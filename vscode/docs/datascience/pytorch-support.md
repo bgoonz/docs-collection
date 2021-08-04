@@ -1,10 +1,8 @@
-PyTorch support in Visual Studio Code
-=====================================
+# PyTorch support in Visual Studio Code
 
 Along with support for [Jupyter Notebooks](/docs/datascience/jupyter-notebooks.md), Visual Studio Code offers many features of particular interest for PyTorch developers. This article covers some of those features and illustrates how they can help you in your projects. If you’re unfamiliar with PyTorch development, Microsoft Learn offers a [Get started with PyTorch](https://docs.microsoft.com/learn/paths/pytorch-fundamentals) learning path that covers the fundamentals of deep learning with PyTorch.
 
-Data Viewer support for Tensors and data slices
------------------------------------------------
+## Data Viewer support for Tensors and data slices
 
 VS Code provides a [Data Viewer](/docs/datascience/jupyter-notebooks.md#variable-explorer-and-data-viewer) that allows you to explore the variables within your code and notebooks, including PyTorch and TensorFlow `Tensor` data types. Along with that the Data Viewer has support for slicing data, allowing you to view any 2D slice of your higher dimensional data.
 
@@ -22,8 +20,7 @@ If you have 3-dimensional or greater data (numpy `ndarray`, PyTorch `Tensor`, or
 
 Along with slicing, you can search for values of interest such as “inf’s” or “NaN’s” by searching for those keywords in the filter under each column name.
 
-TensorBoard integration
------------------------
+## TensorBoard integration
 
 [TensorBoard](https://www.tensorflow.org/tensorboard) is a data science companion dashboard that helps [PyTorch](https://pytorch.org/) and [TensorFlow](https://www.tensorflow.org/) developers visualize datasets and model training. With TensorBoard directly integrated in VS Code, you can spot check your models predictions, view the architecture of your model, analyze your model’s loss and accuracy over time, and profile your code to find out where it’s the slowest.
 
@@ -33,15 +30,13 @@ To start a TensorBoard session, open the **Command Palette** (`kb(workbench.acti
 
 You can also use the setting `python.tensorboard.logDirectory` to set a default TensorBoard log directory for your folder/workspace.
 
-PyTorch Profiler integration
-----------------------------
+## PyTorch Profiler integration
 
 Along with TensorBoard, VS Code and the Python extension also integrate the PyTorch Profiler, allowing you to better analyze your PyTorch models in one place. For more information about the profiler, see the [PyTorch Profiler documentation](https://pytorch.org/blog/introducing-pytorch-profiler-the-new-and-improved-performance-tool/).
 
 ![PyTorch Profiler integration with VS Code](images/pytorch-support/pytorch-profiler.png)
 
-IntelliSense through the Pylance language server
-------------------------------------------------
+## IntelliSense through the Pylance language server
 
 The Python editing experience in VS Code, enhanced with the power of Pylance, provides completions and other rich features for PyTorch. For the best experience, update PyTorch to 1.8.1 to get improved completions for submodules, such as nn, cuda, and optim.
 

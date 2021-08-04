@@ -1,5 +1,4 @@
-Command Line Interface (CLI)
-============================
+# Command Line Interface (CLI)
 
 Visual Studio Code has a powerful command line interface built-in that lets you control how you launch the editor. You can open files, install extensions, change the display language, and output diagnostics through command-line options (switches).
 
@@ -7,15 +6,13 @@ Visual Studio Code has a powerful command line interface built-in that lets you 
 
 If you are looking for how to run command-line tools inside VS Code, see the [Integrated Terminal](/docs/editor/integrated-terminal.md).
 
-Command line help
------------------
+## Command line help
 
 To get an overview of the VS Code command line interface, open a terminal or command prompt and type `code --help`. You will see the version, usage example, and list of command line options.
 
 ![command line help](images/command-line/command-line-help.png)
 
-Launching from command line
----------------------------
+## Launching from command line
 
 You can launch VS Code from the command line to quickly open a file, folder, or project. Typically, you open VS Code within the context of a folder. To do this, from an open terminal or command prompt, navigate to your project folder and type `code .`:
 
@@ -27,8 +24,7 @@ Windows and Linux installations should add the VS Code binaries location to your
 
 > **Insiders:** If you are using the VS Code [Insiders](/insiders) preview, you launch your Insiders build with `code-insiders`.
 
-Core CLI options
-----------------
+## Core CLI options
 
 Here are optional arguments you can use when starting VS Code at the command line via `code`:
 
@@ -36,8 +32,7 @@ Here are optional arguments you can use when starting VS Code at the command lin
 
 ![launch with locale](images/command-line/launch-locale.png)
 
-Opening Files and Folders
--------------------------
+## Opening Files and Folders
 
 Sometimes you will want to open or create a file. If the specified file does not exist, VS Code will create them for you along with any new intermediate folders:
 
@@ -53,8 +48,7 @@ If you specify more than one folder at the command line, VS Code will create a [
 
 ![go to line and column](images/command-line/goto-line-column.png)
 
-Working with extensions
------------------------
+## Working with extensions
 
 You can install and manage VS Code [extensions](/docs/editor/extension-marketplace.md) from the command line.
 
@@ -62,15 +56,13 @@ You can install and manage VS Code [extensions](/docs/editor/extension-marketpla
 
 ![install extension](images/command-line/install-extension.png)
 
-Advanced CLI options
---------------------
+## Advanced CLI options
 
 There are several CLI options that help with reproducing errors and advanced setup.
 
 <table style="width:99%;"><colgroup><col style="width: 62%" /><col style="width: 37%" /></colgroup><thead><tr class="header"><th>Argument</th><th>Description</th></tr></thead><tbody><tr class="odd"><td><code>--extensions-dir &lt;dir&gt;</code></td><td>Set the root path for extensions. Has no effect in <a href="/docs/editor/portable.md">Portable Mode</a>.</td></tr><tr class="even"><td><code>--user-data-dir &lt;dir&gt;</code></td><td>Specifies the directory that user data is kept in, useful when running as root. Has no effect in <a href="/docs/editor/portable.md">Portable Mode</a>.</td></tr><tr class="odd"><td><code>-s, --status</code></td><td>Print process usage and diagnostics information.</td></tr><tr class="even"><td><code>-p, --performance</code></td><td>Start with the <strong>Developer: Startup Performance</strong> command enabled.</td></tr><tr class="odd"><td><code>--disable-gpu</code></td><td>Disable GPU hardware acceleration.</td></tr><tr class="even"><td><code>--verbose</code></td><td>Print verbose output (implies <code>--wait</code>).</td></tr><tr class="odd"><td><code>--prof-startup</code></td><td>Run CPU profiler during startup.</td></tr><tr class="even"><td><code>--upload-logs</code></td><td>Uploads logs from current session to a secure endpoint.</td></tr><tr class="odd"><td><strong>Multi-root</strong></td><td></td></tr><tr class="even"><td><code>--add &lt;dir&gt;</code></td><td>Add folder(s) to the last active window for a multi-root workspace.</td></tr></tbody></table>
 
-Opening VS Code with URLs
--------------------------
+## Opening VS Code with URLs
 
 You can also open projects and files using the platform’s URL handling mechanism. Use the following URL formats to:
 
@@ -98,17 +90,15 @@ You can use the URL in applications such as browsers or file explorers that can 
 
 > **Note**: If you are using VS Code [Insiders](/insiders) builds, the URL prefix is `vscode-insiders://`.
 
-Next steps
-----------
+## Next steps
 
 Read on to find out about:
 
--   [Integrated Terminal](/docs/editor/integrated-terminal.md) - Run command-line tools from inside VS Code.
--   [Basic Editing](/docs/editor/codebasics.md) - Learn the basics of the VS Code editor.
--   [Code Navigation](/docs/editor/editingevolved.md) - VS Code lets you quickly understand and move through your source code.
+- [Integrated Terminal](/docs/editor/integrated-terminal.md) - Run command-line tools from inside VS Code.
+- [Basic Editing](/docs/editor/codebasics.md) - Learn the basics of the VS Code editor.
+- [Code Navigation](/docs/editor/editingevolved.md) - VS Code lets you quickly understand and move through your source code.
 
-Common questions
-----------------
+## Common questions
 
 ### ‘code’ is not recognized as an internal or external command
 

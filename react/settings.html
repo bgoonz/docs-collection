@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Settings</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Settings</h1>
+</header>
+<p><code>Settings</code> serves as a wrapper for <a href="https://developer.apple.com/documentation/foundation/nsuserdefaults"><code>NSUserDefaults</code></a>, a persistent key-value store available only on iOS.</p>
+<h2 id="example">Example</h2>
+<p>```SnackPlayer name=Settings%20Example&amp;supportedPlatforms=ios import React, { useState } from “react”; import { Button, Settings, StyleSheet, Text, View } from “react-native”;</p>
+<p>const App = () =&gt; { const [data, setData] = useState(Settings.get(“data”));</p>
+<p>const storeData = data =&gt; { Settings.set(data); setData(Settings.get(“data”)); };</p>
+<p>return ( <View style={styles.container}> <Text>Stored value:</Text> <Text style={styles.value}>{data}</Text> &lt;Button onPress={() =&gt; storeData({ data: “React” })} title=“Store ‘React’” /&gt; &lt;Button onPress={() =&gt; storeData({ data: “Native” })} title=“Store ‘Native’” /&gt; </View> ); };</p>
+<p>const styles = StyleSheet.create({ container: { flex: 1, justifyContent: “center”, alignItems: “center” }, value: { fontSize: 24, marginVertical: 12 } });</p>
+<p>export default App; ```</p>
+<hr />
+<h1 id="reference">Reference</h1>
+<h2 id="methods">Methods</h2>
+<h3 id="clearwatch"><code>clearWatch()</code></h3>
+<pre class="jsx"><code>static clearWatch(watchId: number)</code></pre>
+<p><code>watchId</code> is the number returned by <code>watchKeys()</code> when the subscription was originally configured.</p>
+<hr />
+<h3 id="get"><code>get()</code></h3>
+<pre class="jsx"><code>static get(key: string): mixed</code></pre>
+<p>Get the current value for a given <code>key</code> in <code>NSUserDefaults</code>.</p>
+<hr />
+<h3 id="set"><code>set()</code></h3>
+<pre class="jsx"><code>static set(settings: object)</code></pre>
+<p>Set one or more values in <code>NSUserDefaults</code>.</p>
+<hr />
+<h3 id="watchkeys"><code>watchKeys()</code></h3>
+<pre class="jsx"><code>static watchKeys(keys: string | array&lt;string&gt;, callback: function): number</code></pre>
+<p>Subscribe to be notified when the value for any of the keys specified by the <code>keys</code> parameter has been changed in <code>NSUserDefaults</code>. Returns a <code>watchId</code> number that may be used with <code>clearWatch()</code> to unsubscribe.</p>
+<blockquote>
+<p><strong>Note:</strong> <code>watchKeys()</code> by design ignores internal <code>set()</code> calls and fires callback only on changes preformed outside of React Native code.</p>
+</blockquote>
+</body>
+</html>

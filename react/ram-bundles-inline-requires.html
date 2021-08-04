@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>RAM Bundles and Inline Requires</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">RAM Bundles and Inline Requires</h1>
+</header>
+<p>If you have a large app you may want to consider the Random Access Modules (RAM) bundle format, and using inline requires. This is useful for apps that have a large number of screens which may not ever be opened during a typical usage of the app. Generally it is useful to apps that have large amounts of code that are not needed for a while after startup. For instance the app includes complicated profile screens or lesser used features, but most sessions only involve visiting the main screen of the app for updates. We can optimize the loading of the bundle by using the RAM format and requiring those features and screens inline (when they are actually used).</p>
+<h2 id="loading-javascript">Loading JavaScript</h2>
+<p>Before react-native can execute JS code, that code must be loaded into memory and parsed. With a standard bundle if you load a 50mb bundle, all 50mb must be loaded and parsed before any of it can be executed. The optimization behind RAM bundles is that you can load only the portion of the 50mb that you actually need at startup, and progressively load more of the bundle as those sections are needed.</p>
+<h2 id="inline-requires">Inline Requires</h2>
+<p>Inline requires delay the requiring of a module or file until that file is actually needed. A basic example would look like this:</p>
+<h3 id="veryexpensive.js">VeryExpensive.js</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="im">import</span> React<span class="op">,</span> <span class="op">{</span> Component <span class="op">}</span> <span class="im">from</span> <span class="st">&#39;react&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="im">import</span> <span class="op">{</span> Text <span class="op">}</span> <span class="im">from</span> <span class="st">&#39;react-native&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="co">// ... import some very expensive modules</span></a>
+<a class="sourceLine" id="cb1-4" title="4"></a>
+<a class="sourceLine" id="cb1-5" title="5"><span class="co">// You may want to log at the file level to verify when this is happening</span></a>
+<a class="sourceLine" id="cb1-6" title="6"><span class="va">console</span>.<span class="at">log</span>(<span class="st">&#39;VeryExpensive component loaded&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-7" title="7"></a>
+<a class="sourceLine" id="cb1-8" title="8"><span class="im">export</span> <span class="im">default</span> <span class="kw">class</span> VeryExpensive <span class="kw">extends</span> Component <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-9" title="9">  <span class="co">// lots and lots of code</span></a>
+<a class="sourceLine" id="cb1-10" title="10">  <span class="at">render</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-11" title="11">    <span class="cf">return</span> <span class="op">&lt;</span>Text<span class="op">&gt;</span>Very Expensive Component&lt;/Text<span class="op">&gt;;</span></a>
+<a class="sourceLine" id="cb1-12" title="12">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb1-13" title="13"><span class="op">}</span></a></code></pre></div>
+<h3 id="optimized.js">Optimized.js</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="im">import</span> React<span class="op">,</span> <span class="op">{</span> Component <span class="op">}</span> <span class="im">from</span> <span class="st">&#39;react&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="im">import</span> <span class="op">{</span> TouchableOpacity<span class="op">,</span> View<span class="op">,</span> Text <span class="op">}</span> <span class="im">from</span> <span class="st">&#39;react-native&#39;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb2-3" title="3"></a>
+<a class="sourceLine" id="cb2-4" title="4"><span class="kw">let</span> VeryExpensive <span class="op">=</span> <span class="kw">null</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb2-5" title="5"></a>
+<a class="sourceLine" id="cb2-6" title="6"><span class="im">export</span> <span class="im">default</span> <span class="kw">class</span> Optimized <span class="kw">extends</span> Component <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-7" title="7">  state <span class="op">=</span> <span class="op">{</span> <span class="dt">needsExpensive</span><span class="op">:</span> <span class="kw">false</span> <span class="op">};</span></a>
+<a class="sourceLine" id="cb2-8" title="8"></a>
+<a class="sourceLine" id="cb2-9" title="9">  didPress <span class="op">=</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-10" title="10">    <span class="cf">if</span> (VeryExpensive <span class="op">==</span> <span class="kw">null</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-11" title="11">      VeryExpensive <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;./VeryExpensive&#39;</span>).<span class="at">default</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb2-12" title="12">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb2-13" title="13"></a>
+<a class="sourceLine" id="cb2-14" title="14">    <span class="kw">this</span>.<span class="at">setState</span>(() <span class="kw">=&gt;</span> (<span class="op">{</span></a>
+<a class="sourceLine" id="cb2-15" title="15">      <span class="dt">needsExpensive</span><span class="op">:</span> <span class="kw">true</span></a>
+<a class="sourceLine" id="cb2-16" title="16">    <span class="op">}</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-17" title="17">  <span class="op">};</span></a>
+<a class="sourceLine" id="cb2-18" title="18"></a>
+<a class="sourceLine" id="cb2-19" title="19">  <span class="at">render</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-20" title="20">    <span class="cf">return</span> (</a>
+<a class="sourceLine" id="cb2-21" title="21">      <span class="op">&lt;</span>View style<span class="op">={{</span> <span class="dt">marginTop</span><span class="op">:</span> <span class="dv">20</span> <span class="op">}}&gt;</span></a>
+<a class="sourceLine" id="cb2-22" title="22">        <span class="op">&lt;</span>TouchableOpacity onPress<span class="op">={</span><span class="kw">this</span>.<span class="at">didPress</span><span class="op">}&gt;</span></a>
+<a class="sourceLine" id="cb2-23" title="23">          <span class="op">&lt;</span>Text<span class="op">&gt;</span>Load&lt;/Text<span class="op">&gt;</span></a>
+<a class="sourceLine" id="cb2-24" title="24">        &lt;/TouchableOpacity<span class="op">&gt;</span></a>
+<a class="sourceLine" id="cb2-25" title="25">        <span class="op">{</span><span class="kw">this</span>.<span class="va">state</span>.<span class="at">needsExpensive</span> <span class="op">?</span> <span class="op">&lt;</span>VeryExpensive /<span class="op">&gt;</span> : <span class="kw">null</span><span class="op">}</span></a>
+<a class="sourceLine" id="cb2-26" title="26">      &lt;/View<span class="op">&gt;</span></a>
+<a class="sourceLine" id="cb2-27" title="27">    )<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-28" title="28">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb2-29" title="29"><span class="op">}</span></a></code></pre></div>
+<p>Even without the RAM format, inline requires can lead to startup time improvements, because the code within VeryExpensive.js will only execute once it is required for the first time.</p>
+<h2 id="enable-the-ram-format">Enable the RAM format</h2>
+<p>On iOS using the RAM format will create a single indexed file that react native will load one module at a time. On Android, by default it will create a set of files for each module. You can force Android to create a single file, like iOS, but using multiple files can be more performant and requires less memory.</p>
+<p>Enable the RAM format in Xcode by editing the build phase “Bundle React Native code and images”. Before <code>../node_modules/react-native/scripts/react-native-xcode.sh</code> add <code>export BUNDLE_COMMAND="ram-bundle"</code>:</p>
+<pre><code>export BUNDLE_COMMAND=&quot;ram-bundle&quot;
+export NODE_BINARY=node
+../node_modules/react-native/scripts/react-native-xcode.sh</code></pre>
+<p>On Android enable the RAM format by editing your <code>android/app/build.gradle</code> file. Before the line <code>apply from: "../../node_modules/react-native/react.gradle"</code> add or amend the <code>project.ext.react</code> block:</p>
+<pre><code>project.ext.react = [
+  bundleCommand: &quot;ram-bundle&quot;,
+]</code></pre>
+<p>Use the following lines on Android if you want to use a single indexed file:</p>
+<pre><code>project.ext.react = [
+  bundleCommand: &quot;ram-bundle&quot;,
+  extraPackagerArgs: [&quot;--indexed-ram-bundle&quot;]
+]</code></pre>
+<blockquote>
+<p><strong><em>Note</em></strong>: If you are using <a href="https://github.com/facebook/hermes">Hermes JS Engine</a>, you <strong>should not</strong> have RAM bundles feature enabled. In Hermes, when loading the bytecode, <code>mmap</code> ensures that the entire file is not loaded. Using Hermes with RAM bundles might lead to issues, because those mechanisms are not compatible with each other.</p>
+</blockquote>
+<h2 id="configure-preloading-and-inline-requires">Configure Preloading and Inline Requires</h2>
+<p>Now that we have a RAM bundle, there is overhead for calling <code>require</code>. <code>require</code> now needs to send a message over the bridge when it encounters a module it has not loaded yet. This will impact startup the most, because that is where the largest number of require calls are likely to take place while the app loads the initial module. Luckily we can configure a portion of the modules to be preloaded. In order to do this, you will need to implement some form of inline require.</p>
+<h2 id="investigating-the-loaded-modules">Investigating the Loaded Modules</h2>
+<p>In your root file (index.(ios|android).js) you can add the following after the initial imports:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb6-1" title="1"><span class="kw">const</span> modules <span class="op">=</span> <span class="va">require</span>.<span class="at">getModules</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-2" title="2"><span class="kw">const</span> moduleIds <span class="op">=</span> <span class="va">Object</span>.<span class="at">keys</span>(modules)<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-3" title="3"><span class="kw">const</span> loadedModuleNames <span class="op">=</span> moduleIds</a>
+<a class="sourceLine" id="cb6-4" title="4">  .<span class="at">filter</span>((moduleId) <span class="kw">=&gt;</span> modules[moduleId].<span class="at">isInitialized</span>)</a>
+<a class="sourceLine" id="cb6-5" title="5">  .<span class="at">map</span>((moduleId) <span class="kw">=&gt;</span> modules[moduleId].<span class="at">verboseName</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-6" title="6"><span class="kw">const</span> waitingModuleNames <span class="op">=</span> moduleIds</a>
+<a class="sourceLine" id="cb6-7" title="7">  .<span class="at">filter</span>((moduleId) <span class="kw">=&gt;</span> <span class="op">!</span>modules[moduleId].<span class="at">isInitialized</span>)</a>
+<a class="sourceLine" id="cb6-8" title="8">  .<span class="at">map</span>((moduleId) <span class="kw">=&gt;</span> modules[moduleId].<span class="at">verboseName</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-9" title="9"></a>
+<a class="sourceLine" id="cb6-10" title="10"><span class="co">// make sure that the modules you expect to be waiting are actually waiting</span></a>
+<a class="sourceLine" id="cb6-11" title="11"><span class="va">console</span>.<span class="at">log</span>(</a>
+<a class="sourceLine" id="cb6-12" title="12">  <span class="st">&#39;loaded:&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb6-13" title="13">  <span class="va">loadedModuleNames</span>.<span class="at">length</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb6-14" title="14">  <span class="st">&#39;waiting:&#39;</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb6-15" title="15">  <span class="va">waitingModuleNames</span>.<span class="at">length</span></a>
+<a class="sourceLine" id="cb6-16" title="16">)<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-17" title="17"></a>
+<a class="sourceLine" id="cb6-18" title="18"><span class="co">// grab this text blob, and put it in a file named packager/modulePaths.js</span></a>
+<a class="sourceLine" id="cb6-19" title="19"><span class="va">console</span>.<span class="at">log</span>(</a>
+<a class="sourceLine" id="cb6-20" title="20">  <span class="vs">`module.exports = </span><span class="sc">${</span><span class="va">JSON</span>.<span class="at">stringify</span>(</a>
+<a class="sourceLine" id="cb6-21" title="21">    <span class="va">loadedModuleNames</span>.<span class="at">sort</span>()<span class="op">,</span></a>
+<a class="sourceLine" id="cb6-22" title="22">    <span class="kw">null</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb6-23" title="23">    <span class="dv">2</span></a>
+<a class="sourceLine" id="cb6-24" title="24">  )<span class="sc">}</span><span class="vs">;`</span></a>
+<a class="sourceLine" id="cb6-25" title="25">)<span class="op">;</span></a></code></pre></div>
+<p>When you run your app, you can look in the console and see how many modules have been loaded, and how many are waiting. You may want to read the moduleNames and see if there are any surprises. Note that inline requires are invoked the first time the imports are referenced. You may need to investigate and refactor to ensure only the modules you want are loaded on startup. Note that you can change the Systrace object on require to help debug problematic requires.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb7-1" title="1"><span class="va">require</span>.<span class="va">Systrace</span>.<span class="at">beginEvent</span> <span class="op">=</span> (message) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb7-2" title="2">  <span class="cf">if</span> (<span class="va">message</span>.<span class="at">includes</span>(problematicModule)) <span class="op">{</span></a>
+<a class="sourceLine" id="cb7-3" title="3">    <span class="cf">throw</span> <span class="kw">new</span> <span class="at">Error</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb7-4" title="4">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb7-5" title="5"><span class="op">};</span></a></code></pre></div>
+<p>Every app is different, but it may make sense to only load the modules you need for the very first screen. When you are satisfied, put the output of the loadedModuleNames into a file named <code>packager/modulePaths.js</code>.</p>
+<h2 id="updating-the-metro.config.js">Updating the metro.config.js</h2>
+<p>We now need to update <code>metro.config.js</code> in the root of the project to use our newly generated <code>modulePaths.js</code> file:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb8-1" title="1"><span class="kw">const</span> modulePaths <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;./packager/modulePaths&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-2" title="2"><span class="kw">const</span> resolve <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;path&#39;</span>).<span class="at">resolve</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb8-3" title="3"><span class="kw">const</span> fs <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;fs&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-4" title="4"></a>
+<a class="sourceLine" id="cb8-5" title="5"><span class="co">// Update the following line if the root folder of your app is somewhere else.</span></a>
+<a class="sourceLine" id="cb8-6" title="6"><span class="kw">const</span> ROOT_FOLDER <span class="op">=</span> <span class="at">resolve</span>(__dirname<span class="op">,</span> <span class="st">&#39;..&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-7" title="7"></a>
+<a class="sourceLine" id="cb8-8" title="8"><span class="kw">const</span> config <span class="op">=</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-9" title="9">  <span class="dt">transformer</span><span class="op">:</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-10" title="10">    <span class="dt">getTransformOptions</span><span class="op">:</span> () <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-11" title="11">      <span class="kw">const</span> moduleMap <span class="op">=</span> <span class="op">{};</span></a>
+<a class="sourceLine" id="cb8-12" title="12">      <span class="va">modulePaths</span>.<span class="at">forEach</span>((path) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-13" title="13">        <span class="cf">if</span> (<span class="va">fs</span>.<span class="at">existsSync</span>(path)) <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-14" title="14">          moduleMap[<span class="at">resolve</span>(path)] <span class="op">=</span> <span class="kw">true</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb8-15" title="15">        <span class="op">}</span></a>
+<a class="sourceLine" id="cb8-16" title="16">      <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-17" title="17">      <span class="cf">return</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb8-18" title="18">        <span class="dt">preloadedModules</span><span class="op">:</span> moduleMap<span class="op">,</span></a>
+<a class="sourceLine" id="cb8-19" title="19">        <span class="dt">transform</span><span class="op">:</span> <span class="op">{</span> <span class="dt">inlineRequires</span><span class="op">:</span> <span class="op">{</span> <span class="dt">blockList</span><span class="op">:</span> moduleMap <span class="op">}</span> <span class="op">}</span></a>
+<a class="sourceLine" id="cb8-20" title="20">      <span class="op">};</span></a>
+<a class="sourceLine" id="cb8-21" title="21">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb8-22" title="22">  <span class="op">},</span></a>
+<a class="sourceLine" id="cb8-23" title="23">  <span class="dt">projectRoot</span><span class="op">:</span> ROOT_FOLDER</a>
+<a class="sourceLine" id="cb8-24" title="24"><span class="op">};</span></a>
+<a class="sourceLine" id="cb8-25" title="25"></a>
+<a class="sourceLine" id="cb8-26" title="26"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> config<span class="op">;</span></a></code></pre></div>
+<p>The <code>preloadedModules</code> entry in the config indicates which modules should be marked as preloaded when building a RAM bundle. When the bundle is loaded, those modules are immediately loaded, before any requires have even executed. The <code>blockList</code> entry indicates that those modules should not be required inline. Because they are preloaded, there is no performance benefit from using an inline require. In fact the generated JavaScript spends extra time resolving the inline require every time the imports are referenced.</p>
+<h2 id="test-and-measure-improvements">Test and Measure Improvements</h2>
+<p>You should now be ready to build your app using the RAM format and inline requires. Make sure you measure the before and after startup times.</p>
+</body>
+</html>

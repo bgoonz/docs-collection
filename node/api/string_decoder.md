@@ -1,5 +1,4 @@
-String decoder
-==============
+# String decoder
 
 > Stability: 2 - Stable
 
@@ -29,19 +28,18 @@ In the following example, the three UTF-8 encoded bytes of the European Euro sym
     decoder.write(Buffer.from([0x82]));
     console.log(decoder.end(Buffer.from([0xAC])));
 
-Class: `StringDecoder`
-----------------------
+## Class: `StringDecoder`
 
 ### `new StringDecoder([encoding])`
 
--   `encoding` {string} The character [encoding](buffer.md#buffer_buffers_and_character_encodings) the `StringDecoder` will use. **Default:** `'utf8'`.
+- `encoding` {string} The character [encoding](buffer.md#buffer_buffers_and_character_encodings) the `StringDecoder` will use. **Default:** `'utf8'`.
 
 Creates a new `StringDecoder` instance.
 
 ### `stringDecoder.end([buffer])`
 
--   `buffer` {Buffer|TypedArray|DataView} A `Buffer`, or `TypedArray`, or `DataView` containing the bytes to decode.
--   Returns: {string}
+- `buffer` {Buffer|TypedArray|DataView} A `Buffer`, or `TypedArray`, or `DataView` containing the bytes to decode.
+- Returns: {string}
 
 Returns any remaining input stored in the internal buffer as a string. Bytes representing incomplete UTF-8 and UTF-16 characters will be replaced with substitution characters appropriate for the character encoding.
 
@@ -49,7 +47,7 @@ If the `buffer` argument is provided, one final call to `stringDecoder.write()` 
 
 ### `stringDecoder.write(buffer)`
 
--   `buffer` {Buffer|TypedArray|DataView} A `Buffer`, or `TypedArray`, or `DataView` containing the bytes to decode.
--   Returns: {string}
+- `buffer` {Buffer|TypedArray|DataView} A `Buffer`, or `TypedArray`, or `DataView` containing the bytes to decode.
+- Returns: {string}
 
 Returns a decoded string, ensuring that any incomplete multibyte characters at the end of the `Buffer`, or `TypedArray`, or `DataView` are omitted from the returned string and stored in an internal buffer for the next call to `stringDecoder.write()` or `stringDecoder.end()`.

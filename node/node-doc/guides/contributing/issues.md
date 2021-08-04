@@ -1,34 +1,29 @@
-Issues
-======
+# Issues
 
--   [Asking for general help](#asking-for-general-help)
--   [Discussing non-technical topics](#discussing-non-technical-topics)
--   [Submitting a bug report](#submitting-a-bug-report)
--   [Triaging a bug report](#triaging-a-bug-report)
+- [Asking for general help](#asking-for-general-help)
+- [Discussing non-technical topics](#discussing-non-technical-topics)
+- [Submitting a bug report](#submitting-a-bug-report)
+- [Triaging a bug report](#triaging-a-bug-report)
 
-Asking for general help
------------------------
+## Asking for general help
 
 Because the level of activity in the `nodejs/node` repository is so high, questions or requests for general help using Node.js should be directed at the [Node.js help repository](https://github.com/nodejs/help/issues).
 
-Discussing non-technical topics
--------------------------------
+## Discussing non-technical topics
 
 Discussion of non-technical topics (such as intellectual property and trademark) should be directed to the [Technical Steering Committee (TSC) repository](https://github.com/nodejs/TSC/issues).
 
-Submitting a bug report
------------------------
+## Submitting a bug report
 
 When opening a new issue in the `nodejs/node` issue tracker, users will be presented with a choice of issue templates. If you believe that you have uncovered a bug in Node.js, please fill out the `Bug Report` template to the best of your ability. Do not worry if you cannot answer every detail; just fill in what you can.
 
 The two most important pieces of information we need in order to properly evaluate the report is a description of the behavior you are seeing and a simple test case we can use to recreate the problem on our own. If we cannot recreate the issue, it becomes impossible for us to fix.
 
-In order to rule out the possibility of bugs introduced by userland code, test cases should be limited, as much as possible, to using *only* Node.js APIs. If the bug occurs only when you’re using a specific userland module, there is a very good chance that either (a) the module has a bug or (b) something in Node.js changed that broke the module.
+In order to rule out the possibility of bugs introduced by userland code, test cases should be limited, as much as possible, to using _only_ Node.js APIs. If the bug occurs only when you’re using a specific userland module, there is a very good chance that either (a) the module has a bug or (b) something in Node.js changed that broke the module.
 
 See [How to create a Minimal, Complete, and Verifiable example](https://stackoverflow.com/help/mcve).
 
-Triaging a bug report
----------------------
+## Triaging a bug report
 
 Once an issue has been opened, it is common for there to be discussion around it. Some contributors may have differing opinions about the issue, including whether the behavior being seen is a bug or a feature. This discussion is part of the process and should be kept focused, helpful, and professional.
 

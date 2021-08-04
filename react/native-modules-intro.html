@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Native Modules Intro</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Native Modules Intro</h1>
+    </header>
+    <p>
+      Sometimes a React Native app needs to access a native platform API that is
+      not available by default in JavaScript, for example the native APIs to
+      access Apple or Google Pay. Maybe you want to reuse some existing
+      Objective-C, Swift, Java or C++ libraries without having to reimplement it
+      in JavaScript, or write some high performance, multi-threaded code for
+      things like image processing.
+    </p>
+    <p>
+      The NativeModule system exposes instances of Java/Objective-C/C++ (native)
+      classes to JavaScript (JS) as JS objects, thereby allowing you to execute
+      arbitrary native code from within JS. While we don’t expect this feature
+      to be part of the usual development process, it is essential that it
+      exists. If React Native doesn’t export a native API that your JS app needs
+      you should be able to export it yourself!
+    </p>
+    <h2 id="native-module-setup">Native Module Setup</h2>
+    <p>
+      There are two ways to write a native module for your React Native
+      application:
+    </p>
+    <ol type="1">
+      <li>
+        Directly within your React Native application’s iOS/Android projects
+      </li>
+      <li>
+        As a NPM package that can be installed as a dependency by your/other
+        React Native applications
+      </li>
+    </ol>
+    <p>
+      This guide will first walk you through implementing a native module
+      directly within a React Native application. However the native module you
+      build in the following guide can be distributed as an NPM package. Check
+      out the
+      <a href="native-modules-setup"
+        >Setting Up a Native Module as a NPM Package</a
+      >
+      guide if you are interested in doing so.
+    </p>
+    <h2 id="getting-started">Getting Started</h2>
+    <p>
+      In the following sections we will walk you through guides on how to build
+      a native module directly within a React Native application. As a
+      prerequisite, you will need a React Native application to work within. You
+      can follow the steps <a href="getting-started">here</a> to setup a React
+      Native application if you do not already have one.
+    </p>
+    <p>
+      Imagine that you want to access the iOS/Android native calendar APIs from
+      JavaScript within a React Native application in order to create calendar
+      events. React Native does not expose a JavaScript API to communicate with
+      the native calendar libraries. However, through native modules, you can
+      write native code that communicates with native calendar APIs. Then you
+      can invoke that native code through JavaScript in your React Native
+      application.
+    </p>
+    <p>
+      In the following sections you will create such a Calendar native module
+      for both <a href="native-modules-android">Android</a> and
+      <a href="native-modules-ios">iOS</a>.
+    </p>
+  </body>
+</html>

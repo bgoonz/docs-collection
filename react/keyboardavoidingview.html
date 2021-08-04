@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>KeyboardAvoidingView</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">KeyboardAvoidingView</h1>
+</header>
+<p>It is a component to solve the common problem of views that need to move out of the way of the virtual keyboard. It can automatically adjust either its height, position, or bottom padding based on the keyboard height.</p>
+<h2 id="example">Example</h2>
+<p>```SnackPlayer name=KeyboardAvoidingView&amp;supportedPlatforms=android,ios import React from ‘react’; import { View, KeyboardAvoidingView, TextInput, StyleSheet, Text, Platform, TouchableWithoutFeedback, Button, Keyboard } from ‘react-native’;</p>
+<p>const KeyboardAvoidingComponent = () =&gt; { return ( &lt;KeyboardAvoidingView behavior={Platform.OS === “ios” ? “padding” : “height”} style={styles.container} &gt; <TouchableWithoutFeedback onPress={Keyboard.dismiss}> <View style={styles.inner}> <Text style={styles.header}>Header</Text> <TextInput placeholder="Username" style={styles.textInput} /> <View style={styles.btnContainer}> &lt;Button title=“Submit” onPress={() =&gt; null} /&gt; </View> </View> </TouchableWithoutFeedback> </KeyboardAvoidingView> ); };</p>
+<p>const styles = StyleSheet.create({ container: { flex: 1 }, inner: { padding: 24, flex: 1, justifyContent: “space-around” }, header: { fontSize: 36, marginBottom: 48 }, textInput: { height: 40, borderColor: “#000000”, borderBottomWidth: 1, marginBottom: 36 }, btnContainer: { backgroundColor: “white”, marginTop: 12 } });</p>
+<p>export default KeyboardAvoidingComponent; ```</p>
+<hr />
+<h1 id="reference">Reference</h1>
+<h2 id="props">Props</h2>
+<h3 id="view-props"><a href="view.md#props">View Props</a></h3>
+<p>Inherits <a href="view.md#props">View Props</a>.</p>
+<hr />
+<h3 id="behavior"><code>behavior</code></h3>
+<p>Specify how to react to the presence of the keyboard.</p>
+<blockquote>
+<p>Android and iOS both interact with this prop differently. On both iOS and Android, setting <code>behavior</code> is recommended.</p>
+</blockquote>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>enum(<code>'height'</code>, <code>'position'</code>, <code>'padding'</code>)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="contentcontainerstyle"><code>contentContainerStyle</code></h3>
+<p>The style of the content container (View) when behavior is <code>'position'</code>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="view-style-props.md">View Style</a></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="enabled"><code>enabled</code></h3>
+<p>Enabled or disabled KeyboardAvoidingView.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>boolean</td>
+<td><code>true</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="keyboardverticaloffset"><code>keyboardVerticalOffset</code></h3>
+<p>This is the distance between the top of the user screen and the react native view, may be non-zero in some use cases.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number</td>
+<td><code>0</code></td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

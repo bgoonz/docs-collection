@@ -11,6 +11,7 @@ tags:
   - Polyfill
 browser-compat: javascript.builtins.Array.filter
 ---
+
 {{JSRef}}
 
 The **`filter()`** method **creates a new array** with all elements that pass the test implemented by the provided function.
@@ -83,34 +84,35 @@ The range of elements processed by `filter()` is set before the first invocation
 You can work around this by inserting the following code at the beginning of your scripts, allowing use of `filter()` in ECMA-262 implementations which do not natively support it. This algorithm is exactly equivalent to the one specified in ECMA-262, 5th edition, assuming that `fn.call` evaluates to the original value of {{jsxref("Function.prototype.bind()")}}, and that {{jsxref("Array.prototype.push()")}} has its original value.
 
 ```js
-if (!Array.prototype.filter){
-  Array.prototype.filter = function(func, thisArg) {
-    'use strict';
-    if ( ! ((typeof func === 'Function' || typeof func === 'function') && this) )
-        throw new TypeError();
+if (!Array.prototype.filter) {
+  Array.prototype.filter = function (func, thisArg) {
+    "use strict";
+    if (!((typeof func === "Function" || typeof func === "function") && this))
+      throw new TypeError();
 
     var len = this.length >>> 0,
-        res = new Array(len), // preallocate array
-        t = this, c = 0, i = -1;
+      res = new Array(len), // preallocate array
+      t = this,
+      c = 0,
+      i = -1;
 
     var kValue;
-    if (thisArg === undefined){
-      while (++i !== len){
+    if (thisArg === undefined) {
+      while (++i !== len) {
         // checks to see if the key was set
-        if (i in this){
+        if (i in this) {
           kValue = t[i]; // in case t is changed in callback
-          if (func(t[i], i, t)){
+          if (func(t[i], i, t)) {
             res[c++] = kValue;
           }
         }
       }
-    }
-    else{
-      while (++i !== len){
+    } else {
+      while (++i !== len) {
         // checks to see if the key was set
-        if (i in this){
+        if (i in this) {
           kValue = t[i];
-          if (func.call(thisArg, t[i], i, t)){
+          if (func.call(thisArg, t[i], i, t)) {
             res[c++] = kValue;
           }
         }
@@ -131,10 +133,10 @@ The following example uses `filter()` to create a filtered array that has all el
 
 ```js
 function isBigEnough(value) {
-  return value >= 10
+  return value >= 10;
 }
 
-let filtered = [12, 5, 8, 130, 44].filter(isBigEnough)
+let filtered = [12, 5, 8, 130, 44].filter(isBigEnough);
 // filtered is [12, 130, 44]
 ```
 
@@ -168,29 +170,29 @@ let arr = [
   { id: 0 },
   { id: 3 },
   { id: 12.2 },
-  { },
+  {},
   { id: null },
   { id: NaN },
-  { id: 'undefined' }
-]
+  { id: "undefined" },
+];
 
-let invalidEntries = 0
+let invalidEntries = 0;
 
 function filterByID(item) {
   if (Number.isFinite(item.id) && item.id !== 0) {
-    return true
+    return true;
   }
-  invalidEntries++
+  invalidEntries++;
   return false;
 }
 
-let arrByID = arr.filter(filterByID)
+let arrByID = arr.filter(filterByID);
 
-console.log('Filtered Array\n', arrByID)
+console.log("Filtered Array\n", arrByID);
 // Filtered Array
 // [{ id: 15 }, { id: -1 }, { id: 3 }, { id: 12.2 }]
 
-console.log('Number of Invalid Entries = ', invalidEntries)
+console.log("Number of Invalid Entries = ", invalidEntries);
 // Number of Invalid Entries = 5
 ```
 
@@ -199,35 +201,37 @@ console.log('Number of Invalid Entries = ', invalidEntries)
 Following example uses `filter()` to filter array content based on search criteria.
 
 ```js
-let fruits = ['apple', 'banana', 'grapes', 'mango', 'orange']
+let fruits = ["apple", "banana", "grapes", "mango", "orange"];
 
 /**
  * Filter array items based on search criteria (query)
  */
 function filterItems(arr, query) {
-  return arr.filter(function(el) {
-      return el.toLowerCase().indexOf(query.toLowerCase()) !== -1
-  })
+  return arr.filter(function (el) {
+    return el.toLowerCase().indexOf(query.toLowerCase()) !== -1;
+  });
 }
 
-console.log(filterItems(fruits, 'ap'))  // ['apple', 'grapes']
-console.log(filterItems(fruits, 'an'))  // ['banana', 'mango', 'orange']
+console.log(filterItems(fruits, "ap")); // ['apple', 'grapes']
+console.log(filterItems(fruits, "an")); // ['banana', 'mango', 'orange']
 ```
 
 #### ES2015 Implementation
 
 ```js
-const fruits = ['apple', 'banana', 'grapes', 'mango', 'orange']
+const fruits = ["apple", "banana", "grapes", "mango", "orange"];
 
 /**
  * Filter array items based on search criteria (query)
  */
 const filterItems = (arr, query) => {
-  return arr.filter(el => el.toLowerCase().indexOf(query.toLowerCase()) !== -1)
-}
+  return arr.filter(
+    (el) => el.toLowerCase().indexOf(query.toLowerCase()) !== -1
+  );
+};
 
-console.log(filterItems(fruits, 'ap'))  // ['apple', 'grapes']
-console.log(filterItems(fruits, 'an'))  // ['banana', 'mango', 'orange']
+console.log(filterItems(fruits, "ap")); // ['apple', 'grapes']
+console.log(filterItems(fruits, "an")); // ['banana', 'mango', 'orange']
 ```
 
 ### Affecting Initial Array (modifying, appending and deleting)
@@ -236,36 +240,36 @@ The following examples tests the behavior of the `filter` method when the array 
 
 ```js
 // Modifying each words
-let words = ['spray', 'limit', 'exuberant', 'destruction','elite', 'present']
+let words = ["spray", "limit", "exuberant", "destruction", "elite", "present"];
 
-const modifiedWords = words.filter( (word, index, arr) => {
-  arr[index+1] +=' extra'
-  return word.length < 6
-})
+const modifiedWords = words.filter((word, index, arr) => {
+  arr[index + 1] += " extra";
+  return word.length < 6;
+});
 
-console.log(modifiedWords)
+console.log(modifiedWords);
 // Notice there are three words below length 6, but since they've been modified one is returned
 // ["spray"]
 
 // Appending new words
-words = ['spray', 'limit', 'exuberant', 'destruction','elite', 'present']
-const appendedWords = words.filter( (word, index, arr) => {
-  arr.push('new')
-  return word.length < 6
-})
+words = ["spray", "limit", "exuberant", "destruction", "elite", "present"];
+const appendedWords = words.filter((word, index, arr) => {
+  arr.push("new");
+  return word.length < 6;
+});
 
-console.log(appendedWords)
+console.log(appendedWords);
 // Only three fits the condition even though the `words` itself now has a lot more words with character length less than 6
 // ["spray" ,"limit" ,"elite"]
 
 // Deleting words
-words = ['spray', 'limit', 'exuberant', 'destruction', 'elite', 'present']
-const deleteWords = words.filter( (word, index, arr) => {
-  arr.pop()
-  return word.length < 6
-})
+words = ["spray", "limit", "exuberant", "destruction", "elite", "present"];
+const deleteWords = words.filter((word, index, arr) => {
+  arr.pop();
+  return word.length < 6;
+});
 
-console.log(deleteWords)
+console.log(deleteWords);
 // Notice 'elite' is not even obtained as its been popped off `words` before filter can even get there
 // ["spray" ,"limit"]
 ```

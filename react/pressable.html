@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Pressable</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Pressable</h1>
+</header>
+<p>Pressable is a Core Component wrapper that can detect various stages of press interactions on any of its defined children.</p>
+<pre class="jsx"><code>&lt;Pressable onPress={onPressFunction}&gt;
+  &lt;Text&gt;I&#39;m pressable!&lt;/Text&gt;
+&lt;/Pressable&gt;</code></pre>
+<h2 id="how-it-works">How it works</h2>
+<p>On an element wrapped by <code>Pressable</code>:</p>
+<ul>
+<li><a href="#onpressin"><code>onPressIn</code></a> is called when a press is activated.</li>
+<li><a href="#onpressout"><code>onPressOut</code></a> is called when the press gesture is deactivated.</li>
+</ul>
+<p>After pressing <a href="#onpressin"><code>onPressIn</code></a>, one of two things will happen:</p>
+<ol type="1">
+<li>The person will remove their finger, triggering <a href="#onpressout"><code>onPressOut</code></a> followed by <a href="#onpress"><code>onPress</code></a>.</li>
+<li>If the person leaves their finger longer than 500 milliseconds before removing it, <a href="#onlongpress"><code>onLongPress</code></a> is triggered. (<a href="#onpressout"><code>onPressOut</code></a> will still fire when they remove their finger.)</li>
+</ol>
+<p><img src="/docs/assets/d_pressable_pressing.svg" width="1000" alt="Diagram of the onPress events in sequence." /></p>
+<p>Fingers are not the most precise instruments, and it is common for users to accidentally activate the wrong element or miss the activation area. To help, <code>Pressable</code> has an optional <code>HitRect</code> you can use to define how far a touch can register away from the wrapped element. Presses can start anywhere within a <code>HitRect</code>.</p>
+<p><code>PressRect</code> allows presses to move beyond the element and its <code>HitRect</code> while maintaining activation and being eligible for a “press”—think of sliding your finger slowly away from a button you’re pressing down on.</p>
+<blockquote>
+<p>The touch area never extends past the parent view bounds and the Z-index of sibling views always takes precedence if a touch hits two overlapping views.</p>
+</blockquote>
+<figure>
+<img src="/docs/assets/d_pressable_anatomy.svg" width="1000" alt="Diagram of HitRect and PressRect and how they work." />
+<figcaption>
+You can set <code>HitRect</code> with <code>hitSlop</code> and set <code>PressRect</code> with <code>pressRetentionOffset</code>.
+</figcaption>
+</figure>
+<blockquote>
+<p><code>Pressable</code> uses React Native’s <code>Pressability</code> API. For more information around the state machine flow of Pressability and how it works, check out the implementation for <a href="https://github.com/facebook/react-native/blob/16ea9ba8133a5340ed6751ec7d49bf03a0d4c5ea/Libraries/Pressability/Pressability.js#L347">Pressability</a>.</p>
+</blockquote>
+<h2 id="example">Example</h2>
+<p>```SnackPlayer name=Pressable import React, { useState } from ‘react’; import { Pressable, StyleSheet, Text, View } from ‘react-native’;</p>
+<p>const App = () =&gt; { const [timesPressed, setTimesPressed] = useState(0);</p>
+<p>let textLog = ’‘; if (timesPressed &gt; 1) { textLog = timesPressed + ’x onPress’; } else if (timesPressed &gt; 0) { textLog = ‘onPress’; }</p>
+<p>return ( <View style={styles.container}> &lt;Pressable onPress={() =&gt; { setTimesPressed((current) =&gt; current + 1); }} style={({ pressed }) =&gt; [ { backgroundColor: pressed ? ‘rgb(210, 230, 255)’ : ‘white’ }, styles.wrapperCustom ]}&gt; {({ pressed }) =&gt; ( <Text style={styles.text}> {pressed ? ‘Pressed!’ : ‘Press Me’} </Text> )} </Pressable> <View style={styles.logBox}> <Text testID="pressable_press_console">{textLog}</Text> </View> </View> ); };</p>
+<p>const styles = StyleSheet.create({ container: { flex: 1, justifyContent: “center”, }, text: { fontSize: 16 }, wrapperCustom: { borderRadius: 8, padding: 6 }, logBox: { padding: 20, margin: 10, borderWidth: StyleSheet.hairlineWidth, borderColor: ‘#f0f0f0’, backgroundColor: ‘#f9f9f9’ } });</p>
+<p>export default App; ```</p>
+<h2 id="props">Props</h2>
+### <code>android_disableSound</code>
+<div class="label android">
+Android
+</div>
+<p>If true, doesn’t play Android system sound on press.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>boolean</td>
+<td>No</td>
+<td><code>false</code></td>
+</tr>
+</tbody>
+</table>
+### <code>android_ripple</code>
+<div class="label android">
+Android
+</div>
+<p>Enables the Android ripple effect and configures its properties.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="pressable#rippleconfig">RippleConfig</a></td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<h3 id="children"><code>children</code></h3>
+<p>Either children or a function that receives a boolean reflecting whether the component is currently pressed.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="react-node">React Node</a></td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<h3 id="unstable_pressdelay"><code>unstable_pressDelay</code></h3>
+<p>Duration (in milliseconds) to wait after press down before calling <code>onPressIn</code>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<h3 id="delaylongpress"><code>delayLongPress</code></h3>
+<p>Duration (in milliseconds) from <code>onPressIn</code> before <code>onLongPress</code> is called.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number</td>
+<td>No</td>
+<td><code>500</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="disabled"><code>disabled</code></h3>
+<p>Whether the press behavior is disabled.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>boolean</td>
+<td>No</td>
+<td><code>false</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="hitslop"><code>hitSlop</code></h3>
+<p>Sets additional distance outside of element in which a press can be detected.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="rect">Rect</a> or number</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<h3 id="onlongpress"><code>onLongPress</code></h3>
+<p>Called if the time after <code>onPressIn</code> lasts longer than 500 milliseconds. This time period can be customized with <a href="#delaylongpress"><code>delayLongPress</code></a>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="pressevent">PressEvent</a></td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<h3 id="onpress"><code>onPress</code></h3>
+<p>Called after <code>onPressOut</code>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="pressevent">PressEvent</a></td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<h3 id="onpressin"><code>onPressIn</code></h3>
+<p>Called immediately when a touch is engaged, before <code>onPressOut</code> and <code>onPress</code>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="pressevent">PressEvent</a></td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<h3 id="onpressout"><code>onPressOut</code></h3>
+<p>Called when a touch is released.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="pressevent">PressEvent</a></td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<h3 id="pressretentionoffset"><code>pressRetentionOffset</code></h3>
+<p>Additional distance outside of this view in which a touch is considered a press before <code>onPressOut</code> is triggered.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="rect">Rect</a> or number</td>
+<td>No</td>
+<td><code>{ bottom: 30, left: 20, right: 20, top: 20 }</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="style"><code>style</code></h3>
+<p>Either view styles or a function that receives a boolean reflecting whether the component is currently pressed and returns view styles.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="view-style-props">View Style</a></td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<h3 id="testonly_pressed"><code>testOnly_pressed</code></h3>
+<p>Used only for documentation or testing (e.g. snapshot testing).</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>boolean</td>
+<td>No</td>
+<td><code>false</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="type-definitions">Type Definitions</h2>
+<h3 id="rippleconfig">RippleConfig</h3>
+<p>Ripple effect configuration for the <code>android_ripple</code> property.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>object</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Properties:</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>color</td>
+<td><a href="colors">color</a></td>
+<td>No</td>
+<td>Defines the color of the ripple effect.</td>
+</tr>
+<tr class="even">
+<td>borderless</td>
+<td>boolean</td>
+<td>No</td>
+<td>Defines if ripple effect should not include border.</td>
+</tr>
+<tr class="odd">
+<td>radius</td>
+<td>number</td>
+<td>No</td>
+<td>Defines the radius of the ripple effect.</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

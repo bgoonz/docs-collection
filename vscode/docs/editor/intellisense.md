@@ -1,19 +1,16 @@
-IntelliSense
-============
+# IntelliSense
 
 IntelliSense is a general term for various code editing features including: code completion, parameter info, quick info, and member lists. IntelliSense features are sometimes called by other names such as “code completion”, “content assist”, and “code hinting.”
 
 ![IntelliSense demo](images/intellisense/intellisense.gif)
 
-IntelliSense for your programming language
-------------------------------------------
+## IntelliSense for your programming language
 
 Visual Studio Code IntelliSense is provided for JavaScript, TypeScript, JSON, HTML, CSS, SCSS, and Less out of the box. VS Code supports word based completions for any programming language but can also be configured to have richer IntelliSense by installing a language extension.
 
 Below are the most popular language extensions in the [Marketplace](https://marketplace.visualstudio.com/vscode). Select an extension tile below to read the description and reviews to decide which extension is best for you.
 
-IntelliSense features
----------------------
+## IntelliSense features
 
 VS Code IntelliSense features are powered by a language service. A language service provides intelligent code completions based on language semantics and an analysis of your source code. If a language service knows possible completions, the IntelliSense suggestions will pop up as you type. If you continue typing characters, the list of members (variables, methods, etc.) is filtered to only include members containing your typed characters. Pressing `kbstyle(Tab)` or `kbstyle(Enter)` will insert the selected member.
 
@@ -35,8 +32,7 @@ After choosing a method you are provided with **parameter info**.
 
 When applicable, a language service will surface the underlying types in the quick info and method signatures. In the image above, you can see several `any` types. Because JavaScript is dynamic and doesn’t need or enforce types, `any` suggests that the variable can be of any type.
 
-Types of completions
---------------------
+## Types of completions
 
 The JavaScript code below illustrates IntelliSense completions. IntelliSense gives both inferred proposals and the global identifiers of the project. The inferred symbols are presented first, followed by the global identifiers (shown by the Word icon).
 
@@ -46,8 +42,7 @@ VS Code IntelliSense offers different types of completions, including language s
 
 <table style="width:99%;"><colgroup><col style="width: 28%" /><col style="width: 41%" /><col style="width: 28%" /></colgroup><tbody><tr class="odd"><td><img src="images/intellisense/Method_16x.svg" alt="method icon" /></td><td>Methods and Functions</td><td><code>method</code>, <code>function</code>, <code>constructor</code></td></tr><tr class="even"><td><img src="images/intellisense/Variable_16x.svg" alt="variable icon" /></td><td>Variables</td><td><code>variable</code></td></tr><tr class="odd"><td><img src="images/intellisense/Field_16x.svg" alt="field icon" /></td><td>Fields</td><td><code>field</code></td></tr><tr class="even"><td><img src="images/intellisense/symbol-parameter.svg" alt="type parameter" /></td><td>Type parameters</td><td><code>typeParameter</code></td></tr><tr class="odd"><td><img src="images/intellisense/symbol-constant.svg" alt="constant" /></td><td>Constants</td><td><code>constant</code></td></tr><tr class="even"><td><img src="images/intellisense/Class_16x.svg" alt="class" /></td><td>Classes</td><td><code>class</code></td></tr><tr class="odd"><td><img src="images/intellisense/Interface_16x.svg" alt="interface" /></td><td>Interfaces</td><td><code>interface</code></td></tr><tr class="even"><td><img src="images/intellisense/symbol-structure.svg" alt="structure" /></td><td>Structures</td><td><code>struct</code></td></tr><tr class="odd"><td><img src="images/intellisense/symbol-event.svg" alt="event" /></td><td>Events</td><td><code>event</code></td></tr><tr class="even"><td><img src="images/intellisense/symbol-operator.svg" alt="operator" /></td><td>Operators</td><td><code>operator</code></td></tr><tr class="odd"><td><img src="images/intellisense/Namespace_16x.svg" alt="module" /></td><td>Modules</td><td><code>module</code></td></tr><tr class="even"><td><img src="images/intellisense/Property_16x.svg" alt="property" /></td><td>Properties and Attributes</td><td><code>property</code></td></tr><tr class="odd"><td><img src="images/intellisense/EnumItem_16x.svg" alt="enumeration icon" /></td><td>Values and Enumerations</td><td><code>value</code>, <code>enum</code></td></tr><tr class="even"><td><img src="images/intellisense/Reference_16x.svg" alt="reference" /></td><td>References</td><td><code>reference</code></td></tr><tr class="odd"><td><img src="images/intellisense/Keyword_16x.svg" alt="keyword" /></td><td>Keywords</td><td><code>keyword</code></td></tr><tr class="even"><td><img src="images/intellisense/symbol-file.svg" alt="file" /></td><td>Files</td><td><code>file</code></td></tr><tr class="odd"><td><img src="images/intellisense/folder.svg" alt="folder" /></td><td>Folders</td><td><code>folder</code></td></tr><tr class="even"><td><img src="images/intellisense/ColorPalette_16x.svg" alt="color" /></td><td>Colors</td><td><code>color</code></td></tr><tr class="odd"><td><img src="images/intellisense/Ruler_16x.svg" alt="unit" /></td><td>Unit</td><td><code>unit</code></td></tr><tr class="even"><td><img src="images/intellisense/Snippet_16x.svg" alt="a square with ellipses forming the bottom show snippet prefix" /></td><td>Snippet prefixes</td><td><code>snippet</code></td></tr><tr class="odd"><td><img src="images/intellisense/String_16x.svg" alt="a square with letters abc word completion" /></td><td>Words</td><td><code>text</code></td></tr></tbody></table>
 
-Customizing IntelliSense
-------------------------
+## Customizing IntelliSense
 
 You can customize your IntelliSense experience in settings and key bindings.
 
@@ -99,9 +94,9 @@ The editor supports “tab completion” which inserts the best matching complet
 
 By default, tab completion is disabled. Use the `editor.tabCompletion` setting to enable it. These values exist:
 
--   `off` - (default) Tab completion is disabled.
--   `on` - Tab completion is enabled for all suggestions and repeated invocations insert the next best suggestion.
--   `onlySnippets` - Tab completion only inserts static snippets which prefix match the current line prefix.
+- `off` - (default) Tab completion is disabled.
+- `on` - Tab completion is enabled for all suggestions and repeated invocations insert the next best suggestion.
+- `onlySnippets` - Tab completion only inserts static snippets which prefix match the current line prefix.
 
 ### Locality Bonus
 
@@ -117,9 +112,9 @@ By default, VS Code pre-selects the previously used suggestion in the suggestion
 
 The available `editor.suggestSelection` values are:
 
--   `first` - Always select the top list item.
--   `recentlyUsed` - (default) The previously used item is selected unless a prefix (type to select) selects a different item.
--   `recentlyUsedByPrefix` - Select items based on previous prefixes that have completed those suggestions.
+- `first` - Always select the top list item.
+- `recentlyUsed` - (default) The previously used item is selected unless a prefix (type to select) selects a different item.
+- `recentlyUsedByPrefix` - Select items based on previous prefixes that have completed those suggestions.
 
 “Type to select” means that the current prefix (roughly the text left of the cursor) is used to filter and sort suggestions. When this happens and when its result differs from the result of `recentlyUsed` it will be given precedence.
 
@@ -153,8 +148,7 @@ The key bindings shown below are the default key bindings. You can change these 
         }
     ]
 
-Troubleshooting
----------------
+## Troubleshooting
 
 If you find IntelliSense has stopped working, the language service may not be running. Try restarting VS Code and this should solve the issue. If you are still missing IntelliSense features after installing a language extension, open an issue in the repository of the language extension.
 
@@ -162,18 +156,16 @@ If you find IntelliSense has stopped working, the language service may not be ru
 
 A particular language extension may not support all the VS Code IntelliSense features. Review the extension’s README to find out what is supported. If you think there are issues with a language extension, you can usually find the issue repository for an extension through the [VS Code Marketplace](https://marketplace.visualstudio.com/vscode). Navigate to the extension’s Details page and select the **Support** link.
 
-Next steps
-----------
+## Next steps
 
 IntelliSense is just one of VS Code’s powerful features. Read on to learn more:
 
--   [JavaScript](/docs/languages/javascript.md) - Get the most out of your JavaScript development, including configuring IntelliSense.
--   [Node.js](/docs/nodejs/nodejs-tutorial.md) - See an example of IntelliSense in action in the Node.js walkthrough.
--   [Debugging](/docs/editor/debugging.md) - Learn how to set up debugging for your application.
--   [Creating Language extensions](/api/language-extensions/programmatic-language-features.md) - Learn how to create extensions that add IntelliSense for new programming languages.
+- [JavaScript](/docs/languages/javascript.md) - Get the most out of your JavaScript development, including configuring IntelliSense.
+- [Node.js](/docs/nodejs/nodejs-tutorial.md) - See an example of IntelliSense in action in the Node.js walkthrough.
+- [Debugging](/docs/editor/debugging.md) - Learn how to set up debugging for your application.
+- [Creating Language extensions](/api/language-extensions/programmatic-language-features.md) - Learn how to create extensions that add IntelliSense for new programming languages.
 
-Common questions
-----------------
+## Common questions
 
 ### Why am I not getting any suggestions?
 

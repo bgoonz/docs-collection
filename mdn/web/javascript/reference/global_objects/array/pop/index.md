@@ -9,6 +9,7 @@ tags:
   - Reference
 browser-compat: javascript.builtins.Array.pop
 ---
+
 {{JSRef}}
 
 The **`pop()`** method removes the **last**
@@ -20,7 +21,7 @@ array.
 ## Syntax
 
 ```js
-pop()
+pop();
 ```
 
 ### Return value
@@ -51,7 +52,7 @@ The following code creates the `myFish` array containing four elements, then
 removes its last element.
 
 ```js
-var myFish = ['angel', 'clown', 'mandarin', 'sturgeon'];
+var myFish = ["angel", "clown", "mandarin", "sturgeon"];
 
 var popped = myFish.pop();
 
@@ -67,7 +68,13 @@ elements and a length parameter, then removes its last element and decrements th
 parameter.
 
 ```js
-var myFish = {0:'angel', 1:'clown', 2:'mandarin', 3:'sturgeon', length: 4};
+var myFish = {
+  0: "angel",
+  1: "clown",
+  2: "mandarin",
+  3: "sturgeon",
+  length: 4,
+};
 
 var popped = Array.prototype.pop.call(myFish); //same syntax for using apply( )
 

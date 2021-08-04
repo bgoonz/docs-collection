@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Handling Text Input</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Handling Text Input</h1>
+</header>
+<p><a href="textinput#content"><code>TextInput</code></a> is a <a href="intro-react-native-components">Core Component</a> that allows the user to enter text. It has an <code>onChangeText</code> prop that takes a function to be called every time the text changed, and an <code>onSubmitEditing</code> prop that takes a function to be called when the text is submitted.</p>
+<p>For example, let’s say that as the user types, you’re translating their words into a different language. In this new language, every single word is written the same way: 🍕. So the sentence “Hello there Bob” would be translated as “🍕🍕🍕”.</p>
+<p>```SnackPlayer name=Handling%20Text%20Input import React, { useState } from ‘react’; import { Text, TextInput, View } from ‘react-native’;</p>
+<p>const PizzaTranslator = () =&gt; { const [text, setText] = useState(’‘); return ( &lt;View style={{padding: 10}}&gt; &lt;TextInput style={{height: 40}} placeholder=“Type here to translate!” onChangeText={text =&gt; setText(text)} defaultValue={text} /&gt; &lt;Text style={{padding: 10, fontSize: 42}}&gt; {text.split(’ ‘).map((word) =&gt; word &amp;&amp;’🍕‘).join(’ ’)} </Text> </View> ); }</p>
+<p>export default PizzaTranslator; ```</p>
+<p>In this example, we store <code>text</code> in the state, because it changes over time.</p>
+<p>There are a lot more things you might want to do with a text input. For example, you could validate the text inside while the user types. For more detailed examples, see the <a href="https://reactjs.org/docs/forms.html#controlled-components">React docs on controlled components</a>, or the <a href="textinput.md">reference docs for TextInput</a>.</p>
+<p>Text input is one of the ways the user interacts with the app. Next, let’s look at another type of input and <a href="handling-touches.md">learn how to handle touches</a>.</p>
+</body>
+</html>

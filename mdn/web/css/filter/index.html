@@ -7,21 +7,31 @@ tags:
   - Reference
   - SVG
   - SVG Filter
-  - 'recipe:css-property'
+  - "recipe:css-property"
 browser-compat: css.properties.filter
 ---
+
 <div>{{CSSRef}}</div>
 
-<p>The <strong><code>filter</code></strong> <a href="/en-US/docs/Web/CSS">CSS</a> property applies graphical effects like blur or color shift to an element. Filters are commonly used to adjust the rendering of images, backgrounds, and borders.</p>
+<p>
+  The <strong><code>filter</code></strong>
+  <a href="/en-US/docs/Web/CSS">CSS</a> property applies graphical effects like
+  blur or color shift to an element. Filters are commonly used to adjust the
+  rendering of images, backgrounds, and borders.
+</p>
 
-<p>Included in the CSS standard are several functions that achieve predefined effects. You can also reference an SVG filter with a URL to an <a href="/en-US/docs/Web/SVG/Element/filter">SVG filter element</a>.</p>
+<p>
+  Included in the CSS standard are several functions that achieve predefined
+  effects. You can also reference an SVG filter with a URL to an
+  <a href="/en-US/docs/Web/SVG/Element/filter">SVG filter element</a>.
+</p>
 
 <div>{{EmbedInteractiveExample("pages/css/filter.html")}}</div>
 
-
 <h2 id="Syntax">Syntax</h2>
 
-<pre class="brush:css no-line-numbers">/* URL to SVG filter */
+<pre class="brush:css no-line-numbers">
+/* URL to SVG filter */
 filter: url("filters.svg#filter-id");
 
 /* &lt;filter-function&gt; values */
@@ -51,43 +61,83 @@ filter: unset;
 
 <p>With a function, use the following:</p>
 
-<pre class="brush: css">filter: &lt;filter-function&gt; [&lt;filter-function&gt;]* | none
+<pre class="brush: css">
+filter: &lt;filter-function&gt; [&lt;filter-function&gt;]* | none
 </pre>
 
-<p>For a reference to an SVG {{SVGElement("filter")}} element, use the following:</p>
+<p>
+  For a reference to an SVG {{SVGElement("filter")}} element, use the following:
+</p>
 
-<pre class="brush: css">filter: url(file.svg#filter-element-id)
+<pre class="brush: css">
+filter: url(file.svg#filter-element-id)
 </pre>
 
 <h3 id="Interpolation">Interpolation</h3>
 
-<p>If both the beginning and end filters have a function list of the same length without {{cssxref("url()","url()")}}, each of their filter functions is interpolated according to its specific rules. If they have different lengths, the missing equivalent filter functions from the longer list are added to the end of the shorter list using their lacuna values, then all filter functions are interpolated according to their specific rules. If one filter is <code>none</code>, it is replaced with the filter functions list of the other one using the filter function default values, then all filter functions are interpolated according to their specific rules. Otherwise, discrete interpolation is used.</p>
+<p>
+  If both the beginning and end filters have a function list of the same length
+  without {{cssxref("url()","url()")}}, each of their filter functions is
+  interpolated according to its specific rules. If they have different lengths,
+  the missing equivalent filter functions from the longer list are added to the
+  end of the shorter list using their lacuna values, then all filter functions
+  are interpolated according to their specific rules. If one filter is
+  <code>none</code>, it is replaced with the filter functions list of the other
+  one using the filter function default values, then all filter functions are
+  interpolated according to their specific rules. Otherwise, discrete
+  interpolation is used.
+</p>
 
 <h2 id="Functions">Functions</h2>
 
-<p>The <code>filter</code> property is specified as <code>none</code> or one or more of the functions listed below. If the parameter for any function is invalid, the function returns <code>none</code>. Except where noted, the functions that take a value expressed with a percent sign (as in <code>34%</code>) also accept the value expressed as decimal (as in <code>0.34</code>).</p>
+<p>
+  The <code>filter</code> property is specified as <code>none</code> or one or
+  more of the functions listed below. If the parameter for any function is
+  invalid, the function returns <code>none</code>. Except where noted, the
+  functions that take a value expressed with a percent sign (as in
+  <code>34%</code>) also accept the value expressed as decimal (as in
+  <code>0.34</code>).
+</p>
 
-<p>When a single <code>filter</code> property has two or more functions it's results will be different from when two or more <code>filter</code> properties are separately applied with the same functions.</p>
+<p>
+  When a single <code>filter</code> property has two or more functions it's
+  results will be different from when two or more <code>filter</code> properties
+  are separately applied with the same functions.
+</p>
 
 <h3 id="SVG_filter">SVG filter</h3>
 
 <h4 id="url">url()</h4>
 
-<p>Takes an URI pointing to an <a href="/en-US/docs/Web/SVG/Element/filter">SVG filter</a>, which may be embedded in an external XML file.</p>
+<p>
+  Takes an URI pointing to an
+  <a href="/en-US/docs/Web/SVG/Element/filter">SVG filter</a>, which may be
+  embedded in an external XML file.
+</p>
 
-<pre class="brush: css">filter: url(resources.svg#c1)
+<pre class="brush: css">
+filter: url(resources.svg#c1)
 </pre>
 
 <h3 id="Filter_functions">Filter functions</h3>
 
 <h4 id="blur">blur()</h4>
 
-<p>The {{cssxref("filter-function/blur()", "blur()")}} function applies a Gaussian blur to the input image. The value of <code>radius</code> defines the value of the standard deviation to the Gaussian function, or how many pixels on the screen blend into each other, so a larger value will create more blur. The lacuna value for interpolation is <code>0</code>. The parameter is specified as a CSS length, but does not accept percentage values.</p>
+<p>
+  The {{cssxref("filter-function/blur()", "blur()")}} function applies a
+  Gaussian blur to the input image. The value of <code>radius</code> defines the
+  value of the standard deviation to the Gaussian function, or how many pixels
+  on the screen blend into each other, so a larger value will create more blur.
+  The lacuna value for interpolation is <code>0</code>. The parameter is
+  specified as a CSS length, but does not accept percentage values.
+</p>
 
-<pre class="brush: css">filter: blur(5px)
+<pre class="brush: css">
+filter: blur(5px)
 </pre>
 
-<pre class="brush: html hidden">  &lt;table class="standard-table"&gt;
+<pre class="brush: html hidden">
+  &lt;table class="standard-table"&gt;
   &lt;thead&gt;
     &lt;tr&gt;
       &lt;th style="text-align: left;" scope="col"&gt;Original image&lt;/th&gt;
@@ -113,9 +163,11 @@ filter: unset;
       &lt;td&gt;&lt;img id="img4" class="internal default" src="test_form_2_s.jpg" style="width: 100%;" /&gt;&lt;/td&gt;
     &lt;/tr&gt;
   &lt;/tbody&gt;
-&lt;/table&gt;</pre>
+&lt;/table&gt;</pre
+>
 
-<pre class="brush: css hidden">html {
+<pre class="brush: css hidden">
+html {
   height:100%;
 }
 body {
@@ -158,21 +210,32 @@ table.standard-table td {
 }
 </pre>
 
-<pre class="brush: svg">&lt;svg style="position: absolute; top: -99999px" xmlns="http://www.w3.org/2000/svg"&gt;
+<pre class="brush: svg">
+&lt;svg style="position: absolute; top: -99999px" xmlns="http://www.w3.org/2000/svg"&gt;
   &lt;filter id="svgBlur" x="-5%" y="-5%" width="110%" height="110%"&gt;
     &lt;feGaussianBlur in="SourceGraphic" stdDeviation="5"/&gt;
   &lt;/filter&gt;
-&lt;/svg&gt;</pre>
+&lt;/svg&gt;</pre
+>
 
 <div>{{EmbedLiveSample('blur','100%','236px','','', 'no-codepen')}}</div>
 
 <h4 id="brightness">brightness()</h4>
 
-<p>The {{cssxref("filter-function/brightness()", "brightness()")}} function applies a linear multiplier to the input image, making it appear more or less bright. A value of <code>0%</code> will create an image that is completely black. A value of <code>100%</code> leaves the input unchanged. Other values are linear multipliers on the effect. Values of an amount over <code>100%</code> are allowed, providing brighter results. The lacuna value for interpolation is <code>1</code>.</p>
+<p>
+  The {{cssxref("filter-function/brightness()", "brightness()")}} function
+  applies a linear multiplier to the input image, making it appear more or less
+  bright. A value of <code>0%</code> will create an image that is completely
+  black. A value of <code>100%</code> leaves the input unchanged. Other values
+  are linear multipliers on the effect. Values of an amount over
+  <code>100%</code> are allowed, providing brighter results. The lacuna value
+  for interpolation is <code>1</code>.
+</p>
 
 <pre class="brush: css">filter: brightness(2)</pre>
 
-<pre class="brush: svg">&lt;svg style="position: absolute; top: -99999px" xmlns="http://www.w3.org/2000/svg"&gt;
+<pre class="brush: svg">
+&lt;svg style="position: absolute; top: -99999px" xmlns="http://www.w3.org/2000/svg"&gt;
   &lt;filter id="brightness"&gt;
     &lt;feComponentTransfer&gt;
       &lt;feFuncR type="linear" slope="[amount]"/&gt;
@@ -180,9 +243,11 @@ table.standard-table td {
       &lt;feFuncB type="linear" slope="[amount]"/&gt;
     &lt;/feComponentTransfer&gt;
   &lt;/filter&gt;
-&lt;/svg&gt;</pre>
+&lt;/svg&gt;</pre
+>
 
-<pre class="brush: html hidden">&lt;table class="standard-table"&gt;
+<pre class="brush: html hidden">
+&lt;table class="standard-table"&gt;
   &lt;thead&gt;
     &lt;tr&gt;
       &lt;th style="text-align: left;" scope="col"&gt;Original image&lt;/th&gt;
@@ -211,7 +276,8 @@ table.standard-table td {
 &lt;/table&gt;
 </pre>
 
-<pre class="brush: css hidden">html {
+<pre class="brush: css hidden">
+html {
   height:100%;
 }
 body {
@@ -259,12 +325,21 @@ table.standard-table td {
 
 <h4 id="contrast">contrast()</h4>
 
-<p>The {{cssxref("filter-function/contrast()", "contrast()")}} function adjusts the contrast of the input image. A value of <code>0%</code> will create an image that is completely gray. A value of <code>100%</code> leaves the input unchanged. Values of an amount over <code>100%</code> are allowed, providing results with more contrast. The lacuna value for interpolation is <code>1</code>.</p>
+<p>
+  The {{cssxref("filter-function/contrast()", "contrast()")}} function adjusts
+  the contrast of the input image. A value of <code>0%</code> will create an
+  image that is completely gray. A value of <code>100%</code> leaves the input
+  unchanged. Values of an amount over <code>100%</code> are allowed, providing
+  results with more contrast. The lacuna value for interpolation is
+  <code>1</code>.
+</p>
 
-<pre class="brush: css">filter: contrast(200%)
+<pre class="brush: css">
+filter: contrast(200%)
 </pre>
 
-<pre class="brush: svg">&lt;svg style="position: absolute; top: -99999px" xmlns="http://www.w3.org/2000/svg"&gt;
+<pre class="brush: svg">
+&lt;svg style="position: absolute; top: -99999px" xmlns="http://www.w3.org/2000/svg"&gt;
   &lt;filter id="contrast"&gt;
     &lt;feComponentTransfer&gt;
       &lt;feFuncR type="linear" slope="[amount]" intercept="-(0.5 * [amount]) + 0.5"/&gt;
@@ -275,7 +350,8 @@ table.standard-table td {
 &lt;/svg&gt;
 </pre>
 
-<pre class="brush: html hidden">&lt;table class="standard-table"&gt;
+<pre class="brush: html hidden">
+&lt;table class="standard-table"&gt;
   &lt;thead&gt;
     &lt;tr&gt;
       &lt;th style="text-align: left;" scope="col"&gt;Original image&lt;/th&gt;
@@ -304,7 +380,8 @@ table.standard-table td {
 &lt;/table&gt;
 </pre>
 
-<pre class="brush: css hidden">html {
+<pre class="brush: css hidden">
+html {
   height:100%;
 }
 body {
@@ -352,21 +429,58 @@ table.standard-table td {
 
 <h4 id="drop-shadow">drop-shadow()</h4>
 
-<p>The {{cssxref("filter-function/drop-shadow()", "drop-shadow()")}} function applies a drop shadow effect to the input image. A drop shadow is effectively a blurred, offset version of the input image's alpha mask drawn in a particular color, composited below the image. The function accepts a parameter of type <code>&lt;shadow&gt;</code> (defined in <a href="https://www.w3.org/TR/css-backgrounds-3/#typedef-shadow">CSS3 Backgrounds</a>), with the exception that the <code>inset</code> keyword and <code>spread </code>parameter are not allowed. This function is similar to the more established {{cssxref("box-shadow")}} property; the difference is that with filters, some browsers provide hardware acceleration for better performance. The parameters of the <code>&lt;shadow&gt;</code> parameter are as follows:</p>
+<p>
+  The {{cssxref("filter-function/drop-shadow()", "drop-shadow()")}} function
+  applies a drop shadow effect to the input image. A drop shadow is effectively
+  a blurred, offset version of the input image's alpha mask drawn in a
+  particular color, composited below the image. The function accepts a parameter
+  of type <code>&lt;shadow&gt;</code> (defined in
+  <a href="https://www.w3.org/TR/css-backgrounds-3/#typedef-shadow"
+    >CSS3 Backgrounds</a
+  >), with the exception that the <code>inset</code> keyword and
+  <code>spread </code>parameter are not allowed. This function is similar to the
+  more established {{cssxref("box-shadow")}} property; the difference is that
+  with filters, some browsers provide hardware acceleration for better
+  performance. The parameters of the <code>&lt;shadow&gt;</code> parameter are
+  as follows:
+</p>
 
 <dl>
- <dt><code>&lt;offset-x&gt;</code> <code>&lt;offset-y&gt;</code> <small>(required)</small></dt>
- <dd>These are two {{cssxref("&lt;length&gt;")}} values to set the shadow offset. <code>&lt;offset-x&gt;</code> specifies the horizontal distance. Negative values place the shadow to the left of the element. <code>&lt;offset-y&gt;</code> specifies the vertical distance. Negative values place the shadow above the element. See {{cssxref("&lt;length&gt;")}} for possible units.<br>
- If both values are <code>0</code>, the shadow is placed behind the element (and may generate a blur effect if <code>&lt;blur-radius&gt;</code> and/or <code>&lt;spread-radius&gt;</code> is set).</dd>
- <dt><code>&lt;blur-radius&gt;</code> <small>(optional)</small></dt>
- <dd>This is a third {{cssxref("&lt;length&gt;")}} value. The larger this value, the bigger the blur, so the shadow becomes bigger and lighter. Negative values are not allowed. If not specified, it will be <code>0</code> (the shadow's edge is sharp).</dd>
- <dt><code>&lt;color&gt;</code> <small>(optional)</small></dt>
- <dd>See {{cssxref("&lt;color&gt;")}} values for possible keywords and notations. If not specified, the color used depends on the browser - it is usually the value of the {{cssxref("&lt;color&gt;")}} property, but note that Safari currently paints a transparent shadow in this case.</dd>
+  <dt>
+    <code>&lt;offset-x&gt;</code> <code>&lt;offset-y&gt;</code>
+    <small>(required)</small>
+  </dt>
+  <dd>
+    These are two {{cssxref("&lt;length&gt;")}} values to set the shadow offset.
+    <code>&lt;offset-x&gt;</code> specifies the horizontal distance. Negative
+    values place the shadow to the left of the element.
+    <code>&lt;offset-y&gt;</code> specifies the vertical distance. Negative
+    values place the shadow above the element. See {{cssxref("&lt;length&gt;")}}
+    for possible units.<br />
+    If both values are <code>0</code>, the shadow is placed behind the element
+    (and may generate a blur effect if <code>&lt;blur-radius&gt;</code> and/or
+    <code>&lt;spread-radius&gt;</code> is set).
+  </dd>
+  <dt><code>&lt;blur-radius&gt;</code> <small>(optional)</small></dt>
+  <dd>
+    This is a third {{cssxref("&lt;length&gt;")}} value. The larger this value,
+    the bigger the blur, so the shadow becomes bigger and lighter. Negative
+    values are not allowed. If not specified, it will be <code>0</code> (the
+    shadow's edge is sharp).
+  </dd>
+  <dt><code>&lt;color&gt;</code> <small>(optional)</small></dt>
+  <dd>
+    See {{cssxref("&lt;color&gt;")}} values for possible keywords and notations.
+    If not specified, the color used depends on the browser - it is usually the
+    value of the {{cssxref("&lt;color&gt;")}} property, but note that Safari
+    currently paints a transparent shadow in this case.
+  </dd>
 </dl>
 
 <pre class="brush: css">filter: drop-shadow(16px 16px 10px black)</pre>
 
-<pre class="brush: svg">&lt;svg style="position: absolute; top: -999999px" xmlns="http://www.w3.org/2000/svg"&gt;
+<pre class="brush: svg">
+&lt;svg style="position: absolute; top: -999999px" xmlns="http://www.w3.org/2000/svg"&gt;
  &lt;filter id="drop-shadow"&gt;
     &lt;feGaussianBlur in="SourceAlpha" stdDeviation="[radius]"/&gt;
     &lt;feOffset dx="[offset-x]" dy="[offset-y]" result="offsetblur"/&gt;
@@ -380,7 +494,8 @@ table.standard-table td {
 &lt;/svg&gt;
 </pre>
 
-<pre class="brush: html hidden">&lt;table class="standard-table"&gt;
+<pre class="brush: html hidden">
+&lt;table class="standard-table"&gt;
   &lt;thead&gt;
     &lt;tr&gt;
       &lt;th style="text-align: left;" scope="col"&gt;Original image&lt;/th&gt;
@@ -437,7 +552,8 @@ table.standard-table td {
 &lt;/table&gt;
 </pre>
 
-<pre class="brush: css hidden">html {
+<pre class="brush: css hidden">
+html {
   height:100%;
 }
 body {
@@ -498,11 +614,20 @@ table.standard-table td {
 
 <h4 id="grayscale">grayscale()</h4>
 
-<p>The {{cssxref("filter-function/grayscale()", "grayscale()")}} function converts the input image to grayscale. The value of <code>amount</code> defines the proportion of the conversion. A value of <code>100%</code> is completely grayscale. A value of <code>0%</code> leaves the input unchanged. Values between <code>0%</code> and <code>100%</code> are linear multipliers on the effect. The lacuna value for interpolation is <code>0</code>.</p>
+<p>
+  The {{cssxref("filter-function/grayscale()", "grayscale()")}} function
+  converts the input image to grayscale. The value of
+  <code>amount</code> defines the proportion of the conversion. A value of
+  <code>100%</code> is completely grayscale. A value of <code>0%</code> leaves
+  the input unchanged. Values between <code>0%</code> and <code>100%</code> are
+  linear multipliers on the effect. The lacuna value for interpolation is
+  <code>0</code>.
+</p>
 
 <pre class="brush: css">filter: grayscale(100%)</pre>
 
-<pre class="brush: html hidden">&lt;table class="standard-table"&gt;
+<pre class="brush: html hidden">
+&lt;table class="standard-table"&gt;
   &lt;thead&gt;
     &lt;tr&gt;
       &lt;th style="text-align: left;" scope="col"&gt;Original image&lt;/th&gt;
@@ -531,7 +656,8 @@ table.standard-table td {
 &lt;/table&gt;
 </pre>
 
-<pre class="brush: css hidden">html {
+<pre class="brush: css hidden">
+html {
   height:100%;
 }
 body {
@@ -579,11 +705,20 @@ table.standard-table td {
 
 <h4 id="hue-rotate">hue-rotate()</h4>
 
-<p>The {{cssxref("filter-function/hue-rotate()", "hue-rotate()")}} function applies a hue rotation on the input image. The value of <code class="property">angle</code> defines the number of degrees around the color circle the input samples will be adjusted. A value of <code>0deg</code> leaves the input unchanged. The lacuna value for interpolation is <code>0</code>. Though there is no maximum value; the effect of values above <code>360deg</code> wraps around.</p>
+<p>
+  The {{cssxref("filter-function/hue-rotate()", "hue-rotate()")}} function
+  applies a hue rotation on the input image. The value of
+  <code class="property">angle</code> defines the number of degrees around the
+  color circle the input samples will be adjusted. A value of
+  <code>0deg</code> leaves the input unchanged. The lacuna value for
+  interpolation is <code>0</code>. Though there is no maximum value; the effect
+  of values above <code>360deg</code> wraps around.
+</p>
 
 <pre class="brush: css">filter: hue-rotate(90deg)</pre>
 
-<pre class="brush: html hidden">&lt;table class="standard-table"&gt;
+<pre class="brush: html hidden">
+&lt;table class="standard-table"&gt;
   &lt;thead&gt;
     &lt;tr&gt;
       &lt;th style="text-align: left;" scope="col"&gt;Original image&lt;/th&gt;
@@ -609,7 +744,8 @@ table.standard-table td {
 &lt;/table&gt;
 </pre>
 
-<pre class="brush: css hidden">html {
+<pre class="brush: css hidden">
+html {
   height:100%;
 }
 body {
@@ -653,21 +789,32 @@ table.standard-table td {
 }
 </pre>
 
-<pre class="brush: html">&lt;svg style="position: absolute; top: -999999px" xmlns="http://www.w3.org/2000/svg"&gt;
+<pre class="brush: html">
+&lt;svg style="position: absolute; top: -999999px" xmlns="http://www.w3.org/2000/svg"&gt;
   &lt;filter id="svgHueRotate"&gt;
     &lt;feColorMatrix type="hueRotate" values="[angle]"/&gt;
   &lt;/filter&gt;
-&lt;/svg&gt;</pre>
+&lt;/svg&gt;</pre
+>
 
 <p>{{EmbedLiveSample('hue-rotate','100%','221px','','', 'no-codepen')}}</p>
 
 <h4 id="invert">invert()</h4>
 
-<p>The {{cssxref("filter-function/invert()", "invert()")}} function inverts the samples in the input image. The value of <code class="property">amount</code> defines the proportion of the conversion. A value of <code>100%</code> is completely inverted. A value of <code>0%</code> leaves the input unchanged. Values between <code>0%</code> and <code>100%</code> are linear multipliers on the effect. The lacuna value for interpolation is <code>0</code>.</p>
+<p>
+  The {{cssxref("filter-function/invert()", "invert()")}} function inverts the
+  samples in the input image. The value of
+  <code class="property">amount</code> defines the proportion of the conversion.
+  A value of <code>100%</code> is completely inverted. A value of
+  <code>0%</code> leaves the input unchanged. Values between <code>0%</code> and
+  <code>100%</code> are linear multipliers on the effect. The lacuna value for
+  interpolation is <code>0</code>.
+</p>
 
 <pre class="brush: css">filter: invert(100%)</pre>
 
-<pre class="brush: html hidden">&lt;table class="standard-table"&gt;
+<pre class="brush: html hidden">
+&lt;table class="standard-table"&gt;
   &lt;thead&gt;
     &lt;tr&gt;
       &lt;th style="text-align: left;" scope="col"&gt;Original image&lt;/th&gt;
@@ -696,7 +843,8 @@ table.standard-table td {
 &lt;/table&gt;
 </pre>
 
-<pre class="brush: css hidden">html {
+<pre class="brush: css hidden">
+html {
   height:100%;
 }
 body {
@@ -744,11 +892,24 @@ table.standard-table td {
 
 <h4 id="opacity">opacity()</h4>
 
-<p>The {{cssxref("filter-function/opacity()", "opacity()")}} function applies transparency to the samples in the input image. The value of <code class="property">amount</code> defines the proportion of the conversion. A value of <code>0%</code> is completely transparent. A value of <code>100%</code> leaves the input unchanged. Values between <code>0%</code> and <code>100%</code> are linear multipliers on the effect. This is equivalent to multiplying the input image samples by amount. The lacuna value for interpolation is <code>1</code>. This function is similar to the more established {{cssxref("opacity")}} property; the difference is that with filters, some browsers provide hardware acceleration for better performance.</p>
+<p>
+  The {{cssxref("filter-function/opacity()", "opacity()")}} function applies
+  transparency to the samples in the input image. The value of
+  <code class="property">amount</code> defines the proportion of the conversion.
+  A value of <code>0%</code> is completely transparent. A value of
+  <code>100%</code> leaves the input unchanged. Values between
+  <code>0%</code> and <code>100%</code> are linear multipliers on the effect.
+  This is equivalent to multiplying the input image samples by amount. The
+  lacuna value for interpolation is <code>1</code>. This function is similar to
+  the more established {{cssxref("opacity")}} property; the difference is that
+  with filters, some browsers provide hardware acceleration for better
+  performance.
+</p>
 
 <pre class="brush: css">filter: opacity(50%)</pre>
 
-<pre class="brush: html hidden">&lt;table class="standard-table"&gt;
+<pre class="brush: html hidden">
+&lt;table class="standard-table"&gt;
   &lt;thead&gt;
     &lt;tr&gt;
       &lt;th style="text-align: left;" scope="col"&gt;Original image&lt;/th&gt;
@@ -775,7 +936,8 @@ table.standard-table td {
 &lt;/table&gt;
 </pre>
 
-<pre class="brush: css hidden">html {
+<pre class="brush: css hidden">
+html {
   height:100%;
 }
 body {
@@ -823,11 +985,20 @@ table.standard-table td {
 
 <h4 id="saturate">saturate()</h4>
 
-<p>The {{cssxref("filter-function/saturate()", "saturate()")}} function saturates the input image. The value of <code class="property">amount</code> defines the proportion of the conversion. A value of <code>0%</code> is completely un-saturated. A value of <code>100%</code> leaves the input unchanged. Other values are linear multipliers on the effect. Values of amount over <code>100%</code> are allowed, providing super-saturated results. The lacuna value for interpolation is <code>1</code>.</p>
+<p>
+  The {{cssxref("filter-function/saturate()", "saturate()")}} function saturates
+  the input image. The value of <code class="property">amount</code> defines the
+  proportion of the conversion. A value of <code>0%</code> is completely
+  un-saturated. A value of <code>100%</code> leaves the input unchanged. Other
+  values are linear multipliers on the effect. Values of amount over
+  <code>100%</code> are allowed, providing super-saturated results. The lacuna
+  value for interpolation is <code>1</code>.
+</p>
 
 <pre class="brush: css">filter: saturate(200%)</pre>
 
-<pre class="brush: html hidden">&lt;table class="standard-table"&gt;
+<pre class="brush: html hidden">
+&lt;table class="standard-table"&gt;
   &lt;thead&gt;
     &lt;tr&gt;
       &lt;th style="text-align: left;" scope="col"&gt;Original image&lt;/th&gt;
@@ -853,7 +1024,8 @@ table.standard-table td {
 &lt;/table&gt;
 </pre>
 
-<pre class="brush: css hidden">html {
+<pre class="brush: css hidden">
+html {
   height:100%;
 }
 body {
@@ -901,11 +1073,20 @@ table.standard-table td {
 
 <h4 id="sepia">sepia()</h4>
 
-<p>The {{cssxref("filter-function/sepia()", "sepia()")}} function converts the input image to sepia. The value of <code class="property">amount</code> defines the proportion of the conversion. A value of <code>100%</code> is completely sepia. A value of <code>0%</code> leaves the input unchanged. Values between <code>0%</code> and <code>100%</code> are linear multipliers on the effect. The lacuna value for interpolation is <code>0</code>.</p>
+<p>
+  The {{cssxref("filter-function/sepia()", "sepia()")}} function converts the
+  input image to sepia. The value of
+  <code class="property">amount</code> defines the proportion of the conversion.
+  A value of <code>100%</code> is completely sepia. A value of
+  <code>0%</code> leaves the input unchanged. Values between <code>0%</code> and
+  <code>100%</code> are linear multipliers on the effect. The lacuna value for
+  interpolation is <code>0</code>.
+</p>
 
 <pre class="brush: css">filter: sepia(100%)</pre>
 
-<pre class="brush: html hidden">&lt;table class="standard-table"&gt;
+<pre class="brush: html hidden">
+&lt;table class="standard-table"&gt;
   &lt;thead&gt;
     &lt;tr&gt;
       &lt;th style="text-align: left;" scope="col"&gt;Original image&lt;/th&gt;
@@ -934,7 +1115,8 @@ table.standard-table td {
 &lt;/table&gt;
 </pre>
 
-<pre class="brush: css hidden">html {
+<pre class="brush: css hidden">
+html {
   height:100%;
 }
 body {
@@ -982,11 +1164,15 @@ table.standard-table td {
 
 <h2 id="Combining_functions">Combining functions</h2>
 
-<p>You may combine any number of functions to manipulate the rendering. The following example enhances the contrast and brightness of the image:</p>
+<p>
+  You may combine any number of functions to manipulate the rendering. The
+  following example enhances the contrast and brightness of the image:
+</p>
 
 <pre class="brush: css">filter: contrast(175%) brightness(103%)</pre>
 
-<pre class="brush: html hidden">&lt;table class="standard-table"&gt;
+<pre class="brush: html hidden">
+&lt;table class="standard-table"&gt;
   &lt;thead&gt;
     &lt;tr&gt;
       &lt;th style="text-align: left;" scope="col"&gt;Original image&lt;/th&gt;
@@ -1004,7 +1190,8 @@ table.standard-table td {
 &lt;/table&gt;
 </pre>
 
-<pre class="brush: css hidden">html {
+<pre class="brush: css hidden">
+html {
   height:100%;
 }
 body {
@@ -1049,7 +1236,9 @@ table.standard-table td {
 }
 </pre>
 
-<p>{{EmbedLiveSample('Combining_functions','100%','209px','','', 'no-codepen')}}</p>
+<p>
+  {{EmbedLiveSample('Combining_functions','100%','209px','','', 'no-codepen')}}
+</p>
 
 <h2 id="Formal_definition">Formal definition</h2>
 
@@ -1063,22 +1252,28 @@ table.standard-table td {
 
 <h3 id="Applying_filter_functions">Applying filter functions</h3>
 
-<p>Examples of using the predefined functions are shown below. See each function for a specific example.</p>
+<p>
+  Examples of using the predefined functions are shown below. See each function
+  for a specific example.
+</p>
 
-<pre class="brush: css">.mydiv {
+<pre class="brush: css">
+.mydiv {
   filter: grayscale(50%);
 }
 
 /* Gray all images by 50% and blur by 10px */
 img {
   filter: grayscale(0.5) blur(10px);
-}</pre>
+}</pre
+>
 
 <h3 id="Applying_SVG_filters">Applying SVG filters</h3>
 
 <p>Examples of using the URL function with an SVG resource are as follows:</p>
 
-<pre class="brush: css">.target {
+<pre class="brush: css">
+.target {
   filter: url(#c1);
 }
 
@@ -1098,7 +1293,13 @@ img {
 <h2 id="See_also">See also</h2>
 
 <ul>
- <li><a class="internal" href="/en-US/docs/Web/SVG/Applying_SVG_effects_to_HTML_content">Applying SVG effects to HTML content</a></li>
- <li>The {{cssxref("mask")}} property</li>
- <li><a class="internal" href="/en-US/docs/Web/SVG">SVG</a></li>
+  <li>
+    <a
+      class="internal"
+      href="/en-US/docs/Web/SVG/Applying_SVG_effects_to_HTML_content"
+      >Applying SVG effects to HTML content</a
+    >
+  </li>
+  <li>The {{cssxref("mask")}} property</li>
+  <li><a class="internal" href="/en-US/docs/Web/SVG">SVG</a></li>
 </ul>

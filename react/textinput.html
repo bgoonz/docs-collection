@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>TextInput</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">TextInput</h1>
+</header>
+<p>A foundational component for inputting text into the app via a keyboard. Props provide configurability for several features, such as auto-correction, auto-capitalization, placeholder text, and different keyboard types, such as a numeric keypad.</p>
+<p>The most basic use case is to plop down a <code>TextInput</code> and subscribe to the <code>onChangeText</code> events to read the user input. There are also other events, such as <code>onSubmitEditing</code> and <code>onFocus</code> that can be subscribed to. A minimal example:</p>
+<p>```SnackPlayer name=TextInput import React from “react”; import { SafeAreaView, StyleSheet, TextInput } from “react-native”;</p>
+<p>const UselessTextInput = () =&gt; { const [text, onChangeText] = React.useState(“Useless Text”); const [number, onChangeNumber] = React.useState(null);</p>
+<p>return ( <SafeAreaView> <TextInput
+        style={styles.input}
+        onChangeText={onChangeText}
+        value={text}
+      /> <TextInput
+        style={styles.input}
+        onChangeText={onChangeNumber}
+        value={number}
+        placeholder="useless placeholder"
+        keyboardType="numeric"
+      /> </SafeAreaView> ); };</p>
+<p>const styles = StyleSheet.create({ input: { height: 40, margin: 12, borderWidth: 1, padding: 10, }, });</p>
+<p>export default UselessTextInput; ```</p>
+<p>Two methods exposed via the native element are .focus() and .blur() that will focus or blur the TextInput programmatically.</p>
+<p>Note that some props are only available with <code>multiline={true/false}</code>. Additionally, border styles that apply to only one side of the element (e.g., <code>borderBottomColor</code>, <code>borderLeftWidth</code>, etc.) will not be applied if <code>multiline=true</code>. To achieve the same effect, you can wrap your <code>TextInput</code> in a <code>View</code>:</p>
+<p>```SnackPlayer name=TextInput import React from ‘react’; import { View, TextInput } from ‘react-native’;</p>
+<p>const UselessTextInput = (props) =&gt; { return ( &lt;TextInput {…props} // Inherit any props passed to it; e.g., multiline, numberOfLines below editable maxLength={40} /&gt; ); }</p>
+<p>const UselessTextInputMultiline = () =&gt; { const [value, onChangeText] = React.useState(‘Useless Multiline Placeholder’);</p>
+<p>// If you type something in the text box that is a color, the background will change to that // color. return ( &lt;View style={{ backgroundColor: value, borderBottomColor: ‘#000000’, borderBottomWidth: 1, }}&gt; &lt;UselessTextInput multiline numberOfLines={4} onChangeText={text =&gt; onChangeText(text)} value={value} style={{padding: 10}} /&gt; </View> ); }</p>
+<p>export default UselessTextInputMultiline;</p>
+<pre><code>
+`TextInput` has by default a border at the bottom of its view. This border has its padding set by the background image provided by the system, and it cannot be changed. Solutions to avoid this are to either not set height explicitly, in which case the system will take care of displaying the border in the correct position, or to not display the border by setting `underlineColorAndroid` to transparent.
+
+Note that on Android performing text selection in an input can change the app&#39;s activity `windowSoftInputMode` param to `adjustResize`. This may cause issues with components that have position: &#39;absolute&#39; while the keyboard is active. To avoid this behavior either specify `windowSoftInputMode` in AndroidManifest.xml ( https://developer.android.com/guide/topics/manifest/activity-element.html ) or control this param programmatically with native code.
+
+---
+
+# Reference
+
+## Props
+
+### [View Props](view.md#props)
+
+Inherits [View Props](view.md#props).
+
+---
+
+### `allowFontScaling`
+
+Specifies whether fonts should scale to respect Text Size accessibility settings. The default is `true`.
+
+| Type |
+| ---- |
+| bool |
+
+---
+
+### `autoCapitalize`
+
+Tells `TextInput` to automatically capitalize certain characters. This property is not supported by some keyboard types such as `name-phone-pad`.
+
+- `characters`: all characters.
+- `words`: first letter of each word.
+- `sentences`: first letter of each sentence (_default_).
+- `none`: don&#39;t auto capitalize anything.
+
+| Type                                             |
+| ------------------------------------------------ |
+| enum(&#39;none&#39;, &#39;sentences&#39;, &#39;words&#39;, &#39;characters&#39;) |
+
+---
+
+### `autoCompleteType` &lt;div class=&quot;label android&quot;&gt;Android&lt;/div&gt;
+
+Specifies autocomplete hints for the system, so it can provide autofill. On Android, the system will always attempt to offer autofill by using heuristics to identify the type of content. To disable autocomplete, set `autoCompleteType` to `off`.
+
+Possible values for `autoCompleteType` are:
+
+- `off`
+- `username`
+- `password`
+- `email`
+- `name`
+- `tel`
+- `street-address`
+- `postal-code`
+- `cc-number`
+- `cc-csc`
+- `cc-exp`
+- `cc-exp-month`
+- `cc-exp-year`
+
+| Type                                                                                                                                                         |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| enum(&#39;off&#39;, &#39;username&#39;, &#39;password&#39;, &#39;email&#39;, &#39;name&#39;, &#39;tel&#39;, &#39;street-address&#39;, &#39;postal-code&#39;, &#39;cc-number&#39;, &#39;cc-csc&#39;, &#39;cc-exp&#39;, &#39;cc-exp-month&#39;, &#39;cc-exp-year&#39;) |
+
+---
+
+### `autoCorrect`
+
+If `false`, disables auto-correct. The default value is `true`.
+
+| Type |
+| ---- |
+| bool |
+
+---
+
+### `autoFocus`
+
+If `true`, focuses the input on `componentDidMount` or `useEffect`. The default value is `false`.
+
+| Type |
+| ---- |
+| bool |
+
+---
+
+### `blurOnSubmit`
+
+If `true`, the text field will blur when submitted. The default value is true for single-line fields and false for multiline fields. Note that for multiline fields, setting `blurOnSubmit` to `true` means that pressing return will blur the field and trigger the `onSubmitEditing` event instead of inserting a newline into the field.
+
+| Type |
+| ---- |
+| bool |
+
+---
+
+### `caretHidden`
+
+If `true`, caret is hidden. The default value is `false`.
+
+| Type |
+| ---- |
+| bool |
+
+---
+
+### `clearButtonMode` &lt;div class=&quot;label ios&quot;&gt;iOS&lt;/div&gt;
+
+When the clear button should appear on the right side of the text view. This property is supported only for single-line TextInput component. The default value is `never`.
+
+| Type                                                       |
+| ---------------------------------------------------------- |
+| enum(&#39;never&#39;, &#39;while-editing&#39;, &#39;unless-editing&#39;, &#39;always&#39;) |
+
+---
+
+### `clearTextOnFocus` &lt;div class=&quot;label ios&quot;&gt;iOS&lt;/div&gt;
+
+If `true`, clears the text field automatically when editing begins.
+
+| Type |
+| ---- |
+| bool |
+
+---
+
+### `contextMenuHidden`
+
+If `true`, context menu is hidden. The default value is `false`.
+
+| Type |
+| ---- |
+| bool |
+
+---
+
+### `dataDetectorTypes` &lt;div class=&quot;label ios&quot;&gt;iOS&lt;/div&gt;
+
+Determines the types of data converted to clickable URLs in the text input. Only valid if `multiline={true}` and `editable={false}`. By default no data types are detected.
+
+You can provide one type or an array of many types.
+
+Possible values for `dataDetectorTypes` are:
+
+- `&#39;phoneNumber&#39;`
+- `&#39;link&#39;`
+- `&#39;address&#39;`
+- `&#39;calendarEvent&#39;`
+- `&#39;none&#39;`
+- `&#39;all&#39;`
+
+| Type                                                                                                                                                     |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| enum(&#39;phoneNumber&#39;, &#39;link&#39;, &#39;address&#39;, &#39;calendarEvent&#39;, &#39;none&#39;, &#39;all&#39;), ,array of enum(&#39;phoneNumber&#39;, &#39;link&#39;, &#39;address&#39;, &#39;calendarEvent&#39;, &#39;none&#39;, &#39;all&#39;) |
+
+---
+
+### `defaultValue`
+
+Provides an initial value that will change when the user starts typing. Useful for use-cases where you do not want to deal with listening to events and updating the value prop to keep the controlled state in sync.
+
+| Type   |
+| ------ |
+| string |
+
+---
+
+### `disableFullscreenUI` &lt;div class=&quot;label android&quot;&gt;Android&lt;/div&gt;
+
+When `false`, if there is a small amount of space available around a text input (e.g. landscape orientation on a phone), the OS may choose to have the user edit the text inside of a full screen text input mode. When `true`, this feature is disabled and users will always edit the text directly inside of the text input. Defaults to `false`.
+
+| Type |
+| ---- |
+| bool |
+
+---
+
+### `editable`
+
+If `false`, text is not editable. The default value is `true`.
+
+| Type |
+| ---- |
+| bool |
+
+---
+
+### `enablesReturnKeyAutomatically` &lt;div class=&quot;label ios&quot;&gt;iOS&lt;/div&gt;
+
+If `true`, the keyboard disables the return key when there is no text and automatically enables it when there is text. The default value is `false`.
+
+| Type |
+| ---- |
+| bool |
+
+---
+
+### `importantForAutofill` &lt;div class=&quot;label android&quot;&gt;Android&lt;/div&gt;
+
+Tells the operating system whether the individual fields in your app should be included in a view structure for autofill purposes on Android API Level 26+. Possible values are `auto`, `no`, `noExcludeDescendants`, `yes`, and `yesExcludeDescendants`. The default value is `auto`.
+
+- `auto`: Let the Android System use its heuristics to determine if the view is important for autofill.
+- `no`: This view isn&#39;t important for autofill.
+- `noExcludeDescendants`: This view and its children aren&#39;t important for autofill.
+- `yes`: This view is important for autofill.
+- `yesExcludeDescendants`: This view is important for autofill, but its children aren&#39;t important for autofill.
+
+| Type                                                                       |
+| -------------------------------------------------------------------------- |
+| enum(&#39;auto&#39;, &#39;no&#39;, &#39;noExcludeDescendants&#39;, &#39;yes&#39;, &#39;yesExcludeDescendants&#39;) |
+
+---
+
+### `inlineImageLeft` &lt;div class=&quot;label android&quot;&gt;Android&lt;/div&gt;
+
+If defined, the provided image resource will be rendered on the left. The image resource must be inside `/android/app/src/main/res/drawable` and referenced like
+</code></pre>
+<p><TextInput
+ inlineImageLeft='search_icon'
+/> ```</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>string</td>
+</tr>
+</tbody>
+</table>
+<hr />
+### <code>inlineImagePadding</code>
+<div class="label android">
+Android
+</div>
+<p>Padding between the inline image, if any, and the text input itself.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number</td>
+</tr>
+</tbody>
+</table>
+<hr />
+### <code>inputAccessoryViewID</code>
+<div class="label ios">
+iOS
+</div>
+<p>An optional identifier which links a custom <a href="inputaccessoryview.md">InputAccessoryView</a> to this text input. The InputAccessoryView is rendered above the keyboard when this text input is focused.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>string</td>
+</tr>
+</tbody>
+</table>
+<hr />
+### <code>keyboardAppearance</code>
+<div class="label ios">
+iOS
+</div>
+<p>Determines the color of the keyboard.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>enum(‘default’, ‘light’, ‘dark’)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="keyboardtype"><code>keyboardType</code></h3>
+<p>Determines which keyboard to open, e.g.<code>numeric</code>.</p>
+<p>See screenshots of all the types <a href="http://lefkowitz.me/2018/04/30/visual-guide-to-react-native-textinput-keyboardtype-options/">here</a>.</p>
+<p>The following values work across platforms:</p>
+<ul>
+<li><code>default</code></li>
+<li><code>number-pad</code></li>
+<li><code>decimal-pad</code></li>
+<li><code>numeric</code></li>
+<li><code>email-address</code></li>
+<li><code>phone-pad</code></li>
+</ul>
+<p><em>iOS Only</em></p>
+<p>The following values work on iOS only:</p>
+<ul>
+<li><code>ascii-capable</code></li>
+<li><code>numbers-and-punctuation</code></li>
+<li><code>url</code></li>
+<li><code>name-phone-pad</code></li>
+<li><code>twitter</code></li>
+<li><code>web-search</code></li>
+</ul>
+<p><em>Android Only</em></p>
+<p>The following values work on Android only:</p>
+<ul>
+<li><code>visible-password</code></li>
+</ul>
+<table>
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>enum(‘default’, ‘email-address’, ‘numeric’, ‘phone-pad’, ‘ascii-capable’, ‘numbers-and-punctuation’, ‘url’, ‘number-pad’, ‘name-phone-pad’, ‘decimal-pad’, ‘twitter’, ‘web-search’, ‘visible-password’)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="maxfontsizemultiplier"><code>maxFontSizeMultiplier</code></h3>
+<p>Specifies largest possible scale a font can reach when <code>allowFontScaling</code> is enabled. Possible values:</p>
+<ul>
+<li><code>null/undefined</code> (default): inherit from the parent node or the global default (0)</li>
+<li><code>0</code>: no max, ignore parent/global default</li>
+<li><code>&gt;= 1</code>: sets the <code>maxFontSizeMultiplier</code> of this node to this value</li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="maxlength"><code>maxLength</code></h3>
+<p>Limits the maximum number of characters that can be entered. Use this instead of implementing the logic in JS to avoid flicker.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="multiline"><code>multiline</code></h3>
+<p>If <code>true</code>, the text input can be multiple lines. The default value is <code>false</code>. It is important to note that this aligns the text to the top on iOS, and centers it on Android. Use with <code>textAlignVertical</code> set to <code>top</code> for the same behavior in both platforms.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>bool</td>
+</tr>
+</tbody>
+</table>
+<hr />
+### <code>numberOfLines</code>
+<div class="label android">
+Android
+</div>
+<p>Sets the number of lines for a <code>TextInput</code>. Use it with multiline set to <code>true</code> to be able to fill the lines.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="onblur"><code>onBlur</code></h3>
+<p>Callback that is called when the text input is blurred.</p>
+<blockquote>
+<p>Note: If you are attempting to access the <code>text</code> value from <code>nativeEvent</code> keep in mind that the resulting value you get can be <code>undefined</code> which can cause unintended errors. If you are trying to find the last value of TextInput, you can use the <a href="textinput#onendediting"><code>onEndEditing</code></a> event, which is fired upon completion of editing.</p>
+</blockquote>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>function</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="onchange"><code>onChange</code></h3>
+<p>Callback that is called when the text input’s text changes. This will be called with <code>{ nativeEvent: { eventCount, target, text} }</code></p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>function</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="onchangetext"><code>onChangeText</code></h3>
+<p>Callback that is called when the text input’s text changes. Changed text is passed as a single string argument to the callback handler.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>function</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="oncontentsizechange"><code>onContentSizeChange</code></h3>
+<p>Callback that is called when the text input’s content size changes. This will be called with <code>{ nativeEvent: { contentSize: { width, height } } }</code>.</p>
+<p>Only called for multiline text inputs.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>function</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="onendediting"><code>onEndEditing</code></h3>
+<p>Callback that is called when text input ends.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>function</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="onpressin"><code>onPressIn</code></h3>
+<p>Callback that is called when a touch is engaged.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="pressevent">PressEvent</a></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="onpressout"><code>onPressOut</code></h3>
+<p>Callback that is called when a touch is released.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="pressevent">PressEvent</a></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="onfocus"><code>onFocus</code></h3>
+<p>Callback that is called when the text input is focused. This is called with <code>{ nativeEvent: { target } }</code>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>(<a href="layoutevent">LayoutEvent</a>) =&gt; void</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="onkeypress"><code>onKeyPress</code></h3>
+<p>Callback that is called when a key is pressed. This will be called with <code>{ nativeEvent: { key: keyValue } }</code> where <code>keyValue</code> is <code>'Enter'</code> or <code>'Backspace'</code> for respective keys and the typed-in character otherwise including <code>' '</code> for space. Fires before <code>onChange</code> callbacks. Note: on Android only the inputs from soft keyboard are handled, not the hardware keyboard inputs.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>function</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="onlayout"><code>onLayout</code></h3>
+<p>Invoked on mount and on layout changes.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>function</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="onscroll"><code>onScroll</code></h3>
+<p>Invoked on content scroll with <code>{ nativeEvent: { contentOffset: { x, y } } }</code>. May also contain other properties from ScrollEvent but on Android contentSize is not provided for performance reasons.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>function</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="onselectionchange"><code>onSelectionChange</code></h3>
+<p>Callback that is called when the text input selection is changed. This will be called with <code>{ nativeEvent: { selection: { start, end } } }</code>. This prop requires <code>multiline={true}</code> to be set.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>function</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="onsubmitediting"><code>onSubmitEditing</code></h3>
+<p>Callback that is called when the text input’s submit button is pressed with the argument <code>{nativeEvent: {text, eventCount, target}}</code>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>function</td>
+</tr>
+</tbody>
+</table>
+<p>Note that on iOS this method isn’t called when using <code>keyboardType="phone-pad"</code>.</p>
+<hr />
+<h3 id="placeholder"><code>placeholder</code></h3>
+<p>The string that will be rendered before text input has been entered.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>string</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="placeholdertextcolor"><code>placeholderTextColor</code></h3>
+<p>The text color of the placeholder string.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="colors.md">color</a></td>
+</tr>
+</tbody>
+</table>
+<hr />
+### <code>returnKeyLabel</code>
+<div class="label android">
+Android
+</div>
+<p>Sets the return key to the label. Use it instead of <code>returnKeyType</code>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>string</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="returnkeytype"><code>returnKeyType</code></h3>
+<p>Determines how the return key should look. On Android you can also use <code>returnKeyLabel</code>.</p>
+<p><em>Cross platform</em></p>
+<p>The following values work across platforms:</p>
+<ul>
+<li><code>done</code></li>
+<li><code>go</code></li>
+<li><code>next</code></li>
+<li><code>search</code></li>
+<li><code>send</code></li>
+</ul>
+<p><em>Android Only</em></p>
+<p>The following values work on Android only:</p>
+<ul>
+<li><code>none</code></li>
+<li><code>previous</code></li>
+</ul>
+<p><em>iOS Only</em></p>
+<p>The following values work on iOS only:</p>
+<ul>
+<li><code>default</code></li>
+<li><code>emergency-call</code></li>
+<li><code>google</code></li>
+<li><code>join</code></li>
+<li><code>route</code></li>
+<li><code>yahoo</code></li>
+</ul>
+<table>
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>enum(‘done’, ‘go’, ‘next’, ‘search’, ‘send’, ‘none’, ‘previous’, ‘default’, ‘emergency-call’, ‘google’, ‘join’, ‘route’, ‘yahoo’)</td>
+</tr>
+</tbody>
+</table>
+### <code>rejectResponderTermination</code>
+<div class="label ios">
+iOS
+</div>
+<p>If <code>true</code>, allows TextInput to pass touch events to the parent component. This allows components such as SwipeableListView to be swipeable from the TextInput on iOS, as is the case on Android by default. If <code>false</code>, TextInput always asks to handle the input (except when disabled). The default value is <code>true</code>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>bool</td>
+</tr>
+</tbody>
+</table>
+<hr />
+### <code>scrollEnabled</code>
+<div class="label ios">
+iOS
+</div>
+<p>If <code>false</code>, scrolling of the text view will be disabled. The default value is <code>true</code>. Only works with <code>multiline={true}</code>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>bool</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="securetextentry"><code>secureTextEntry</code></h3>
+<p>If <code>true</code>, the text input obscures the text entered so that sensitive text like passwords stay secure. The default value is <code>false</code>. Does not work with <code>multiline={true}</code>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>bool</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="selection"><code>selection</code></h3>
+<p>The start and end of the text input’s selection. Set start and end to the same value to position the cursor.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>object: {start: number,end: number}</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="selectioncolor"><code>selectionColor</code></h3>
+<p>The highlight and cursor color of the text input.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="colors.md">color</a></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="selecttextonfocus"><code>selectTextOnFocus</code></h3>
+<p>If <code>true</code>, all text will automatically be selected on focus.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>bool</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="showsoftinputonfocus"><code>showSoftInputOnFocus</code></h3>
+<p>When <code>false</code>, it will prevent the soft keyboard from showing when the field is focused. The default value is <code>true</code>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>bool</td>
+</tr>
+</tbody>
+</table>
+<hr />
+### <code>spellCheck</code>
+<div class="label ios">
+iOS
+</div>
+<p>If <code>false</code>, disables spell-check style (i.e. red underlines). The default value is inherited from <code>autoCorrect</code>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>bool</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="textalign"><code>textAlign</code></h3>
+<p>Align the input text to the left, center, or right sides of the input field.</p>
+<p>Possible values for <code>textAlign</code> are:</p>
+<ul>
+<li><code>left</code></li>
+<li><code>center</code></li>
+<li><code>right</code></li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>enum(‘left’, ‘center’, ‘right’)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+### <code>textContentType</code>
+<div class="label ios">
+iOS
+</div>
+<p>Give the keyboard and the system information about the expected semantic meaning for the content that users enter.</p>
+<p>For iOS 11+ you can set <code>textContentType</code> to <code>username</code> or <code>password</code> to enable autofill of login details from the device keychain.</p>
+<p>For iOS 12+ <code>newPassword</code> can be used to indicate a new password input the user may want to save in the keychain, and <code>oneTimeCode</code> can be used to indicate that a field can be autofilled by a code arriving in an SMS.</p>
+<p>To disable autofill, set <code>textContentType</code> to <code>none</code>.</p>
+<p>Possible values for <code>textContentType</code> are:</p>
+<ul>
+<li><code>none</code></li>
+<li><code>URL</code></li>
+<li><code>addressCity</code></li>
+<li><code>addressCityAndState</code></li>
+<li><code>addressState</code></li>
+<li><code>countryName</code></li>
+<li><code>creditCardNumber</code></li>
+<li><code>emailAddress</code></li>
+<li><code>familyName</code></li>
+<li><code>fullStreetAddress</code></li>
+<li><code>givenName</code></li>
+<li><code>jobTitle</code></li>
+<li><code>location</code></li>
+<li><code>middleName</code></li>
+<li><code>name</code></li>
+<li><code>namePrefix</code></li>
+<li><code>nameSuffix</code></li>
+<li><code>nickname</code></li>
+<li><code>organizationName</code></li>
+<li><code>postalCode</code></li>
+<li><code>streetAddressLine1</code></li>
+<li><code>streetAddressLine2</code></li>
+<li><code>sublocality</code></li>
+<li><code>telephoneNumber</code></li>
+<li><code>username</code></li>
+<li><code>password</code></li>
+<li><code>newPassword</code></li>
+<li><code>oneTimeCode</code></li>
+</ul>
+<table>
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>enum(‘none’, ‘URL’, ‘addressCity’, ‘addressCityAndState’, ‘addressState’, ‘countryName’, ‘creditCardNumber’, ‘emailAddress’, ‘familyName’, ‘fullStreetAddress’, ‘givenName’, ‘jobTitle’, ‘location’, ‘middleName’, ‘name’, ‘namePrefix’, ‘nameSuffix’, ‘nickname’, ‘organizationName’, ‘postalCode’, ‘streetAddressLine1’, ‘streetAddressLine2’, ‘sublocality’, ‘telephoneNumber’, ‘username’, ‘password’)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+### <code>passwordRules</code>
+<div class="label ios">
+iOS
+</div>
+<p>When using <code>textContentType</code> as <code>newPassword</code> on iOS we can let the OS know the minimum requirements of the password so that it can generate one that will satisfy them. In order to create a valid string for <code>PasswordRules</code> take a look to the <a href="https://developer.apple.com/password-rules/">Apple Docs</a>.</p>
+<blockquote>
+<p>If passwords generation dialog doesn’t appear please make sure that:</p>
+<ul>
+<li>AutoFill is enabled: <strong>Settings</strong> → <strong>Passwords &amp; Accounts</strong> → toggle “On” the <strong>AutoFill Passwords</strong>,</li>
+<li>iCloud Keychain is used: <strong>Settings</strong> → <strong>Apple ID</strong> → <strong>iCloud</strong> → <strong>Keychain</strong> → toggle “On” the <strong>iCloud Keychain</strong>.</li>
+</ul>
+</blockquote>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>string</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="style"><code>style</code></h3>
+<p>Note that not all Text styles are supported, an incomplete list of what is not supported includes:</p>
+<ul>
+<li><code>borderLeftWidth</code></li>
+<li><code>borderTopWidth</code></li>
+<li><code>borderRightWidth</code></li>
+<li><code>borderBottomWidth</code></li>
+<li><code>borderTopLeftRadius</code></li>
+<li><code>borderTopRightRadius</code></li>
+<li><code>borderBottomRightRadius</code></li>
+<li><code>borderBottomLeftRadius</code></li>
+</ul>
+<p>see <a href="https://github.com/facebook/react-native/issues/7070">Issue#7070</a> for more detail.</p>
+<p><a href="style.md">Styles</a></p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="text.md#style">Text</a></td>
+</tr>
+</tbody>
+</table>
+<hr />
+### <code>textBreakStrategy</code>
+<div class="label android">
+Android
+</div>
+<!-- alex disable simple -->
+<p>Set text break strategy on Android API Level 23+, possible values are <code>simple</code>, <code>highQuality</code>, <code>balanced</code> The default value is <code>simple</code>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>enum(‘simple’, ‘highQuality’, ‘balanced’)</td>
+</tr>
+</tbody>
+</table>
+<!-- alex enable simple -->
+<hr />
+### <code>underlineColorAndroid</code>
+<div class="label android">
+Android
+</div>
+<p>The color of the <code>TextInput</code> underline.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="colors.md">color</a></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="value"><code>value</code></h3>
+<p>The value to show for the text input. <code>TextInput</code> is a controlled component, which means the native value will be forced to match this value prop if provided. For most uses, this works great, but in some cases this may cause flickering - one common cause is preventing edits by keeping value the same. In addition to setting the same value, either set <code>editable={false}</code>, or set/update <code>maxLength</code> to prevent unwanted edits without flicker.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>string</td>
+</tr>
+</tbody>
+</table>
+<h2 id="methods">Methods</h2>
+<h3 id="focus"><code>.focus()</code></h3>
+<pre class="jsx"><code>focus();</code></pre>
+<p>Makes the native input request focus.</p>
+<h3 id="blur"><code>.blur()</code></h3>
+<pre class="jsx"><code>blur();</code></pre>
+<p>Makes the native input lose focus.</p>
+<h3 id="clear"><code>clear()</code></h3>
+<pre class="jsx"><code>clear();</code></pre>
+<p>Removes all text from the <code>TextInput</code>.</p>
+<hr />
+<h3 id="isfocused"><code>isFocused()</code></h3>
+<pre class="jsx"><code>isFocused();</code></pre>
+<p>Returns <code>true</code> if the input is currently focused; <code>false</code> otherwise.</p>
+<h1 id="known-issues">Known issues</h1>
+<ul>
+<li><a href="https://github.com/facebook/react-native/issues/19096">react-native#19096</a>: Doesn’t support Android’s <code>onKeyPreIme</code>.</li>
+<li><a href="https://github.com/facebook/react-native/issues/19366">react-native#19366</a>: Calling .focus() after closing Android’s keyboard via back button doesn’t bring keyboard up again.</li>
+<li><a href="https://github.com/facebook/react-native/issues/26799">react-native#26799</a>: Doesn’t support Android’s <code>secureTextEntry</code> when <code>keyboardType="email-address"</code> or <code>keyboardType="phone-pad"</code>.</li>
+</ul>
+</body>
+</html>

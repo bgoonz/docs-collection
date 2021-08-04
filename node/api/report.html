@@ -1,92 +1,229 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
-<head>
-  <meta charset="utf-8" />
-  <meta name="generator" content="pandoc" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>report</title>
-  <style type="text/css">
-      code{white-space: pre-wrap;}
-      span.smallcaps{font-variant: small-caps;}
-      span.underline{text-decoration: underline;}
-      div.column{display: inline-block; vertical-align: top; width: 50%;}
-  </style>
-  <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
-}
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {  }
-@media screen {
-a.sourceLine::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-  </style>
-</head>
-<body>
-<h1 id="diagnostic-report">Diagnostic report</h1>
-<!--introduced_in=v11.8.0-->
-<!-- type=misc -->
-<blockquote>
-<p>Stability: 2 - Stable</p>
-</blockquote>
-<!-- name=report -->
-<p>Delivers a JSON-formatted diagnostic summary, written to a file.</p>
-<p>The report is intended for development, test and production use, to capture and preserve information for problem determination. It includes JavaScript and native stack traces, heap statistics, platform information, resource usage etc. With the report option enabled, diagnostic reports can be triggered on unhandled exceptions, fatal errors and user signals, in addition to triggering programmatically through API calls.</p>
-<p>A complete example report that was generated on an uncaught exception is provided below for reference.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb1-1" title="1"><span class="fu">{</span></a>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>report</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <h1 id="diagnostic-report">Diagnostic report</h1>
+    <!--introduced_in=v11.8.0-->
+    <!-- type=misc -->
+    <blockquote>
+      <p>Stability: 2 - Stable</p>
+    </blockquote>
+    <!-- name=report -->
+    <p>Delivers a JSON-formatted diagnostic summary, written to a file.</p>
+    <p>
+      The report is intended for development, test and production use, to
+      capture and preserve information for problem determination. It includes
+      JavaScript and native stack traces, heap statistics, platform information,
+      resource usage etc. With the report option enabled, diagnostic reports can
+      be triggered on unhandled exceptions, fatal errors and user signals, in
+      addition to triggering programmatically through API calls.
+    </p>
+    <p>
+      A complete example report that was generated on an uncaught exception is
+      provided below for reference.
+    </p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb1-1" title="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb1-2" title="2">  <span class="dt">&quot;header&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
 <a class="sourceLine" id="cb1-3" title="3">    <span class="dt">&quot;reportVersion&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb1-4" title="4">    <span class="dt">&quot;event&quot;</span><span class="fu">:</span> <span class="st">&quot;exception&quot;</span><span class="fu">,</span></a>
@@ -452,67 +589,220 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb1-364" title="364">    <span class="st">&quot;/lib64/libc.so.6&quot;</span><span class="ot">,</span></a>
 <a class="sourceLine" id="cb1-365" title="365">    <span class="st">&quot;/lib64/ld-linux-x86-64.so.2&quot;</span></a>
 <a class="sourceLine" id="cb1-366" title="366">  <span class="ot">]</span></a>
-<a class="sourceLine" id="cb1-367" title="367"><span class="fu">}</span></a></code></pre></div>
-<h2 id="usage">Usage</h2>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" title="1"><span class="ex">node</span> --report-uncaught-exception --report-on-signal \</a>
-<a class="sourceLine" id="cb2-2" title="2">--report-on-fatalerror app.js</a></code></pre></div>
-<ul>
-<li><p><code>--report-uncaught-exception</code> Enables report to be generated on un-caught exceptions. Useful when inspecting JavaScript stack in conjunction with native stack and other runtime environment data.</p></li>
-<li><p><code>--report-on-signal</code> Enables report to be generated upon receiving the specified (or predefined) signal to the running Node.js process. (See below on how to modify the signal that triggers the report.) Default signal is <code>SIGUSR2</code>. Useful when a report needs to be triggered from another program. Application monitors may leverage this feature to collect report at regular intervals and plot rich set of internal runtime data to their views.</p></li>
-</ul>
-<p>Signal based report generation is not supported in Windows.</p>
-<p>Under normal circumstances, there is no need to modify the report triggering signal. However, if <code>SIGUSR2</code> is already used for other purposes, then this flag helps to change the signal for report generation and preserve the original meaning of <code>SIGUSR2</code> for the said purposes.</p>
-<ul>
-<li><p><code>--report-on-fatalerror</code> Enables the report to be triggered on fatal errors (internal errors within the Node.js runtime, such as out of memory) that leads to termination of the application. Useful to inspect various diagnostic data elements such as heap, stack, event loop state, resource consumption etc. to reason about the fatal error.</p></li>
-<li><p><code>--report-compact</code> Write reports in a compact format, single-line JSON, more easily consumable by log processing systems than the default multi-line format designed for human consumption.</p></li>
-<li><p><code>--report-directory</code> Location at which the report will be generated.</p></li>
-<li><p><code>--report-filename</code> Name of the file to which the report will be written.</p></li>
-<li><p><code>--report-signal</code> Sets or resets the signal for report generation (not supported on Windows). Default signal is <code>SIGUSR2</code>.</p></li>
-</ul>
-<p>A report can also be triggered via an API call from a JavaScript application:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb3-1" title="1"><span class="va">process</span>.<span class="va">report</span>.<span class="at">writeReport</span>()<span class="op">;</span></a></code></pre></div>
-<p>This function takes an optional additional argument <code>filename</code>, which is the name of a file into which the report is written.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb4-1" title="1"><span class="va">process</span>.<span class="va">report</span>.<span class="at">writeReport</span>(<span class="st">&#39;./foo.json&#39;</span>)<span class="op">;</span></a></code></pre></div>
-<p>This function takes an optional additional argument <code>err</code> which is an <code>Error</code> object that will be used as the context for the JavaScript stack printed in the report. When using report to handle errors in a callback or an exception handler, this allows the report to include the location of the original error as well as where it was handled.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb5-1" title="1"><span class="cf">try</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-367" title="367"><span class="fu">}</span></a></code></pre>
+    </div>
+    <h2 id="usage">Usage</h2>
+    <div class="sourceCode" id="cb2">
+      <pre
+        class="sourceCode bash"
+      ><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" title="1"><span class="ex">node</span> --report-uncaught-exception --report-on-signal \</a>
+<a class="sourceLine" id="cb2-2" title="2">--report-on-fatalerror app.js</a></code></pre>
+    </div>
+    <ul>
+      <li>
+        <p>
+          <code>--report-uncaught-exception</code> Enables report to be
+          generated on un-caught exceptions. Useful when inspecting JavaScript
+          stack in conjunction with native stack and other runtime environment
+          data.
+        </p>
+      </li>
+      <li>
+        <p>
+          <code>--report-on-signal</code> Enables report to be generated upon
+          receiving the specified (or predefined) signal to the running Node.js
+          process. (See below on how to modify the signal that triggers the
+          report.) Default signal is <code>SIGUSR2</code>. Useful when a report
+          needs to be triggered from another program. Application monitors may
+          leverage this feature to collect report at regular intervals and plot
+          rich set of internal runtime data to their views.
+        </p>
+      </li>
+    </ul>
+    <p>Signal based report generation is not supported in Windows.</p>
+    <p>
+      Under normal circumstances, there is no need to modify the report
+      triggering signal. However, if <code>SIGUSR2</code> is already used for
+      other purposes, then this flag helps to change the signal for report
+      generation and preserve the original meaning of <code>SIGUSR2</code> for
+      the said purposes.
+    </p>
+    <ul>
+      <li>
+        <p>
+          <code>--report-on-fatalerror</code> Enables the report to be triggered
+          on fatal errors (internal errors within the Node.js runtime, such as
+          out of memory) that leads to termination of the application. Useful to
+          inspect various diagnostic data elements such as heap, stack, event
+          loop state, resource consumption etc. to reason about the fatal error.
+        </p>
+      </li>
+      <li>
+        <p>
+          <code>--report-compact</code> Write reports in a compact format,
+          single-line JSON, more easily consumable by log processing systems
+          than the default multi-line format designed for human consumption.
+        </p>
+      </li>
+      <li>
+        <p>
+          <code>--report-directory</code> Location at which the report will be
+          generated.
+        </p>
+      </li>
+      <li>
+        <p>
+          <code>--report-filename</code> Name of the file to which the report
+          will be written.
+        </p>
+      </li>
+      <li>
+        <p>
+          <code>--report-signal</code> Sets or resets the signal for report
+          generation (not supported on Windows). Default signal is
+          <code>SIGUSR2</code>.
+        </p>
+      </li>
+    </ul>
+    <p>
+      A report can also be triggered via an API call from a JavaScript
+      application:
+    </p>
+    <div class="sourceCode" id="cb3">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb3-1" title="1"><span class="va">process</span>.<span class="va">report</span>.<span class="at">writeReport</span>()<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      This function takes an optional additional argument <code>filename</code>,
+      which is the name of a file into which the report is written.
+    </p>
+    <div class="sourceCode" id="cb4">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb4-1" title="1"><span class="va">process</span>.<span class="va">report</span>.<span class="at">writeReport</span>(<span class="st">&#39;./foo.json&#39;</span>)<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      This function takes an optional additional argument <code>err</code> which
+      is an <code>Error</code> object that will be used as the context for the
+      JavaScript stack printed in the report. When using report to handle errors
+      in a callback or an exception handler, this allows the report to include
+      the location of the original error as well as where it was handled.
+    </p>
+    <div class="sourceCode" id="cb5">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb5-1" title="1"><span class="cf">try</span> <span class="op">{</span></a>
 <a class="sourceLine" id="cb5-2" title="2">  <span class="va">process</span>.<span class="at">chdir</span>(<span class="st">&#39;/non-existent-path&#39;</span>)<span class="op">;</span></a>
 <a class="sourceLine" id="cb5-3" title="3"><span class="op">}</span> <span class="cf">catch</span> (err) <span class="op">{</span></a>
 <a class="sourceLine" id="cb5-4" title="4">  <span class="va">process</span>.<span class="va">report</span>.<span class="at">writeReport</span>(err)<span class="op">;</span></a>
 <a class="sourceLine" id="cb5-5" title="5"><span class="op">}</span></a>
-<a class="sourceLine" id="cb5-6" title="6"><span class="co">// Any other code</span></a></code></pre></div>
-<p>If both filename and error object are passed to <code>writeReport()</code> the error object must be the second parameter.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb6-1" title="1"><span class="cf">try</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-6" title="6"><span class="co">// Any other code</span></a></code></pre>
+    </div>
+    <p>
+      If both filename and error object are passed to
+      <code>writeReport()</code> the error object must be the second parameter.
+    </p>
+    <div class="sourceCode" id="cb6">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb6-1" title="1"><span class="cf">try</span> <span class="op">{</span></a>
 <a class="sourceLine" id="cb6-2" title="2">  <span class="va">process</span>.<span class="at">chdir</span>(<span class="st">&#39;/non-existent-path&#39;</span>)<span class="op">;</span></a>
 <a class="sourceLine" id="cb6-3" title="3"><span class="op">}</span> <span class="cf">catch</span> (err) <span class="op">{</span></a>
 <a class="sourceLine" id="cb6-4" title="4">  <span class="va">process</span>.<span class="va">report</span>.<span class="at">writeReport</span>(filename<span class="op">,</span> err)<span class="op">;</span></a>
 <a class="sourceLine" id="cb6-5" title="5"><span class="op">}</span></a>
-<a class="sourceLine" id="cb6-6" title="6"><span class="co">// Any other code</span></a></code></pre></div>
-<p>The content of the diagnostic report can be returned as a JavaScript Object via an API call from a JavaScript application:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb7-1" title="1"><span class="kw">const</span> report <span class="op">=</span> <span class="va">process</span>.<span class="va">report</span>.<span class="at">getReport</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-6" title="6"><span class="co">// Any other code</span></a></code></pre>
+    </div>
+    <p>
+      The content of the diagnostic report can be returned as a JavaScript
+      Object via an API call from a JavaScript application:
+    </p>
+    <div class="sourceCode" id="cb7">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb7-1" title="1"><span class="kw">const</span> report <span class="op">=</span> <span class="va">process</span>.<span class="va">report</span>.<span class="at">getReport</span>()<span class="op">;</span></a>
 <a class="sourceLine" id="cb7-2" title="2"><span class="va">console</span>.<span class="at">log</span>(<span class="kw">typeof</span> report <span class="op">===</span> <span class="st">&#39;object&#39;</span>)<span class="op">;</span> <span class="co">// true</span></a>
 <a class="sourceLine" id="cb7-3" title="3"></a>
 <a class="sourceLine" id="cb7-4" title="4"><span class="co">// Similar to process.report.writeReport() output</span></a>
-<a class="sourceLine" id="cb7-5" title="5"><span class="va">console</span>.<span class="at">log</span>(<span class="va">JSON</span>.<span class="at">stringify</span>(report<span class="op">,</span> <span class="kw">null</span><span class="op">,</span> <span class="dv">2</span>))<span class="op">;</span></a></code></pre></div>
-<p>This function takes an optional additional argument <code>err</code>, which is an <code>Error</code> object that will be used as the context for the JavaScript stack printed in the report.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb8-1" title="1"><span class="kw">const</span> report <span class="op">=</span> <span class="va">process</span>.<span class="va">report</span>.<span class="at">getReport</span>(<span class="kw">new</span> <span class="at">Error</span>(<span class="st">&#39;custom error&#39;</span>))<span class="op">;</span></a>
-<a class="sourceLine" id="cb8-2" title="2"><span class="va">console</span>.<span class="at">log</span>(<span class="kw">typeof</span> report <span class="op">===</span> <span class="st">&#39;object&#39;</span>)<span class="op">;</span> <span class="co">// true</span></a></code></pre></div>
-<p>The API versions are useful when inspecting the runtime state from within the application, in expectation of self-adjusting the resource consumption, load balancing, monitoring etc.</p>
-<p>The content of the report consists of a header section containing the event type, date, time, PID and Node.js version, sections containing JavaScript and native stack traces, a section containing V8 heap information, a section containing <code>libuv</code> handle information and an OS platform information section showing CPU and memory usage and system limits. An example report can be triggered using the Node.js REPL:</p>
-<pre class="console"><code>$ node
+<a class="sourceLine" id="cb7-5" title="5"><span class="va">console</span>.<span class="at">log</span>(<span class="va">JSON</span>.<span class="at">stringify</span>(report<span class="op">,</span> <span class="kw">null</span><span class="op">,</span> <span class="dv">2</span>))<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      This function takes an optional additional argument <code>err</code>,
+      which is an <code>Error</code> object that will be used as the context for
+      the JavaScript stack printed in the report.
+    </p>
+    <div class="sourceCode" id="cb8">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb8-1" title="1"><span class="kw">const</span> report <span class="op">=</span> <span class="va">process</span>.<span class="va">report</span>.<span class="at">getReport</span>(<span class="kw">new</span> <span class="at">Error</span>(<span class="st">&#39;custom error&#39;</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb8-2" title="2"><span class="va">console</span>.<span class="at">log</span>(<span class="kw">typeof</span> report <span class="op">===</span> <span class="st">&#39;object&#39;</span>)<span class="op">;</span> <span class="co">// true</span></a></code></pre>
+    </div>
+    <p>
+      The API versions are useful when inspecting the runtime state from within
+      the application, in expectation of self-adjusting the resource
+      consumption, load balancing, monitoring etc.
+    </p>
+    <p>
+      The content of the report consists of a header section containing the
+      event type, date, time, PID and Node.js version, sections containing
+      JavaScript and native stack traces, a section containing V8 heap
+      information, a section containing <code>libuv</code> handle information
+      and an OS platform information section showing CPU and memory usage and
+      system limits. An example report can be triggered using the Node.js REPL:
+    </p>
+    <pre class="console"><code>$ node
 &gt; process.report.writeReport();
 Writing Node.js report to file: report.20181126.091102.8480.0.001.json
 Node.js report completed
 &gt;</code></pre>
-<p>When a report is written, start and end messages are issued to stderr and the filename of the report is returned to the caller. The default filename includes the date, time, PID and a sequence number. The sequence number helps in associating the report dump with the runtime state if generated multiple times for the same Node.js process.</p>
-<h2 id="configuration">Configuration</h2>
-<p>Additional runtime configuration of report generation is available via the following properties of <code>process.report</code>:</p>
-<p><code>reportOnFatalError</code> triggers diagnostic reporting on fatal errors when <code>true</code>. Defaults to <code>false</code>.</p>
-<p><code>reportOnSignal</code> triggers diagnostic reporting on signal when <code>true</code>. This is not supported on Windows. Defaults to <code>false</code>.</p>
-<p><code>reportOnUncaughtException</code> triggers diagnostic reporting on uncaught exception when <code>true</code>. Defaults to <code>false</code>.</p>
-<p><code>signal</code> specifies the POSIX signal identifier that will be used to intercept external triggers for report generation. Defaults to <code>'SIGUSR2'</code>.</p>
-<p><code>filename</code> specifies the name of the output file in the file system. Special meaning is attached to <code>stdout</code> and <code>stderr</code>. Usage of these will result in report being written to the associated standard streams. In cases where standard streams are used, the value in <code>directory</code> is ignored. URLs are not supported. Defaults to a composite filename that contains timestamp, PID and sequence number.</p>
-<p><code>directory</code> specifies the filesystem directory where the report will be written. URLs are not supported. Defaults to the current working directory of the Node.js process.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb10-1" title="1"><span class="co">// Trigger report only on uncaught exceptions.</span></a>
+    <p>
+      When a report is written, start and end messages are issued to stderr and
+      the filename of the report is returned to the caller. The default filename
+      includes the date, time, PID and a sequence number. The sequence number
+      helps in associating the report dump with the runtime state if generated
+      multiple times for the same Node.js process.
+    </p>
+    <h2 id="configuration">Configuration</h2>
+    <p>
+      Additional runtime configuration of report generation is available via the
+      following properties of <code>process.report</code>:
+    </p>
+    <p>
+      <code>reportOnFatalError</code> triggers diagnostic reporting on fatal
+      errors when <code>true</code>. Defaults to <code>false</code>.
+    </p>
+    <p>
+      <code>reportOnSignal</code> triggers diagnostic reporting on signal when
+      <code>true</code>. This is not supported on Windows. Defaults to
+      <code>false</code>.
+    </p>
+    <p>
+      <code>reportOnUncaughtException</code> triggers diagnostic reporting on
+      uncaught exception when <code>true</code>. Defaults to <code>false</code>.
+    </p>
+    <p>
+      <code>signal</code> specifies the POSIX signal identifier that will be
+      used to intercept external triggers for report generation. Defaults to
+      <code>'SIGUSR2'</code>.
+    </p>
+    <p>
+      <code>filename</code> specifies the name of the output file in the file
+      system. Special meaning is attached to <code>stdout</code> and
+      <code>stderr</code>. Usage of these will result in report being written to
+      the associated standard streams. In cases where standard streams are used,
+      the value in <code>directory</code> is ignored. URLs are not supported.
+      Defaults to a composite filename that contains timestamp, PID and sequence
+      number.
+    </p>
+    <p>
+      <code>directory</code> specifies the filesystem directory where the report
+      will be written. URLs are not supported. Defaults to the current working
+      directory of the Node.js process.
+    </p>
+    <div class="sourceCode" id="cb10">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb10-1" title="1"><span class="co">// Trigger report only on uncaught exceptions.</span></a>
 <a class="sourceLine" id="cb10-2" title="2"><span class="va">process</span>.<span class="va">report</span>.<span class="at">reportOnFatalError</span> <span class="op">=</span> <span class="kw">false</span><span class="op">;</span></a>
 <a class="sourceLine" id="cb10-3" title="3"><span class="va">process</span>.<span class="va">report</span>.<span class="at">reportOnSignal</span> <span class="op">=</span> <span class="kw">false</span><span class="op">;</span></a>
 <a class="sourceLine" id="cb10-4" title="4"><span class="va">process</span>.<span class="va">report</span>.<span class="at">reportOnUncaughtException</span> <span class="op">=</span> <span class="kw">true</span><span class="op">;</span></a>
@@ -526,15 +816,26 @@ Node.js report completed
 <a class="sourceLine" id="cb10-12" title="12"><span class="va">process</span>.<span class="va">report</span>.<span class="at">reportOnFatalError</span> <span class="op">=</span> <span class="kw">false</span><span class="op">;</span></a>
 <a class="sourceLine" id="cb10-13" title="13"><span class="va">process</span>.<span class="va">report</span>.<span class="at">reportOnUncaughtException</span> <span class="op">=</span> <span class="kw">false</span><span class="op">;</span></a>
 <a class="sourceLine" id="cb10-14" title="14"><span class="va">process</span>.<span class="va">report</span>.<span class="at">reportOnSignal</span> <span class="op">=</span> <span class="kw">true</span><span class="op">;</span></a>
-<a class="sourceLine" id="cb10-15" title="15"><span class="va">process</span>.<span class="va">report</span>.<span class="at">signal</span> <span class="op">=</span> <span class="st">&#39;SIGQUIT&#39;</span><span class="op">;</span></a></code></pre></div>
-<p>Configuration on module initialization is also available via environment variables:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb11-1" title="1"><span class="va">NODE_OPTIONS=</span><span class="st">&quot;--report-uncaught-exception \</span></a>
+<a class="sourceLine" id="cb10-15" title="15"><span class="va">process</span>.<span class="va">report</span>.<span class="at">signal</span> <span class="op">=</span> <span class="st">&#39;SIGQUIT&#39;</span><span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      Configuration on module initialization is also available via environment
+      variables:
+    </p>
+    <div class="sourceCode" id="cb11">
+      <pre
+        class="sourceCode bash"
+      ><code class="sourceCode bash"><a class="sourceLine" id="cb11-1" title="1"><span class="va">NODE_OPTIONS=</span><span class="st">&quot;--report-uncaught-exception \</span></a>
 <a class="sourceLine" id="cb11-2" title="2"><span class="st">  --report-on-fatalerror --report-on-signal \</span></a>
 <a class="sourceLine" id="cb11-3" title="3"><span class="st">  --report-signal=SIGUSR2  --report-filename=./report.json \</span></a>
-<a class="sourceLine" id="cb11-4" title="4"><span class="st">  --report-directory=/home/nodeuser&quot;</span></a></code></pre></div>
-<p>Specific API documentation can be found under <a href="process.md"><code>process API documentation</code></a> section.</p>
-<h2 id="interaction-with-workers">Interaction with workers</h2>
-<!-- YAML
+<a class="sourceLine" id="cb11-4" title="4"><span class="st">  --report-directory=/home/nodeuser&quot;</span></a></code></pre>
+    </div>
+    <p>
+      Specific API documentation can be found under
+      <a href="process.md"><code>process API documentation</code></a> section.
+    </p>
+    <h2 id="interaction-with-workers">Interaction with workers</h2>
+    <!-- YAML
 changes:
   - version:
       - v13.9.0
@@ -542,8 +843,20 @@ changes:
     pr-url: https://github.com/nodejs/node/pull/31386
     description: Workers are now included in the report.
 -->
-<p><a href="worker_threads.md"><code>Worker</code></a> threads can create reports in the same way that the main thread does.</p>
-<p>Reports will include information on any Workers that are children of the current thread as part of the <code>workers</code> section, with each Worker generating a report in the standard report format.</p>
-<p>The thread which is generating the report will wait for the reports from Worker threads to finish. However, the latency for this will usually be low, as both running JavaScript and the event loop are interrupted to generate the report.</p>
-</body>
+    <p>
+      <a href="worker_threads.md"><code>Worker</code></a> threads can create
+      reports in the same way that the main thread does.
+    </p>
+    <p>
+      Reports will include information on any Workers that are children of the
+      current thread as part of the <code>workers</code> section, with each
+      Worker generating a report in the standard report format.
+    </p>
+    <p>
+      The thread which is generating the report will wait for the reports from
+      Worker threads to finish. However, the latency for this will usually be
+      low, as both running JavaScript and the event loop are interrupted to
+      generate the report.
+    </p>
+  </body>
 </html>

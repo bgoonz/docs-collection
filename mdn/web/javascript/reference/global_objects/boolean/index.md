@@ -8,6 +8,7 @@ tags:
   - Reference
 browser-compat: javascript.builtins.Boolean
 ---
+
 {{JSRef}}
 
 The **`Boolean`** object is an object wrapper for a boolean value.
@@ -39,18 +40,18 @@ if (x) {
 Do not use a `Boolean` object to convert a non-boolean value to a boolean value. To perform this task, instead, use `Boolean` as a function, or a [double NOT operator](/en-US/docs/Web/JavaScript/Reference/Operators/Logical_NOT):
 
 ```js
-var x = Boolean(expression);     // use this...
-var x = !!(expression);          // ...or this
+var x = Boolean(expression); // use this...
+var x = !!expression; // ...or this
 var x = new Boolean(expression); // don't use this!
 ```
 
 If you specify any object, including a `Boolean` object whose value is `false`, as the initial value of a `Boolean` object, the new `Boolean` object has a value of `true`.
 
 ```js
-var myFalse = new Boolean(false);   // initial value of false
-var g = Boolean(myFalse);       // initial value of true
-var myString = new String('Hello'); // string object
-var s = Boolean(myString);      // initial value of true
+var myFalse = new Boolean(false); // initial value of false
+var g = Boolean(myFalse); // initial value of true
+var myString = new String("Hello"); // string object
+var s = Boolean(myString); // initial value of true
 ```
 
 Do not use a `Boolean` object in place of a `Boolean` primitive.
@@ -77,7 +78,7 @@ Do not use a `Boolean` object in place of a `Boolean` primitive.
 var bNoParam = new Boolean();
 var bZero = new Boolean(0);
 var bNull = new Boolean(null);
-var bEmptyString = new Boolean('');
+var bEmptyString = new Boolean("");
 var bfalse = new Boolean(false);
 ```
 
@@ -85,9 +86,9 @@ var bfalse = new Boolean(false);
 
 ```js
 var btrue = new Boolean(true);
-var btrueString = new Boolean('true');
-var bfalseString = new Boolean('false');
-var bSuLin = new Boolean('Su Lin');
+var btrueString = new Boolean("true");
+var bfalseString = new Boolean("false");
+var bSuLin = new Boolean("Su Lin");
 var bArrayProto = new Boolean([]);
 var bObjProto = new Boolean({});
 ```

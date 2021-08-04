@@ -1,5 +1,4 @@
-Util
-====
+# Util
 
 > Stability: 2 - Stable
 
@@ -7,11 +6,10 @@ The `util` module supports the needs of Node.js internal APIs. Many of the utili
 
     const util = require('util');
 
-`util.callbackify(original)`
-----------------------------
+## `util.callbackify(original)`
 
--   `original` {Function} An `async` function
--   Returns: {Function} a callback style function
+- `original` {Function} An `async` function
+- Returns: {Function} a callback style function
 
 Takes an `async` function (or a function that returns a `Promise`) and returns a function following the error-first callback style, i.e. taking an `(err, value) => ...` callback as the last argument. In the callback, the first argument will be the rejection reason (or `null` if the `Promise` resolved), and the second argument will be the resolved value.
 
@@ -46,12 +44,11 @@ Since `null` has a special meaning as the first argument to a callback, if a wra
       err && err.hasOwnProperty('reason') && err.reason === null;  // true
     });
 
-`util.debuglog(section[, callback])`
-------------------------------------
+## `util.debuglog(section[, callback])`
 
--   `section` {string} A string identifying the portion of the application for which the `debuglog` function is being created.
--   `callback` {Function} A callback invoked the first time the logging function is called with a function argument that is a more optimized logging function.
--   Returns: {Function} The logging function
+- `section` {string} A string identifying the portion of the application for which the `debuglog` function is being created.
+- `callback` {Function} A callback invoked the first time the logging function is called with a function argument that is a more optimized logging function.
+- Returns: {Function} The logging function
 
 The `util.debuglog()` method is used to create a function that conditionally writes debug messages to `stderr` based on the existence of the `NODE_DEBUG` environment variable. If the `section` name appears within the value of that environment variable, then the returned function operates similar to [`console.error()`](console.md#console_console_error_data_args). If not, then the returned function is a no-op.
 
@@ -90,7 +87,7 @@ The optional `callback` argument can be used to replace the logging function wit
 
 ### `debuglog().enabled`
 
--   {boolean}
+- {boolean}
 
 The `util.debuglog().enabled` getter is used to create a test that can be used in conditionals based on the existence of the `NODE_DEBUG` environment variable. If the `section` name appears within the value of that environment variable, then the returned value will be `true`. If not, then the returned value will be `false`.
 
@@ -104,18 +101,16 @@ If this program is run with `NODE_DEBUG=foo` in the environment, then it will ou
 
     hello from foo [123]
 
-`util.debug(section)`
----------------------
+## `util.debug(section)`
 
 Alias for `util.debuglog`. Usage allows for readability of that doesn’t imply logging when only using `util.debuglog().enabled`.
 
-`util.deprecate(fn, msg[, code])`
----------------------------------
+## `util.deprecate(fn, msg[, code])`
 
--   `fn` {Function} The function that is being deprecated.
--   `msg` {string} A warning message to display when the deprecated function is invoked.
--   `code` {string} A deprecation code. See the [list of deprecated APIs](deprecations.md#deprecations_list_of_deprecated_apis) for a list of codes.
--   Returns: {Function} The deprecated function wrapped to emit a warning.
+- `fn` {Function} The function that is being deprecated.
+- `msg` {string} A warning message to display when the deprecated function is invoked.
+- `code` {string} A deprecation code. See the [list of deprecated APIs](deprecations.md#deprecations_list_of_deprecated_apis) for a list of codes.
+- Returns: {Function} The deprecated function wrapped to emit a warning.
 
 The `util.deprecate()` method wraps `fn` (which may be a function or class) in such a way that it is marked as deprecated.
 
@@ -136,7 +131,7 @@ If the same optional `code` is supplied in multiple calls to `util.deprecate()`,
     fn1(); // Emits a deprecation warning with code DEP0001
     fn2(); // Does not emit a deprecation warning because it has the same code
 
-If either the `--no-deprecation` or `--no-warnings` command-line flags are used, or if the `process.noDeprecation` property is set to `true` *prior* to the first deprecation warning, the `util.deprecate()` method does nothing.
+If either the `--no-deprecation` or `--no-warnings` command-line flags are used, or if the `process.noDeprecation` property is set to `true` _prior_ to the first deprecation warning, the `util.deprecate()` method does nothing.
 
 If the `--trace-deprecation` or `--trace-warnings` command-line flags are set, or the `process.traceDeprecation` property is set to `true`, a warning and a stack trace are printed to `stderr` the first time the deprecated function is called.
 
@@ -144,23 +139,22 @@ If the `--throw-deprecation` command-line flag is set, or the `process.throwDepr
 
 The `--throw-deprecation` command-line flag and `process.throwDeprecation` property take precedence over `--trace-deprecation` and `process.traceDeprecation`.
 
-`util.format(format[, ...args])`
---------------------------------
+## `util.format(format[, ...args])`
 
--   `format` {string} A `printf`-like format string.
+- `format` {string} A `printf`-like format string.
 
 The `util.format()` method returns a formatted string using the first argument as a `printf`-like format string which can contain zero or more format specifiers. Each specifier is replaced with the converted value from the corresponding argument. Supported specifiers are:
 
--   `%s`: `String` will be used to convert all values except `BigInt`, `Object` and `-0`. `BigInt` values will be represented with an `n` and Objects that have no user defined `toString` function are inspected using `util.inspect()` with options `{ depth: 0, colors: false, compact: 3 }`.
--   `%d`: `Number` will be used to convert all values except `BigInt` and `Symbol`.
--   `%i`: `parseInt(value, 10)` is used for all values except `BigInt` and `Symbol`.
--   `%f`: `parseFloat(value)` is used for all values expect `Symbol`.
--   `%j`: JSON. Replaced with the string `'[Circular]'` if the argument contains circular references.
--   `%o`: `Object`. A string representation of an object with generic JavaScript object formatting. Similar to `util.inspect()` with options `{ showHidden: true, showProxy: true }`. This will show the full object including non-enumerable properties and proxies.
--   `%O`: `Object`. A string representation of an object with generic JavaScript object formatting. Similar to `util.inspect()` without options. This will show the full object not including non-enumerable properties and proxies.
--   `%c`: `CSS`. This specifier is ignored and will skip any CSS passed in.
--   `%%`: single percent sign (`'%'`). This does not consume an argument.
--   Returns: {string} The formatted string
+- `%s`: `String` will be used to convert all values except `BigInt`, `Object` and `-0`. `BigInt` values will be represented with an `n` and Objects that have no user defined `toString` function are inspected using `util.inspect()` with options `{ depth: 0, colors: false, compact: 3 }`.
+- `%d`: `Number` will be used to convert all values except `BigInt` and `Symbol`.
+- `%i`: `parseInt(value, 10)` is used for all values except `BigInt` and `Symbol`.
+- `%f`: `parseFloat(value)` is used for all values expect `Symbol`.
+- `%j`: JSON. Replaced with the string `'[Circular]'` if the argument contains circular references.
+- `%o`: `Object`. A string representation of an object with generic JavaScript object formatting. Similar to `util.inspect()` with options `{ showHidden: true, showProxy: true }`. This will show the full object including non-enumerable properties and proxies.
+- `%O`: `Object`. A string representation of an object with generic JavaScript object formatting. Similar to `util.inspect()` without options. This will show the full object not including non-enumerable properties and proxies.
+- `%c`: `CSS`. This specifier is ignored and will skip any CSS passed in.
+- `%%`: single percent sign (`'%'`). This does not consume an argument.
+- Returns: {string} The formatted string
 
 If a specifier does not have a corresponding argument, it is not replaced:
 
@@ -186,11 +180,10 @@ If only one argument is passed to `util.format()`, it is returned as it is witho
 
 `util.format()` is a synchronous method that is intended as a debugging tool. Some input values can have a significant performance overhead that can block the event loop. Use this function with care and never in a hot code path.
 
-`util.formatWithOptions(inspectOptions, format[, ...args])`
------------------------------------------------------------
+## `util.formatWithOptions(inspectOptions, format[, ...args])`
 
--   `inspectOptions` {Object}
--   `format` {string}
+- `inspectOptions` {Object}
+- `format` {string}
 
 This function is identical to [`util.format()`](#util_util_format_format_args), except in that it takes an `inspectOptions` argument which specifies options that are passed along to [`util.inspect()`](#util_util_inspect_object_options).
 
@@ -198,11 +191,10 @@ This function is identical to [`util.format()`](#util_util_format_format_args), 
     // Returns 'See object { foo: 42 }', where `42` is colored as a number
     // when printed to a terminal.
 
-`util.getSystemErrorName(err)`
-------------------------------
+## `util.getSystemErrorName(err)`
 
--   `err` {number}
--   Returns: {string}
+- `err` {number}
+- Returns: {string}
 
 Returns the string name for a numeric error code that comes from a Node.js API. The mapping between error codes and error names is platform-dependent. See [Common System Errors](errors.md#errors_common_system_errors) for the names of common errors.
 
@@ -211,10 +203,9 @@ Returns the string name for a numeric error code that comes from a Node.js API. 
       console.error(name);  // ENOENT
     });
 
-`util.getSystemErrorMap()`
---------------------------
+## `util.getSystemErrorMap()`
 
--   Returns: {Map}
+- Returns: {Map}
 
 Returns a Map of all system error codes available from the Node.js API. The mapping between error codes and error names is platform-dependent. See [Common System Errors](errors.md#errors_common_system_errors) for the names of common errors.
 
@@ -224,13 +215,12 @@ Returns a Map of all system error codes available from the Node.js API. The mapp
       console.error(name);  // ENOENT
     });
 
-`util.inherits(constructor, superConstructor)`
-----------------------------------------------
+## `util.inherits(constructor, superConstructor)`
 
 > Stability: 3 - Legacy: Use ES2015 class syntax and `extends` keyword instead.
 
--   `constructor` {Function}
--   `superConstructor` {Function}
+- `constructor` {Function}
+- `superConstructor` {Function}
 
 Usage of `util.inherits()` is discouraged. Please use the ES6 `class` and `extends` keywords to get language level inheritance support. Also note that the two styles are [semantically incompatible](https://github.com/nodejs/node/issues/4179).
 
@@ -278,26 +268,24 @@ ES6 example using `class` and `extends`:
     });
     stream.write('With ES6');
 
-`util.inspect(object[, options])`
----------------------------------
+## `util.inspect(object[, options])`
 
-`util.inspect(object[, showHidden[, depth[, colors]]])`
--------------------------------------------------------
+## `util.inspect(object[, showHidden[, depth[, colors]]])`
 
--   `object` {any} Any JavaScript primitive or `Object`.
--   `options` {Object}
-    -   `showHidden` {boolean} If `true`, `object`’s non-enumerable symbols and properties are included in the formatted result. [`WeakMap`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap) and [`WeakSet`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet) entries are also included as well as user defined prototype properties (excluding method properties). **Default:** `false`.
-    -   `depth` {number} Specifies the number of times to recurse while formatting `object`. This is useful for inspecting large objects. To recurse up to the maximum call stack size pass `Infinity` or `null`. **Default:** `2`.
-    -   `colors` {boolean} If `true`, the output is styled with ANSI color codes. Colors are customizable. See [Customizing `util.inspect` colors](#util_customizing_util_inspect_colors). **Default:** `false`.
-    -   `customInspect` {boolean} If `false`, `[util.inspect.custom](depth, opts)` functions are not invoked. **Default:** `true`.
-    -   `showProxy` {boolean} If `true`, `Proxy` inspection includes the [`target` and `handler`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy#Terminology) objects. **Default:** `false`.
-    -   `maxArrayLength` {integer} Specifies the maximum number of `Array`, [`TypedArray`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray), [`WeakMap`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap) and [`WeakSet`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet) elements to include when formatting. Set to `null` or `Infinity` to show all elements. Set to `0` or negative to show no elements. **Default:** `100`.
-    -   `maxStringLength` {integer} Specifies the maximum number of characters to include when formatting. Set to `null` or `Infinity` to show all elements. Set to `0` or negative to show no characters. **Default:** `10000`.
-    -   `breakLength` {integer} The length at which input values are split across multiple lines. Set to `Infinity` to format the input as a single line (in combination with `compact` set to `true` or any number &gt;= `1`). **Default:** `80`.
-    -   `compact` {boolean|integer} Setting this to `false` causes each object key to be displayed on a new line. It will break on new lines in text that is longer than `breakLength`. If set to a number, the most `n` inner elements are united on a single line as long as all properties fit into `breakLength`. Short array elements are also grouped together. For more information, see the example below. **Default:** `3`.
-    -   `sorted` {boolean|Function} If set to `true` or a function, all properties of an object, and `Set` and `Map` entries are sorted in the resulting string. If set to `true` the [default sort](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort) is used. If set to a function, it is used as a [compare function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort#Parameters).
-    -   `getters` {boolean|string} If set to `true`, getters are inspected. If set to `'get'`, only getters without a corresponding setter are inspected. If set to `'set'`, only getters with a corresponding setter are inspected. This might cause side effects depending on the getter function. **Default:** `false`.
--   Returns: {string} The representation of `object`.
+- `object` {any} Any JavaScript primitive or `Object`.
+- `options` {Object}
+  - `showHidden` {boolean} If `true`, `object`’s non-enumerable symbols and properties are included in the formatted result. [`WeakMap`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap) and [`WeakSet`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet) entries are also included as well as user defined prototype properties (excluding method properties). **Default:** `false`.
+  - `depth` {number} Specifies the number of times to recurse while formatting `object`. This is useful for inspecting large objects. To recurse up to the maximum call stack size pass `Infinity` or `null`. **Default:** `2`.
+  - `colors` {boolean} If `true`, the output is styled with ANSI color codes. Colors are customizable. See [Customizing `util.inspect` colors](#util_customizing_util_inspect_colors). **Default:** `false`.
+  - `customInspect` {boolean} If `false`, `[util.inspect.custom](depth, opts)` functions are not invoked. **Default:** `true`.
+  - `showProxy` {boolean} If `true`, `Proxy` inspection includes the [`target` and `handler`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy#Terminology) objects. **Default:** `false`.
+  - `maxArrayLength` {integer} Specifies the maximum number of `Array`, [`TypedArray`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray), [`WeakMap`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap) and [`WeakSet`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet) elements to include when formatting. Set to `null` or `Infinity` to show all elements. Set to `0` or negative to show no elements. **Default:** `100`.
+  - `maxStringLength` {integer} Specifies the maximum number of characters to include when formatting. Set to `null` or `Infinity` to show all elements. Set to `0` or negative to show no characters. **Default:** `10000`.
+  - `breakLength` {integer} The length at which input values are split across multiple lines. Set to `Infinity` to format the input as a single line (in combination with `compact` set to `true` or any number &gt;= `1`). **Default:** `80`.
+  - `compact` {boolean|integer} Setting this to `false` causes each object key to be displayed on a new line. It will break on new lines in text that is longer than `breakLength`. If set to a number, the most `n` inner elements are united on a single line as long as all properties fit into `breakLength`. Short array elements are also grouped together. For more information, see the example below. **Default:** `3`.
+  - `sorted` {boolean|Function} If set to `true` or a function, all properties of an object, and `Set` and `Map` entries are sorted in the resulting string. If set to `true` the [default sort](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort) is used. If set to a function, it is used as a [compare function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort#Parameters).
+  - `getters` {boolean|string} If set to `true`, getters are inspected. If set to `'get'`, only getters without a corresponding setter are inspected. If set to `'set'`, only getters with a corresponding setter are inspected. This might cause side effects depending on the getter function. **Default:** `false`.
+- Returns: {string} The representation of `object`.
 
 The `util.inspect()` method returns a string representation of `object` that is intended for debugging. The output of `util.inspect` may change at any time and should not be depended upon programmatically. Additional `options` may be passed that alter the result. `util.inspect()` will use the constructor’s name and/or `@@toStringTag` to make an identifiable tag for an inspected value.
 
@@ -433,18 +421,18 @@ Color output (if enabled) of `util.inspect` is customizable globally via the `ut
 
 The default styles and associated colors are:
 
--   `bigint`: `yellow`
--   `boolean`: `yellow`
--   `date`: `magenta`
--   `module`: `underline`
--   `name`: (no styling)
--   `null`: `bold`
--   `number`: `yellow`
--   `regexp`: `red`
--   `special`: `cyan` (e.g., `Proxies`)
--   `string`: `green`
--   `symbol`: `green`
--   `undefined`: `grey`
+- `bigint`: `yellow`
+- `boolean`: `yellow`
+- `date`: `magenta`
+- `module`: `underline`
+- `name`: (no styling)
+- `null`: `bold`
+- `number`: `yellow`
+- `regexp`: `red`
+- `special`: `cyan` (e.g., `Proxies`)
+- `string`: `green`
+- `symbol`: `green`
+- `undefined`: `grey`
 
 Color styling uses ANSI control codes that may not be supported on all terminals. To verify color support use [`tty.hasColors()`](tty.md#tty_writestream_hascolors_count_env).
 
@@ -454,56 +442,56 @@ Predefined control codes are listed below (grouped as “Modifiers”, “Foregr
 
 Modifier support varies throughout different terminals. They will mostly be ignored, if not supported.
 
--   `reset` - Resets all (color) modifiers to their defaults
--   **bold** - Make text bold
--   *italic* - Make text italic
--   <span style="border-bottom: 1px;">underline</span> - Make text underlined
--   <s>strikethrough</s> - Puts a horizontal line through the center of the text (Alias: `strikeThrough`, `crossedout`, `crossedOut`)
--   `hidden` - Prints the text, but makes it invisible (Alias: conceal)
--   <span style="opacity: 0.5;">dim</span> - Decreased color intensity (Alias: `faint`)
--   <span style="border-top: 1px">overlined</span> - Make text overlined
--   blink - Hides and shows the text in an interval
--   <span style="filter: invert(100%)">inverse</span> - Swap foreground and background colors (Alias: `swapcolors`, `swapColors`)
--   <span style="border-bottom: 1px double;">doubleunderline</span> - Make text double underlined (Alias: `doubleUnderline`)
--   <span style="border: 1px">framed</span> - Draw a frame around the text
+- `reset` - Resets all (color) modifiers to their defaults
+- **bold** - Make text bold
+- _italic_ - Make text italic
+- <span style="border-bottom: 1px;">underline</span> - Make text underlined
+- <s>strikethrough</s> - Puts a horizontal line through the center of the text (Alias: `strikeThrough`, `crossedout`, `crossedOut`)
+- `hidden` - Prints the text, but makes it invisible (Alias: conceal)
+- <span style="opacity: 0.5;">dim</span> - Decreased color intensity (Alias: `faint`)
+- <span style="border-top: 1px">overlined</span> - Make text overlined
+- blink - Hides and shows the text in an interval
+- <span style="filter: invert(100%)">inverse</span> - Swap foreground and background colors (Alias: `swapcolors`, `swapColors`)
+- <span style="border-bottom: 1px double;">doubleunderline</span> - Make text double underlined (Alias: `doubleUnderline`)
+- <span style="border: 1px">framed</span> - Draw a frame around the text
 
 #### Foreground colors
 
--   `black`
--   `red`
--   `green`
--   `yellow`
--   `blue`
--   `magenta`
--   `cyan`
--   `white`
--   `gray` (alias: `grey`, `blackBright`)
--   `redBright`
--   `greenBright`
--   `yellowBright`
--   `blueBright`
--   `magentaBright`
--   `cyanBright`
--   `whiteBright`
+- `black`
+- `red`
+- `green`
+- `yellow`
+- `blue`
+- `magenta`
+- `cyan`
+- `white`
+- `gray` (alias: `grey`, `blackBright`)
+- `redBright`
+- `greenBright`
+- `yellowBright`
+- `blueBright`
+- `magentaBright`
+- `cyanBright`
+- `whiteBright`
 
 #### Background colors
 
--   `bgBlack`
--   `bgRed`
--   `bgGreen`
--   `bgYellow`
--   `bgBlue`
--   `bgMagenta`
--   `bgCyan`
--   `bgWhite`
--   `bgGray` (alias: `bgGrey`, `bgBlackBright`)
--   `bgRedBright`
--   `bgGreenBright`
--   `bgYellowBright`
--   `bgBlueBright`
--   `bgMagentaBright`
--   `bgCyanBright`
--   `bgWhiteBright`
+- `bgBlack`
+- `bgRed`
+- `bgGreen`
+- `bgYellow`
+- `bgBlue`
+- `bgMagenta`
+- `bgCyan`
+- `bgWhite`
+- `bgGray` (alias: `bgGrey`, `bgBlackBright`)
+- `bgRedBright`
+- `bgGreenBright`
+- `bgYellowBright`
+- `bgBlueBright`
+- `bgMagentaBright`
+- `bgCyanBright`
+- `bgWhiteBright`
 
 ### Custom inspection functions on objects
 
@@ -552,7 +540,7 @@ Custom `[util.inspect.custom](depth, opts)` functions typically return a string 
 
 ### `util.inspect.custom`
 
--   {symbol} that can be used to declare custom inspect functions.
+- {symbol} that can be used to declare custom inspect functions.
 
 In addition to being accessible through `util.inspect.custom`, this symbol is [registered globally](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/for) and can be accessed in any environment as `Symbol.for('nodejs.util.inspect.custom')`.
 
@@ -589,22 +577,20 @@ The `defaultOptions` value allows customization of the default options used by `
     util.inspect.defaultOptions.maxArrayLength = null;
     console.log(arr); // logs the full array
 
-`util.isDeepStrictEqual(val1, val2)`
-------------------------------------
+## `util.isDeepStrictEqual(val1, val2)`
 
--   `val1` {any}
--   `val2` {any}
--   Returns: {boolean}
+- `val1` {any}
+- `val2` {any}
+- Returns: {boolean}
 
 Returns `true` if there is deep strict equality between `val1` and `val2`. Otherwise, returns `false`.
 
 See [`assert.deepStrictEqual()`](assert.md#assert_assert_deepstrictequal_actual_expected_message) for more information about deep strict equality.
 
-`util.promisify(original)`
---------------------------
+## `util.promisify(original)`
 
--   `original` {Function}
--   Returns: {Function}
+- `original` {Function}
+- Returns: {Function}
 
 Takes a function following the common error-first callback style, i.e. taking an `(err, value) => ...` callback as the last argument, and returns a version that returns promises.
 
@@ -691,7 +677,7 @@ If `promisify.custom` is defined but is not a function, `promisify()` will throw
 
 ### `util.promisify.custom`
 
--   {symbol} that can be used to declare custom promisified variants of functions, see [Custom promisified functions](#util_custom_promisified_functions).
+- {symbol} that can be used to declare custom promisified variants of functions, see [Custom promisified functions](#util_custom_promisified_functions).
 
 In addition to being accessible through `util.promisify.custom`, this symbol is [registered globally](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/for) and can be accessed in any environment as `Symbol.for('nodejs.util.promisify.custom')`.
 
@@ -705,8 +691,7 @@ For example, with a function that takes in `(foo, onSuccessCallback, onErrorCall
       });
     };
 
-Class: `util.TextDecoder`
--------------------------
+## Class: `util.TextDecoder`
 
 An implementation of the [WHATWG Encoding Standard](https://encoding.spec.whatwg.org/) `TextDecoder` API.
 
@@ -740,10 +725,10 @@ The `'iso-8859-16'` encoding listed in the [WHATWG Encoding Standard](https://en
 
 ### `new TextDecoder([encoding[, options]])`
 
--   `encoding` {string} Identifies the `encoding` that this `TextDecoder` instance supports. **Default:** `'utf-8'`.
--   `options` {Object}
-    -   `fatal` {boolean} `true` if decoding failures are fatal. This option is not supported when ICU is disabled (see [Internationalization](intl.md)). **Default:** `false`.
-    -   `ignoreBOM` {boolean} When `true`, the `TextDecoder` will include the byte order mark in the decoded result. When `false`, the byte order mark will be removed from the output. This option is only used when `encoding` is `'utf-8'`, `'utf-16be'` or `'utf-16le'`. **Default:** `false`.
+- `encoding` {string} Identifies the `encoding` that this `TextDecoder` instance supports. **Default:** `'utf-8'`.
+- `options` {Object}
+  - `fatal` {boolean} `true` if decoding failures are fatal. This option is not supported when ICU is disabled (see [Internationalization](intl.md)). **Default:** `false`.
+  - `ignoreBOM` {boolean} When `true`, the `TextDecoder` will include the byte order mark in the decoded result. When `false`, the byte order mark will be removed from the output. This option is only used when `encoding` is `'utf-8'`, `'utf-16be'` or `'utf-16le'`. **Default:** `false`.
 
 Creates an new `TextDecoder` instance. The `encoding` may specify one of the supported encodings or an alias.
 
@@ -751,10 +736,10 @@ The `TextDecoder` class is also available on the global object.
 
 ### `textDecoder.decode([input[, options]])`
 
--   `input` {ArrayBuffer|DataView|TypedArray} An `ArrayBuffer`, `DataView` or `TypedArray` instance containing the encoded data.
--   `options` {Object}
-    -   `stream` {boolean} `true` if additional chunks of data are expected. **Default:** `false`.
--   Returns: {string}
+- `input` {ArrayBuffer|DataView|TypedArray} An `ArrayBuffer`, `DataView` or `TypedArray` instance containing the encoded data.
+- `options` {Object}
+  - `stream` {boolean} `true` if additional chunks of data are expected. **Default:** `false`.
+- Returns: {string}
 
 Decodes the `input` and returns a string. If `options.stream` is `true`, any incomplete byte sequences occurring at the end of the `input` are buffered internally and emitted after the next call to `textDecoder.decode()`.
 
@@ -762,24 +747,23 @@ If `textDecoder.fatal` is `true`, decoding errors that occur will result in a `T
 
 ### `textDecoder.encoding`
 
--   {string}
+- {string}
 
 The encoding supported by the `TextDecoder` instance.
 
 ### `textDecoder.fatal`
 
--   {boolean}
+- {boolean}
 
 The value will be `true` if decoding errors result in a `TypeError` being thrown.
 
 ### `textDecoder.ignoreBOM`
 
--   {boolean}
+- {boolean}
 
 The value will be `true` if the decoding result will include the byte order mark.
 
-Class: `util.TextEncoder`
--------------------------
+## Class: `util.TextEncoder`
 
 An implementation of the [WHATWG Encoding Standard](https://encoding.spec.whatwg.org/) `TextEncoder` API. All instances of `TextEncoder` only support UTF-8 encoding.
 
@@ -790,18 +774,18 @@ The `TextEncoder` class is also available on the global object.
 
 ### `textEncoder.encode([input])`
 
--   `input` {string} The text to encode. **Default:** an empty string.
--   Returns: {Uint8Array}
+- `input` {string} The text to encode. **Default:** an empty string.
+- Returns: {Uint8Array}
 
 UTF-8 encodes the `input` string and returns a `Uint8Array` containing the encoded bytes.
 
 ### `textEncoder.encodeInto(src, dest)`
 
--   `src` {string} The text to encode.
--   `dest` {Uint8Array} The array to hold the encode result.
--   Returns: {Object}
-    -   `read` {number} The read Unicode code units of src.
-    -   `written` {number} The written UTF-8 bytes of dest.
+- `src` {string} The text to encode.
+- `dest` {Uint8Array} The array to hold the encode result.
+- Returns: {Object}
+  - `read` {number} The read Unicode code units of src.
+  - `written` {number} The written UTF-8 bytes of dest.
 
 UTF-8 encodes the `src` string to the `dest` Uint8Array and returns an object containing the read Unicode code units and written UTF-8 bytes.
 
@@ -812,12 +796,11 @@ UTF-8 encodes the `src` string to the `dest` Uint8Array and returns an object co
 
 ### `textEncoder.encoding`
 
--   {string}
+- {string}
 
 The encoding supported by the `TextEncoder` instance. Always set to `'utf-8'`.
 
-`util.types`
-------------
+## `util.types`
 
 `util.types` provides type checks for different kinds of built-in objects. Unlike `instanceof` or `Object.prototype.toString.call(value)`, these checks do not inspect properties of the object that are accessible from JavaScript (like their prototype), and usually have the overhead of calling into C++.
 
@@ -827,8 +810,8 @@ The API is accessible via `require('util').types` or `require('util/types')`.
 
 ### `util.types.isAnyArrayBuffer(value)`
 
--   `value` {any}
--   Returns: {boolean}
+- `value` {any}
+- Returns: {boolean}
 
 Returns `true` if the value is a built-in [`ArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) or [`SharedArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer) instance.
 
@@ -839,8 +822,8 @@ See also [`util.types.isArrayBuffer()`](#util_util_types_isarraybuffer_value) an
 
 ### `util.types.isArrayBufferView(value)`
 
--   `value` {any}
--   Returns: {boolean}
+- `value` {any}
+- Returns: {boolean}
 
 Returns `true` if the value is an instance of one of the [`ArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) views, such as typed array objects or [`DataView`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView). Equivalent to [`ArrayBuffer.isView()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer/isView).
 
@@ -851,8 +834,8 @@ Returns `true` if the value is an instance of one of the [`ArrayBuffer`](https:/
 
 ### `util.types.isArgumentsObject(value)`
 
--   `value` {any}
--   Returns: {boolean}
+- `value` {any}
+- Returns: {boolean}
 
 Returns `true` if the value is an `arguments` object.
 
@@ -862,18 +845,18 @@ Returns `true` if the value is an `arguments` object.
 
 ### `util.types.isArrayBuffer(value)`
 
--   `value` {any}
--   Returns: {boolean}
+- `value` {any}
+- Returns: {boolean}
 
-Returns `true` if the value is a built-in [`ArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) instance. This does *not* include [`SharedArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer) instances. Usually, it is desirable to test for both; See [`util.types.isAnyArrayBuffer()`](#util_util_types_isanyarraybuffer_value) for that.
+Returns `true` if the value is a built-in [`ArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) instance. This does _not_ include [`SharedArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer) instances. Usually, it is desirable to test for both; See [`util.types.isAnyArrayBuffer()`](#util_util_types_isanyarraybuffer_value) for that.
 
     util.types.isArrayBuffer(new ArrayBuffer());  // Returns true
     util.types.isArrayBuffer(new SharedArrayBuffer());  // Returns false
 
 ### `util.types.isAsyncFunction(value)`
 
--   `value` {any}
--   Returns: {boolean}
+- `value` {any}
+- Returns: {boolean}
 
 Returns `true` if the value is an [async function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function). This only reports back what the JavaScript engine is seeing; in particular, the return value may not match the original source code if a transpilation tool was used.
 
@@ -882,8 +865,8 @@ Returns `true` if the value is an [async function](https://developer.mozilla.org
 
 ### `util.types.isBigInt64Array(value)`
 
--   `value` {any}
--   Returns: {boolean}
+- `value` {any}
+- Returns: {boolean}
 
 Returns `true` if the value is a `BigInt64Array` instance.
 
@@ -892,8 +875,8 @@ Returns `true` if the value is a `BigInt64Array` instance.
 
 ### `util.types.isBigUint64Array(value)`
 
--   `value` {any}
--   Returns: {boolean}
+- `value` {any}
+- Returns: {boolean}
 
 Returns `true` if the value is a `BigUint64Array` instance.
 
@@ -902,8 +885,8 @@ Returns `true` if the value is a `BigUint64Array` instance.
 
 ### `util.types.isBooleanObject(value)`
 
--   `value` {any}
--   Returns: {boolean}
+- `value` {any}
+- Returns: {boolean}
 
 Returns `true` if the value is a boolean object, e.g. created by `new Boolean()`.
 
@@ -916,8 +899,8 @@ Returns `true` if the value is a boolean object, e.g. created by `new Boolean()
 
 ### `util.types.isBoxedPrimitive(value)`
 
--   `value` {any}
--   Returns: {boolean}
+- `value` {any}
+- Returns: {boolean}
 
 Returns `true` if the value is any boxed primitive object, e.g. created by `new Boolean()`, `new String()` or `Object(Symbol())`.
 
@@ -931,15 +914,15 @@ For example:
 
 ### `util.types.isCryptoKey(value)`
 
--   `value` {Object}
--   Returns: {boolean}
+- `value` {Object}
+- Returns: {boolean}
 
 Returns `true` if `value` is a {CryptoKey}, `false` otherwise.
 
 ### `util.types.isDataView(value)`
 
--   `value` {any}
--   Returns: {boolean}
+- `value` {any}
+- Returns: {boolean}
 
 Returns `true` if the value is a built-in [`DataView`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView) instance.
 
@@ -951,8 +934,8 @@ See also [`ArrayBuffer.isView()`](https://developer.mozilla.org/en-US/docs/Web/J
 
 ### `util.types.isDate(value)`
 
--   `value` {any}
--   Returns: {boolean}
+- `value` {any}
+- Returns: {boolean}
 
 Returns `true` if the value is a built-in [`Date`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date) instance.
 
@@ -960,8 +943,8 @@ Returns `true` if the value is a built-in [`Date`](https://developer.mozilla.org
 
 ### `util.types.isExternal(value)`
 
--   `value` {any}
--   Returns: {boolean}
+- `value` {any}
+- Returns: {boolean}
 
 Returns `true` if the value is a native `External` value.
 
@@ -993,8 +976,8 @@ For further information on `napi_create_external`, refer to [`napi_create_extern
 
 ### `util.types.isFloat32Array(value)`
 
--   `value` {any}
--   Returns: {boolean}
+- `value` {any}
+- Returns: {boolean}
 
 Returns `true` if the value is a built-in [`Float32Array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float32Array) instance.
 
@@ -1004,8 +987,8 @@ Returns `true` if the value is a built-in [`Float32Array`](https://developer.moz
 
 ### `util.types.isFloat64Array(value)`
 
--   `value` {any}
--   Returns: {boolean}
+- `value` {any}
+- Returns: {boolean}
 
 Returns `true` if the value is a built-in [`Float64Array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float64Array) instance.
 
@@ -1015,8 +998,8 @@ Returns `true` if the value is a built-in [`Float64Array`](https://developer.moz
 
 ### `util.types.isGeneratorFunction(value)`
 
--   `value` {any}
--   Returns: {boolean}
+- `value` {any}
+- Returns: {boolean}
 
 Returns `true` if the value is a generator function. This only reports back what the JavaScript engine is seeing; in particular, the return value may not match the original source code if a transpilation tool was used.
 
@@ -1025,8 +1008,8 @@ Returns `true` if the value is a generator function. This only reports back what
 
 ### `util.types.isGeneratorObject(value)`
 
--   `value` {any}
--   Returns: {boolean}
+- `value` {any}
+- Returns: {boolean}
 
 Returns `true` if the value is a generator object as returned from a built-in generator function. This only reports back what the JavaScript engine is seeing; in particular, the return value may not match the original source code if a transpilation tool was used.
 
@@ -1036,8 +1019,8 @@ Returns `true` if the value is a generator object as returned from a built-in ge
 
 ### `util.types.isInt8Array(value)`
 
--   `value` {any}
--   Returns: {boolean}
+- `value` {any}
+- Returns: {boolean}
 
 Returns `true` if the value is a built-in [`Int8Array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int8Array) instance.
 
@@ -1047,8 +1030,8 @@ Returns `true` if the value is a built-in [`Int8Array`](https://developer.mozill
 
 ### `util.types.isInt16Array(value)`
 
--   `value` {any}
--   Returns: {boolean}
+- `value` {any}
+- Returns: {boolean}
 
 Returns `true` if the value is a built-in [`Int16Array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int16Array) instance.
 
@@ -1058,8 +1041,8 @@ Returns `true` if the value is a built-in [`Int16Array`](https://developer.mozil
 
 ### `util.types.isInt32Array(value)`
 
--   `value` {any}
--   Returns: {boolean}
+- `value` {any}
+- Returns: {boolean}
 
 Returns `true` if the value is a built-in [`Int32Array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int32Array) instance.
 
@@ -1069,15 +1052,15 @@ Returns `true` if the value is a built-in [`Int32Array`](https://developer.mozil
 
 ### `util.types.isKeyObject(value)`
 
--   `value` {Object}
--   Returns: {boolean}
+- `value` {Object}
+- Returns: {boolean}
 
 Returns `true` if `value` is a {KeyObject}, `false` otherwise.
 
 ### `util.types.isMap(value)`
 
--   `value` {any}
--   Returns: {boolean}
+- `value` {any}
+- Returns: {boolean}
 
 Returns `true` if the value is a built-in [`Map`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) instance.
 
@@ -1085,8 +1068,8 @@ Returns `true` if the value is a built-in [`Map`](https://developer.mozilla.org/
 
 ### `util.types.isMapIterator(value)`
 
--   `value` {any}
--   Returns: {boolean}
+- `value` {any}
+- Returns: {boolean}
 
 Returns `true` if the value is an iterator returned for a built-in [`Map`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) instance.
 
@@ -1098,8 +1081,8 @@ Returns `true` if the value is an iterator returned for a built-in [`Map`](https
 
 ### `util.types.isModuleNamespaceObject(value)`
 
--   `value` {any}
--   Returns: {boolean}
+- `value` {any}
+- Returns: {boolean}
 
 Returns `true` if the value is an instance of a [Module Namespace Object](https://tc39.github.io/ecma262/#sec-module-namespace-exotic-objects).
 
@@ -1109,8 +1092,8 @@ Returns `true` if the value is an instance of a [Module Namespace Object](https:
 
 ### `util.types.isNativeError(value)`
 
--   `value` {any}
--   Returns: {boolean}
+- `value` {any}
+- Returns: {boolean}
 
 Returns `true` if the value is an instance of a built-in [`Error`](errors.md#errors_class_error) type.
 
@@ -1120,8 +1103,8 @@ Returns `true` if the value is an instance of a built-in [`Error`](errors.md#err
 
 ### `util.types.isNumberObject(value)`
 
--   `value` {any}
--   Returns: {boolean}
+- `value` {any}
+- Returns: {boolean}
 
 Returns `true` if the value is a number object, e.g. created by `new Number()`.
 
@@ -1130,8 +1113,8 @@ Returns `true` if the value is a number object, e.g. created by `new Number()`.
 
 ### `util.types.isPromise(value)`
 
--   `value` {any}
--   Returns: {boolean}
+- `value` {any}
+- Returns: {boolean}
 
 Returns `true` if the value is a built-in [`Promise`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise).
 
@@ -1139,8 +1122,8 @@ Returns `true` if the value is a built-in [`Promise`](https://developer.mozilla.
 
 ### `util.types.isProxy(value)`
 
--   `value` {any}
--   Returns: {boolean}
+- `value` {any}
+- Returns: {boolean}
 
 Returns `true` if the value is a [`Proxy`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) instance.
 
@@ -1151,8 +1134,8 @@ Returns `true` if the value is a [`Proxy`](https://developer.mozilla.org/en-US/d
 
 ### `util.types.isRegExp(value)`
 
--   `value` {any}
--   Returns: {boolean}
+- `value` {any}
+- Returns: {boolean}
 
 Returns `true` if the value is a regular expression object.
 
@@ -1161,8 +1144,8 @@ Returns `true` if the value is a regular expression object.
 
 ### `util.types.isSet(value)`
 
--   `value` {any}
--   Returns: {boolean}
+- `value` {any}
+- Returns: {boolean}
 
 Returns `true` if the value is a built-in [`Set`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set) instance.
 
@@ -1170,8 +1153,8 @@ Returns `true` if the value is a built-in [`Set`](https://developer.mozilla.org/
 
 ### `util.types.isSetIterator(value)`
 
--   `value` {any}
--   Returns: {boolean}
+- `value` {any}
+- Returns: {boolean}
 
 Returns `true` if the value is an iterator returned for a built-in [`Set`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set) instance.
 
@@ -1183,18 +1166,18 @@ Returns `true` if the value is an iterator returned for a built-in [`Set`](https
 
 ### `util.types.isSharedArrayBuffer(value)`
 
--   `value` {any}
--   Returns: {boolean}
+- `value` {any}
+- Returns: {boolean}
 
-Returns `true` if the value is a built-in [`SharedArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer) instance. This does *not* include [`ArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) instances. Usually, it is desirable to test for both; See [`util.types.isAnyArrayBuffer()`](#util_util_types_isanyarraybuffer_value) for that.
+Returns `true` if the value is a built-in [`SharedArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer) instance. This does _not_ include [`ArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) instances. Usually, it is desirable to test for both; See [`util.types.isAnyArrayBuffer()`](#util_util_types_isanyarraybuffer_value) for that.
 
     util.types.isSharedArrayBuffer(new ArrayBuffer());  // Returns false
     util.types.isSharedArrayBuffer(new SharedArrayBuffer());  // Returns true
 
 ### `util.types.isStringObject(value)`
 
--   `value` {any}
--   Returns: {boolean}
+- `value` {any}
+- Returns: {boolean}
 
 Returns `true` if the value is a string object, e.g. created by `new String()`.
 
@@ -1203,8 +1186,8 @@ Returns `true` if the value is a string object, e.g. created by `new String()`.
 
 ### `util.types.isSymbolObject(value)`
 
--   `value` {any}
--   Returns: {boolean}
+- `value` {any}
+- Returns: {boolean}
 
 Returns `true` if the value is a symbol object, created by calling `Object()` on a `Symbol` primitive.
 
@@ -1214,8 +1197,8 @@ Returns `true` if the value is a symbol object, created by calling `Object()` on
 
 ### `util.types.isTypedArray(value)`
 
--   `value` {any}
--   Returns: {boolean}
+- `value` {any}
+- Returns: {boolean}
 
 Returns `true` if the value is a built-in [`TypedArray`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) instance.
 
@@ -1227,8 +1210,8 @@ See also [`ArrayBuffer.isView()`](https://developer.mozilla.org/en-US/docs/Web/J
 
 ### `util.types.isUint8Array(value)`
 
--   `value` {any}
--   Returns: {boolean}
+- `value` {any}
+- Returns: {boolean}
 
 Returns `true` if the value is a built-in [`Uint8Array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) instance.
 
@@ -1238,8 +1221,8 @@ Returns `true` if the value is a built-in [`Uint8Array`](https://developer.mozil
 
 ### `util.types.isUint8ClampedArray(value)`
 
--   `value` {any}
--   Returns: {boolean}
+- `value` {any}
+- Returns: {boolean}
 
 Returns `true` if the value is a built-in [`Uint8ClampedArray`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8ClampedArray) instance.
 
@@ -1249,8 +1232,8 @@ Returns `true` if the value is a built-in [`Uint8ClampedArray`](https://develope
 
 ### `util.types.isUint16Array(value)`
 
--   `value` {any}
--   Returns: {boolean}
+- `value` {any}
+- Returns: {boolean}
 
 Returns `true` if the value is a built-in [`Uint16Array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint16Array) instance.
 
@@ -1260,8 +1243,8 @@ Returns `true` if the value is a built-in [`Uint16Array`](https://developer.mozi
 
 ### `util.types.isUint32Array(value)`
 
--   `value` {any}
--   Returns: {boolean}
+- `value` {any}
+- Returns: {boolean}
 
 Returns `true` if the value is a built-in [`Uint32Array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint32Array) instance.
 
@@ -1271,8 +1254,8 @@ Returns `true` if the value is a built-in [`Uint32Array`](https://developer.mozi
 
 ### `util.types.isWeakMap(value)`
 
--   `value` {any}
--   Returns: {boolean}
+- `value` {any}
+- Returns: {boolean}
 
 Returns `true` if the value is a built-in [`WeakMap`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap) instance.
 
@@ -1280,8 +1263,8 @@ Returns `true` if the value is a built-in [`WeakMap`](https://developer.mozilla.
 
 ### `util.types.isWeakSet(value)`
 
--   `value` {any}
--   Returns: {boolean}
+- `value` {any}
+- Returns: {boolean}
 
 Returns `true` if the value is a built-in [`WeakSet`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet) instance.
 
@@ -1291,16 +1274,15 @@ Returns `true` if the value is a built-in [`WeakSet`](https://developer.mozilla.
 
 > Stability: 0 - Deprecated: Use `value instanceof WebAssembly.Module` instead.
 
--   `value` {any}
--   Returns: {boolean}
+- `value` {any}
+- Returns: {boolean}
 
 Returns `true` if the value is a built-in [`WebAssembly.Module`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly/Module) instance.
 
     const module = new WebAssembly.Module(wasmBuffer);
     util.types.isWebAssemblyCompiledModule(module);  // Returns true
 
-Deprecated APIs
----------------
+## Deprecated APIs
 
 The following APIs are deprecated and should no longer be used. Existing applications and modules should be updated to find alternative approaches.
 
@@ -1308,8 +1290,8 @@ The following APIs are deprecated and should no longer be used. Existing applica
 
 > Stability: 0 - Deprecated: Use [`Object.assign()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign) instead.
 
--   `target` {Object}
--   `source` {Object}
+- `target` {Object}
+- `source` {Object}
 
 The `util._extend()` method was never intended to be used outside of internal Node.js modules. The community found and used it anyway.
 
@@ -1319,8 +1301,8 @@ It is deprecated and should not be used in new code. JavaScript comes with very 
 
 > Stability: 0 - Deprecated: Use [`Array.isArray()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray) instead.
 
--   `object` {any}
--   Returns: {boolean}
+- `object` {any}
+- Returns: {boolean}
 
 Alias for [`Array.isArray()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray).
 
@@ -1339,8 +1321,8 @@ Returns `true` if the given `object` is an `Array`. Otherwise, returns `false`.
 
 > Stability: 0 - Deprecated: Use `typeof value === 'boolean'` instead.
 
--   `object` {any}
--   Returns: {boolean}
+- `object` {any}
+- Returns: {boolean}
 
 Returns `true` if the given `object` is a `Boolean`. Otherwise, returns `false`.
 
@@ -1357,8 +1339,8 @@ Returns `true` if the given `object` is a `Boolean`. Otherwise, returns `false`.
 
 > Stability: 0 - Deprecated: Use [`Buffer.isBuffer()`](buffer.md#buffer_static_method_buffer_isbuffer_obj) instead.
 
--   `object` {any}
--   Returns: {boolean}
+- `object` {any}
+- Returns: {boolean}
 
 Returns `true` if the given `object` is a `Buffer`. Otherwise, returns `false`.
 
@@ -1375,8 +1357,8 @@ Returns `true` if the given `object` is a `Buffer`. Otherwise, returns `false`.
 
 > Stability: 0 - Deprecated: Use [`util.types.isDate()`](#util_util_types_isdate_value) instead.
 
--   `object` {any}
--   Returns: {boolean}
+- `object` {any}
+- Returns: {boolean}
 
 Returns `true` if the given `object` is a `Date`. Otherwise, returns `false`.
 
@@ -1393,8 +1375,8 @@ Returns `true` if the given `object` is a `Date`. Otherwise, returns `false`.
 
 > Stability: 0 - Deprecated: Use [`util.types.isNativeError()`](#util_util_types_isnativeerror_value) instead.
 
--   `object` {any}
--   Returns: {boolean}
+- `object` {any}
+- Returns: {boolean}
 
 Returns `true` if the given `object` is an [`Error`](errors.md#errors_class_error). Otherwise, returns `false`.
 
@@ -1422,8 +1404,8 @@ This method relies on `Object.prototype.toString()` behavior. It is possible to 
 
 > Stability: 0 - Deprecated: Use `typeof value === 'function'` instead.
 
--   `object` {any}
--   Returns: {boolean}
+- `object` {any}
+- Returns: {boolean}
 
 Returns `true` if the given `object` is a `Function`. Otherwise, returns `false`.
 
@@ -1443,8 +1425,8 @@ Returns `true` if the given `object` is a `Function`. Otherwise, returns `false`
 
 > Stability: 0 - Deprecated: Use `value === null` instead.
 
--   `object` {any}
--   Returns: {boolean}
+- `object` {any}
+- Returns: {boolean}
 
 Returns `true` if the given `object` is strictly `null`. Otherwise, returns `false`.
 
@@ -1461,8 +1443,8 @@ Returns `true` if the given `object` is strictly `null`. Otherwise, returns `fal
 
 > Stability: 0 - Deprecated: Use `value === undefined || value === null` instead.
 
--   `object` {any}
--   Returns: {boolean}
+- `object` {any}
+- Returns: {boolean}
 
 Returns `true` if the given `object` is `null` or `undefined`. Otherwise, returns `false`.
 
@@ -1479,8 +1461,8 @@ Returns `true` if the given `object` is `null` or `undefined`. Otherwise, return
 
 > Stability: 0 - Deprecated: Use `typeof value === 'number'` instead.
 
--   `object` {any}
--   Returns: {boolean}
+- `object` {any}
+- Returns: {boolean}
 
 Returns `true` if the given `object` is a `Number`. Otherwise, returns `false`.
 
@@ -1499,8 +1481,8 @@ Returns `true` if the given `object` is a `Number`. Otherwise, returns `false`.
 
 > Stability: 0 - Deprecated: Use `value !== null && typeof value === 'object'` instead.
 
--   `object` {any}
--   Returns: {boolean}
+- `object` {any}
+- Returns: {boolean}
 
 Returns `true` if the given `object` is strictly an `Object` **and** not a `Function` (even though functions are objects in JavaScript). Otherwise, returns `false`.
 
@@ -1519,8 +1501,8 @@ Returns `true` if the given `object` is strictly an `Object` **and** not a `Func
 
 > Stability: 0 - Deprecated: Use `(typeof value !== 'object' && typeof value !== 'function') || value === null` instead.
 
--   `object` {any}
--   Returns: {boolean}
+- `object` {any}
+- Returns: {boolean}
 
 Returns `true` if the given `object` is a primitive type. Otherwise, returns `false`.
 
@@ -1549,8 +1531,8 @@ Returns `true` if the given `object` is a primitive type. Otherwise, returns `fa
 
 > Stability: 0 - Deprecated
 
--   `object` {any}
--   Returns: {boolean}
+- `object` {any}
+- Returns: {boolean}
 
 Returns `true` if the given `object` is a `RegExp`. Otherwise, returns `false`.
 
@@ -1567,8 +1549,8 @@ Returns `true` if the given `object` is a `RegExp`. Otherwise, returns `false`.
 
 > Stability: 0 - Deprecated: Use `typeof value === 'string'` instead.
 
--   `object` {any}
--   Returns: {boolean}
+- `object` {any}
+- Returns: {boolean}
 
 Returns `true` if the given `object` is a `string`. Otherwise, returns `false`.
 
@@ -1587,8 +1569,8 @@ Returns `true` if the given `object` is a `string`. Otherwise, returns `false`.
 
 > Stability: 0 - Deprecated: Use `typeof value === 'symbol'` instead.
 
--   `object` {any}
--   Returns: {boolean}
+- `object` {any}
+- Returns: {boolean}
 
 Returns `true` if the given `object` is a `Symbol`. Otherwise, returns `false`.
 
@@ -1605,8 +1587,8 @@ Returns `true` if the given `object` is a `Symbol`. Otherwise, returns `false`.
 
 > Stability: 0 - Deprecated: Use `value === undefined` instead.
 
--   `object` {any}
--   Returns: {boolean}
+- `object` {any}
+- Returns: {boolean}
 
 Returns `true` if the given `object` is `undefined`. Otherwise, returns `false`.
 
@@ -1624,7 +1606,7 @@ Returns `true` if the given `object` is `undefined`. Otherwise, returns `false`.
 
 > Stability: 0 - Deprecated: Use a third party module instead.
 
--   `string` {string}
+- `string` {string}
 
 The `util.log()` method prints the given `string` to `stdout` with an included timestamp.
 

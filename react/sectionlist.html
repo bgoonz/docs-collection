@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>SectionList</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">SectionList</h1>
+</header>
+<p>import Tabs from ‘<span class="citation" data-cites="theme/Tabs">@theme/Tabs</span>’; import TabItem from ‘<span class="citation" data-cites="theme/TabItem">@theme/TabItem</span>’; import constants from ‘<span class="citation" data-cites="site/core/TabsConstants">@site/core/TabsConstants</span>’;</p>
+<p>A performant interface for rendering sectioned lists, supporting the most handy features:</p>
+<ul>
+<li>Fully cross-platform.</li>
+<li>Configurable viewability callbacks.</li>
+<li>List header support.</li>
+<li>List footer support.</li>
+<li>Item separator support.</li>
+<li>Section header support.</li>
+<li>Section separator support.</li>
+<li>Heterogeneous data and item rendering support.</li>
+<li>Pull to Refresh.</li>
+<li>Scroll loading.</li>
+</ul>
+<p>If you don’t need section support and want a simpler interface, use <a href="flatlist.md"><code>&lt;FlatList&gt;</code></a>.</p>
+<h2 id="example">Example</h2>
+<p><Tabs groupId="syntax" defaultValue={constants.defaultSyntax} values={constants.syntax}> <TabItem value="functional"></p>
+<p>```SnackPlayer name=SectionList%20Example import React from “react”; import { StyleSheet, Text, View, SafeAreaView, SectionList, StatusBar } from “react-native”;</p>
+<p>const DATA = [ { title: “Main dishes”, data: [“Pizza”, “Burger”, “Risotto”] }, { title: “Sides”, data: [“French Fries”, “Onion Rings”, “Fried Shrimps”] }, { title: “Drinks”, data: [“Water”, “Coke”, “Beer”] }, { title: “Desserts”, data: [“Cheese Cake”, “Ice Cream”] }];</p>
+<p>const Item = ({ title }) =&gt; ( <View style={styles.item}> <Text style={styles.title}>{title}</Text> </View> );</p>
+<p>const App = () =&gt; ( <SafeAreaView style={styles.container}> &lt;SectionList sections={DATA} keyExtractor={(item, index) =&gt; item + index} renderItem={({ item }) =&gt; <Item title={item} />} renderSectionHeader={({ section: { title } }) =&gt; ( <Text style={styles.header}>{title}</Text> )} /&gt; </SafeAreaView> );</p>
+<p>const styles = StyleSheet.create({ container: { flex: 1, paddingTop: StatusBar.currentHeight, marginHorizontal: 16 }, item: { backgroundColor: “#f9c2ff”, padding: 20, marginVertical: 8 }, header: { fontSize: 32, backgroundColor: “#fff” }, title: { fontSize: 24 } });</p>
+<p>export default App; ```</p>
+<p></TabItem> <TabItem value="classical"></p>
+<p>```SnackPlayer name=SectionList%20Example import React, { Component } from “react”; import { StyleSheet, Text, View, SafeAreaView, SectionList, StatusBar } from “react-native”;</p>
+<p>const DATA = [ { title: “Main dishes”, data: [“Pizza”, “Burger”, “Risotto”] }, { title: “Sides”, data: [“French Fries”, “Onion Rings”, “Fried Shrimps”] }, { title: “Drinks”, data: [“Water”, “Coke”, “Beer”] }, { title: “Desserts”, data: [“Cheese Cake”, “Ice Cream”] }];</p>
+<p>const Item = ({ title }) =&gt; ( <View style={styles.item}> <Text style={styles.title}>{title}</Text> </View> );</p>
+<p>class App extends Component { render() { return ( <SafeAreaView style={styles.container}> &lt;SectionList sections={DATA} keyExtractor={(item, index) =&gt; item + index} renderItem={({ item }) =&gt; <Item title={item} />} renderSectionHeader={({ section: { title } }) =&gt; ( <Text style={styles.header}>{title}</Text> )} /&gt; </SafeAreaView> ); } }</p>
+<p>const styles = StyleSheet.create({ container: { flex: 1, paddingTop: StatusBar.currentHeight, marginHorizontal: 16 }, item: { backgroundColor: “#f9c2ff”, padding: 20, marginVertical: 8 }, header: { fontSize: 32, backgroundColor: “#fff” }, title: { fontSize: 24 } });</p>
+<p>export default App; ```</p>
+<p></TabItem> </Tabs></p>
+<p>This is a convenience wrapper around <a href="virtualizedlist.md"><code>&lt;VirtualizedList&gt;</code></a>, and thus inherits its props (as well as those of <a href="scrollview.md"><code>&lt;ScrollView&gt;</code></a>) that aren’t explicitly listed here, along with the following caveats:</p>
+<ul>
+<li>Internal state is not preserved when content scrolls out of the render window. Make sure all your data is captured in the item data or external stores like Flux, Redux, or Relay.</li>
+<li>This is a <code>PureComponent</code> which means that it will not re-render if <code>props</code> remain shallow-equal. Make sure that everything your <code>renderItem</code> function depends on is passed as a prop (e.g. <code>extraData</code>) that is not <code>===</code> after updates, otherwise your UI may not update on changes. This includes the <code>data</code> prop and parent component state.</li>
+<li>In order to constrain memory and enable smooth scrolling, content is rendered asynchronously offscreen. This means it’s possible to scroll faster than the fill rate and momentarily see blank content. This is a tradeoff that can be adjusted to suit the needs of each application, and we are working on improving it behind the scenes.</li>
+<li>By default, the list looks for a <code>key</code> prop on each item and uses that for the React key. Alternatively, you can provide a custom <code>keyExtractor</code> prop.</li>
+</ul>
+<hr />
+<h1 id="reference">Reference</h1>
+<h2 id="props">Props</h2>
+<h3 id="scrollview-props"><a href="scrollview.md#props">ScrollView Props</a></h3>
+<p>Inherits <a href="scrollview.md#props">ScrollView Props</a>.</p>
+<hr />
+###
+<div class="label required basic">
+Required
+</div>
+<p><strong><code>renderItem</code></strong></p>
+<p>Default renderer for every item in every section. Can be over-ridden on a per-section basis. Should return a React element.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>function</td>
+</tr>
+</tbody>
+</table>
+<p>The render function will be passed an object with the following keys:</p>
+<ul>
+<li>‘item’ (object) - the item object as specified in this section’s <code>data</code> key</li>
+<li>‘index’ (number) - Item’s index within the section.</li>
+<li>‘section’ (object) - The full section object as specified in <code>sections</code>.</li>
+<li>‘separators’ (object) - An object with the following keys:
+<ul>
+<li>‘highlight’ (function) - <code>() =&gt; void</code></li>
+<li>‘unhighlight’ (function) - <code>() =&gt; void</code></li>
+<li>‘updateProps’ (function) - <code>(select, newProps) =&gt; void</code>
+<ul>
+<li>‘select’ (enum) - possible values are ‘leading’, ‘trailing’</li>
+<li>‘newProps’ (object)</li>
+</ul></li>
+</ul></li>
+</ul>
+<hr />
+###
+<div class="label required basic">
+Required
+</div>
+<p><strong><code>sections</code></strong></p>
+<p>The actual data to render, akin to the <code>data</code> prop in <a href="flatlist.md"><code>FlatList</code></a>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>array of <a href="sectionlist.md#section">Section</a>s</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="extradata"><code>extraData</code></h3>
+<p>A marker property for telling the list to re-render (since it implements <code>PureComponent</code>). If any of your <code>renderItem</code>, Header, Footer, etc. functions depend on anything outside of the <code>data</code> prop, stick it here and treat it immutably.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>any</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="initialnumtorender"><code>initialNumToRender</code></h3>
+<p>How many items to render in the initial batch. This should be enough to fill the screen but not much more. Note these items will never be unmounted as part of the windowed rendering in order to improve perceived performance of scroll-to-top actions.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number</td>
+<td><code>10</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="inverted"><code>inverted</code></h3>
+<p>Reverses the direction of scroll. Uses scale transforms of -1.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>boolean</td>
+<td><code>false</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="itemseparatorcomponent"><code>ItemSeparatorComponent</code></h3>
+<p>Rendered in between each item, but not at the top or bottom. By default, <code>highlighted</code>, <code>section</code>, and <code>[leading/trailing][Item/Section]</code> props are provided. <code>renderItem</code> provides <code>separators.highlight</code>/<code>unhighlight</code> which will update the <code>highlighted</code> prop, but you can also add custom props with <code>separators.updateProps</code>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>component, element</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="keyextractor"><code>keyExtractor</code></h3>
+<p>Used to extract a unique key for a given item at the specified index. Key is used for caching and as the React key to track item re-ordering. The default extractor checks <code>item.key</code>, then falls back to using the index, like React does. Note that this sets keys for each item, but each overall section still needs its own key.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>(item: object, index: number) =&gt; string</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="listemptycomponent"><code>ListEmptyComponent</code></h3>
+<p>Rendered when the list is empty. Can be a React Component (e.g. <code>SomeComponent</code>), or a React element (e.g. <code>&lt;SomeComponent /&gt;</code>).</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>component, element</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="listfootercomponent"><code>ListFooterComponent</code></h3>
+<p>Rendered at the very end of the list. Can be a React Component (e.g. <code>SomeComponent</code>), or a React element (e.g. <code>&lt;SomeComponent /&gt;</code>).</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>component, element</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="listheadercomponent"><code>ListHeaderComponent</code></h3>
+<p>Rendered at the very beginning of the list. Can be a React Component (e.g. <code>SomeComponent</code>), or a React element (e.g. <code>&lt;SomeComponent /&gt;</code>).</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>component, element</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="onendreached"><code>onEndReached</code></h3>
+<p>Called once when the scroll position gets within <code>onEndReachedThreshold</code> of the rendered content.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>(info: { distanceFromEnd: number }) =&gt; void</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="onendreachedthreshold"><code>onEndReachedThreshold</code></h3>
+<p>How far from the end (in units of visible length of the list) the bottom edge of the list must be from the end of the content to trigger the <code>onEndReached</code> callback. Thus a value of 0.5 will trigger <code>onEndReached</code> when the end of the content is within half the visible length of the list.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number</td>
+<td><code>2</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="onrefresh"><code>onRefresh</code></h3>
+<p>If provided, a standard RefreshControl will be added for “Pull to Refresh” functionality. Make sure to also set the <code>refreshing</code> prop correctly. To offset the RefreshControl from the top (e.g. by 100 pts), use <code>progressViewOffset={100}</code>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>function</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="onviewableitemschanged"><code>onViewableItemsChanged</code></h3>
+<p>Called when the viewability of rows changes, as defined by the <code>viewabilityConfig</code> prop.</p>
+<table>
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>(callback: { changed: array of <a href="viewtoken">ViewToken</a>s, viewableItems: array of <a href="viewtoken">ViewToken</a>s }) =&gt; void</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="refreshing"><code>refreshing</code></h3>
+<p>Set this true while waiting for new data from a refresh.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>boolean</td>
+<td><code>false</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="removeclippedsubviews"><code>removeClippedSubviews</code></h3>
+<blockquote>
+<p>Note: may have bugs (missing content) in some circumstances - use at your own risk.</p>
+</blockquote>
+<p>This may improve scroll performance for large lists.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>boolean</td>
+<td><code>false</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="rendersectionfooter"><code>renderSectionFooter</code></h3>
+<p>Rendered at the bottom of each section.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>(info: { section: <a href="sectionlist#section">Section</a> }) =&gt; element, <code>null</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="rendersectionheader"><code>renderSectionHeader</code></h3>
+<p>Rendered at the top of each section. These stick to the top of the <code>ScrollView</code> by default on iOS. See <code>stickySectionHeadersEnabled</code>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>(info: { section: <a href="sectionlist#section">Section</a> }) =&gt; element, <code>null</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="sectionseparatorcomponent"><code>SectionSeparatorComponent</code></h3>
+<p>Rendered at the top and bottom of each section (note this is different from <code>ItemSeparatorComponent</code> which is only rendered between items). These are intended to separate sections from the headers above and below and typically have the same highlight response as <code>ItemSeparatorComponent</code>. Also receives <code>highlighted</code>, <code>[leading/trailing][Item/Section]</code>, and any custom props from <code>separators.updateProps</code>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>component, element</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="stickysectionheadersenabled"><code>stickySectionHeadersEnabled</code></h3>
+<p>Makes section headers stick to the top of the screen until the next one pushes it off. Only enabled by default on iOS because that is the platform standard there.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+| boolean | <code>false</code>
+<div class="label android">
+Android
+</div>
+<hr/>
+<code>true</code>
+<div data-classname="label ios">
+iOS
+</div>
+<p>|</p>
+<h2 id="methods">Methods</h2>
+### <code>flashScrollIndicators()</code>
+<div class="label ios">
+iOS
+</div>
+<pre class="jsx"><code>flashScrollIndicators();</code></pre>
+<p>Displays the scroll indicators momentarily.</p>
+<hr />
+<h3 id="recordinteraction"><code>recordInteraction()</code></h3>
+<pre class="jsx"><code>recordInteraction();</code></pre>
+<p>Tells the list an interaction has occurred, which should trigger viewability calculations, e.g. if <code>waitForInteractions</code> is true and the user has not scrolled. This is typically called by taps on items or by navigation actions.</p>
+<hr />
+<h3 id="scrolltolocation"><code>scrollToLocation()</code></h3>
+<pre class="jsx"><code>scrollToLocation(params);</code></pre>
+<p>Scrolls to the item at the specified <code>sectionIndex</code> and <code>itemIndex</code> (within the section) positioned in the viewable area such that <code>viewPosition</code> 0 places it at the top (and may be covered by a sticky header), 1 at the bottom, and 0.5 centered in the middle.</p>
+<blockquote>
+<p>Note: Cannot scroll to locations outside the render window without specifying the <code>getItemLayout</code> or <code>onScrollToIndexFailed</code> prop.</p>
+</blockquote>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+| params
+<div class="label basic required">
+Required
+</div>
+<p>| object |</p>
+<p>Valid <code>params</code> keys are:</p>
+<ul>
+<li>‘animated’ (boolean) - Whether the list should do an animation while scrolling. Defaults to <code>true</code>.</li>
+<li>‘itemIndex’ (number) - Index within section for the item to scroll to. Required.</li>
+<li>‘sectionIndex’ (number) - Index for section that contains the item to scroll to. Required.</li>
+<li>‘viewOffset’ (number) - A fixed number of pixels to offset the final target position, e.g. to compensate for sticky headers.</li>
+<li>‘viewPosition’ (number) - A value of <code>0</code> places the item specified by index at the top, <code>1</code> at the bottom, and <code>0.5</code> centered in the middle.</li>
+</ul>
+<h2 id="type-definitions">Type Definitions</h2>
+<h3 id="section">Section</h3>
+<p>An object that identifies the data to be rendered for a given section.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>any</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Properties:</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+| data
+<div class="label basic required">
+Required
+</div>
+<p>| array | The data for rendering items in this section. Array of objects, much like <a href="flatlist#data"><code>FlatList</code>’s data prop</a>. | | key | string | Optional key to keep track of section re-ordering. If you don’t plan on re-ordering sections, the array index will be used by default. | | renderItem | function | Optionally define an arbitrary item renderer for this section, overriding the default <a href="sectionlist#renderitem"><code>renderItem</code></a> for the list. | | ItemSeparatorComponent | component, element | Optionally define an arbitrary item separator for this section, overriding the default <a href="sectionlist#itemseparatorcomponent"><code>ItemSeparatorComponent</code></a> for the list. | | keyExtractor | function | Optionally define an arbitrary key extractor for this section, overriding the default <a href="sectionlist#keyextractor"><code>keyExtractor</code></a>. |</p>
+</body>
+</html>

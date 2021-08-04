@@ -1,5 +1,4 @@
-Trace events
-============
+# Trace events
 
 > Stability: 1 - Experimental
 
@@ -9,25 +8,25 @@ Tracing can be enabled with the `--trace-event-categories` command-line flag or 
 
 The available categories are:
 
--   `node`: An empty placeholder.
--   `node.async_hooks`: Enables capture of detailed [`async_hooks`](async_hooks.md) trace data. The [`async_hooks`](async_hooks.md) events have a unique `asyncId` and a special `triggerId` `triggerAsyncId` property.
--   `node.bootstrap`: Enables capture of Node.js bootstrap milestones.
--   `node.console`: Enables capture of `console.time()` and `console.count()` output.
--   `node.dns.native`: Enables capture of trace data for DNS queries.
--   `node.environment`: Enables capture of Node.js Environment milestones.
--   `node.fs.sync`: Enables capture of trace data for file system sync methods.
--   `node.perf`: Enables capture of [Performance API](perf_hooks.md) measurements.
-    -   `node.perf.usertiming`: Enables capture of only Performance API User Timing measures and marks.
-    -   `node.perf.timerify`: Enables capture of only Performance API timerify measurements.
--   `node.promises.rejections`: Enables capture of trace data tracking the number of unhandled Promise rejections and handled-after-rejections.
--   `node.vm.script`: Enables capture of trace data for the `vm` module’s `runInNewContext()`, `runInContext()`, and `runInThisContext()` methods.
--   `v8`: The [V8](v8.md) events are GC, compiling, and execution related.
+- `node`: An empty placeholder.
+- `node.async_hooks`: Enables capture of detailed [`async_hooks`](async_hooks.md) trace data. The [`async_hooks`](async_hooks.md) events have a unique `asyncId` and a special `triggerId` `triggerAsyncId` property.
+- `node.bootstrap`: Enables capture of Node.js bootstrap milestones.
+- `node.console`: Enables capture of `console.time()` and `console.count()` output.
+- `node.dns.native`: Enables capture of trace data for DNS queries.
+- `node.environment`: Enables capture of Node.js Environment milestones.
+- `node.fs.sync`: Enables capture of trace data for file system sync methods.
+- `node.perf`: Enables capture of [Performance API](perf_hooks.md) measurements.
+  - `node.perf.usertiming`: Enables capture of only Performance API User Timing measures and marks.
+  - `node.perf.timerify`: Enables capture of only Performance API timerify measurements.
+- `node.promises.rejections`: Enables capture of trace data tracking the number of unhandled Promise rejections and handled-after-rejections.
+- `node.vm.script`: Enables capture of trace data for the `vm` module’s `runInNewContext()`, `runInContext()`, and `runInThisContext()` methods.
+- `v8`: The [V8](v8.md) events are GC, compiling, and execution related.
 
 By default the `node`, `node.async_hooks`, and `v8` categories are enabled.
 
     node --trace-event-categories v8,node,node.async_hooks server.js
 
-Prior versions of Node.js required the use of the `--trace-events-enabled` flag to enable trace events. This requirement has been removed. However, the `--trace-events-enabled` flag *may* still be used and will enable the `node`, `node.async_hooks`, and `v8` trace event categories by default.
+Prior versions of Node.js required the use of the `--trace-events-enabled` flag to enable trace events. This requirement has been removed. However, the `--trace-events-enabled` flag _may_ still be used and will enable the `node`, `node.async_hooks`, and `v8` trace event categories by default.
 
     node --trace-events-enabled
 
@@ -55,8 +54,7 @@ The tracing system uses the same time source as the one used by `process.hrtime(
 
 The features from this module are not available in [`Worker`](worker_threads.md#worker_threads_class_worker) threads.
 
-The `trace_events` module
--------------------------
+## The `trace_events` module
 
 ### `Tracing` object
 
@@ -66,7 +64,7 @@ When created, the `Tracing` object is disabled. Calling the `tracing.enable()` m
 
 #### `tracing.categories`
 
--   {string}
+- {string}
 
 A comma-separated list of the trace event categories covered by this `Tracing` object.
 
@@ -74,7 +72,7 @@ A comma-separated list of the trace event categories covered by this `Tracing` o
 
 Disables this `Tracing` object.
 
-Only trace event categories *not* covered by other enabled `Tracing` objects and *not* specified by the `--trace-event-categories` flag will be disabled.
+Only trace event categories _not_ covered by other enabled `Tracing` objects and _not_ specified by the `--trace-event-categories` flag will be disabled.
 
     const trace_events = require('trace_events');
     const t1 = trace_events.createTracing({ categories: ['node', 'v8'] });
@@ -96,13 +94,13 @@ Enables this `Tracing` object for the set of categories covered by the `Tracing`
 
 #### `tracing.enabled`
 
--   {boolean} `true` only if the `Tracing` object has been enabled.
+- {boolean} `true` only if the `Tracing` object has been enabled.
 
 ### `trace_events.createTracing(options)`
 
--   `options` {Object}
-    -   `categories` {string\[\]} An array of trace category names. Values included in the array are coerced to a string when possible. An error will be thrown if the value cannot be coerced.
--   Returns: {Tracing}.
+- `options` {Object}
+  - `categories` {string\[\]} An array of trace category names. Values included in the array are coerced to a string when possible. An error will be thrown if the value cannot be coerced.
+- Returns: {Tracing}.
 
 Creates and returns a `Tracing` object for the given set of `categories`.
 
@@ -115,9 +113,9 @@ Creates and returns a `Tracing` object for the given set of `categories`.
 
 ### `trace_events.getEnabledCategories()`
 
--   Returns: {string}
+- Returns: {string}
 
-Returns a comma-separated list of all currently-enabled trace event categories. The current set of enabled trace event categories is determined by the *union* of all currently-enabled `Tracing` objects and any categories enabled using the `--trace-event-categories` flag.
+Returns a comma-separated list of all currently-enabled trace event categories. The current set of enabled trace event categories is determined by the _union_ of all currently-enabled `Tracing` objects and any categories enabled using the `--trace-event-categories` flag.
 
 Given the file `test.js` below, the command `node --trace-event-categories node.perf test.js` will print `'node.async_hooks,node.perf'` to the console.
 

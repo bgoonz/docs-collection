@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>🚧 Clipboard</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">🚧 Clipboard</h1>
+</header>
+<blockquote>
+<p><strong>Deprecated.</strong> Use one of the <a href="https://reactnative.directory/?search=clipboard">community packages</a> instead.</p>
+</blockquote>
+<p><code>Clipboard</code> gives you an interface for setting and getting content from Clipboard on both Android and iOS</p>
+<hr />
+<h2 id="example">Example</h2>
+<p>```SnackPlayer name=Clipboard%20API%20Example&amp;supportedPlatforms=ios,android</p>
+<p>import React, { useState } from ‘react’ import { SafeAreaView, View, Text, TouchableOpacity, Clipboard, StyleSheet } from ‘react-native’</p>
+<p>const App = () =&gt; { const [copiedText, setCopiedText] = useState(’’)</p>
+<p>const copyToClipboard = () =&gt; { Clipboard.setString(‘hello world’) }</p>
+<p>const fetchCopiedText = async () =&gt; { const text = await Clipboard.getString() setCopiedText(text) }</p>
+<p>return ( &lt;SafeAreaView style={{ flex: 1 }}&gt; <View style={styles.container}> &lt;TouchableOpacity onPress={() =&gt; copyToClipboard()}&gt; <Text>Click here to copy to Clipboard</Text> </TouchableOpacity> &lt;TouchableOpacity onPress={() =&gt; fetchCopiedText()}&gt; <Text>View copied text</Text> </TouchableOpacity></p>
+<pre><code>    &lt;Text style={styles.copiedText}&gt;{copiedText}&lt;/Text&gt;
+  &lt;/View&gt;
+
+&lt;/SafeAreaView&gt;</code></pre>
+<p>) }</p>
+<p>const styles = StyleSheet.create({ container: { flex: 1, justifyContent: ‘center’, alignItems: ‘center’ }, copiedText: { marginTop: 10, color: ‘red’ } })</p>
+<p>export default App ```</p>
+<h1 id="reference">Reference</h1>
+<h2 id="methods">Methods</h2>
+<h3 id="getstring"><code>getString()</code></h3>
+<pre class="jsx"><code>static getString()</code></pre>
+<p>Get content of string type, this method returns a <code>Promise</code>, so you can use following code to get clipboard content</p>
+<pre class="jsx"><code>async _getContent() {
+  var content = await Clipboard.getString();
+}</code></pre>
+<hr />
+<h3 id="setstring"><code>setString()</code></h3>
+<pre class="jsx"><code>static setString(content)</code></pre>
+<p>Set content of string type. You can use following code to set clipboard content</p>
+<pre class="jsx"><code>_setContent() {
+  Clipboard.setString(&#39;hello world&#39;);
+}</code></pre>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>content</td>
+<td>string</td>
+<td>Yes</td>
+<td>The content to be stored in the clipboard</td>
+</tr>
+</tbody>
+</table>
+<p><em>Notice</em></p>
+<p>Be careful when you’re trying to copy to clipboard any data except <code>string</code> and <code>number</code>, some data need additional stringification. For example, if you will try to copy array - Android will raise an exception, but iOS will not.</p>
+</body>
+</html>

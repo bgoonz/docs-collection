@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Height and Width</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Height and Width</h1>
+</header>
+<p>A component’s height and width determine its size on the screen.</p>
+<h2 id="fixed-dimensions">Fixed Dimensions</h2>
+<p>The general way to set the dimensions of a component is by adding a fixed <code>width</code> and <code>height</code> to style. All dimensions in React Native are unitless, and represent density-independent pixels.</p>
+<p>```SnackPlayer name=Height%20and%20Width import React from ‘react’; import { View } from ‘react-native’;</p>
+<p>const FixedDimensionsBasics = () =&gt; { return ( <View> &lt;View style={{ width: 50, height: 50, backgroundColor: ‘powderblue’ }} /&gt; &lt;View style={{ width: 100, height: 100, backgroundColor: ‘skyblue’ }} /&gt; &lt;View style={{ width: 150, height: 150, backgroundColor: ‘steelblue’ }} /&gt; </View> ); };</p>
+<p>export default FixedDimensionsBasics; ```</p>
+<p>Setting dimensions this way is common for components whose size should always be fixed to a number of points and not calculated based on screen size.</p>
+<blockquote>
+<p>There is no universal mapping from points to physical units of measurement. This means that a component with fixed dimensions might not have the same physical size, across different devices and screen sizes. However, this difference is unnoticable for most use cases.</p>
+</blockquote>
+<h2 id="flex-dimensions">Flex Dimensions</h2>
+<p>Use <code>flex</code> in a component’s style to have the component expand and shrink dynamically based on available space. Normally you will use <code>flex: 1</code>, which tells a component to fill all available space, shared evenly amongst other components with the same parent. The larger the <code>flex</code> given, the higher the ratio of space a component will take compared to its siblings.</p>
+<blockquote>
+<p>A component can only expand to fill available space if its parent has dimensions greater than <code>0</code>. If a parent does not have either a fixed <code>width</code> and <code>height</code> or <code>flex</code>, the parent will have dimensions of <code>0</code> and the <code>flex</code> children will not be visible.</p>
+</blockquote>
+<p>```SnackPlayer name=Flex%20Dimensions import React from ‘react’; import { View } from ‘react-native’;</p>
+<p>const FlexDimensionsBasics = () =&gt; { return ( // Try removing the <code>flex: 1</code> on the parent View. // The parent will not have dimensions, so the children can’t expand. // What if you add <code>height: 300</code> instead of <code>flex: 1</code>? &lt;View style={{ flex: 1 }}&gt; &lt;View style={{ flex: 1, backgroundColor: ‘powderblue’ }} /&gt; &lt;View style={{ flex: 2, backgroundColor: ‘skyblue’ }} /&gt; &lt;View style={{ flex: 3, backgroundColor: ‘steelblue’ }} /&gt; </View> ); };</p>
+<p>export default FlexDimensionsBasics; ```</p>
+<p>After you can control a component’s size, the next step is to <a href="flexbox.md">learn how to lay it out on the screen</a>.</p>
+<h2 id="percentage-dimensions">Percentage Dimensions</h2>
+<p>If you want to fill a certain portion of the screen, but you <em>don’t</em> want to use the <code>flex</code> layout, you <em>can</em> use <strong>percentage values</strong> in the component’s style. Similar to flex dimensions, percentage dimensions require parent with a defined size.</p>
+<p>```SnackPlayer name=Percentage%20Dimensions import React from ‘react’; import { View } from ‘react-native’;</p>
+<p>const PercentageDimensionsBasics = () =&gt; { // Try removing the <code>height: '100%'</code> on the parent View. // The parent will not have dimensions, so the children can’t expand. return ( &lt;View style={{ height: ‘100%’ }}&gt; &lt;View style={{ height: ‘15%’, backgroundColor: ‘powderblue’ }} /&gt; &lt;View style={{ width: ‘66%’, height: ‘35%’, backgroundColor: ‘skyblue’ }} /&gt; &lt;View style={{ width: ‘33%’, height: ‘50%’, backgroundColor: ‘steelblue’ }} /&gt; </View> ); };</p>
+<p>export default PercentageDimensionsBasics; ```</p>
+</body>
+</html>

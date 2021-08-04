@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Android Native UI Components</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Android Native UI Components</h1>
+    </header>
+    <p>
+      There are tons of native UI widgets out there ready to be used in the
+      latest apps - some of them are part of the platform, others are available
+      as third-party libraries, and still more might be in use in your very own
+      portfolio. React Native has several of the most critical platform
+      components already wrapped, like <code>ScrollView</code> and
+      <code>TextInput</code>, but not all of them, and certainly not ones you
+      might have written yourself for a previous app. Fortunately, we can wrap
+      up these existing components for seamless integration with your React
+      Native application.
+    </p>
+    <p>
+      Like the native module guide, this too is a more advanced guide that
+      assumes you are somewhat familiar with Android SDK programming. This guide
+      will show you how to build a native UI component, walking you through the
+      implementation of a subset of the existing
+      <code>ImageView</code> component available in the core React Native
+      library.
+    </p>
+    <h2 id="imageview-example">ImageView example</h2>
+    <p>
+      For this example we are going to walk through the implementation
+      requirements to allow the use of ImageViews in JavaScript.
+    </p>
+    <p>
+      Native views are created and manipulated by extending
+      <code>ViewManager</code> or more commonly <code>SimpleViewManager</code> .
+      A <code>SimpleViewManager</code> is convenient in this case because it
+      applies common properties such as background color, opacity, and Flexbox
+      layout.
+    </p>
+    <p>
+      These subclasses are essentially singletons - only one instance of each is
+      created by the bridge. They send native views to the
+      <code>NativeViewHierarchyManager</code>, which delegates back to them to
+      set and update the properties of the views as necessary. The
+      <code>ViewManagers</code> are also typically the delegates for the views,
+      sending events back to JavaScript via the bridge.
+    </p>
+    <p>To send a view:</p>
+    <ol type="1">
+      <li>Create the ViewManager subclass.</li>
+      <li>Implement the <code>createViewInstance</code> method</li>
+      <li>
+        Expose view property setters using <code>@ReactProp</code> (or
+        <code>@ReactPropGroup</code>) annotation
+      </li>
+      <li>
+        Register the manager in <code>createViewManagers</code> of the
+        applications package.
+      </li>
+      <li>Implement the JavaScript module</li>
+    </ol>
+    <h2 id="create-the-viewmanager-subclass">
+      1. Create the <code>ViewManager</code> subclass
+    </h2>
+    <p>
+      In this example we create view manager class
+      <code>ReactImageManager</code> that extends
+      <code>SimpleViewManager</code> of type <code>ReactImageView</code>.
+      <code>ReactImageView</code> is the type of object managed by the manager,
+      this will be the custom native view. Name returned by
+      <code>getName</code> is used to reference the native view type from
+      JavaScript.
+    </p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode java"
+      ><code class="sourceCode java"><a class="sourceLine" id="cb1-1" title="1">...</a>
+<a class="sourceLine" id="cb1-2" title="2"></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="kw">public</span> <span class="kw">class</span> ReactImageManager <span class="kw">extends</span> SimpleViewManager&lt;ReactImageView&gt; {</a>
+<a class="sourceLine" id="cb1-4" title="4"></a>
+<a class="sourceLine" id="cb1-5" title="5">  <span class="kw">public</span> <span class="dt">static</span> <span class="dt">final</span> <span class="bu">String</span> REACT_CLASS = <span class="st">&quot;RCTImageView&quot;</span>;</a>
+<a class="sourceLine" id="cb1-6" title="6">  ReactApplicationContext mCallerContext;</a>
+<a class="sourceLine" id="cb1-7" title="7"></a>
+<a class="sourceLine" id="cb1-8" title="8">  <span class="kw">public</span> <span class="fu">ReactImageManager</span>(ReactApplicationContext reactContext) {</a>
+<a class="sourceLine" id="cb1-9" title="9">    mCallerContext = reactContext;</a>
+<a class="sourceLine" id="cb1-10" title="10">  }</a>
+<a class="sourceLine" id="cb1-11" title="11"></a>
+<a class="sourceLine" id="cb1-12" title="12">  <span class="at">@Override</span></a>
+<a class="sourceLine" id="cb1-13" title="13">  <span class="kw">public</span> <span class="bu">String</span> <span class="fu">getName</span>() {</a>
+<a class="sourceLine" id="cb1-14" title="14">    <span class="kw">return</span> REACT_CLASS;</a>
+<a class="sourceLine" id="cb1-15" title="15">  }</a></code></pre>
+    </div>
+    <h2 id="implement-method-createviewinstance">
+      2. Implement method <code>createViewInstance</code>
+    </h2>
+    <p>
+      Views are created in the <code>createViewInstance</code> method, the view
+      should initialize itself in its default state, any properties will be set
+      via a follow up call to <code>updateView.</code>
+    </p>
+    <div class="sourceCode" id="cb2">
+      <pre
+        class="sourceCode java"
+      ><code class="sourceCode java"><a class="sourceLine" id="cb2-1" title="1">  <span class="at">@Override</span></a>
+<a class="sourceLine" id="cb2-2" title="2">  <span class="kw">public</span> ReactImageView <span class="fu">createViewInstance</span>(ThemedReactContext context) {</a>
+<a class="sourceLine" id="cb2-3" title="3">    <span class="kw">return</span> <span class="kw">new</span> <span class="fu">ReactImageView</span>(context, Fresco.<span class="fu">newDraweeControllerBuilder</span>(), <span class="kw">null</span>, mCallerContext);</a>
+<a class="sourceLine" id="cb2-4" title="4">  }</a></code></pre>
+    </div>
+    <h2
+      id="expose-view-property-setters-using-reactprop-or-reactpropgroup-annotation"
+    >
+      3. Expose view property setters using <code>@ReactProp</code> (or
+      <code>@ReactPropGroup</code>) annotation
+    </h2>
+    <p>
+      Properties that are to be reflected in JavaScript needs to be exposed as
+      setter method annotated with <code>@ReactProp</code> (or
+      <code>@ReactPropGroup</code>). Setter method should take view to be
+      updated (of the current view type) as a first argument and property value
+      as a second argument. Setter should be declared as a
+      <code>void</code> method and should be <code>public</code>. Property type
+      sent to JS is determined automatically based on the type of value argument
+      of the setter. The following type of values are currently supported:
+      <code>boolean</code>, <code>int</code>, <code>float</code>,
+      <code>double</code>, <code>String</code>, <code>Boolean</code>,
+      <code>Integer</code>, <code>ReadableArray</code>,
+      <code>ReadableMap</code>.
+    </p>
+    <p>
+      Annotation <code>@ReactProp</code> has one obligatory argument
+      <code>name</code> of type <code>String</code>. Name assigned to the
+      <code>@ReactProp</code> annotation linked to the setter method is used to
+      reference the property on JS side.
+    </p>
+    <!-- alex disable primitive -->
+    <p>
+      Except from <code>name</code>, <code>@ReactProp</code> annotation may take
+      following optional arguments: <code>defaultBoolean</code>,
+      <code>defaultInt</code>, <code>defaultFloat</code>. Those arguments should
+      be of the corresponding type (accordingly <code>boolean</code>,
+      <code>int</code>, <code>float</code>) and the value provided will be
+      passed to the setter method in case when the property that the setter is
+      referencing has been removed from the component. Note that “default”
+      values are only provided for primitive types, in case when setter is of
+      some complex type, <code>null</code> will be provided as a default value
+      in case when corresponding property gets removed.
+    </p>
+    <p>
+      Setter declaration requirements for methods annotated with
+      <code>@ReactPropGroup</code> are different than for
+      <code>@ReactProp</code>, please refer to the
+      <code>@ReactPropGroup</code> annotation class docs for more information
+      about it. <strong>IMPORTANT!</strong> in ReactJS updating the property
+      value will result in setter method call. Note that one of the ways we can
+      update component is by removing properties that have been set before. In
+      that case setter method will be called as well to notify view manager that
+      property has changed. In that case “default” value will be provided (for
+      primitive types “default” can value can be specified using
+      <code>defaultBoolean</code>, <code>defaultFloat</code>, etc. arguments of
+      <code>@ReactProp</code> annotation, for complex types setter will be
+      called with value set to <code>null</code>).
+    </p>
+    <!-- alex enable primitive -->
+    <div class="sourceCode" id="cb3">
+      <pre
+        class="sourceCode java"
+      ><code class="sourceCode java"><a class="sourceLine" id="cb3-1" title="1">  <span class="at">@ReactProp</span>(name = <span class="st">&quot;src&quot;</span>)</a>
+<a class="sourceLine" id="cb3-2" title="2">  <span class="kw">public</span> <span class="dt">void</span> <span class="fu">setSrc</span>(ReactImageView view, <span class="at">@Nullable</span> ReadableArray sources) {</a>
+<a class="sourceLine" id="cb3-3" title="3">    view.<span class="fu">setSource</span>(sources);</a>
+<a class="sourceLine" id="cb3-4" title="4">  }</a>
+<a class="sourceLine" id="cb3-5" title="5"></a>
+<a class="sourceLine" id="cb3-6" title="6">  <span class="at">@ReactProp</span>(name = <span class="st">&quot;borderRadius&quot;</span>, defaultFloat = <span class="fl">0f</span>)</a>
+<a class="sourceLine" id="cb3-7" title="7">  <span class="kw">public</span> <span class="dt">void</span> <span class="fu">setBorderRadius</span>(ReactImageView view, <span class="dt">float</span> borderRadius) {</a>
+<a class="sourceLine" id="cb3-8" title="8">    view.<span class="fu">setBorderRadius</span>(borderRadius);</a>
+<a class="sourceLine" id="cb3-9" title="9">  }</a>
+<a class="sourceLine" id="cb3-10" title="10"></a>
+<a class="sourceLine" id="cb3-11" title="11">  <span class="at">@ReactProp</span>(name = ViewProps.<span class="fu">RESIZE_MODE</span>)</a>
+<a class="sourceLine" id="cb3-12" title="12">  <span class="kw">public</span> <span class="dt">void</span> <span class="fu">setResizeMode</span>(ReactImageView view, <span class="at">@Nullable</span> <span class="bu">String</span> resizeMode) {</a>
+<a class="sourceLine" id="cb3-13" title="13">    view.<span class="fu">setScaleType</span>(ImageResizeMode.<span class="fu">toScaleType</span>(resizeMode));</a>
+<a class="sourceLine" id="cb3-14" title="14">  }</a></code></pre>
+    </div>
+    <h2 id="register-the-viewmanager">
+      4. Register the <code>ViewManager</code>
+    </h2>
+    <p>
+      The final Java step is to register the ViewManager to the application,
+      this happens in a similar way to
+      <a href="native-modules-android.md">Native Modules</a>, via the
+      applications package member function <code>createViewManagers.</code>
+    </p>
+    <div class="sourceCode" id="cb4">
+      <pre
+        class="sourceCode java"
+      ><code class="sourceCode java"><a class="sourceLine" id="cb4-1" title="1">  <span class="at">@Override</span></a>
+<a class="sourceLine" id="cb4-2" title="2">  <span class="kw">public</span> <span class="bu">List</span>&lt;ViewManager&gt; <span class="fu">createViewManagers</span>(</a>
+<a class="sourceLine" id="cb4-3" title="3">                            ReactApplicationContext reactContext) {</a>
+<a class="sourceLine" id="cb4-4" title="4">    <span class="kw">return</span> <span class="bu">Arrays</span>.&lt;ViewManager&gt;<span class="fu">asList</span>(</a>
+<a class="sourceLine" id="cb4-5" title="5">      <span class="kw">new</span> <span class="fu">ReactImageManager</span>(reactContext)</a>
+<a class="sourceLine" id="cb4-6" title="6">    );</a>
+<a class="sourceLine" id="cb4-7" title="7">  }</a></code></pre>
+    </div>
+    <h2 id="implement-the-javascript-module">
+      5. Implement the JavaScript module
+    </h2>
+    <p>
+      The very final step is to create the JavaScript module that defines the
+      interface layer between Java and JavaScript for the users of your new
+      view. It is recommended for you to document the component interface in
+      this module (e.g. using Flow, TypeScript, or plain old comments).
+    </p>
+    <pre class="jsx"><code>// ImageView.js
+
+import { requireNativeComponent } from &#39;react-native&#39;;
+
+/**
+ * Composes `View`.
+ *
+ * - src: string
+ * - borderRadius: number
+ * - resizeMode: &#39;cover&#39; | &#39;contain&#39; | &#39;stretch&#39;
+ */
+module.exports = requireNativeComponent(&#39;RCTImageView&#39;);</code></pre>
+    <p>
+      The <code>requireNativeComponent</code> function takes the name of the
+      native view. Note that if your component needs to do anything more
+      sophisticated (e.g. custom event handling), you should wrap the native
+      component in another React component. This is illustrated in the
+      <code>MyCustomView</code> example below.
+    </p>
+    <h1 id="events">Events</h1>
+    <p>
+      So now we know how to expose native view components that we can control
+      freely from JS, but how do we deal with events from the user, like
+      pinch-zooms or panning? When a native event occurs the native code should
+      issue an event to the JavaScript representation of the View, and the two
+      views are linked with the value returned from the
+      <code>getId()</code> method.
+    </p>
+    <div class="sourceCode" id="cb6">
+      <pre
+        class="sourceCode java"
+      ><code class="sourceCode java"><a class="sourceLine" id="cb6-1" title="1"><span class="kw">class</span> MyCustomView <span class="kw">extends</span> <span class="bu">View</span> {</a>
+<a class="sourceLine" id="cb6-2" title="2">   ...</a>
+<a class="sourceLine" id="cb6-3" title="3">   <span class="kw">public</span> <span class="dt">void</span> <span class="fu">onReceiveNativeEvent</span>() {</a>
+<a class="sourceLine" id="cb6-4" title="4">      WritableMap event = Arguments.<span class="fu">createMap</span>();</a>
+<a class="sourceLine" id="cb6-5" title="5">      event.<span class="fu">putString</span>(<span class="st">&quot;message&quot;</span>, <span class="st">&quot;MyMessage&quot;</span>);</a>
+<a class="sourceLine" id="cb6-6" title="6">      ReactContext reactContext = (ReactContext)<span class="fu">getContext</span>();</a>
+<a class="sourceLine" id="cb6-7" title="7">      reactContext.<span class="fu">getJSModule</span>(RCTEventEmitter.<span class="fu">class</span>).<span class="fu">receiveEvent</span>(</a>
+<a class="sourceLine" id="cb6-8" title="8">          <span class="fu">getId</span>(),</a>
+<a class="sourceLine" id="cb6-9" title="9">          <span class="st">&quot;topChange&quot;</span>,</a>
+<a class="sourceLine" id="cb6-10" title="10">          event);</a>
+<a class="sourceLine" id="cb6-11" title="11">    }</a>
+<a class="sourceLine" id="cb6-12" title="12">}</a></code></pre>
+    </div>
+    <p>
+      To map the <code>topChange</code> event name to the
+      <code>onChange</code> callback prop in JavaScript, register it by
+      overriding the
+      <code>getExportedCustomBubblingEventTypeConstants</code> method in your
+      <code>ViewManager</code>:
+    </p>
+    <div class="sourceCode" id="cb7">
+      <pre
+        class="sourceCode java"
+      ><code class="sourceCode java"><a class="sourceLine" id="cb7-1" title="1"><span class="kw">public</span> <span class="kw">class</span> ReactImageManager <span class="kw">extends</span> SimpleViewManager&lt;MyCustomView&gt; {</a>
+<a class="sourceLine" id="cb7-2" title="2">    ...</a>
+<a class="sourceLine" id="cb7-3" title="3">    <span class="kw">public</span> <span class="bu">Map</span> <span class="fu">getExportedCustomBubblingEventTypeConstants</span>() {</a>
+<a class="sourceLine" id="cb7-4" title="4">        <span class="kw">return</span> MapBuilder.<span class="fu">builder</span>()</a>
+<a class="sourceLine" id="cb7-5" title="5">            .<span class="fu">put</span>(</a>
+<a class="sourceLine" id="cb7-6" title="6">                <span class="st">&quot;topChange&quot;</span>,</a>
+<a class="sourceLine" id="cb7-7" title="7">                MapBuilder.<span class="fu">of</span>(</a>
+<a class="sourceLine" id="cb7-8" title="8">                    <span class="st">&quot;phasedRegistrationNames&quot;</span>,</a>
+<a class="sourceLine" id="cb7-9" title="9">                    MapBuilder.<span class="fu">of</span>(<span class="st">&quot;bubbled&quot;</span>, <span class="st">&quot;onChange&quot;</span>)))</a>
+<a class="sourceLine" id="cb7-10" title="10">                    .<span class="fu">build</span>();</a>
+<a class="sourceLine" id="cb7-11" title="11">    }</a>
+<a class="sourceLine" id="cb7-12" title="12">}</a></code></pre>
+    </div>
+    <p>
+      This callback is invoked with the raw event, which we typically process in
+      the wrapper component to make a simpler API:
+    </p>
+    <pre class="jsx"><code>// MyCustomView.js
+
+class MyCustomView extends React.Component {
+  constructor(props) {
+    super(props);
+    this._onChange = this._onChange.bind(this);
+  }
+  _onChange(event: Event) {
+    if (!this.props.onChangeMessage) {
+      return;
+    }
+    this.props.onChangeMessage(event.nativeEvent.message);
+  }
+  render() {
+    return &lt;RCTMyCustomView {...this.props} onChange={this._onChange} /&gt;;
+  }
+}
+MyCustomView.propTypes = {
+  /**
+   * Callback that is called continuously when the user is dragging the map.
+   */
+  onChangeMessage: PropTypes.func,
+  ...
+};
+
+var RCTMyCustomView = requireNativeComponent(`RCTMyCustomView`);</code></pre>
+  </body>
+</html>

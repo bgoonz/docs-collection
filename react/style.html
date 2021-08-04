@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Style</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Style</h1>
+</header>
+<p>With React Native, you style your application using JavaScript. All of the core components accept a prop named <code>style</code>. The style names and <a href="colors.md">values</a> usually match how CSS works on the web, except names are written using camel casing, e.g. <code>backgroundColor</code> rather than <code>background-color</code>.</p>
+<p>The <code>style</code> prop can be a plain old JavaScript object. That’s what we usually use for example code. You can also pass an array of styles - the last style in the array has precedence, so you can use this to inherit styles.</p>
+<p>As a component grows in complexity, it is often cleaner to use <code>StyleSheet.create</code> to define several styles in one place. Here’s an example:</p>
+<p>```SnackPlayer name=Style import React from ‘react’; import { StyleSheet, Text, View } from ‘react-native’;</p>
+<p>const LotsOfStyles = () =&gt; { return ( <View style={styles.container}> <Text style={styles.red}>just red</Text> <Text style={styles.bigBlue}>just bigBlue</Text> &lt;Text style={[styles.bigBlue, styles.red]}&gt;bigBlue, then red</Text> &lt;Text style={[styles.red, styles.bigBlue]}&gt;red, then bigBlue</Text> </View> ); };</p>
+<p>const styles = StyleSheet.create({ container: { marginTop: 50, }, bigBlue: { color: ‘blue’, fontWeight: ‘bold’, fontSize: 30, }, red: { color: ‘red’, }, });</p>
+<p>export default LotsOfStyles; ```</p>
+<p>One common pattern is to make your component accept a <code>style</code> prop which in turn is used to style subcomponents. You can use this to make styles “cascade” the way they do in CSS.</p>
+<p>There are a lot more ways to customize the text style. Check out the <a href="text.md">Text component reference</a> for a complete list.</p>
+<p>Now you can make your text beautiful. The next step in becoming a style expert is to <a href="height-and-width.md">learn how to control component size</a>.</p>
+<h2 id="known-issues">Known issues</h2>
+<ul>
+<li><a href="https://github.com/facebook/react-native/issues/29308#issuecomment-792864162">react-native#29308</a>: In some cases React Native does not match how CSS works on the web, for example the touch area never extends past the parent view bounds and on Android negative margin is not supported.</li>
+</ul>
+</body>
+</html>

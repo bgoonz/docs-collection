@@ -10,6 +10,7 @@ tags:
   - Polyfill
 browser-compat: javascript.builtins.Object.assign
 ---
+
 {{JSRef}}
 
 The **`Object.assign()`** method
@@ -23,7 +24,7 @@ object.
 ## Syntax
 
 ```js
-Object.assign(target, ...sources)
+Object.assign(target, ...sources);
 ```
 
 ### Parameters
@@ -71,13 +72,14 @@ This [polyfill](/en-US/docs/Glossary/Polyfill) doesn't support symbol
 properties, since ES5 doesn't have symbols anyway:
 
 ```js
-if (typeof Object.assign !== 'function') {
+if (typeof Object.assign !== "function") {
   // Must be writable: true, enumerable: false, configurable: true
   Object.defineProperty(Object, "assign", {
-    value: function assign(target, varArgs) { // .length of function is 2
-      'use strict';
+    value: function assign(target, varArgs) {
+      // .length of function is 2
+      "use strict";
       if (target === null || target === undefined) {
-        throw new TypeError('Cannot convert undefined or null to object');
+        throw new TypeError("Cannot convert undefined or null to object");
       }
 
       var to = Object(target);
@@ -97,7 +99,7 @@ if (typeof Object.assign !== 'function') {
       return to;
     },
     writable: true,
-    configurable: true
+    configurable: true,
   });
 }
 ```
@@ -121,9 +123,9 @@ If the source value is a reference to an object, it only copies the reference va
 
 ```js
 function test() {
-  'use strict';
+  "use strict";
 
-  let obj1 = { a: 0 , b: { c: 0}};
+  let obj1 = { a: 0, b: { c: 0 } };
   let obj2 = Object.assign({}, obj1);
   console.log(JSON.stringify(obj2)); // { "a": 0, "b": { "c": 0}}
 
@@ -140,7 +142,7 @@ function test() {
   console.log(JSON.stringify(obj2)); // { "a": 2, "b": { "c": 3}}
 
   // Deep Clone
-  obj1 = { a: 0 , b: { c: 0}};
+  obj1 = { a: 0, b: { c: 0 } };
   let obj3 = JSON.parse(JSON.stringify(obj1));
   obj1.a = 4;
   obj1.b.c = 4;
@@ -159,7 +161,7 @@ const o3 = { c: 3 };
 
 const obj = Object.assign(o1, o2, o3);
 console.log(obj); // { a: 1, b: 2, c: 3 }
-console.log(o1);  // { a: 1, b: 2, c: 3 }, target object itself is changed.
+console.log(o1); // { a: 1, b: 2, c: 3 }, target object itself is changed.
 ```
 
 ### Merging objects with same properties
@@ -180,7 +182,7 @@ the parameters order.
 
 ```js
 const o1 = { a: 1 };
-const o2 = { [Symbol('foo')]: 2 };
+const o2 = { [Symbol("foo")]: 2 };
 
 const obj = Object.assign({}, o1, o2);
 console.log(obj); // { a : 1, [Symbol("foo")]: 2 } (cf. bug 1207182 on Firefox)
@@ -190,15 +192,19 @@ Object.getOwnPropertySymbols(obj); // [Symbol(foo)]
 ### Properties on the prototype chain and non-enumerable properties cannot be copied
 
 ```js
-const obj = Object.create({ foo: 1 }, { // foo is on obj's prototype chain.
-  bar: {
-    value: 2  // bar is a non-enumerable property.
-  },
-  baz: {
-    value: 3,
-    enumerable: true  // baz is an own enumerable property.
+const obj = Object.create(
+  { foo: 1 },
+  {
+    // foo is on obj's prototype chain.
+    bar: {
+      value: 2, // bar is a non-enumerable property.
+    },
+    baz: {
+      value: 3,
+      enumerable: true, // baz is an own enumerable property.
+    },
   }
-});
+);
 
 const copy = Object.assign({}, obj);
 console.log(copy); // { baz: 3 }
@@ -207,10 +213,10 @@ console.log(copy); // { baz: 3 }
 ### Primitives will be wrapped to objects
 
 ```js
-const v1 = 'abc';
+const v1 = "abc";
 const v2 = true;
 const v3 = 10;
-const v4 = Symbol('foo');
+const v4 = Symbol("foo");
 
 const obj = Object.assign({}, v1, null, v2, undefined, v3, v4);
 // Primitives will be wrapped, null and undefined will be ignored.
@@ -221,20 +227,20 @@ console.log(obj); // { "0": "a", "1": "b", "2": "c" }
 ### Exceptions will interrupt the ongoing copying task
 
 ```js
-const target = Object.defineProperty({}, 'foo', {
+const target = Object.defineProperty({}, "foo", {
   value: 1,
-  writable: false
+  writable: false,
 }); // target.foo is a read-only property
 
 Object.assign(target, { bar: 2 }, { foo2: 3, foo: 3, foo3: 3 }, { baz: 4 });
 // TypeError: "foo" is read-only
 // The Exception is thrown when assigning target.foo
 
-console.log(target.bar);  // 2, the first source was copied successfully.
+console.log(target.bar); // 2, the first source was copied successfully.
 console.log(target.foo2); // 3, the first property of the second source was copied successfully.
-console.log(target.foo);  // 1, exception is thrown here.
+console.log(target.foo); // 1, exception is thrown here.
 console.log(target.foo3); // undefined, assign method has finished, foo3 will not be copied.
-console.log(target.baz);  // undefined, the third source will not be copied either.
+console.log(target.baz); // undefined, the third source will not be copied either.
 ```
 
 ### Copying accessors
@@ -244,7 +250,7 @@ const obj = {
   foo: 1,
   get bar() {
     return 2;
-  }
+  },
 };
 
 let copy = Object.assign({}, obj);
@@ -254,14 +260,13 @@ console.log(copy);
 
 // This is an assign function that copies full descriptors
 function completeAssign(target, ...sources) {
-  sources.forEach(source => {
+  sources.forEach((source) => {
     let descriptors = Object.keys(source).reduce((descriptors, key) => {
       descriptors[key] = Object.getOwnPropertyDescriptor(source, key);
       return descriptors;
-    }, {});
+    }, {}); // By default, Object.assign copies enumerable Symbols, too
 
-    // By default, Object.assign copies enumerable Symbols, too
-    Object.getOwnPropertySymbols(source).forEach(sym => {
+    Object.getOwnPropertySymbols(source).forEach((sym) => {
       let descriptor = Object.getOwnPropertyDescriptor(source, sym);
       if (descriptor.enumerable) {
         descriptors[sym] = descriptor;

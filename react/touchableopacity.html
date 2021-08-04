@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>TouchableOpacity</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">TouchableOpacity</h1>
+</header>
+<p>import Tabs from ‘<span class="citation" data-cites="theme/Tabs">@theme/Tabs</span>’; import TabItem from ‘<span class="citation" data-cites="theme/TabItem">@theme/TabItem</span>’; import constants from ‘<span class="citation" data-cites="site/core/TabsConstants">@site/core/TabsConstants</span>’;</p>
+<blockquote>
+<p>If you’re looking for a more extensive and future-proof way to handle touch-based input, check out the <a href="pressable.md">Pressable</a> API.</p>
+</blockquote>
+<p>A wrapper for making views respond properly to touches. On press down, the opacity of the wrapped view is decreased, dimming it.</p>
+<p>Opacity is controlled by wrapping the children in an <code>Animated.View</code>, which is added to the view hierarchy. Be aware that this can affect layout.</p>
+<h2 id="example">Example</h2>
+<p><Tabs groupId="syntax" defaultValue={constants.defaultSyntax} values={constants.syntax}> <TabItem value="functional"></p>
+<p>```SnackPlayer name=TouchableOpacity%20Function%20Component%20Example import React, { useState } from “react”; import { StyleSheet, Text, TouchableOpacity, View } from “react-native”;</p>
+<p>const App = () =&gt; { const [count, setCount] = useState(0); const onPress = () =&gt; setCount(prevCount =&gt; prevCount + 1);</p>
+<p>return ( <View style={styles.container}> <View style={styles.countContainer}> <Text>Count: {count}</Text> </View> <TouchableOpacity
+        style={styles.button}
+        onPress={onPress}
+      > <Text>Press Here</Text> </TouchableOpacity> </View> ); };</p>
+<p>const styles = StyleSheet.create({ container: { flex: 1, justifyContent: “center”, paddingHorizontal: 10 }, button: { alignItems: “center”, backgroundColor: “#DDDDDD”, padding: 10 }, countContainer: { alignItems: “center”, padding: 10 } });</p>
+<p>export default App; ```</p>
+<p></TabItem> <TabItem value="classical"></p>
+<p>```SnackPlayer name=TouchableOpacity%20Class%20Component%20Example import React, { Component } from “react”; import { StyleSheet, Text, TouchableOpacity, View } from “react-native”;</p>
+<p>class App extends Component { constructor(props) { super(props); this.state = { count: 0 }; }</p>
+<p>onPress = () =&gt; { this.setState({ count: this.state.count + 1 }); };</p>
+<p>render() { const { count } = this.state; return ( <View style={styles.container}> <View style={styles.countContainer}> <Text>Count: {count}</Text> </View> <TouchableOpacity
+          style={styles.button}
+          onPress={this.onPress}
+        > <Text>Press Here</Text> </TouchableOpacity> </View> ); } }</p>
+<p>const styles = StyleSheet.create({ container: { flex: 1, justifyContent: “center”, paddingHorizontal: 10 }, button: { alignItems: “center”, backgroundColor: “#DDDDDD”, padding: 10 }, countContainer: { alignItems: “center”, padding: 10 } });</p>
+<p>export default App; ```</p>
+<p></TabItem> </Tabs></p>
+<hr />
+<h1 id="reference">Reference</h1>
+<h2 id="props">Props</h2>
+<h3 id="touchablewithoutfeedback-props"><a href="touchablewithoutfeedback.md#props">TouchableWithoutFeedback Props</a></h3>
+<p>Inherits <a href="touchablewithoutfeedback.md#props">TouchableWithoutFeedback Props</a>.</p>
+<hr />
+<h3 id="style"><code>style</code></h3>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>View.style</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="activeopacity"><code>activeOpacity</code></h3>
+<p>Determines what the opacity of the wrapped view should be when touch is active. Defaults to <code>0.2</code>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="tvparallaxproperties"><code>tvParallaxProperties</code></h3>
+<p><em>(Apple TV only)</em> Object with properties to control Apple TV parallax effects.</p>
+<ul>
+<li><code>enabled</code>: If <code>true</code>, parallax effects are enabled. Defaults to <code>true</code>.</li>
+<li><code>shiftDistanceX</code>: Defaults to <code>2.0</code>.</li>
+<li><code>shiftDistanceY</code>: Defaults to <code>2.0</code>.</li>
+<li><code>tiltAngle</code>: Defaults to <code>0.05</code>.</li>
+<li><code>magnification</code>: Defaults to <code>1.0</code>.</li>
+<li><code>pressMagnification</code>: Defaults to <code>1.0</code>.</li>
+<li><code>pressDuration</code>: Defaults to <code>0.3</code>.</li>
+<li><code>pressDelay</code>: Defaults to <code>0.0</code>.</li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+<th>Platform</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>object</td>
+<td>No</td>
+<td>iOS</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="hastvpreferredfocus"><code>hasTVPreferredFocus</code></h3>
+<p><em>(Apple TV only)</em> TV preferred focus (see documentation for the View component).</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+<th>Platform</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>bool</td>
+<td>No</td>
+<td>iOS</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="nextfocusdown"><code>nextFocusDown</code></h3>
+<p>TV next focus down (see documentation for the View component).</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+<th>Platform</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number</td>
+<td>No</td>
+<td>Android</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="nextfocusforward"><code>nextFocusForward</code></h3>
+<p>TV next focus forward (see documentation for the View component).</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+<th>Platform</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number</td>
+<td>No</td>
+<td>Android</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="nextfocusleft"><code>nextFocusLeft</code></h3>
+<p>TV next focus left (see documentation for the View component).</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+<th>Platform</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number</td>
+<td>No</td>
+<td>Android</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="nextfocusright"><code>nextFocusRight</code></h3>
+<p>TV next focus right (see documentation for the View component).</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+<th>Platform</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number</td>
+<td>No</td>
+<td>Android</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="nextfocusup"><code>nextFocusUp</code></h3>
+<p>TV next focus up (see documentation for the View component).</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+<th>Platform</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number</td>
+<td>No</td>
+<td>Android</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

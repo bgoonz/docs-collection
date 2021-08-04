@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>_integration-with-exisiting-apps-swift</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <h2 id="key-concepts">Key Concepts</h2>
+    <p>
+      The keys to integrating React Native components into your iOS application
+      are to:
+    </p>
+    <ol type="1">
+      <li>Set up React Native dependencies and directory structure.</li>
+      <li>Understand what React Native components you will use in your app.</li>
+      <li>Add these components as dependencies using CocoaPods.</li>
+      <li>Develop your React Native components in JavaScript.</li>
+      <li>
+        Add a <code>RCTRootView</code> to your iOS app. This view will serve as
+        the container for your React Native component.
+      </li>
+      <li>Start the React Native server and run your native application.</li>
+      <li>
+        Verify that the React Native aspect of your application works as
+        expected.
+      </li>
+    </ol>
+    <h2 id="prerequisites">Prerequisites</h2>
+    <p>
+      Follow the React Native CLI Quickstart in the
+      <a href="environment-setup">environment setup guide</a> to configure your
+      development environment for building React Native apps for iOS.
+    </p>
+    <h3 id="set-up-directory-structure">1. Set up directory structure</h3>
+    <p>
+      To ensure a smooth experience, create a new folder for your integrated
+      React Native project, then copy your existing iOS project to a
+      <code>/ios</code> subfolder.
+    </p>
+    <h3 id="install-javascript-dependencies">
+      2. Install JavaScript dependencies
+    </h3>
+    <p>
+      Go to the root directory for your project and create a new
+      <code>package.json</code> file with the following contents:
+    </p>
+    <pre><code>{
+  &quot;name&quot;: &quot;MyReactNativeApp&quot;,
+  &quot;version&quot;: &quot;0.0.1&quot;,
+  &quot;private&quot;: true,
+  &quot;scripts&quot;: {
+    &quot;start&quot;: &quot;yarn react-native start&quot;
+  }
+}</code></pre>
+    <p>
+      Next, make sure you have
+      <a href="https://yarnpkg.com/lang/en/docs/install/"
+        >installed the yarn package manager</a
+      >.
+    </p>
+    <p>
+      Install the <code>react</code> and <code>react-native</code> packages.
+      Open a terminal or command prompt, then navigate to the directory with
+      your <code>package.json</code> file and run:
+    </p>
+    <pre class="shell"><code>$ yarn add react-native</code></pre>
+    <p>
+      This will print a message similar to the following (scroll up in the yarn
+      output to see it):
+    </p>
+    <blockquote>
+      <p>
+        warning “react-native@0.52.2” has unmet peer dependency “react@16.2.0”.
+      </p>
+    </blockquote>
+    <p>This is OK, it means we also need to install React:</p>
+    <pre class="shell"><code>$ yarn add react@version_printed_above</code></pre>
+    <p>
+      Yarn has created a new <code>/node_modules</code> folder. This folder
+      stores all the JavaScript dependencies required to build your project.
+    </p>
+    <p>Add <code>node_modules/</code> to your <code>.gitignore</code> file.</p>
+    <h3 id="install-cocoapods">3. Install CocoaPods</h3>
+    <p>
+      <a href="http://cocoapods.org">CocoaPods</a> is a package management tool
+      for iOS and macOS development. We use it to add the actual React Native
+      framework code locally into your current project.
+    </p>
+    <p>
+      We recommend installing CocoaPods using
+      <a href="http://brew.sh/">Homebrew</a>.
+    </p>
+    <pre class="shell"><code>$ brew install cocoapods</code></pre>
+    <blockquote>
+      <p>
+        It is technically possible not to use CocoaPods, but that would require
+        manual library and linker additions that would overly complicate this
+        process.
+      </p>
+    </blockquote>
+    <h2 id="adding-react-native-to-your-app">
+      Adding React Native to your app
+    </h2>
+    <p>
+      Assume the
+      <a href="https://github.com/JoelMarcey/swift-2048">app for integration</a>
+      is a
+      <a href="https://en.wikipedia.org/wiki/2048_%28video_game%29">2048</a>
+      game. Here is what the main menu of the native application looks like
+      without React Native.
+    </p>
+    <figure>
+      <img
+        src="/docs/assets/react-native-existing-app-integration-ios-before.png"
+        alt="Before RN Integration"
+      />
+      <figcaption>Before RN Integration</figcaption>
+    </figure>
+    <h3 id="command-line-tools-for-xcode">Command Line Tools for Xcode</h3>
+    <p>
+      Install the Command Line Tools. Choose “Preferences…” in the Xcode menu.
+      Go to the Locations panel and install the tools by selecting the most
+      recent version in the Command Line Tools dropdown.
+    </p>
+    <figure>
+      <img
+        src="/docs/assets/GettingStartedXcodeCommandLineTools.png"
+        alt="Xcode Command Line Tools"
+      />
+      <figcaption>Xcode Command Line Tools</figcaption>
+    </figure>
+    <h3 id="configuring-cocoapods-dependencies">
+      Configuring CocoaPods dependencies
+    </h3>
+    <p>
+      Before you integrate React Native into your application, you will want to
+      decide what parts of the React Native framework you would like to
+      integrate. We will use CocoaPods to specify which of these “subspecs” your
+      app will depend on.
+    </p>
+    <p>
+      The list of supported <code>subspec</code>s is available in
+      <a
+        href="https://github.com/facebook/react-native/blob/master/React.podspec"
+        ><code>/node_modules/react-native/React.podspec</code></a
+      >. They are generally named by functionality. For example, you will
+      generally always want the <code>Core</code> <code>subspec</code>. That
+      will get you the <code>AppRegistry</code>, <code>StyleSheet</code>,
+      <code>View</code> and other core React Native libraries. If you want to
+      add the React Native <code>Text</code> library (e.g., for
+      <code>&lt;Text&gt;</code> elements), then you will need the
+      <code>RCTText</code> <code>subspec</code>. If you want the
+      <code>Image</code> library (e.g., for
+      <code>&lt;Image&gt;</code> elements), then you will need the
+      <code>RCTImage</code> <code>subspec</code>.
+    </p>
+    <p>
+      You can specify which <code>subspec</code>s your app will depend on in a
+      <code>Podfile</code> file. The easiest way to create a
+      <code>Podfile</code> is by running the CocoaPods <code>init</code> command
+      in the <code>/ios</code> subfolder of your project:
+    </p>
+    <pre class="shell"><code>$ pod init</code></pre>
+    <p>
+      The <code>Podfile</code> will contain a boilerplate setup that you will
+      tweak for your integration purposes.
+    </p>
+    <blockquote>
+      <p>
+        The <code>Podfile</code> version changes depending on your version of
+        <code>react-native</code>. Refer to
+        https://react-native-community.github.io/upgrade-helper/ for the
+        specific version of <code>Podfile</code> you should be using.
+      </p>
+    </blockquote>
+    <p>
+      Ultimately, your <code>Podfile</code> should look something similar to
+      this:
+    </p>
+    <pre><code>source &#39;https://github.com/CocoaPods/Specs.git&#39;
+
+# Required for Swift apps
+platform :ios, &#39;8.0&#39;
+use_frameworks!
+
+# The target name is most likely the name of your project.
+target &#39;swift-2048&#39; do
+
+  # Your &#39;node_modules&#39; directory is probably in the root of your project,
+  # but if not, adjust the `:path` accordingly
+  pod &#39;React&#39;, :path =&gt; &#39;../node_modules/react-native&#39;, :subspecs =&gt; [
+    &#39;Core&#39;,
+    &#39;CxxBridge&#39;, # Include this for RN &gt;= 0.47
+    &#39;DevSupport&#39;, # Include this to enable In-App Devmenu if RN &gt;= 0.43
+    &#39;RCTText&#39;,
+    &#39;RCTNetwork&#39;,
+    &#39;RCTWebSocket&#39;, # needed for debugging
+    # Add any other subspecs you want to use in your project
+  ]
+  # Explicitly include Yoga if you are using RN &gt;= 0.42.0
+  pod &quot;Yoga&quot;, :path =&gt; &quot;../node_modules/react-native/ReactCommon/yoga&quot;
+
+  # Third party deps podspec link
+  pod &#39;DoubleConversion&#39;, :podspec =&gt; &#39;../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec&#39;
+  pod &#39;glog&#39;, :podspec =&gt; &#39;../node_modules/react-native/third-party-podspecs/glog.podspec&#39;
+  pod &#39;Folly&#39;, :podspec =&gt; &#39;../node_modules/react-native/third-party-podspecs/Folly.podspec&#39;
+
+end</code></pre>
+    <p>
+      After you have created your <code>Podfile</code>, you are ready to install
+      the React Native pod.
+    </p>
+    <pre class="shell"><code>$ pod install</code></pre>
+    <p>You should see output such as:</p>
+    <pre><code>Analyzing dependencies
+Fetching podspec for `React` from `../node_modules/react-native`
+Downloading dependencies
+Installing React (0.62.0)
+Generating Pods project
+Integrating client project
+Sending stats
+Pod installation complete! There are 3 dependencies from the Podfile and 1 total pod installed.</code></pre>
+    <blockquote>
+      <p>
+        If this fails with errors mentioning <code>xcrun</code>, make sure that
+        in Xcode in <strong>Preferences &gt; Locations</strong> the Command Line
+        Tools are assigned.
+      </p>
+    </blockquote>
+    <blockquote>
+      <p>
+        If you get a warning such as “<em
+          >The <code>swift-2048 [Debug]</code> target overrides the
+          <code>FRAMEWORK_SEARCH_PATHS</code> build setting defined in
+          <code
+            >Pods/Target Support
+            Files/Pods-swift-2048/Pods-swift-2048.debug.xcconfig</code
+          >. This can lead to problems with the CocoaPods installation</em
+        >”, then make sure the <code>Framework Search Paths</code> in
+        <code>Build Settings</code> for both <code>Debug</code> and
+        <code>Release</code> only contain <code>$(inherited)</code>.
+      </p>
+    </blockquote>
+    <h3 id="code-integration">Code integration</h3>
+    <p>
+      Now we will actually modify the native iOS application to integrate React
+      Native. For our 2048 sample app, we will add a “High Score” screen in
+      React Native.
+    </p>
+    <h4 id="the-react-native-component">The React Native component</h4>
+    <p>
+      The first bit of code we will write is the actual React Native code for
+      the new “High Score” screen that will be integrated into our application.
+    </p>
+    <h5 id="create-a-index.js-file">1. Create a <code>index.js</code> file</h5>
+    <p>
+      First, create an empty <code>index.js</code> file in the root of your
+      React Native project.
+    </p>
+    <p>
+      <code>index.js</code> is the starting point for React Native applications,
+      and it is always required. It can be a small file that
+      <code>require</code>s other file that are part of your React Native
+      component or application, or it can contain all the code that is needed
+      for it. In our case, we will put everything in <code>index.js</code>.
+    </p>
+    <h5 id="add-your-react-native-code">2. Add your React Native code</h5>
+    <p>
+      In your <code>index.js</code>, create your component. In our sample here,
+      we will add a <code>&lt;Text&gt;</code> component within a styled
+      <code>&lt;View&gt;</code>
+    </p>
+    <pre class="jsx"><code>import React from &#39;react&#39;;
+import {
+  AppRegistry,
+  StyleSheet,
+  Text,
+  View
+} from &#39;react-native&#39;;
+
+const RNHighScores = ({ scores }) =&gt; {
+  const contents = scores.map((score) =&gt; (
+    &lt;Text key={score.name}&gt;
+      {score.name}:{score.value}
+      {&#39;\n&#39;}
+    &lt;/Text&gt;
+  ));
+  return (
+    &lt;View style={styles.container}&gt;
+      &lt;Text style={styles.highScoresTitle}&gt;
+        2048 High Scores!
+      &lt;/Text&gt;
+      &lt;Text style={styles.scores}&gt;{contents}&lt;/Text&gt;
+    &lt;/View&gt;
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: &#39;center&#39;,
+    alignItems: &#39;center&#39;,
+    backgroundColor: &#39;#FFFFFF&#39;
+  },
+  highScoresTitle: {
+    fontSize: 20,
+    textAlign: &#39;center&#39;,
+    margin: 10
+  },
+  scores: {
+    textAlign: &#39;center&#39;,
+    color: &#39;#333333&#39;,
+    marginBottom: 5
+  }
+});
+
+// Module name
+AppRegistry.registerComponent(&#39;RNHighScores&#39;, () =&gt; RNHighScores);</code></pre>
+    <blockquote>
+      <p>
+        <code>RNHighScores</code> is the name of your module that will be used
+        when you add a view to React Native from within your iOS application.
+      </p>
+    </blockquote>
+    <h4 id="the-magic-rctrootview">The Magic: <code>RCTRootView</code></h4>
+    <p>
+      Now that your React Native component is created via <code>index.js</code>,
+      you need to add that component to a new or existing
+      <code>ViewController</code>. The easiest path to take is to optionally
+      create an event path to your component and then add that component to an
+      existing <code>ViewController</code>.
+    </p>
+    <p>
+      We will tie our React Native component with a new native view in the
+      <code>ViewController</code> that will actually contain it called
+      <code>RCTRootView</code> .
+    </p>
+    <h5 id="create-an-event-path">1. Create an Event Path</h5>
+    <p>
+      You can add a new link on the main game menu to go to the “High Score”
+      React Native page.
+    </p>
+    <figure>
+      <img
+        src="/docs/assets/react-native-add-react-native-integration-link.png"
+        alt="Event Path"
+      />
+      <figcaption>Event Path</figcaption>
+    </figure>
+    <h5 id="event-handler">2. Event Handler</h5>
+    <p>
+      We will now add an event handler from the menu link. A method will be
+      added to the main <code>ViewController</code> of your application. This is
+      where <code>RCTRootView</code> comes into play.
+    </p>
+    <p>
+      When you build a React Native application, you use the
+      <a href="https://facebook.github.io/metro/">Metro bundler</a> to create an
+      <code>index.bundle</code> that will be served by the React Native server.
+      Inside <code>index.bundle</code> will be our
+      <code>RNHighScore</code> module. So, we need to point our
+      <code>RCTRootView</code> to the location of the
+      <code>index.bundle</code> resource (via <code>NSURL</code>) and tie it to
+      the module.
+    </p>
+    <p>
+      We will, for debugging purposes, log that the event handler was invoked.
+      Then, we will create a string with the location of our React Native code
+      that exists inside the <code>index.bundle</code>. Finally, we will create
+      the main <code>RCTRootView</code>. Notice how we provide
+      <code>RNHighScores</code> as the <code>moduleName</code> that we created
+      <a href="#the-react-native-component">above</a> when writing the code for
+      our React Native component.
+    </p>
+    <p>First <code>import</code> the <code>React</code> library.</p>
+    <pre class="jsx"><code>import React</code></pre>
+    <blockquote>
+      <p>
+        The <code>initialProperties</code> are here for illustration purposes so
+        we have some data for our high score screen. In our React Native
+        component, we will use <code>this.props</code> to get access to that
+        data.
+      </p>
+    </blockquote>
+    <pre
+      class="swift"
+    ><code>@IBAction func highScoreButtonTapped(sender : UIButton) {
+  NSLog(&quot;Hello&quot;)
+  let jsCodeLocation = URL(string: &quot;http://localhost:8081/index.bundle?platform=ios&quot;)
+  let mockData:NSDictionary = [&quot;scores&quot;:
+      [
+          [&quot;name&quot;:&quot;Alex&quot;, &quot;value&quot;:&quot;42&quot;],
+          [&quot;name&quot;:&quot;Joel&quot;, &quot;value&quot;:&quot;10&quot;]
+      ]
+  ]
+
+  let rootView = RCTRootView(
+      bundleURL: jsCodeLocation,
+      moduleName: &quot;RNHighScores&quot;,
+      initialProperties: mockData as [NSObject : AnyObject],
+      launchOptions: nil
+  )
+  let vc = UIViewController()
+  vc.view = rootView
+  self.present(vc, animated: true, completion: nil)
+}</code></pre>
+    <blockquote>
+      <p>
+        Note that <code>RCTRootView bundleURL</code> starts up a new JSC VM. To
+        save resources and simplify the communication between RN views in
+        different parts of your native app, you can have multiple views powered
+        by React Native that are associated with a single JS runtime. To do
+        that, instead of using <code>RCTRootView bundleURL</code>, use
+        <a
+          href="https://github.com/facebook/react-native/blob/master/React/Base/RCTBridge.h#L89"
+          ><code>RCTBridge initWithBundleURL</code></a
+        >
+        to create a bridge and then use <code>RCTRootView initWithBridge</code>.
+      </p>
+    </blockquote>
+    <blockquote>
+      <p>
+        When moving your app to production, the <code>NSURL</code> can point to
+        a pre-bundled file on disk via something like
+        <code
+          >let mainBundle = NSBundle(URLForResource: "main"
+          withExtension:"jsbundle")</code
+        >. You can use the <code>react-native-xcode.sh</code> script in
+        <code>node_modules/react-native/scripts/</code> to generate that
+        pre-bundled file.
+      </p>
+    </blockquote>
+    <h5 id="wire-up">3. Wire Up</h5>
+    <p>
+      Wire up the new link in the main menu to the newly added event handler
+      method.
+    </p>
+    <figure>
+      <img
+        src="/docs/assets/react-native-add-react-native-integration-wire-up.png"
+        alt="Event Path"
+      />
+      <figcaption>Event Path</figcaption>
+    </figure>
+    <blockquote>
+      <p>
+        One of the easier ways to do this is to open the view in the storyboard
+        and right click on the new link. Select something such as the
+        <code>Touch Up Inside</code> event, drag that to the storyboard and then
+        select the created method from the list provided.
+      </p>
+    </blockquote>
+    <h3 id="test-your-integration">Test your integration</h3>
+    <p>
+      You have now done all the basic steps to integrate React Native with your
+      current application. Now we will start the
+      <a href="https://facebook.github.io/metro/">Metro bundler</a> to build the
+      <code>index.bundle</code> package and the server running on
+      <code>localhost</code> to serve it.
+    </p>
+    <h5 id="add-app-transport-security-exception">
+      1. Add App Transport Security exception
+    </h5>
+    <p>
+      Apple has blocked implicit cleartext HTTP resource loading. So we need to
+      add the following our project’s <code>Info.plist</code> (or equivalent)
+      file.
+    </p>
+    <div class="sourceCode" id="cb12">
+      <pre
+        class="sourceCode xml"
+      ><code class="sourceCode xml"><a class="sourceLine" id="cb12-1" title="1"><span class="kw">&lt;key&gt;</span>NSAppTransportSecurity<span class="kw">&lt;/key&gt;</span></a>
+<a class="sourceLine" id="cb12-2" title="2"><span class="kw">&lt;dict&gt;</span></a>
+<a class="sourceLine" id="cb12-3" title="3">    <span class="kw">&lt;key&gt;</span>NSExceptionDomains<span class="kw">&lt;/key&gt;</span></a>
+<a class="sourceLine" id="cb12-4" title="4">    <span class="kw">&lt;dict&gt;</span></a>
+<a class="sourceLine" id="cb12-5" title="5">        <span class="kw">&lt;key&gt;</span>localhost<span class="kw">&lt;/key&gt;</span></a>
+<a class="sourceLine" id="cb12-6" title="6">        <span class="kw">&lt;dict&gt;</span></a>
+<a class="sourceLine" id="cb12-7" title="7">            <span class="kw">&lt;key&gt;</span>NSTemporaryExceptionAllowsInsecureHTTPLoads<span class="kw">&lt;/key&gt;</span></a>
+<a class="sourceLine" id="cb12-8" title="8">            <span class="kw">&lt;true/&gt;</span></a>
+<a class="sourceLine" id="cb12-9" title="9">        <span class="kw">&lt;/dict&gt;</span></a>
+<a class="sourceLine" id="cb12-10" title="10">    <span class="kw">&lt;/dict&gt;</span></a>
+<a class="sourceLine" id="cb12-11" title="11"><span class="kw">&lt;/dict&gt;</span></a></code></pre>
+    </div>
+    <blockquote>
+      <p>
+        App Transport Security is good for your users. Make sure to re-enable it
+        prior to releasing your app for production.
+      </p>
+    </blockquote>
+    <h5 id="run-the-packager">2. Run the packager</h5>
+    <p>
+      To run your app, you need to first start the development server. To do
+      this, run the following command in the root directory of your React Native
+      project:
+    </p>
+    <pre class="shell"><code>$ npm start</code></pre>
+    <h5 id="run-the-app">3. Run the app</h5>
+    <p>
+      If you are using Xcode or your favorite editor, build and run your native
+      iOS application as normal. Alternatively, you can run the app from the
+      command line using:
+    </p>
+    <pre><code># From the root of your project
+$ npx react-native run-ios</code></pre>
+    <p>
+      In our sample application, you should see the link to the “High Scores”
+      and then when you click on that you will see the rendering of your React
+      Native component.
+    </p>
+    <p>Here is the <em>native</em> application home screen:</p>
+    <figure>
+      <img
+        src="/docs/assets/react-native-add-react-native-integration-example-home-screen.png"
+        alt="Home Screen"
+      />
+      <figcaption>Home Screen</figcaption>
+    </figure>
+    <p>Here is the <em>React Native</em> high score screen:</p>
+    <figure>
+      <img
+        src="/docs/assets/react-native-add-react-native-integration-example-high-scores.png"
+        alt="High Scores"
+      />
+      <figcaption>High Scores</figcaption>
+    </figure>
+    <blockquote>
+      <p>
+        If you are getting module resolution issues when running your
+        application please see
+        <a href="https://github.com/facebook/react-native/issues/4968"
+          >this GitHub issue</a
+        >
+        for information and possible resolution.
+        <a
+          href="https://github.com/facebook/react-native/issues/4968#issuecomment-220941717"
+          >This comment</a
+        >
+        seemed to be the latest possible resolution.
+      </p>
+    </blockquote>
+    <h3 id="see-the-code">See the Code</h3>
+    <p>
+      You can examine the code that added the React Native screen to our sample
+      app on
+      <a
+        href="https://github.com/JoelMarcey/swift-2048/commit/13272a31ee6dd46dc68b1dcf4eaf16c1a10f5229"
+        >GitHub</a
+      >.
+    </p>
+    <h3 id="now-what">Now what?</h3>
+    <p>
+      At this point you can continue developing your app as usual. Refer to our
+      <a href="debugging">debugging</a> and
+      <a href="running-on-device">deployment</a> docs to learn more about
+      working with React Native.
+    </p>
+  </body>
+</html>

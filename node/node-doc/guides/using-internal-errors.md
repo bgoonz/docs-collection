@@ -1,8 +1,6 @@
-Using the internal/errors.js module
-===================================
+# Using the internal/errors.js module
 
-What is internal/errors.js
---------------------------
+## What is internal/errors.js
 
 The `require('internal/errors')` module is an internal-only module that can be used to produce `Error`, `TypeError` and `RangeError` instances that use a static, permanent error code and an optionally parameterized message.
 
@@ -10,8 +8,7 @@ The intent of the module is to allow errors provided by Node.js to be assigned a
 
 Switching an existing error to use the `internal/errors` module must be considered a `semver-major` change.
 
-Using internal/errors.js
-------------------------
+## Using internal/errors.js
 
 The `internal/errors` module exposes all custom errors as subclasses of the builtin errors. After being added, an error can be found in the `codes` object.
 
@@ -29,8 +26,7 @@ Then replacing the existing `new TypeError` in the code:
     // ...
     const err = new FOO(type);
 
-Adding new errors
------------------
+## Adding new errors
 
 New static error codes are added by modifying the `internal/errors.js` file and appending the new error codes to the end using the utility `E()` method.
 
@@ -50,13 +46,11 @@ It is possible to create multiple derived classes by providing additional argume
     // RangeError
     throw new EXAMPLE_KEY.RangeError();
 
-Documenting new errors
-----------------------
+## Documenting new errors
 
 Whenever a new static error code is added and used, corresponding documentation for the error code should be added to the `doc/api/errors.md` file. This will give users a place to go to easily look up the meaning of individual error codes.
 
-Testing new errors
-------------------
+## Testing new errors
 
 When adding a new error, corresponding test(s) for the error message formatting may also be required. If the message for the error is a constant string then no test is required for the error message formatting as we can trust the error helper implementation. An example of this kind of error would be:
 
@@ -80,8 +74,7 @@ In addition, there should also be tests which validate the use of the error base
 
 Avoid changing the format of the message after the error has been created. If it does make sense to do this for some reason, then additional tests validating the formatting of the error message for those cases will likely be required.
 
-API
----
+## API
 
 ### Object: errors.codes
 
@@ -89,8 +82,8 @@ Exposes all internal error classes to be used by Node.js APIs.
 
 ### Method: errors.message(key, args)
 
--   `key` {string} The static error identifier
--   `args` {Array} Zero or more optional arguments passed as an Array
--   Returns: {string}
+- `key` {string} The static error identifier
+- `args` {Array} Zero or more optional arguments passed as an Array
+- Returns: {string}
 
 Returns the formatted error message string for the given `key`.

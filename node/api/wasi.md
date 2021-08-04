@@ -1,5 +1,4 @@
-WebAssembly System Interface (WASI)
-===================================
+# WebAssembly System Interface (WASI)
 
 > Stability: 1 - Experimental
 
@@ -80,25 +79,24 @@ Use [wabt](https://github.com/WebAssembly/wabt) to compile `.wat` to `.wasm`
 
 The `--experimental-wasi-unstable-preview1` CLI argument is needed for this example to run.
 
-Class: `WASI`
--------------
+## Class: `WASI`
 
 The `WASI` class provides the WASI system call API and additional convenience methods for working with WASI-based applications. Each `WASI` instance represents a distinct sandbox environment. For security purposes, each `WASI` instance must have its command-line arguments, environment variables, and sandbox directory structure configured explicitly.
 
 ### `new WASI([options])`
 
--   `options` {Object}
-    -   `args` {Array} An array of strings that the WebAssembly application will see as command-line arguments. The first argument is the virtual path to the WASI command itself. **Default:** `[]`.
-    -   `env` {Object} An object similar to `process.env` that the WebAssembly application will see as its environment. **Default:** `{}`.
-    -   `preopens` {Object} This object represents the WebAssembly application’s sandbox directory structure. The string keys of `preopens` are treated as directories within the sandbox. The corresponding values in `preopens` are the real paths to those directories on the host machine.
-    -   `returnOnExit` {boolean} By default, WASI applications terminate the Node.js process via the `__wasi_proc_exit()` function. Setting this option to `true` causes `wasi.start()` to return the exit code rather than terminate the process. **Default:** `false`.
-    -   `stdin` {integer} The file descriptor used as standard input in the WebAssembly application. **Default:** `0`.
-    -   `stdout` {integer} The file descriptor used as standard output in the WebAssembly application. **Default:** `1`.
-    -   `stderr` {integer} The file descriptor used as standard error in the WebAssembly application. **Default:** `2`.
+- `options` {Object}
+  - `args` {Array} An array of strings that the WebAssembly application will see as command-line arguments. The first argument is the virtual path to the WASI command itself. **Default:** `[]`.
+  - `env` {Object} An object similar to `process.env` that the WebAssembly application will see as its environment. **Default:** `{}`.
+  - `preopens` {Object} This object represents the WebAssembly application’s sandbox directory structure. The string keys of `preopens` are treated as directories within the sandbox. The corresponding values in `preopens` are the real paths to those directories on the host machine.
+  - `returnOnExit` {boolean} By default, WASI applications terminate the Node.js process via the `__wasi_proc_exit()` function. Setting this option to `true` causes `wasi.start()` to return the exit code rather than terminate the process. **Default:** `false`.
+  - `stdin` {integer} The file descriptor used as standard input in the WebAssembly application. **Default:** `0`.
+  - `stdout` {integer} The file descriptor used as standard output in the WebAssembly application. **Default:** `1`.
+  - `stderr` {integer} The file descriptor used as standard error in the WebAssembly application. **Default:** `2`.
 
 ### `wasi.start(instance)`
 
--   `instance` {WebAssembly.Instance}
+- `instance` {WebAssembly.Instance}
 
 Attempt to begin execution of `instance` as a WASI command by invoking its `_start()` export. If `instance` does not contain a `_start()` export, or if `instance` contains an `_initialize()` export, then an exception is thrown.
 
@@ -108,7 +106,7 @@ If `start()` is called more than once, an exception is thrown.
 
 ### `wasi.initialize(instance)`
 
--   `instance` {WebAssembly.Instance}
+- `instance` {WebAssembly.Instance}
 
 Attempt to initialize `instance` as a WASI reactor by invoking its `_initialize()` export, if it is present. If `instance` contains a `_start()` export, then an exception is thrown.
 
@@ -118,6 +116,6 @@ If `initialize()` is called more than once, an exception is thrown.
 
 ### `wasi.wasiImport`
 
--   {Object}
+- {Object}
 
 `wasiImport` is an object that implements the WASI system call API. This object should be passed as the `wasi_snapshot_preview1` import during the instantiation of a [`WebAssembly.Instance`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly/Instance).

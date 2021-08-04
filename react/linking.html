@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Linking</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Linking</h1>
+</header>
+<p>import Tabs from ‘<span class="citation" data-cites="theme/Tabs">@theme/Tabs</span>’; import TabItem from ‘<span class="citation" data-cites="theme/TabItem">@theme/TabItem</span>’; import constants from ‘<span class="citation" data-cites="site/core/TabsConstants">@site/core/TabsConstants</span>’;</p>
+<div data-classname="banner-native-code-required">
+<h3>
+Projects with Native Code Only
+</h3>
+<p>
+The following section only applies to projects with native code exposed. If you are using the managed <code>expo-cli</code> workflow, see the guide on <a href="http://docs.expo.io/versions/latest/workflow/linking/">Linking</a> in the Expo documentation for the appropriate alternative.
+</p>
+</div>
+<p><code>Linking</code> gives you a general interface to interact with both incoming and outgoing app links.</p>
+<p>Every Link (URL) has a URL Scheme, some websites are prefixed with <code>https://</code> or <code>http://</code> and the <code>http</code> is the URL Scheme. Let’s call it scheme for short.</p>
+<p>In addition to <code>https</code>, you’re likely also familiar with the <code>mailto</code> scheme. When you open a link with the mailto scheme, your operating system will open an installed mail application. Similarly, there are schemes for making phone calls and sending SMS. Read more about <a href="#built-in-url-schemes">built-in URL</a> schemes below.</p>
+<p>Like using the mailto scheme, it’s possible to link to other applications by using custom url schemes. For example, when you get a <strong>Magic Link</strong> email from Slack, the <strong>Launch Slack</strong> button is an anchor tag with an href that looks something like: <code>slack://secret/magic-login/other-secret</code>. Like with Slack, you can tell the operating system that you want to handle a custom scheme. When the Slack app opens, it receives the URL that was used to open it. This is often referred to as deep linking. Read more about how to <a href="#get-the-deep-link">get the deep link</a> into your app.</p>
+<p>Custom URL scheme isn’t the only way to open your application on mobile. You don’t want to use a custom URL scheme in links in the email because then the links would be broken on desktop. Instead, you want to use a regular <code>https</code> links such as <code>https://www.myapp.io/records/1234546</code>. and on mobile you want that link open your app. Android calls it <strong>Deep Links</strong> (Universal Links - iOS).</p>
+<h3 id="built-in-url-schemes">Built-in URL Schemes</h3>
+<p>As mentioned in the introduction, there are some URL schemes for core functionality that exist on every platform. The following is a non-exhaustive list, but covers the most commonly used schemes.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Scheme</th>
+<th>Description</th>
+<th>iOS</th>
+<th>Android</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>mailto</code></td>
+<td>Open mail app, eg: mailto: support@expo.io</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr class="even">
+<td><code>tel</code></td>
+<td>Open phone app, eg: tel:+123456789</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr class="odd">
+<td><code>sms</code></td>
+<td>Open SMS app, eg: sms:+123456789</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr class="even">
+<td><code>https</code> / <code>http</code></td>
+<td>Open web browser app, eg: https://expo.io</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+</tbody>
+</table>
+<h3 id="enabling-deep-links">Enabling Deep Links</h3>
+<p>If you want to enable deep links in your app, please read the below guide:</p>
+<p><Tabs groupId="syntax" defaultValue={constants.defaultPlatform} values={constants.platforms}> <TabItem value="android"></p>
+<blockquote>
+<p>For instructions on how to add support for deep linking on Android, refer to <a href="http://developer.android.com/training/app-indexing/deep-linking.html#adding-filters">Enabling Deep Links for App Content - Add Intent Filters for Your Deep Links</a>.</p>
+</blockquote>
+<p>If you wish to receive the intent in an existing instance of MainActivity, you may set the <code>launchMode</code> of MainActivity to <code>singleTask</code> in <code>AndroidManifest.xml</code>. See <a href="http://developer.android.com/guide/topics/manifest/activity-element.html"><code>&lt;activity&gt;</code></a> documentation for more information.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode xml"><code class="sourceCode xml"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">&lt;activity</span></a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="ot">  android:name=</span><span class="st">&quot;.MainActivity&quot;</span></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="ot">  android:launchMode=</span><span class="st">&quot;singleTask&quot;</span><span class="kw">&gt;</span></a></code></pre></div>
+<p></TabItem> <TabItem value="ios"></p>
+<blockquote>
+<p><strong>NOTE:</strong> On iOS, you’ll need to add the <code>LinkingIOS</code> folder into your header search paths as described in step 3 <a href="linking-libraries-ios#step-3">here</a>. If you also want to listen to incoming app links during your app’s execution, you’ll need to add the following lines to your <code>*AppDelegate.m</code>:</p>
+</blockquote>
+<div class="sourceCode" id="cb2"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb2-1" title="1"><span class="co">// iOS 9.x or newer</span></a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="pp">#import </span><span class="im">&lt;React/RCTLinkingManager.h&gt;</span></a>
+<a class="sourceLine" id="cb2-3" title="3"></a>
+<a class="sourceLine" id="cb2-4" title="4">- (BOOL)application:(UIApplication *)application</a>
+<a class="sourceLine" id="cb2-5" title="5">   openURL:(NSURL *)url</a>
+<a class="sourceLine" id="cb2-6" title="6">   options:(NSDictionary&lt;UIApplicationOpenURLOptionsKey,id&gt; *)options</a>
+<a class="sourceLine" id="cb2-7" title="7">{</a>
+<a class="sourceLine" id="cb2-8" title="8">  <span class="kw">return</span> [RCTLinkingManager application:application openURL:url options:options];</a>
+<a class="sourceLine" id="cb2-9" title="9">}</a></code></pre></div>
+<p>If you’re targeting iOS 8.x or older, you can use the following code instead:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb3-1" title="1"><span class="co">// iOS 8.x or older</span></a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="pp">#import </span><span class="im">&lt;React/RCTLinkingManager.h&gt;</span></a>
+<a class="sourceLine" id="cb3-3" title="3"></a>
+<a class="sourceLine" id="cb3-4" title="4">- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url</a>
+<a class="sourceLine" id="cb3-5" title="5">  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation</a>
+<a class="sourceLine" id="cb3-6" title="6">{</a>
+<a class="sourceLine" id="cb3-7" title="7">  <span class="kw">return</span> [RCTLinkingManager application:application openURL:url</a>
+<a class="sourceLine" id="cb3-8" title="8">                      sourceApplication:sourceApplication annotation:annotation];</a>
+<a class="sourceLine" id="cb3-9" title="9">}</a></code></pre></div>
+<p>If your app is using <a href="https://developer.apple.com/library/prerelease/ios/documentation/General/Conceptual/AppSearch/UniversalLinks.html">Universal Links</a>, you’ll need to add the following code as well:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode objectivec"><code class="sourceCode objectivec"><a class="sourceLine" id="cb4-1" title="1">- (BOOL)application:(UIApplication *)application continueUserActivity:(nonnull NSUserActivity *)userActivity</a>
+<a class="sourceLine" id="cb4-2" title="2"> restorationHandler:(nonnull <span class="dt">void</span> (^)(NSArray&lt;id&lt;UIUserActivityRestoring&gt;&gt; * _Nullable))restorationHandler</a>
+<a class="sourceLine" id="cb4-3" title="3">{</a>
+<a class="sourceLine" id="cb4-4" title="4"> <span class="kw">return</span> [RCTLinkingManager application:application</a>
+<a class="sourceLine" id="cb4-5" title="5">                  continueUserActivity:userActivity</a>
+<a class="sourceLine" id="cb4-6" title="6">                    restorationHandler:restorationHandler];</a>
+<a class="sourceLine" id="cb4-7" title="7">}</a></code></pre></div>
+<p></TabItem> </Tabs></p>
+<h3 id="handling-deep-links">Handling Deep Links</h3>
+<p>There are two ways to handle URLs that open your app.</p>
+<h4 id="if-the-app-is-already-open-the-app-is-foregrounded-and-a-linking-url-event-is-fired">1. If the app is already open, the app is foregrounded and a Linking ‘url’ event is fired</h4>
+<p>You can handle these events with <code>Linking.addEventListener('url', callback)</code> - it calls <code>callback({ url })</code> with the linked URL</p>
+<h4 id="if-the-app-is-not-already-open-it-is-opened-and-the-url-is-passed-in-as-the-initialurl">2. If the app is not already open, it is opened and the url is passed in as the initialURL</h4>
+<p>You can handle these events with <code>Linking.getInitialURL()</code> - it returns a Promise that resolves to the URL, if there is one.</p>
+<hr />
+<h2 id="example">Example</h2>
+<h3 id="open-links-and-deep-links-universal-links">Open Links and Deep Links (Universal Links)</h3>
+<p>```SnackPlayer name=Linking%20Function%20Component%20Example&amp;supportedPlatforms=ios,android import React, { useCallback } from “react”; import { Alert, Button, Linking, StyleSheet, View } from “react-native”;</p>
+<p>const supportedURL = “https://google.com”;</p>
+<p>const unsupportedURL = “slack://open?team=123456”;</p>
+<p>const OpenURLButton = ({ url, children }) =&gt; { const handlePress = useCallback(async () =&gt; { // Checking if the link is supported for links with custom URL scheme. const supported = await Linking.canOpenURL(url);</p>
+<pre><code>if (supported) {
+  // Opening the link with some app, if the URL scheme is &quot;http&quot; the web link should be opened
+  // by some browser in the mobile
+  await Linking.openURL(url);
+} else {
+  Alert.alert(`Don&#39;t know how to open this URL: ${url}`);
+}</code></pre>
+<p>}, [url]);</p>
+<p>return <Button title={children} onPress={handlePress} />; };</p>
+<p>const App = () =&gt; { return ( <View style={styles.container}> <OpenURLButton url={supportedURL}>Open Supported URL</OpenURLButton> <OpenURLButton url={unsupportedURL}>Open Unsupported URL</OpenURLButton> </View> ); };</p>
+<p>const styles = StyleSheet.create({ container: { flex: 1, justifyContent: “center”, alignItems: “center” }, });</p>
+<p>export default App; ```</p>
+<h3 id="open-custom-settings">Open Custom Settings</h3>
+<p>```SnackPlayer name=Linking%20Function%20Component%20Example&amp;supportedPlatforms=ios,android import React, { useCallback } from “react”; import { Button, Linking, StyleSheet, View } from “react-native”;</p>
+<p>const OpenSettingsButton = ({ children }) =&gt; { const handlePress = useCallback(async () =&gt; { // Open the custom settings if the app has one await Linking.openSettings(); }, []);</p>
+<p>return <Button title={children} onPress={handlePress} />; };</p>
+<p>const App = () =&gt; { return ( <View style={styles.container}> <OpenSettingsButton>Open Settings</OpenSettingsButton> </View> ); };</p>
+<p>const styles = StyleSheet.create({ container: { flex: 1, justifyContent: “center”, alignItems: “center” }, });</p>
+<p>export default App; ```</p>
+<h3 id="get-the-deep-link">Get the Deep Link</h3>
+<p>```SnackPlayer name=Linking%20Function%20Component%20Example&amp;supportedPlatforms=ios,android import React, { useState, useEffect } from “react”; import { Linking, StyleSheet, Text, View } from “react-native”;</p>
+<p>const useMount = func =&gt; useEffect(() =&gt; func(), []);</p>
+<p>const useInitialURL = () =&gt; { const [url, setUrl] = useState(null); const [processing, setProcessing] = useState(true);</p>
+<p>useMount(() =&gt; { const getUrlAsync = async () =&gt; { // Get the deep link used to open the app const initialUrl = await Linking.getInitialURL();</p>
+<pre><code>  // The setTimeout is just for testing purpose
+  setTimeout(() =&gt; {
+    setUrl(initialUrl);
+    setProcessing(false);
+  }, 1000);
+};
+
+getUrlAsync();</code></pre>
+<p>});</p>
+<p>return { url, processing }; };</p>
+<p>const App = () =&gt; { const { url: initialUrl, processing } = useInitialURL();</p>
+<p>return ( <View style={styles.container}> <Text> {processing ? <code>Processing the initial url from a deep link</code> : <code>The deep link is: ${initialUrl || "None"}</code>} </Text> </View> ); };</p>
+<p>const styles = StyleSheet.create({ container: { flex: 1, justifyContent: “center”, alignItems: “center” }, });</p>
+<p>export default App; ```</p>
+<h3 id="send-intents-android">Send Intents (Android)</h3>
+<p>```SnackPlayer name=Linking%20Function%20Component%20Example&amp;supportedPlatforms=android import React, { useCallback } from “react”; import { Alert, Button, Linking, StyleSheet, View } from “react-native”;</p>
+<p>const SendIntentButton = ({ action, extras, children }) =&gt; { const handlePress = useCallback(async () =&gt; { try { await Linking.sendIntent(action, extras); } catch (e) { Alert.alert(e.message); } }, [action, extras]);</p>
+<p>return <Button title={children} onPress={handlePress} />; };</p>
+<p>const App = () =&gt; { return ( <View style={styles.container}> <SendIntentButton action="android.intent.action.POWER_USAGE_SUMMARY"> Power Usage Summary </SendIntentButton> &lt;SendIntentButton action=“android.settings.APP_NOTIFICATION_SETTINGS” extras={[ { “android.provider.extra.APP_PACKAGE”: “com.facebook.katana” }, ]} &gt; App Notification Settings </SendIntentButton> </View> ); };</p>
+<p>const styles = StyleSheet.create({ container: { flex: 1, justifyContent: “center”, alignItems: “center” }, });</p>
+<p>export default App; ```</p>
+<h1 id="reference">Reference</h1>
+<h2 id="methods">Methods</h2>
+<h3 id="addeventlistener"><code>addEventListener()</code></h3>
+<pre class="jsx"><code>addEventListener(type, handler);</code></pre>
+<p>Add a handler to Linking changes by listening to the <code>url</code> event type and providing the handler.</p>
+<hr />
+<h3 id="canopenurl"><code>canOpenURL()</code></h3>
+<pre class="jsx"><code>canOpenURL(url);</code></pre>
+<p>Determine whether or not an installed app can handle a given URL.</p>
+<p>The method returns a <code>Promise</code> object. When it is determined whether or not the given URL can be handled, the promise is resolved and the first parameter is whether or not it can be opened.</p>
+<p>The <code>Promise</code> will reject on Android if it was impossible to check if the URL can be opened, and on iOS if you didn’t add the specific scheme in the <code>LSApplicationQueriesSchemes</code> key inside <code>Info.plist</code> (see bellow).</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+| url
+<div data-classname="label basic required">
+Required
+</div>
+<p>| string | The URL to open. |</p>
+<blockquote>
+<p>For web URLs, the protocol (<code>"http://"</code>, <code>"https://"</code>) must be set accordingly!</p>
+</blockquote>
+<blockquote>
+<p>This method has limitations on iOS 9+. From <a href="https://developer.apple.com/documentation/uikit/uiapplication/1622952-canopenurl">the official Apple documentation</a>:</p>
+<ul>
+<li>If your app is linked against an earlier version of iOS but is running in iOS 9.0 or later, you can call this method up to 50 times. After reaching that limit, subsequent calls always return false. If the user reinstalls or upgrades the app, iOS resets the limit.</li>
+</ul>
+<p>As of iOS 9, your app also needs to provide the <code>LSApplicationQueriesSchemes</code> key inside <code>Info.plist</code> or <code>canOpenURL()</code> will always return <code>false</code>.</p>
+</blockquote>
+<hr />
+<h3 id="getinitialurl"><code>getInitialURL()</code></h3>
+<pre class="jsx"><code>getInitialURL();</code></pre>
+<p>If the app launch was triggered by an app link, it will give the link url, otherwise it will give <code>null</code>.</p>
+<blockquote>
+<p>To support deep linking on Android, refer http://developer.android.com/training/app-indexing/deep-linking.html#handling-intents</p>
+</blockquote>
+<blockquote>
+<p>getInitialURL may return <code>null</code> while debugging is enabled. Disable the debugger to ensure it gets passed.</p>
+</blockquote>
+<hr />
+<h3 id="opensettings"><code>openSettings()</code></h3>
+<pre class="jsx"><code>openSettings();</code></pre>
+<p>Open the Settings app and displays the app’s custom settings, if it has any.</p>
+<hr />
+<h3 id="openurl"><code>openURL()</code></h3>
+<pre class="jsx"><code>openURL(url);</code></pre>
+<p>Try to open the given <code>url</code> with any of the installed apps.</p>
+<p>You can use other URLs, like a location (e.g. “geo:37.484847,-122.148386” on Android or “http://maps.apple.com/?ll=37.484847,-122.148386” on iOS), a contact, or any other URL that can be opened with the installed apps.</p>
+<p>The method returns a <code>Promise</code> object. If the user confirms the open dialog or the url automatically opens, the promise is resolved. If the user cancels the open dialog or there are no registered applications for the url, the promise is rejected.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+| url
+<div data-classname="label basic required">
+Required
+</div>
+<p>| string | The URL to open. |</p>
+<blockquote>
+<p>This method will fail if the system doesn’t know how to open the specified URL. If you’re passing in a non-http(s) URL, it’s best to check <code>canOpenURL()</code> first.</p>
+</blockquote>
+<blockquote>
+<p>For web URLs, the protocol (<code>"http://"</code>, <code>"https://"</code>) must be set accordingly!</p>
+</blockquote>
+<blockquote>
+<p>This method may behave differently in a simulator e.g. <code>"tel:"</code> links are not able to be handled in the iOS simulator as there’s no access to the dialer app.</p>
+</blockquote>
+<hr />
+<h3 id="removeeventlistener"><code>removeEventListener()</code></h3>
+<pre class="jsx"><code>removeEventListener(type, handler);</code></pre>
+<blockquote>
+<p><strong>Deprecated.</strong> Use the <code>remove()</code> method on the event subscription returned by <a href="#addeventlistener"><code>addEventListener()</code></a>.</p>
+</blockquote>
+<hr />
+### <code>sendIntent()</code>
+<div class="label android">
+Android
+</div>
+<pre class="jsx"><code>sendIntent(action, extras);</code></pre>
+<p>Launch an Android intent with extras.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+| action
+<div data-classname="label basic required">
+Required
+</div>
+<p>| string | | extras | array of <code>{key: string, value: string, number, boolean}</code> |</p>
+</body>
+</html>

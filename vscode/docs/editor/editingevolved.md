@@ -1,10 +1,8 @@
-Code Navigation
-===============
+# Code Navigation
 
 Visual Studio Code has a high productivity code editor which, when combined with programming language services, gives you the power of an IDE and the speed of a text editor. In this topic, we’ll first describe VS Code’s language intelligence features (suggestions, parameter hints, smart code navigation) and then show the power of the core text editor.
 
-Quick file navigation
----------------------
+## Quick file navigation
 
 > **Tip:** You can open any file by its name when you type `kb(workbench.action.quickOpen)` (**Quick Open**).
 
@@ -16,10 +14,9 @@ Hold `kbstyle(Ctrl)` and press `kbstyle(Tab)` to view a list of all files open i
 
 Alternatively, you can use `kb(workbench.action.navigateBack)` and `kb(workbench.action.navigateForward)` to navigate between files and edit locations. If you are jumping around between different lines of the same file, these shortcuts allow you to navigate between those locations easily.
 
-Breadcrumbs
------------
+## Breadcrumbs
 
-The editor has a navigation bar above its contents called [Breadcrumbs](https://en.wikipedia.org/wiki/Breadcrumb_(navigation)). It shows the current location and allows you to quickly navigate between folders, files, and symbols.
+The editor has a navigation bar above its contents called [Breadcrumbs](<https://en.wikipedia.org/wiki/Breadcrumb_(navigation)>). It shows the current location and allows you to quickly navigate between folders, files, and symbols.
 
 ![Breadcrumbs](images/editingevolved/breadcrumbs.png)
 
@@ -45,9 +42,9 @@ You can control how symbols are ordered in the Breadcrumbs dropdown with the `br
 
 Allowed values are:
 
--   `position` - position in the file (default)
--   `name` - alphabetical order
--   `type` - symbol type order
+- `position` - position in the file (default)
+- `name` - alphabetical order
+- `type` - symbol type order
 
 ### Breadcrumb keyboard navigation
 
@@ -55,8 +52,7 @@ To interact with breadcrumbs, use the **Focus Breadcrumbs** command or press `kb
 
 You can also interact with breadcrumbs without the dropdown. Press `kb(breadcrumbs.focus)` to focus the last element, use `kb(breadcrumbs.focusPrevious)` and `kb(breadcrumbs.focusNext)` to navigate, and use `kb(breadcrumbs.revealFocused)` to reveal the element in the editor.
 
-Go to Definition
-----------------
+## Go to Definition
 
 If a [language](/docs/languages/overview.md) supports it, you can go to the definition of a symbol by pressing `kb(editor.action.revealDefinition)`.
 
@@ -66,32 +62,27 @@ If you press `kbstyle(Ctrl)` and hover over a symbol, a preview of the declarati
 
 > **Tip:** You can jump to the definition with `kbstyle(Ctrl+Click)` or open the definition to the side with `kbstyle(Ctrl+Alt+Click)`.
 
-Go to Type Definition
----------------------
+## Go to Type Definition
 
 Some [languages](/docs/languages/overview.md) also support jumping to the type definition of a symbol by running the **Go to Type Definition** command from either the editor context menu or the **Command Palette**. This will take you to the definition of the type of a symbol. The command `editor.action.goToTypeDefinition` is not bound to a keyboard shortcut by default but you can add your own custom [keybinding](/docs/getstarted/keybindings.md).
 
-Go to Implementation
---------------------
+## Go to Implementation
 
 [Languages](/docs/languages/overview.md) can also support jumping to the implementation of a symbol by pressing `kb(editor.action.goToImplementation)`. For an interface, this shows all the implementors of that interface and for abstract methods, this shows all concrete implementations of that method.
 
-Go to Symbol
-------------
+## Go to Symbol
 
 You can navigate symbols inside a file with `kb(workbench.action.gotoSymbol)`. By typing `kbstyle(:)` the symbols will be grouped by category. Press `kbstyle(Up)` or `kbstyle(Down)` and navigate to the place you want.
 
 ![Go to Symbol](images/editingevolved/gotosymbol.png)
 
-Open symbol by name
--------------------
+## Open symbol by name
 
 Some languages support jumping to a symbol across files with `kb(workbench.action.showAllSymbols)`. Type the first letter of a type you want to navigate to, regardless of which file contains it, and press `kbstyle(Enter)`.
 
 ![Open symbol by name](images/editingevolved/symbol.png)
 
-Peek
-----
+## Peek
 
 We think there’s nothing worse than a big context switch when all you want is to quickly check something. That’s why we support peeked editors. When you execute a **Go to References** search (via `kb(editor.action.goToReferences)`), or a **Peek Definition** (via `kb(editor.action.peekDefinition)`), we embed the result inline:
 
@@ -101,8 +92,7 @@ You can navigate between different references in the peeked editor and make quic
 
 > **Tip:** Additionally, the peek window is closed if you press `kbstyle(Escape)` or double-click in the peek editor region. You can disable this behavior with the `editor.stablePeek` [setting](/docs/getstarted/settings.md).
 
-Bracket matching
-----------------
+## Bracket matching
 
 Matching brackets will be highlighted as soon as the cursor is near one of them.
 
@@ -110,8 +100,7 @@ Matching brackets will be highlighted as soon as the cursor is near one of them.
 
 > **Tip:** You can jump to the matching bracket with `kb(editor.action.jumpToBracket)`
 
-Reference information
----------------------
+## Reference information
 
 Some languages like C\# support inline reference information, that is updated live. This allows you to quickly analyze the impact of your edit or the popularity of your specific method or property throughout your project:
 
@@ -121,21 +110,19 @@ Some languages like C\# support inline reference information, that is updated li
 
 > **Tip:** Reference information shown in CodeLens can be turned on or off through the `editor.codeLens` [setting](/docs/getstarted/settings.md).
 
-Rename symbol
--------------
+## Rename symbol
 
 Some languages support rename symbol across files. Press `kb(editor.action.rename)` and then type the new desired name and press `kbstyle(Enter)`. All usages of the symbol will be renamed, across files.
 
 ![Rename](images/editingevolved/rename.png)
 
-Errors & warnings
------------------
+## Errors & warnings
 
 Warnings or Errors can be generated either via [configured tasks](/docs/editor/tasks.md), by rich language services, or by linters, that constantly analyze your code in the background. Since we love bug-free code, warnings and errors show up in multiple places:
 
--   In the Status Bar, there is a summary of all errors and warnings counts.
--   You can click on the summary or press `kb(workbench.actions.view.problems)` to display the **PROBLEMS** panel with a list of all current errors.
--   If you open a file that has errors or warnings, they will be rendered inline with the text and in the overview ruler.
+- In the Status Bar, there is a summary of all errors and warnings counts.
+- You can click on the summary or press `kb(workbench.actions.view.problems)` to display the **PROBLEMS** panel with a list of all current errors.
+- If you open a file that has errors or warnings, they will be rendered inline with the text and in the overview ruler.
 
 ![errors in problems panel](images/editingevolved/errors.png)
 
@@ -143,13 +130,11 @@ Warnings or Errors can be generated either via [configured tasks](/docs/editor/t
 
 ![Errors and Warnings Inline](images/editingevolved/errorsinline.png)
 
-Code Action
------------
+## Code Action
 
 Warnings and Errors can provide Code Actions (also known as Quick Fixes) to help fix issues. These will be displayed in the editor in the left margin as a lightbulb. Clicking on the lightbulb will either display the Code Action options or perform the action.
 
-Outgoing link protection
-------------------------
+## Outgoing link protection
 
 For your protection, VS Code displays a prompt before opening an outgoing website link from the editor.
 
@@ -169,18 +154,16 @@ The option to **Manage Trusted Domains**, also available at any time from the Co
 
 The **Trusted Domains** JSON file also has comments with examples of the supported domain formats and a list of the domains trusted by default, such as `https://*.visualstudio.com` and `https://*.microsoft.com`.
 
-Next steps
-----------
+## Next steps
 
 Now that you know how the editor works, time to try a few other things…
 
--   [Intro Video - Code Editing](/docs/introvideos/codeediting.md) - Watch an introductory video on code editing features.
--   [User Interface](/docs/getstarted/userinterface.md) - In case you missed a basic orientation around VS Code.
--   [Key Bindings](/docs/getstarted/keybindings.md) - Learn how to modify key bindings to your preference.
--   [Debugging](/docs/editor/debugging.md) - This is where VS Code really shines.
+- [Intro Video - Code Editing](/docs/introvideos/codeediting.md) - Watch an introductory video on code editing features.
+- [User Interface](/docs/getstarted/userinterface.md) - In case you missed a basic orientation around VS Code.
+- [Key Bindings](/docs/getstarted/keybindings.md) - Learn how to modify key bindings to your preference.
+- [Debugging](/docs/editor/debugging.md) - This is where VS Code really shines.
 
-Common questions
-----------------
+## Common questions
 
 ### How can I automatically select the second entry in Quick Open instead of the first?
 

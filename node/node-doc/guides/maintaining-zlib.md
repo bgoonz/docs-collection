@@ -1,10 +1,8 @@
-Maintaining zlib
-================
+# Maintaining zlib
 
 This copy of zlib comes from the Chromium team’s zlib fork which incorporated performance improvements not currently available in standard zlib.
 
-Updating zlib
--------------
+## Updating zlib
 
 Update zlib:
 
@@ -21,8 +19,7 @@ Check that Node.js still builds and tests.
 
 It may be necessary to update deps/zlib/zlib.gyp if any significant changes have occurred upstream.
 
-Committing zlib
----------------
+## Committing zlib
 
 Add zlib: `git add --all deps/zlib`
 

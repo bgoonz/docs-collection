@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>PermissionsAndroid</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">PermissionsAndroid</h1>
+</header>
+<p>import Tabs from ‘<span class="citation" data-cites="theme/Tabs">@theme/Tabs</span>’; import TabItem from ‘<span class="citation" data-cites="theme/TabItem">@theme/TabItem</span>’; import constants from ‘<span class="citation" data-cites="site/core/TabsConstants">@site/core/TabsConstants</span>’;</p>
+<div data-classname="banner-native-code-required">
+<h3>
+Project with Native Code Required
+</h3>
+<p>
+The following section only applies to projects with native code exposed. If you are using the managed <code>expo-cli</code> workflow, see the guide on <a href="https://docs.expo.io/versions/latest/sdk/permissions/">Permissions</a> in the Expo documentation for the appropriate alternative.
+</p>
+</div>
+<p><code>PermissionsAndroid</code> provides access to Android M’s new permissions model. The so-called “normal” permissions are granted by default when the application is installed as long as they appear in <code>AndroidManifest.xml</code>. However, “dangerous” permissions require a dialog prompt. You should use this module for those permissions.</p>
+<p>On devices before SDK version 23, the permissions are automatically granted if they appear in the manifest, so <code>check</code> should always result to <code>true</code> and <code>request</code> should always resolve to <code>PermissionsAndroid.RESULTS.GRANTED</code>.</p>
+<p>If a user has previously turned off a permission that you prompt for, the OS will advise your app to show a rationale for needing the permission. The optional <code>rationale</code> argument will show a dialog prompt only if necessary - otherwise the normal permission prompt will appear.</p>
+<h3 id="example">Example</h3>
+<p><Tabs groupId="syntax" defaultValue={constants.defaultSyntax} values={constants.syntax}> <TabItem value="functional"></p>
+<p>```SnackPlayer name=PermissionsAndroid%20Example&amp;supportedPlatforms=android import React from “react”; import { Button, PermissionsAndroid, SafeAreaView, StatusBar, StyleSheet, Text, View } from “react-native”;</p>
+<p>const requestCameraPermission = async () =&gt; { try { const granted = await PermissionsAndroid.request( PermissionsAndroid.PERMISSIONS.CAMERA, { title: “Cool Photo App Camera Permission”, message: “Cool Photo App needs access to your camera” + “so you can take awesome pictures.”, buttonNeutral: “Ask Me Later”, buttonNegative: “Cancel”, buttonPositive: “OK” } ); if (granted === PermissionsAndroid.RESULTS.GRANTED) { console.log(“You can use the camera”); } else { console.log(“Camera permission denied”); } } catch (err) { console.warn(err); } };</p>
+<p>const App = () =&gt; ( <View style={styles.container}> <Text style={styles.item}>Try permissions</Text> <Button title="request permissions" onPress={requestCameraPermission} /> </View> );</p>
+<p>const styles = StyleSheet.create({ container: { flex: 1, justifyContent: “center”, paddingTop: StatusBar.currentHeight, backgroundColor: “#ecf0f1”, padding: 8 }, item: { margin: 24, fontSize: 18, fontWeight: “bold”, textAlign: “center” } });</p>
+<p>export default App; ```</p>
+<p></TabItem> <TabItem value="classical"></p>
+<p>```SnackPlayer name=PermissionsAndroid%20Example&amp;supportedPlatforms=android import React, { Component } from “react”; import { Button, PermissionsAndroid, SafeAreaView, StatusBar, StyleSheet, Text, View } from “react-native”;</p>
+<p>const requestCameraPermission = async () =&gt; { try { const granted = await PermissionsAndroid.request( PermissionsAndroid.PERMISSIONS.CAMERA, { title: “Cool Photo App Camera Permission”, message: “Cool Photo App needs access to your camera” + “so you can take awesome pictures.”, buttonNeutral: “Ask Me Later”, buttonNegative: “Cancel”, buttonPositive: “OK” } ); if (granted === PermissionsAndroid.RESULTS.GRANTED) { console.log(“You can use the camera”); } else { console.log(“Camera permission denied”); } } catch (err) { console.warn(err); } };</p>
+<p>class App extends Component { render() { return ( <View style={styles.container}> <Text style={styles.item}>Try permissions</Text> <Button title="request permissions" onPress={requestCameraPermission} /> </View> ); } };</p>
+<p>const styles = StyleSheet.create({ container: { flex: 1, justifyContent: “center”, paddingTop: StatusBar.currentHeight, backgroundColor: “#ecf0f1”, padding: 8 }, item: { margin: 24, fontSize: 18, fontWeight: “bold”, textAlign: “center” } });</p>
+<p>export default App; ```</p>
+<p></TabItem> </Tabs></p>
+<h3 id="permissions-that-require-prompting-the-user">Permissions that require prompting the user</h3>
+<p>Available as constants under <code>PermissionsAndroid.PERMISSIONS</code>:</p>
+<ul>
+<li><code>READ_CALENDAR</code>: ‘android.permission.READ_CALENDAR’</li>
+<li><code>WRITE_CALENDAR</code>: ‘android.permission.WRITE_CALENDAR’</li>
+<li><code>CAMERA</code>: ‘android.permission.CAMERA’</li>
+<li><code>READ_CONTACTS</code>: ‘android.permission.READ_CONTACTS’</li>
+<li><code>WRITE_CONTACTS</code>: ‘android.permission.WRITE_CONTACTS’</li>
+<li><code>GET_ACCOUNTS</code>: ‘android.permission.GET_ACCOUNTS’</li>
+<li><code>ACCESS_FINE_LOCATION</code>: ‘android.permission.ACCESS_FINE_LOCATION’</li>
+<li><code>ACCESS_COARSE_LOCATION</code>: ‘android.permission.ACCESS_COARSE_LOCATION’</li>
+<li><code>RECORD_AUDIO</code>: ‘android.permission.RECORD_AUDIO’</li>
+<li><code>READ_PHONE_STATE</code>: ‘android.permission.READ_PHONE_STATE’</li>
+<li><code>CALL_PHONE</code>: ‘android.permission.CALL_PHONE’</li>
+<li><code>READ_CALL_LOG</code>: ‘android.permission.READ_CALL_LOG’</li>
+<li><code>WRITE_CALL_LOG</code>: ‘android.permission.WRITE_CALL_LOG’</li>
+<li><code>ADD_VOICEMAIL</code>: ‘com.android.voicemail.permission.ADD_VOICEMAIL’</li>
+<li><code>USE_SIP</code>: ‘android.permission.USE_SIP’</li>
+<li><code>PROCESS_OUTGOING_CALLS</code>: ‘android.permission.PROCESS_OUTGOING_CALLS’</li>
+<li><code>BODY_SENSORS</code>: ‘android.permission.BODY_SENSORS’</li>
+<li><code>SEND_SMS</code>: ‘android.permission.SEND_SMS’</li>
+<li><code>RECEIVE_SMS</code>: ‘android.permission.RECEIVE_SMS’</li>
+<li><code>READ_SMS</code>: ‘android.permission.READ_SMS’</li>
+<li><code>RECEIVE_WAP_PUSH</code>: ‘android.permission.RECEIVE_WAP_PUSH’</li>
+<li><code>RECEIVE_MMS</code>: ‘android.permission.RECEIVE_MMS’</li>
+<li><code>READ_EXTERNAL_STORAGE</code>: ‘android.permission.READ_EXTERNAL_STORAGE’</li>
+<li><code>WRITE_EXTERNAL_STORAGE</code>: ‘android.permission.WRITE_EXTERNAL_STORAGE’</li>
+</ul>
+<h3 id="result-strings-for-requesting-permissions">Result strings for requesting permissions</h3>
+<p>Available as constants under <code>PermissionsAndroid.RESULTS</code>:</p>
+<ul>
+<li><code>GRANTED</code>: ‘granted’</li>
+<li><code>DENIED</code>: ‘denied’</li>
+<li><code>NEVER_ASK_AGAIN</code>: ‘never_ask_again’</li>
+</ul>
+<hr />
+<h1 id="reference">Reference</h1>
+<h2 id="methods">Methods</h2>
+<h3 id="constructor"><code>constructor()</code></h3>
+<pre class="jsx"><code>constructor();</code></pre>
+<hr />
+<h3 id="check"><code>check()</code></h3>
+<pre class="jsx"><code>check(permission);</code></pre>
+<p>Returns a promise resolving to a boolean value as to whether the specified permissions has been granted.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>permission</td>
+<td>string</td>
+<td>Yes</td>
+<td>The permission to check for.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="request"><code>request()</code></h3>
+<pre class="jsx"><code>request(permission, [rationale]);</code></pre>
+<p>Prompts the user to enable a permission and returns a promise resolving to a string value (see result strings above) indicating whether the user allowed or denied the request or does not want to be asked again.</p>
+<p>If <code>rationale</code> is provided, this function checks with the OS whether it is necessary to show a dialog explaining why the permission is needed (https://developer.android.com/training/permissions/requesting.html#explain) and then shows the system permission dialog.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>permission</td>
+<td>string</td>
+<td>Yes</td>
+<td>The permission to request.</td>
+</tr>
+<tr class="even">
+<td>rationale</td>
+<td>object</td>
+<td>No</td>
+<td>See <code>rationale</code> below.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Rationale:</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>title</td>
+<td>string</td>
+<td>Yes</td>
+<td>The title of the dialog.</td>
+</tr>
+<tr class="even">
+<td>message</td>
+<td>string</td>
+<td>Yes</td>
+<td>The message of the dialog.</td>
+</tr>
+<tr class="odd">
+<td>buttonPositive</td>
+<td>string</td>
+<td>Yes</td>
+<td>The text of the positive button.</td>
+</tr>
+<tr class="even">
+<td>buttonNegative</td>
+<td>string</td>
+<td>No</td>
+<td>The text of the negative button.</td>
+</tr>
+<tr class="odd">
+<td>buttonNeutral</td>
+<td>string</td>
+<td>No</td>
+<td>The text of the neutral button.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="requestmultiple"><code>requestMultiple()</code></h3>
+<pre class="jsx"><code>requestMultiple(permissions);</code></pre>
+<p>Prompts the user to enable multiple permissions in the same dialog and returns an object with the permissions as keys and strings as values (see result strings above) indicating whether the user allowed or denied the request or does not want to be asked again.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>permissions</td>
+<td>array</td>
+<td>Yes</td>
+<td>Array of permissions to request.</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

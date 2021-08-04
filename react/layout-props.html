@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Layout Props</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Layout Props</h1>
+</header>
+<blockquote>
+<p>More detailed examples about those properties can be found on the <a href="flexbox">Layout with Flexbox</a> page.</p>
+</blockquote>
+<h3 id="example">Example</h3>
+<p>The following example shows how different properties can affect or shape a React Native layout. You can try for example to add or remove squares from the UI while changing the values of the property <code>flexWrap</code>.</p>
+<p>```SnackPlayer name=LayoutProps%20Example import React, { useState } from ‘react’; import { Button, ScrollView, StatusBar, StyleSheet, Text, View } from ‘react-native’;</p>
+<p>const App = () =&gt; { const flexDirections = [‘row’, ‘row-reverse’, ‘column’, ‘column-reverse’]; const justifyContents = [ ‘flex-start’, ‘flex-end’, ‘center’, ‘space-between’, ‘space-around’, ‘space-evenly’, ]; const alignItemsArr = [ ‘flex-start’, ‘flex-end’, ‘center’, ‘stretch’, ‘baseline’, ]; const wraps = [‘nowrap’, ‘wrap’, ‘wrap-reverse’]; const directions = [‘inherit’, ‘ltr’, ‘rtl’]; const [flexDirection, setFlexDirection] = useState(0); const [justifyContent, setJustifyContent] = useState(0); const [alignItems, setAlignItems] = useState(0); const [direction, setDirection] = useState(0); const [wrap, setWrap] = useState(0);</p>
+<p>const hookedStyles = { flexDirection: flexDirections[flexDirection], justifyContent: justifyContents[justifyContent], alignItems: alignItemsArr[alignItems], direction: directions[direction], flexWrap: wraps[wrap], };</p>
+<p>const changeSetting = (value, options, setterFunction) =&gt; { if (value == options.length - 1) { setterFunction(0); return; } setterFunction(value + 1); }; const [squares, setSquares] = useState([<Square />, <Square />, <Square />]); return ( &lt;&gt; &lt;View style={{ paddingTop: StatusBar.currentHeight }} /&gt; &lt;View style={[styles.container, styles.playingSpace, hookedStyles]}&gt; {squares.map(elem =&gt; elem)} </View> <ScrollView style={[styles.container]}> <View style={[styles.controlSpace]}> <View style={styles.buttonView}> &lt;Button title=“Change Flex Direction” onPress={() =&gt; changeSetting(flexDirection, flexDirections, setFlexDirection) } /&gt; <Text style={styles.text}>{flexDirections[flexDirection]}</Text> </View> <View style={styles.buttonView}> &lt;Button title=“Change Justify Content” onPress={() =&gt; changeSetting( justifyContent, justifyContents, setJustifyContent ) } /&gt; <Text style={styles.text}>{justifyContents[justifyContent]}</Text> </View> <View style={styles.buttonView}> &lt;Button title=“Change Align Items” onPress={() =&gt; changeSetting(alignItems, alignItemsArr, setAlignItems) } /&gt; <Text style={styles.text}>{alignItemsArr[alignItems]}</Text> </View> <View style={styles.buttonView}> &lt;Button title=“Change Direction” onPress={() =&gt; changeSetting(direction, directions, setDirection)} /&gt; <Text style={styles.text}>{directions[direction]}</Text> </View> <View style={styles.buttonView}> &lt;Button title=“Change Flex Wrap” onPress={() =&gt; changeSetting(wrap, wraps, setWrap)} /&gt; <Text style={styles.text}>{wraps[wrap]}</Text> </View> <View style={styles.buttonView}> &lt;Button title=“Add Square” onPress={() =&gt; setSquares([…squares, <Square/>])} /&gt; </View> <View style={styles.buttonView}> &lt;Button title=“Delete Square” onPress={() =&gt; setSquares(squares.filter((v, i) =&gt; i != squares.length - 1)) } /&gt; </View> </View> </ScrollView> &lt;/&gt; ); };</p>
+<p>const styles = StyleSheet.create({ container: { height: ‘50%’, }, playingSpace: { backgroundColor: ‘white’, borderColor: ‘blue’, borderWidth: 3, }, controlSpace: { flexDirection: ‘row’, flexWrap: ‘wrap’, backgroundColor: ‘#F5F5F5’, }, buttonView: { width: ‘50%’, padding: 10, }, text: { textAlign: ‘center’ }, });</p>
+<p>const Square = () =&gt; ( &lt;View style={{ width: 50, height: 50, backgroundColor: randomHexColor(), }} /&gt; );</p>
+<p>const randomHexColor = () =&gt; { return ‘#000000’.replace(/0/g, () =&gt; { return (~~(Math.random() * 16)).toString(16); }); };</p>
+<p>export default App; ```</p>
+<hr />
+<h1 id="reference">Reference</h1>
+<h2 id="props">Props</h2>
+<h3 id="aligncontent"><code>alignContent</code></h3>
+<p><code>alignContent</code> controls how rows align in the cross direction, overriding the <code>alignContent</code> of the parent. See https://developer.mozilla.org/en-US/docs/Web/CSS/align-content for more details.</p>
+<table>
+<colgroup>
+<col style="width: 91%" />
+<col style="width: 8%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>enum(‘flex-start’, ‘flex-end’, ‘center’, ‘stretch’, ‘space-between’, ‘space-around’)</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="alignitems"><code>alignItems</code></h3>
+<p><code>alignItems</code> aligns children in the cross direction. For example, if children are flowing vertically, <code>alignItems</code> controls how they align horizontally. It works like <code>align-items</code> in CSS (default: stretch). See https://developer.mozilla.org/en-US/docs/Web/CSS/align-items for more details.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>enum(‘flex-start’, ‘flex-end’, ‘center’, ‘stretch’, ‘baseline’)</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="alignself"><code>alignSelf</code></h3>
+<p><code>alignSelf</code> controls how a child aligns in the cross direction, overriding the <code>alignItems</code> of the parent. It works like <code>align-self</code> in CSS (default: auto). See https://developer.mozilla.org/en-US/docs/Web/CSS/align-self for more details.</p>
+<table>
+<colgroup>
+<col style="width: 89%" />
+<col style="width: 10%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>enum(‘auto’, ‘flex-start’, ‘flex-end’, ‘center’, ‘stretch’, ‘baseline’)</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="aspectratio"><code>aspectRatio</code></h3>
+<p>Aspect ratio controls the size of the undefined dimension of a node. See https://developer.mozilla.org/en-US/docs/Web/CSS/aspect-ratio for more details.</p>
+<ul>
+<li>On a node with a set width/height, aspect ratio controls the size of the unset dimension</li>
+<li>On a node with a set flex basis, aspect ratio controls the size of the node in the cross axis if unset</li>
+<li>On a node with a measure function, aspect ratio works as though the measure function measures the flex basis</li>
+<li>On a node with flex grow/shrink, aspect ratio controls the size of the node in the cross axis if unset</li>
+<li>Aspect ratio takes min/max dimensions into account</li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="borderbottomwidth"><code>borderBottomWidth</code></h3>
+<p><code>borderBottomWidth</code> works like <code>border-bottom-width</code> in CSS. See https://developer.mozilla.org/en-US/docs/Web/CSS/border-bottom-width for more details.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="borderendwidth"><code>borderEndWidth</code></h3>
+<p>When direction is <code>ltr</code>, <code>borderEndWidth</code> is equivalent to <code>borderRightWidth</code>. When direction is <code>rtl</code>, <code>borderEndWidth</code> is equivalent to <code>borderLeftWidth</code>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="borderleftwidth"><code>borderLeftWidth</code></h3>
+<p><code>borderLeftWidth</code> works like <code>border-left-width</code> in CSS. See https://developer.mozilla.org/en-US/docs/Web/CSS/border-left-width for more details.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="borderrightwidth"><code>borderRightWidth</code></h3>
+<p><code>borderRightWidth</code> works like <code>border-right-width</code> in CSS. See https://developer.mozilla.org/en-US/docs/Web/CSS/border-right-width for more details.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="borderstartwidth"><code>borderStartWidth</code></h3>
+<p>When direction is <code>ltr</code>, <code>borderStartWidth</code> is equivalent to <code>borderLeftWidth</code>. When direction is <code>rtl</code>, <code>borderStartWidth</code> is equivalent to <code>borderRightWidth</code>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="bordertopwidth"><code>borderTopWidth</code></h3>
+<p><code>borderTopWidth</code> works like <code>border-top-width</code> in CSS. See https://developer.mozilla.org/en-US/docs/Web/CSS/border-top-width for more details.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="borderwidth"><code>borderWidth</code></h3>
+<p><code>borderWidth</code> works like <code>border-width</code> in CSS. See https://developer.mozilla.org/en-US/docs/Web/CSS/border-width for more details.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="bottom"><code>bottom</code></h3>
+<p><code>bottom</code> is the number of logical pixels to offset the bottom edge of this component.</p>
+<p>It works similarly to <code>bottom</code> in CSS, but in React Native you must use points or percentages. Ems and other units are not supported.</p>
+<p>See https://developer.mozilla.org/en-US/docs/Web/CSS/bottom for more details of how <code>bottom</code> affects layout.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number, string</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="direction"><code>direction</code></h3>
+<p><code>direction</code> specifies the directional flow of the user interface. The default is <code>inherit</code>, except for root node which will have value based on the current locale. See https://yogalayout.com/docs/layout-direction for more details.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+<th>Platform</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>enum(‘inherit’, ‘ltr’, ‘rtl’)</td>
+<td>No</td>
+<td>iOS</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="display"><code>display</code></h3>
+<p><code>display</code> sets the display type of this component.</p>
+<p>It works similarly to <code>display</code> in CSS but only supports ‘flex’ and ‘none’. ‘flex’ is the default.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>enum(‘none’, ‘flex’)</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="end"><code>end</code></h3>
+<p>When the direction is <code>ltr</code>, <code>end</code> is equivalent to <code>right</code>. When the direction is <code>rtl</code>, <code>end</code> is equivalent to <code>left</code>.</p>
+<p>This style takes precedence over the <code>left</code> and <code>right</code> styles.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number, string</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="flex"><code>flex</code></h3>
+<p>In React Native <code>flex</code> does not work the same way that it does in CSS. <code>flex</code> is a number rather than a string, and it works according to the <a href="https://github.com/facebook/yoga">Yoga</a> layout engine.</p>
+<p>When <code>flex</code> is a positive number, it makes the component flexible, and it will be sized proportional to its flex value. So a component with <code>flex</code> set to 2 will take twice the space as a component with <code>flex</code> set to 1. <code>flex: &lt;positive number&gt;</code> equates to <code>flexGrow: &lt;positive number&gt;, flexShrink: 1, flexBasis: 0</code>.</p>
+<p>When <code>flex</code> is 0, the component is sized according to <code>width</code> and <code>height</code>, and it is inflexible.</p>
+<p>When <code>flex</code> is -1, the component is normally sized according to <code>width</code> and <code>height</code>. However, if there’s not enough space, the component will shrink to its <code>minWidth</code> and <code>minHeight</code>.</p>
+<p><code>flexGrow</code>, <code>flexShrink</code>, and <code>flexBasis</code> work the same as in CSS.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="flexbasis"><code>flexBasis</code></h3>
+<p><code>flexBasis</code> is an axis-independent way of providing the default size of an item along the main axis. Setting the <code>flexBasis</code> of a child is similar to setting the <code>width</code> of that child if its parent is a container with <code>flexDirection: row</code> or setting the <code>height</code> of a child if its parent is a container with <code>flexDirection: column</code>. The <code>flexBasis</code> of an item is the default size of that item, the size of the item before any <code>flexGrow</code> and <code>flexShrink</code> calculations are performed.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number, string</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="flexdirection"><code>flexDirection</code></h3>
+<p><code>flexDirection</code> controls which directions children of a container go. <code>row</code> goes left to right, <code>column</code> goes top to bottom, and you may be able to guess what the other two do. It works like <code>flex-direction</code> in CSS, except the default is <code>column</code>. See https://developer.mozilla.org/en-US/docs/Web/CSS/flex-direction for more details.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>enum(‘row’, ‘row-reverse’, ‘column’, ‘column-reverse’)</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="flexgrow"><code>flexGrow</code></h3>
+<p><code>flexGrow</code> describes how any space within a container should be distributed among its children along the main axis. After laying out its children, a container will distribute any remaining space according to the flex grow values specified by its children.</p>
+<p><code>flexGrow</code> accepts any floating point value &gt;= 0, with 0 being the default value. A container will distribute any remaining space among its children weighted by the children’s <code>flexGrow</code> values.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="flexshrink"><code>flexShrink</code></h3>
+<p><a href="layout-props#flexshrink"><code>flexShrink</code></a> describes how to shrink children along the main axis in the case in which the total size of the children overflows the size of the container on the main axis. <code>flexShrink</code> is very similar to <code>flexGrow</code> and can be thought of in the same way if any overflowing size is considered to be negative remaining space. These two properties also work well together by allowing children to grow and shrink as needed.</p>
+<p><code>flexShrink</code> accepts any floating point value &gt;= 0, with 1 being the default value. A container will shrink its children weighted by the children’s <code>flexShrink</code> values.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="flexwrap"><code>flexWrap</code></h3>
+<p><code>flexWrap</code> controls whether children can wrap around after they hit the end of a flex container. It works like <code>flex-wrap</code> in CSS (default: nowrap). See https://developer.mozilla.org/en-US/docs/Web/CSS/flex-wrap for more details. Note it does not work anymore with <code>alignItems: stretch</code> (the default), so you may want to use <code>alignItems: flex-start</code> for example (breaking change details: https://github.com/facebook/react-native/releases/tag/v0.28.0).</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>enum(‘wrap’, ‘nowrap’, ‘wrap-reverse’)</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="height"><code>height</code></h3>
+<p><code>height</code> sets the height of this component.</p>
+<p>It works similarly to <code>height</code> in CSS, but in React Native you must use points or percentages. Ems and other units are not supported. See https://developer.mozilla.org/en-US/docs/Web/CSS/height for more details.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number, string</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="justifycontent"><code>justifyContent</code></h3>
+<p><code>justifyContent</code> aligns children in the main direction. For example, if children are flowing vertically, <code>justifyContent</code> controls how they align vertically. It works like <code>justify-content</code> in CSS (default: flex-start). See https://developer.mozilla.org/en-US/docs/Web/CSS/justify-content for more details.</p>
+<table>
+<colgroup>
+<col style="width: 91%" />
+<col style="width: 8%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>enum(‘flex-start’, ‘flex-end’, ‘center’, ‘space-between’, ‘space-around’, ‘space-evenly’)</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="left"><code>left</code></h3>
+<p><code>left</code> is the number of logical pixels to offset the left edge of this component.</p>
+<p>It works similarly to <code>left</code> in CSS, but in React Native you must use points or percentages. Ems and other units are not supported.</p>
+<p>See https://developer.mozilla.org/en-US/docs/Web/CSS/left for more details of how <code>left</code> affects layout.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number, string</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="margin"><code>margin</code></h3>
+<p>Setting <code>margin</code> has the same effect as setting each of <code>marginTop</code>, <code>marginLeft</code>, <code>marginBottom</code>, and <code>marginRight</code>. See https://developer.mozilla.org/en-US/docs/Web/CSS/margin for more details.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number, string</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="marginbottom"><code>marginBottom</code></h3>
+<p><code>marginBottom</code> works like <code>margin-bottom</code> in CSS. See https://developer.mozilla.org/en-US/docs/Web/CSS/margin-bottom for more details.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number, string</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="marginend"><code>marginEnd</code></h3>
+<p>When direction is <code>ltr</code>, <code>marginEnd</code> is equivalent to <code>marginRight</code>. When direction is <code>rtl</code>, <code>marginEnd</code> is equivalent to <code>marginLeft</code>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number, string</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="marginhorizontal"><code>marginHorizontal</code></h3>
+<p>Setting <code>marginHorizontal</code> has the same effect as setting both <code>marginLeft</code> and <code>marginRight</code>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number, string</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="marginleft"><code>marginLeft</code></h3>
+<p><code>marginLeft</code> works like <code>margin-left</code> in CSS. See https://developer.mozilla.org/en-US/docs/Web/CSS/margin-left for more details.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number, string</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="marginright"><code>marginRight</code></h3>
+<p><code>marginRight</code> works like <code>margin-right</code> in CSS. See https://developer.mozilla.org/en-US/docs/Web/CSS/margin-right for more details.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number, string</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="marginstart"><code>marginStart</code></h3>
+<p>When direction is <code>ltr</code>, <code>marginStart</code> is equivalent to <code>marginLeft</code>. When direction is <code>rtl</code>, <code>marginStart</code> is equivalent to <code>marginRight</code>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number, string</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="margintop"><code>marginTop</code></h3>
+<p><code>marginTop</code> works like <code>margin-top</code> in CSS. See https://developer.mozilla.org/en-US/docs/Web/CSS/margin-top for more details.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number, string</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="marginvertical"><code>marginVertical</code></h3>
+<p>Setting <code>marginVertical</code> has the same effect as setting both <code>marginTop</code> and <code>marginBottom</code>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number, string</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="maxheight"><code>maxHeight</code></h3>
+<p><code>maxHeight</code> is the maximum height for this component, in logical pixels.</p>
+<p>It works similarly to <code>max-height</code> in CSS, but in React Native you must use points or percentages. Ems and other units are not supported.</p>
+<p>See https://developer.mozilla.org/en-US/docs/Web/CSS/max-height for more details.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number, string</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="maxwidth"><code>maxWidth</code></h3>
+<p><code>maxWidth</code> is the maximum width for this component, in logical pixels.</p>
+<p>It works similarly to <code>max-width</code> in CSS, but in React Native you must use points or percentages. Ems and other units are not supported.</p>
+<p>See https://developer.mozilla.org/en-US/docs/Web/CSS/max-width for more details.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number, string</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="minheight"><code>minHeight</code></h3>
+<p><code>minHeight</code> is the minimum height for this component, in logical pixels.</p>
+<p>It works similarly to <code>min-height</code> in CSS, but in React Native you must use points or percentages. Ems and other units are not supported.</p>
+<p>See https://developer.mozilla.org/en-US/docs/Web/CSS/min-height for more details.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number, string</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="minwidth"><code>minWidth</code></h3>
+<p><code>minWidth</code> is the minimum width for this component, in logical pixels.</p>
+<p>It works similarly to <code>min-width</code> in CSS, but in React Native you must use points or percentages. Ems and other units are not supported.</p>
+<p>See https://developer.mozilla.org/en-US/docs/Web/CSS/min-width for more details.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number, string</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="overflow"><code>overflow</code></h3>
+<p><code>overflow</code> controls how children are measured and displayed. <code>overflow: hidden</code> causes views to be clipped while <code>overflow: scroll</code> causes views to be measured independently of their parents’ main axis. It works like <code>overflow</code> in CSS (default: visible). See https://developer.mozilla.org/en/docs/Web/CSS/overflow for more details.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>enum(‘visible’, ‘hidden’, ‘scroll’)</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="padding"><code>padding</code></h3>
+<p>Setting <code>padding</code> has the same effect as setting each of <code>paddingTop</code>, <code>paddingBottom</code>, <code>paddingLeft</code>, and <code>paddingRight</code>. See https://developer.mozilla.org/en-US/docs/Web/CSS/padding for more details.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number, string</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="paddingbottom"><code>paddingBottom</code></h3>
+<p><code>paddingBottom</code> works like <code>padding-bottom</code> in CSS. See https://developer.mozilla.org/en-US/docs/Web/CSS/padding-bottom for more details.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number, string</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="paddingend"><code>paddingEnd</code></h3>
+<p>When direction is <code>ltr</code>, <code>paddingEnd</code> is equivalent to <code>paddingRight</code>. When direction is <code>rtl</code>, <code>paddingEnd</code> is equivalent to <code>paddingLeft</code>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number, string</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="paddinghorizontal"><code>paddingHorizontal</code></h3>
+<p>Setting <code>paddingHorizontal</code> is like setting both of <code>paddingLeft</code> and <code>paddingRight</code>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number, string</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="paddingleft"><code>paddingLeft</code></h3>
+<p><code>paddingLeft</code> works like <code>padding-left</code> in CSS. See https://developer.mozilla.org/en-US/docs/Web/CSS/padding-left for more details.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number, string</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="paddingright"><code>paddingRight</code></h3>
+<p><code>paddingRight</code> works like <code>padding-right</code> in CSS. See https://developer.mozilla.org/en-US/docs/Web/CSS/padding-right for more details.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number, string</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="paddingstart"><code>paddingStart</code></h3>
+<p>When direction is <code>ltr</code>, <code>paddingStart</code> is equivalent to <code>paddingLeft</code>. When direction is <code>rtl</code>, <code>paddingStart</code> is equivalent to <code>paddingRight</code>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number, string</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="paddingtop"><code>paddingTop</code></h3>
+<p><code>paddingTop</code> works like <code>padding-top</code> in CSS. See https://developer.mozilla.org/en-US/docs/Web/CSS/padding-top for more details.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number, ,string</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="paddingvertical"><code>paddingVertical</code></h3>
+<p>Setting <code>paddingVertical</code> is like setting both of <code>paddingTop</code> and <code>paddingBottom</code>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number, string</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="position"><code>position</code></h3>
+<p><code>position</code> in React Native is similar to regular CSS, but everything is set to <code>relative</code> by default, so <code>absolute</code> positioning is always relative to the parent.</p>
+<p>If you want to position a child using specific numbers of logical pixels relative to its parent, set the child to have <code>absolute</code> position.</p>
+<p>If you want to position a child relative to something that is not its parent, don’t use styles for that. Use the component tree.</p>
+<p>See https://github.com/facebook/yoga for more details on how <code>position</code> differs between React Native and CSS.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>enum(‘absolute’, ‘relative’)</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="right"><code>right</code></h3>
+<p><code>right</code> is the number of logical pixels to offset the right edge of this component.</p>
+<p>It works similarly to <code>right</code> in CSS, but in React Native you must use points or percentages. Ems and other units are not supported.</p>
+<p>See https://developer.mozilla.org/en-US/docs/Web/CSS/right for more details of how <code>right</code> affects layout.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number, string</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="start"><code>start</code></h3>
+<p>When the direction is <code>ltr</code>, <code>start</code> is equivalent to <code>left</code>. When the direction is <code>rtl</code>, <code>start</code> is equivalent to <code>right</code>.</p>
+<p>This style takes precedence over the <code>left</code>, <code>right</code>, and <code>end</code> styles.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number, string</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="top"><code>top</code></h3>
+<p><code>top</code> is the number of logical pixels to offset the top edge of this component.</p>
+<p>It works similarly to <code>top</code> in CSS, but in React Native you must use points or percentages. Ems and other units are not supported.</p>
+<p>See https://developer.mozilla.org/en-US/docs/Web/CSS/top for more details of how <code>top</code> affects layout.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number, string</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="width"><code>width</code></h3>
+<p><code>width</code> sets the width of this component.</p>
+<p>It works similarly to <code>width</code> in CSS, but in React Native you must use points or percentages. Ems and other units are not supported. See https://developer.mozilla.org/en-US/docs/Web/CSS/width for more details.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number, string</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="zindex"><code>zIndex</code></h3>
+<p><code>zIndex</code> controls which components display on top of others. Normally, you don’t use <code>zIndex</code>. Components render according to their order in the document tree, so later components draw over earlier ones. <code>zIndex</code> may be useful if you have animations or custom modal interfaces where you don’t want this behavior.</p>
+<p>It works like the CSS <code>z-index</code> property - components with a larger <code>zIndex</code> will render on top. Think of the z-direction like it’s pointing from the phone into your eyeball. See https://developer.mozilla.org/en-US/docs/Web/CSS/z-index for more details.</p>
+<p>On iOS, <code>zIndex</code> may require <code>View</code>s to be siblings of each other for it to work as expected.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+</body>
+</html>

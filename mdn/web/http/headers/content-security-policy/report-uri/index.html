@@ -1,37 +1,49 @@
 ---
-title: 'CSP: report-uri'
+title: "CSP: report-uri"
 slug: Web/HTTP/Headers/Content-Security-Policy/report-uri
 tags:
-- CSP
-- Directive
-- HTTP
-- Reference
-- Security
+  - CSP
+  - Directive
+  - HTTP
+  - Reference
+  - Security
 browser-compat: http.headers.csp.Content-Security-Policy.report-uri
 ---
+
 <div>{{HTTPSidebar}}{{deprecated_header}}</div>
 
-<p>The deprecated HTTP {{HTTPHeader("Content-Security-Policy")}} (CSP)
-  <code><strong>report-uri</strong></code> directive instructs the user agent to report
-  attempts to violate the Content Security Policy. These violation reports consist of JSON
-  documents sent via an HTTP POST request to the specified URI.</p>
+<p>
+  The deprecated HTTP {{HTTPHeader("Content-Security-Policy")}} (CSP)
+  <code><strong>report-uri</strong></code> directive instructs the user agent to
+  report attempts to violate the Content Security Policy. These violation
+  reports consist of JSON documents sent via an HTTP POST request to the
+  specified URI.
+</p>
 
 <div class="warning">
-  <p>Though the {{CSP("report-to")}} directive is intended to replace the deprecated
-    <code><strong>report-uri</strong></code> directive, {{CSP("report-to")}} isn’t
-    supported in most browsers yet. So for compatibility with current browsers while also
-    adding forward compatibility when browsers get {{CSP("report-to")}} support, you can
-    specify both <code><strong>report-uri</strong></code> and {{CSP("report-to")}}:</p>
+  <p>
+    Though the {{CSP("report-to")}} directive is intended to replace the
+    deprecated <code><strong>report-uri</strong></code> directive,
+    {{CSP("report-to")}} isn’t supported in most browsers yet. So for
+    compatibility with current browsers while also adding forward compatibility
+    when browsers get {{CSP("report-to")}} support, you can specify both
+    <code><strong>report-uri</strong></code> and {{CSP("report-to")}}:
+  </p>
 
-  <pre
-    class="brush: html">Content-Security-Policy: ...; report-uri https://endpoint.com; report-to groupname</pre>
+  <pre class="brush: html">
+Content-Security-Policy: ...; report-uri https://endpoint.com; report-to groupname</pre
+  >
 
-  <p>In browsers that support {{CSP("report-to")}}, the
-    <code><strong>report-uri</strong></code> directive will be ignored.</p>
+  <p>
+    In browsers that support {{CSP("report-to")}}, the
+    <code><strong>report-uri</strong></code> directive will be ignored.
+  </p>
 </div>
 
-<p>The directive has no effect in and of itself, but only gains meaning in combination
-  with other directives.</p>
+<p>
+  The directive has no effect in and of itself, but only gains meaning in
+  combination with other directives.
+</p>
 
 <table class="properties">
   <tbody>
@@ -44,16 +56,19 @@ browser-compat: http.headers.csp.Content-Security-Policy.report-uri
       <td>{{Glossary("Reporting directive")}}</td>
     </tr>
     <tr>
-      <th colspan="2" scope="row">This directive is not supported in the
-        {{HTMLElement("meta")}} element.</th>
+      <th colspan="2" scope="row">
+        This directive is not supported in the {{HTMLElement("meta")}} element.
+      </th>
     </tr>
   </tbody>
 </table>
 
 <h2 id="Syntax">Syntax</h2>
 
-<pre class="brush: html">Content-Security-Policy: report-uri &lt;uri&gt;;
-Content-Security-Policy: report-uri &lt;uri&gt; &lt;uri&gt;;</pre>
+<pre class="brush: html">
+Content-Security-Policy: report-uri &lt;uri&gt;;
+Content-Security-Policy: report-uri &lt;uri&gt; &lt;uri&gt;;</pre
+>
 
 <dl>
   <dt>&lt;uri&gt;</dt>
@@ -62,16 +77,24 @@ Content-Security-Policy: report-uri &lt;uri&gt; &lt;uri&gt;;</pre>
 
 <h2 id="Examples">Examples</h2>
 
-<p>See {{HTTPHeader("Content-Security-Policy-Report-Only")}} for more information and
-  examples.</p>
+<p>
+  See {{HTTPHeader("Content-Security-Policy-Report-Only")}} for more information
+  and examples.
+</p>
 
-<pre>Content-Security-Policy: default-src https:; report-uri /csp-violation-report-endpoint/</pre>
+<pre>
+Content-Security-Policy: default-src https:; report-uri /csp-violation-report-endpoint/</pre
+>
 
-<p><code>/csp-violation-report-endpoint/</code> could for example run a PHP something like
-  the following that logs the JSON detailing the violation and, if the violation is the
-  first one added to the log file, sends an email to an administrator:</p>
+<p>
+  <code>/csp-violation-report-endpoint/</code> could for example run a PHP
+  something like the following that logs the JSON detailing the violation and,
+  if the violation is the first one added to the log file, sends an email to an
+  administrator:
+</p>
 
-<pre class="brush: php">&lt;?php
+<pre class="brush: php">
+&lt;?php
 
 // Start configure
 $log_file = dirname(__FILE__) . '/csp-violations.log';

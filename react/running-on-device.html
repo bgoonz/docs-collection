@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Running On Device</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Running On Device</h1>
+</header>
+<p>import Tabs from ‘<span class="citation" data-cites="theme/Tabs">@theme/Tabs</span>’; import TabItem from ‘<span class="citation" data-cites="theme/TabItem">@theme/TabItem</span>’; import constants from ‘<span class="citation" data-cites="site/core/TabsConstants">@site/core/TabsConstants</span>’;</p>
+<p>It’s always a good idea to test your app on an actual device before releasing it to your users. This document will guide you through the necessary steps to run your React Native app on a device and to get it ready for production.</p>
+<p>If you used Expo CLI or Create React Native App to set up your project, you can preview your app on a device by scanning the QR code with the Expo app—but in order to build and run your app on a device, you will need to eject and install the native code dependencies from the <a href="environment-setup">environment setup guide</a>.</p>
+<p><Tabs groupId="platform" defaultValue={constants.defaultPlatform} values={constants.platforms} className="pill-tabs"> <TabItem value="android"></p>
+<h2 id="running-your-app-on-android-devices">Running your app on Android devices</h2>
+<h4 id="development-os">Development OS</h4>
+<p><Tabs groupId="os" defaultValue={constants.defaultOs} values={constants.oses} className="pill-tabs"> <TabItem value="macos"></p>
+<h3 id="enable-debugging-over-usb">1. Enable Debugging over USB</h3>
+<p>Most Android devices can only install and run apps downloaded from Google Play, by default. You will need to enable USB Debugging on your device in order to install your app during development.</p>
+<p>To enable USB debugging on your device, you will first need to enable the “Developer options” menu by going to <strong>Settings</strong> → <strong>About phone</strong> → <strong>Software information</strong> and then tapping the <code>Build number</code> row at the bottom seven times. You can then go back to <strong>Settings</strong> → <strong>Developer options</strong> to enable “USB debugging”.</p>
+<h3 id="plug-in-your-device-via-usb">2. Plug in your device via USB</h3>
+<p>Let’s now set up an Android device to run our React Native projects. Go ahead and plug in your device via USB to your development machine.</p>
+<p>Now check that your device is properly connecting to ADB, the Android Debug Bridge, by running <code>adb devices</code>.</p>
+<pre class="shell"><code>$ adb devices
+List of devices attached
+emulator-5554 offline   # Google emulator
+14ed2fcc device         # Physical device</code></pre>
+<p>Seeing <code>device</code> in the right column means the device is connected. You must have <strong>only one device connected</strong> at a time.</p>
+<h3 id="run-your-app">3. Run your app</h3>
+<p>Type the following in your command prompt to install and launch your app on the device:</p>
+<pre class="shell"><code>$ npx react-native run-android</code></pre>
+<blockquote>
+<p>If you get a “bridge configuration isn’t available” error, see <a href="running-on-device.md#method-1-using-adb-reverse-recommended">Using adb reverse</a>.</p>
+</blockquote>
+<blockquote>
+<p>Hint: You can also use the <code>React Native CLI</code> to generate and run a <code>Release</code> build (e.g. <code>npx react-native run-android --variant=release</code>).</p>
+</blockquote>
+<h2>
+Connecting to the development server
+</h2>
+<p>You can also iterate quickly on a device by connecting to the development server running on your development machine. There are several ways of accomplishing this, depending on whether you have access to a USB cable or a Wi-Fi network.</p>
+<h3 id="method-1-using-adb-reverse-recommended">Method 1: Using adb reverse (recommended)</h3>
+<p>You can use this method if your device is running Android 5.0 (Lollipop) or newer, it has USB debugging enabled, and it is connected via USB to your development machine.</p>
+<p>Run the following in a command prompt:</p>
+<pre class="shell"><code>$ adb -s &lt;device name&gt; reverse tcp:8081 tcp:8081</code></pre>
+<p>To find the device name, run the following adb command:</p>
+<pre class="shell"><code>$ adb devices</code></pre>
+<p>You can now enable Live reloading from the <a href="debugging.md#accessing-the-in-app-developer-menu">Developer menu</a>. Your app will reload whenever your JavaScript code has changed.</p>
+<h3 id="method-2-connect-via-wi-fi">Method 2: Connect via Wi-Fi</h3>
+<p>You can also connect to the development server over Wi-Fi. You’ll first need to install the app on your device using a USB cable, but once that has been done you can debug wirelessly by following these instructions. You’ll need your development machine’s current IP address before proceeding.</p>
+<p>You can find the IP address in <strong>System Preferences</strong> → <strong>Network</strong>.</p>
+<!-- alex ignore host -->
+<ol type="1">
+<li>Make sure your laptop and your phone are on the <strong>same</strong> Wi-Fi network.</li>
+<li>Open your React Native app on your device.</li>
+<li>You’ll see a <a href="debugging.md#in-app-errors-and-warnings">red screen with an error</a>. This is OK. The following steps will fix that.</li>
+<li>Open the in-app <a href="debugging.md#accessing-the-in-app-developer-menu">Developer menu</a>.</li>
+<li>Go to <strong>Dev Settings</strong> → <strong>Debug server host &amp; port for device</strong>.</li>
+<li>Type in your machine’s IP address and the port of the local dev server (e.g. 10.0.1.1:8081).</li>
+<li>Go back to the <strong>Developer menu</strong> and select <strong>Reload JS</strong>.</li>
+</ol>
+<p>You can now enable Live reloading from the <a href="debugging.md#accessing-the-in-app-developer-menu">Developer menu</a>. Your app will reload whenever your JavaScript code has changed.</p>
+<h2 id="building-your-app-for-production">Building your app for production</h2>
+<p>You have built a great app using React Native, and you are now itching to release it in the Play Store. The process is the same as any other native Android app, with some additional considerations to take into account. Follow the guide for <a href="signed-apk-android.md">generating a signed APK</a> to learn more.</p>
+<p></TabItem> <TabItem value="windows"></p>
+<h3 id="enable-debugging-over-usb-1">1. Enable Debugging over USB</h3>
+<p>Most Android devices can only install and run apps downloaded from Google Play, by default. You will need to enable USB Debugging on your device in order to install your app during development.</p>
+<p>To enable USB debugging on your device, you will first need to enable the “Developer options” menu by going to <strong>Settings</strong> → <strong>About phone</strong> → <strong>Software information</strong> and then tapping the <code>Build number</code> row at the bottom seven times. You can then go back to <strong>Settings</strong> → <strong>Developer options</strong> to enable “USB debugging”.</p>
+<h3 id="plug-in-your-device-via-usb-1">2. Plug in your device via USB</h3>
+<p>Let’s now set up an Android device to run our React Native projects. Go ahead and plug in your device via USB to your development machine.</p>
+<p>Now check that your device is properly connecting to ADB, the Android Debug Bridge, by running <code>adb devices</code>.</p>
+<pre class="shell"><code>$ adb devices
+List of devices attached
+emulator-5554 offline   # Google emulator
+14ed2fcc device         # Physical device</code></pre>
+<p>Seeing <code>device</code> in the right column means the device is connected. You must have <strong>only one device connected</strong> at a time.</p>
+<h3 id="run-your-app-1">3. Run your app</h3>
+<p>Type the following in your command prompt to install and launch your app on the device:</p>
+<pre class="shell"><code>$ npx react-native run-android</code></pre>
+<p>Select your project in the Xcode Project Navigator, then select your main target (it should share the same name as your project). Look for the “Signing &amp; Capabilities” tab. Go to “Signing” and make sure your Apple developer account or team is selected under the Team dropdown. Do the same for the tests target (it ends with Tests, and is below your main target).</p>
+<blockquote>
+<p>Hint: You can also use the <code>React Native CLI</code> to generate and run a <code>Release</code> build (e.g. <code>npx react-native run-android --variant=release</code>).</p>
+</blockquote>
+<h2>
+Connecting to the development server
+</h2>
+<p>You can also iterate quickly on a device by connecting to the development server running on your development machine. There are several ways of accomplishing this, depending on whether you have access to a USB cable or a Wi-Fi network.</p>
+<h3 id="method-1-using-adb-reverse-recommended-1">Method 1: Using adb reverse (recommended)</h3>
+<p>You can use this method if your device is running Android 5.0 (Lollipop) or newer, it has USB debugging enabled, and it is connected via USB to your development machine.</p>
+<p>Run the following in a command prompt:</p>
+<pre class="shell"><code>$ adb -s &lt;device name&gt; reverse tcp:8081 tcp:8081</code></pre>
+<p>To find the device name, run the following adb command:</p>
+<pre class="shell"><code>$ adb devices</code></pre>
+<p>You can now enable Live reloading from the <a href="debugging.md#accessing-the-in-app-developer-menu">Developer menu</a>. Your app will reload whenever your JavaScript code has changed.</p>
+<h3 id="method-2-connect-via-wi-fi-1">Method 2: Connect via Wi-Fi</h3>
+<p>You can also connect to the development server over Wi-Fi. You’ll first need to install the app on your device using a USB cable, but once that has been done you can debug wirelessly by following these instructions. You’ll need your development machine’s current IP address before proceeding.</p>
+<p>Open the command prompt and type <code>ipconfig</code> to find your machine’s IP address (<a href="http://windows.microsoft.com/en-us/windows/using-command-line-tools-networking-information">more info</a>).</p>
+<!-- alex ignore host -->
+<ol type="1">
+<li>Make sure your laptop and your phone are on the <strong>same</strong> Wi-Fi network.</li>
+<li>Open your React Native app on your device.</li>
+<li>You’ll see a <a href="debugging.md#in-app-errors-and-warnings">red screen with an error</a>. This is OK. The following steps will fix that.</li>
+<li>Open the in-app <a href="debugging.md#accessing-the-in-app-developer-menu">Developer menu</a>.</li>
+<li>Go to <strong>Dev Settings</strong> → <strong>Debug server host &amp; port for device</strong>.</li>
+<li>Type in your machine’s IP address and the port of the local dev server (e.g. 10.0.1.1:8081).</li>
+<li>Go back to the <strong>Developer menu</strong> and select <strong>Reload JS</strong>.</li>
+</ol>
+<p>You can now enable Live reloading from the <a href="debugging.md#accessing-the-in-app-developer-menu">Developer menu</a>. Your app will reload whenever your JavaScript code has changed.</p>
+<h2 id="building-your-app-for-production-1">Building your app for production</h2>
+<p>You have built a great app using React Native, and you are now itching to release it in the Play Store. The process is the same as any other native Android app, with some additional considerations to take into account. Follow the guide for <a href="signed-apk-android.md">generating a signed APK</a> to learn more.</p>
+<p></TabItem> <TabItem value="linux"></p>
+<h3 id="enable-debugging-over-usb-2">1. Enable Debugging over USB</h3>
+<p>Most Android devices can only install and run apps downloaded from Google Play, by default. You will need to enable USB Debugging on your device in order to install your app during development.</p>
+<p>To enable USB debugging on your device, you will first need to enable the “Developer options” menu by going to <strong>Settings</strong> → <strong>About phone</strong> → <strong>Software information</strong> and then tapping the <code>Build number</code> row at the bottom seven times. You can then go back to <strong>Settings</strong> → <strong>Developer options</strong> to enable “USB debugging”.</p>
+<h3 id="plug-in-your-device-via-usb-2">2. Plug in your device via USB</h3>
+<p>Let’s now set up an Android device to run our React Native projects. Go ahead and plug in your device via USB to your development machine.</p>
+<p>Next, check the manufacturer code by using <code>lsusb</code> (on mac, you must first <a href="https://github.com/jlhonora/lsusb">install lsusb</a>). <code>lsusb</code> should output something like this:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb9-1" title="1">$ <span class="ex">lsusb</span></a>
+<a class="sourceLine" id="cb9-2" title="2"><span class="ex">Bus</span> 002 Device 002: ID 8087:0024 Intel Corp. Integrated Rate Matching Hub</a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="ex">Bus</span> 002 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub</a>
+<a class="sourceLine" id="cb9-4" title="4"><span class="ex">Bus</span> 001 Device 003: ID 22b8:2e76 Motorola PCS</a>
+<a class="sourceLine" id="cb9-5" title="5"><span class="ex">Bus</span> 001 Device 002: ID 8087:0024 Intel Corp. Integrated Rate Matching Hub</a>
+<a class="sourceLine" id="cb9-6" title="6"><span class="ex">Bus</span> 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub</a>
+<a class="sourceLine" id="cb9-7" title="7"><span class="ex">Bus</span> 004 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub</a>
+<a class="sourceLine" id="cb9-8" title="8"><span class="ex">Bus</span> 003 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub</a></code></pre></div>
+<p>These lines represent the USB devices currently connected to your machine.</p>
+<p>You want the line that represents your phone. If you’re in doubt, try unplugging your phone and running the command again:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb10-1" title="1">$ <span class="ex">lsusb</span></a>
+<a class="sourceLine" id="cb10-2" title="2"><span class="ex">Bus</span> 002 Device 002: ID 8087:0024 Intel Corp. Integrated Rate Matching Hub</a>
+<a class="sourceLine" id="cb10-3" title="3"><span class="ex">Bus</span> 002 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub</a>
+<a class="sourceLine" id="cb10-4" title="4"><span class="ex">Bus</span> 001 Device 002: ID 8087:0024 Intel Corp. Integrated Rate Matching Hub</a>
+<a class="sourceLine" id="cb10-5" title="5"><span class="ex">Bus</span> 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub</a>
+<a class="sourceLine" id="cb10-6" title="6"><span class="ex">Bus</span> 004 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub</a>
+<a class="sourceLine" id="cb10-7" title="7"><span class="ex">Bus</span> 003 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub</a></code></pre></div>
+<p>You’ll see that after removing the phone, the line which has the phone model (“Motorola PCS” in this case) disappeared from the list. This is the line that we care about.</p>
+<p><code>Bus 001 Device 003: ID 22b8:2e76 Motorola PCS</code></p>
+<p>From the above line, you want to grab the first four digits from the device ID:</p>
+<p><code>22b8:2e76</code></p>
+<p>In this case, it’s <code>22b8</code>. That’s the identifier for Motorola.</p>
+<p>You’ll need to input this into your udev rules in order to get up and running:</p>
+<pre class="shell"><code>echo &#39;SUBSYSTEM==&quot;usb&quot;, ATTR{idVendor}==&quot;22b8&quot;, MODE=&quot;0666&quot;, GROUP=&quot;plugdev&quot;&#39; | sudo tee /etc/udev/rules.d/51-android-usb.rules</code></pre>
+<p>Make sure that you replace <code>22b8</code> with the identifier you get in the above command.</p>
+<p>Now check that your device is properly connecting to ADB, the Android Debug Bridge, by running <code>adb devices</code>.</p>
+<pre class="shell"><code>$ adb devices
+List of devices attached
+emulator-5554 offline   # Google emulator
+14ed2fcc device         # Physical device</code></pre>
+<p>Seeing <code>device</code> in the right column means the device is connected. You must have <strong>only one device connected</strong> at a time.</p>
+<h3 id="run-your-app-2">3. Run your app</h3>
+<p>Type the following in your command prompt to install and launch your app on the device:</p>
+<pre class="shell"><code>$ npx react-native run-android</code></pre>
+<blockquote>
+<p>If you get a “bridge configuration isn’t available” error, see <a href="running-on-device.md#method-1-using-adb-reverse-recommended">Using adb reverse</a>.</p>
+</blockquote>
+<blockquote>
+<p>Hint: You can also use the <code>React Native CLI</code> to generate and run a <code>Release</code> build (e.g. <code>npx react-native run-android --variant=release</code>).</p>
+</blockquote>
+<h2>
+Connecting to the development server
+</h2>
+<p>You can also iterate quickly on a device by connecting to the development server running on your development machine. There are several ways of accomplishing this, depending on whether you have access to a USB cable or a Wi-Fi network.</p>
+<h3 id="method-1-using-adb-reverse-recommended-2">Method 1: Using adb reverse (recommended)</h3>
+<p>You can use this method if your device is running Android 5.0 (Lollipop) or newer, it has USB debugging enabled, and it is connected via USB to your development machine.</p>
+<p>Run the following in a command prompt:</p>
+<pre class="shell"><code>$ adb -s &lt;device name&gt; reverse tcp:8081 tcp:8081</code></pre>
+<p>To find the device name, run the following adb command:</p>
+<pre class="shell"><code>$ adb devices</code></pre>
+<p>You can now enable Live reloading from the <a href="debugging.md#accessing-the-in-app-developer-menu">Developer menu</a>. Your app will reload whenever your JavaScript code has changed.</p>
+<h3 id="method-2-connect-via-wi-fi-2">Method 2: Connect via Wi-Fi</h3>
+<p>You can also connect to the development server over Wi-Fi. You’ll first need to install the app on your device using a USB cable, but once that has been done you can debug wirelessly by following these instructions. You’ll need your development machine’s current IP address before proceeding.</p>
+<p>Open a terminal and type <code>/sbin/ifconfig</code> to find your machine’s IP address.</p>
+<!-- alex ignore host -->
+<ol type="1">
+<li>Make sure your laptop and your phone are on the <strong>same</strong> Wi-Fi network.</li>
+<li>Open your React Native app on your device.</li>
+<li>You’ll see a <a href="debugging.md#in-app-errors-and-warnings">red screen with an error</a>. This is OK. The following steps will fix that.</li>
+<li>Open the in-app <a href="debugging.md#accessing-the-in-app-developer-menu">Developer menu</a>.</li>
+<li>Go to <strong>Dev Settings</strong> → <strong>Debug server host &amp; port for device</strong>.</li>
+<li>Type in your machine’s IP address and the port of the local dev server (e.g. 10.0.1.1:8081).</li>
+<li>Go back to the <strong>Developer menu</strong> and select <strong>Reload JS</strong>.</li>
+</ol>
+<p>You can now enable Live reloading from the <a href="debugging.md#accessing-the-in-app-developer-menu">Developer menu</a>. Your app will reload whenever your JavaScript code has changed.</p>
+<h2 id="building-your-app-for-production-2">Building your app for production</h2>
+<p>You have built a great app using React Native, and you are now itching to release it in the Play Store. The process is the same as any other native Android app, with some additional considerations to take into account. Follow the guide for <a href="signed-apk-android.md">generating a signed APK</a> to learn more.</p>
+<p></TabItem> </Tabs></p>
+<p></TabItem> <TabItem value="ios"></p>
+<h2 id="running-your-app-on-ios-devices">Running your app on iOS devices</h2>
+<h4 id="development-os-1">Development OS</h4>
+<p><Tabs groupId="os" defaultValue={constants.defaultOs} values={constants.oses} className="pill-tabs"> <TabItem value="macos"></p>
+<h3 id="plug-in-your-device-via-usb-3">1. Plug in your device via USB</h3>
+<p>Connect your iOS device to your Mac using a USB to Lightning cable. Navigate to the <code>ios</code> folder in your project, then open the <code>.xcodeproj</code> file, or if you are using CocoaPods open <code>.xcworkspace</code>, within it using Xcode.</p>
+<p>If this is your first time running an app on your iOS device, you may need to register your device for development. Open the <strong>Product</strong> menu from Xcode’s menubar, then go to <strong>Destination</strong>. Look for and select your device from the list. Xcode will then register your device for development.</p>
+<h3 id="configure-code-signing">2. Configure code signing</h3>
+<p>Register for an <a href="https://developer.apple.com/">Apple developer account</a> if you don’t have one yet.</p>
+<p>Select your project in the Xcode Project Navigator, then select your main target (it should share the same name as your project). Look for the “General” tab. Go to “Signing” and make sure your Apple developer account or team is selected under the Team dropdown. Do the same for the tests target (it ends with Tests, and is below your main target).</p>
+<p><strong>Repeat</strong> this step for the <strong>Tests</strong> target in your project.</p>
+<p><img src="/docs/assets/RunningOnDeviceCodeSigning.png" /></p>
+<h3 id="build-and-run-your-app">3. Build and Run your app</h3>
+<p>If everything is set up correctly, your device will be listed as the build target in the Xcode toolbar, and it will also appear in the Devices pane (<code>⇧⌘2</code>). You can now press the <strong>Build and run</strong> button (<code>⌘R</code>) or select <strong>Run</strong> from the <strong>Product</strong> menu. Your app will launch on your device shortly.</p>
+<p><img src="/docs/assets/RunningOnDeviceReady.png" /></p>
+<blockquote>
+<p>If you run into any issues, please take a look at Apple’s <a href="https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/LaunchingYourApponDevices/LaunchingYourApponDevices.html#//apple_ref/doc/uid/TP40012582-CH27-SW4">Launching Your App on a Device</a> docs.</p>
+</blockquote>
+<h2>
+Connecting to the development server
+</h2>
+<p>You can also iterate quickly on a device using the development server. You only have to be on the same Wi-Fi network as your computer. Shake your device to open the <a href="debugging.md#accessing-the-in-app-developer-menu">Developer menu</a>, then enable Live Reload. Your app will reload whenever your JavaScript code has changed.</p>
+<p><img src="/docs/assets/DeveloperMenu.png" /></p>
+<h3 id="troubleshooting">Troubleshooting</h3>
+<blockquote>
+<p>If you have any issues, ensure that your Mac and device are on the same network and can reach each other. Many open wireless networks with captive portals are configured to prevent devices from reaching other devices on the network. You may use your device’s Personal Hotspot feature in this case. You may also share your internet (WiFi/Ethernet) connection from your Mac to your device via USB and connect to the bundler through this tunnel for very high transfer speeds.</p>
+</blockquote>
+<p>When trying to connect to the development server you might get a <a href="debugging.md#in-app-errors-and-warnings">red screen with an error</a> saying:</p>
+<blockquote>
+<p>Connection to <code>http://localhost:8081/debugger-proxy?role=client</code> timed out. Are you running node proxy? If you are running on the device, check if you have the right IP address in <code>RCTWebSocketExecutor.m</code>.</p>
+</blockquote>
+<p>To solve this issue check the following points.</p>
+<h4 id="wi-fi-network.">1. Wi-Fi network.</h4>
+<p>Make sure your laptop and your phone are on the <strong>same</strong> Wi-Fi network.</p>
+<h4 id="ip-address">2. IP address</h4>
+<p>Make sure that the build script detected the IP address of your machine correctly (e.g. 10.0.1.123).</p>
+<p><img src="/docs/assets/XcodeBuildIP.png" /></p>
+<p>Open the <strong>Report navigator</strong> tab, select the last <strong>Build</strong> and search for <code>IP=</code> followed by an IP address. The IP address which gets embedded in the app should match your machines IP address.</p>
+<h2 id="building-your-app-for-production-3">Building your app for production</h2>
+<p>You have built a great app using React Native, and you are now itching to release it in the App Store. The process is the same as any other native iOS app, with some additional considerations to take into account. Follow the guide for <a href="publishing-to-app-store.md">publishing to the Apple App Store</a> to learn more.</p>
+<p></TabItem> <TabItem value="windows"></p>
+<blockquote>
+<p>A Mac is required in order to build your app for iOS devices. Alternatively, you can refer to our <a href="environment-setup">environment setup guide</a> to learn how to build your app using Expo CLI, which will allow you to run your app using the Expo client app.</p>
+</blockquote>
+<p></TabItem> <TabItem value="linux"></p>
+<blockquote>
+<p>A Mac is required in order to build your app for iOS devices. Alternatively, you can refer to our <a href="environment-setup">environment setup guide</a> to learn how to build your app using Expo CLI, which will allow you to run your app using the Expo client app.</p>
+</blockquote>
+<p></TabItem> </Tabs></p>
+<p></TabItem> </Tabs></p>
+</body>
+</html>

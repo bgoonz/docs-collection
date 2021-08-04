@@ -8,6 +8,7 @@ tags:
   - Reference
 browser-compat: javascript.operators.remainder
 ---
+
 {{jsSidebar("Operators")}}
 
 The remainder operator (`%`) returns the remainder left over when one
@@ -24,7 +25,7 @@ obtain a modulo in JavaScript, in place of `a % n`, use
 ## Syntax
 
 ```js
-x % y
+x % y;
 ```
 
 ## Examples
@@ -32,33 +33,33 @@ x % y
 ### Remainder with positive dividend
 
 ```js
- 12 % 5  //  2
- 1 % -2 //  1
- 1 % 2  //  1
- 2 % 3  //  2
-5.5 % 2 // 1.5
+12 % 5; //  2
+1 % -2; //  1
+1 % 2; //  1
+2 % 3; //  2
+5.5 % 2; // 1.5
 ```
 
 ### Remainder with negative dividend
 
 ```js
--12 % 5 // -2
--1 % 2  // -1
--4 % 2  // -0
+(-12 % 5) - // -2
+  (1 % 2) - // -1
+  (4 % 2); // -0
 ```
 
 ### Remainder with NaN
 
 ```js
-NaN % 2 // NaN
+NaN % 2; // NaN
 ```
 
 ### Remainder with Infinity
 
 ```js
-Infinity % 2 // NaN
-Infinity % 0 // NaN
-Infinity % Infinity // NaN
+Infinity % 2; // NaN
+Infinity % 0; // NaN
+Infinity % Infinity; // NaN
 ```
 
 ## Specifications

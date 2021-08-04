@@ -10,6 +10,7 @@ tags:
   - Reference
 browser-compat: javascript.functions.arrow_functions
 ---
+
 {{jsSidebar("Functions")}}
 
 An **arrow function expression** is a compact alternative to a traditional
@@ -118,12 +119,12 @@ variables:
 
 ```js
 // Traditional Function
-function bob (a){
+function bob(a) {
   return a + 100;
 }
 
 // Arrow Function
-let bob = a => a + 100;
+let bob = (a) => a + 100;
 ```
 
 ## Syntax
@@ -133,23 +134,23 @@ let bob = a => a + 100;
 One param. With simple expression return is not needed:
 
 ```js
-param => expression
+(param) => expression;
 ```
 
 Multiple params require parentheses. With simple
 expression return is not needed:
 
 ```js
-(param1, paramN) => expression
+(param1, paramN) => expression;
 ```
 
 Multiline statements require body braces and return:
 
 ```js
-param => {
+(param) => {
   let a = 1;
   return a + param;
-}
+};
 ```
 
 Multiple params require parentheses. Multiline statements
@@ -157,9 +158,9 @@ require body braces and return:
 
 ```js
 (param1, paramN) => {
-   let a = 1;
-   return a + param1 + paramN;
-}
+  let a = 1;
+  return a + param1 + paramN;
+};
 ```
 
 ### Advanced syntax
@@ -168,28 +169,28 @@ To return an object literal expression requires
 parentheses around expression:
 
 ```js
-params => ({foo: "a"}) // returning the object {foo: "a"}
+(params) => ({ foo: "a" }); // returning the object {foo: "a"}
 ```
 
 [Rest
 parameters](/en-US/docs/Web/JavaScript/Reference/Functions/Rest_parameters) are supported:
 
 ```js
-(a, b, ...r) => expression
+(a, b, ...r) => expression;
 ```
 
 [Default
 parameters](/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters) are supported:
 
 ```js
-(a=400, b=20, c) => expression
+(a = 400, b = 20, c) => expression;
 ```
 
 [Destructuring](/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment)
 within params supported:
 
 ```js
-([a, b] = [10, 20]) => a + b;  // result is 30
+([a, b] = [10, 20]) => a + b; // result is 30
 ({ a, b } = { a: 10, b: 20 }) => a + b; // result is 30
 ```
 
@@ -201,15 +202,16 @@ As stated previously, arrow function expressions are best suited for non-method
 functions. Let's see what happens when we try to use them as methods:
 
 ```js
-'use strict';
+"use strict";
 
-var obj = { // does not create a new scope
+var obj = {
+  // does not create a new scope
   i: 10,
   b: () => console.log(this.i, this),
-  c: function() {
+  c: function () {
     console.log(this.i, this);
-  }
-}
+  },
+};
 
 obj.b(); // prints undefined, Window {...} (or the global object)
 obj.c(); // prints 10, Object {...}
@@ -219,17 +221,17 @@ Arrow functions do not have their own `this`. Another example involving
 {{jsxref("Object.defineProperty()")}}:
 
 ```js
-'use strict';
+"use strict";
 
 var obj = {
-  a: 10
+  a: 10,
 };
 
-Object.defineProperty(obj, 'b', {
+Object.defineProperty(obj, "b", {
   get: () => {
     console.log(this.a, typeof this.a, this); // undefined 'undefined' Window {...} (or the global object)
     return this.a + 10; // represents global object 'Window', therefore 'this.a' returns 'undefined'
-  }
+  },
 });
 ```
 
@@ -257,8 +259,8 @@ of the methods:
 // ----------------------
 // A simplistic object with its very own "this".
 var obj = {
-    num: 100
-}
+  num: 100,
+};
 
 // Setting "num" on window to show how it is NOT used.
 window.num = 2020; // yikes!
@@ -266,20 +268,20 @@ window.num = 2020; // yikes!
 // A simple traditional function to operate on "this"
 var add = function (a, b, c) {
   return this.num + a + b + c;
-}
+};
 
 // call
-var result = add.call(obj, 1, 2, 3) // establishing the scope as "obj"
-console.log(result) // result 106
+var result = add.call(obj, 1, 2, 3); // establishing the scope as "obj"
+console.log(result); // result 106
 
 // apply
-const arr = [1, 2, 3]
-var result = add.apply(obj, arr) // establishing the scope as "obj"
-console.log(result) // result 106
+const arr = [1, 2, 3];
+var result = add.apply(obj, arr); // establishing the scope as "obj"
+console.log(result); // result 106
 
 // bind
-var result = add.bind(obj) // establishing the scope as "obj"
-console.log(result(1, 2, 3)) // result 106
+var result = add.bind(obj); // establishing the scope as "obj"
+console.log(result(1, 2, 3)); // result 106
 ```
 
 With Arrow functions, since our `add` function is essentially created on the
@@ -292,8 +294,8 @@ With Arrow functions, since our `add` function is essentially created on the
 
 // A simplistic object with its very own "this".
 var obj = {
-    num: 100
-}
+  num: 100,
+};
 
 // Setting "num" on window to show how it gets picked up.
 window.num = 2020; // yikes!
@@ -302,15 +304,15 @@ window.num = 2020; // yikes!
 var add = (a, b, c) => this.num + a + b + c;
 
 // call
-console.log(add.call(obj, 1, 2, 3)) // result 2026
+console.log(add.call(obj, 1, 2, 3)); // result 2026
 
 // apply
-const arr = [1, 2, 3]
-console.log(add.apply(obj, arr)) // result 2026
+const arr = [1, 2, 3];
+console.log(add.apply(obj, arr)); // result 2026
 
 // bind
-const bound = add.bind(obj)
-console.log(bound(1, 2, 3)) // result 2026
+const bound = add.bind(obj);
+console.log(bound(1, 2, 3)); // result 2026
 ```
 
 Perhaps the greatest benefit of using Arrow functions is with DOM-level methods
@@ -321,14 +323,15 @@ call, apply or bind to ensure the function executed in the proper scope.
 
 ```js
 var obj = {
-    count : 10,
-    doSomethingLater : function (){
-        setTimeout(function(){ // the function executes on the window scope
-            this.count++;
-            console.log(this.count);
-        }, 300);
-    }
-}
+  count: 10,
+  doSomethingLater: function () {
+    setTimeout(function () {
+      // the function executes on the window scope
+      this.count++;
+      console.log(this.count);
+    }, 300);
+  },
+};
 
 obj.doSomethingLater(); // console prints "NaN", because the property "count" is not in the window scope.
 ```
@@ -337,14 +340,16 @@ obj.doSomethingLater(); // console prints "NaN", because the property "count" is
 
 ```js
 var obj = {
-    count : 10,
-    doSomethingLater : function(){ // of course, arrow functions are not suited for methods
-        setTimeout( () => { // since the arrow function was created within the "obj", it assumes the object's "this"
-            this.count++;
-            console.log(this.count);
-        }, 300);
-    }
-}
+  count: 10,
+  doSomethingLater: function () {
+    // of course, arrow functions are not suited for methods
+    setTimeout(() => {
+      // since the arrow function was created within the "obj", it assumes the object's "this"
+      this.count++;
+      console.log(this.count);
+    }, 300);
+  },
+};
 
 obj.doSomethingLater();
 ```
@@ -416,10 +421,12 @@ In a concise body, only an expression is specified, which becomes the implicit r
 value. In a block body, you must use an explicit `return` statement.
 
 ```js
-var func = x => x * x;
+var func = (x) => x * x;
 // concise body syntax, implied "return"
 
-var func = (x, y) => { return x + y; };
+var func = (x, y) => {
+  return x + y;
+};
 // with block body, explicit "return" needed
 ```
 
@@ -460,22 +467,15 @@ parentheses/braces as seen below to ensure that the code stays pretty and fluffy
 can also put line breaks between arguments.
 
 ```js
-var func = (a, b, c) =>
-  1;
+var func = (a, b, c) => 1;
 
-var func = (a, b, c) => (
-  1
-);
+var func = (a, b, c) => 1;
 
 var func = (a, b, c) => {
-  return 1
+  return 1;
 };
 
-var func = (
-  a,
-  b,
-  c
-) => 1;
+var func = (a, b, c) => 1;
 
 // no SyntaxError thrown
 ```
@@ -505,15 +505,15 @@ callback = callback || (() => {});    // ok
 // An empty arrow function returns undefined
 let empty = () => {};
 
-(() => 'foobar')();
+(() => "foobar")();
 // Returns "foobar"
 // (this is an Immediately Invoked Function Expression)
 
-var simple = a => a > 15 ? 15 : a;
+var simple = (a) => (a > 15 ? 15 : a);
 simple(16); // 15
 simple(10); // 10
 
-let max = (a, b) => a > b ? a : b;
+let max = (a, b) => (a > b ? a : b);
 
 // Easy array filtering, mapping, ...
 
@@ -522,25 +522,27 @@ var arr = [5, 6, 13, 0, 1, 18, 23];
 var sum = arr.reduce((a, b) => a + b);
 // 66
 
-var even = arr.filter(v => v % 2 == 0);
+var even = arr.filter((v) => v % 2 == 0);
 // [6, 0, 18]
 
-var double = arr.map(v => v * 2);
+var double = arr.map((v) => v * 2);
 // [10, 12, 26, 0, 2, 36, 46]
 
 // More concise promise chains
-promise.then(a => {
-  // ...
-}).then(b => {
-  // ...
-});
+promise
+  .then((a) => {
+    // ...
+  })
+  .then((b) => {
+    // ...
+  });
 
 // Parameterless arrow functions that are visually easier to parse
-setTimeout( () => {
-  console.log('I happen sooner');
-  setTimeout( () => {
+setTimeout(() => {
+  console.log("I happen sooner");
+  setTimeout(() => {
     // deeper code
-    console.log('I happen later');
+    console.log("I happen later");
   }, 1);
 }, 1);
 ```

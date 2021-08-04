@@ -8,6 +8,7 @@ tags:
   - RegExp
 browser-compat: javascript.builtins.RegExp.RegExp
 ---
+
 {{JSRef}}
 
 The **`RegExp`** constructor creates a regular expression
@@ -90,9 +91,9 @@ and a _constructor_.
 The following three expressions create the same regular expression:
 
 ```js
-/ab+c/i
-new RegExp(/ab+c/, 'i') // literal notation
-new RegExp('ab+c', 'i') // constructor
+/ab+c/i;
+new RegExp(/ab+c/, "i"); // literal notation
+new RegExp("ab+c", "i"); // constructor
 ```
 
 The literal notation results in compilation of the regular expression when the

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>ActionSheetIOS</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">ActionSheetIOS</h1>
+</header>
+<p>Displays native to iOS <a href="https://developer.apple.com/design/human-interface-guidelines/ios/views/action-sheets/">Action Sheet</a> component.</p>
+<h2 id="example">Example</h2>
+<p>```SnackPlayer name=ActionSheetIOS&amp;supportedPlatforms=ios import React, { useState } from “react”; import { ActionSheetIOS, Button, StyleSheet, Text, View } from “react-native”;</p>
+<p>const App = () =&gt; { const [result, setResult] = useState(“🔮”);</p>
+<p>const onPress = () =&gt; ActionSheetIOS.showActionSheetWithOptions( { options: [“Cancel”, “Generate number”, “Reset”], destructiveButtonIndex: 2, cancelButtonIndex: 0, userInterfaceStyle: ‘dark’ }, buttonIndex =&gt; { if (buttonIndex === 0) { // cancel action } else if (buttonIndex === 1) { setResult(Math.floor(Math.random() * 100) + 1); } else if (buttonIndex === 2) { setResult(“🔮”); } } );</p>
+<p>return ( <View style={styles.container}> <Text style={styles.result}>{result}</Text> <Button onPress={onPress} title="Show Action Sheet" /> </View> ); };</p>
+<p>const styles = StyleSheet.create({ container: { flex: 1, justifyContent: “center” }, result: { fontSize: 64, textAlign: “center” } });</p>
+<p>export default App; ```</p>
+<h1 id="reference">Reference</h1>
+<h2 id="methods">Methods</h2>
+<h3 id="showactionsheetwithoptions"><code>showActionSheetWithOptions()</code></h3>
+<pre class="jsx"><code>static showActionSheetWithOptions(options, callback)</code></pre>
+<p>Display an iOS action sheet. The <code>options</code> object must contain one or more of:</p>
+<ul>
+<li><code>options</code> (array of strings) - a list of button titles (required)</li>
+<li><code>cancelButtonIndex</code> (int) - index of cancel button in <code>options</code></li>
+<li><code>destructiveButtonIndex</code> (int or array of ints) - indices of destructive buttons in <code>options</code></li>
+<li><code>title</code> (string) - a title to show above the action sheet</li>
+<li><code>message</code> (string) - a message to show below the title</li>
+<li><code>anchor</code> (number) - the node to which the action sheet should be anchored (used for iPad)</li>
+<li><code>tintColor</code> (string) - the <a href="colors">color</a> used for non-destructive button titles</li>
+<li><code>disabledButtonIndices</code> (array of numbers) - a list of button indices which should be disabled</li>
+<li><code>userInterfaceStyle</code> (string) - the interface style used for the action sheet, can be set to <code>light</code> or <code>dark</code>, otherwise the default system style will be used</li>
+</ul>
+<p>The ‘callback’ function takes one parameter, the zero-based index of the selected item.</p>
+<p>Minimal example:</p>
+<pre class="jsx"><code>ActionSheetIOS.showActionSheetWithOptions(
+  {
+    options: [&#39;Cancel&#39;, &#39;Remove&#39;],
+    destructiveButtonIndex: 1,
+    cancelButtonIndex: 0
+  },
+  (buttonIndex) =&gt; {
+    if (buttonIndex === 1) {
+      /* destructive action */
+    }
+  }
+);</code></pre>
+<hr />
+<h3 id="showshareactionsheetwithoptions"><code>showShareActionSheetWithOptions()</code></h3>
+<pre class="jsx"><code>static showShareActionSheetWithOptions(options, failureCallback, successCallback)</code></pre>
+<p>Display the iOS share sheet. The <code>options</code> object should contain one or both of <code>message</code> and <code>url</code> and can additionally have a <code>subject</code> or <code>excludedActivityTypes</code>:</p>
+<ul>
+<li><code>url</code> (string) - a URL to share</li>
+<li><code>message</code> (string) - a message to share</li>
+<li><code>subject</code> (string) - a subject for the message</li>
+<li><code>excludedActivityTypes</code> (array) - the activities to exclude from the ActionSheet</li>
+</ul>
+<blockquote>
+<p><strong>Note:</strong> If <code>url</code> points to a local file, or is a base64-encoded uri, the file it points to will be loaded and shared directly. In this way, you can share images, videos, PDF files, etc. If <code>url</code> points to a remote file or address it must conform to URL format as described in <a href="https://www.ietf.org/rfc/rfc2396.txt">RFC 2396</a>. For example, a web URL without a proper protocol (HTTP/HTTPS) will not be shared.</p>
+</blockquote>
+<p>The ‘failureCallback’ function takes one parameter, an error object. The only property defined on this object is an optional <code>stack</code> property of type <code>string</code>.</p>
+<p>The ‘successCallback’ function takes two parameters:</p>
+<ul>
+<li>a boolean value signifying success or failure</li>
+<li>a string that, in the case of success, indicates the method of sharing</li>
+</ul>
+</body>
+</html>

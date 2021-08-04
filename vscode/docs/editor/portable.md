@@ -1,5 +1,4 @@
-Portable Mode
-=============
+# Portable Mode
 
 Visual Studio Code supports [Portable mode](https://en.wikipedia.org/wiki/Portable_application). This mode enables all data created and maintained by VS Code to live near itself, so it can be moved around across environments.
 
@@ -9,8 +8,7 @@ Portable mode is supported on the ZIP download for Windows, and the TAR.GZ downl
 
 > **Note:** Do not attempt to configure portable mode on an installation from the **Windows User or System installers**. Portable mode is only supported on the Windows ZIP (`.zip`) archive. Note as well that the Windows ZIP archive does not support auto update.
 
-Enable Portable mode
---------------------
+## Enable Portable mode
 
 ### Windows, Linux
 
@@ -38,28 +36,26 @@ Portable Mode won’t work if your application is in [quarantine](https://apple.
 
 **Note:** On Insiders, the folder should be named `code-insiders-portable-data`.
 
-Update Portable VS Code
------------------------
+## Update Portable VS Code
 
 On **Windows** and **Linux**, you can update VS Code by copying the `data` folder over to a more recent version of VS Code.
 
 On **macOS**, automatic updates should work as always, no extra work needed.
 
-Migrate to Portable mode
-------------------------
+## Migrate to Portable mode
 
 You can also migrate an existing installation to Portable mode:
 
 1.  [Download](/download) the VS Code ZIP distribution for your platform.
 2.  Create the `data` or `code-portable-data` folder as above.
 3.  Copy the user data directory `Code` to `data` and rename it to `user-data`:
-    -   **Windows** `%APPDATA%\Code`
-    -   **macOS** `$HOME/Library/Application Support/Code`
-    -   **Linux** `$HOME/.config/Code`
+    - **Windows** `%APPDATA%\Code`
+    - **macOS** `$HOME/Library/Application Support/Code`
+    - **Linux** `$HOME/.config/Code`
 4.  Copy the extensions directory to `data`:
-    -   **Windows** `%USERPROFILE%\.vscode\extensions`
-    -   **macOS** `~/.vscode/extensions`
-    -   **Linux** `~/.vscode/extensions`
+    - **Windows** `%USERPROFILE%\.vscode\extensions`
+    - **macOS** `~/.vscode/extensions`
+    - **Linux** `~/.vscode/extensions`
 
 Here’s the desired outcome on **Windows**:
 
@@ -72,7 +68,6 @@ Here’s the desired outcome on **Windows**:
     |   |   |   |- ...
     |   |- ...
 
-TMP directory
--------------
+## TMP directory
 
 By default, the default `TMP` directory is still the system one even in Portable Mode, since no state is kept there. If you want to also have your TMP directory within your portable directory, you can create an empty `tmp` directory inside the `data` folder. As long as a `tmp` directory exists, it will be used for TMP data.

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Building For TV Devices</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Building For TV Devices</h1>
+</header>
+<p>import Tabs from ‘<span class="citation" data-cites="theme/Tabs">@theme/Tabs</span>’; import TabItem from ‘<span class="citation" data-cites="theme/TabItem">@theme/TabItem</span>’; import constants from ‘<span class="citation" data-cites="site/core/TabsConstants">@site/core/TabsConstants</span>’;</p>
+<p>TV devices support has been implemented with the intention of making existing React Native applications work on Apple TV and Android TV, with few or no changes needed in the JavaScript code for the applications.</p>
+<p>&lt;Tabs groupId=“tv” defaultValue=“androidtv” values={[ {label: ‘Android TV’, value: ‘androidtv’}, {label: ‘🚧 tvOS’, value: ‘tvos’}, ]}&gt;</p>
+<p><TabItem value="androidtv"></p>
+<h2 id="build-changes">Build changes</h2>
+<ul>
+<li><em>Native layer</em>: To run React Native project on Android TV make sure to make the following changes to <code>AndroidManifest.xml</code></li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="sourceCode xml"><code class="sourceCode xml"><a class="sourceLine" id="cb1-1" title="1">  <span class="co">&lt;!-- Add custom banner image to display as Android TV launcher icon --&gt;</span></a>
+<a class="sourceLine" id="cb1-2" title="2"> <span class="kw">&lt;application</span></a>
+<a class="sourceLine" id="cb1-3" title="3">  <span class="er">...</span></a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="ot">  android:banner=</span><span class="st">&quot;@drawable/tv_banner&quot;</span></a>
+<a class="sourceLine" id="cb1-5" title="5">  <span class="kw">&gt;</span></a>
+<a class="sourceLine" id="cb1-6" title="6">    ...</a>
+<a class="sourceLine" id="cb1-7" title="7">    <span class="kw">&lt;intent-filter&gt;</span></a>
+<a class="sourceLine" id="cb1-8" title="8">      ...</a>
+<a class="sourceLine" id="cb1-9" title="9">      <span class="co">&lt;!-- Needed to properly create a launch intent when running on Android TV --&gt;</span></a>
+<a class="sourceLine" id="cb1-10" title="10">      <span class="kw">&lt;category</span><span class="ot"> android:name=</span><span class="st">&quot;android.intent.category.LEANBACK_LAUNCHER&quot;</span><span class="kw">/&gt;</span></a>
+<a class="sourceLine" id="cb1-11" title="11">    <span class="kw">&lt;/intent-filter&gt;</span></a>
+<a class="sourceLine" id="cb1-12" title="12">    ...</a>
+<a class="sourceLine" id="cb1-13" title="13">  <span class="kw">&lt;/application&gt;</span></a></code></pre></div>
+<ul>
+<li><em>JavaScript layer</em>: Support for Android TV has been added to <code>Platform.android.js</code>. You can check whether code is running on Android TV by doing</li>
+</ul>
+<div class="sourceCode" id="cb2"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">var</span> Platform <span class="op">=</span> <span class="at">require</span>(<span class="st">&#39;Platform&#39;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="kw">var</span> running_on_android_tv <span class="op">=</span> <span class="va">Platform</span>.<span class="at">isTV</span><span class="op">;</span></a></code></pre></div>
+<h2 id="code-changes">Code changes</h2>
+<ul>
+<li><p><em>Access to touchable controls</em>: When running on Android TV the Android framework will automatically apply a directional navigation scheme based on relative position of focusable elements in your views. The <code>Touchable</code> mixin has code added to detect focus changes and use existing methods to style the components properly and initiate the proper actions when the view is selected using the TV remote, so <code>TouchableWithoutFeedback</code>, <code>TouchableHighlight</code>, <code>TouchableOpacity</code> and <code>TouchableNativeFeedback</code> will work as expected. In particular:</p>
+<ul>
+<li><code>onFocus</code> will be executed when the touchable view goes into focus</li>
+<li><code>onBlur</code> will be executed when the touchable view goes out of focus</li>
+<li><code>onPress</code> will be executed when the touchable view is actually selected by pressing the “select” button on the TV remote.</li>
+</ul></li>
+<li><p><em>TV remote/keyboard input</em>: A new native class, <code>ReactAndroidTVRootViewHelper</code>, sets up key events handlers for TV remote events. When TV remote events occur, this class fires a JS event. This event will be picked up by instances of the <code>TVEventHandler</code> JavaScript object. Application code that needs to implement custom handling of TV remote events can create an instance of <code>TVEventHandler</code> and listen for these events, as in the following code:</p></li>
+</ul>
+<pre class="jsx"><code>var TVEventHandler = require(&#39;TVEventHandler&#39;);
+
+class Game2048 extends React.Component {
+  _tvEventHandler: any;
+
+  _enableTVEventHandler() {
+    this._tvEventHandler = new TVEventHandler();
+    this._tvEventHandler.enable(this, function (cmp, evt) {
+      if (evt &amp;&amp; evt.eventType === &#39;right&#39;) {
+        cmp.setState({ board: cmp.state.board.move(2) });
+      } else if (evt &amp;&amp; evt.eventType === &#39;up&#39;) {
+        cmp.setState({ board: cmp.state.board.move(1) });
+      } else if (evt &amp;&amp; evt.eventType === &#39;left&#39;) {
+        cmp.setState({ board: cmp.state.board.move(0) });
+      } else if (evt &amp;&amp; evt.eventType === &#39;down&#39;) {
+        cmp.setState({ board: cmp.state.board.move(3) });
+      } else if (evt &amp;&amp; evt.eventType === &#39;playPause&#39;) {
+        cmp.restartGame();
+      }
+    });
+  }
+
+  _disableTVEventHandler() {
+    if (this._tvEventHandler) {
+      this._tvEventHandler.disable();
+      delete this._tvEventHandler;
+    }
+  }
+
+  componentDidMount() {
+    this._enableTVEventHandler();
+  }
+
+  componentWillUnmount() {
+    this._disableTVEventHandler();
+  }
+}</code></pre>
+<ul>
+<li><p><em>Dev Menu support</em>: On the emulator, cmd-M will bring up the developer menu, similar to Android. To bring it up on a real Android TV device, press the menu button or long press the fast-forward button on the remote. (Please do not shake the Android TV device, that will not work :) )</p></li>
+<li><p><em>Known issues</em>:</p>
+<ul>
+<li><code>TextInput</code> components do not work for now (i.e. they cannot receive focus automatically, see <a href="https://github.com/facebook/react-native/pull/16500#issuecomment-629285638">this comment</a>).
+<ul>
+<li>It is however possible to use a ref to manually trigger <code>inputRef.current.focus()</code>.</li>
+<li>You can wrap your input inside a <code>TouchableWithoutFeedback</code> component and trigger focus in the <code>onFocus</code> event of that touchable. This enables opening the keyboard via the arrow keys.</li>
+<li>The keyboard might reset its state after each keypress (this might only happen inside the Android TV emulator).</li>
+</ul></li>
+<li>The content of <code>Modal</code> components cannot receive focus, see <a href="https://github.com/facebook/react-native/issues/24448">this issue</a> for details.</li>
+</ul></li>
+</ul>
+<p></TabItem> <TabItem value="tvos"></p>
+<blockquote>
+<p><strong>Deprecated.</strong> Use <a href="https://github.com/react-native-community/react-native-tvos">react-native-tvos</a> instead. For the details please check the <a href="https://reactnative.dev/blog/#moving-apple-tv-to-react-native-tvos">0.62 release blog post</a>.</p>
+</blockquote>
+<h2 id="build-changes-1">Build changes</h2>
+<ul>
+<li><p><em>Native layer</em>: React Native Xcode projects all now have Apple TV build targets, with names ending in the string ‘-tvOS’.</p></li>
+<li><p><em>react-native init</em>: New React Native projects created with <code>react-native init</code> will have Apple TV target automatically created in their XCode projects.</p></li>
+<li><p><em>JavaScript layer</em>: Support for Apple TV has been added to <code>Platform.ios.js</code>. You can check whether code is running on AppleTV by doing</p></li>
+</ul>
+<pre class="jsx"><code>var Platform = require(&#39;Platform&#39;);
+var running_on_tv = Platform.isTV;
+
+// If you want to be more specific and only detect devices running tvOS
+// (but no Android TV devices) you can use:
+var running_on_apple_tv = Platform.isTVOS;</code></pre>
+<h2 id="code-changes-1">Code changes</h2>
+<ul>
+<li><p><em>General support for tvOS</em>: Apple TV specific changes in native code are all wrapped by the TARGET_OS_TV define. These include changes to suppress APIs that are not supported on tvOS (e.g. web views, sliders, switches, status bar, etc.), and changes to support user input from the TV remote or keyboard.</p></li>
+<li><p><em>Common codebase</em>: Since tvOS and iOS share most Objective-C and JavaScript code in common, most documentation for iOS applies equally to tvOS.</p></li>
+<li><p><em>Access to touchable controls</em>: When running on Apple TV, the native view class is <code>RCTTVView</code>, which has additional methods to make use of the tvOS focus engine. The <code>Touchable</code> mixin has code added to detect focus changes and use existing methods to style the components properly and initiate the proper actions when the view is selected using the TV remote, so <code>TouchableWithoutFeedback</code>, <code>TouchableHighlight</code> and <code>TouchableOpacity</code> will work as expected. In particular:</p>
+<ul>
+<li><code>onFocus</code> will be executed when the touchable view goes into focus</li>
+<li><code>onBlur</code> will be executed when the touchable view goes out of focus</li>
+<li><code>onPress</code> will be executed when the touchable view is actually selected by pressing the “select” button on the TV remote.</li>
+</ul></li>
+<li><p><em>TV remote/keyboard input</em>: A new native class, <code>RCTTVRemoteHandler</code>, sets up gesture recognizers for TV remote events. When TV remote events occur, this class fires notifications that are picked up by <code>RCTTVNavigationEventEmitter</code> (a subclass of <code>RCTEventEmitter</code>), that fires a JS event. This event will be picked up by instances of the <code>TVEventHandler</code> JavaScript object. Application code that needs to implement custom handling of TV remote events can create an instance of <code>TVEventHandler</code> and listen for these events, as in the following code:</p></li>
+</ul>
+<pre class="jsx"><code>var TVEventHandler = require(&#39;TVEventHandler&#39;);
+
+class Game2048 extends React.Component {
+  _tvEventHandler: any;
+
+  _enableTVEventHandler() {
+    this._tvEventHandler = new TVEventHandler();
+    this._tvEventHandler.enable(this, function (cmp, evt) {
+      if (evt &amp;&amp; evt.eventType === &#39;right&#39;) {
+        cmp.setState({ board: cmp.state.board.move(2) });
+      } else if (evt &amp;&amp; evt.eventType === &#39;up&#39;) {
+        cmp.setState({ board: cmp.state.board.move(1) });
+      } else if (evt &amp;&amp; evt.eventType === &#39;left&#39;) {
+        cmp.setState({ board: cmp.state.board.move(0) });
+      } else if (evt &amp;&amp; evt.eventType === &#39;down&#39;) {
+        cmp.setState({ board: cmp.state.board.move(3) });
+      } else if (evt &amp;&amp; evt.eventType === &#39;playPause&#39;) {
+        cmp.restartGame();
+      }
+    });
+  }
+
+  _disableTVEventHandler() {
+    if (this._tvEventHandler) {
+      this._tvEventHandler.disable();
+      delete this._tvEventHandler;
+    }
+  }
+
+  componentDidMount() {
+    this._enableTVEventHandler();
+  }
+
+  componentWillUnmount() {
+    this._disableTVEventHandler();
+  }
+}</code></pre>
+<ul>
+<li><p><em>Dev Menu support</em>: On the simulator, cmd-D will bring up the developer menu, similar to iOS. To bring it up on a real Apple TV device, make a long press on the play/pause button on the remote. (Please do not shake the Apple TV device, that will not work :) )</p></li>
+<li><p><em>TV remote animations</em>: <code>RCTTVView</code> native code implements Apple-recommended parallax animations to help guide the eye as the user navigates through views. The animations can be disabled or adjusted with new optional view properties.</p></li>
+<li><p><em>Back navigation with the TV remote menu button</em>: The <code>BackHandler</code> component, originally written to support the Android back button, now also supports back navigation on the Apple TV using the menu button on the TV remote.</p></li>
+<li><p><em>TabBarIOS behavior</em>: The <code>TabBarIOS</code> component wraps the native <code>UITabBar</code> API, which works differently on Apple TV. To avoid jittery re-rendering of the tab bar in tvOS (see <a href="https://github.com/facebook/react-native/issues/15081">this issue</a>), the selected tab bar item can only be set from JavaScript on initial render, and is controlled after that by the user through native code.</p></li>
+<li><p><em>Known issues</em>:</p>
+<ul>
+<li><a href="https://github.com/facebook/react-native/issues/12793">ListView scrolling</a>. The issue can be worked around by setting <code>removeClippedSubviews</code> to false in ListView and similar components. For more discussion of this issue, see <a href="https://github.com/facebook/react-native/pull/12944">this PR</a>.</li>
+</ul></li>
+</ul>
+<p></TabItem> </Tabs></p>
+</body>
+</html>

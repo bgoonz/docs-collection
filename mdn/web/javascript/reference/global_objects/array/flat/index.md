@@ -11,6 +11,7 @@ tags:
   - Polyfill
 browser-compat: javascript.builtins.Array.flat
 ---
+
 {{JSRef}}
 
 The **`flat()`** method creates a new array with all sub-array
@@ -21,8 +22,8 @@ elements concatenated into it recursively up to the specified depth.
 ## Syntax
 
 ```js
-flat()
-flat(depth)
+flat();
+flat(depth);
 ```
 
 ### Parameters
@@ -49,7 +50,7 @@ arr.reduce((acc, val) => acc.concat(val), []);
 // [1, 2, 3, 4]
 
 // or with decomposition syntax
-const flattened = arr => [].concat(...arr);
+const flattened = (arr) => [].concat(...arr);
 ```
 
 ### reduce + concat + isArray + recursivity
@@ -59,9 +60,14 @@ const arr = [1, 2, [3, 4, [5, 6]]];
 
 // to enable deep level flatten use recursion with reduce and concat
 function flatDeep(arr, d = 1) {
-   return d > 0 ? arr.reduce((acc, val) => acc.concat(Array.isArray(val) ? flatDeep(val, d - 1) : val), [])
-                : arr.slice();
-};
+  return d > 0
+    ? arr.reduce(
+        (acc, val) =>
+          acc.concat(Array.isArray(val) ? flatDeep(val, d - 1) : val),
+        []
+      )
+    : arr.slice();
+}
 
 flatDeep(arr, Infinity);
 // [1, 2, 3, 4, 5, 6]
@@ -76,10 +82,10 @@ flatDeep(arr, Infinity);
 function flatten(input) {
   const stack = [...input];
   const res = [];
-  while(stack.length) {
+  while (stack.length) {
     // pop value from stack
     const next = stack.pop();
-    if(Array.isArray(next)) {
+    if (Array.isArray(next)) {
       // push back array items, won't modify the original input
       stack.push(...next);
     } else {
@@ -99,16 +105,16 @@ flatten(arr);
 
 ```js
 function* flatten(array, depth) {
-    if(depth === undefined) {
-      depth = 1;
+  if (depth === undefined) {
+    depth = 1;
+  }
+  for (const item of array) {
+    if (Array.isArray(item) && depth > 0) {
+      yield* flatten(item, depth - 1);
+    } else {
+      yield item;
     }
-    for(const item of array) {
-        if(Array.isArray(item) && depth > 0) {
-          yield* flatten(item, depth - 1);
-        } else {
-          yield item;
-        }
-    }
+  }
 }
 
 const arr = [1, 2, [3, 4, [5, 6]]];

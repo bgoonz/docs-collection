@@ -10,6 +10,7 @@ tags:
   - Reference
 browser-compat: javascript.operators.optional_chaining
 ---
+
 {{JSSidebar("Operators")}}
 
 The **optional chaining** operator (**`?.`**)
@@ -36,10 +37,10 @@ Optional chaining cannot be used on a non-declared root object, but can be used 
 ## Syntax
 
 ```js
-obj.val?.prop
-obj.val?.[expr]
-obj.arr?.[index]
-obj.func?.(args)
+obj.val?.prop;
+obj.val?.[expr];
+obj.arr?.[index];
+obj.func?.(args);
 ```
 
 ## Description
@@ -80,7 +81,7 @@ created:
 
 ```js
 let temp = obj.first;
-let nestedProp = ((temp === null || temp === undefined) ? undefined : temp.second);
+let nestedProp = temp === null || temp === undefined ? undefined : temp.second;
 ```
 
 ### Optional chaining with function calls
@@ -121,9 +122,9 @@ this extra test:
 function doSomething(onContent, onError) {
   try {
     // ... do something with the data
-  }
-  catch (err) {
-    if (onError) { // Testing if onError really exists
+  } catch (err) {
+    if (onError) {
+      // Testing if onError really exists
       onError(err.message);
     }
   }
@@ -134,9 +135,8 @@ function doSomething(onContent, onError) {
 // Using optional chaining with function calls
 function doSomething(onContent, onError) {
   try {
-   // ... do something with the data
-  }
-  catch (err) {
+    // ... do something with the data
+  } catch (err) {
     onError?.(err.message); // no exception if onError is undefined
   }
 }
@@ -149,7 +149,7 @@ expression using [the
 bracket notation of the property accessor](/en-US/docs/Web/JavaScript/Reference/Operators/Property_Accessors#Bracket_notation):
 
 ```js
-let nestedProp = obj?.['prop' + 'Name'];
+let nestedProp = obj?.["prop" + "Name"];
 ```
 
 ### Optional chaining not valid on the left-hand side of an assignment
@@ -175,7 +175,7 @@ This example looks for the value of the `name` property for the member
 
 ```js
 let myMap = new Map();
-myMap.set("foo", {name: "baz", desc: "inga"});
+myMap.set("foo", { name: "baz", desc: "inga" });
 
 let nameBar = myMap.get("bar")?.name;
 ```
@@ -202,8 +202,8 @@ let customer = {
   name: "Carl",
   details: {
     age: 82,
-    location: "Paradise Falls" // detailed address is unknown
-  }
+    location: "Paradise Falls", // detailed address is unknown
+  },
 };
 let customerCity = customer.details?.address?.city;
 
@@ -220,7 +220,7 @@ was found:
 ```js
 let customer = {
   name: "Carl",
-  details: { age: 82 }
+  details: { age: 82 },
 };
 const customerCity = customer?.city ?? "Unknown city";
 console.log(customerCity); // Unknown city

@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Accessibility</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Accessibility</h1>
+</header>
+<p>Both Android and iOS provide APIs for integrating apps with assistive technologies like the bundled screen readers VoiceOver (iOS) and TalkBack (Android). React Native has complementary APIs that let your app accommodate all users.</p>
+<blockquote>
+<p>Android and iOS differ slightly in their approaches, and thus the React Native implementations may vary by platform.</p>
+</blockquote>
+<h2 id="accessibility-properties">Accessibility properties</h2>
+<h3 id="accessible"><code>accessible</code></h3>
+<p>When <code>true</code>, indicates that the view is an accessibility element. When a view is an accessibility element, it groups its children into a single selectable component. By default, all touchable elements are accessible.</p>
+<p>On Android, <code>accessible={true}</code> property for a react-native View will be translated into native <code>focusable={true}</code>.</p>
+<pre class="jsx"><code>&lt;View accessible={true}&gt;
+  &lt;Text&gt;text one&lt;/Text&gt;
+  &lt;Text&gt;text two&lt;/Text&gt;
+&lt;/View&gt;</code></pre>
+<p>In the above example, we can’t get accessibility focus separately on ‘text one’ and ‘text two’. Instead we get focus on a parent view with ‘accessible’ property.</p>
+<h3 id="accessibilitylabel"><code>accessibilityLabel</code></h3>
+<p>When a view is marked as accessible, it is a good practice to set an accessibilityLabel on the view, so that people who use VoiceOver know what element they have selected. VoiceOver will read this string when a user selects the associated element.</p>
+<p>To use, set the <code>accessibilityLabel</code> property to a custom string on your View, Text or Touchable:</p>
+<pre class="jsx"><code>&lt;TouchableOpacity
+  accessible={true}
+  accessibilityLabel=&quot;Tap me!&quot;
+  onPress={onPress}
+&gt;
+  &lt;View style={styles.button}&gt;
+    &lt;Text style={styles.buttonText}&gt;Press me!&lt;/Text&gt;
+  &lt;/View&gt;
+&lt;/TouchableOpacity&gt;</code></pre>
+<p>In the above example, the <code>accessibilityLabel</code> on the TouchableOpacity element would default to “Press me!”. The label is constructed by concatenating all Text node children separated by spaces.</p>
+<h3 id="accessibilityhint"><code>accessibilityHint</code></h3>
+<p>An accessibility hint helps users understand what will happen when they perform an action on the accessibility element when that result is not clear from the accessibility label.</p>
+<p>To use, set the <code>accessibilityHint</code> property to a custom string on your View, Text or Touchable:</p>
+<pre class="jsx"><code>&lt;TouchableOpacity
+  accessible={true}
+  accessibilityLabel=&quot;Go back&quot;
+  accessibilityHint=&quot;Navigates to the previous screen&quot;
+  onPress={onPress}
+&gt;
+  &lt;View style={styles.button}&gt;
+    &lt;Text style={styles.buttonText}&gt;Back&lt;/Text&gt;
+  &lt;/View&gt;
+&lt;/TouchableOpacity&gt;</code></pre>
+<p>iOS In the above example, VoiceOver will read the hint after the label, if the user has hints enabled in the device’s VoiceOver settings. Read more about guidelines for accessibilityHint in the <a href="https://developer.apple.com/documentation/objectivec/nsobject/1615093-accessibilityhint">iOS Developer Docs</a></p>
+<p>Android In the above example, TalkBack will read the hint after the label. At this time, hints cannot be turned off on Android.</p>
+### <code>accessibilityIgnoresInvertColors</code>
+<div class="label ios">
+iOS
+</div>
+<p>Inverting screen colors is an Accessibility feature that makes the iPhone and iPad easier on the eyes for some people with a sensitivity to brightness, easier to distinguish for some people with color blindness, and easier to make out for some people with low vision. However, sometimes you have views such as photos that you don’t want to be inverted. In this case, you can set this property to be false so that these specific views won’t have their colors inverted.</p>
+### <code>accessibilityLiveRegion</code>
+<div class="label android">
+Android
+</div>
+<p>When components dynamically change, we want TalkBack to alert the end user. This is made possible by the <code>accessibilityLiveRegion</code> property. It can be set to <code>none</code>, <code>polite</code> and <code>assertive</code>:</p>
+<ul>
+<li><strong>none</strong> Accessibility services should not announce changes to this view.</li>
+<li><strong>polite</strong> Accessibility services should announce changes to this view.</li>
+<li><strong>assertive</strong> Accessibility services should interrupt ongoing speech to immediately announce changes to this view.</li>
+</ul>
+<pre class="jsx"><code>&lt;TouchableWithoutFeedback onPress={addOne}&gt;
+  &lt;View style={styles.embedded}&gt;
+    &lt;Text&gt;Click me&lt;/Text&gt;
+  &lt;/View&gt;
+&lt;/TouchableWithoutFeedback&gt;
+&lt;Text accessibilityLiveRegion=&quot;polite&quot;&gt;
+  Clicked {count} times
+&lt;/Text&gt;</code></pre>
+<p>In the above example method <code>addOne</code> changes the state variable <code>count</code>. As soon as an end user clicks the TouchableWithoutFeedback, TalkBack reads text in the Text view because of its <code>accessibilityLiveRegion="polite"</code> property.</p>
+<h3 id="accessibilityrole"><code>accessibilityRole</code></h3>
+<p><code>accessibilityRole</code> communicates the purpose of a component to the user of an assistive technology.</p>
+<p><code>accessibilityRole</code> can be one of the following:</p>
+<ul>
+<li><strong>adjustable</strong> Used when an element can be “adjusted” (e.g. a slider).</li>
+<li><strong>alert</strong> Used when an element contains important text to be presented to the user.</li>
+<li><strong>button</strong> Used when the element should be treated as a button.</li>
+<li><strong>checkbox</strong> Used when an element represents a checkbox which can be checked, unchecked, or have mixed checked state.</li>
+<li><strong>combobox</strong> Used when an element represents a combo box, which allows the user to select among several choices.</li>
+<li><strong>header</strong> Used when an element acts as a header for a content section (e.g. the title of a navigation bar).</li>
+<li><strong>image</strong> Used when the element should be treated as an image. Can be combined with button or link, for example.</li>
+<li><strong>imagebutton</strong> Used when the element should be treated as a button and is also an image.</li>
+<li><strong>keyboardkey</strong> Used when the element acts as a keyboard key.</li>
+<li><strong>link</strong> Used when the element should be treated as a link.</li>
+<li><strong>menu</strong> Used when the component is a menu of choices.</li>
+<li><strong>menubar</strong> Used when a component is a container of multiple menus.</li>
+<li><strong>menuitem</strong> Used to represent an item within a menu.</li>
+<li><strong>none</strong> Used when the element has no role.</li>
+<li><strong>progressbar</strong> Used to represent a component which indicates progress of a task.</li>
+<li><strong>radio</strong> Used to represent a radio button.</li>
+<li><strong>radiogroup</strong> Used to represent a group of radio buttons.</li>
+<li><strong>scrollbar</strong> Used to represent a scroll bar.</li>
+<li><strong>search</strong> Used when the text field element should also be treated as a search field.</li>
+<li><strong>spinbutton</strong> Used to represent a button which opens a list of choices.</li>
+<li><strong>summary</strong> Used when an element can be used to provide a quick summary of current conditions in the app when the app first launches.</li>
+<li><strong>switch</strong> Used to represent a switch which can be turned on and off.</li>
+<li><strong>tab</strong> Used to represent a tab.</li>
+<li><strong>tablist</strong> Used to represent a list of tabs.</li>
+<li><strong>text</strong> Used when the element should be treated as static text that cannot change.</li>
+<li><strong>timer</strong> Used to represent a timer.</li>
+<li><strong>toolbar</strong> Used to represent a tool bar (a container of action buttons or components).</li>
+</ul>
+<h3 id="accessibilitystate"><code>accessibilityState</code></h3>
+<p>Describes the current state of a component to the user of an assistive technology.</p>
+<p><code>accessibilityState</code> is an object. It contains the following fields:</p>
+<table>
+<colgroup>
+<col style="width: 4%" />
+<col style="width: 79%" />
+<col style="width: 10%" />
+<col style="width: 4%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Description</th>
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>disabled</td>
+<td>Indicates whether the element is disabled or not.</td>
+<td>boolean</td>
+<td>No</td>
+</tr>
+<tr class="even">
+<td>selected</td>
+<td>Indicates whether a selectable element is currently selected or not.</td>
+<td>boolean</td>
+<td>No</td>
+</tr>
+<tr class="odd">
+<td>checked</td>
+<td>Indicates the state of a checkable element. This field can either take a boolean or the “mixed” string to represent mixed checkboxes.</td>
+<td>boolean or ‘mixed’</td>
+<td>No</td>
+</tr>
+<tr class="even">
+<td>busy</td>
+<td>Indicates whether an element is currently busy or not.</td>
+<td>boolean</td>
+<td>No</td>
+</tr>
+<tr class="odd">
+<td>expanded</td>
+<td>Indicates whether an expandable element is currently expanded or collapsed.</td>
+<td>boolean</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<p>To use, set the <code>accessibilityState</code> to an object with a specific definition.</p>
+<h3 id="accessibilityvalue"><code>accessibilityValue</code></h3>
+<p>Represents the current value of a component. It can be a textual description of a component’s value, or for range-based components, such as sliders and progress bars, it contains range information (minimum, current, and maximum).</p>
+<p><code>accessibilityValue</code> is an object. It contains the following fields:</p>
+<table>
+<colgroup>
+<col style="width: 3%" />
+<col style="width: 72%" />
+<col style="width: 5%" />
+<col style="width: 19%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Description</th>
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>min</td>
+<td>The minimum value of this component’s range.</td>
+<td>integer</td>
+<td>Required if <code>now</code> is set.</td>
+</tr>
+<tr class="even">
+<td>max</td>
+<td>The maximum value of this component’s range.</td>
+<td>integer</td>
+<td>Required if <code>now</code> is set.</td>
+</tr>
+<tr class="odd">
+<td>now</td>
+<td>The current value of this component’s range.</td>
+<td>integer</td>
+<td>No</td>
+</tr>
+<tr class="even">
+<td>text</td>
+<td>A textual description of this component’s value. Will override <code>min</code>, <code>now</code>, and <code>max</code> if set.</td>
+<td>string</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+### <code>accessibilityViewIsModal</code>
+<div class="label ios">
+iOS
+</div>
+<p>A Boolean value indicating whether VoiceOver should ignore the elements within views that are siblings of the receiver.</p>
+<p>For example, in a window that contains sibling views <code>A</code> and <code>B</code>, setting <code>accessibilityViewIsModal</code> to <code>true</code> on view <code>B</code> causes VoiceOver to ignore the elements in the view <code>A</code>. On the other hand, if view <code>B</code> contains a child view <code>C</code> and you set <code>accessibilityViewIsModal</code> to <code>true</code> on view <code>C</code>, VoiceOver does not ignore the elements in view <code>A</code>.</p>
+### <code>accessibilityElementsHidden</code>
+<div class="label ios">
+iOS
+</div>
+<p>A Boolean value indicating whether the accessibility elements contained within this accessibility element are hidden.</p>
+<p>For example, in a window that contains sibling views <code>A</code> and <code>B</code>, setting <code>accessibilityElementsHidden</code> to <code>true</code> on view <code>B</code> causes VoiceOver to ignore the elements in the view <code>B</code>. This is similar to the Android property <code>importantForAccessibility="no-hide-descendants"</code>.</p>
+### <code>importantForAccessibility</code>
+<div class="label android">
+Android
+</div>
+<p>In the case of two overlapping UI components with the same parent, default accessibility focus can have unpredictable behavior. The <code>importantForAccessibility</code> property will resolve this by controlling if a view fires accessibility events and if it is reported to accessibility services. It can be set to <code>auto</code>, <code>yes</code>, <code>no</code> and <code>no-hide-descendants</code> (the last value will force accessibility services to ignore the component and all of its children).</p>
+<pre class="jsx"><code>&lt;View style={styles.container}&gt;
+  &lt;View
+    style={[styles.layout, { backgroundColor: &quot;green&quot; }]}
+    importantForAccessibility=&quot;yes&quot;
+  &gt;
+    &lt;Text&gt;First layout&lt;/Text&gt;
+  &lt;/View&gt;
+  &lt;View
+    style={[styles.layout, { backgroundColor: &quot;yellow&quot; }]}
+    importantForAccessibility=&quot;no-hide-descendants&quot;
+  &gt;
+    &lt;Text&gt;Second layout&lt;/Text&gt;
+  &lt;/View&gt;
+&lt;/View&gt;</code></pre>
+<p>In the above example, the <code>yellow</code> layout and its descendants are completely invisible to TalkBack and all other accessibility services. So we can use overlapping views with the same parent without confusing TalkBack.</p>
+### <code>onAccessibilityEscape</code>
+<div class="label ios">
+iOS
+</div>
+<p>Assign this property to a custom function which will be called when someone performs the “escape” gesture, which is a two finger Z shaped gesture. An escape function should move back hierarchically in the user interface. This can mean moving up or back in a navigation hierarchy or dismissing a modal user interface. If the selected element does not have an <code>onAccessibilityEscape</code> function, the system will attempt to traverse up the view hierarchy until it finds a view that does or bonk to indicate it was unable to find one.</p>
+<h3 id="onaccessibilitytap"><code>onAccessibilityTap</code></h3>
+<p>Use this property to assign a custom function to be called when someone activates an accessible element by double tapping on it while it’s selected.</p>
+### <code>onMagicTap</code>
+<div class="label ios">
+iOS
+</div>
+<p>Assign this property to a custom function which will be called when someone performs the “magic tap” gesture, which is a double-tap with two fingers. A magic tap function should perform the most relevant action a user could take on a component. In the Phone app on iPhone, a magic tap answers a phone call, or ends the current one. If the selected element does not have an <code>onMagicTap</code> function, the system will traverse up the view hierarchy until it finds a view that does.</p>
+<h2 id="accessibility-actions">Accessibility Actions</h2>
+<p>Accessibility actions allow an assistive technology to programmatically invoke the actions of a component. In order to support accessibility actions, a component must do two things:</p>
+<ul>
+<li>Define the list of actions it supports via the <code>accessibilityActions</code> property.</li>
+<li>Implement an <code>onAccessibilityAction</code> function to handle action requests.</li>
+</ul>
+<p>The <code>accessibilityActions</code> property should contain a list of action objects. Each action object should contain the following fields:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>name</td>
+<td>string</td>
+<td>Yes</td>
+</tr>
+<tr class="even">
+<td>label</td>
+<td>string</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<p>Actions either represent standard actions, such as clicking a button or adjusting a slider, or custom actions specific to a given component such as deleting an email message. The <code>name</code> field is required for both standard and custom actions, but <code>label</code> is optional for standard actions.</p>
+<p>When adding support for standard actions, <code>name</code> must be one of the following:</p>
+<ul>
+<li><code>'magicTap'</code> - iOS only - While VoiceOver focus is on or inside the component, the user double tapped with two fingers.</li>
+<li><code>'escape'</code> - iOS only - While VoiceOver focus is on or inside the component, the user performed a two finger scrub gesture (left, right, left).</li>
+<li><code>'activate'</code> - Activate the component. Typically this should perform the same action as when the user touches or clicks the component when not using an assistive technology. This is generated when a screen reader user double taps the component.</li>
+<li><code>'increment'</code> - Increment an adjustable component. On iOS, VoiceOver generates this action when the component has a role of <code>'adjustable'</code> and the user places focus on it and swipes upward. On Android, TalkBack generates this action when the user places accessibility focus on the component and presses the volume up button.</li>
+<li><code>'decrement'</code> - Decrement an adjustable component. On iOS, VoiceOver generates this action when the component has a role of <code>'adjustable'</code> and the user places focus on it and swipes downward. On Android, TalkBack generates this action when the user places accessibility focus on the component and presses the volume down button.</li>
+<li><code>'longpress'</code> - Android only - This action is generated when the user places accessibility focus on the component and double tap and holds one finger on the screen. Typically, this should perform the same action as when the user holds down one finger on the component while not using an assistive technology.</li>
+</ul>
+<p>The <code>label</code> field is optional for standard actions, and is often unused by assistive technologies. For custom actions, it is a localized string containing a description of the action to be presented to the user.</p>
+<p>To handle action requests, a component must implement an <code>onAccessibilityAction</code> function. The only argument to this function is an event containing the name of the action to perform. The below example from RNTester shows how to create a component which defines and handles several custom actions.</p>
+<pre class="jsx"><code>&lt;View
+  accessible={true}
+  accessibilityActions={[
+    { name: &quot;cut&quot;, label: &quot;cut&quot; },
+    { name: &quot;copy&quot;, label: &quot;copy&quot; },
+    { name: &quot;paste&quot;, label: &quot;paste&quot; },
+  ]}
+  onAccessibilityAction={(event) =&gt; {
+    switch (event.nativeEvent.actionName) {
+      case &quot;cut&quot;:
+        Alert.alert(&quot;Alert&quot;, &quot;cut action success&quot;);
+        break;
+      case &quot;copy&quot;:
+        Alert.alert(&quot;Alert&quot;, &quot;copy action success&quot;);
+        break;
+      case &quot;paste&quot;:
+        Alert.alert(&quot;Alert&quot;, &quot;paste action success&quot;);
+        break;
+    }
+  }}
+/&gt;</code></pre>
+<h2 id="checking-if-a-screen-reader-is-enabled">Checking if a Screen Reader is Enabled</h2>
+<p>The <code>AccessibilityInfo</code> API allows you to determine whether or not a screen reader is currently active. See the <a href="accessibilityinfo">AccessibilityInfo documentation</a> for details.</p>
+## Sending Accessibility Events
+<div class="label android">
+Android
+</div>
+<p>Sometimes it is useful to trigger an accessibility event on a UI component (i.e. when a custom view appears on a screen or set accessibility focus to a view). Native UIManager module exposes a method ‘sendAccessibilityEvent’ for this purpose. It takes two arguments: view tag and a type of an event. The supported event types are <code>typeWindowStateChanged</code>, <code>typeViewFocused</code> and <code>typeViewClicked</code>.</p>
+<pre class="jsx"><code>import { Platform, UIManager, findNodeHandle } from &quot;react-native&quot;;
+
+if (Platform.OS === &quot;android&quot;) {
+  UIManager.sendAccessibilityEvent(
+    findNodeHandle(this),
+    UIManager.AccessibilityEventTypes.typeViewFocused
+  );
+}</code></pre>
+## Testing TalkBack Support
+<div class="label android">
+Android
+</div>
+<p>To enable TalkBack, go to the Settings app on your Android device or emulator. Tap Accessibility, then TalkBack. Toggle the “Use service” switch to enable or disable it.</p>
+<p>Android emulators don’t have TalkBack installed by default. You can install TalkBack on your emulator via the Google Play Store. Make sure to choose an emulator with the Google Play store installed. These are available in Android Studio.</p>
+<p>You can use the volume key shortcut to toggle TalkBack. To turn on the volume key shortcut, go to the Settings app, then Accessibility. At the top, turn on Volume key shortcut.</p>
+<p>To use the volume key shortcut, press both volume keys for 3 seconds to start an accessibility tool.</p>
+<p>Additionally, if you prefer, you can toggle TalkBack via command line with:</p>
+<pre class="shell"><code># disable
+adb shell settings put secure enabled_accessibility_services com.android.talkback/com.google.android.marvin.talkback.TalkBackService
+
+# enable
+adb shell settings put secure enabled_accessibility_services com.google.android.marvin.talkback/com.google.android.marvin.talkback.TalkBackService</code></pre>
+## Testing VoiceOver Support
+<div class="label ios">
+iOS
+</div>
+<p>To enable VoiceOver, go to the Settings app on your iOS device (it’s not available for simulator). Tap General, then Accessibility. There you will find many tools that people use to make their devices more usable, such as bolder text, increased contrast, and VoiceOver.</p>
+<p>To enable VoiceOver, tap on VoiceOver under “Vision” and toggle the switch that appears at the top.</p>
+<p>At the very bottom of the Accessibility settings, there is an “Accessibility Shortcut”. You can use this to toggle VoiceOver by triple clicking the Home button.</p>
+<h2 id="additional-resources">Additional Resources</h2>
+<ul>
+<li><a href="https://engineering.fb.com/ios/making-react-native-apps-accessible/">Making React Native Apps Accessible</a></li>
+</ul>
+</body>
+</html>

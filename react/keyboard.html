@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Keyboard</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Keyboard</h1>
+</header>
+<p>import Tabs from ‘<span class="citation" data-cites="theme/Tabs">@theme/Tabs</span>’; import TabItem from ‘<span class="citation" data-cites="theme/TabItem">@theme/TabItem</span>’; import constants from ‘<span class="citation" data-cites="site/core/TabsConstants">@site/core/TabsConstants</span>’;</p>
+<p><code>Keyboard</code> module to control keyboard events.</p>
+<h3 id="usage">Usage</h3>
+<p>The Keyboard module allows you to listen for native events and react to them, as well as make changes to the keyboard, like dismissing it.</p>
+<p><Tabs groupId="syntax" defaultValue={constants.defaultSyntax} values={constants.syntax}> <TabItem value="functional"></p>
+<p>```SnackPlayer name=Keyboard%20Function%20Component%20Example&amp;supportedPlatforms=ios,android import React, { useState, useEffect } from “react”; import { Keyboard, Text, TextInput, StyleSheet, View } from “react-native”;</p>
+<p>const Example = () =&gt; { const [keyboardStatus, setKeyboardStatus] = useState(undefined);</p>
+<p>useEffect(() =&gt; { const showSubscription = Keyboard.addListener(“keyboardDidShow”, () =&gt; { setKeyboardStatus(“Keyboard Shown”); }); const hideSubscription = Keyboard.addListener(“keyboardDidHide”, () =&gt; { setKeyboardStatus(“Keyboard Hidden”); });</p>
+<pre><code>return () =&gt; {
+  showSubscription.remove();
+  hideSubscription.remove();
+};</code></pre>
+<p>}, []);</p>
+<p>return ( <View style={style.container}> <TextInput
+        style={style.input}
+        placeholder='Click here…'
+        onSubmitEditing={Keyboard.dismiss}
+      /> <Text style={style.status}>{keyboardStatus}</Text> </View> ); }</p>
+<p>const style = StyleSheet.create({ container: { flex: 1, padding: 36 }, input: { padding: 10, borderWidth: 0.5, borderRadius: 4 }, status: { padding: 10, textAlign: “center” } });</p>
+<p>export default Example; ```</p>
+<p></TabItem> <TabItem value="classical"></p>
+<p>```SnackPlayer name=Keyboard%20Class%20Component%20Example&amp;supportedPlatforms=ios,android import React, { Component } from ‘react’; import { Keyboard, Text, TextInput, StyleSheet, View } from ‘react-native’;</p>
+<p>class Example extends Component { state = { keyboardStatus: undefined };</p>
+<p>componentDidMount() { this.keyboardDidShowSubscription = Keyboard.addListener( ‘keyboardDidShow’, () =&gt; { this.setState({ keyboardStatus: ‘Keyboard Shown’ }); }, ); this.keyboardDidHideSubscription = Keyboard.addListener( ‘keyboardDidHide’, () =&gt; { this.setState({ keyboardStatus: ‘Keyboard Hidden’ }); }, ); }</p>
+<p>componentWillUnmount() { this.keyboardDidShowSubscription.remove(); this.keyboardDidHideSubscription.remove(); }</p>
+<p>render() { return ( <View style={style.container}> <TextInput
+          style={style.input}
+          placeholder='Click here…'
+          onSubmitEditing={Keyboard.dismiss}
+        /> <Text style={style.status}> {this.state.keyboardStatus} </Text> </View> ) } }</p>
+<p>const style = StyleSheet.create({ container: { flex: 1, padding: 36 }, input: { padding: 10, borderWidth: 0.5, borderRadius: 4 }, status: { padding: 10, textAlign: “center” } });</p>
+<p>export default Example; ```</p>
+<p></TabItem> </Tabs></p>
+<hr />
+<h1 id="reference">Reference</h1>
+<h2 id="methods">Methods</h2>
+<h3 id="addlistener"><code>addListener()</code></h3>
+<pre class="jsx"><code>static addListener(eventName, callback)</code></pre>
+<p>The <code>addListener</code> function connects a JavaScript function to an identified native keyboard notification event.</p>
+<p>This function then returns the reference to the listener.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+| eventName
+<div data-classname="label basic two-lines required">
+Required
+</div>
+| string | The string that identifies the event you’re listening for. See the list below. | | callback
+<div data-classname="label basic two-lines required">
+Required
+</div>
+<p>| function | The function to be called when the event fires |</p>
+<p><strong><code>eventName</code></strong></p>
+<p>This can be any of the following:</p>
+<ul>
+<li><code>keyboardWillShow</code></li>
+<li><code>keyboardDidShow</code></li>
+<li><code>keyboardWillHide</code></li>
+<li><code>keyboardDidHide</code></li>
+<li><code>keyboardWillChangeFrame</code></li>
+<li><code>keyboardDidChangeFrame</code></li>
+</ul>
+<blockquote>
+<p>Note that if you set <code>android:windowSoftInputMode</code> to <code>adjustResize</code> or <code>adjustPan</code>, only <code>keyboardDidShow</code> and <code>keyboardDidHide</code> events will be available on Android. If you set <code>android:windowSoftInputMode</code> to <code>adjustNothing</code>, no events will be available on Android. <code>keyboardWillShow</code> as well as <code>keyboardWillHide</code> are generally not available on Android since there is no native corresponding event.</p>
+</blockquote>
+<hr />
+<h3 id="removelistener"><code>removeListener()</code></h3>
+<pre class="jsx"><code>static removeListener(eventName, callback)</code></pre>
+<blockquote>
+<p><strong>Deprecated.</strong> Use the <code>remove()</code> method on the event subscription returned by <a href="#addlistener"><code>addListener()</code></a>.</p>
+</blockquote>
+<p><strong>Parameters:</strong></p>
+<table>
+<colgroup>
+<col style="width: 8%" />
+<col style="width: 7%" />
+<col style="width: 7%" />
+<col style="width: 75%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>eventName</td>
+<td>string</td>
+<td>Yes</td>
+<td>The <code>nativeEvent</code> is the string that identifies the event you’re listening for</td>
+</tr>
+<tr class="even">
+<td>callback</td>
+<td>function</td>
+<td>Yes</td>
+<td>The function to be called when the event fires</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="removealllisteners"><code>removeAllListeners()</code></h3>
+<pre class="jsx"><code>static removeAllListeners(eventName)</code></pre>
+<p>Removes all listeners for a specific event type.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<colgroup>
+<col style="width: 9%" />
+<col style="width: 6%" />
+<col style="width: 8%" />
+<col style="width: 74%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>eventType</td>
+<td>string</td>
+<td>Yes</td>
+<td>The native event string listeners are watching which will be removed</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="dismiss"><code>dismiss()</code></h3>
+<pre class="jsx"><code>static dismiss()</code></pre>
+<p>Dismisses the active keyboard and removes focus.</p>
+<hr />
+<h3 id="schedulelayoutanimation"><code>scheduleLayoutAnimation</code></h3>
+<pre class="jsx"><code>static scheduleLayoutAnimation(event)</code></pre>
+<p>Useful for syncing TextInput (or other keyboard accessory view) size of position changes with keyboard movements.</p>
+</body>
+</html>

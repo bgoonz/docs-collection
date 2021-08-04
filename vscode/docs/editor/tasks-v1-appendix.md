@@ -1,10 +1,8 @@
-Appendix (legacy version)
-=========================
+# Appendix (legacy version)
 
 This is additional information for Visual Studio Code [tasks](/docs/editor/tasks-v1.md).
 
-Schema for tasks.json
----------------------
+## Schema for tasks.json
 
 The following interfaces define the schema of the tasks.json file.
 

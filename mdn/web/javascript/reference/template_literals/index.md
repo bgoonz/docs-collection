@@ -13,6 +13,7 @@ tags:
   - strings
 browser-compat: javascript.grammar.template_literals
 ---
+
 {{JsSidebar("More")}}
 
 Template literals are string literals allowing embedded
@@ -24,14 +25,10 @@ They were called "template strings" in prior editions of the ES2015 specificatio
 ## Syntax
 
 ```js
-`string text`
+`string text``string text line 1
+ string text line 2``string text ${expression} string text`;
 
-`string text line 1
- string text line 2`
-
-`string text ${expression} string text`
-
-tag`string text ${expression} string text`
+tag`string text ${expression} string text`;
 ```
 
 ## Description
@@ -53,7 +50,7 @@ To escape a backtick in a template literal, put a backslash (`\`) before the
 backtick.
 
 ```js
-`\`` === '`' // --> true
+`\`` === "`"; // --> true
 ```
 
 ### Multi-line strings
@@ -64,8 +61,7 @@ Using normal strings, you would have to use the following syntax in order to get
 multi-line strings:
 
 ```js
-console.log('string text line 1\n' +
-'string text line 2');
+console.log("string text line 1\n" + "string text line 2");
 // "string text line 1
 // string text line 2"
 ```
@@ -87,7 +83,7 @@ syntax:
 ```js
 let a = 5;
 let b = 10;
-console.log('Fifteen is ' + (a + b) + ' and\nnot ' + (2 * a + b) + '.');
+console.log("Fifteen is " + (a + b) + " and\nnot " + (2 * a + b) + ".");
 // "Fifteen is 15 and
 // not 20."
 ```
@@ -116,24 +112,28 @@ templated literal.
 In ES5:
 
 ```js
-let classes = 'header';
-classes += (isLargeScreen() ?
-  '' : item.isCollapsed ?
-    ' icon-expander' : ' icon-collapser');
+let classes = "header";
+classes += isLargeScreen()
+  ? ""
+  : item.isCollapsed
+  ? " icon-expander"
+  : " icon-collapser";
 ```
 
 In ES2015 with template literals and without nesting:
 
 ```js
-const classes = `header ${ isLargeScreen() ? '' :
-  (item.isCollapsed ? 'icon-expander' : 'icon-collapser') }`;
+const classes = `header ${
+  isLargeScreen() ? "" : item.isCollapsed ? "icon-expander" : "icon-collapser"
+}`;
 ```
 
 In ES2015 with nested template literals:
 
 ```js
-const classes = `header ${ isLargeScreen() ? '' :
-  `icon-${item.isCollapsed ? 'expander' : 'collapser'}` }`;
+const classes = `header ${
+  isLargeScreen() ? "" : `icon-${item.isCollapsed ? "expander" : "collapser"}`
+}`;
 ```
 
 ### Tagged templates
@@ -151,7 +151,7 @@ different, as described in one of the following examples.)
 The name of the function used for the tag can be whatever you want.
 
 ```js
-let person = 'Mike';
+let person = "Mike";
 let age = 28;
 
 function myTag(strings, personExp, ageExp) {
@@ -160,17 +160,17 @@ function myTag(strings, personExp, ageExp) {
   let str2 = strings[2]; // "."
 
   let ageStr;
-  if (ageExp > 99){
-    ageStr = 'centenarian';
+  if (ageExp > 99) {
+    ageStr = "centenarian";
   } else {
-    ageStr = 'youngster';
+    ageStr = "youngster";
   }
 
   // We can even return a string built using a template literal
   return `${str0}${personExp}${str1}${ageStr}${str2}`;
 }
 
-let output = myTag`That ${ person } is a ${ age }.`;
+let output = myTag`That ${person} is a ${age}.`;
 
 console.log(output);
 // That Mike is a youngster.
@@ -180,29 +180,29 @@ Tag functions don't even need to return a string!
 
 ```js
 function template(strings, ...keys) {
-  return (function(...values) {
+  return function (...values) {
     let dict = values[values.length - 1] || {};
     let result = [strings[0]];
-    keys.forEach(function(key, i) {
+    keys.forEach(function (key, i) {
       let value = Number.isInteger(key) ? values[key] : dict[key];
       result.push(value, strings[i + 1]);
     });
-    return result.join('');
-  });
+    return result.join("");
+  };
 }
 
 let t1Closure = template`${0}${1}${0}!`;
 //let t1Closure = template(["","","","!"],0,1,0);
-t1Closure('Y', 'A');                      // "YAY!"
+t1Closure("Y", "A"); // "YAY!"
 
-let t2Closure = template`${0} ${'foo'}!`;
+let t2Closure = template`${0} ${"foo"}!`;
 //let t2Closure = template([""," ","!"],0,"foo");
-t2Closure('Hello', {foo: 'World'}); // "Hello World!"
+t2Closure("Hello", { foo: "World" }); // "Hello World!"
 
-let t3Closure = template`I'm ${'name'}. I'm almost ${'age'} years old.`;
+let t3Closure = template`I'm ${"name"}. I'm almost ${"age"} years old.`;
 //let t3Closure = template(["I'm ", ". I'm almost ", " years old."], "name", "age");
-t3Closure('foo', {name: 'MDN', age: 30}); //"I'm MDN. I'm almost 30 years old."
-t3Closure({name: 'MDN', age: 30}); //"I'm MDN. I'm almost 30 years old."
+t3Closure("foo", { name: "MDN", age: 30 }); //"I'm MDN. I'm almost 30 years old."
+t3Closure({ name: "MDN", age: 30 }); //"I'm MDN. I'm almost 30 years old."
 ```
 
 ### Raw strings
@@ -226,13 +226,13 @@ In addition, the {{jsxref("String.raw()")}} method exists to create raw stringsâ
 like the default template function and string concatenation would create.
 
 ```js
-let str = String.raw`Hi\n${2+3}!`;
+let str = String.raw`Hi\n${2 + 3}!`;
 // "Hi\\n5!"
 
 str.length;
 // 6
 
-Array.from(str).join(',');
+Array.from(str).join(",");
 // "H,i,\\,n,5,!"
 ```
 
@@ -255,7 +255,7 @@ ECMAScript grammar, a parser looks for valid Unicode escape sequences, but finds
 malformed syntax:
 
 ```js
-latex`\unicode`
+latex`\unicode`;
 // Throws in older ECMAScript versions (ES2016 and earlier)
 // SyntaxError: malformed Unicode character escape sequence
 ```
@@ -273,10 +273,10 @@ array:
 
 ```js
 function latex(str) {
-  return { "cooked": str[0], "raw": str.raw[0] }
+  return { cooked: str[0], raw: str.raw[0] };
 }
 
-latex`\unicode`
+latex`\unicode`;
 
 // { cooked: undefined, raw: "\\unicode" }
 ```

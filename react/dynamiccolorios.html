@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>DynamicColorIOS</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">DynamicColorIOS</h1>
+</header>
+<p>import Tabs from ‘<span class="citation" data-cites="theme/Tabs">@theme/Tabs</span>’; import TabItem from ‘<span class="citation" data-cites="theme/TabItem">@theme/TabItem</span>’; import constants from ‘<span class="citation" data-cites="site/core/TabsConstants">@site/core/TabsConstants</span>’;</p>
+<p>The <code>DynamicColorIOS</code> function is a platform color type specific to iOS.</p>
+<pre class="jsx"><code>DynamicColorIOS({
+  light: color,
+  dark: color,
+  highContrastLight: color, // (optional) will fallback to &quot;light&quot; if not provided
+  highContrastDark: color // (optional) will fallback to &quot;dark&quot; if not provided
+});</code></pre>
+<p><code>DynamicColorIOS</code> takes a single argument as an object with two mandatory keys: <code>dark</code> and <code>light</code>, and two optional keys <code>highContrastLight</code> and <code>highContrastDark</code>. These correspond to the colors you want to use for “light mode” and “dark mode” on iOS, and when high contrast accessibility mode is enabled, high contrast version of them.</p>
+<p>At runtime, the system will choose which of the colors to display depending on the current system appearance and accessibility settings. Dynamic colors are useful for branding colors or other app specific colors that still respond automatically to system setting changes.</p>
+<h4 id="developer-notes">Developer notes</h4>
+<p>&lt;Tabs groupId=“guide” defaultValue=“web” values={constants.getDevNotesTabs([“ios”, “web”])}&gt;</p>
+<p><TabItem value="web"></p>
+<blockquote>
+<p>If you’re familiar with <code>@media (prefers-color-scheme: dark)</code> in CSS, this is similar! Only instead of defining all the colors in a media query, you define which color to use under what circumstances right there where you’re using it. Neat!</p>
+</blockquote>
+<p></TabItem> <TabItem value="ios"></p>
+<blockquote>
+<p>The <code>DynamicColorIOS</code> function is similar to the iOS native methods <a href="https://developer.apple.com/documentation/uikit/uicolor/3238040-colorwithdynamicprovider"><code>UIColor colorWithDynamicProvider:</code></a></p>
+</blockquote>
+<p></TabItem> </Tabs></p>
+<h2 id="example">Example</h2>
+<pre class="jsx"><code>import { DynamicColorIOS } from &#39;react-native&#39;;
+
+const customDynamicTextColor = DynamicColorIOS({
+  dark: &#39;lightskyblue&#39;,
+  light: &#39;midnightblue&#39;
+});
+
+const customContrastDynamicTextColor = DynamicColorIOS({
+  dark: &#39;darkgray&#39;,
+  light: &#39;lightgray&#39;,
+  highContrastDark: &#39;black&#39;,
+  highContrastLight: &#39;white&#39;
+});</code></pre>
+</body>
+</html>

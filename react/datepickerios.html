@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>🚧 DatePickerIOS</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">🚧 DatePickerIOS</h1>
+</header>
+<p>import Tabs from ‘<span class="citation" data-cites="theme/Tabs">@theme/Tabs</span>’; import TabItem from ‘<span class="citation" data-cites="theme/TabItem">@theme/TabItem</span>’; import constants from ‘<span class="citation" data-cites="site/core/TabsConstants">@site/core/TabsConstants</span>’;</p>
+<blockquote>
+<p><strong>Deprecated.</strong> Use one of the <a href="https://reactnative.directory/?search=datepicker">community packages</a> instead.</p>
+</blockquote>
+<p>Use <code>DatePickerIOS</code> to render a date/time picker (selector) on iOS. This is a controlled component, so you must hook in to the <code>onDateChange</code> callback and update the <code>date</code> prop in order for the component to update, otherwise the user’s change will be reverted immediately to reflect <code>props.date</code> as the source of truth.</p>
+<h3 id="example">Example</h3>
+<p><Tabs groupId="syntax" defaultValue={constants.defaultSyntax} values={constants.syntax}> <TabItem value="functional"></p>
+<p>```SnackPlayer name=DatePickerIOS&amp;supportedPlatforms=ios import React, {useState} from ‘react’; import {DatePickerIOS, View, StyleSheet} from ‘react-native’;</p>
+<p>const App = () =&gt; {</p>
+<p>const [chosenDate, setChosenDate] = useState(new Date());</p>
+<p>return ( <View style={styles.container}> <DatePickerIOS
+        date={chosenDate}
+        onDateChange={setChosenDate}
+      /> </View> ); }</p>
+<p>const styles = StyleSheet.create({ container: { flex: 1, justifyContent: ‘center’, }, });</p>
+<p>export default App; ```</p>
+<p></TabItem> <TabItem value="classical"></p>
+<p>```SnackPlayer name=DatePickerIOS&amp;supportedPlatforms=ios import React, {Component} from ‘react’; import {DatePickerIOS, View, StyleSheet} from ‘react-native’;</p>
+<p>export default class App extends Component { constructor(props) { super(props); this.state = {chosenDate: new Date()};</p>
+<pre><code>this.setDate = this.setDate.bind(this);</code></pre>
+<p>}</p>
+<p>setDate(newDate) { this.setState({chosenDate: newDate}); }</p>
+<p>render() { return ( <View style={styles.container}> <DatePickerIOS
+          date={this.state.chosenDate}
+          onDateChange={this.setDate}
+        /> </View> ); } }</p>
+<p>const styles = StyleSheet.create({ container: { flex: 1, justifyContent: ‘center’, }, }); ```</p>
+<p></TabItem> </Tabs></p>
+<hr />
+<h1 id="reference">Reference</h1>
+<h2 id="props">Props</h2>
+<p>Inherits <a href="view.md#props">View Props</a>.</p>
+<h3 id="date"><code>date</code></h3>
+<p>The currently selected date.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Date</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="onchange"><code>onChange</code></h3>
+<p>Date change handler.</p>
+<p>This is called when the user changes the date or time in the UI. The first and only argument is an Event. For getting the date the picker was changed to, use onDateChange instead.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>function</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="ondatechange"><code>onDateChange</code></h3>
+<p>Date change handler.</p>
+<p>This is called when the user changes the date or time in the UI. The first and only argument is a Date object representing the new date and time.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>function</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="maximumdate"><code>maximumDate</code></h3>
+<p>Maximum date.</p>
+<p>Restricts the range of possible date/time values.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Date</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<p>Example with <code>maximumDate</code> set to December 31, 2017:</p>
+<center>
+<img src="/docs/assets/DatePickerIOS/maximumDate.gif" width="360"></img>
+</center>
+<hr />
+<h3 id="minimumdate"><code>minimumDate</code></h3>
+<p>Minimum date.</p>
+<p>Restricts the range of possible date/time values.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Date</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<p>See <a href="#maximumdate"><code>maximumDate</code></a> for an example image.</p>
+<hr />
+<h3 id="minuteinterval"><code>minuteInterval</code></h3>
+<p>The interval at which minutes can be selected.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>enum(1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 30)</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<p>Example with <code>minuteInterval</code> set to <code>10</code>:</p>
+<center>
+<img src="/docs/assets/DatePickerIOS/minuteInterval.png" width="360"></img>
+</center>
+<hr />
+<h3 id="mode"><code>mode</code></h3>
+<p>The date picker mode.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>enum(‘date’, ‘time’, ‘datetime’, ‘countdown’)</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<p>Example with <code>mode</code> set to <code>date</code>, <code>time</code>, and <code>datetime</code>: <img src="/docs/assets/DatePickerIOS/mode.png" /></p>
+<hr />
+<h3 id="locale"><code>locale</code></h3>
+<p>The locale for the date picker. Value needs to be a <a href="https://developer.apple.com/library/content/documentation/MacOSX/Conceptual/BPInternational/LanguageandLocaleIDs/LanguageandLocaleIDs.html">Locale ID</a>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>String</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="timezoneoffsetinminutes"><code>timeZoneOffsetInMinutes</code></h3>
+<p>Timezone offset in minutes.</p>
+<p>By default, the date picker will use the device’s timezone. With this parameter, it is possible to force a certain timezone offset. For instance, to show times in Pacific Standard Time, pass -7 * 60.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="initialdate"><code>initialDate</code></h3>
+<p>Provides an initial value that will change when the user starts selecting a date. It is useful for use-cases where you do not want to deal with listening to events and updating the date prop to keep the controlled state in sync. The controlled state has known bugs which causes it to go out of sync with native. The initialDate prop is intended to allow you to have native be source of truth.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Date</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

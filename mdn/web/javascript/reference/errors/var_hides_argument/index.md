@@ -8,6 +8,7 @@ tags:
   - Strict Mode
   - TypeError
 ---
+
 {{jsSidebar("Errors")}}
 
 The JavaScript [strict
@@ -43,10 +44,10 @@ non-strict code, the redeclaration is silently ignored.
 In this case, the variable "arg" redeclares the argument.
 
 ```js example-bad
-'use strict';
+"use strict";
 
 function f(arg) {
-  var arg = 'foo';
+  var arg = "foo";
 }
 ```
 
@@ -58,10 +59,10 @@ statement can just be omitted, because the variable exists already. In other cas
 might to rename either the function parameter or the variable name.
 
 ```js example-good
-'use strict';
+"use strict";
 
 function f(arg) {
-  arg = 'foo';
+  arg = "foo";
 }
 ```
 

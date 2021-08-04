@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Text</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Text</h1>
+</header>
+<p>import Tabs from ‘<span class="citation" data-cites="theme/Tabs">@theme/Tabs</span>’; import TabItem from ‘<span class="citation" data-cites="theme/TabItem">@theme/TabItem</span>’; import constants from ‘<span class="citation" data-cites="site/core/TabsConstants">@site/core/TabsConstants</span>’;</p>
+<p>A React component for displaying text.</p>
+<p><code>Text</code> supports nesting, styling, and touch handling.</p>
+<p>In the following example, the nested title and body text will inherit the <code>fontFamily</code> from <code>styles.baseText</code>, but the title provides its own additional styles. The title and body will stack on top of each other on account of the literal newlines:</p>
+<p><Tabs groupId="syntax" defaultValue={constants.defaultSyntax} values={constants.syntax}> <TabItem value="functional"></p>
+<p>```SnackPlayer name=Text%20Functional%20Component%20Example import React, { useState } from “react”; import { Text, StyleSheet } from “react-native”;</p>
+<p>const TextInANest = () =&gt; { const [titleText, setTitleText] = useState(“Bird’s Nest”); const bodyText = useState(“This is not really a bird nest.”);</p>
+<p>const onPressTitle = () =&gt; { setTitleText(“Bird’s Nest [pressed]”); };</p>
+<p>return ( <Text style={styles.baseText}> <Text style={styles.titleText} onPress={onPressTitle}> {titleText} {“”} {“”} </Text> <Text numberOfLines={5}>{bodyText}</Text> </Text> ); };</p>
+<p>const styles = StyleSheet.create({ baseText: { fontFamily: “Cochin” }, titleText: { fontSize: 20, fontWeight: “bold” } });</p>
+<p>export default TextInANest; ```</p>
+<p></TabItem> <TabItem value="classical"></p>
+<p>```SnackPlayer name=Text%20Class%20Component%20Example import React, { Component } from “react”; import { Text, StyleSheet } from “react-native”;</p>
+<p>class TextInANest extends Component { constructor(props) { super(props); this.state = { titleText: “Bird’s Nest”, bodyText: “This is not really a bird nest.” }; }</p>
+<p>onPressTitle = () =&gt; { this.setState({ titleText: “Bird’s Nest [pressed]” }); };</p>
+<p>render() { return ( <Text style={styles.baseText}> <Text
+          style={styles.titleText}
+          onPress={this.onPressTitle}
+        > {this.state.titleText} {“”} {“”} </Text> <Text numberOfLines={5}>{this.state.bodyText}</Text> </Text> ); } }</p>
+<p>const styles = StyleSheet.create({ baseText: { fontFamily: “Cochin” }, titleText: { fontSize: 20, fontWeight: “bold” } });</p>
+<p>export default TextInANest; ```</p>
+<p></TabItem> </Tabs></p>
+<h2 id="nested-text">Nested text</h2>
+<p>Both Android and iOS allow you to display formatted text by annotating ranges of a string with specific formatting like bold or colored text (<code>NSAttributedString</code> on iOS, <code>SpannableString</code> on Android). In practice, this is very tedious. For React Native, we decided to use web paradigm for this where you can nest text to achieve the same effect.</p>
+<p>```SnackPlayer name=Nested%20Text%20Example import React from ‘react’; import { Text, StyleSheet } from ‘react-native’;</p>
+<p>const BoldAndBeautiful = () =&gt; { return ( <Text style={styles.baseText}> I am bold <Text style={styles.innerText}> and red</Text> </Text> ); };</p>
+<p>const styles = StyleSheet.create({ baseText: { fontWeight: ‘bold’ }, innerText: { color: ‘red’ } });</p>
+<p>export default BoldAndBeautiful; ```</p>
+<p>Behind the scenes, React Native converts this to a flat <code>NSAttributedString</code> or <code>SpannableString</code> that contains the following information:</p>
+<pre class="jsx"><code>&quot;I am bold and red&quot;
+0-9: bold
+9-17: bold, red</code></pre>
+<h2 id="containers">Containers</h2>
+<p>The <code>&lt;Text&gt;</code> element is unique relative to layout: everything inside is no longer using the Flexbox layout but using text layout. This means that elements inside of a <code>&lt;Text&gt;</code> are no longer rectangles, but wrap when they see the end of the line.</p>
+<pre class="jsx"><code>&lt;Text&gt;
+  &lt;Text&gt;First part and &lt;/Text&gt;
+  &lt;Text&gt;second part&lt;/Text&gt;
+&lt;/Text&gt;
+// Text container: the text will be inline if the space allowed it
+// |First part and second part|
+
+// otherwise, the text will flow as if it was one
+// |First part |
+// |and second |
+// |part       |
+
+&lt;View&gt;
+  &lt;Text&gt;First part and &lt;/Text&gt;
+  &lt;Text&gt;second part&lt;/Text&gt;
+&lt;/View&gt;
+// View container: each text is its own block
+// |First part and|
+// |second part   |
+
+// otherwise, the text will flow in its own block
+// |First part |
+// |and        |
+// |second part|</code></pre>
+<h2 id="limited-style-inheritance">Limited Style Inheritance</h2>
+<p>On the web, the usual way to set a font family and size for the entire document is to take advantage of inherited CSS properties like so:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode css"><code class="sourceCode css"><a class="sourceLine" id="cb3-1" title="1">html {</a>
+<a class="sourceLine" id="cb3-2" title="2">  <span class="kw">font-family</span>: <span class="st">&#39;lucida grande&#39;</span><span class="op">,</span> tahoma<span class="op">,</span> verdana<span class="op">,</span> arial<span class="op">,</span> <span class="dv">sans-serif</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb3-3" title="3">  <span class="kw">font-size</span>: <span class="dv">11</span><span class="dt">px</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb3-4" title="4">  <span class="kw">color</span>: <span class="cn">#141823</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb3-5" title="5">}</a></code></pre></div>
+<p>All elements in the document will inherit this font unless they or one of their parents specifies a new rule.</p>
+<p>In React Native, we are more strict about it: <strong>you must wrap all the text nodes inside of a <code>&lt;Text&gt;</code> component</strong>. You cannot have a text node directly under a <code>&lt;View&gt;</code>.</p>
+<pre class="jsx"><code>// BAD: will raise exception, can&#39;t have a text node as child of a &lt;View&gt;
+&lt;View&gt;
+  Some text
+&lt;/View&gt;
+
+// GOOD
+&lt;View&gt;
+  &lt;Text&gt;
+    Some text
+  &lt;/Text&gt;
+&lt;/View&gt;</code></pre>
+<p>You also lose the ability to set up a default font for an entire subtree. Meanwhile, <code>fontFamily</code> only accepts a single font name, which is different from <code>font-family</code> in CSS. The recommended way to use consistent fonts and sizes across your application is to create a component <code>MyAppText</code> that includes them and use this component across your app. You can also use this component to make more specific components like <code>MyAppHeaderText</code> for other kinds of text.</p>
+<pre class="jsx"><code>&lt;View&gt;
+  &lt;MyAppText&gt;
+    Text styled with the default font for the entire application
+  &lt;/MyAppText&gt;
+  &lt;MyAppHeaderText&gt;Text styled as a header&lt;/MyAppHeaderText&gt;
+&lt;/View&gt;</code></pre>
+<p>Assuming that <code>MyAppText</code> is a component that only renders out its children into a <code>Text</code> component with styling, then <code>MyAppHeaderText</code> can be defined as follows:</p>
+<pre class="jsx"><code>class MyAppHeaderText extends Component {
+  render() {
+    return (
+      &lt;MyAppText&gt;
+        &lt;Text style={{ fontSize: 20 }}&gt;
+          {this.props.children}
+        &lt;/Text&gt;
+      &lt;/MyAppText&gt;
+    );
+  }
+}</code></pre>
+<p>Composing <code>MyAppText</code> in this way ensures that we get the styles from a top-level component, but leaves us the ability to add / override them in specific use cases.</p>
+<p>React Native still has the concept of style inheritance, but limited to text subtrees. In this case, the second part will be both bold and red.</p>
+<pre class="jsx"><code>&lt;Text style={{ fontWeight: &#39;bold&#39; }}&gt;
+  I am bold
+  &lt;Text style={{ color: &#39;red&#39; }}&gt;and red&lt;/Text&gt;
+&lt;/Text&gt;</code></pre>
+<p>We believe that this more constrained way to style text will yield better apps:</p>
+<ul>
+<li><p>(Developer) React components are designed with strong isolation in mind: You should be able to drop a component anywhere in your application, trusting that as long as the props are the same, it will look and behave the same way. Text properties that could inherit from outside of the props would break this isolation.</p></li>
+<li><p>(Implementor) The implementation of React Native is also simplified. We do not need to have a <code>fontFamily</code> field on every single element, and we do not need to potentially traverse the tree up to the root every time we display a text node. The style inheritance is only encoded inside of the native Text component and doesn’t leak to other components or the system itself.</p></li>
+</ul>
+<hr />
+<h1 id="reference">Reference</h1>
+<h2 id="props">Props</h2>
+<h3 id="accessibilityhint"><code>accessibilityHint</code></h3>
+<p>An accessibility hint helps users understand what will happen when they perform an action on the accessibility element when that result is not clear from the accessibility label.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>string</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="accessibilitylabel"><code>accessibilityLabel</code></h3>
+<p>Overrides the text that’s read by the screen reader when the user interacts with the element. By default, the label is constructed by traversing all the children and accumulating all the <code>Text</code> nodes separated by space.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>string</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="accessibilityrole"><code>accessibilityRole</code></h3>
+<p>Tells the screen reader to treat the currently focused on element as having a specific role.</p>
+<p>On iOS, these roles map to corresponding Accessibility Traits. Image button has the same functionality as if the trait was set to both ‘image’ and ‘button’. See the <a href="accessibility.md#accessibilitytraits-ios">Accessibility guide</a> for more information.</p>
+<p>On Android, these roles have similar functionality on TalkBack as adding Accessibility Traits does on Voiceover in iOS</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="accessibility#accessibilityrole">AccessibilityRole</a></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="accessibilitystate"><code>accessibilityState</code></h3>
+<p>Tells the screen reader to treat the currently focused on element as being in a specific state.</p>
+<p>You can provide one state, no state, or multiple states. The states must be passed in through an object. Ex: <code>{selected: true, disabled: true}</code>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="accessibility#accessibilitystate">AccessibilityState</a></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="accessible"><code>accessible</code></h3>
+<p>When set to <code>true</code>, indicates that the view is an accessibility element.</p>
+<p>See the <a href="accessibility#accessible-ios-android">Accessibility guide</a> for more information.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>boolean</td>
+<td><code>true</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="adjustsfontsizetofit"><code>adjustsFontSizeToFit</code></h3>
+<p>Specifies whether fonts should be scaled down automatically to fit given style constraints.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>boolean</td>
+<td><code>false</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="allowfontscaling"><code>allowFontScaling</code></h3>
+<p>Specifies whether fonts should scale to respect Text Size accessibility settings.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>boolean</td>
+<td><code>true</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+### <code>android_hyphenationFrequency</code>
+<div class="label android">
+Android
+</div>
+<p>Sets the frequency of automatic hyphenation to use when determining word breaks on Android API Level 23+.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>enum(<code>'none'</code>, <code>'full'</code>, <code>'balanced'</code>, <code>'high'</code>)</td>
+<td><code>'none'</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+### <code>dataDetectorType</code>
+<div class="label android">
+Android
+</div>
+<p>Determines the types of data converted to clickable URLs in the text element. By default, no data types are detected.</p>
+<p>You can provide only one type.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>enum(<code>'phoneNumber'</code>, <code>'link'</code>, <code>'email'</code>, <code>'none'</code>, <code>'all'</code>)</td>
+<td><code>'none'</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+### <code>disabled</code>
+<div class="label android">
+Android
+</div>
+<p>Specifies the disabled state of the text view for testing purposes.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>bool</td>
+<td><code>false</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="ellipsizemode"><code>ellipsizeMode</code></h3>
+<p>When <code>numberOfLines</code> is set, this prop defines how the text will be truncated. <code>numberOfLines</code> must be set in conjunction with this prop.</p>
+<p>This can be one of the following values:</p>
+<ul>
+<li><code>head</code> - The line is displayed so that the end fits in the container and the missing text at the beginning of the line is indicated by an ellipsis glyph. e.g., “…wxyz”</li>
+<li><code>middle</code> - The line is displayed so that the beginning and end fit in the container and the missing text in the middle is indicated by an ellipsis glyph. “ab…yz”</li>
+<li><code>tail</code> - The line is displayed so that the beginning fits in the container and the missing text at the end of the line is indicated by an ellipsis glyph. e.g., “abcd…”</li>
+<li><code>clip</code> - Lines are not drawn past the edge of the text container.</li>
+</ul>
+<blockquote>
+<p>On Android, when <code>numberOfLines</code> is set to a value higher than <code>1</code>, only <code>tail</code> value will work correctly.</p>
+</blockquote>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>enum(<code>'head'</code>, <code>'middle'</code>, <code>'tail'</code>, <code>'clip'</code>)</td>
+<td><code>tail</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="maxfontsizemultiplier"><code>maxFontSizeMultiplier</code></h3>
+<p>Specifies the largest possible scale a font can reach when <code>allowFontScaling</code> is enabled. Possible values:</p>
+<ul>
+<li><code>null/undefined</code>: inherit from the parent node or the global default (0)</li>
+<li><code>0</code>: no max, ignore parent/global default</li>
+<li><code>&gt;= 1</code>: sets the <code>maxFontSizeMultiplier</code> of this node to this value</li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number</td>
+<td><code>undefined</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+### <code>minimumFontScale</code>
+<div class="label ios">
+iOS
+</div>
+<p>Specifies the smallest possible scale a font can reach when <code>adjustsFontSizeToFit</code> is enabled. (values 0.01-1.0).</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="nativeid"><code>nativeID</code></h3>
+<p>Used to locate this view from native code.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>string</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="numberoflines"><code>numberOfLines</code></h3>
+<p>Used to truncate the text with an ellipsis after computing the text layout, including line wrapping, such that the total number of lines does not exceed this number. Setting this property to <code>0</code> will result in unsetting this value, which means that no lines restriction will be applied.</p>
+<p>This prop is commonly used with <code>ellipsizeMode</code>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number</td>
+<td><code>0</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="onlayout"><code>onLayout</code></h3>
+<p>Invoked on mount and on layout changes.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>(<a href="layoutevent">LayoutEvent</a>) =&gt; void</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="onlongpress"><code>onLongPress</code></h3>
+<p>This function is called on long press.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>(<a href="pressevent">PressEvent</a>) =&gt; void</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="onmoveshouldsetresponder"><code>onMoveShouldSetResponder</code></h3>
+<p>Does this view want to “claim” touch responsiveness? This is called for every touch move on the <code>View</code> when it is not the responder.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>(<a href="pressevent">PressEvent</a>) =&gt; boolean</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="onpress"><code>onPress</code></h3>
+<p>This function is called on press.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>(<a href="pressevent">PressEvent</a>) =&gt; void</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="onrespondergrant"><code>onResponderGrant</code></h3>
+<p>The View is now responding to touch events. This is the time to highlight and show the user what is happening.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>(<a href="pressevent">PressEvent</a>) =&gt; void</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="onrespondermove"><code>onResponderMove</code></h3>
+<p>The user is moving their finger.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>(<a href="pressevent">PressEvent</a>) =&gt; void</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="onresponderrelease"><code>onResponderRelease</code></h3>
+<p>Fired at the end of the touch.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>(<a href="pressevent">PressEvent</a>) =&gt; void</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="onresponderterminate"><code>onResponderTerminate</code></h3>
+<p>The responder has been taken from the <code>View</code>. Might be taken by other views after a call to <code>onResponderTerminationRequest</code>, or might be taken by the OS without asking (e.g., happens with control center/ notification center on iOS)</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>(<a href="pressevent">PressEvent</a>) =&gt; void</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="onresponderterminationrequest"><code>onResponderTerminationRequest</code></h3>
+<p>Some other <code>View</code> wants to become a responder and is asking this <code>View</code> to release its responder. Returning <code>true</code> allows its release.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>(<a href="pressevent">PressEvent</a>) =&gt; boolean</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="onstartshouldsetrespondercapture"><code>onStartShouldSetResponderCapture</code></h3>
+<p>If a parent <code>View</code> wants to prevent a child <code>View</code> from becoming a responder on a touch start, it should have this handler which returns <code>true</code>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>(<a href="pressevent">PressEvent</a>) =&gt; boolean</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="ontextlayout"><code>onTextLayout</code></h3>
+<p>Invoked on Text layout change.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>(<a href="text#textlayoutevent"><code>TextLayoutEvent</code></a>) =&gt; mixed</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="pressretentionoffset"><code>pressRetentionOffset</code></h3>
+<p>When the scroll view is disabled, this defines how far your touch may move off of the button, before deactivating the button. Once deactivated, try moving it back and you’ll see that the button is once again reactivated! Move it back and forth several times while the scroll view is disabled. Ensure you pass in a constant to reduce memory allocations.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="rect">Rect</a>, number</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="selectable"><code>selectable</code></h3>
+<p>Lets the user select text, to use the native copy and paste functionality.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>boolean</td>
+<td><code>false</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+### <code>selectionColor</code>
+<div class="label android">
+Android
+</div>
+<p>The highlight color of the text.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="colors">color</a></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="style"><code>style</code></h3>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="text-style-props">Text Style</a>, <a href="view-style-props">View Style Props</a></td>
+</tr>
+</tbody>
+</table>
+<hr />
+### <code>suppressHighlighting</code>
+<div class="label ios">
+iOS
+</div>
+<p>When <code>true</code>, no visual change is made when text is pressed down. By default, a gray oval highlights the text on press down.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>boolean</td>
+<td><code>false</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="testid"><code>testID</code></h3>
+<p>Used to locate this view in end-to-end tests.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>string</td>
+</tr>
+</tbody>
+</table>
+<hr />
+### <code>textBreakStrategy</code>
+<div class="label android">
+Android
+</div>
+<p>Set text break strategy on Android API Level 23+, possible values are <code>simple</code>, <code>highQuality</code>, <code>balanced</code>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>enum(<code>'simple'</code>, <code>'highQuality'</code>, <code>'balanced'</code>)</td>
+<td><code>highQuality</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="type-definitions">Type Definitions</h2>
+<h3 id="textlayout">TextLayout</h3>
+<p><code>TextLayout</code> object is a part of <a href="text#textlayoutevent"><code>TextLayoutEvent</code></a> callback and contains the measurement data for <code>Text</code> line.</p>
+<h4 id="example">Example</h4>
+<div class="sourceCode" id="cb8"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb8-1" title="1"><span class="op">{</span></a>
+<a class="sourceLine" id="cb8-2" title="2">    <span class="dt">capHeight</span><span class="op">:</span> <span class="fl">10.496</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb8-3" title="3">    <span class="dt">ascender</span><span class="op">:</span> <span class="fl">14.624</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb8-4" title="4">    <span class="dt">descender</span><span class="op">:</span> <span class="dv">4</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb8-5" title="5">    <span class="dt">width</span><span class="op">:</span> <span class="fl">28.224</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb8-6" title="6">    <span class="dt">height</span><span class="op">:</span> <span class="fl">18.624</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb8-7" title="7">    <span class="dt">xHeight</span><span class="op">:</span> <span class="fl">6.048</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb8-8" title="8">    <span class="dt">x</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span></a>
+<a class="sourceLine" id="cb8-9" title="9">    <span class="dt">y</span><span class="op">:</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb8-10" title="10"><span class="op">}</span></a></code></pre></div>
+<h4 id="properties">Properties</h4>
+<table>
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 6%" />
+<col style="width: 8%" />
+<col style="width: 74%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Optional</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ascender</td>
+<td>number</td>
+<td>No</td>
+<td>The line ascender height after the text layout changes.</td>
+</tr>
+<tr class="even">
+<td>capHeight</td>
+<td>number</td>
+<td>No</td>
+<td>Height of capital letter above the baseline.</td>
+</tr>
+<tr class="odd">
+<td>descender</td>
+<td>number</td>
+<td>No</td>
+<td>The line descender height after the text layout changes.</td>
+</tr>
+<tr class="even">
+<td>height</td>
+<td>number</td>
+<td>No</td>
+<td>Height of the line after the text layout changes.</td>
+</tr>
+<tr class="odd">
+<td>width</td>
+<td>number</td>
+<td>No</td>
+<td>Width of the line after the text layout changes.</td>
+</tr>
+<tr class="even">
+<td>x</td>
+<td>number</td>
+<td>No</td>
+<td>Line X coordinate inside the Text component.</td>
+</tr>
+<tr class="odd">
+<td>xHeight</td>
+<td>number</td>
+<td>No</td>
+<td>Distance between the baseline and median of the line (corpus size).</td>
+</tr>
+<tr class="even">
+<td>y</td>
+<td>number</td>
+<td>No</td>
+<td>Line Y coordinate inside the Text component.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="textlayoutevent">TextLayoutEvent</h3>
+<p><code>TextLayoutEvent</code> object is returned in the callback as a result of a component layout change. It contains a key called <code>lines</code> with a value which is an array containing <a href="text#textlayout"><code>TextLayout</code></a> object corresponded to every rendered text line.</p>
+<h4 id="example-1">Example</h4>
+<div class="sourceCode" id="cb9"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb9-1" title="1"><span class="op">{</span></a>
+<a class="sourceLine" id="cb9-2" title="2">  <span class="dt">lines</span><span class="op">:</span> [</a>
+<a class="sourceLine" id="cb9-3" title="3">    TextLayout<span class="op">,</span></a>
+<a class="sourceLine" id="cb9-4" title="4">    TextLayout</a>
+<a class="sourceLine" id="cb9-5" title="5">    <span class="co">// ...</span></a>
+<a class="sourceLine" id="cb9-6" title="6">  ]<span class="op">;</span></a>
+<a class="sourceLine" id="cb9-7" title="7">  <span class="dt">target</span><span class="op">:</span> <span class="dv">1127</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb9-8" title="8"><span class="op">}</span></a></code></pre></div>
+<h4 id="properties-1">Properties</h4>
+<table>
+<colgroup>
+<col style="width: 5%" />
+<col style="width: 36%" />
+<col style="width: 7%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Optional</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>lines</td>
+<td>array of <a href="text#textlayout">TextLayout</a>s</td>
+<td>No</td>
+<td>Provides the TextLayout data for every rendered line.</td>
+</tr>
+<tr class="even">
+<td>target</td>
+<td>number</td>
+<td>No</td>
+<td>The node id of the element.</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

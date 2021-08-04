@@ -1,5 +1,4 @@
-Diagnostic report
-=================
+# Diagnostic report
 
 > Stability: 2 - Stable
 
@@ -377,29 +376,28 @@ A complete example report that was generated on an uncaught exception is provide
       ]
     }
 
-Usage
------
+## Usage
 
     node --report-uncaught-exception --report-on-signal \
     --report-on-fatalerror app.js
 
--   `--report-uncaught-exception` Enables report to be generated on un-caught exceptions. Useful when inspecting JavaScript stack in conjunction with native stack and other runtime environment data.
+- `--report-uncaught-exception` Enables report to be generated on un-caught exceptions. Useful when inspecting JavaScript stack in conjunction with native stack and other runtime environment data.
 
--   `--report-on-signal` Enables report to be generated upon receiving the specified (or predefined) signal to the running Node.js process. (See below on how to modify the signal that triggers the report.) Default signal is `SIGUSR2`. Useful when a report needs to be triggered from another program. Application monitors may leverage this feature to collect report at regular intervals and plot rich set of internal runtime data to their views.
+- `--report-on-signal` Enables report to be generated upon receiving the specified (or predefined) signal to the running Node.js process. (See below on how to modify the signal that triggers the report.) Default signal is `SIGUSR2`. Useful when a report needs to be triggered from another program. Application monitors may leverage this feature to collect report at regular intervals and plot rich set of internal runtime data to their views.
 
 Signal based report generation is not supported in Windows.
 
 Under normal circumstances, there is no need to modify the report triggering signal. However, if `SIGUSR2` is already used for other purposes, then this flag helps to change the signal for report generation and preserve the original meaning of `SIGUSR2` for the said purposes.
 
--   `--report-on-fatalerror` Enables the report to be triggered on fatal errors (internal errors within the Node.js runtime, such as out of memory) that leads to termination of the application. Useful to inspect various diagnostic data elements such as heap, stack, event loop state, resource consumption etc. to reason about the fatal error.
+- `--report-on-fatalerror` Enables the report to be triggered on fatal errors (internal errors within the Node.js runtime, such as out of memory) that leads to termination of the application. Useful to inspect various diagnostic data elements such as heap, stack, event loop state, resource consumption etc. to reason about the fatal error.
 
--   `--report-compact` Write reports in a compact format, single-line JSON, more easily consumable by log processing systems than the default multi-line format designed for human consumption.
+- `--report-compact` Write reports in a compact format, single-line JSON, more easily consumable by log processing systems than the default multi-line format designed for human consumption.
 
--   `--report-directory` Location at which the report will be generated.
+- `--report-directory` Location at which the report will be generated.
 
--   `--report-filename` Name of the file to which the report will be written.
+- `--report-filename` Name of the file to which the report will be written.
 
--   `--report-signal` Sets or resets the signal for report generation (not supported on Windows). Default signal is `SIGUSR2`.
+- `--report-signal` Sets or resets the signal for report generation (not supported on Windows). Default signal is `SIGUSR2`.
 
 A report can also be triggered via an API call from a JavaScript application:
 
@@ -452,8 +450,7 @@ The content of the report consists of a header section containing the event type
 
 When a report is written, start and end messages are issued to stderr and the filename of the report is returned to the caller. The default filename includes the date, time, PID and a sequence number. The sequence number helps in associating the report dump with the runtime state if generated multiple times for the same Node.js process.
 
-Configuration
--------------
+## Configuration
 
 Additional runtime configuration of report generation is available via the following properties of `process.report`:
 
@@ -494,8 +491,7 @@ Configuration on module initialization is also available via environment variabl
 
 Specific API documentation can be found under [`process API documentation`](process.md) section.
 
-Interaction with workers
-------------------------
+## Interaction with workers
 
 [`Worker`](worker_threads.md) threads can create reports in the same way that the main thread does.
 

@@ -1,5 +1,4 @@
-Snippets in Visual Studio Code
-==============================
+# Snippets in Visual Studio Code
 
 Code snippets are templates that make it easier to enter repeating code patterns, such as loops or conditional-statements.
 
@@ -9,8 +8,7 @@ The snippet syntax follows the [TextMate snippet syntax](https://manual.macromat
 
 ![ajax snippet](images/userdefinedsnippets/ajax-snippet.gif)
 
-Built-in snippets
------------------
+## Built-in snippets
 
 VS Code has built-in snippets for a number of languages such as: JavaScript, TypeScript, Markdown, and PHP.
 
@@ -18,8 +16,7 @@ VS Code has built-in snippets for a number of languages such as: JavaScript, Typ
 
 You can see the available snippets for a language by running the **Insert Snippet** command in the Command Palette to get a list of the snippets for the language of the current file. However, keep in mind that this list also includes user snippets that you have defined, and any snippets provided by extensions you have installed.
 
-Install snippets from the Marketplace
--------------------------------------
+## Install snippets from the Marketplace
 
 Many [extensions](/docs/editor/extension-marketplace.md) on the [VS Code Marketplace](https://marketplace.visualstudio.com/vscode) include snippets. You can search for extensions that contains snippets in the Extensions view (`kb(workbench.view.extensions)`) using the `@category:"snippets"` filter.
 
@@ -27,8 +24,7 @@ Many [extensions](/docs/editor/extension-marketplace.md) on the [VS Code Marketp
 
 If you find an extension you want to use, install it, then restart VS Code and the new snippets will be available.
 
-Create your own snippets
-------------------------
+## Create your own snippets
 
 You can easily define your own snippets without any extension. To create or edit your own snippets, select **User Snippets** under **File** &gt; **Preferences** (**Code** &gt; **Preferences** on macOS), and then select the language (by [language identifier](/docs/languages/identifiers.md)) for which the snippets should appear, or the **New Global Snippets file** option if they should appear for all languages. VS Code manages the creation and refreshing of the underlying snippets file(s) for you.
 
@@ -56,15 +52,14 @@ Below is an example of a `for` loop snippet for JavaScript:
 
 In the example above:
 
--   “For Loop” is the snippet name. It is displayed via IntelliSense if no `description` is provided.
--   `prefix` defines one or more trigger words that display the snippet in IntelliSense. Substring matching is performed on prefixes, so in this case, “fc” could match “for-const”.
--   `body` is one or more lines of content, which will be joined as multiple lines upon insertion. Newlines and embedded tabs will be formatted according to the context in which the snippet is inserted.
--   `description` is an optional description of the snippet displayed by IntelliSense.
+- “For Loop” is the snippet name. It is displayed via IntelliSense if no `description` is provided.
+- `prefix` defines one or more trigger words that display the snippet in IntelliSense. Substring matching is performed on prefixes, so in this case, “fc” could match “for-const”.
+- `body` is one or more lines of content, which will be joined as multiple lines upon insertion. Newlines and embedded tabs will be formatted according to the context in which the snippet is inserted.
+- `description` is an optional description of the snippet displayed by IntelliSense.
 
 Additionally, the `body` of the example above has three placeholders (listed in order of traversal): `${1:array}`, `${2:element}`, and `$0`. You can quickly jump to the next placeholder with `kb(jumpToNextSnippetPlaceholder)`, at which point you may edit the placeholder or jump again the next one. The string after the colon (if any) is the default text, for example `element` in `${2:element}`. Placeholder traversal order is ascending by number, starting from one; zero is an optional special case that always comes last, and exits snippet mode with the cursor at the specified position.
 
-Snippet scope
--------------
+## Snippet scope
 
 Snippets are scoped so that only relevant snippets are suggested. Snippets can be scoped by either:
 
@@ -88,8 +83,7 @@ Most user-defined snippets are scoped to a single language, and so are defined i
 
 You can also have a global snippets file (JSON with file suffix `.code-snippets`) scoped to your project. Project-folder snippets are created with the **New Snippets file for ‘’…** option in the **Preferences: Configure User Snippets** dropdown menu and are located at the root of the project in a `.vscode` folder. Project snippet files are useful for sharing snippets with all users working in that project. Project-folder snippets are similar to global snippets and can be scoped to specific languages through the `scope` property.
 
-Snippet syntax
---------------
+## Snippet syntax
 
 The `body` of a snippet can use special constructs to control cursors and the text being inserted. The following are supported features and their syntaxes:
 
@@ -111,46 +105,46 @@ With `$name` or `${name:default}`, you can insert the value of a variable. When 
 
 The following variables can be used:
 
--   `TM_SELECTED_TEXT` The currently selected text or the empty string
--   `TM_CURRENT_LINE` The contents of the current line
--   `TM_CURRENT_WORD` The contents of the word under cursor or the empty string
--   `TM_LINE_INDEX` The zero-index based line number
--   `TM_LINE_NUMBER` The one-index based line number
--   `TM_FILENAME` The filename of the current document
--   `TM_FILENAME_BASE` The filename of the current document without its extensions
--   `TM_DIRECTORY` The directory of the current document
--   `TM_FILEPATH` The full file path of the current document
--   `RELATIVE_FILEPATH` The relative (to the opened workspace or folder) file path of the current document
--   `CLIPBOARD` The contents of your clipboard
--   `WORKSPACE_NAME` The name of the opened workspace or folder
--   `WORKSPACE_FOLDER` The path of the opened workspace or folder
+- `TM_SELECTED_TEXT` The currently selected text or the empty string
+- `TM_CURRENT_LINE` The contents of the current line
+- `TM_CURRENT_WORD` The contents of the word under cursor or the empty string
+- `TM_LINE_INDEX` The zero-index based line number
+- `TM_LINE_NUMBER` The one-index based line number
+- `TM_FILENAME` The filename of the current document
+- `TM_FILENAME_BASE` The filename of the current document without its extensions
+- `TM_DIRECTORY` The directory of the current document
+- `TM_FILEPATH` The full file path of the current document
+- `RELATIVE_FILEPATH` The relative (to the opened workspace or folder) file path of the current document
+- `CLIPBOARD` The contents of your clipboard
+- `WORKSPACE_NAME` The name of the opened workspace or folder
+- `WORKSPACE_FOLDER` The path of the opened workspace or folder
 
 For inserting the current date and time:
 
--   `CURRENT_YEAR` The current year
--   `CURRENT_YEAR_SHORT` The current year’s last two digits
--   `CURRENT_MONTH` The month as two digits (example ‘02’)
--   `CURRENT_MONTH_NAME` The full name of the month (example ‘July’)
--   `CURRENT_MONTH_NAME_SHORT` The short name of the month (example ‘Jul’)
--   `CURRENT_DATE` The day of the month
--   `CURRENT_DAY_NAME` The name of day (example ‘Monday’)
--   `CURRENT_DAY_NAME_SHORT` The short name of the day (example ‘Mon’)
--   `CURRENT_HOUR` The current hour in 24-hour clock format
--   `CURRENT_MINUTE` The current minute
--   `CURRENT_SECOND` The current second
--   `CURRENT_SECONDS_UNIX` The number of seconds since the Unix epoch
+- `CURRENT_YEAR` The current year
+- `CURRENT_YEAR_SHORT` The current year’s last two digits
+- `CURRENT_MONTH` The month as two digits (example ‘02’)
+- `CURRENT_MONTH_NAME` The full name of the month (example ‘July’)
+- `CURRENT_MONTH_NAME_SHORT` The short name of the month (example ‘Jul’)
+- `CURRENT_DATE` The day of the month
+- `CURRENT_DAY_NAME` The name of day (example ‘Monday’)
+- `CURRENT_DAY_NAME_SHORT` The short name of the day (example ‘Mon’)
+- `CURRENT_HOUR` The current hour in 24-hour clock format
+- `CURRENT_MINUTE` The current minute
+- `CURRENT_SECOND` The current second
+- `CURRENT_SECONDS_UNIX` The number of seconds since the Unix epoch
 
 For inserting random values:
 
--   `RANDOM` 6 random Base-10 digits
--   `RANDOM_HEX` 6 random Base-16 digits
--   `UUID` A Version 4 UUID
+- `RANDOM` 6 random Base-10 digits
+- `RANDOM_HEX` 6 random Base-16 digits
+- `UUID` A Version 4 UUID
 
 For inserting line or block comments, honoring the current language:
 
--   `BLOCK_COMMENT_START` Example output: in PHP `/*` or in HTML `<!--`
-    -   `BLOCK_COMMENT_END` Example output: in PHP `*/` or in HTML `-->`
--   `LINE_COMMENT` Example output: in PHP `//`
+- `BLOCK_COMMENT_START` Example output: in PHP `/*` or in HTML `<!--`
+  - `BLOCK_COMMENT_END` Example output: in PHP `*/` or in HTML `-->`
+- `LINE_COMMENT` Example output: in PHP `//`
 
 The snippet below inserts `/* Hello World */` in JavaScript files and `<!-- Hello World -->` in HTML files:
 
@@ -219,13 +213,11 @@ Below is the EBNF ([extended Backus-Naur form](https://en.wikipedia.org/wiki/Ext
     int         ::= [0-9]+
     text        ::= .*
 
-Using TextMate snippets
------------------------
+## Using TextMate snippets
 
 You can also use existing TextMate snippets (.tmSnippets) with VS Code. See the [Using TextMate Snippets](/api/language-extensions/snippet-guide.md#using-textmate-snippets) topic in our Extension API section to learn more.
 
-Assign keybindings to snippets
-------------------------------
+## Assign keybindings to snippets
 
 You can create custom [keybindings](/docs/getstarted/keybindings.md) to insert specific snippets. Open `keybindings.json` (**Preferences: Open Keyboard Shortcuts File**), which defines all your keybindings, and add a keybinding passing `"snippet"` as an extra argument:
 
@@ -252,15 +244,13 @@ Also, instead of using the `snippet` argument value to define your snippet inlin
       }
     }
 
-Next steps
-----------
+## Next steps
 
--   [Command Line](/docs/editor/command-line.md) - VS Code has a rich command-line interface to open or diff files and install extensions.
--   [Extension API](/api) - Learn about other ways to extend VS Code.
--   [Snippet Guide](/api/language-extensions/snippet-guide.md) - You can package snippets for use in VS Code.
+- [Command Line](/docs/editor/command-line.md) - VS Code has a rich command-line interface to open or diff files and install extensions.
+- [Extension API](/api) - Learn about other ways to extend VS Code.
+- [Snippet Guide](/api/language-extensions/snippet-guide.md) - You can package snippets for use in VS Code.
 
-Common questions
-----------------
+## Common questions
 
 ### What if I want to use existing TextMate snippets from a .tmSnippet file?
 

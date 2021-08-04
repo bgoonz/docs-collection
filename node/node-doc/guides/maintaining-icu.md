@@ -1,21 +1,18 @@
-Maintaining ICU in Node.js
-==========================
+# Maintaining ICU in Node.js
 
-Background
-----------
+## Background
 
 International Components for Unicode ([ICU4C](http://site.icu-project.org/)) is used both by V8 and also by Node.js directly to provide internationalization functionality. To quote from icu-project.org:
 
 > ICU is a mature, widely used set of C/C++ and Java libraries providing Unicode and Globalization support for software applications. ICU is widely portable and gives applications the same results on all platforms and between C/C++ and Java software.
 
-Data dependencies
------------------
+## Data dependencies
 
 ICU consumes and includes:
 
--   Extracted locale data from [CLDR](http://cldr.unicode.org/)
--   Extracted [Unicode](https://home.unicode.org/) data.
--   Time zone ([tz](https://www.iana.org/time-zones)) data
+- Extracted locale data from [CLDR](http://cldr.unicode.org/)
+- Extracted [Unicode](https://home.unicode.org/) data.
+- Time zone ([tz](https://www.iana.org/time-zones)) data
 
 The current versions of these items can be viewed for node with `node -p process.versions`:
 
@@ -41,17 +38,16 @@ All modern versions of Node.js use the version 44 ABI of the time zone data file
 
 #### Example: updating the ICU `.dat` file
 
--   Decompress `deps/icu/source/data/in/icudt##l.dat.bz2`, where `##` is the ICU major version number.
--   Clone the icu/icu-data repository and copy the latest `tzdata` release `le` files into the `source/data/in` directory.
--   Follow the upstream [ICU instructions](https://unicode-org.github.io/icu/userguide/datetime/timezone/) to patch the ICU `.dat` file: &gt; `for i in zoneinfo64.res windowsZones.res timezoneTypes.res metaZones.res; > do icupkg -a $i icudt*l.dat`
--   Optionally, verify that there is only one of the above files listed when using `icupkg -l`.
--   Optionally, extract each file using `icupkg -x` and verify the `shasum` matches the desired value.
--   Compress the `.dat` file with the same filename as in the first step.
--   Build, test, verifying `process.versions.tz` matches the desired version.
--   Create a new minor version release.
+- Decompress `deps/icu/source/data/in/icudt##l.dat.bz2`, where `##` is the ICU major version number.
+- Clone the icu/icu-data repository and copy the latest `tzdata` release `le` files into the `source/data/in` directory.
+- Follow the upstream [ICU instructions](https://unicode-org.github.io/icu/userguide/datetime/timezone/) to patch the ICU `.dat` file: &gt; `for i in zoneinfo64.res windowsZones.res timezoneTypes.res metaZones.res; > do icupkg -a $i icudt*l.dat`
+- Optionally, verify that there is only one of the above files listed when using `icupkg -l`.
+- Optionally, extract each file using `icupkg -x` and verify the `shasum` matches the desired value.
+- Compress the `.dat` file with the same filename as in the first step.
+- Build, test, verifying `process.versions.tz` matches the desired version.
+- Create a new minor version release.
 
-Release schedule
-----------------
+## Release schedule
 
 ICU typically has &gt;1 release a year, particularly coinciding with a major release of [Unicode](https://home.unicode.org/). The current release schedule is available on the [ICU](http://site.icu-project.org/) website on the left sidebar.
 
@@ -64,26 +60,25 @@ V8 will aggressively upgrade to a new ICU version, due to requirements for featu
 
 V8 in Node.js depends on the ICU version supplied by Node.js.
 
-The file `tools/icu/icu_versions.json` contains the current minimum version of ICU that Node.js is known to work with. This should be *at least* the same version as V8, so that users will find out earlier that their ICU is too old. A test case validates this when Node.js is built.
+The file `tools/icu/icu_versions.json` contains the current minimum version of ICU that Node.js is known to work with. This should be _at least_ the same version as V8, so that users will find out earlier that their ICU is too old. A test case validates this when Node.js is built.
 
-How to upgrade ICU
-------------------
+## How to upgrade ICU
 
--   Make sure your Node.js workspace is clean (`git status` should be sufficient).
--   Configure Node.js with the specific [ICU version](http://site.icu-project.org/download) you want to upgrade to, for example:
+- Make sure your Node.js workspace is clean (`git status` should be sufficient).
+- Configure Node.js with the specific [ICU version](http://site.icu-project.org/download) you want to upgrade to, for example:
 
-    ./configure \
-        --with-intl=full-icu \
-        --with-icu-source=https://github.com/unicode-org/icu/releases/download/release-67-1/icu4c-67_1-src.tgz
-    make
+  ./configure \
+   --with-intl=full-icu \
+   --with-icu-source=https://github.com/unicode-org/icu/releases/download/release-67-1/icu4c-67_1-src.tgz
+  make
 
-> *Note* in theory, the equivalent `vcbuild.bat` commands should work also, but the commands below are makefile-centric.
+> _Note_ in theory, the equivalent `vcbuild.bat` commands should work also, but the commands below are makefile-centric.
 
--   If there are ICU version-specific changes needed, you may need to make changes in `tools/icu/icu-generic.gyp` or add patch files to `tools/icu/patches`.
-    -   Specifically, look for the lists in `sources!` in the `tools/icu/icu-generic.gyp` for files to exclude.
--   Verify the Node.js build works:
+- If there are ICU version-specific changes needed, you may need to make changes in `tools/icu/icu-generic.gyp` or add patch files to `tools/icu/patches`.
+  - Specifically, look for the lists in `sources!` in the `tools/icu/icu-generic.gyp` for files to exclude.
+- Verify the Node.js build works:
 
-    make test-ci
+  make test-ci
 
 Also running
 
@@ -91,22 +86,22 @@ Also running
 
 …Should return `enero` not `January`.
 
--   Now, run the shrink tool to update `deps/icu-small` from `deps/icu`
+- Now, run the shrink tool to update `deps/icu-small` from `deps/icu`
 
 > :warning: Do not modify any source code in `deps/icu-small` ! See section below about floating patches to ICU.
 
     python tools/icu/shrink-icu-src.py
 
--   Now, do a clean rebuild of Node.js to test:
+- Now, do a clean rebuild of Node.js to test:
 
-    make -k distclean
-    ./configure
-    make
+  make -k distclean
+  ./configure
+  make
 
--   Test this newly default-generated Node.js
+- Test this newly default-generated Node.js
 
-    process.versions.icu;
-    new Intl.DateTimeFormat('es', { month: 'long' }).format(new Date(9E8));
+  process.versions.icu;
+  new Intl.DateTimeFormat('es', { month: 'long' }).format(new Date(9E8));
 
 (This should print your updated ICU version number, and also `enero` again.)
 
@@ -114,26 +109,27 @@ You are ready to check in the updated `deps/icu-small`. This is a big commit, so
 
 > :warning: Do not modify any source code in `deps/icu-small` ! See section below about floating patches to ICU.
 
--   Now, rebuild the Node.js license.
+- Now, rebuild the Node.js license.
 
-    # clean up - remove deps/icu
-    make clean
-    tools/license-builder.sh
+  # clean up - remove deps/icu
 
--   Update the URL and hash for the full ICU file in `tools/icu/current_ver.dep`. It should match the ICU URL used in the first step. When this is done, the following should build with small ICU.
+  make clean
+  tools/license-builder.sh
 
-    # clean up
-    rm -rf out deps/icu deps/icu4c*
-    ./configure --with-intl=small-icu --download=all
-    make
-    make test-ci
+- Update the URL and hash for the full ICU file in `tools/icu/current_ver.dep`. It should match the ICU URL used in the first step. When this is done, the following should build with small ICU.
 
--   commit the change to `tools/icu/current_ver.dep` and `LICENSE` files.
+  # clean up
 
-    -   Note: To simplify review, I often will “pre-land” this patch, meaning that I run the patch through `curl -L https://github.com/nodejs/node/pull/xxx.patch | git am -3 --whitespace=fix` per the collaborator’s guide… and then push that patched branch into my PR’s branch. This reduces the whitespace changes that show up in the PR, since the final land will eliminate those anyway.
+  rm -rf out deps/icu deps/icu4c\*
+  ./configure --with-intl=small-icu --download=all
+  make
+  make test-ci
 
-Floating patches to ICU
------------------------
+- commit the change to `tools/icu/current_ver.dep` and `LICENSE` files.
+
+  - Note: To simplify review, I often will “pre-land” this patch, meaning that I run the patch through `curl -L https://github.com/nodejs/node/pull/xxx.patch | git am -3 --whitespace=fix` per the collaborator’s guide… and then push that patched branch into my PR’s branch. This reduces the whitespace changes that show up in the PR, since the final land will eliminate those anyway.
+
+## Floating patches to ICU
 
 Floating patches are applied at `configure` time. The “patch” files are used instead of the original source files. The patch files are complete `.cpp` files replacing the original contents.
 

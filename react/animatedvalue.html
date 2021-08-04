@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Animated.Value</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Animated.Value</h1>
+</header>
+<p>Standard value for driving animations. One <code>Animated.Value</code> can drive multiple properties in a synchronized fashion, but can only be driven by one mechanism at a time. Using a new mechanism (e.g. starting a new animation, or calling <code>setValue</code>) will stop any previous ones.</p>
+<p>Typically initialized with <code>new Animated.Value(0);</code></p>
+<hr />
+<h1 id="reference">Reference</h1>
+<h2 id="methods">Methods</h2>
+<h3 id="setvalue"><code>setValue()</code></h3>
+<pre class="jsx"><code>setValue(value);</code></pre>
+<p>Directly set the value. This will stop any animations running on the value and update all the bound properties.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>value</td>
+<td>number</td>
+<td>Yes</td>
+<td>Value</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="setoffset"><code>setOffset()</code></h3>
+<pre class="jsx"><code>setOffset(offset);</code></pre>
+<p>Sets an offset that is applied on top of whatever value is set, whether via <code>setValue</code>, an animation, or <code>Animated.event</code>. Useful for compensating things like the start of a pan gesture.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>offset</td>
+<td>number</td>
+<td>Yes</td>
+<td>Offset value</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="flattenoffset"><code>flattenOffset()</code></h3>
+<pre class="jsx"><code>flattenOffset();</code></pre>
+<p>Merges the offset value into the base value and resets the offset to zero. The final output of the value is unchanged.</p>
+<hr />
+<h3 id="extractoffset"><code>extractOffset()</code></h3>
+<pre class="jsx"><code>extractOffset();</code></pre>
+<p>Sets the offset value to the base value, and resets the base value to zero. The final output of the value is unchanged.</p>
+<hr />
+<h3 id="addlistener"><code>addListener()</code></h3>
+<pre class="jsx"><code>addListener(callback);</code></pre>
+<p>Adds an asynchronous listener to the value so you can observe updates from animations. This is useful because there is no way to synchronously read the value because it might be driven natively.</p>
+<p>Returns a string that serves as an identifier for the listener.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<colgroup>
+<col style="width: 6%" />
+<col style="width: 6%" />
+<col style="width: 6%" />
+<col style="width: 79%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>callback</td>
+<td>function</td>
+<td>Yes</td>
+<td>The callback function which will receive an object with a <code>value</code> key set to the new value.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="removelistener"><code>removeListener()</code></h3>
+<pre class="jsx"><code>removeListener(id);</code></pre>
+<p>Unregister a listener. The <code>id</code> param shall match the identifier previously returned by <code>addListener()</code>.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>id</td>
+<td>string</td>
+<td>Yes</td>
+<td>Id for the listener being removed.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="removealllisteners"><code>removeAllListeners()</code></h3>
+<pre class="jsx"><code>removeAllListeners();</code></pre>
+<p>Remove all registered listeners.</p>
+<hr />
+<h3 id="stopanimation"><code>stopAnimation()</code></h3>
+<pre class="jsx"><code>stopAnimation([callback]);</code></pre>
+<p>Stops any running animation or tracking. <code>callback</code> is invoked with the final value after stopping the animation, which is useful for updating state to match the animation position with layout.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>callback</td>
+<td>function</td>
+<td>No</td>
+<td>A function that will receive the final value.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="resetanimation"><code>resetAnimation()</code></h3>
+<pre class="jsx"><code>resetAnimation([callback]);</code></pre>
+<p>Stops any animation and resets the value to its original.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>callback</td>
+<td>function</td>
+<td>No</td>
+<td>A function that will receive the original value.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="interpolate"><code>interpolate()</code></h3>
+<pre class="jsx"><code>interpolate(config);</code></pre>
+<p>Interpolates the value before updating the property, e.g. mapping 0-1 to 0-10.</p>
+<p>See <code>AnimatedInterpolation.js</code></p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>config</td>
+<td>object</td>
+<td>Yes</td>
+<td>See below.</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>config</code> object is composed of the following keys:</p>
+<ul>
+<li><code>inputRange</code>: an array of numbers</li>
+<li><code>outputRange</code>: an array of numbers or strings</li>
+<li><code>easing</code> (optional): a function that returns a number, given an input number</li>
+<li><code>extrapolate</code> (optional): a string such as ‘extend’, ‘identity’, or ‘clamp’</li>
+<li><code>extrapolateLeft</code> (optional): a string such as ‘extend’, ‘identity’, or ‘clamp’</li>
+<li><code>extrapolateRight</code> (optional): a string such as ‘extend’, ‘identity’, or ‘clamp’</li>
+</ul>
+<hr />
+<h3 id="animate"><code>animate()</code></h3>
+<pre class="jsx"><code>animate(animation, callback);</code></pre>
+<p>Typically only used internally, but could be used by a custom Animation class.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>animation</td>
+<td>Animation</td>
+<td>Yes</td>
+<td>See <code>Animation.js</code>.</td>
+</tr>
+<tr class="even">
+<td>callback</td>
+<td>function</td>
+<td>Yes</td>
+<td>Callback function.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="stoptracking"><code>stopTracking()</code></h3>
+<pre class="jsx"><code>stopTracking();</code></pre>
+<p>Typically only used internally.</p>
+<hr />
+<h3 id="track"><code>track()</code></h3>
+<pre class="jsx"><code>track(tracking);</code></pre>
+<p>Typically only used internally.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>tracking</td>
+<td>AnimatedNode</td>
+<td>Yes</td>
+<td>See <code>AnimatedNode.js</code></td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

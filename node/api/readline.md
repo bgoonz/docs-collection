@@ -1,5 +1,4 @@
-Readline
-========
+# Readline
 
 > Stability: 2 - Stable
 
@@ -25,10 +24,9 @@ The following simple example illustrates the basic use of the `readline` module.
 
 Once this code is invoked, the Node.js application will not terminate until the `readline.Interface` is closed because the interface waits for data to be received on the `input` stream.
 
-Class: `Interface`
-------------------
+## Class: `Interface`
 
--   Extends: {EventEmitter}
+- Extends: {EventEmitter}
 
 Instances of the `readline.Interface` class are constructed using the `readline.createInterface()` method. Every instance is associated with a single `input` [Readable](stream.md#stream_readable_streams) stream and a single `output` [Writable](stream.md#stream_writable_streams) stream. The `output` stream is used to print prompts for user input that arrives on, and is read from, the `input` stream.
 
@@ -36,10 +34,10 @@ Instances of the `readline.Interface` class are constructed using the `readline.
 
 The `'close'` event is emitted when one of the following occur:
 
--   The `rl.close()` method is called and the `readline.Interface` instance has relinquished control over the `input` and `output` streams;
--   The `input` stream receives its `'end'` event;
--   The `input` stream receives Ctrl+D to signal end-of-transmission (EOT);
--   The `input` stream receives Ctrl+C to signal `SIGINT` and there is no `'SIGINT'` event listener registered on the `readline.Interface` instance.
+- The `rl.close()` method is called and the `readline.Interface` instance has relinquished control over the `input` and `output` streams;
+- The `input` stream receives its `'end'` event;
+- The `input` stream receives Ctrl+D to signal end-of-transmission (EOT);
+- The `input` stream receives Ctrl+C to signal `SIGINT` and there is no `'SIGINT'` event listener registered on the `readline.Interface` instance.
 
 The listener function is called without passing any arguments.
 
@@ -71,8 +69,8 @@ The primary purpose is to allow a listener to persist the history. It is also po
 
 The `'pause'` event is emitted when one of the following occur:
 
--   The `input` stream is paused.
--   The `input` stream is not paused and receives the `'SIGCONT'` event. (See events [`'SIGTSTP'`](#readline_event_sigtstp) and [`'SIGCONT'`](#readline_event_sigcont).)
+- The `input` stream is paused.
+- The `input` stream is not paused and receives the `'SIGCONT'` event. (See events [`'SIGTSTP'`](#readline_event_sigtstp) and [`'SIGCONT'`](#readline_event_sigcont).)
 
 The listener function is called without passing any arguments.
 
@@ -94,7 +92,7 @@ The listener function is called without passing any arguments.
 
 The `'SIGCONT'` event is emitted when a Node.js process previously moved into the background using Ctrl+Z (i.e. `SIGTSTP`) is then brought back to the foreground using fg(1p).
 
-If the `input` stream was paused *before* the `SIGTSTP` request, this event will not be emitted.
+If the `input` stream was paused _before_ the `SIGTSTP` request, this event will not be emitted.
 
 The listener function is invoked without passing any arguments.
 
@@ -103,7 +101,7 @@ The listener function is invoked without passing any arguments.
       rl.prompt();
     });
 
-The `'SIGCONT'` event is *not* supported on Windows.
+The `'SIGCONT'` event is _not_ supported on Windows.
 
 ### Event: `'SIGINT'`
 
@@ -133,7 +131,7 @@ The listener function is invoked without passing any arguments.
       console.log('Caught SIGTSTP.');
     });
 
-The `'SIGTSTP'` event is *not* supported on Windows.
+The `'SIGTSTP'` event is _not_ supported on Windows.
 
 ### `rl.close()`
 
@@ -149,7 +147,7 @@ Calling `rl.pause()` does not immediately pause other events (including `'line'`
 
 ### `rl.prompt([preserveCursor])`
 
--   `preserveCursor` {boolean} If `true`, prevents the cursor placement from being reset to `0`.
+- `preserveCursor` {boolean} If `true`, prevents the cursor placement from being reset to `0`.
 
 The `rl.prompt()` method writes the `readline.Interface` instances configured `prompt` to a new line in `output` in order to provide a user with a new location at which to provide input.
 
@@ -159,10 +157,10 @@ If the `readline.Interface` was created with `output` set to `null` or `undefine
 
 ### `rl.question(query[, options], callback)`
 
--   `query` {string} A statement or query to write to `output`, prepended to the prompt.
--   `options` {Object}
-    -   `signal` {AbortSignal} Optionally allows the `question()` to be canceled using an `AbortController`.
--   `callback` {Function} A callback function that is invoked with the user’s input in response to the `query`.
+- `query` {string} A statement or query to write to `output`, prepended to the prompt.
+- `options` {Object}
+  - `signal` {AbortSignal} Optionally allows the `question()` to be canceled using an `AbortController`.
+- `callback` {Function} A callback function that is invoked with the user’s input in response to the `query`.
 
 The `rl.question()` method displays the `query` by writing it to the `output`, waits for user input to be provided on `input`, then invokes the `callback` function passing the provided input as the first argument.
 
@@ -214,24 +212,24 @@ The `rl.resume()` method resumes the `input` stream if it has been paused.
 
 ### `rl.setPrompt(prompt)`
 
--   `prompt` {string}
+- `prompt` {string}
 
 The `rl.setPrompt()` method sets the prompt that will be written to `output` whenever `rl.prompt()` is called.
 
 ### `rl.getPrompt()`
 
--   Returns: {string} the current prompt string
+- Returns: {string} the current prompt string
 
 The `rl.getPrompt()` method returns the current prompt used by `rl.prompt()`.
 
 ### `rl.write(data[, key])`
 
--   `data` {string}
--   `key` {Object}
-    -   `ctrl` {boolean} `true` to indicate the Ctrl key.
-    -   `meta` {boolean} `true` to indicate the Meta key.
-    -   `shift` {boolean} `true` to indicate the Shift key.
-    -   `name` {string} The name of the a key.
+- `data` {string}
+- `key` {Object}
+  - `ctrl` {boolean} `true` to indicate the Ctrl key.
+  - `meta` {boolean} `true` to indicate the Meta key.
+  - `shift` {boolean} `true` to indicate the Shift key.
+  - `name` {string} The name of the a key.
 
 The `rl.write()` method will write either `data` or a key sequence identified by `key` to the `output`. The `key` argument is supported only if `output` is a [TTY](tty.md) text terminal. See [TTY keybindings](#readline_tty_keybindings) for a list of key combinations.
 
@@ -245,11 +243,11 @@ If the `readline.Interface` was created with `output` set to `null` or `undefine
     // Simulate Ctrl+U to delete the line written previously
     rl.write(null, { ctrl: true, name: 'u' });
 
-The `rl.write()` method will write the data to the `readline` `Interface`’s `input` *as if it were provided by the user*.
+The `rl.write()` method will write the data to the `readline` `Interface`’s `input` _as if it were provided by the user_.
 
 ### `rl[Symbol.asyncIterator]()`
 
--   Returns: {AsyncIterator}
+- Returns: {AsyncIterator}
 
 Create an `AsyncIterator` object that iterates through each line in the input stream as a string. This method allows asynchronous iteration of `readline.Interface` objects through `for await...of` loops.
 
@@ -274,7 +272,7 @@ Performance is not on par with the traditional `'line'` event API. Use `'line'` 
 
 ### `rl.line`
 
--   {string}
+- {string}
 
 The current input data being processed by node.
 
@@ -300,7 +298,7 @@ One possible use case would be as follows:
 
 ### `rl.cursor`
 
--   {number|undefined}
+- {number|undefined}
 
 The cursor position relative to `rl.line`.
 
@@ -308,51 +306,48 @@ This will track where the current cursor lands in the input string, when reading
 
 ### `rl.getCursorPos()`
 
--   Returns: {Object}
-    -   `rows` {number} the row of the prompt the cursor currently lands on
-    -   `cols` {number} the screen column the cursor currently lands on
+- Returns: {Object}
+  - `rows` {number} the row of the prompt the cursor currently lands on
+  - `cols` {number} the screen column the cursor currently lands on
 
 Returns the real position of the cursor in relation to the input prompt + string. Long input (wrapping) strings, as well as multiple line prompts are included in the calculations.
 
-`readline.clearLine(stream, dir[, callback])`
----------------------------------------------
+## `readline.clearLine(stream, dir[, callback])`
 
--   `stream` {stream.Writable}
--   `dir` {number}
-    -   `-1`: to the left from cursor
-    -   `1`: to the right from cursor
-    -   `0`: the entire line
--   `callback` {Function} Invoked once the operation completes.
--   Returns: {boolean} `false` if `stream` wishes for the calling code to wait for the `'drain'` event to be emitted before continuing to write additional data; otherwise `true`.
+- `stream` {stream.Writable}
+- `dir` {number}
+  - `-1`: to the left from cursor
+  - `1`: to the right from cursor
+  - `0`: the entire line
+- `callback` {Function} Invoked once the operation completes.
+- Returns: {boolean} `false` if `stream` wishes for the calling code to wait for the `'drain'` event to be emitted before continuing to write additional data; otherwise `true`.
 
 The `readline.clearLine()` method clears current line of given [TTY](tty.md) stream in a specified direction identified by `dir`.
 
-`readline.clearScreenDown(stream[, callback])`
-----------------------------------------------
+## `readline.clearScreenDown(stream[, callback])`
 
--   `stream` {stream.Writable}
--   `callback` {Function} Invoked once the operation completes.
--   Returns: {boolean} `false` if `stream` wishes for the calling code to wait for the `'drain'` event to be emitted before continuing to write additional data; otherwise `true`.
+- `stream` {stream.Writable}
+- `callback` {Function} Invoked once the operation completes.
+- Returns: {boolean} `false` if `stream` wishes for the calling code to wait for the `'drain'` event to be emitted before continuing to write additional data; otherwise `true`.
 
 The `readline.clearScreenDown()` method clears the given [TTY](tty.md) stream from the current position of the cursor down.
 
-`readline.createInterface(options)`
------------------------------------
+## `readline.createInterface(options)`
 
--   `options` {Object}
-    -   `input` {stream.Readable} The [Readable](stream.md#stream_readable_streams) stream to listen to. This option is *required*.
-    -   `output` {stream.Writable} The [Writable](stream.md#stream_writable_streams) stream to write readline data to.
-    -   `completer` {Function} An optional function used for Tab autocompletion.
-    -   `terminal` {boolean} `true` if the `input` and `output` streams should be treated like a TTY, and have ANSI/VT100 escape codes written to it. **Default:** checking `isTTY` on the `output` stream upon instantiation.
-    -   `history` {string\[\]} Initial list of history lines. This option makes sense only if `terminal` is set to `true` by the user or by an internal `output` check, otherwise the history caching mechanism is not initialized at all. **Default:** `[]`.
-    -   `historySize` {number} Maximum number of history lines retained. To disable the history set this value to `0`. This option makes sense only if `terminal` is set to `true` by the user or by an internal `output` check, otherwise the history caching mechanism is not initialized at all. **Default:** `30`.
-    -   `removeHistoryDuplicates` {boolean} If `true`, when a new input line added to the history list duplicates an older one, this removes the older line from the list. **Default:** `false`.
-    -   `prompt` {string} The prompt string to use. **Default:** `'> '`.
-    -   `crlfDelay` {number} If the delay between `\r` and `\n` exceeds `crlfDelay` milliseconds, both `\r` and `\n` will be treated as separate end-of-line input. `crlfDelay` will be coerced to a number no less than `100`. It can be set to `Infinity`, in which case `\r` followed by `\n` will always be considered a single newline (which may be reasonable for [reading files](#readline_example_read_file_stream_line_by_line) with `\r\n` line delimiter). **Default:** `100`.
-    -   `escapeCodeTimeout` {number} The duration `readline` will wait for a character (when reading an ambiguous key sequence in milliseconds one that can both form a complete key sequence using the input read so far and can take additional input to complete a longer key sequence). **Default:** `500`.
-    -   `tabSize` {integer} The number of spaces a tab is equal to (minimum 1). **Default:** `8`.
-    -   `signal` {AbortSignal} Allows closing the interface using an AbortSignal. Aborting the signal will internally call `close` on the interface.
--   Returns: {readline.Interface}
+- `options` {Object}
+  - `input` {stream.Readable} The [Readable](stream.md#stream_readable_streams) stream to listen to. This option is _required_.
+  - `output` {stream.Writable} The [Writable](stream.md#stream_writable_streams) stream to write readline data to.
+  - `completer` {Function} An optional function used for Tab autocompletion.
+  - `terminal` {boolean} `true` if the `input` and `output` streams should be treated like a TTY, and have ANSI/VT100 escape codes written to it. **Default:** checking `isTTY` on the `output` stream upon instantiation.
+  - `history` {string\[\]} Initial list of history lines. This option makes sense only if `terminal` is set to `true` by the user or by an internal `output` check, otherwise the history caching mechanism is not initialized at all. **Default:** `[]`.
+  - `historySize` {number} Maximum number of history lines retained. To disable the history set this value to `0`. This option makes sense only if `terminal` is set to `true` by the user or by an internal `output` check, otherwise the history caching mechanism is not initialized at all. **Default:** `30`.
+  - `removeHistoryDuplicates` {boolean} If `true`, when a new input line added to the history list duplicates an older one, this removes the older line from the list. **Default:** `false`.
+  - `prompt` {string} The prompt string to use. **Default:** `'> '`.
+  - `crlfDelay` {number} If the delay between `\r` and `\n` exceeds `crlfDelay` milliseconds, both `\r` and `\n` will be treated as separate end-of-line input. `crlfDelay` will be coerced to a number no less than `100`. It can be set to `Infinity`, in which case `\r` followed by `\n` will always be considered a single newline (which may be reasonable for [reading files](#readline_example_read_file_stream_line_by_line) with `\r\n` line delimiter). **Default:** `100`.
+  - `escapeCodeTimeout` {number} The duration `readline` will wait for a character (when reading an ambiguous key sequence in milliseconds one that can both form a complete key sequence using the input read so far and can take additional input to complete a longer key sequence). **Default:** `500`.
+  - `tabSize` {integer} The number of spaces a tab is equal to (minimum 1). **Default:** `8`.
+  - `signal` {AbortSignal} Allows closing the interface using an AbortSignal. Aborting the signal will internally call `close` on the interface.
+- Returns: {readline.Interface}
 
 The `readline.createInterface()` method creates a new `readline.Interface` instance.
 
@@ -378,8 +373,8 @@ When creating a `readline.Interface` using `stdin` as input, the program will no
 
 The `completer` function takes the current line entered by the user as an argument, and returns an `Array` with 2 entries:
 
--   An `Array` with matching entries for the completion.
--   The substring that was used for the matching.
+- An `Array` with matching entries for the completion.
+- The substring that was used for the matching.
 
 For instance: `[[substr1, substr2, ...], originalsubstring]`.
 
@@ -396,22 +391,20 @@ The `completer` function can be called asynchronously if it accepts two argument
       callback(null, [['123'], linePartial]);
     }
 
-`readline.cursorTo(stream, x[, y][, callback])`
------------------------------------------------
+## `readline.cursorTo(stream, x[, y][, callback])`
 
--   `stream` {stream.Writable}
--   `x` {number}
--   `y` {number}
--   `callback` {Function} Invoked once the operation completes.
--   Returns: {boolean} `false` if `stream` wishes for the calling code to wait for the `'drain'` event to be emitted before continuing to write additional data; otherwise `true`.
+- `stream` {stream.Writable}
+- `x` {number}
+- `y` {number}
+- `callback` {Function} Invoked once the operation completes.
+- Returns: {boolean} `false` if `stream` wishes for the calling code to wait for the `'drain'` event to be emitted before continuing to write additional data; otherwise `true`.
 
 The `readline.cursorTo()` method moves cursor to the specified position in a given [TTY](tty.md) `stream`.
 
-`readline.emitKeypressEvents(stream[, interface])`
---------------------------------------------------
+## `readline.emitKeypressEvents(stream[, interface])`
 
--   `stream` {stream.Readable}
--   `interface` {readline.Interface}
+- `stream` {stream.Readable}
+- `interface` {readline.Interface}
 
 The `readline.emitKeypressEvents()` method causes the given [Readable](stream.md#stream_readable_streams) stream to begin emitting `'keypress'` events corresponding to received input.
 
@@ -425,19 +418,17 @@ This is automatically called by any readline instance on its `input` if the `inp
     if (process.stdin.isTTY)
       process.stdin.setRawMode(true);
 
-`readline.moveCursor(stream, dx, dy[, callback])`
--------------------------------------------------
+## `readline.moveCursor(stream, dx, dy[, callback])`
 
--   `stream` {stream.Writable}
--   `dx` {number}
--   `dy` {number}
--   `callback` {Function} Invoked once the operation completes.
--   Returns: {boolean} `false` if `stream` wishes for the calling code to wait for the `'drain'` event to be emitted before continuing to write additional data; otherwise `true`.
+- `stream` {stream.Writable}
+- `dx` {number}
+- `dy` {number}
+- `callback` {Function} Invoked once the operation completes.
+- Returns: {boolean} `false` if `stream` wishes for the calling code to wait for the `'drain'` event to be emitted before continuing to write additional data; otherwise `true`.
 
-The `readline.moveCursor()` method moves the cursor *relative* to its current position in a given [TTY](tty.md) `stream`.
+The `readline.moveCursor()` method moves the cursor _relative_ to its current position in a given [TTY](tty.md) `stream`.
 
-Example: Tiny CLI
------------------
+## Example: Tiny CLI
 
 The following example illustrates the use of `readline.Interface` class to implement a small command-line interface:
 
@@ -465,8 +456,7 @@ The following example illustrates the use of `readline.Interface` class to imple
       process.exit(0);
     });
 
-Example: Read file stream line-by-Line
---------------------------------------
+## Example: Read file stream line-by-Line
 
 A common use case for `readline` is to consume an input file one line at a time. The easiest way to do so is leveraging the [`fs.ReadStream`](fs.md#fs_class_fs_readstream) API as well as a `for await...of` loop:
 
@@ -530,7 +520,6 @@ Currently, `for await...of` loop can be a bit slower. If `async` / `await` flow 
       }
     })();
 
-TTY keybindings
----------------
+## TTY keybindings
 
 <table><thead><tr class="header"><th>Keybindings</th><th>Description</th><th>Notes</th></tr></thead><tbody><tr class="odd"><td>Ctrl+Shift+Backspace</td><td>Delete line left</td><td>Doesn’t work on Linux, Mac and Windows</td></tr><tr class="even"><td>Ctrl+Shift+Delete</td><td>Delete line right</td><td>Doesn’t work on Mac</td></tr><tr class="odd"><td>Ctrl+C</td><td>Emit <code>SIGINT</code> or close the readline instance</td><td></td></tr><tr class="even"><td>Ctrl+H</td><td>Delete left</td><td></td></tr><tr class="odd"><td>Ctrl+D</td><td>Delete right or close the readline instance in case the current line is empty / EOF</td><td>Doesn’t work on Windows</td></tr><tr class="even"><td>Ctrl+U</td><td>Delete from the current position to the line start</td><td></td></tr><tr class="odd"><td>Ctrl+K</td><td>Delete from the current position to the end of line</td><td></td></tr><tr class="even"><td>Ctrl+A</td><td>Go to start of line</td><td></td></tr><tr class="odd"><td>Ctrl+E</td><td>Go to to end of line</td><td></td></tr><tr class="even"><td>Ctrl+B</td><td>Back one character</td><td></td></tr><tr class="odd"><td>Ctrl+F</td><td>Forward one character</td><td></td></tr><tr class="even"><td>Ctrl+L</td><td>Clear screen</td><td></td></tr><tr class="odd"><td>Ctrl+N</td><td>Next history item</td><td></td></tr><tr class="even"><td>Ctrl+P</td><td>Previous history item</td><td></td></tr><tr class="odd"><td>Ctrl+Z</td><td>Moves running process into background. Type <code>fg</code> and press Enter to return.</td><td>Doesn’t work on Windows</td></tr><tr class="even"><td>Ctrl+W or Ctrl +Backspace</td><td>Delete backward to a word boundary</td><td>Ctrl+Backspace Doesn’t work on Linux, Mac and Windows</td></tr><tr class="odd"><td>Ctrl+Delete</td><td>Delete forward to a word boundary</td><td>Doesn’t work on Mac</td></tr><tr class="even"><td>Ctrl+Left arrow or Meta+B</td><td>Word left</td><td>Ctrl+Left arrow Doesn’t work on Mac</td></tr><tr class="odd"><td>Ctrl+Right arrow or Meta+F</td><td>Word right</td><td>Ctrl+Right arrow Doesn’t work on Mac</td></tr><tr class="even"><td>Meta+D or Meta +Delete</td><td>Delete word right</td><td>Meta+Delete Doesn’t work on windows</td></tr><tr class="odd"><td>Meta+Backspace</td><td>Delete word left</td><td>Doesn’t work on Mac</td></tr></tbody></table>

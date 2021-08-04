@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Text Style Props</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Text Style Props</h1>
+</header>
+<h3 id="example">Example</h3>
+<p>```SnackPlayer name=TextStyleProps&amp;supportedPlatforms=ios,android import React, { useState } from “react”; import { FlatList, Platform, ScrollView, Slider, StatusBar, StyleSheet, Switch, Text, TouchableWithoutFeedback, View } from “react-native”;</p>
+<p>const fontStyles = [“normal”, “italic”]; const fontVariants = [ undefined, “small-caps”, “oldstyle-nums”, “lining-nums”, “tabular-nums”, “proportional-nums”]; const fontWeights = [ “normal”, “bold”, “100”, “200”, “300”, “400”, “500”, “600”, “700”, “800”, “900”]; const textAlignments = [“auto”, “left”, “right”, “center”, “justify”]; const textDecorationLines = [ “none”, “underline”, “line-through”, “underline line-through”]; const textDecorationStyles = [“solid”, “double”, “dotted”, “dashed”]; const textTransformations = [“none”, “uppercase”, “lowercase”, “capitalize”]; const textAlignmentsVertical = [“auto”, “top”, “bottom”, “center”]; const writingDirections = [“auto”, “ltr”, “rtl”];</p>
+<p>const App = () =&gt; { const [fontSize, setFontSize] = useState(10); const [fontStyleIdx, setFontStyleIdx] = useState(0); const [fontWeightIdx, setFontWeightIdx] = useState(0); const [lineHeight, setLineHeight] = useState(10); const [textAlignIdx, setTextAlignIdx] = useState(0); const [textDecorationLineIdx, setTextDecorationLineIdx] = useState(0); const [includeFontPadding, setIncludeFontPadding] = useState(false); const [textVerticalAlignIdx, setTextVerticalAlignIdx] = useState(0); const [fontVariantIdx, setFontVariantIdx] = useState(0); const [letterSpacing, setLetterSpacing] = useState(0); const [textDecorationStyleIdx, setTextDecorationStyleIdx] = useState(0); const [textTransformIdx, setTextTransformIdx] = useState(0); const [writingDirectionIdx, setWritingDirectionIdx] = useState(0); const [textShadowRadius, setTextShadowRadius] = useState(0); const [textShadowOffset, setTextShadowOffset] = useState({ height: 0, width: 0 });</p>
+<p>return ( <View style={styles.container}> &lt;Text style={[ styles.paragraph, { fontSize, fontStyle: fontStyles[fontStyleIdx], fontWeight: fontWeights[fontWeightIdx], lineHeight, textAlign: textAlignments[textAlignIdx], textDecorationLine: textDecorationLines[textDecorationLineIdx], textTransform: textTransformations[textTransformIdx], textAlignVertical: textAlignmentsVertical[textVerticalAlignIdx], fontVariant: [fontVariants[fontVariantIdx]], letterSpacing, includeFontPadding, textDecorationStyle: textDecorationStyles[textDecorationStyleIdx], writingDirection: writingDirections[writingDirectionIdx], textShadowOffset, textShadowRadius } ]} &gt; Lorem Ipsum is simply dummy text of the printing and typesetting industry. 112 Likes </Text> <ScrollView> <View> <Text>Common platform properties</Text> &lt;CustomSlider label=“Text Shadow Offset - Height” value={textShadowOffset.height} minimumValue={-40} maximumValue={40} handleValueChange={val =&gt; setTextShadowOffset(prev =&gt; ({ …prev, height: val })) } /&gt; &lt;CustomSlider label=“Text Shadow Offset - Width” value={textShadowOffset.width} minimumValue={-40} maximumValue={40} handleValueChange={val =&gt; setTextShadowOffset(prev =&gt; ({ …prev, width: val })) } /&gt; <CustomSlider
+            label="Font Size"
+            value={fontSize}
+            maximumValue={40}
+            handleValueChange={setFontSize}
+          /> <CustomPicker
+            label="Font Style"
+            data={fontStyles}
+            currentIndex={fontStyleIdx}
+            onSelected={setFontStyleIdx}
+          /> <CustomPicker
+            label="Font Weight"
+            data={fontWeights}
+            currentIndex={fontWeightIdx}
+            onSelected={setFontWeightIdx}
+          /> <CustomSlider
+            label="Line Height"
+            value={lineHeight}
+            minimumValue={10}
+            maximumValue={50}
+            handleValueChange={setLineHeight}
+          /> <CustomPicker
+            label="Text Align"
+            data={textAlignments}
+            currentIndex={textAlignIdx}
+            onSelected={setTextAlignIdx}
+          /> <CustomPicker
+            label="Text Decoration Line"
+            data={textDecorationLines}
+            currentIndex={textDecorationLineIdx}
+            onSelected={setTextDecorationLineIdx}
+          /> <CustomSlider
+            label="Text Shadow Radius"
+            value={textShadowRadius}
+            handleValueChange={setTextShadowRadius}
+          /> <CustomPicker
+            label="Font Variant"
+            data={fontVariants}
+            currentIndex={fontVariantIdx}
+            onSelected={setFontVariantIdx}
+          /> <CustomSlider
+            label="Letter Spacing"
+            step={0.1}
+            value={letterSpacing}
+            handleValueChange={setLetterSpacing}
+          /> <CustomPicker
+            label="Text Transform"
+            data={textTransformations}
+            currentIndex={textTransformIdx}
+            onSelected={setTextTransformIdx}
+          /> </View> {Platform.OS === “android” &amp;&amp; ( <View style={styles.platformContainer}> <Text style={styles.platformContainerTitle}> Android only properties </Text> <CustomPicker
+              label="Text Vertical Align"
+              data={textAlignmentsVertical}
+              currentIndex={textVerticalAlignIdx}
+              onSelected={setTextVerticalAlignIdx}
+            /> <CustomSwitch
+              label="Include Font Padding"
+              handleValueChange={setIncludeFontPadding}
+              value={includeFontPadding}
+            /> </View> )} {Platform.OS === “ios” &amp;&amp; ( <View style={styles.platformContainer}> <Text style={styles.platformContainerTitle}> iOS only properties </Text> <CustomPicker
+              label="Text Decoration Style"
+              data={textDecorationStyles}
+              currentIndex={textDecorationStyleIdx}
+              onSelected={setTextDecorationStyleIdx}
+            /> <CustomPicker
+              label="Writing Direction"
+              data={writingDirections}
+              currentIndex={writingDirectionIdx}
+              onSelected={setWritingDirectionIdx}
+            /> </View> )} </ScrollView> </View> ); }</p>
+<p>const CustomSwitch = ({ label, handleValueChange, value }) =&gt; { return ( &lt;&gt; <Text style={styles.title}>{label}</Text> &lt;View style={{ alignItems: “flex-start” }}&gt; &lt;Switch trackColor={{ false: “#767577”, true: “#DAA520” }} thumbColor={value ? “#DAA520” : “#f4f3f4”} onValueChange={handleValueChange} value={value} /&gt; </View> &lt;/&gt; ); }</p>
+<p>const CustomSlider = ({ label, handleValueChange, step = 1, minimumValue = 0, maximumValue = 10, value }) =&gt; { return ( &lt;&gt; {label &amp;&amp; ( <Text style={styles.title}>{<code>${label} (${value.toFixed(2)})</code>}</Text> )} <View style={styles.wrapperHorizontal}> <Slider
+          thumbTintColor="#DAA520"
+          minimumTrackTintColor="#DAA520"
+          minimumValue={minimumValue}
+          maximumValue={maximumValue}
+          step={step}
+          onValueChange={handleValueChange}
+          value={value}
+        /> </View> &lt;/&gt; ); }</p>
+<p>const CustomPicker = ({ label, data, currentIndex, onSelected }) =&gt; { return ( &lt;&gt; <Text style={styles.title}>{label}</Text> <View style={styles.wrapperHorizontal}> &lt;FlatList bounces horizontal data={data} keyExtractor={(item, idx) =&gt; String(item)} renderItem={({ item, index }) =&gt; { const selected = index === currentIndex; return ( &lt;TouchableWithoutFeedback onPress={() =&gt; onSelected(index)}&gt; &lt;View style={[ styles.itemStyleHorizontal, selected &amp;&amp; styles.itemSelectedStyleHorizontal ]} &gt; &lt;Text style={{ textAlign: “center”, color: selected ? “black” : “grey”, fontWeight: selected ? “bold” : “normal” }} &gt; {item + ""} </Text> </View> </TouchableWithoutFeedback> ); }} /&gt; </View> &lt;/&gt; ); }</p>
+<p>const styles = StyleSheet.create({ container: { flex: 1, paddingTop: StatusBar.currentHeight, backgroundColor: “#ecf0f1”, padding: 8 }, paragraph: { color: “black”, textDecorationColor: “yellow”, textShadowColor: “red”, textShadowRadius: 1, margin: 24 }, wrapperHorizontal: { height: 54, justifyContent: “center”, color: “black”, marginBottom: 12 }, itemStyleHorizontal: { marginRight: 10, height: 50, padding: 8, borderWidth: 1, borderColor: “grey”, borderRadius: 25, textAlign: “center”, justifyContent: “center” }, itemSelectedStyleHorizontal: { borderWidth: 2, borderColor: “#DAA520” }, platformContainer: { marginTop: 8, borderTopWidth: 1 }, platformContainerTitle: { marginTop: 8 }, title: { fontWeight: “bold”, marginVertical: 4 } });</p>
+<p>export default App; ```</p>
+<h1 id="reference">Reference</h1>
+<h2 id="props">Props</h2>
+<h3 id="color"><code>color</code></h3>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="colors.md">color</a></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="fontfamily"><code>fontFamily</code></h3>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>string</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="fontsize"><code>fontSize</code></h3>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="fontstyle"><code>fontStyle</code></h3>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>enum(<code>'normal'</code>, <code>'italic'</code>)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="fontweight"><code>fontWeight</code></h3>
+<p>Specifies font weight. The values <code>'normal'</code> and <code>'bold'</code> are supported for most fonts. Not all fonts have a variant for each of the numeric values, in that case the closest one is chosen.</p>
+<table>
+<colgroup>
+<col style="width: 91%" />
+<col style="width: 8%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>enum(<code>'normal'</code>, <code>'bold'</code>, <code>'100'</code>, <code>'200'</code>, <code>'300'</code>, <code>'400'</code>, <code>'500'</code>, <code>'600'</code>, <code>'700'</code>, <code>'800'</code>, <code>'900'</code>)</td>
+<td><code>'normal'</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+### <code>includeFontPadding</code>
+<div class="label android">
+Android
+</div>
+<p>Set to <code>false</code> to remove extra font padding intended to make space for certain ascenders / descenders. With some fonts, this padding can make text look slightly misaligned when centered vertically. For best results also set <code>textAlignVertical</code> to <code>center</code>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>bool</td>
+<td><code>true</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="fontvariant"><code>fontVariant</code></h3>
+<table>
+<colgroup>
+<col style="width: 93%" />
+<col style="width: 6%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>array of enum(<code>'small-caps'</code>, <code>'oldstyle-nums'</code>, <code>'lining-nums'</code>, <code>'tabular-nums'</code>, <code>'proportional-nums'</code>)</td>
+<td><code>[]</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="letterspacing"><code>letterSpacing</code></h3>
+<p>Increase or decrease the spacing between characters. By default there is no extra letter spacing.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="lineheight"><code>lineHeight</code></h3>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="textalign"><code>textAlign</code></h3>
+<p>Specifies text alignment. On Android, the value ‘justify’ is only supported on Oreo (8.0) or above (API level &gt;= 26). The value will fallback to <code>left</code> on lower Android versions.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>enum(<code>'auto'</code>, <code>'left'</code>, <code>'right'</code>, <code>'center'</code>, <code>'justify'</code>)</td>
+<td><code>'auto'</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+### <code>textAlignVertical</code>
+<div class="label android">
+Android
+</div>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>enum(<code>'auto'</code>, <code>'top'</code>, <code>'bottom'</code>, <code>'center'</code>)</td>
+<td><code>'auto'</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+### <code>textDecorationColor</code>
+<div class="label ios">
+iOS
+</div>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="colors.md">color</a></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="textdecorationline"><code>textDecorationLine</code></h3>
+<table>
+<colgroup>
+<col style="width: 90%" />
+<col style="width: 9%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>enum(<code>'none'</code>, <code>'underline'</code>, <code>'line-through'</code>, <code>'underline line-through'</code>)</td>
+<td><code>'none'</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+### <code>textDecorationStyle</code>
+<div class="label ios">
+iOS
+</div>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>enum(<code>'solid'</code>, <code>'double'</code>, <code>'dotted'</code>, <code>'dashed'</code>)</td>
+<td><code>'solid'</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="textshadowcolor"><code>textShadowColor</code></h3>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="colors.md">color</a></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="textshadowoffset"><code>textShadowOffset</code></h3>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>object: { width?: number, height?: number }</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="textshadowradius"><code>textShadowRadius</code></h3>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="texttransform"><code>textTransform</code></h3>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>enum(<code>'none'</code>, <code>'uppercase'</code>, <code>'lowercase'</code>, <code>'capitalize'</code>)</td>
+<td><code>'none'</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+### <code>writingDirection</code>
+<div class="label ios">
+iOS
+</div>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>enum(<code>'auto'</code>, <code>'ltr'</code>, <code>'rtl'</code>)</td>
+<td><code>'auto'</code></td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Integration with an Android Fragment</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Integration with an Android Fragment</h1>
+</header>
+<p>The guide for <a href="https://reactnative.dev/docs/integration-with-existing-apps">Integration with Existing Apps</a> details how to integrate a full-screen React Native app into an existing Android app as an Activity. To use React Native components within Fragments in an existing app requires some additional setup. The benefit of this is that it allows for a native app to integrate React Native components alongside native fragments in an Activity.</p>
+<h3 id="add-react-native-to-your-app">1. Add React Native to your app</h3>
+<p>Follow the guide for <a href="https://reactnative.dev/docs/integration-with-existing-apps">Integration with Existing Apps</a> until the Code integration section. Continue to follow Step 1. Create an <code>index.android.js</code> file and Step 2. Add your React Native code from this section.</p>
+<h3 id="integrating-your-app-with-a-react-native-fragment">2. Integrating your App with a React Native Fragment</h3>
+<p>You can render your React Native component into a Fragment instead of a full screen React Native Activity. The component may be termed a “screen” or “fragment” and it will function in the same manner as an Android fragment, likely containing child components. These components can be placed in a <code>/fragments</code> folder and the child components used to compose the fragment can be placed in a <code>/components</code> folder.</p>
+<p>You will need to implement the ReactApplication interface in your main Application Java class. If you have created a new project from Android Studio with a default activity, you will need to create a new class e.g. <code>MyReactApplication.java</code>. If it is an existing class you can find this main class in your <code>AndroidManifest.xml</code> file. Under the <code>&lt;application /&gt;</code> tag you should see a property <code>android:name</code> e.g. <code>android:name=".MyReactApplication"</code>. This value is the class you want to implement and provide the required methods to.</p>
+<p>Ensure your main Application Java class implements ReactApplication:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode java"><code class="sourceCode java"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">public</span> <span class="kw">class</span> MyReactApplication <span class="kw">extends</span> Application <span class="kw">implements</span> ReactApplication {...}</a></code></pre></div>
+<p>Override the required methods <code>getUseDeveloperSupport</code>, <code>getPackages</code> and <code>getReactNativeHost</code>:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode java"><code class="sourceCode java"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">public</span> <span class="kw">class</span> MyReactApplication <span class="kw">extends</span> Application <span class="kw">implements</span> ReactApplication {</a>
+<a class="sourceLine" id="cb2-2" title="2">    <span class="at">@Override</span></a>
+<a class="sourceLine" id="cb2-3" title="3">    <span class="kw">public</span> <span class="dt">void</span> <span class="fu">onCreate</span>() {</a>
+<a class="sourceLine" id="cb2-4" title="4">        <span class="kw">super</span>.<span class="fu">onCreate</span>();</a>
+<a class="sourceLine" id="cb2-5" title="5">        SoLoader.<span class="fu">init</span>(<span class="kw">this</span>, <span class="kw">false</span>);</a>
+<a class="sourceLine" id="cb2-6" title="6">    }</a>
+<a class="sourceLine" id="cb2-7" title="7"></a>
+<a class="sourceLine" id="cb2-8" title="8">    <span class="kw">private</span> <span class="dt">final</span> ReactNativeHost mReactNativeHost = <span class="kw">new</span> <span class="fu">ReactNativeHost</span>(<span class="kw">this</span>) {</a>
+<a class="sourceLine" id="cb2-9" title="9">        <span class="at">@Override</span></a>
+<a class="sourceLine" id="cb2-10" title="10">        <span class="kw">public</span> <span class="dt">boolean</span> <span class="fu">getUseDeveloperSupport</span>() {</a>
+<a class="sourceLine" id="cb2-11" title="11">            <span class="kw">return</span> BuildConfig.<span class="fu">DEBUG</span>;</a>
+<a class="sourceLine" id="cb2-12" title="12">        }</a>
+<a class="sourceLine" id="cb2-13" title="13"></a>
+<a class="sourceLine" id="cb2-14" title="14">        <span class="kw">protected</span> <span class="bu">List</span>&lt;ReactPackage&gt; <span class="fu">getPackages</span>() {</a>
+<a class="sourceLine" id="cb2-15" title="15">            <span class="bu">List</span>&lt;ReactPackage&gt; packages = <span class="kw">new</span> <span class="fu">PackageList</span>(<span class="kw">this</span>).<span class="fu">getPackages</span>();</a>
+<a class="sourceLine" id="cb2-16" title="16">            <span class="co">// Packages that cannot be autolinked yet can be added manually here</span></a>
+<a class="sourceLine" id="cb2-17" title="17">            <span class="kw">return</span> packages;</a>
+<a class="sourceLine" id="cb2-18" title="18">        }</a>
+<a class="sourceLine" id="cb2-19" title="19">    };</a>
+<a class="sourceLine" id="cb2-20" title="20"></a>
+<a class="sourceLine" id="cb2-21" title="21">    <span class="at">@Override</span></a>
+<a class="sourceLine" id="cb2-22" title="22">    <span class="kw">public</span> ReactNativeHost <span class="fu">getReactNativeHost</span>() {</a>
+<a class="sourceLine" id="cb2-23" title="23">        <span class="kw">return</span> mReactNativeHost;</a>
+<a class="sourceLine" id="cb2-24" title="24">    }</a>
+<a class="sourceLine" id="cb2-25" title="25">}</a></code></pre></div>
+<p>If you are using Android Studio, use Alt + Enter to add all missing imports in your class. Alternatively these are the required imports to include manually:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode java"><code class="sourceCode java"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">import</span><span class="im"> android.app.Application;</span></a>
+<a class="sourceLine" id="cb3-2" title="2"></a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="kw">import</span><span class="im"> com.facebook.react.PackageList;</span></a>
+<a class="sourceLine" id="cb3-4" title="4"><span class="kw">import</span><span class="im"> com.facebook.react.ReactApplication;</span></a>
+<a class="sourceLine" id="cb3-5" title="5"><span class="kw">import</span><span class="im"> com.facebook.react.ReactNativeHost;</span></a>
+<a class="sourceLine" id="cb3-6" title="6"><span class="kw">import</span><span class="im"> com.facebook.react.ReactPackage;</span></a>
+<a class="sourceLine" id="cb3-7" title="7"><span class="kw">import</span><span class="im"> com.facebook.soloader.SoLoader;</span></a>
+<a class="sourceLine" id="cb3-8" title="8"></a>
+<a class="sourceLine" id="cb3-9" title="9"><span class="kw">import</span><span class="im"> java.util.List;</span></a></code></pre></div>
+<p>Perform a “Sync Project files with Gradle” operation.</p>
+<h3 id="step-3.-add-a-framelayout-for-the-react-native-fragment">Step 3. Add a FrameLayout for the React Native Fragment</h3>
+<p>You will now add your React Native Fragment to an Activity. For a new project this Activity will be <code>MainActivity</code> but it could be any Activity and more fragments can be added to additional Activities as you integrate more React Native components into your app.</p>
+<p>First add the React Native Fragment to your Activity’s layout. For example <code>main_activity.xml</code> in the <code>res/layouts</code> folder.</p>
+<p>Add a <code>&lt;FrameLayout&gt;</code> with an id, width and height. This is the layout you will find and render your React Native Fragment into.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode xml"><code class="sourceCode xml"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">&lt;FrameLayout</span></a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="ot">    android:id=</span><span class="st">&quot;@+id/reactNativeFragment&quot;</span></a>
+<a class="sourceLine" id="cb4-3" title="3"><span class="ot">    android:layout_width=</span><span class="st">&quot;match_parent&quot;</span></a>
+<a class="sourceLine" id="cb4-4" title="4"><span class="ot">    android:layout_height=</span><span class="st">&quot;match_parent&quot;</span> <span class="kw">/&gt;</span></a></code></pre></div>
+<h3 id="step-4.-add-a-react-native-fragment-to-the-framelayout">Step 4. Add a React Native Fragment to the FrameLayout</h3>
+<p>To add your React Native Fragment to your layout you need to have an Activity. As mentioned in a new project this will be <code>MainActivity</code>. In this Activity add a button and an event listener. On button click you will render your React Native Fragment.</p>
+<p>Modify your Activity layout to add the button:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode xml"><code class="sourceCode xml"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">&lt;Button</span></a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="ot">    android:layout_margin=</span><span class="st">&quot;10dp&quot;</span></a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="ot">    android:id=</span><span class="st">&quot;@+id/button&quot;</span></a>
+<a class="sourceLine" id="cb5-4" title="4"><span class="ot">    android:layout_width=</span><span class="st">&quot;match_parent&quot;</span></a>
+<a class="sourceLine" id="cb5-5" title="5"><span class="ot">    android:layout_height=</span><span class="st">&quot;wrap_content&quot;</span></a>
+<a class="sourceLine" id="cb5-6" title="6"><span class="ot">    android:text=</span><span class="st">&quot;Show react fragment&quot;</span> <span class="kw">/&gt;</span></a></code></pre></div>
+<p>Now in your Activity class e.g. <code>MainActivity.java</code> you need to add an OnClickListener for the button, instantiate your ReactFragment and add it to the frame layout.</p>
+<p>Add the button field to the top of your Activity:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode java"><code class="sourceCode java"><a class="sourceLine" id="cb6-1" title="1"><span class="kw">private</span> <span class="bu">Button</span> mButton;</a></code></pre></div>
+<p>Update your Activity’s onCreate method as follows:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode java"><code class="sourceCode java"><a class="sourceLine" id="cb7-1" title="1"><span class="at">@Override</span></a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="kw">protected</span> <span class="dt">void</span> <span class="fu">onCreate</span>(Bundle savedInstanceState) {</a>
+<a class="sourceLine" id="cb7-3" title="3">    <span class="kw">super</span>.<span class="fu">onCreate</span>(savedInstanceState);</a>
+<a class="sourceLine" id="cb7-4" title="4">    <span class="fu">setContentView</span>(R.<span class="fu">layout</span>.<span class="fu">main_activity</span>);</a>
+<a class="sourceLine" id="cb7-5" title="5"></a>
+<a class="sourceLine" id="cb7-6" title="6">    mButton = <span class="fu">findViewById</span>(R.<span class="fu">id</span>.<span class="fu">button</span>);</a>
+<a class="sourceLine" id="cb7-7" title="7">    mButton.<span class="fu">setOnClickListener</span>(<span class="kw">new</span> <span class="bu">View</span>.<span class="fu">OnClickListener</span>() {</a>
+<a class="sourceLine" id="cb7-8" title="8">        <span class="kw">public</span> <span class="dt">void</span> <span class="fu">onClick</span>(<span class="bu">View</span> v) {</a>
+<a class="sourceLine" id="cb7-9" title="9">            Fragment reactNativeFragment = <span class="kw">new</span> ReactFragment.<span class="fu">Builder</span>()</a>
+<a class="sourceLine" id="cb7-10" title="10">                    .<span class="fu">setComponentName</span>(<span class="st">&quot;HelloWorld&quot;</span>)</a>
+<a class="sourceLine" id="cb7-11" title="11">                    .<span class="fu">setLaunchOptions</span>(<span class="fu">getLaunchOptions</span>(<span class="st">&quot;test message&quot;</span>))</a>
+<a class="sourceLine" id="cb7-12" title="12">                    .<span class="fu">build</span>();</a>
+<a class="sourceLine" id="cb7-13" title="13"></a>
+<a class="sourceLine" id="cb7-14" title="14">            <span class="fu">getSupportFragmentManager</span>()</a>
+<a class="sourceLine" id="cb7-15" title="15">                    .<span class="fu">beginTransaction</span>()</a>
+<a class="sourceLine" id="cb7-16" title="16">                    .<span class="fu">add</span>(R.<span class="fu">id</span>.<span class="fu">reactNativeFragment</span>, reactNativeFragment)</a>
+<a class="sourceLine" id="cb7-17" title="17">                    .<span class="fu">commit</span>();</a>
+<a class="sourceLine" id="cb7-18" title="18"></a>
+<a class="sourceLine" id="cb7-19" title="19">        }</a>
+<a class="sourceLine" id="cb7-20" title="20">    });</a>
+<a class="sourceLine" id="cb7-21" title="21">}</a></code></pre></div>
+<p>In the code above <code>Fragment reactNativeFragment = new ReactFragment.Builder()</code> creates the ReactFragment and <code>getSupportFragmentManager().beginTransaction().add()</code> adds the Fragment to the Frame Layout.</p>
+<p>If you are using a starter kit for React Native, replace the “HelloWorld” string with the one in your <code>index.js</code> or <code>index.android.js</code> file (it’s the first argument to the AppRegistry.registerComponent() method).</p>
+<p>Add the <code>getLaunchOptions</code> method which will allow you to pass props through to your component. This is optional and you can remove <code>setLaunchOptions</code> if you don’t need to pass any props.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode java"><code class="sourceCode java"><a class="sourceLine" id="cb8-1" title="1"><span class="kw">private</span> Bundle <span class="fu">getLaunchOptions</span>(<span class="bu">String</span> message) {</a>
+<a class="sourceLine" id="cb8-2" title="2">    Bundle initialProperties = <span class="kw">new</span> <span class="fu">Bundle</span>();</a>
+<a class="sourceLine" id="cb8-3" title="3">    initialProperties.<span class="fu">putString</span>(<span class="st">&quot;message&quot;</span>, message);</a>
+<a class="sourceLine" id="cb8-4" title="4">    <span class="kw">return</span> initialProperties;</a>
+<a class="sourceLine" id="cb8-5" title="5">}</a></code></pre></div>
+<p>Add all missing imports in your Activity class. Be careful to use your package’s BuildConfig and not the one from the facebook package! Alternatively these are the required imports to include manually:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode java"><code class="sourceCode java"><a class="sourceLine" id="cb9-1" title="1"><span class="kw">import</span><span class="im"> android.app.Application;</span></a>
+<a class="sourceLine" id="cb9-2" title="2"></a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="kw">import</span><span class="im"> com.facebook.react.ReactApplication;</span></a>
+<a class="sourceLine" id="cb9-4" title="4"><span class="kw">import</span><span class="im"> com.facebook.react.ReactNativeHost;</span></a>
+<a class="sourceLine" id="cb9-5" title="5"><span class="kw">import</span><span class="im"> com.facebook.react.ReactPackage;</span></a>
+<a class="sourceLine" id="cb9-6" title="6"><span class="kw">import</span><span class="im"> com.facebook.react.shell.MainReactPackage;</span></a>
+<a class="sourceLine" id="cb9-7" title="7"><span class="kw">import</span><span class="im"> com.facebook.soloader.SoLoader;</span></a></code></pre></div>
+<p>Perform a “Sync Project files with Gradle” operation.</p>
+<h3 id="step-5.-test-your-integration">Step 5. Test your integration</h3>
+<p>Make sure you run <code>yarn</code> to install your react-native dependencies and run <code>yarn native</code> to start the metro bundler. Run your android app in Android Studio and it should load the JavaScript code from the development server and display it in your React Native Fragment in the Activity.</p>
+<h3 id="step-6.-additional-setup---native-modules">Step 6. Additional setup - Native modules</h3>
+<p>You may need to call out to existing Java code from your react component. Native modules allow you to call out to native code and run methods in your native app. Follow the setup here <a href="https://reactnative.dev/docs/native-modules-android">native-modules-android</a></p>
+</body>
+</html>

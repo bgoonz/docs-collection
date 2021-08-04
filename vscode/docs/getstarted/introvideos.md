@@ -1,5 +1,4 @@
-Introductory Videos
-===================
+# Introductory Videos
 
 Start your journey using Visual Studio Code with this set of introductory videos! These videos are designed to give you an overview of VS Code’s various features and quickly get you familiar with them.
 

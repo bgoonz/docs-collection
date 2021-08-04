@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>PanResponder</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">PanResponder</h1>
+</header>
+<p>import Tabs from ‘<span class="citation" data-cites="theme/Tabs">@theme/Tabs</span>’; import TabItem from ‘<span class="citation" data-cites="theme/TabItem">@theme/TabItem</span>’; import constants from ‘<span class="citation" data-cites="site/core/TabsConstants">@site/core/TabsConstants</span>’;</p>
+<p><code>PanResponder</code> reconciles several touches into a single gesture. It makes single-touch gestures resilient to extra touches, and can be used to recognize basic multi-touch gestures.</p>
+<p>By default, <code>PanResponder</code> holds an <code>InteractionManager</code> handle to block long-running JS events from interrupting active gestures.</p>
+<p>It provides a predictable wrapper of the responder handlers provided by the <a href="gesture-responder-system.md">gesture responder system</a>. For each handler, it provides a new <code>gestureState</code> object alongside the native event object:</p>
+<pre><code>onPanResponderMove: (event, gestureState) =&gt; {}</code></pre>
+<p>A native event is a synthetic touch event with form of <a href="pressevent">PressEvent</a>.</p>
+<p>A <code>gestureState</code> object has the following:</p>
+<ul>
+<li><code>stateID</code> - ID of the gestureState- persisted as long as there’s at least one touch on screen</li>
+<li><code>moveX</code> - the latest screen coordinates of the recently-moved touch</li>
+<li><code>moveY</code> - the latest screen coordinates of the recently-moved touch</li>
+<li><code>x0</code> - the screen coordinates of the responder grant</li>
+<li><code>y0</code> - the screen coordinates of the responder grant</li>
+<li><code>dx</code> - accumulated distance of the gesture since the touch started</li>
+<li><code>dy</code> - accumulated distance of the gesture since the touch started</li>
+<li><code>vx</code> - current velocity of the gesture</li>
+<li><code>vy</code> - current velocity of the gesture</li>
+<li><code>numberActiveTouches</code> - Number of touches currently on screen</li>
+</ul>
+<h2 id="usage-pattern">Usage Pattern</h2>
+<pre class="jsx"><code>const ExampleComponent = () =&gt; {
+  const panResponder = React.useRef(
+    PanResponder.create({
+      // Ask to be the responder:
+      onStartShouldSetPanResponder: (evt, gestureState) =&gt; true,
+      onStartShouldSetPanResponderCapture: (evt, gestureState) =&gt;
+        true,
+      onMoveShouldSetPanResponder: (evt, gestureState) =&gt; true,
+      onMoveShouldSetPanResponderCapture: (evt, gestureState) =&gt;
+        true,
+
+      onPanResponderGrant: (evt, gestureState) =&gt; {
+        // The gesture has started. Show visual feedback so the user knows
+        // what is happening!
+        // gestureState.d{x,y} will be set to zero now
+      },
+      onPanResponderMove: (evt, gestureState) =&gt; {
+        // The most recent move distance is gestureState.move{X,Y}
+        // The accumulated gesture distance since becoming responder is
+        // gestureState.d{x,y}
+      },
+      onPanResponderTerminationRequest: (evt, gestureState) =&gt;
+        true,
+      onPanResponderRelease: (evt, gestureState) =&gt; {
+        // The user has released all touches while this view is the
+        // responder. This typically means a gesture has succeeded
+      },
+      onPanResponderTerminate: (evt, gestureState) =&gt; {
+        // Another component has become the responder, so this gesture
+        // should be cancelled
+      },
+      onShouldBlockNativeResponder: (evt, gestureState) =&gt; {
+        // Returns whether this component should block native components from becoming the JS
+        // responder. Returns true by default. Is currently only supported on android.
+        return true;
+      }
+    })
+  ).current;
+
+  return &lt;View {...panResponder.panHandlers} /&gt;;
+};</code></pre>
+<h2 id="example">Example</h2>
+<p><code>PanResponder</code> works with <code>Animated</code> API to help build complex gestures in the UI. The following example contains an animated <code>View</code> component which can be dragged freely across the screen</p>
+<p><Tabs groupId="syntax" defaultValue={constants.defaultSyntax} values={constants.syntax}> <TabItem value="functional"></p>
+<p>```SnackPlayer name=PanResponder import React, { useRef } from “react”; import { Animated, View, StyleSheet, PanResponder, Text } from “react-native”;</p>
+<p>const App = () =&gt; { const pan = useRef(new Animated.ValueXY()).current;</p>
+<p>const panResponder = useRef( PanResponder.create({ onMoveShouldSetPanResponder: () =&gt; true, onPanResponderGrant: () =&gt; { pan.setOffset({ x: pan.x._value, y: pan.y._value }); }, onPanResponderMove: Animated.event( [ null, { dx: pan.x, dy: pan.y } ] ), onPanResponderRelease: () =&gt; { pan.flattenOffset(); } }) ).current;</p>
+<p>return ( <View style={styles.container}> <Text style={styles.titleText}>Drag this box!</Text> &lt;Animated.View style={{ transform: [{ translateX: pan.x }, { translateY: pan.y }] }} {…panResponder.panHandlers} &gt; <View style={styles.box} /> &lt;/Animated.View&gt; </View> ); }</p>
+<p>const styles = StyleSheet.create({ container: { flex: 1, alignItems: “center”, justifyContent: “center” }, titleText: { fontSize: 14, lineHeight: 24, fontWeight: “bold” }, box: { height: 150, width: 150, backgroundColor: “blue”, borderRadius: 5 } });</p>
+<p>export default App; ```</p>
+<p></TabItem> <TabItem value="classical"></p>
+<p>```SnackPlayer name=PanResponder import React, { Component } from “react”; import { Animated, View, StyleSheet, PanResponder, Text } from “react-native”;</p>
+<p>class App extends Component { pan = new Animated.ValueXY(); panResponder = PanResponder.create({ onMoveShouldSetPanResponder: () =&gt; true, onPanResponderGrant: () =&gt; { this.pan.setOffset({ x: this.pan.x._value, y: this.pan.y._value }); }, onPanResponderMove: Animated.event([ null, { dx: this.pan.x, dy: this.pan.y } ]), onPanResponderRelease: () =&gt; { this.pan.flattenOffset(); } });</p>
+<p>render() { return ( <View style={styles.container}> <Text style={styles.titleText}>Drag this box!</Text> &lt;Animated.View style={{ transform: [{ translateX: this.pan.x }, { translateY: this.pan.y }] }} {…this.panResponder.panHandlers} &gt; <View style={styles.box} /> &lt;/Animated.View&gt; </View> ); } }</p>
+<p>const styles = StyleSheet.create({ container: { flex: 1, alignItems: “center”, justifyContent: “center” }, titleText: { fontSize: 14, lineHeight: 24, fontWeight: “bold” }, box: { height: 150, width: 150, backgroundColor: “blue”, borderRadius: 5 } });</p>
+<p>export default App; ```</p>
+<p></TabItem> </Tabs></p>
+<p>Try the <a href="https://github.com/facebook/react-native/blob/master/packages/rn-tester/js/examples/PanResponder/PanResponderExample.js">PanResponder example in RNTester</a>.</p>
+<hr />
+<h1 id="reference">Reference</h1>
+<h2 id="methods">Methods</h2>
+<h3 id="create"><code>create()</code></h3>
+<pre class="jsx"><code>static create(config)</code></pre>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+| config
+<div data-classname="label basic required">
+Required
+</div>
+<p>| object | Refer below |</p>
+<p>The <code>config</code> object provides enhanced versions of all of the responder callbacks that provide not only the <a href="pressevent"><code>PressEvent</code></a>, but also the <code>PanResponder</code> gesture state, by replacing the word <code>Responder</code> with <code>PanResponder</code> in each of the typical <code>onResponder*</code> callbacks. For example, the <code>config</code> object would look like:</p>
+<ul>
+<li><code>onMoveShouldSetPanResponder: (e, gestureState) =&gt; {...}</code></li>
+<li><code>onMoveShouldSetPanResponderCapture: (e, gestureState) =&gt; {...}</code></li>
+<li><code>onStartShouldSetPanResponder: (e, gestureState) =&gt; {...}</code></li>
+<li><code>onStartShouldSetPanResponderCapture: (e, gestureState) =&gt; {...}</code></li>
+<li><code>onPanResponderReject: (e, gestureState) =&gt; {...}</code></li>
+<li><code>onPanResponderGrant: (e, gestureState) =&gt; {...}</code></li>
+<li><code>onPanResponderStart: (e, gestureState) =&gt; {...}</code></li>
+<li><code>onPanResponderEnd: (e, gestureState) =&gt; {...}</code></li>
+<li><code>onPanResponderRelease: (e, gestureState) =&gt; {...}</code></li>
+<li><code>onPanResponderMove: (e, gestureState) =&gt; {...}</code></li>
+<li><code>onPanResponderTerminate: (e, gestureState) =&gt; {...}</code></li>
+<li><code>onPanResponderTerminationRequest: (e, gestureState) =&gt; {...}</code></li>
+<li><code>onShouldBlockNativeResponder: (e, gestureState) =&gt; {...}</code></li>
+</ul>
+<p>In general, for events that have capture equivalents, we update the gestureState once in the capture phase and can use it in the bubble phase as well.</p>
+<p>Be careful with <code>onStartShould*</code> callbacks. They only reflect updated <code>gestureState</code> for start/end events that bubble/capture to the Node. Once the node is the responder, you can rely on every start/end event being processed by the gesture and <code>gestureState</code> being updated accordingly. (numberActiveTouches) may not be totally accurate unless you are the responder.</p>
+</body>
+</html>

@@ -1,5 +1,4 @@
-Maintaining the root certificates
-=================================
+# Maintaining the root certificates
 
 Node.js contains a compiled-in set of root certificates used as trust anchors for TLS certificate validation.
 
@@ -7,13 +6,11 @@ The certificates come from Mozilla, specifically NSS’s `certdata.txt` file.
 
 The PEM encodings of the certificates are converted to C strings, and committed in `src/node_root_certs.h`.
 
-When to update
---------------
+## When to update
 
 Root certificates should be updated sometime after Mozilla makes an NSS release, check the [NSS release schedule](https://wiki.mozilla.org/NSS:Release_Versions).
 
-Process
--------
+## Process
 
 Commands assume that the current working directory is the root of a checkout of the nodejs/node repository.
 

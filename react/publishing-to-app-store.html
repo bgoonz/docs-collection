@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Publishing to Apple App Store</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Publishing to Apple App Store</h1>
+    </header>
+    <p>
+      The publishing process is the same as any other native iOS app, with some
+      additional considerations to take into account.
+    </p>
+    <blockquote>
+      <p>
+        If you are using Expo then read the Expo Guide for
+        <a
+          href="https://docs.expo.io/versions/latest/distribution/building-standalone-apps/"
+          >Building Standalone Apps</a
+        >.
+      </p>
+    </blockquote>
+    <h3 id="enable-app-transport-security">1. Enable App Transport Security</h3>
+    <p>
+      App Transport Security is a security feature introduced in iOS 9 that
+      rejects all HTTP requests that are not sent over HTTPS. This can result in
+      HTTP traffic being blocked, including the developer React Native server.
+      ATS is disabled for <code>localhost</code> by default in React Native
+      projects in order to make development easier.
+    </p>
+    <p>
+      You should re-enable ATS prior to building your app for production by
+      removing the <code>localhost</code> entry from the
+      <code>NSExceptionDomains</code> dictionary and setting
+      <code>NSAllowsArbitraryLoads</code> to <code>false</code> in your
+      <code>Info.plist</code> file in the <code>ios/</code> folder. You can also
+      re-enable ATS from within Xcode by opening your target properties under
+      the Info pane and editing the App Transport Security Settings entry.
+    </p>
+    <blockquote>
+      <p>
+        If your application needs to access HTTP resources on production, see
+        <a
+          href="http://ste.vn/2015/06/10/configuring-app-transport-security-ios-9-osx-10-11/"
+          >this post</a
+        >
+        to learn how to configure ATS on your project.
+      </p>
+    </blockquote>
+    <h3 id="configure-release-scheme">2. Configure release scheme</h3>
+    <p>
+      Building an app for distribution in the App Store requires using the
+      <code>Release</code> scheme in Xcode. Apps built for
+      <code>Release</code> will automatically disable the in-app Developer menu,
+      which will prevent your users from inadvertently accessing the menu in
+      production. It will also bundle the JavaScript locally, so you can put the
+      app on a device and test whilst not connected to the computer.
+    </p>
+    <p>
+      To configure your app to be built using the <code>Release</code> scheme,
+      go to <strong>Product</strong> → <strong>Scheme</strong> →
+      <strong>Edit Scheme</strong>. Select the <strong>Run</strong> tab in the
+      sidebar, then set the Build Configuration dropdown to
+      <code>Release</code>.
+    </p>
+    <p><img src="/docs/assets/ConfigureReleaseScheme.png" /></p>
+    <h4 id="pro-tips">Pro Tips</h4>
+    <p>
+      As your App Bundle grows in size, you may start to see a blank screen
+      flash between your splash screen and the display of your root application
+      view. If this is the case, you can add the following code to
+      <code>AppDelegate.m</code> in order to keep your splash screen displayed
+      during the transition.
+    </p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode objectivec"
+      ><code class="sourceCode objectivec"><a class="sourceLine" id="cb1-1" title="1">  <span class="co">// Place this code after &quot;[self.window makeKeyAndVisible]&quot; and before &quot;return YES;&quot;</span></a>
+<a class="sourceLine" id="cb1-2" title="2">  UIStoryboard *sb = [UIStoryboard storyboardWithName:<span class="st">@&quot;LaunchScreen&quot;</span> bundle:nil];</a>
+<a class="sourceLine" id="cb1-3" title="3">  UIViewController *vc = [sb instantiateInitialViewController];</a>
+<a class="sourceLine" id="cb1-4" title="4">  rootView.loadingView = vc.view;</a></code></pre>
+    </div>
+    <p>
+      The static bundle is built every time you target a physical device, even
+      in Debug. If you want to save time, turn off bundle generation in Debug by
+      adding the following to your shell script in the Xcode Build Phase
+      <code>Bundle React Native code and images</code>:
+    </p>
+    <pre
+      class="shell"
+    ><code> if [ &quot;${CONFIGURATION}&quot; == &quot;Debug&quot; ]; then
+  export SKIP_BUNDLING=true
+ fi</code></pre>
+    <h3 id="build-app-for-release">3. Build app for release</h3>
+    <p>
+      You can now build your app for release by tapping <code>⌘B</code> or
+      selecting <strong>Product</strong> → <strong>Build</strong> from the menu
+      bar. Once built for release, you’ll be able to distribute the app to beta
+      testers and submit the app to the App Store.
+    </p>
+    <blockquote>
+      <p>
+        You can also use the <code>React Native CLI</code> to perform this
+        operation using the option <code>--configuration</code> with the value
+        <code>Release</code> (e.g. <code
+          >npx react-native run-ios --configuration Release</code
+        >).
+      </p>
+    </blockquote>
+  </body>
+</html>

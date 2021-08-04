@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Linking Libraries</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Linking Libraries</h1>
+</header>
+<p>Not every app uses all the native capabilities, and including the code to support all those features would impact the binary size… But we still want to support adding these features whenever you need them.</p>
+<p>With that in mind we exposed many of these features as independent static libraries.</p>
+<p>For most of the libs it will be as quick as dragging two files, sometimes a third step will be necessary, but no more than that.</p>
+<p><em>All the libraries we ship with React Native live on the <code>Libraries</code> folder in the root of the repository. Some of them are pure JavaScript, and you only need to <code>require</code> it. Other libraries also rely on some native code, in that case you’ll have to add these files to your app, otherwise the app will throw an error as soon as you try to use the library.</em></p>
+<h2 id="here-are-the-few-steps-to-link-your-libraries-that-contain-native-code">Here are the few steps to link your libraries that contain native code</h2>
+<h3 id="automatic-linking">Automatic linking</h3>
+<h4 id="step-1">Step 1</h4>
+<p>Install a library with native dependencies:</p>
+<pre class="shell"><code>npm install &lt;library-with-native-dependencies&gt; --save</code></pre>
+<blockquote>
+<p><strong><em>Note:</em></strong> <code>--save</code> or <code>--save-dev</code> flag is very important for this step. React Native will link your libs based on <code>dependencies</code> and <code>devDependencies</code> in your <code>package.json</code> file.</p>
+</blockquote>
+<h4 id="step-2">Step 2</h4>
+<p>Link your native dependencies:</p>
+<pre class="shell"><code>npx react-native link</code></pre>
+<p>Done! All libraries with native dependencies should be successfully linked to your iOS/Android project.</p>
+<blockquote>
+<p><strong><em>Note:</em></strong> If your iOS project is using CocoaPods (contains <code>Podfile</code>) and linked library has <code>podspec</code> file, then <code>npx react-native link</code> will link library using Podfile. To support non-trivial Podfiles add <code># Add new pods below this line</code> comment to places where you expect pods to be added.</p>
+</blockquote>
+<h3 id="manual-linking">Manual linking</h3>
+<h4 id="step-1-1">Step 1</h4>
+<p>If the library has native code, there must be an <code>.xcodeproj</code> file inside its folder. Drag this file to your project on Xcode (usually under the <code>Libraries</code> group on Xcode);</p>
+<p><img src="/docs/assets/AddToLibraries.png" /></p>
+<h4 id="step-2-1">Step 2</h4>
+<p>Click on your main project file (the one that represents the <code>.xcodeproj</code>) select <code>Build Phases</code> and drag the static library from the <code>Products</code> folder inside the Library you are importing to <code>Link Binary With Libraries</code></p>
+<p><img src="/docs/assets/AddToBuildPhases.png" /></p>
+<h4 id="step-3">Step 3</h4>
+<p>Not every library will need this step, what you need to consider is:</p>
+<p><em>Do I need to know the contents of the library at compile time?</em></p>
+<p>What that means is, are you using this library on the native side or only in JavaScript? If you are only using it in JavaScript, you are good to go!</p>
+<p>If you do need to call it from native, then we need to know the library’s headers. To achieve that you have to go to your project’s file, select <code>Build Settings</code> and search for <code>Header Search Paths</code>. There you should include the path to your library. (This documentation used to recommend using <code>recursive</code>, but this is no longer recommended, as it can cause subtle build failures, especially with CocoaPods.)</p>
+<p><img src="/docs/assets/AddToSearchPaths.png" /></p>
+</body>
+</html>

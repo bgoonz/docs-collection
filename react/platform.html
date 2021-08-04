@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Platform</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Platform</h1>
+    </header>
+    <h2 id="example">Example</h2>
+    <p>
+      ```SnackPlayer
+      name=Platform%20API%20Example&amp;supportedPlatforms=ios,android import
+      React from ‘react’; import { Platform, StyleSheet, Text, ScrollView } from
+      ‘react-native’;
+    </p>
+    <p>
+      const App = () =&gt; { return (
+      <ScrollView contentContainerStyle="{styles.container}">
+        <Text>OS</Text> <Text style="{styles.value}">{Platform.OS}</Text>
+        <Text>OS Version</Text>
+        <Text style="{styles.value}">{Platform.Version}</Text>
+        <Text>isTV</Text>
+        <Text style="{styles.value}">{Platform.isTV.toString()}</Text>
+        {Platform.OS === ‘ios’ &amp;&amp; &lt;&gt; <Text>isPad</Text>
+        <Text style="{styles.value}">{Platform.isPad.toString()}</Text>
+        &lt;/&gt;} <Text>Constants</Text>
+        <Text style="{styles.value}">
+          {JSON.stringify(Platform.constants, null, 2)}
+        </Text>
+      </ScrollView>
+      ); };
+    </p>
+    <p>
+      const styles = StyleSheet.create({ container: { flex: 1, justifyContent:
+      ‘center’, alignItems: ‘center’, }, value: { fontWeight: ‘600’, padding: 4,
+      marginBottom: 8 } });
+    </p>
+    <p>export default App; ```</p>
+    <hr />
+    <h1 id="reference">Reference</h1>
+    <h2 id="properties">Properties</h2>
+    <h3 id="constants"><code>constants</code></h3>
+    <pre class="jsx"><code>Platform.constants;</code></pre>
+    <p>
+      Returns an object which contains all available common and specific
+      constants related to the platform.
+    </p>
+    <p><strong>Properties:</strong></p>
+    |
+    <div data-classname="widerColumn">Name</div>
+    <pre><code>               | Type    | Optional | Description                                                                                                                                                                                       |</code></pre>
+    | ——————————————————— | ——- | ——– |
+    ————————————————————————————————————————————————————————————————- | |
+    isTesting | boolean | No | | | reactNativeVersion | object | No |
+    Information about React Native version. Keys are <code>major</code>,
+    <code>minor</code>, <code>patch</code> with optional
+    <code>prerelease</code> and values are <code>number</code>s. | | Version
+    <div data-classname="label android">Android</div>
+    <pre><code>  | number  | No       | OS version constant specific to Android.                                                                                                                                                          |</code></pre>
+    | Release
+    <div data-classname="label android">Android</div>
+    <pre><code>  | string  | No       |                                                                                                                                                                                                   |</code></pre>
+    | Serial
+    <div data-classname="label android">Android</div>
+    <pre><code>   | string  | No       | Hardware serial number of an Android device.                                                                                                                                                      |</code></pre>
+    | Fingerprint
+    <div data-classname="label android">Android</div>
+    | string | No | A string that uniquely identifies the build. | | Model
+    <div data-classname="label android">Android</div>
+    <pre><code>    | string  | No       | The end-user-visible name for the Android device.                                                                                                                                                 |</code></pre>
+    | Brand
+    <div data-classname="label android">Android</div>
+    <pre><code>    | string  | No       | The consumer-visible brand with which the product/hardware will be associated.                                                                                                                    |</code></pre>
+    | Manufacturer
+    <div data-classname="label android">Android</div>
+    | string | No | The manufacturer of the Android device. | | ServerHost
+    <div data-classname="label android">Android</div>
+    | string | Yes | | | uiMode
+    <div data-classname="label android">Android</div>
+    <pre><code>   | string  | No       | Possible values are: `&#39;car&#39;`, `&#39;desk&#39;`, `&#39;normal&#39;`,`&#39;tv&#39;`, `&#39;watch&#39;` and `&#39;unknown&#39;`. Read more about [Android ModeType](https://developer.android.com/reference/android/app/UiModeManager.html). |</code></pre>
+    | forceTouchAvailable
+    <div data-classname="label ios">iOS</div>
+    | boolean | No | Indicate the availability of 3D Touch on a device. | |
+    interfaceIdiom
+    <div data-classname="label ios">iOS</div>
+    <pre><code>   | string  | No       | The interface type for the device. Read more about [UIUserInterfaceIdiom](https://developer.apple.com/documentation/uikit/uiuserinterfaceidiom).                                                  |</code></pre>
+    | osVersion
+    <div data-classname="label ios">iOS</div>
+    <pre><code>        | string  | No       | OS version constant specific to iOS.                                                                                                                                                              |</code></pre>
+    | systemName
+    <div data-classname="label ios">iOS</div>
+    <pre><code>       | string  | No       | OS name constant specific to iOS.                                                                                                                                                                 |</code></pre>
+    <hr />
+    ### <code>isPad</code>
+    <div class="label ios">iOS</div>
+    <pre class="jsx"><code>Platform.isPad;</code></pre>
+    <p>Returns a boolean which defines if device is an iPad.</p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>boolean</td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    <h3 id="istv"><code>isTV</code></h3>
+    <pre class="jsx"><code>Platform.isTV;</code></pre>
+    <p>Returns a boolean which defines if device is a TV.</p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>boolean</td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    <h3 id="istesting"><code>isTesting</code></h3>
+    <pre class="jsx"><code>Platform.isTesting;</code></pre>
+    <p>
+      Returns a boolean which defines if application is running in Developer
+      Mode with testing flag set.
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>boolean</td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    <h3 id="os"><code>OS</code></h3>
+    <pre class="jsx"><code>static Platform.OS</code></pre>
+    <p>Returns string value representing the current OS.</p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>enum(<code>'android'</code>, <code>'ios'</code>)</td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    <h3 id="version"><code>Version</code></h3>
+    <pre class="jsx"><code>Platform.Version;</code></pre>
+    <p>Returns the version of the OS.</p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    | number
+    <div data-classname="label android">Android</div>
+    <hr />
+    string
+    <div data-classname="label ios">iOS</div>
+    <p>|</p>
+    <h2 id="methods">Methods</h2>
+    <h3 id="select"><code>select()</code></h3>
+    <pre class="jsx"><code>static select(config: object): any</code></pre>
+    <p>
+      Returns the most fitting value for the platform you are currently running
+      on.
+    </p>
+    <h4 id="parameters">Parameters:</h4>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Name</th>
+          <th>Type</th>
+          <th>Required</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>config</td>
+          <td>object</td>
+          <td>Yes</td>
+          <td>See config description below.</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      Select method returns the most fitting value for the platform you are
+      currently running on. That is, if you’re running on a phone,
+      <code>android</code> and <code>ios</code> keys will take preference. If
+      those are not specified, <code>native</code> key will be used and then the
+      <code>default</code> key.
+    </p>
+    <p>
+      The <code>config</code> parameter is an object with the following keys:
+    </p>
+    <ul>
+      <li><code>android</code> (any)</li>
+      <li><code>ios</code> (any)</li>
+      <li><code>native</code> (any)</li>
+      <li><code>default</code> (any)</li>
+    </ul>
+    <p><strong>Example usage:</strong></p>
+    <pre
+      class="jsx"
+    ><code>import { Platform, StyleSheet } from &#39;react-native&#39;;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    ...Platform.select({
+      android: {
+        backgroundColor: &#39;green&#39;
+      },
+      ios: {
+        backgroundColor: &#39;red&#39;
+      },
+      default: {
+        // other platforms, web for example
+        backgroundColor: &#39;blue&#39;
+      }
+    })
+  }
+});</code></pre>
+    <p>
+      This will result in a container having <code>flex: 1</code> on all
+      platforms, a green background color on Android, a red background color on
+      iOS, and a blue background color on other platforms.
+    </p>
+    <p>
+      Since the value of the corresponding platform key can be of type
+      <code>any</code>,
+      <a href="platform.md#select"><code>select</code></a> method can also be
+      used to return platform-specific components, like below:
+    </p>
+    <pre class="jsx"><code>const Component = Platform.select({
+  ios: () =&gt; require(&#39;ComponentIOS&#39;),
+  android: () =&gt; require(&#39;ComponentAndroid&#39;)
+})();
+
+&lt;Component /&gt;;</code></pre>
+    <pre class="jsx"><code>const Component = Platform.select({
+  native: () =&gt; require(&#39;ComponentForNative&#39;),
+  default: () =&gt; require(&#39;ComponentForWeb&#39;)
+})();
+
+&lt;Component /&gt;;</code></pre>
+  </body>
+</html>

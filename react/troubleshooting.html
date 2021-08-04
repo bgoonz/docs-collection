@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Troubleshooting</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Troubleshooting</h1>
+</header>
+<p>These are some common issues you may run into while setting up React Native. If you encounter something that is not listed here, try <a href="https://github.com/facebook/react-native/issues/">searching for the issue in GitHub</a>.</p>
+<h3 id="port-already-in-use">Port already in use</h3>
+<p>The <a href="https://facebook.github.io/metro/">Metro bundler</a> runs on port 8081. If another process is already using that port, you can either terminate that process, or change the port that the bundler uses.</p>
+<h4 id="terminating-a-process-on-port-8081">Terminating a process on port 8081</h4>
+<p>Run the following command to find the id for the process that is listening on port 8081:</p>
+<pre class="shell"><code>sudo lsof -i :8081</code></pre>
+<p>Then run the following to terminate the process:</p>
+<pre class="shell"><code>kill -9 &lt;PID&gt;</code></pre>
+<p>On Windows you can find the process using port 8081 using <a href="https://stackoverflow.com/questions/48198/how-can-you-find-out-which-process-is-listening-on-a-port-on-windows">Resource Monitor</a> and stop it using Task Manager.</p>
+<h4 id="using-a-port-other-than-8081">Using a port other than 8081</h4>
+<p>You can configure the bundler to use a port other than 8081 by using the <code>port</code> parameter:</p>
+<pre class="shell"><code>npx react-native start --port=8088</code></pre>
+<p>You will also need to update your applications to load the JavaScript bundle from the new port. If running on device from Xcode, you can do this by updating occurrences of <code>8081</code> to your chosen port in the <code>node_modules/react-native/React/React.xcodeproj/project.pbxproj</code> file.</p>
+<h3 id="npm-locking-error">NPM locking error</h3>
+<p>If you encounter an error such as <code>npm WARN locking Error: EACCES</code> while using the React Native CLI, try running the following:</p>
+<pre class="shell"><code>sudo chown -R $USER ~/.npm
+sudo chown -R $USER /usr/local/lib/node_modules</code></pre>
+<h3 id="missing-libraries-for-react">Missing libraries for React</h3>
+<p>If you added React Native manually to your project, make sure you have included all the relevant dependencies that you are using, like <code>RCTText.xcodeproj</code>, <code>RCTImage.xcodeproj</code>. Next, the binaries built by these dependencies have to be linked to your app binary. Use the <code>Linked Frameworks and Binaries</code> section in the Xcode project settings. More detailed steps are here: <a href="linking-libraries-ios.md#content">Linking Libraries</a>.</p>
+<p>If you are using CocoaPods, verify that you have added React along with the subspecs to the <code>Podfile</code>. For example, if you were using the <code>&lt;Text /&gt;</code>, <code>&lt;Image /&gt;</code> and <code>fetch()</code> APIs, you would need to add these in your <code>Podfile</code>:</p>
+<pre><code>pod &#39;React&#39;, :path =&gt; &#39;../node_modules/react-native&#39;, :subspecs =&gt; [
+  &#39;RCTText&#39;,
+  &#39;RCTImage&#39;,
+  &#39;RCTNetwork&#39;,
+  &#39;RCTWebSocket&#39;,
+]</code></pre>
+<p>Next, make sure you have run <code>pod install</code> and that a <code>Pods/</code> directory has been created in your project with React installed. CocoaPods will instruct you to use the generated <code>.xcworkspace</code> file henceforth to be able to use these installed dependencies.</p>
+<h4 id="react-native-does-not-compile-when-being-used-as-a-cocoapod">React Native does not compile when being used as a CocoaPod</h4>
+<p>There is a CocoaPods plugin called <a href="https://github.com/orta/cocoapods-fix-react-native">cocoapods-fix-react-native</a> which handles any potential post-fixing of the source code due to differences when using a dependency manager.</p>
+<h4 id="argument-list-too-long-recursive-header-expansion-failed">Argument list too long: recursive header expansion failed</h4>
+<p>In the project’s build settings, <code>User Search Header Paths</code> and <code>Header Search Paths</code> are two configs that specify where Xcode should look for <code>#import</code> header files specified in the code. For Pods, CocoaPods uses a default array of specific folders to look in. Verify that this particular config is not overwritten, and that none of the folders configured are too large. If one of the folders is a large folder, Xcode will attempt to recursively search the entire directory and throw above error at some point.</p>
+<p>To revert the <code>User Search Header Paths</code> and <code>Header Search Paths</code> build settings to their defaults set by CocoaPods - select the entry in the Build Settings panel, and hit delete. It will remove the custom override and return to the CocoaPod defaults.</p>
+<h3 id="no-transports-available">No transports available</h3>
+<p>React Native implements a polyfill for WebSockets. These <a href="https://github.com/facebook/react-native/blob/master/Libraries/Core/InitializeCore.js">polyfills</a> are initialized as part of the react-native module that you include in your application through <code>import React from 'react'</code>. If you load another module that requires WebSockets, such as <a href="https://github.com/facebook/react-native/issues/3645">Firebase</a>, be sure to load/require it after react-native:</p>
+<pre><code>import React from &#39;react&#39;;
+import Firebase from &#39;firebase&#39;;</code></pre>
+<h2 id="shell-command-unresponsive-exception">Shell Command Unresponsive Exception</h2>
+<p>If you encounter a ShellCommandUnresponsiveException exception such as:</p>
+<pre><code>Execution failed for task &#39;:app:installDebug&#39;.
+  com.android.builder.testing.api.DeviceException: com.android.ddmlib.ShellCommandUnresponsiveException</code></pre>
+<p>Try <a href="https://github.com/facebook/react-native/issues/2720">downgrading your Gradle version to 1.2.3</a> in <code>android/build.gradle</code>.</p>
+<h2 id="react-native-init-hangs">react-native init hangs</h2>
+<p>If you run into issues where running <code>npx react-native init</code> hangs in your system, try running it again in verbose mode and referring to <a href="https://github.com/facebook/react-native/issues/2797">#2797</a> for common causes:</p>
+<pre class="shell"><code>npx react-native init --verbose</code></pre>
+<h2 id="unable-to-start-react-native-package-manager-on-linux">Unable to start react-native package manager (on Linux)</h2>
+<h3 id="case-1-error-codeenospcerrnoenospc">Case 1: Error “code”:“ENOSPC”,“errno”:“ENOSPC”</h3>
+<p>Issue caused by the number of directories <a href="https://github.com/guard/listen/wiki/Increasing-the-amount-of-inotify-watchers">inotify</a> (used by watchman on Linux) can monitor. To solve it, run this command in your terminal window</p>
+<pre class="shell"><code>echo fs.inotify.max_user_watches=582222 | sudo tee -a /etc/sysctl.conf &amp;&amp; sudo sysctl -p</code></pre>
+</body>
+</html>

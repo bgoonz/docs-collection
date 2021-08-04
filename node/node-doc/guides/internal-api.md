@@ -1,10 +1,8 @@
 These flags are for Node.js core development usage only. Do not use these flags in your own applications. These flags are not subjected to semantic versioning rules. The core developers may remove these flags in any version of Node.js.
 
-Internal documentation of Node.js
-=================================
+# Internal documentation of Node.js
 
-CLI
----
+## CLI
 
 ### Flags
 

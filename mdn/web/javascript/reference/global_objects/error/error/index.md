@@ -7,6 +7,7 @@ tags:
   - Reference
 browser-compat: javascript.builtins.Error.Error
 ---
+
 {{JSRef}}
 
 The **`Error`** constructor creates an
@@ -15,10 +16,10 @@ error object.
 ## Syntax
 
 ```js
-new Error()
-new Error(message)
-new Error(message, fileName)
-new Error(message, fileName, lineNumber)
+new Error();
+new Error(message);
+new Error(message, fileName);
+new Error(message, fileName, lineNumber);
 ```
 
 ### Parameters
@@ -45,10 +46,10 @@ object via the `new` keyword would.
 
 ```js
 // this...
-const x = Error('I was created using a function call!')
+const x = Error("I was created using a function call!");
 
 // ...has the same functionality as this.
-const y = new Error('I was constructed via the "new" keyword!')
+const y = new Error('I was constructed via the "new" keyword!');
 ```
 
 ## Specifications

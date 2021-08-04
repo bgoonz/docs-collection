@@ -1,20 +1,18 @@
-Integrated Terminal
-===================
+# Integrated Terminal
 
 Visual Studio Code includes a fully featured integrated terminal that conveniently starts at the root of your workspace. It provides integration with the editor to support features like [links](#links) and [error detection](/docs/editor/tasks.md).
 
 To open the terminal:
 
--   Use the `kb(workbench.action.terminal.toggleTerminal)` keyboard shortcut with the backtick character.
--   Use the **View** &gt; **Terminal** menu command.
--   From the **Command Palette** (`kb(workbench.action.showCommands)`), use the **View: Toggle Integrated Terminal** command.
+- Use the `kb(workbench.action.terminal.toggleTerminal)` keyboard shortcut with the backtick character.
+- Use the **View** &gt; **Terminal** menu command.
+- From the **Command Palette** (`kb(workbench.action.showCommands)`), use the **View: Toggle Integrated Terminal** command.
 
 ![Terminal](images/integrated-terminal/integrated-terminal.png)
 
 > **Note:** Open an external terminal with the `kb(workbench.action.terminal.openNativeConsole)` keyboard shortcut if you prefer to work outside VS Code.
 
-Managing terminals
-------------------
+## Managing terminals
 
 The terminal tabs view is on the right side of the terminal view. Each terminal has an entry with its name, icon, color, and group decoration (if any).
 
@@ -34,10 +32,10 @@ Icons may appear to the right of the terminal title on the tab label when a term
 
 Split the terminal by:
 
--   On hover, selecting the inline split button.
--   Right-clicking the context menu and selecting the **Split** menu option.
--   `kbstyle(Alt)` click on a tab, the **+** button, or the single tab on the terminal panel.
--   Triggering the `kb(workbench.action.terminal.split)` command.
+- On hover, selecting the inline split button.
+- Right-clicking the context menu and selecting the **Split** menu option.
+- `kbstyle(Alt)` click on a tab, the **+** button, or the single tab on the terminal panel.
+- Triggering the `kb(workbench.action.terminal.split)` command.
 
 Navigate between terminals in a group by focusing the previous pane, `kb(workbench.action.terminal.focusPreviousPane)`, and focusing the next pane, `kb(workbench.action.terminal.focusNextPane)`.
 
@@ -55,8 +53,7 @@ Change the terminal’s name, icon, and tab color via the right-click context me
 
 ![Multiple Terminals](images/integrated-terminal/terminal-multiple-instances.png)
 
-Terminal profiles
------------------
+## Terminal profiles
 
 Terminal profiles are platform-specific shell configurations comprised of an executable path, arguments, and other customizations.
 
@@ -89,10 +86,10 @@ Profiles can be created using either a `path` or a `source`, as well as a set of
 
 Other arguments supported in profiles include:
 
--   `overrideName`: A boolean indicating whether or not to replace the dynamic terminal title that detects what program is running with the static profile name.
--   `env`: A map defining environment variables and their values, set the variable to `null` to delete it from the environment. This can be configured for all profiles using the `terminal.integrated.env.<platform>` setting.
--   `icon`: An icon ID to use for the profile.
--   `color`: A theme color ID to style the icon.
+- `overrideName`: A boolean indicating whether or not to replace the dynamic terminal title that detects what program is running with the static profile name.
+- `env`: A map defining environment variables and their values, set the variable to `null` to delete it from the environment. This can be configured for all profiles using the `terminal.integrated.env.<platform>` setting.
+- `icon`: An icon ID to use for the profile.
+- `color`: A theme color ID to style the icon.
 
 > **Tip:** Path, args, and env all support [resolving variables](https://code.visualstudio.com/docs/editor/variables-reference)
 
@@ -110,7 +107,7 @@ The **default profile** can be defined manually with the `terminal.integrated.de
 
 > **Tip:** The integrated terminal shell is running with the permissions of VS Code. If you need to run a shell command with elevated (administrator) or different permissions, use platform utilities such as `runas.exe` within a terminal.
 
-The *default profile* can be defined manually with the `terminal.integrated.defaultProfile.*` settings. This should be set to the *name* of an existing profile:
+The _default profile_ can be defined manually with the `terminal.integrated.defaultProfile.*` settings. This should be set to the _name_ of an existing profile:
 
     {
       "terminal.integrated.profiles.windows": {
@@ -143,8 +140,7 @@ By default, the task/debug features will use the default profile. To override th
         "terminal.integrated.automationShell.osx": "/bin/sh"
     }
 
-Working directory
------------------
+## Working directory
 
 By default, the terminal will open at the folder that is opened in the Explorer. The `terminal.integrated.cwd` setting allows specifying a custom path to open instead:
 
@@ -160,13 +156,11 @@ Split terminals on Windows will start in the directory that the parent terminal 
 
 There are also extensions available that give more options such as [Terminal Here](https://marketplace.visualstudio.com/items?itemName=Tyriar.vscode-terminal-here).
 
-Terminal process reconnection
------------------------------
+## Terminal process reconnection
 
 Local and remote terminal processes are restored on window reload, such as when an extension install requires a reload. The terminal will be reconnected and the UI state of the terminals will be restored, including the active tab and split terminal relative dimensions.
 
-Links
------
+## Links
 
 The terminal features link detection, showing an underline when files or URLs are hovered with the mouse that will go to the target when `kbstyle(Ctrl)`/`kbstyle(Cmd)` is held. If a file or URL cannot be detected, they are still surfaced as “low confidence” links, which only show an underline when is held. These low confidence links will search the workspace for the term, opening the match if one is found.
 
@@ -176,8 +170,7 @@ Extensions make use of links in the terminal, such as GitLens, to identify branc
 
 ![A branch link is hovered in the terminal](images/integrated-terminal/gitlens-link.png)
 
-Local echo
-----------
+## Local echo
 
 On some remote connections, there’s a delay between typing and seeing the characters on the terminal, as a result of the round trip the data has to make from VS code to the process. Local echo attempts to predict modifications and cursor movements made locally in the terminal in order to decrease this lag.
 
@@ -185,34 +178,31 @@ When enabled, dimmed characters appear as you type. The dimmed style can be chan
 
 To disable the feature, set `terminal.integrated.localEchoLatencyThreshold` to `-1`. To enable it all of the time, set it to `0`.
 
-Terminal appearance
--------------------
+## Terminal appearance
 
 Customize the terminal’s appearance using the following [settings](https://code.visualstudio.com/docs/getstarted/settings):
 
--   Font: family, size, and weight
--   Spacing: line height and letter spacing
--   Cursor: style, width, and blinking
+- Font: family, size, and weight
+- Spacing: line height and letter spacing
+- Cursor: style, width, and blinking
 
-Copy & Paste
-------------
+## Copy & Paste
 
 The keybindings for copy and paste follow platform standards:
 
--   Linux: `kbstyle(Ctrl+Shift+C)` and `kbstyle(Ctrl+Shift+V)`, selection paste is available with `kbstyle(Shift+Insert)`
--   macOS: `kbstyle(Cmd+C)` and `kbstyle(Cmd+V)`
--   Windows: `kbstyle(Ctrl+C)` and `kbstyle(Ctrl+V)`
+- Linux: `kbstyle(Ctrl+Shift+C)` and `kbstyle(Ctrl+Shift+V)`, selection paste is available with `kbstyle(Shift+Insert)`
+- macOS: `kbstyle(Cmd+C)` and `kbstyle(Cmd+V)`
+- Windows: `kbstyle(Ctrl+C)` and `kbstyle(Ctrl+V)`
 
-Using the mouse
----------------
+## Using the mouse
 
 ### Right-click behavior
 
 The right-click behavior differs based on the platform:
 
--   Linux: Show the context menu.
--   macOS: Select the word under the cursor and show the context menu.
--   Windows: Copy and drop selection if there is a selection, otherwise paste.
+- Linux: Show the context menu.
+- macOS: Select the word under the cursor and show the context menu.
+- Windows: Copy and drop selection if there is a selection, otherwise paste.
 
 This can be configured using the `terminal.integrated.rightClickBehavior` setting.
 
@@ -220,8 +210,7 @@ This can be configured using the `terminal.integrated.rightClickBehavior` settin
 
 `kbstyle(Alt)` left click will reposition the cursor to underneath the mouse. This works by simulating arrow key strokes, which may fail for some shells or programs. This feature can be disabled.
 
-Keybindings and the shell
--------------------------
+## Keybindings and the shell
 
 While focus is in the integrated terminal, many key bindings will not work as the keystrokes are passed to and consumed by the terminal itself. There is a hardcoded list of commands, which skip being processed by the shell and instead get sent to the VS Code keybinding system. Customize this list with the `terminal.integrated.commandsToSkipShell` setting. Commands can be added to this list by adding the command name to the list, and removed by adding the command name to the list prefixed with a `-`.
 
@@ -258,11 +247,10 @@ This feature supports [variable substitution](/docs/editor/variables-reference.m
 
 Note that the command only works with the `\u0000` format for using characters via their character code (not `\x00`). Read more about these hex code and the sequences terminals work with on the following resources:
 
--   [XTerm Control Sequences](https://invisible-island.net/xterm/ctlseqs/ctlseqs.html)
--   [List of C0 and C1 control codes](https://github.com/xtermjs/xterm.js/blob/0e45909c7e79c83452493d2cd46d99c0a0bb585f/src/common/data/EscapeSequences.ts)
+- [XTerm Control Sequences](https://invisible-island.net/xterm/ctlseqs/ctlseqs.html)
+- [List of C0 and C1 control codes](https://github.com/xtermjs/xterm.js/blob/0e45909c7e79c83452493d2cd46d99c0a0bb585f/src/common/data/EscapeSequences.ts)
 
-Find
-----
+## Find
 
 The integrated terminal has find functionality that can be triggered with `kb(workbench.action.terminal.focusFind)`.
 
@@ -274,8 +262,7 @@ If you want `kbstyle(Ctrl+F)` to go to the shell instead of launching the Find c
       ],
     }
 
-Run selected text
------------------
+## Run selected text
 
 To use the `runSelectedText` command, select text in an editor and run the command **Terminal: Run Selected Text in Active Terminal** via the **Command Palette** (`kb(workbench.action.showCommands)`):
 
@@ -289,8 +276,7 @@ If no text is selected in the active editor, the line that the cursor is on is r
 
 > **Tip:** Also run the active file using the command `workbench.action.terminal.runActiveFile`.
 
-Automating launching of terminals
----------------------------------
+## Automating launching of terminals
 
 The [Tasks](/docs/editor/tasks.md) feature can be used to automate the launching of terminals, for example the following `.vscode/tasks.json` file will launch a Command Prompt and PowerShell terminal in a single terminal group when the window starts:
 
@@ -362,17 +348,15 @@ The [Tasks](/docs/editor/tasks.md) feature can be used to automate the launching
 
 This file could be committed to the repository to share it with other developers or alternatively created as a user task via the `workbench.action.tasks.openUserTasks` command.
 
-Next steps
-----------
+## Next steps
 
 The basics of the terminal have been covered in this document, read on to find out more about:
 
--   [Tasks](/docs/editor/tasks.md) - Tasks let you integrate with external tools and leverage the terminal heavily.
--   [Mastering VS Code’s Terminal](https://www.growingwiththeweb.com/2017/03/mastering-vscodes-terminal.html) - An external blog with plenty of power user tips for the terminal.
--   Explore the rest of the terminal commands by browsing your keybindings.json file within VS Code.
+- [Tasks](/docs/editor/tasks.md) - Tasks let you integrate with external tools and leverage the terminal heavily.
+- [Mastering VS Code’s Terminal](https://www.growingwiththeweb.com/2017/03/mastering-vscodes-terminal.html) - An external blog with plenty of power user tips for the terminal.
+- Explore the rest of the terminal commands by browsing your keybindings.json file within VS Code.
 
-Common questions
-----------------
+## Common questions
 
 ### I’m having problems launching the terminal
 
@@ -425,12 +409,12 @@ nvm (Node Version Manager) users often see this error for the first time inside 
 
 This is mostly a macOS problem and does not happen in external terminals. The typical reasons for this are the following:
 
--   `npm` was globally installed using another instance of `node` that is somewhere in your path (such as `/usr/local/bin/npm`).
--   In order to get the development tools on the `$PATH`, VS Code will launch a bash login shell on start up. This means that your `~/.bash_profile` has already run and when an integrated terminal launches, it will run **another** login shell, reordering the `$PATH` potentially in unexpected ways.
+- `npm` was globally installed using another instance of `node` that is somewhere in your path (such as `/usr/local/bin/npm`).
+- In order to get the development tools on the `$PATH`, VS Code will launch a bash login shell on start up. This means that your `~/.bash_profile` has already run and when an integrated terminal launches, it will run **another** login shell, reordering the `$PATH` potentially in unexpected ways.
 
-To resolve this issue, you need to track down where the old `npm` is installed and remove both it and its out of date node\_modules. Find the `nvm` initialization script and running `which npm` before it runs, which should print the path when you launch a new terminal.
+To resolve this issue, you need to track down where the old `npm` is installed and remove both it and its out of date node_modules. Find the `nvm` initialization script and running `which npm` before it runs, which should print the path when you launch a new terminal.
 
-Once you have the path to npm, find the old node\_modules by resolving the symlink by running a command something like this:
+Once you have the path to npm, find the old node_modules by resolving the symlink by running a command something like this:
 
     ls -la /usr/local/bin | grep "np[mx]"
 

@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Communication between native and React Native</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Communication between native and React Native</h1>
+    </header>
+    <p>
+      In
+      <a href="integration-with-existing-apps"
+        >Integrating with Existing Apps guide</a
+      >
+      and <a href="native-components-android">Native UI Components guide</a> we
+      learn how to embed React Native in a native component and vice versa. When
+      we mix native and React Native components, we’ll eventually find a need to
+      communicate between these two worlds. Some ways to achieve that have been
+      already mentioned in other guides. This article summarizes available
+      techniques.
+    </p>
+    <h2 id="introduction">Introduction</h2>
+    <p>
+      React Native is inspired by React, so the basic idea of the information
+      flow is similar. The flow in React is one-directional. We maintain a
+      hierarchy of components, in which each component depends only on its
+      parent and its own internal state. We do this with properties: data is
+      passed from a parent to its children in a top-down manner. If an ancestor
+      component relies on the state of its descendant, one should pass down a
+      callback to be used by the descendant to update the ancestor.
+    </p>
+    <p>
+      The same concept applies to React Native. As long as we are building our
+      application purely within the framework, we can drive our app with
+      properties and callbacks. But, when we mix React Native and native
+      components, we need some specific, cross-language mechanisms that would
+      allow us to pass information between them.
+    </p>
+    <h2 id="properties">Properties</h2>
+    <p>
+      Properties are the most straightforward way of cross-component
+      communication. So we need a way to pass properties both from native to
+      React Native, and from React Native to native.
+    </p>
+    <h3 id="passing-properties-from-native-to-react-native">
+      Passing properties from native to React Native
+    </h3>
+    <p>
+      You can pass properties down to the React Native app by providing a custom
+      implementation of <code>ReactActivityDelegate</code> in your main
+      activity. This implementation should override
+      <code>getLaunchOptions</code> to return a <code>Bundle</code> with the
+      desired properties.
+    </p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode java"
+      ><code class="sourceCode java"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">public</span> <span class="kw">class</span> MainActivity <span class="kw">extends</span> ReactActivity {</a>
+<a class="sourceLine" id="cb1-2" title="2">  <span class="at">@Override</span></a>
+<a class="sourceLine" id="cb1-3" title="3">  <span class="kw">protected</span> ReactActivityDelegate <span class="fu">createReactActivityDelegate</span>() {</a>
+<a class="sourceLine" id="cb1-4" title="4">    <span class="kw">return</span> <span class="kw">new</span> <span class="fu">ReactActivityDelegate</span>(<span class="kw">this</span>, <span class="fu">getMainComponentName</span>()) {</a>
+<a class="sourceLine" id="cb1-5" title="5">      <span class="at">@Override</span></a>
+<a class="sourceLine" id="cb1-6" title="6">      <span class="kw">protected</span> Bundle <span class="fu">getLaunchOptions</span>() {</a>
+<a class="sourceLine" id="cb1-7" title="7">        Bundle initialProperties = <span class="kw">new</span> <span class="fu">Bundle</span>();</a>
+<a class="sourceLine" id="cb1-8" title="8">        <span class="bu">ArrayList</span>&lt;<span class="bu">String</span>&gt; imageList = <span class="kw">new</span> <span class="bu">ArrayList</span>&lt;<span class="bu">String</span>&gt;(<span class="bu">Arrays</span>.<span class="fu">asList</span>(</a>
+<a class="sourceLine" id="cb1-9" title="9">                <span class="st">&quot;http://foo.com/bar1.png&quot;</span>,</a>
+<a class="sourceLine" id="cb1-10" title="10">                <span class="st">&quot;http://foo.com/bar2.png&quot;</span></a>
+<a class="sourceLine" id="cb1-11" title="11">        ));</a>
+<a class="sourceLine" id="cb1-12" title="12">        initialProperties.<span class="fu">putStringArrayList</span>(<span class="st">&quot;images&quot;</span>, imageList);</a>
+<a class="sourceLine" id="cb1-13" title="13">        <span class="kw">return</span> initialProperties;</a>
+<a class="sourceLine" id="cb1-14" title="14">      }</a>
+<a class="sourceLine" id="cb1-15" title="15">    };</a>
+<a class="sourceLine" id="cb1-16" title="16">  }</a>
+<a class="sourceLine" id="cb1-17" title="17">}</a></code></pre>
+    </div>
+    <pre class="jsx"><code>import React from &#39;react&#39;;
+import { View, Image } from &#39;react-native&#39;;
+
+export default class ImageBrowserApp extends React.Component {
+  renderImage(imgURI) {
+    return &lt;Image source={{ uri: imgURI }} /&gt;;
+  }
+  render() {
+    return &lt;View&gt;{this.props.images.map(this.renderImage)}&lt;/View&gt;;
+  }
+}</code></pre>
+    <p>
+      <code>ReactRootView</code> provides a read-write property
+      <code>appProperties</code>. After <code>appProperties</code> is set, the
+      React Native app is re-rendered with new properties. The update is only
+      performed when the new updated properties differ from the previous ones.
+    </p>
+    <div class="sourceCode" id="cb3">
+      <pre
+        class="sourceCode java"
+      ><code class="sourceCode java"><a class="sourceLine" id="cb3-1" title="1">Bundle updatedProps = mReactRootView.<span class="fu">getAppProperties</span>();</a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="bu">ArrayList</span>&lt;<span class="bu">String</span>&gt; imageList = <span class="kw">new</span> <span class="bu">ArrayList</span>&lt;<span class="bu">String</span>&gt;(<span class="bu">Arrays</span>.<span class="fu">asList</span>(</a>
+<a class="sourceLine" id="cb3-3" title="3">        <span class="st">&quot;http://foo.com/bar3.png&quot;</span>,</a>
+<a class="sourceLine" id="cb3-4" title="4">        <span class="st">&quot;http://foo.com/bar4.png&quot;</span></a>
+<a class="sourceLine" id="cb3-5" title="5">));</a>
+<a class="sourceLine" id="cb3-6" title="6">updatedProps.<span class="fu">putStringArrayList</span>(<span class="st">&quot;images&quot;</span>, imageList);</a>
+<a class="sourceLine" id="cb3-7" title="7"></a>
+<a class="sourceLine" id="cb3-8" title="8">mReactRootView.<span class="fu">setAppProperties</span>(updatedProps);</a></code></pre>
+    </div>
+    <p>
+      It is fine to update properties anytime. However, updates have to be
+      performed on the main thread. You use the getter on any thread.
+    </p>
+    <p>
+      There is no way to update only a few properties at a time. We suggest that
+      you build it into your own wrapper instead.
+    </p>
+    <blockquote>
+      <p>
+        <strong><em>Note:</em></strong> Currently, JS function
+        <code>componentWillUpdateProps</code> of the top level RN component will
+        not be called after a prop update. However, you can access the new props
+        in <code>componentDidMount</code> function.
+      </p>
+    </blockquote>
+    <h3 id="passing-properties-from-react-native-to-native">
+      Passing properties from React Native to native
+    </h3>
+    <p>
+      The problem exposing properties of native components is covered in detail
+      in
+      <a
+        href="native-components-android#3-expose-view-property-setters-using-reactprop-or-reactpropgroup-annotation"
+        >this article</a
+      >. In short, properties that are to be reflected in JavaScript needs to be
+      exposed as setter method annotated with <code>@ReactProp</code>, then use
+      them in React Native as if the component was an ordinary React Native
+      component.
+    </p>
+    <h3 id="limits-of-properties">Limits of properties</h3>
+    <p>
+      The main drawback of cross-language properties is that they do not support
+      callbacks, which would allow us to handle bottom-up data bindings. Imagine
+      you have a small RN view that you want to be removed from the native
+      parent view as a result of a JS action. There is no way to do that with
+      props, as the information would need to go bottom-up.
+    </p>
+    <p>
+      Although we have a flavor of cross-language callbacks (<a
+        href="native-modules-android#callbacks"
+        >described here</a
+      >), these callbacks are not always the thing we need. The main problem is
+      that they are not intended to be passed as properties. Rather, this
+      mechanism allows us to trigger a native action from JS, and handle the
+      result of that action in JS.
+    </p>
+    <h2 id="other-ways-of-cross-language-interaction-events-and-native-modules">
+      Other ways of cross-language interaction (events and native modules)
+    </h2>
+    <p>
+      As stated in the previous chapter, using properties comes with some
+      limitations. Sometimes properties are not enough to drive the logic of our
+      app and we need a solution that gives more flexibility. This chapter
+      covers other communication techniques available in React Native. They can
+      be used for internal communication (between JS and native layers in RN) as
+      well as for external communication (between RN and the ‘pure native’ part
+      of your app).
+    </p>
+    <p>
+      React Native enables you to perform cross-language function calls. You can
+      execute custom native code from JS and vice versa. Unfortunately,
+      depending on the side we are working on, we achieve the same goal in
+      different ways. For native - we use events mechanism to schedule an
+      execution of a handler function in JS, while for React Native we directly
+      call methods exported by native modules.
+    </p>
+    <h3 id="calling-react-native-functions-from-native-events">
+      Calling React Native functions from native (events)
+    </h3>
+    <p>
+      Events are described in detail in
+      <a href="native-components-android#events">this article</a>. Note that
+      using events gives us no guarantees about execution time, as the event is
+      handled on a separate thread.
+    </p>
+    <p>
+      Events are powerful, because they allow us to change React Native
+      components without needing a reference to them. However, there are some
+      pitfalls that you can fall into while using them:
+    </p>
+    <ul>
+      <li>
+        As events can be sent from anywhere, they can introduce spaghetti-style
+        dependencies into your project.
+      </li>
+      <li>
+        Events share namespace, which means that you may encounter some name
+        collisions. Collisions will not be detected statically, which makes them
+        hard to debug.
+      </li>
+      <li>
+        If you use several instances of the same React Native component and you
+        want to distinguish them from the perspective of your event, you’ll
+        likely need to introduce identifiers and pass them along with events
+        (you can use the native view’s <code>reactTag</code> as an identifier).
+      </li>
+    </ul>
+    <h3 id="calling-native-functions-from-react-native-native-modules">
+      Calling native functions from React Native (native modules)
+    </h3>
+    <p>
+      Native modules are Java classes that are available in JS. Typically one
+      instance of each module is created per JS bridge. They can export
+      arbitrary functions and constants to React Native. They have been covered
+      in detail in <a href="native-modules-android">this article</a>.
+    </p>
+    <blockquote>
+      <p>
+        <strong><em>Warning</em></strong
+        >: All native modules share the same namespace. Watch out for name
+        collisions when creating new ones.
+      </p>
+    </blockquote>
+  </body>
+</html>

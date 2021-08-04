@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Button</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Button</h1>
+    </header>
+    <p>
+      A basic button component that should render nicely on any platform.
+      Supports a minimal level of customization.
+    </p>
+    <p>
+      If this button doesn’t look right for your app, you can build your own
+      button using <a href="touchableopacity">TouchableOpacity</a> or
+      <a href="touchablewithoutfeedback">TouchableWithoutFeedback</a>. For
+      inspiration, look at the
+      <a
+        href="https://github.com/facebook/react-native/blob/master/Libraries/Components/Button.js"
+        >source code for this button component</a
+      >. Or, take a look at the
+      <a
+        href="https://js.coach/?menu%5Bcollections%5D=React%20Native&amp;page=1&amp;query=button"
+        >wide variety of button components built by the community</a
+      >.
+    </p>
+    <pre class="jsx"><code>&lt;Button
+  onPress={onPressLearnMore}
+  title=&quot;Learn More&quot;
+  color=&quot;#841584&quot;
+  accessibilityLabel=&quot;Learn more about this purple button&quot;
+/&gt;</code></pre>
+    <h2 id="example">Example</h2>
+    <p>
+      ```SnackPlayer name=Button%20Example import React from ‘react’; import {
+      StyleSheet, Button, View, SafeAreaView, Text, Alert } from ‘react-native’;
+    </p>
+    <p>const Separator = () =&gt; ( <View style="{styles.separator}" /> );</p>
+    <p>
+      const App = () =&gt; (
+      <SafeAreaView style="{styles.container}">
+        <View>
+          <Text style="{styles.title}">
+            The title and onPress handler are required. It is recommended to set
+            accessibilityLabel to help make your app usable by everyone.
+          </Text>
+          &lt;Button title=“Press me” onPress={() =&gt; Alert.alert(‘Simple
+          Button pressed’)} /&gt;
+        </View>
+        <Separator />
+        <View>
+          <Text style="{styles.title}">
+            Adjust the color in a way that looks standard on each platform. On
+            iOS, the color prop controls the color of the text. On Android, the
+            color adjusts the background color of the button.
+          </Text>
+          &lt;Button title=“Press me” color=“#f194ff” onPress={() =&gt;
+          Alert.alert(‘Button with adjusted color pressed’)} /&gt;
+        </View>
+        <Separator />
+        <View>
+          <Text style="{styles.title}">
+            All interaction for the component are disabled.
+          </Text>
+          &lt;Button title=“Press me” disabled onPress={() =&gt;
+          Alert.alert(‘Cannot press this one’)} /&gt;
+        </View>
+        <Separator />
+        <View>
+          <Text style="{styles.title}">
+            This layout strategy lets the title define the width of the button.
+          </Text>
+          <View style="{styles.fixToText}">
+            &lt;Button title=“Left button” onPress={() =&gt; Alert.alert(‘Left
+            button pressed’)} /&gt; &lt;Button title=“Right button” onPress={()
+            =&gt; Alert.alert(‘Right button pressed’)} /&gt;
+          </View>
+        </View>
+      </SafeAreaView>
+      );
+    </p>
+    <p>
+      const styles = StyleSheet.create({ container: { flex: 1, justifyContent:
+      ‘center’, marginHorizontal: 16, }, title: { textAlign: ‘center’,
+      marginVertical: 8, }, fixToText: { flexDirection: ‘row’, justifyContent:
+      ‘space-between’, }, separator: { marginVertical: 8, borderBottomColor:
+      ‘#737373’, borderBottomWidth: StyleSheet.hairlineWidth, }, });
+    </p>
+    <p>export default App; ```</p>
+    <hr />
+    <h1 id="reference">Reference</h1>
+    <h2 id="props">Props</h2>
+    ###
+    <div class="label required basic">Required</div>
+    <p>
+      <strong><code>onPress</code></strong>
+    </p>
+    <p>Handler to be called when the user taps the button.</p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>function(<a href="pressevent">PressEvent</a>)</td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    ###
+    <div class="label required basic">Required</div>
+    <p>
+      <strong><code>title</code></strong>
+    </p>
+    <p>
+      Text to display inside the button. On Android the given title will be
+      converted to the uppercased form.
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>string</td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    <h3 id="accessibilitylabel"><code>accessibilityLabel</code></h3>
+    <p>Text to display for blindness accessibility features.</p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>string</td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    <h3 id="color"><code>color</code></h3>
+    <p>Color of the text (iOS), or background color of the button (Android).</p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    | <a href="colors">color</a> | &lt;ins style={{background: ‘#2196F3’}}
+    className=“color-box” /&gt; <code>'#2196F3'</code>
+    <div data-classname="label android">Android</div>
+    <hr />
+    &lt;ins style={{background: ‘#007AFF’}} className=“color-box” /&gt;
+    <code>'#007AFF'</code>
+    <div data-classname="label ios">iOS</div>
+    <p>|</p>
+    <hr />
+    <h3 id="disabled"><code>disabled</code></h3>
+    <p>If <code>true</code>, disable all interactions for this component.</p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>bool</td>
+          <td><code>false</code></td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    ### <code>hasTVPreferredFocus</code>
+    <div class="label tv">TV</div>
+    <p>TV preferred focus.</p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>bool</td>
+          <td><code>false</code></td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    ### <code>nextFocusDown</code>
+    <div class="label android">Android</div>
+    <div class="label tv">TV</div>
+    <p>
+      Designates the next view to receive focus when the user navigates down.
+      See the
+      <a
+        href="https://developer.android.com/reference/android/view/View.html#attr_android:nextFocusDown"
+        >Android documentation</a
+      >.
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>number</td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    ### <code>nextFocusForward</code>
+    <div class="label android">Android</div>
+    <div class="label tv">TV</div>
+    <p>
+      Designates the next view to receive focus when the user navigates forward.
+      See the
+      <a
+        href="https://developer.android.com/reference/android/view/View.html#attr_android:nextFocusForward"
+        >Android documentation</a
+      >.
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>number</td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    ### <code>nextFocusLeft</code>
+    <div class="label android">Android</div>
+    <div class="label tv">TV</div>
+    <p>
+      Designates the next view to receive focus when the user navigates left.
+      See the
+      <a
+        href="https://developer.android.com/reference/android/view/View.html#attr_android:nextFocusLeft"
+        >Android documentation</a
+      >.
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>number</td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    ### <code>nextFocusRight</code>
+    <div class="label android">Android</div>
+    <div class="label tv">TV</div>
+    <p>
+      Designates the next view to receive focus when the user navigates right.
+      See the
+      <a
+        href="https://developer.android.com/reference/android/view/View.html#attr_android:nextFocusRight"
+        >Android documentation</a
+      >.
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>number</td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    ### <code>nextFocusUp</code>
+    <div class="label android">Android</div>
+    <div class="label tv">TV</div>
+    <p>
+      Designates the next view to receive focus when the user navigates up. See
+      the
+      <a
+        href="https://developer.android.com/reference/android/view/View.html#attr_android:nextFocusUp"
+        >Android documentation</a
+      >.
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>number</td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    <h3 id="testid"><code>testID</code></h3>
+    <p>Used to locate this view in end-to-end tests.</p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>string</td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    ### <code>touchSoundDisabled</code>
+    <div class="label android">Android</div>
+    <p>If <code>true</code>, doesn’t play system sound on touch.</p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>boolean</td>
+          <td><code>false</code></td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>

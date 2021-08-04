@@ -10,6 +10,7 @@ tags:
   - Reference
 browser-compat: javascript.builtins.Date.setYear
 ---
+
 {{JSRef}} {{deprecated_header}}
 
 The **`setYear()`** method sets the year for a specified date
@@ -20,7 +21,7 @@ according to local time. Because `setYear()` does not set full years ("year
 ## Syntax
 
 ```js
-setYear(yearValue)
+setYear(yearValue);
 ```
 
 ### Parameters

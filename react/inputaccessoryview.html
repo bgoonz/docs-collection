@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>InputAccessoryView</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">InputAccessoryView</h1>
+    </header>
+    <p>
+      A component which enables customization of the keyboard input accessory
+      view on iOS. The input accessory view is displayed above the keyboard
+      whenever a <code>TextInput</code> has focus. This component can be used to
+      create custom toolbars.
+    </p>
+    <p>
+      To use this component wrap your custom toolbar with the InputAccessoryView
+      component, and set a <code>nativeID</code>. Then, pass that
+      <code>nativeID</code> as the <code>inputAccessoryViewID</code> of whatever
+      <code>TextInput</code> you desire. A basic example:
+    </p>
+    <p>
+      ```SnackPlayer name=InputAccessoryView&amp;supportedPlatforms=ios import
+      React, { useState } from ‘react’; import { Button, InputAccessoryView,
+      ScrollView, TextInput } from ‘react-native’;
+    </p>
+    <p>
+      export default App = () =&gt; { const inputAccessoryViewID = ‘uniqueID’;
+      const initialText = ’’; const [text, setText] = useState(initialText);
+    </p>
+    <p>
+      return ( &lt;&gt;
+      <ScrollView keyboardDismissMode="interactive">
+        &lt;TextInput style={{ padding: 16, marginTop: 50, }}
+        inputAccessoryViewID={inputAccessoryViewID} onChangeText={setText}
+        value={text} placeholder={‘Please type here…’} /&gt;
+      </ScrollView>
+      <InputAccessoryView nativeID="{inputAccessoryViewID}">
+        &lt;Button onPress={() =&gt; setText(initialText)} title=“Clear text”
+        /&gt;
+      </InputAccessoryView>
+      &lt;/&gt; ); } ```
+    </p>
+    <p>
+      This component can also be used to create sticky text inputs (text inputs
+      which are anchored to the top of the keyboard). To do this, wrap a
+      <code>TextInput</code> with the <code>InputAccessoryView</code> component,
+      and don’t set a <code>nativeID</code>. For an example, look at
+      <a
+        href="https://github.com/facebook/react-native/blob/master/packages/rn-tester/js/examples/InputAccessoryView/InputAccessoryViewExample.js"
+        >InputAccessoryViewExample.js</a
+      >.
+    </p>
+    <hr />
+    <h1 id="reference">Reference</h1>
+    <h2 id="props">Props</h2>
+    <h3 id="backgroundcolor"><code>backgroundColor</code></h3>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td><a href="colors.md">color</a></td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    <h3 id="nativeid"><code>nativeID</code></h3>
+    <p>
+      An ID which is used to associate this <code>InputAccessoryView</code> to
+      specified TextInput(s).
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>string</td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    <h3 id="style"><code>style</code></h3>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td><a href="view-style-props.md">View Style</a></td>
+        </tr>
+      </tbody>
+    </table>
+    <h1 id="known-issues">Known issues</h1>
+    <ul>
+      <li>
+        <a href="https://github.com/facebook/react-native/issues/18997"
+          >react-native#18997</a
+        >: Doesn’t support multiline <code>TextInput</code>
+      </li>
+      <li>
+        <a href="https://github.com/facebook/react-native/issues/20157"
+          >react-native#20157</a
+        >: Can’t use with a bottom tab bar
+      </li>
+    </ul>
+  </body>
+</html>

@@ -1,5 +1,4 @@
-Workspace Trust
-===============
+# Workspace Trust
 
 Visual Studio Code takes security seriously and wants to help you safely browse and edit code no matter the source or original authors. The Workspace Trust feature lets you decide whether your project folders should allow or restrict automatic code execution.
 
@@ -7,8 +6,7 @@ Visual Studio Code takes security seriously and wants to help you safely browse 
 
 > **Note**: When in doubt, leave a folder in [Restricted Mode](#restricted-mode). You can always [enable trust](#trusting-a-workspace) later.
 
-Safe code browsing
-------------------
+## Safe code browsing
 
 It’s great that there is so much source code available on public repositories and file shares. No matter the coding task or problem, there is probably already a good solution available somewhere. It is also great that there are so many powerful coding tools available to help you understand, debug, and optimize your code. However, using open-source code and tools does have risks, and you can leave yourself open to malicious code execution and exploits.
 
@@ -16,8 +14,7 @@ Workspace Trust provides an extra layer of security when working with unfamiliar
 
 > **Note**: The terms “workspace” and “folder” are used widely in the VS Code UI and documentation. You can think of a [“workspace”](/docs/editor/workspaces.md) as a folder with extra metadata created and used by VS Code.
 
-Restricted Mode
----------------
+## Restricted Mode
 
 When prompted by the Workspace Trust dialog, if you choose **No, I don’t trust the authors**, VS Code will go into Restricted Mode to prevent code execution. The workbench will display a banner at the top with links to **Manage** your folder via the Workspace Trust editor, and **Learn More** about Workspace Trust (which takes you to back to this documentation).
 
@@ -93,8 +90,7 @@ If you try to install an extension in Restricted Mode, you will be prompted to e
 
 > **Note**: Extension authors can learn how to update their extensions to support Workspace Trust by reading the [Workspace Trust Extension Guide](/api/extension-guides/workspace-trust.md).
 
-Trusting a workspace
---------------------
+## Trusting a workspace
 
 If you trust the authors and maintainers of a project, you can trust the project’s folder on your local machine. For example, it is usually safe to trust repositories from well-known GitHub organizations such as github.com/microsoft or github.com/docker.
 
@@ -108,18 +104,17 @@ There are several ways to bring up the Workspace Editor dialog.
 
 When in Restricted Mode:
 
--   Restricted Mode banner **Manage** link
--   Restricted Mode Status bar item
+- Restricted Mode banner **Manage** link
+- Restricted Mode Status bar item
 
 You can also at any time use:
 
--   **Workspaces: Manage Workspace Trust** command from the Command Palette (`kb(workbench.action.showCommands)`)
--   **Manage Workspace Trust** from the **Manage** gear in the Activity bar
+- **Workspaces: Manage Workspace Trust** command from the Command Palette (`kb(workbench.action.showCommands)`)
+- **Manage Workspace Trust** from the **Manage** gear in the Activity bar
 
 ![Manage Workspace Trust command in the Manage gear context menu](images/workspace-trust/gear-manage-workspace-trust.png)
 
-Selecting folders
------------------
+## Selecting folders
 
 When you trust a folder, it is added to the **Trusted Folders & Workspaces** list displayed in the Workspace Trust editor.
 
@@ -154,8 +149,7 @@ You also group and set trust on your repositories by grouping them under organiz
     ├── github/{myforks} - Place your forked repositories under this parent folder
     └── local - Local un-published repositories
 
-Enabling extensions
--------------------
+## Enabling extensions
 
 What happens if you want to use Restricted Mode but your favorite extension doesn’t support Workspace Trust? This can happen if an extension, while useful and functional, isn’t being actively maintained and hasn’t declared their Workspace Trust support. To handle this scenario, you can override the extension’s trust state with the `extensions.supportUntrustedWorkspaces` setting.
 
@@ -180,8 +174,7 @@ You can either enable or disable Workspace Trust support with the `supported` at
 
 If you’d like to learn more about how extension authors evaluate and determine which features to limit in Restricted Mode, you can read the [Workspace Trust Extension Guide](/api/extension-guides/workspace-trust.md).
 
-Opening untrusted files
------------------------
+## Opening untrusted files
 
 If you open a file that is located outside of a trusted folder, VS Code will detect that the file comes from somewhere outside the folder root and prompt you with the option to continue to open the file or open the file in a new window in Restricted Mode. Opening in Restricted Mode is the safest option and you can always reopen the file in your original VS Code window once you determine the file is trustworthy.
 
@@ -205,34 +198,30 @@ You can switch an empty window to Restricted Mode using the Workspace Trust edit
 
 If you want all empty windows to be in Restricted Mode, you can set `security.workspace.trust.emptyWindow` to `false`.
 
-Settings
---------
+## Settings
 
 Below are the available Workspace Trust settings:
 
--   `security.workspace.trust.enabled` - Enable Workspace Trust feature. Default is true.
--   `security.workspace.trust.startupPrompt` - Whether to show the Workspace Trust dialog on startup. Default is to only show once per distinct folder or workspace.
--   `security.workspace.trust.emptyWindow` - Whether to always trust an empty window (no open folder). Default is true.
--   `security.workspace.trust.untrustedFiles` - Controls how to handle loose files in a workspace. Default is to prompt.
--   `extensions.supportUntrustedWorkspaces` - Override extension Workspace Trust declarations. Either true or false.
--   `security.workspace.trust.banner` - Controls when the Restricted Mode banner is displayed. Default is `untilDismissed`.
+- `security.workspace.trust.enabled` - Enable Workspace Trust feature. Default is true.
+- `security.workspace.trust.startupPrompt` - Whether to show the Workspace Trust dialog on startup. Default is to only show once per distinct folder or workspace.
+- `security.workspace.trust.emptyWindow` - Whether to always trust an empty window (no open folder). Default is true.
+- `security.workspace.trust.untrustedFiles` - Controls how to handle loose files in a workspace. Default is to prompt.
+- `extensions.supportUntrustedWorkspaces` - Override extension Workspace Trust declarations. Either true or false.
+- `security.workspace.trust.banner` - Controls when the Restricted Mode banner is displayed. Default is `untilDismissed`.
 
-Command-line switch
--------------------
+## Command-line switch
 
 You can disable Workspace Trust via the VS Code command line by passing `--disable-workspace-trust`. This switch only affects the current session.
 
-Next steps
-----------
+## Next steps
 
 Learn more at:
 
--   [Workspace Trust Extension Guide](/api/extension-guides/workspace-trust.md) - Learn how extension authors can support Workspace Trust.
--   [What is a VS Code “workspace”?](/docs/editor/workspaces.md) - Find out more details about the VS Code “workspace” concept.
--   [Remote Repositories extension](/docs/editor/github.md#remote-repositories-extension) - Work directly on a repository without cloning the source code to your local machine.
+- [Workspace Trust Extension Guide](/api/extension-guides/workspace-trust.md) - Learn how extension authors can support Workspace Trust.
+- [What is a VS Code “workspace”?](/docs/editor/workspaces.md) - Find out more details about the VS Code “workspace” concept.
+- [Remote Repositories extension](/docs/editor/github.md#remote-repositories-extension) - Work directly on a repository without cloning the source code to your local machine.
 
-Common questions
-----------------
+## Common questions
 
 ### Can I still edit my source code in Restricted Mode?
 

@@ -7,6 +7,7 @@ tags:
   - Guide
   - JavaScript
 ---
+
 {{JsSidebar}}
 
 **ECMAScript** is the scripting language that forms the basis of [JavaScript](/en-US/docs/Web/JavaScript). ECMAScript standardized by the [ECMA International](https://www.ecma-international.org/) standards organization in the **ECMA-262 and ECMA-402 specifications**. The following ECMAScript standards have been approved or are being worked on:

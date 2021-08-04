@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Brent Vatne" />
+  <title>Using Libraries</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Using Libraries</h1>
+<p class="author">Brent Vatne</p>
+</header>
+<p>import Tabs from ‘<span class="citation" data-cites="theme/Tabs">@theme/Tabs</span>’; import TabItem from ‘<span class="citation" data-cites="theme/TabItem">@theme/TabItem</span>’; import constants from ‘<span class="citation" data-cites="site/core/TabsConstants">@site/core/TabsConstants</span>’;</p>
+<p>React Native provides a set of built-in <a href="./components-and-apis">Core Components and APIs</a> ready to use in your app. You’re not limited to the components and APIs bundled with React Native. React Native has a community of thousands of developers. If the Core Components and APIs don’t have what you are looking for, you may be able to find and install a library from the community to add the functionality to your app.</p>
+<h2 id="selecting-a-package-manager">Selecting a Package Manager</h2>
+<p>React Native libraries are typically installed from the <a href="https://www.npmjs.com/">npm registry</a> using a Node.js package manager such as <a href="https://docs.npmjs.com/cli/npm">npm CLI</a> or <a href="https://classic.yarnpkg.com/en/">Yarn Classic</a>.</p>
+<p>If you have Node.js installed on your computer then you already have the npm CLI installed. Some developers prefer to use Yarn Classic for slightly faster install times and additional advanced features like Workspaces. Both tools work great with React Native. We will assume npm for the rest of this guide for simplicity of explanation.</p>
+<blockquote>
+<p>💡 The terms “library” and “package” are used interchangeably in the JavaScript community.</p>
+</blockquote>
+<h2 id="installing-a-library">Installing a Library</h2>
+<p>To install a library in your project, navigate to your project directory in your terminal and run the installation command. Let’s try this with <code>react-native-webview</code>:</p>
+<p><Tabs groupId="package-manager" defaultValue={constants.defaultPackageManager} values={constants.packageManagers}> <TabItem value="npm"></p>
+<pre class="shell"><code>npm install react-native-webview</code></pre>
+<p></TabItem> <TabItem value="yarn"></p>
+<pre class="shell"><code>yarn add react-native-webview</code></pre>
+<p></TabItem> </Tabs></p>
+<p>The library that we installed includes native code, and we need to link to our app before we use it.</p>
+<h2 id="linking-native-code-on-ios">Linking Native Code on iOS</h2>
+<p>React Native uses CocoaPods to manage iOS project dependencies and most React Native libraries follow this same convention. If a library you are using does not, then please refer to their README for additional instruction. In most cases, the following instructions will apply.</p>
+<p>Run <code>pod install</code> in our <code>ios</code> directory in order to link it to our native iOS project. A shortcut for doing this without switching to the <code>ios</code> directory is to run <code>npx pod-install</code>.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" title="1"><span class="ex">npx</span> pod-install</a></code></pre></div>
+<p>Once this is complete, re-build the app binary to start using your new library:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" title="1"><span class="ex">npx</span> react-native run-ios</a></code></pre></div>
+<h2 id="linking-native-code-on-android">Linking Native Code on Android</h2>
+<p>React Native uses Gradle to manage Android project dependencies. After you install a library with native dependencies, you will need to re-build the app binary to use your new library:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" title="1"><span class="ex">npx</span> react-native run-android</a></code></pre></div>
+<h2 id="finding-libraries">Finding Libraries</h2>
+<p><a href="https://reactnative.directory">React Native Directory</a> is a searchable database of libraries built specifically for React Native. This is the first place to look for a library for your React Native app.</p>
+<p>Many of the libraries you will find on the directory are from <a href="https://github.com/react-native-community/">React Native Community</a> or <a href="https://docs.expo.io/versions/latest/">Expo</a>.</p>
+<p>Libraries built by the React Native Community are driven by volunteers and individuals at companies that depend on React Native. They often support iOS, tvOS, Android, Windows, but this varies across projects. Many of the libraries in this organization were once React Native Core Components and APIs.</p>
+<p>Libraries built by Expo are all written in TypeScript and support iOS, Android, and react-native-web wherever possible. They usually require that you first install <a href="https://github.com/expo/expo/tree/master/packages/react-native-unimodules">react-native-unimodules</a> in order to use in your React Native app.</p>
+<p>After React Native Directory, the <a href="https://www.npmjs.com/">npm registry</a> is the next best place if you can’t find a library specifically for React Native on the directory. The npm registry is the definitive source for JavaScript libraries, but the libraries that it lists may not all be compatible with React Native. React Native is one of many JavaScript programming environments, including Node.js, web browsers, Electron, and more, and npm includes libraries that work for all of these environments.</p>
+<h2 id="determining-library-compatibility">Determining Library Compatibility</h2>
+<h3 id="does-it-work-with-react-native">Does it work with React Native?</h3>
+<p>Usually libraries built <em>specifically for other platforms</em> will not work with React Native. Examples include <code>react-select</code> which is built for the web and specifically targets <code>react-dom</code>, and <code>rimraf</code> which is built for Node.js and interacts with your computer file system. Other libraries like <code>lodash</code> use only JavaScript language features and work in any environment. You will gain a sense for this over time, but until then the easiest way to find out is to try it yourself. You can remove packages using <code>npm uninstall</code> if it turns out that it does not work in React Native.</p>
+<h3 id="does-it-work-for-the-platforms-that-my-app-supports">Does it work for the platforms that my app supports?</h3>
+<p><a href="https://reactnative.directory">React Native Directory</a> allows you to filter by platform compatibility, such as iOS, Android, Web, and Windows. If the library you would like to use is not currently listed there, refer to the README for the library to learn more.</p>
+<h3 id="does-it-work-with-my-app-version-of-react-native">Does it work with my app version of React Native?</h3>
+<p>The latest version of a library is typically compatible with the latest version of React Native. If you are using an older version, you should refer to the README to know which version of the library you should install. You can install a particular version of the library by running <code>npm install &lt;library-name&gt;@&lt;version-number&gt;</code>, for example: <code>npm install @react-native-community/netinfo@^2.0.0</code>.</p>
+</body>
+</html>

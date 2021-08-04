@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>LayoutAnimation</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">LayoutAnimation</h1>
+</header>
+<p>import Tabs from ‘<span class="citation" data-cites="theme/Tabs">@theme/Tabs</span>’; import TabItem from ‘<span class="citation" data-cites="theme/TabItem">@theme/TabItem</span>’; import constants from ‘<span class="citation" data-cites="site/core/TabsConstants">@site/core/TabsConstants</span>’;</p>
+<p>Automatically animates views to their new positions when the next layout happens.</p>
+<p>A common way to use this API is to call it before updating the state hook in functional components and calling <code>setState</code> in class components.</p>
+<p>Note that in order to get this to work on <strong>Android</strong> you need to set the following flags via <code>UIManager</code>:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="cf">if</span> (<span class="va">Platform</span>.<span class="at">OS</span> <span class="op">===</span> <span class="st">&#39;android&#39;</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-2" title="2">  <span class="cf">if</span> (<span class="va">UIManager</span>.<span class="at">setLayoutAnimationEnabledExperimental</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-3" title="3">    <span class="va">UIManager</span>.<span class="at">setLayoutAnimationEnabledExperimental</span>(<span class="kw">true</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-4" title="4">  <span class="op">}</span></a>
+<a class="sourceLine" id="cb1-5" title="5"><span class="op">}</span></a></code></pre></div>
+<h2 id="example">Example</h2>
+<p>```SnackPlayer name=LayoutAnimation&amp;supportedPlatforms=android,ios import React, { useState } from “react”; import { LayoutAnimation, Platform, StyleSheet, Text, TouchableOpacity, UIManager, View } from “react-native”;</p>
+<p>if ( Platform.OS === “android” &amp;&amp; UIManager.setLayoutAnimationEnabledExperimental ) { UIManager.setLayoutAnimationEnabledExperimental(true); } const App = () =&gt; { const [expanded, setExpanded] = useState(false);</p>
+<p>return ( <View style={style.container}> &lt;TouchableOpacity onPress={() =&gt; { LayoutAnimation.configureNext(LayoutAnimation.Presets.spring); setExpanded(!expanded); }} &gt; <Text>Press me to {expanded ? “collapse” : “expand”}!</Text> </TouchableOpacity> {expanded &amp;&amp; ( <View style={style.tile}> <Text>I disappear sometimes!</Text> </View> )} </View> ); };</p>
+<p>const style = StyleSheet.create({ tile: { backgroundColor: “lightgrey”, borderWidth: 0.5, borderColor: “#d6d7da” }, container: { flex: 1, justifyContent: “center”, alignItems: “center”, overflow: “hidden” } });</p>
+<p>export default App; ```</p>
+<hr />
+<h1 id="reference">Reference</h1>
+<h2 id="methods">Methods</h2>
+<h3 id="configurenext"><code>configureNext()</code></h3>
+<pre class="jsx"><code>static configureNext(config, onAnimationDidEnd?, onAnimationDidFail?)</code></pre>
+<p>Schedules an animation to happen on the next layout.</p>
+<h4 id="parameters">Parameters:</h4>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>config</td>
+<td>object</td>
+<td>Yes</td>
+<td>See config description below.</td>
+</tr>
+<tr class="even">
+<td>onAnimationDidEnd</td>
+<td>function</td>
+<td>No</td>
+<td>Called when the animation finished.</td>
+</tr>
+<tr class="odd">
+<td>onAnimationDidFail</td>
+<td>function</td>
+<td>No</td>
+<td>Called when the animation failed.</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>config</code> parameter is an object with the keys below. <a href="layoutanimation.md#create"><code>create</code></a> returns a valid object for <code>config</code>, and the <a href="layoutanimation.md#presets"><code>Presets</code></a> objects can also all be passed as the <code>config</code>.</p>
+<ul>
+<li><code>duration</code> in milliseconds</li>
+<li><code>create</code>, optional config for animating in new views</li>
+<li><code>update</code>, optional config for animating views that have been updated</li>
+<li><code>delete</code>, optional config for animating views as they are removed</li>
+</ul>
+<p>The config that’s passed to <code>create</code>, <code>update</code>, or <code>delete</code> has the following keys:</p>
+<ul>
+<li><code>type</code>, the <a href="layoutanimation.md#types">animation type</a> to use</li>
+<li><code>property</code>, the <a href="layoutanimation.md#properties">layout property</a> to animate (optional, but recommended for <code>create</code> and <code>delete</code>)</li>
+<li><code>springDamping</code> (number, optional and only for use with <code>type: Type.spring</code>)</li>
+<li><code>initialVelocity</code> (number, optional)</li>
+<li><code>delay</code> (number, optional)</li>
+<li><code>duration</code> (number, optional)</li>
+</ul>
+<hr />
+<h3 id="create"><code>create()</code></h3>
+<pre class="jsx"><code>static create(duration, type, creationProp)</code></pre>
+<p>Helper that creates an object (with <code>create</code>, <code>update</code>, and <code>delete</code> fields) to pass into <a href="layoutanimation.md#configurenext"><code>configureNext</code></a>. The <code>type</code> parameter is an <a href="layoutanimation.md#types">animation type</a>, and the <code>creationProp</code> parameter is a <a href="layoutanimation.md#properties">layout property</a>.</p>
+<p><strong>Example:</strong></p>
+<p><Tabs groupId="syntax" defaultValue={constants.defaultSyntax} values={constants.syntax}> <TabItem value="functional"></p>
+<p>```SnackPlayer name=LayoutAnimation&amp;supportedPlatforms=android,ios import React, { useState } from “react”; import { View, Platform, UIManager, LayoutAnimation, StyleSheet, Button } from “react-native”;</p>
+<p>if ( Platform.OS === “android” &amp;&amp; UIManager.setLayoutAnimationEnabledExperimental ) { UIManager.setLayoutAnimationEnabledExperimental(true); }</p>
+<p>const App = () =&gt; { const [boxPosition, setBoxPosition] = useState(“left”);</p>
+<p>const toggleBox = () =&gt; { LayoutAnimation.configureNext( LayoutAnimation.create( 500, LayoutAnimation.Types.spring, LayoutAnimation.Properties.scaleXY ) ); setBoxPosition(boxPosition === “left” ? “right” : “left”); };</p>
+<p>return ( <View style={styles.container}> <View style={styles.buttonContainer}> <Button title="Toggle Layout" onPress={toggleBox} /> </View> &lt;View style={[styles.box, boxPosition === “left” ? null : styles.moveRight]} /&gt; </View> ); }</p>
+<p>const styles = StyleSheet.create({ container: { flex: 1, alignItems: “flex-start”, justifyContent: “center” }, box: { height: 100, width: 100, borderRadius: 5, margin: 8, backgroundColor: “blue” }, moveRight: { alignSelf: “flex-end”, height: 200, width: 200 }, buttonContainer: { alignSelf: “center” } });</p>
+<p>export default App; ```</p>
+<p></TabItem> <TabItem value="classical"></p>
+<p>```SnackPlayer name=LayoutAnimation&amp;supportedPlatforms=android,ios import React, { Component } from “react”; import { View, Platform, UIManager, LayoutAnimation, StyleSheet, Button } from “react-native”;</p>
+<p>if ( Platform.OS === “android” &amp;&amp; UIManager.setLayoutAnimationEnabledExperimental ) { UIManager.setLayoutAnimationEnabledExperimental(true); }</p>
+<p>class App extends Component { state = { boxPosition: “left” };</p>
+<p>toggleBox = () =&gt; { LayoutAnimation.configureNext( LayoutAnimation.create( 500, LayoutAnimation.Types.spring, LayoutAnimation.Properties.scaleXY ) ); this.setState({ boxPosition: this.state.boxPosition === “left” ? “right” : “left” }); };</p>
+<p>render() { return ( <View style={styles.container}> <View style={styles.buttonContainer}> <Button title="Toggle Layout" onPress={this.toggleBox} /> </View> &lt;View style={[ styles.box, this.state.boxPosition === “left” ? null : styles.moveRight ]} /&gt; </View> ); } }</p>
+<p>const styles = StyleSheet.create({ container: { flex: 1, alignItems: “flex-start”, justifyContent: “center” }, box: { height: 100, width: 100, borderRadius: 5, margin: 8, backgroundColor: “blue” }, moveRight: { alignSelf: “flex-end”, height: 200, width: 200 }, buttonContainer: { alignSelf: “center” } });</p>
+<p>export default App; ```</p>
+<p></TabItem> </Tabs></p>
+<h2 id="properties">Properties</h2>
+<h3 id="types">Types</h3>
+<p>An enumeration of animation types to be used in the <a href="layoutanimation.md#create"><code>create</code></a> method, or in the <code>create</code>/<code>update</code>/<code>delete</code> configs for <a href="layoutanimation.md#configurenext"><code>configureNext</code></a>. (example usage: <code>LayoutAnimation.Types.easeIn</code>)</p>
+<table>
+<thead>
+<tr class="header">
+<th>Types</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>spring</td>
+</tr>
+<tr class="even">
+<td>linear</td>
+</tr>
+<tr class="odd">
+<td>easeInEaseOut</td>
+</tr>
+<tr class="even">
+<td>easeIn</td>
+</tr>
+<tr class="odd">
+<td>easeOut</td>
+</tr>
+<tr class="even">
+<td>keyboard</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="properties-1">Properties</h3>
+<p>An enumeration of layout properties to be animated to be used in the <a href="layoutanimation.md#create"><code>create</code></a> method, or in the <code>create</code>/<code>update</code>/<code>delete</code> configs for <a href="layoutanimation.md#configurenext"><code>configureNext</code></a>. (example usage: <code>LayoutAnimation.Properties.opacity</code>)</p>
+<table>
+<thead>
+<tr class="header">
+<th>Properties</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>opacity</td>
+</tr>
+<tr class="even">
+<td>scaleX</td>
+</tr>
+<tr class="odd">
+<td>scaleY</td>
+</tr>
+<tr class="even">
+<td>scaleXY</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="presets">Presets</h3>
+<p>A set of predefined animation configs to pass into <a href="layoutanimation.md#configurenext"><code>configureNext</code></a>.</p>
+<table>
+<colgroup>
+<col style="width: 7%" />
+<col style="width: 92%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Presets</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>easeInEaseOut</td>
+<td><code>create(300, 'easeInEaseOut', 'opacity')</code></td>
+</tr>
+<tr class="even">
+<td>linear</td>
+<td><code>create(500, 'linear', 'opacity')</code></td>
+</tr>
+<tr class="odd">
+<td>spring</td>
+<td><code>{ duration: 700, create: { type: 'linear', property: 'opacity' }, update: { type: 'spring', springDamping: 0.4 }, delete: { type: 'linear', property: 'opacity' } }</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="easeineaseout"><code>easeInEaseOut</code></h3>
+<p>Calls <code>configureNext()</code> with <code>Presets.easeInEaseOut</code>.</p>
+<hr />
+<h3 id="linear"><code>linear</code></h3>
+<p>Calls <code>configureNext()</code> with <code>Presets.linear</code>.</p>
+<hr />
+<h3 id="spring"><code>spring</code></h3>
+<p>Calls <code>configureNext()</code> with <code>Presets.spring</code>.</p>
+<p><strong>Example:</strong></p>
+<p><Tabs groupId="syntax" defaultValue={constants.defaultSyntax} values={constants.syntax}> <TabItem value="functional"></p>
+<p>```SnackPlayer name=LayoutAnimation&amp;supportedPlatforms=android,ios import React, { useState } from “react”; import { View, Platform, UIManager, LayoutAnimation, StyleSheet, Button } from “react-native”;</p>
+<p>if ( Platform.OS === “android” &amp;&amp; UIManager.setLayoutAnimationEnabledExperimental ) { UIManager.setLayoutAnimationEnabledExperimental(true); }</p>
+<p>const App = () =&gt; { const [firstBoxPosition, setFirstBoxPosition] = useState(“left”); const [secondBoxPosition, setSecondBoxPosition] = useState(“left”); const [thirdBoxPosition, setThirdBoxPosition] = useState(“left”);</p>
+<p>const toggleFirstBox = () =&gt; { LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut); setFirstBoxPosition(firstBoxPosition === “left” ? “right” : “left”); };</p>
+<p>const toggleSecondBox = () =&gt; { LayoutAnimation.configureNext(LayoutAnimation.Presets.linear); setSecondBoxPosition(secondBoxPosition === “left” ? “right” : “left”); };</p>
+<p>const toggleThirdBox = () =&gt; { LayoutAnimation.configureNext(LayoutAnimation.Presets.spring); setThirdBoxPosition(thirdBoxPosition === “left” ? “right” : “left”); };</p>
+<p>return ( <View style={styles.container}> <View style={styles.buttonContainer}> <Button title="EaseInEaseOut" onPress={toggleFirstBox} /> </View> &lt;View style={[ styles.box, firstBoxPosition === “left” ? null : styles.moveRight ]} /&gt; <View style={styles.buttonContainer}> <Button title="Linear" onPress={toggleSecondBox} /> </View> &lt;View style={[ styles.box, secondBoxPosition === “left” ? null : styles.moveRight ]} /&gt; <View style={styles.buttonContainer}> <Button title="Spring" onPress={toggleThirdBox} /> </View> &lt;View style={[ styles.box, thirdBoxPosition === “left” ? null : styles.moveRight ]} /&gt; </View> ); }</p>
+<p>const styles = StyleSheet.create({ container: { flex: 1, alignItems: “flex-start”, justifyContent: “center” }, box: { height: 100, width: 100, borderRadius: 5, margin: 8, backgroundColor: “blue” }, moveRight: { alignSelf: “flex-end” }, buttonContainer: { alignSelf: “center” } });</p>
+<p>export default App; ```</p>
+<p></TabItem> <TabItem value="classical"></p>
+<p>```SnackPlayer name=LayoutAnimation&amp;supportedPlatforms=android,ios import React, { Component } from “react”; import { View, Platform, UIManager, LayoutAnimation, StyleSheet, Button } from “react-native”;</p>
+<p>if ( Platform.OS === “android” &amp;&amp; UIManager.setLayoutAnimationEnabledExperimental ) { UIManager.setLayoutAnimationEnabledExperimental(true); }</p>
+<p>class App extends Component { state = { firstBoxPosition: “left”, secondBoxPosition: “left”, thirdBoxPosition: “left” };</p>
+<p>toggleFirstBox = () =&gt; { LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut); this.setState({ firstBoxPosition: this.state.firstBoxPosition === “left” ? “right” : “left” }); };</p>
+<p>toggleSecondBox = () =&gt; { LayoutAnimation.configureNext(LayoutAnimation.Presets.linear); this.setState({ secondBoxPosition: this.state.secondBoxPosition === “left” ? “right” : “left” }); };</p>
+<p>toggleThirdBox = () =&gt; { LayoutAnimation.configureNext(LayoutAnimation.Presets.spring); this.setState({ thirdBoxPosition: this.state.thirdBoxPosition === “left” ? “right” : “left” }); };</p>
+<p>render() { return ( <View style={styles.container}> <View style={styles.buttonContainer}> <Button title="EaseInEaseOut" onPress={this.toggleFirstBox} /> </View> &lt;View style={[ styles.box, this.state.firstBoxPosition === “left” ? null : styles.moveRight ]} /&gt; <View style={styles.buttonContainer}> <Button title="Linear" onPress={this.toggleSecondBox} /> </View> &lt;View style={[ styles.box, this.state.secondBoxPosition === “left” ? null : styles.moveRight ]} /&gt; <View style={styles.buttonContainer}> <Button title="Spring" onPress={this.toggleThirdBox} /> </View> &lt;View style={[ styles.box, this.state.thirdBoxPosition === “left” ? null : styles.moveRight ]} /&gt; </View> ); } }</p>
+<p>const styles = StyleSheet.create({ container: { flex: 1, alignItems: “flex-start”, justifyContent: “center” }, box: { height: 100, width: 100, borderRadius: 5, margin: 8, backgroundColor: “blue” }, moveRight: { alignSelf: “flex-end” }, buttonContainer: { alignSelf: “center” } });</p>
+<p>export default App; ```</p>
+<p></TabItem> </Tabs></p>
+</body>
+</html>

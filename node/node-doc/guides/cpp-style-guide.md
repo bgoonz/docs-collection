@@ -1,40 +1,37 @@
-C++ style guide
-===============
+# C++ style guide
 
 See also the [C++ codebase README](../../src/README.md) for C++ idioms in the Node.js codebase not related to stylistic issues.
 
-Table of contents
------------------
+## Table of contents
 
--   [Guides and references](#guides-and-references)
--   [Formatting](#formatting)
-    -   [Left-leaning (C++ style) asterisks for pointer declarations](#left-leaning-c-style-asterisks-for-pointer-declarations)
-    -   [C++ style comments](#c-style-comments)
-    -   [2 spaces of indentation for blocks or bodies of conditionals](#2-spaces-of-indentation-for-blocks-or-bodies-of-conditionals)
-    -   [4 spaces of indentation for statement continuations](#4-spaces-of-indentation-for-statement-continuations)
-    -   [Align function arguments vertically](#align-function-arguments-vertically)
-    -   [Initialization lists](#initialization-lists)
-    -   [CamelCase for methods, functions, and classes](#camelcase-for-methods-functions-and-classes)
-    -   [`snake_case` for local variables and parameters](#snake_case-for-local-variables-and-parameters)
-    -   [`snake_case_` for private class fields](#snake_case_-for-private-class-fields)
-    -   [`snake_case` for C-like structs](#snake_case-for-c-like-structs)
-    -   [Space after `template`](#space-after-template)
--   [Memory management](#memory-management)
-    -   [Memory allocation](#memory-allocation)
-    -   [Use `nullptr` instead of `NULL` or `0`](#use-nullptr-instead-of-null-or-0)
-    -   [Use explicit pointer comparisons](#use-explicit-pointer-comparisons)
-    -   [Ownership and smart pointers](#ownership-and-smart-pointers)
-    -   [Avoid non-const references](#avoid-non-const-references)
-    -   [Use AliasedBuffers to manipulate TypedArrays](#use-aliasedbuffers-to-manipulate-typedarrays)
--   [Others](#others)
-    -   [Type casting](#type-casting)
-    -   [Using `auto`](#using-auto)
-    -   [Do not include `*.h` if `*-inl.h` has already been included](#do-not-include-h-if--inlh-has-already-been-included)
-    -   [Avoid throwing JavaScript errors in C++ methods](#avoid-throwing-javascript-errors-in-c)
-        -   [Avoid throwing JavaScript errors in nested C++ methods](#avoid-throwing-javascript-errors-in-nested-c-methods)
+- [Guides and references](#guides-and-references)
+- [Formatting](#formatting)
+  - [Left-leaning (C++ style) asterisks for pointer declarations](#left-leaning-c-style-asterisks-for-pointer-declarations)
+  - [C++ style comments](#c-style-comments)
+  - [2 spaces of indentation for blocks or bodies of conditionals](#2-spaces-of-indentation-for-blocks-or-bodies-of-conditionals)
+  - [4 spaces of indentation for statement continuations](#4-spaces-of-indentation-for-statement-continuations)
+  - [Align function arguments vertically](#align-function-arguments-vertically)
+  - [Initialization lists](#initialization-lists)
+  - [CamelCase for methods, functions, and classes](#camelcase-for-methods-functions-and-classes)
+  - [`snake_case` for local variables and parameters](#snake_case-for-local-variables-and-parameters)
+  - [`snake_case_` for private class fields](#snake_case_-for-private-class-fields)
+  - [`snake_case` for C-like structs](#snake_case-for-c-like-structs)
+  - [Space after `template`](#space-after-template)
+- [Memory management](#memory-management)
+  - [Memory allocation](#memory-allocation)
+  - [Use `nullptr` instead of `NULL` or `0`](#use-nullptr-instead-of-null-or-0)
+  - [Use explicit pointer comparisons](#use-explicit-pointer-comparisons)
+  - [Ownership and smart pointers](#ownership-and-smart-pointers)
+  - [Avoid non-const references](#avoid-non-const-references)
+  - [Use AliasedBuffers to manipulate TypedArrays](#use-aliasedbuffers-to-manipulate-typedarrays)
+- [Others](#others)
+  - [Type casting](#type-casting)
+  - [Using `auto`](#using-auto)
+  - [Do not include `*.h` if `*-inl.h` has already been included](#do-not-include-h-if--inlh-has-already-been-included)
+  - [Avoid throwing JavaScript errors in C++ methods](#avoid-throwing-javascript-errors-in-c)
+    - [Avoid throwing JavaScript errors in nested C++ methods](#avoid-throwing-javascript-errors-in-nested-c-methods)
 
-Guides and references
----------------------
+## Guides and references
 
 The Node.js C++ codebase strives to be consistent in its use of language features and idioms, as well as have some specific guidelines for the use of runtime features.
 
@@ -46,8 +43,7 @@ Coding guidelines are based on the following guides (highest priority first):
 
 In general, code should follow the C++ Core Guidelines, unless overridden by the Google C++ Style Guide or this document. At the moment these guidelines are checked manually by reviewers with the goal to validate this with automatic tools.
 
-Formatting
-----------
+## Formatting
 
 Unfortunately, the C++ linter (based on [Google’s `cpplint`](https://github.com/google/styleguide)), which can be run explicitly via `make lint-cpp`, does not currently catch a lot of rules that are specific to the Node.js C++ code base. This document explains the most common of these rules:
 
@@ -144,7 +140,7 @@ Exceptions are simple getters/setters, which are named `property_name()` and `se
 
 ### `snake_case` for C-like structs
 
-For plain C-like structs snake\_case can be used.
+For plain C-like structs snake_case can be used.
 
     struct foo_bar {
       int name;
@@ -157,13 +153,12 @@ For plain C-like structs snake\_case can be used.
      ...
     };
 
-Memory management
------------------
+## Memory management
 
 ### Memory allocation
 
--   `Malloc()`, `Calloc()`, etc. from `util.h` abort in Out-of-Memory situations
--   `UncheckedMalloc()`, etc. return `nullptr` in OOM situations
+- `Malloc()`, `Calloc()`, etc. from `util.h` abort in Out-of-Memory situations
+- `UncheckedMalloc()`, etc. return `nullptr` in OOM situations
 
 ### Use `nullptr` instead of `NULL` or `0`
 
@@ -175,8 +170,8 @@ Use explicit comparisons to `nullptr` when testing pointers, i.e. `if (foo == nu
 
 ### Ownership and smart pointers
 
--   [R.20](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rr-owner): Use `std::unique_ptr` or `std::shared_ptr` to represent ownership
--   [R.21](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rr-unique): Prefer `unique_ptr` over `shared_ptr` unless you need to share ownership
+- [R.20](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rr-owner): Use `std::unique_ptr` or `std::shared_ptr` to represent ownership
+- [R.21](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rr-unique): Prefer `unique_ptr` over `shared_ptr` unless you need to share ownership
 
 Use `std::unique_ptr` to make ownership transfer explicit. For example:
 
@@ -222,7 +217,7 @@ Using non-const references often obscures which values are changed by an assignm
 
 ### Use AliasedBuffers to manipulate TypedArrays
 
-When working with typed arrays that involve direct data modification from C++, use an `AliasedBuffer` when possible. The API abstraction and the usage scope of `AliasedBuffer` are documented in [aliased\_buffer.h](https://github.com/nodejs/node/blob/HEAD/src/aliased_buffer.h#L12).
+When working with typed arrays that involve direct data modification from C++, use an `AliasedBuffer` when possible. The API abstraction and the usage scope of `AliasedBuffer` are documented in [aliased_buffer.h](https://github.com/nodejs/node/blob/HEAD/src/aliased_buffer.h#L12).
 
     // Create an AliasedBuffer.
     AliasedBuffer<uint32_t, v8::Uint32Array> data;
@@ -231,20 +226,19 @@ When working with typed arrays that involve direct data modification from C++, u
     // Modify the data through natural operator semantics.
     data[0] = 12345;
 
-Others
-------
+## Others
 
 ### Type casting
 
--   Use `static_cast<T>` if casting is required, and it is valid.
--   Use `reinterpret_cast` only when it is necessary.
--   Avoid C-style casts (`(type)value`).
--   `dynamic_cast` does not work because Node.js is built without [Run Time Type Information](https://en.wikipedia.org/wiki/Run-time_type_information).
+- Use `static_cast<T>` if casting is required, and it is valid.
+- Use `reinterpret_cast` only when it is necessary.
+- Avoid C-style casts (`(type)value`).
+- `dynamic_cast` does not work because Node.js is built without [Run Time Type Information](https://en.wikipedia.org/wiki/Run-time_type_information).
 
 Further reading:
 
--   [ES.48](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Res-casts): Avoid casts
--   [ES.49](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Res-casts-named): If you must use a cast, use a named cast
+- [ES.48](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Res-casts): Avoid casts
+- [ES.49](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Res-casts-named): If you must use a cast, use a named cast
 
 ### Using `auto`
 

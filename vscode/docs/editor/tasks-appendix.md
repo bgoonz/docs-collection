@@ -1,10 +1,8 @@
-Appendix
-========
+# Appendix
 
 This is additional information for Visual Studio Code [tasks](/docs/editor/tasks.md).
 
-Schema for tasks.json
----------------------
+## Schema for tasks.json
 
 The following interfaces define the basic schema of the `tasks.json` file.
 

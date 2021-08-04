@@ -11,6 +11,7 @@ tags:
   - Reference
 browser-compat: javascript.builtins.Intl.Collator.Collator
 ---
+
 {{JSRef}}
 
 The **`Intl.Collator()`** constructor creates
@@ -24,9 +25,9 @@ comparison.
 ## Syntax
 
 ```js
-new Intl.Collator()
-new Intl.Collator(locales)
-new Intl.Collator(locales, options)
+new Intl.Collator();
+new Intl.Collator(locales);
+new Intl.Collator(locales, options);
 ```
 
 ### Parameters
@@ -36,7 +37,7 @@ new Intl.Collator(locales, options)
   - : Optional. A string with a BCP 47 language tag, or an array of such strings. For
     the general form and interpretation of the `locales` argument, see
     the {{jsxref("Global_Objects/Intl", "Intl page",
-			"#Locale_identification_and_negotiation", 1)}}.
+    	"#Locale_identification_and_negotiation", 1)}}.
 
     The following Unicode extension keys are allowed:
 
@@ -146,9 +147,9 @@ The following example demonstrates the different potential results for a string
 occurring before, after, or at the same level as another:
 
 ```js
-console.log(new Intl.Collator().compare('a', 'c')); // → a negative value
-console.log(new Intl.Collator().compare('c', 'a')); // → a positive value
-console.log(new Intl.Collator().compare('a', 'a')); // → 0
+console.log(new Intl.Collator().compare("a", "c")); // → a negative value
+console.log(new Intl.Collator().compare("c", "a")); // → a positive value
+console.log(new Intl.Collator().compare("a", "a")); // → 0
 ```
 
 Note that the results shown in the code above can vary between browsers and browser

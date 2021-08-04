@@ -1,5 +1,4 @@
-Building Node.js with Ninja
-===========================
+# Building Node.js with Ninja
 
 The purpose of this guide is to show how to build Node.js using [Ninja](https://ninja-build.org/), as doing so can be significantly quicker than using `make`. Please see [Ninja’s site](https://ninja-build.org/) for installation instructions (Unix only).
 
@@ -16,8 +15,7 @@ The bottom line will change while building, showing the progress as `[finished/t
 
     JOBS=12 make
 
-Producing a debug build
------------------------
+## Producing a debug build
 
 To create a debug build rather than a release build:
 

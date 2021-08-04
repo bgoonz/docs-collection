@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>_getting-started-macos-ios</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<h2 id="installing-dependencies">Installing dependencies</h2>
+<p>You will need Node, Watchman, the React Native command line interface, Xcode and CocoaPods.</p>
+<p>While you can use any editor of your choice to develop your app, you will need to install Xcode in order to set up the necessary tooling to build your React Native app for iOS.</p>
+<h3 id="node-watchman">Node &amp; Watchman</h3>
+<p>We recommend installing Node and Watchman using <a href="http://brew.sh/">Homebrew</a>. Run the following commands in a Terminal after installing Homebrew:</p>
+<pre class="shell"><code>brew install node
+brew install watchman</code></pre>
+<p>If you have already installed Node on your system, make sure it is Node 12 or newer.</p>
+<p><a href="https://facebook.github.io/watchman">Watchman</a> is a tool by Facebook for watching changes in the filesystem. It is highly recommended you install it for better performance.</p>
+<h3 id="xcode">Xcode</h3>
+<p>The easiest way to install Xcode is via the <a href="https://itunes.apple.com/us/app/xcode/id497799835?mt=12">Mac App Store</a>. Installing Xcode will also install the iOS Simulator and all the necessary tools to build your iOS app.</p>
+<p>If you have already installed Xcode on your system, make sure it is version 10 or newer.</p>
+<h4 id="command-line-tools">Command Line Tools</h4>
+<p>You will also need to install the Xcode Command Line Tools. Open Xcode, then choose “Preferences…” from the Xcode menu. Go to the Locations panel and install the tools by selecting the most recent version in the Command Line Tools dropdown.</p>
+<figure>
+<img src="/docs/assets/GettingStartedXcodeCommandLineTools.png" alt="Xcode Command Line Tools" /><figcaption>Xcode Command Line Tools</figcaption>
+</figure>
+<h4 id="installing-an-ios-simulator-in-xcode">Installing an iOS Simulator in Xcode</h4>
+<p>To install a simulator, open <strong>Xcode &gt; Preferences…</strong> and select the <strong>Components</strong> tab. Select a simulator with the corresponding version of iOS you wish to use.</p>
+<h4 id="cocoapods">CocoaPods</h4>
+<p><a href="https://cocoapods.org/">CocoaPods</a> is built with Ruby and it will be installable with the default Ruby available on macOS. You can use a Ruby Version manager, however we recommend that you use the standard Ruby available on macOS unless you know what you’re doing.</p>
+<p>Using the default Ruby install will require you to use <code>sudo</code> when installing gems. (This is only an issue for the duration of the gem installation, though.)</p>
+<pre class="shell"><code>sudo gem install cocoapods</code></pre>
+<p>For more information, please visit <a href="https://guides.cocoapods.org/using/getting-started.html">CocoaPods Getting Started guide</a>.</p>
+<h3 id="react-native-command-line-interface">React Native Command Line Interface</h3>
+<p>React Native has a built-in command line interface. Rather than install and manage a specific version of the CLI globally, we recommend you access the current version at runtime using <code>npx</code>, which ships with Node.js. With <code>npx react-native &lt;command&gt;</code>, the current stable version of the CLI will be downloaded and executed at the time the command is run.</p>
+<h2 id="creating-a-new-application">Creating a new application</h2>
+<blockquote>
+<p>If you previously installed a global <code>react-native-cli</code> package, please remove it as it may cause unexpected issues.</p>
+</blockquote>
+<p>You can use React Native’s built-in command line interface to generate a new project. Let’s create a new React Native project called “AwesomeProject”:</p>
+<pre class="shell"><code>npx react-native init AwesomeProject</code></pre>
+<p>This is not necessary if you are integrating React Native into an existing application, if you “ejected” from Expo, or if you’re adding iOS support to an existing React Native project (see <a href="integration-with-existing-apps.md">Integration with Existing Apps</a>). You can also use a third-party CLI to init your React Native app, such as <a href="https://github.com/infinitered/ignite">Ignite CLI</a>.</p>
+<h3 id="optional-using-a-specific-version-or-template">[Optional] Using a specific version or template</h3>
+<p>If you want to start a new project with a specific React Native version, you can use the <code>--version</code> argument:</p>
+<pre class="shell"><code>npx react-native init AwesomeProject --version X.XX.X</code></pre>
+<p>You can also start a project with a custom React Native template, like TypeScript, with <code>--template</code> argument:</p>
+<pre class="shell"><code>npx react-native init AwesomeTSProject --template react-native-template-typescript</code></pre>
+<blockquote>
+<p><strong>Note</strong> If the above command is failing, you may have old version of <code>react-native</code> or <code>react-native-cli</code> installed globally on your pc. Try uninstalling the cli and run the cli using <code>npx</code>.</p>
+</blockquote>
+<h2 id="running-your-react-native-application">Running your React Native application</h2>
+<h3 id="step-1-start-metro">Step 1: Start Metro</h3>
+<p>First, you will need to start Metro, the JavaScript bundler that ships with React Native. Metro “takes in an entry file and various options, and returns a single JavaScript file that includes all your code and its dependencies.”—<a href="https://facebook.github.io/metro/docs/concepts">Metro Docs</a></p>
+<p>To start Metro, run <code>npx react-native start</code> inside your React Native project folder:</p>
+<pre class="shell"><code>npx react-native start</code></pre>
+<p><code>react-native start</code> starts Metro Bundler.</p>
+<blockquote>
+<p>If you use the Yarn package manager, you can use <code>yarn</code> instead of <code>npx</code> when running React Native commands inside an existing project.</p>
+</blockquote>
+<blockquote>
+<p>If you’re familiar with web development, Metro is a lot like webpack—for React Native apps. Unlike Kotlin or Java, JavaScript isn’t compiled—and neither is React Native. Bundling isn’t the same as compiling, but it can help improve startup performance and translate some platform-specific JavaScript into more widely supported JavaScript.</p>
+</blockquote>
+<h3 id="step-2-start-your-application">Step 2: Start your application</h3>
+<p>Let Metro Bundler run in its own terminal. Open a new terminal inside your React Native project folder. Run the following:</p>
+<pre class="shell"><code>npx react-native run-ios</code></pre>
+<p>You should see your new app running in the iOS Simulator shortly.</p>
+<figure>
+<img src="/docs/assets/GettingStartediOSSuccess.png" alt="AwesomeProject on iOS" /><figcaption>AwesomeProject on iOS</figcaption>
+</figure>
+<p><code>npx react-native run-ios</code> is one way to run your app. You can also run it directly from within Xcode.</p>
+<blockquote>
+<p>If you can’t get this to work, see the <a href="troubleshooting.md#content">Troubleshooting</a> page.</p>
+</blockquote>
+<h3 id="running-on-a-device">Running on a device</h3>
+<p>The above command will automatically run your app on the iOS Simulator by default. If you want to run the app on an actual physical iOS device, please follow the instructions <a href="running-on-device.md">here</a>.</p>
+<h3 id="modifying-your-app">Modifying your app</h3>
+<p>Now that you have successfully run the app, let’s modify it.</p>
+<ul>
+<li>Open <code>App.js</code> in your text editor of choice and edit some lines.</li>
+<li>Hit <code>⌘R</code> in your iOS Simulator to reload the app and see your changes!</li>
+</ul>
+<h3 id="thats-it">That’s it!</h3>
+<p>Congratulations! You’ve successfully run and modified your first React Native app.</p>
+<center>
+<img src="/docs/assets/GettingStartedCongratulations.png" width="150"></img>
+</center>
+<h2 id="now-what">Now what?</h2>
+<ul>
+<li>If you want to add this new React Native code to an existing application, check out the <a href="integration-with-existing-apps.md">Integration guide</a>.</li>
+</ul>
+<p>If you’re curious to learn more about React Native, check out the <a href="getting-started">Introduction to React Native</a>.</p>
+</body>
+</html>

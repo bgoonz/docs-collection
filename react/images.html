@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Images</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Images</h1>
+</header>
+<h2 id="static-image-resources">Static Image Resources</h2>
+<p>React Native provides a unified way of managing images and other media assets in your Android and iOS apps. To add a static image to your app, place it somewhere in your source code tree and reference it like this:</p>
+<pre class="jsx"><code>&lt;Image source={require(&#39;./my-icon.png&#39;)} /&gt;</code></pre>
+<p>The image name is resolved the same way JS modules are resolved. In the example above, the bundler will look for <code>my-icon.png</code> in the same folder as the component that requires it.</p>
+<p>You can use the <code>@2x</code> and <code>@3x</code> suffixes to provide images for different screen densities. If you have the following file structure:</p>
+<pre><code>.
+├── button.js
+└── img
+    ├── check.png
+    ├── check@2x.png
+    └── check@3x.png</code></pre>
+<p>…and <code>button.js</code> code contains:</p>
+<pre class="jsx"><code>&lt;Image source={require(&#39;./img/check.png&#39;)} /&gt;</code></pre>
+<p>…the bundler will bundle and serve the image corresponding to device’s screen density. For example, <code>check@2x.png</code>, will be used on an iPhone 7, while<code>check@3x.png</code> will be used on an iPhone 7 Plus or a Nexus 5. If there is no image matching the screen density, the closest best option will be selected.</p>
+<p>On Windows, you might need to restart the bundler if you add new images to your project.</p>
+<p>Here are some benefits that you get:</p>
+<ol type="1">
+<li>Same system on Android and iOS.</li>
+<li>Images live in the same folder as your JavaScript code. Components are self-contained.</li>
+<li>No global namespace, i.e. you don’t have to worry about name collisions.</li>
+<li>Only the images that are actually used will be packaged into your app.</li>
+<li>Adding and changing images doesn’t require app recompilation, you can refresh the simulator as you normally do.</li>
+<li>The bundler knows the image dimensions, no need to duplicate it in the code.</li>
+<li>Images can be distributed via <a href="https://www.npmjs.com/">npm</a> packages.</li>
+</ol>
+<p>In order for this to work, the image name in <code>require</code> has to be known statically.</p>
+<pre class="jsx"><code>// GOOD
+&lt;Image source={require(&#39;./my-icon.png&#39;)} /&gt;;
+
+// BAD
+var icon = this.props.active
+  ? &#39;my-icon-active&#39;
+  : &#39;my-icon-inactive&#39;;
+&lt;Image source={require(&#39;./&#39; + icon + &#39;.png&#39;)} /&gt;;
+
+// GOOD
+var icon = this.props.active
+  ? require(&#39;./my-icon-active.png&#39;)
+  : require(&#39;./my-icon-inactive.png&#39;);
+&lt;Image source={icon} /&gt;;</code></pre>
+<p>Note that image sources required this way include size (width, height) info for the Image. If you need to scale the image dynamically (i.e. via flex), you may need to manually set <code>{ width: undefined, height: undefined }</code> on the style attribute.</p>
+<h2 id="static-non-image-resources">Static Non-Image Resources</h2>
+<p>The <code>require</code> syntax described above can be used to statically include audio, video or document files in your project as well. Most common file types are supported including <code>.mp3</code>, <code>.wav</code>, <code>.mp4</code>, <code>.mov</code>, <code>.html</code> and <code>.pdf</code>. See <a href="https://github.com/facebook/metro/blob/master/packages/metro-config/src/defaults/defaults.js#L14-L44">bundler defaults</a> for the full list.</p>
+<p>You can add support for other types by adding an <a href="https://facebook.github.io/metro/docs/configuration#resolver-options"><code>assetExts</code> resolver option</a> in your <a href="https://facebook.github.io/metro/docs/configuration">Metro configuration</a>.</p>
+<p>A caveat is that videos must use absolute positioning instead of <code>flexGrow</code>, since size info is not currently passed for non-image assets. This limitation doesn’t occur for videos that are linked directly into Xcode or the Assets folder for Android.</p>
+<h2 id="images-from-hybrid-apps-resources">Images From Hybrid App’s Resources</h2>
+<p>If you are building a hybrid app (some UIs in React Native, some UIs in platform code) you can still use images that are already bundled into the app.</p>
+<p>For images included via Xcode asset catalogs or in the Android drawable folder, use the image name without the extension:</p>
+<pre class="jsx"><code>&lt;Image
+  source={{ uri: &#39;app_icon&#39; }}
+  style={{ width: 40, height: 40 }}
+/&gt;</code></pre>
+<p>For images in the Android assets folder, use the <code>asset:/</code> scheme:</p>
+<pre class="jsx"><code>&lt;Image
+  source={{ uri: &#39;asset:/app_icon.png&#39; }}
+  style={{ width: 40, height: 40 }}
+/&gt;</code></pre>
+<p>These approaches provide no safety checks. It’s up to you to guarantee that those images are available in the application. Also you have to specify image dimensions manually.</p>
+<h2 id="network-images">Network Images</h2>
+<p>Many of the images you will display in your app will not be available at compile time, or you will want to load some dynamically to keep the binary size down. Unlike with static resources, <em>you will need to manually specify the dimensions of your image</em>. It’s highly recommended that you use https as well in order to satisfy <a href="running-on-device.md#app-transport-security">App Transport Security</a> requirements on iOS.</p>
+<pre class="jsx"><code>// GOOD
+&lt;Image source={{uri: &#39;https://reactjs.org/logo-og.png&#39;}}
+       style={{width: 400, height: 400}} /&gt;
+
+// BAD
+&lt;Image source={{uri: &#39;https://reactjs.org/logo-og.png&#39;}} /&gt;</code></pre>
+<h3 id="network-requests-for-images">Network Requests for Images</h3>
+<p>If you would like to set such things as the HTTP-Verb, Headers or a Body along with the image request, you may do this by defining these properties on the source object:</p>
+<pre class="jsx"><code>&lt;Image
+  source={{
+    uri: &#39;https://reactjs.org/logo-og.png&#39;,
+    method: &#39;POST&#39;,
+    headers: {
+      Pragma: &#39;no-cache&#39;
+    },
+    body: &#39;Your Body goes here&#39;
+  }}
+  style={{ width: 400, height: 400 }}
+/&gt;</code></pre>
+<h2 id="uri-data-images">Uri Data Images</h2>
+<p>Sometimes, you might be getting encoded image data from a REST API call. You can use the <code>'data:'</code> uri scheme to use these images. Same as for network resources, <em>you will need to manually specify the dimensions of your image</em>.</p>
+<blockquote>
+<p>This is recommended for very small and dynamic images only, like icons in a list from a DB.</p>
+</blockquote>
+<pre class="jsx"><code>// include at least width and height!
+&lt;Image
+  style={{
+    width: 51,
+    height: 51,
+    resizeMode: &#39;contain&#39;
+  }}
+  source={{
+    uri:
+      &#39;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAAAzCAYAAAA6oTAqAAAAEXRFWHRTb2Z0d2FyZQBwbmdjcnVzaEB1SfMAAABQSURBVGje7dSxCQBACARB+2/ab8BEeQNhFi6WSYzYLYudDQYGBgYGBgYGBgYGBgYGBgZmcvDqYGBgmhivGQYGBgYGBgYGBgYGBgYGBgbmQw+P/eMrC5UTVAAAAABJRU5ErkJggg==&#39;
+  }}
+/&gt;</code></pre>
+<h3 id="cache-control-ios-only">Cache Control (iOS Only)</h3>
+<p>In some cases you might only want to display an image if it is already in the local cache, i.e. a low resolution placeholder until a higher resolution is available. In other cases you do not care if the image is outdated and are willing to display an outdated image to save bandwidth. The <code>cache</code> source property gives you control over how the network layer interacts with the cache.</p>
+<ul>
+<li><code>default</code>: Use the native platforms default strategy.</li>
+<li><code>reload</code>: The data for the URL will be loaded from the originating source. No existing cache data should be used to satisfy a URL load request.</li>
+<li><code>force-cache</code>: The existing cached data will be used to satisfy the request, regardless of its age or expiration date. If there is no existing data in the cache corresponding the request, the data is loaded from the originating source.</li>
+<li><code>only-if-cached</code>: The existing cache data will be used to satisfy a request, regardless of its age or expiration date. If there is no existing data in the cache corresponding to a URL load request, no attempt is made to load the data from the originating source, and the load is considered to have failed.</li>
+</ul>
+<pre class="jsx"><code>&lt;Image
+  source={{
+    uri: &#39;https://reactjs.org/logo-og.png&#39;,
+    cache: &#39;only-if-cached&#39;
+  }}
+  style={{ width: 400, height: 400 }}
+/&gt;</code></pre>
+<h2 id="local-filesystem-images">Local Filesystem Images</h2>
+<p>See <a href="https://github.com/react-native-community/react-native-cameraroll">CameraRoll</a> for an example of using local resources that are outside of <code>Images.xcassets</code>.</p>
+<h3 id="best-camera-roll-image">Best Camera Roll Image</h3>
+<p>iOS saves multiple sizes for the same image in your Camera Roll, it is very important to pick the one that’s as close as possible for performance reasons. You wouldn’t want to use the full quality 3264x2448 image as source when displaying a 200x200 thumbnail. If there’s an exact match, React Native will pick it, otherwise it’s going to use the first one that’s at least 50% bigger in order to avoid blur when resizing from a close size. All of this is done by default so you don’t have to worry about writing the tedious (and error prone) code to do it yourself.</p>
+<h2 id="why-not-automatically-size-everything">Why Not Automatically Size Everything?</h2>
+<p><em>In the browser</em> if you don’t give a size to an image, the browser is going to render a 0x0 element, download the image, and then render the image based with the correct size. The big issue with this behavior is that your UI is going to jump all around as images load, this makes for a very bad user experience.</p>
+<p><em>In React Native</em> this behavior is intentionally not implemented. It is more work for the developer to know the dimensions (or aspect ratio) of the remote image in advance, but we believe that it leads to a better user experience. Static images loaded from the app bundle via the <code>require('./my-icon.png')</code> syntax <em>can be automatically sized</em> because their dimensions are available immediately at the time of mounting.</p>
+<p>For example, the result of <code>require('./my-icon.png')</code> might be:</p>
+<pre class="jsx"><code>{&quot;__packager_asset&quot;:true,&quot;uri&quot;:&quot;my-icon.png&quot;,&quot;width&quot;:591,&quot;height&quot;:573}</code></pre>
+<h2 id="source-as-an-object">Source as an object</h2>
+<p>In React Native, one interesting decision is that the <code>src</code> attribute is named <code>source</code> and doesn’t take a string but an object with a <code>uri</code> attribute.</p>
+<pre class="jsx"><code>&lt;Image source={{ uri: &#39;something.jpg&#39; }} /&gt;</code></pre>
+<p>On the infrastructure side, the reason is that it allows us to attach metadata to this object. For example if you are using <code>require('./my-icon.png')</code>, then we add information about its actual location and size (don’t rely on this fact, it might change in the future!). This is also future proofing, for example we may want to support sprites at some point, instead of outputting <code>{uri: ...}</code>, we can output <code>{uri: ..., crop: {left: 10, top: 50, width: 20, height: 40}}</code> and transparently support spriting on all the existing call sites.</p>
+<p>On the user side, this lets you annotate the object with useful attributes such as the dimension of the image in order to compute the size it’s going to be displayed in. Feel free to use it as your data structure to store more information about your image.</p>
+<h2 id="background-image-via-nesting">Background Image via Nesting</h2>
+<p>A common feature request from developers familiar with the web is <code>background-image</code>. To handle this use case, you can use the <code>&lt;ImageBackground&gt;</code> component, which has the same props as <code>&lt;Image&gt;</code>, and add whatever children to it you would like to layer on top of it.</p>
+<p>You might not want to use <code>&lt;ImageBackground&gt;</code> in some cases, since the implementation is basic. Refer to <code>&lt;ImageBackground&gt;</code>’s <a href="imagebackground.md">documentation</a> for more insight, and create your own custom component when needed.</p>
+<pre class="jsx"><code>return (
+  &lt;ImageBackground source={...} style={{width: &#39;100%&#39;, height: &#39;100%&#39;}}&gt;
+    &lt;Text&gt;Inside&lt;/Text&gt;
+  &lt;/ImageBackground&gt;
+);</code></pre>
+<p>Note that you must specify some width and height style attributes.</p>
+<h2 id="ios-border-radius-styles">iOS Border Radius Styles</h2>
+<p>Please note that the following corner specific, border radius style properties are currently ignored by iOS’s image component:</p>
+<ul>
+<li><code>borderTopLeftRadius</code></li>
+<li><code>borderTopRightRadius</code></li>
+<li><code>borderBottomLeftRadius</code></li>
+<li><code>borderBottomRightRadius</code></li>
+</ul>
+<h2 id="off-thread-decoding">Off-thread Decoding</h2>
+<p>Image decoding can take more than a frame-worth of time. This is one of the major sources of frame drops on the web because decoding is done in the main thread. In React Native, image decoding is done in a different thread. In practice, you already need to handle the case when the image is not downloaded yet, so displaying the placeholder for a few more frames while it is decoding does not require any code change.</p>
+</body>
+</html>

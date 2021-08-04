@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>🚧 TimePickerAndroid</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">🚧 TimePickerAndroid</h1>
+</header>
+<blockquote>
+<p><strong>Removed.</strong> Use one of the <a href="https://reactnative.directory/?search=timepicker">community packages</a> instead.</p>
+</blockquote>
+<p>Opens the standard Android time picker dialog.</p>
+<h3 id="example">Example</h3>
+<pre class="jsx"><code>try {
+  const { action, hour, minute } = await TimePickerAndroid.open({
+    hour: 14,
+    minute: 0,
+    is24Hour: false // Will display &#39;2 PM&#39;
+  });
+  if (action !== TimePickerAndroid.dismissedAction) {
+    // Selected hour (0-23), minute (0-59)
+  }
+} catch ({ code, message }) {
+  console.warn(&#39;Cannot open time picker&#39;, message);
+}</code></pre>
+<hr />
+<h1 id="reference">Reference</h1>
+<h2 id="methods">Methods</h2>
+<h3 id="open"><code>open()</code></h3>
+<pre class="jsx"><code>static open(options)</code></pre>
+<p>Opens the standard Android time picker dialog.</p>
+<p>The available keys for the <code>options</code> object are:</p>
+<ul>
+<li><code>hour</code> (0-23) - the hour to show, defaults to the current time</li>
+<li><code>minute</code> (0-59) - the minute to show, defaults to the current time</li>
+<li><code>is24Hour</code> (boolean) - If <code>true</code>, the picker uses the 24-hour format. If <code>false</code>, the picker shows an AM/PM chooser. If undefined, the default for the current locale is used.</li>
+<li><code>mode</code> (<code>enum('clock', 'spinner', 'default')</code>) - set the time picker mode
+<ul>
+<li>‘clock’: Show a time picker in clock mode.</li>
+<li>‘spinner’: Show a time picker in spinner mode.</li>
+<li>‘default’: Show a default time picker based on Android versions.</li>
+</ul></li>
+</ul>
+<p>Returns a Promise which will be invoked an object containing <code>action</code>, <code>hour</code> (0-23), <code>minute</code> (0-59) if the user picked a time. If the user dismissed the dialog, the Promise will still be resolved with action being <code>TimePickerAndroid.dismissedAction</code> and all the other keys being undefined. <strong>Always</strong> check whether the <code>action</code> before reading the values.</p>
+<hr />
+<h3 id="timesetaction"><code>timeSetAction()</code></h3>
+<pre class="jsx"><code>static timeSetAction()</code></pre>
+<p>A time has been selected.</p>
+<hr />
+<h3 id="dismissedaction"><code>dismissedAction()</code></h3>
+<pre class="jsx"><code>static dismissedAction()</code></pre>
+<p>The dialog has been dismissed.</p>
+</body>
+</html>

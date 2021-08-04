@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Improving User Experience</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Improving User Experience</h1>
+</header>
+<h2 id="configure-text-inputs">Configure text inputs</h2>
+<p>Entering text on touch phone is a challenge - small screen, software keyboard. But based on what kind of data you need, you can make it easier by properly configuring the text inputs:</p>
+<ul>
+<li>Focus the first field automatically</li>
+<li>Use placeholder text as an example of expected data format</li>
+<li>Enable or disable autocapitalization and autocorrect</li>
+<li>Choose keyboard type (e.g. email, numeric)</li>
+<li>Make sure the return button focuses the next field or submits the form</li>
+</ul>
+<p>Check out <a href="textinput.md"><code>TextInput</code> docs</a> for more configuration options.</p>
+<video src="/img/textinput.mp4" muted autoplay loop width="320" height="430">
+</video>
+<p><a href="https://snack.expo.io/H1iGt2vSW">Try it on your phone</a></p>
+<h2 id="manage-layout-when-keyboard-is-visible">Manage layout when keyboard is visible</h2>
+<p>Software keyboard takes almost half of the screen. If you have interactive elements that can get covered by the keyboard, make sure they are still accessible by using the <a href="keyboardavoidingview.md"><code>KeyboardAvoidingView</code> component</a>.</p>
+<video src="/img/keyboardavoidingview.mp4" muted autoplay loop width="320" height="448">
+</video>
+<p><a href="https://snack.expo.io/ryxRkwnrW">Try it on your phone</a></p>
+<h2 id="make-tappable-areas-larger">Make tappable areas larger</h2>
+<p>On mobile phones it’s hard to be very precise when pressing buttons. Make sure all interactive elements are 44x44 or larger. One way to do this is to leave enough space for the element, <code>padding</code>, <code>minWidth</code> and <code>minHeight</code> style values can be useful for that. Alternatively, you can use <a href="touchablewithoutfeedback.md#hitslop"><code>hitSlop</code> prop</a> to increase interactive area without affecting the layout. Here’s a demo:</p>
+<video src="/img/hitslop.mp4" muted autoplay loop width="320" height="120">
+</video>
+<p><a href="https://snack.expo.io/rJPwCt4HZ">Try it on your phone</a></p>
+<h2 id="use-android-ripple">Use Android Ripple</h2>
+<p>Android API 21+ uses the material design ripple to provide user with feedback when they touch an interactable area on the screen. React Native exposes this through the <a href="touchablenativefeedback.md"><code>TouchableNativeFeedback</code> component</a>. Using this touchable effect instead of opacity or highlight will often make your app feel much more fitting on the platform. That said, you need to be careful when using it because it doesn’t work on iOS or on Android API &lt; 21, so you will need to fallback to using one of the other Touchable components on iOS. You can use a library like <a href="https://github.com/react-community/react-native-platform-touchable">react-native-platform-touchable</a> to handle the platform differences for you.</p>
+<video src="/img/ripple.mp4" muted autoplay loop width="320">
+</video>
+<p><a href="https://snack.expo.io/SJywqe3rZ">Try it on your phone</a></p>
+<h2 id="screen-orientation-lock">Screen orientation lock</h2>
+<p>Multiple screen orientations should work fine by default unless you’re using <code>Dimensions</code> API and don’t handle orientation changes. If you don’t want to support multiple screen orientations, you can lock the screen orientation to either portrait or landscape.</p>
+<p>On iOS, in the General tab and Deployment Info section of Xcode enable the Device Orientation you want to support (ensure you have selected iPhone from the Devices menu when making the changes). For Android, open the AndroidManifest.xml file and within the activity element add <code>'android:screenOrientation="portrait"'</code> to lock to portrait or <code>'android:screenOrientation="landscape"'</code> to lock to landscape.</p>
+<h1 id="learn-more">Learn more</h1>
+<p><a href="https://material.io/">Material Design</a> and <a href="https://developer.apple.com/ios/human-interface-guidelines/overview/design-principles/">Human Interface Guidelines</a> are great resources for learning more about designing for mobile platforms.</p>
+</body>
+</html>

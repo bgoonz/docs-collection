@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Image</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Image</h1>
+</header>
+<p>import Tabs from ‘<span class="citation" data-cites="theme/Tabs">@theme/Tabs</span>’; import TabItem from ‘<span class="citation" data-cites="theme/TabItem">@theme/TabItem</span>’; import constants from ‘<span class="citation" data-cites="site/core/TabsConstants">@site/core/TabsConstants</span>’;</p>
+<p>A React component for displaying different types of images, including network images, static resources, temporary local images, and images from local disk, such as the camera roll.</p>
+<p>This example shows fetching and displaying an image from local storage as well as one from network and even from data provided in the <code>'data:'</code> uri scheme.</p>
+<blockquote>
+<p>Note that for network and data images, you will need to manually specify the dimensions of your image!</p>
+</blockquote>
+<h2 id="examples">Examples</h2>
+<p><Tabs groupId="syntax" defaultValue={constants.defaultSyntax} values={constants.syntax}> <TabItem value="functional"></p>
+<p>```SnackPlayer name=Function%20Component%20Example</p>
+<p>import React from ‘react’; import { View, Image, StyleSheet } from ‘react-native’;</p>
+<p>const styles = StyleSheet.create({ container: { paddingTop: 50, }, tinyLogo: { width: 50, height: 50, }, logo: { width: 66, height: 58, }, });</p>
+<p>const DisplayAnImage = () =&gt; { return ( <View style={styles.container}> <Image
+        style={styles.tinyLogo}
+        source={require('@expo/snack-static/react-native-logo.png')}
+      /> &lt;Image style={styles.tinyLogo} source={{ uri: ‘https://reactnative.dev/img/tiny_logo.png’, }} /&gt; &lt;Image style={styles.logo} source={{ uri: ‘data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAAAzCAYAAAA6oTAqAAAAEXRFWHRTb2Z0d2FyZQBwbmdjcnVzaEB1SfMAAABQSURBVGje7dSxCQBACARB+2/ab8BEeQNhFi6WSYzYLYudDQYGBgYGBgYGBgYGBgYGBgZmcvDqYGBgmhivGQYGBgYGBgYGBgYGBgYGBgbmQw+P/eMrC5UTVAAAAABJRU5ErkJggg==’, }} /&gt; </View> ); }</p>
+<p>export default DisplayAnImage; ```</p>
+<p></TabItem> <TabItem value="classical"></p>
+<p>```SnackPlayer name=Class%20Component%20Example</p>
+<p>import React, { Component } from ‘react’; import { AppRegistry, View, Image, StyleSheet } from ‘react-native’;</p>
+<p>const styles = StyleSheet.create({ container: { paddingTop: 50, }, tinyLogo: { width: 50, height: 50, }, logo: { width: 66, height: 58, }, });</p>
+<p>class DisplayAnImage extends Component { render() { return ( <View style={styles.container}> <Image
+          style={styles.tinyLogo}
+          source={require('@expo/snack-static/react-native-logo.png')}
+        /> &lt;Image style={styles.tinyLogo} source={{uri: ‘https://reactnative.dev/img/tiny_logo.png’}} /&gt; &lt;Image style={styles.logo} source={{uri: ‘data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAAAzCAYAAAA6oTAqAAAAEXRFWHRTb2Z0d2FyZQBwbmdjcnVzaEB1SfMAAABQSURBVGje7dSxCQBACARB+2/ab8BEeQNhFi6WSYzYLYudDQYGBgYGBgYGBgYGBgYGBgZmcvDqYGBgmhivGQYGBgYGBgYGBgYGBgYGBgbmQw+P/eMrC5UTVAAAAABJRU5ErkJggg==’}} /&gt; </View> ); } }</p>
+<p>export default DisplayAnImage; ```</p>
+<p></TabItem> </Tabs></p>
+<p>You can also add <code>style</code> to an image:</p>
+<p><Tabs groupId="syntax" defaultValue={constants.defaultSyntax} values={constants.syntax}> <TabItem value="functional"></p>
+<p>```SnackPlayer name=Function%20Component%20Example</p>
+<p>import React from ‘react’; import { View, Image, StyleSheet } from ‘react-native’;</p>
+<p>const styles = StyleSheet.create({ container: { paddingTop: 50, }, stretch: { width: 50, height: 200, resizeMode: ‘stretch’, }, });</p>
+<p>const DisplayAnImageWithStyle = () =&gt; { return ( <View style={styles.container}> <Image
+        style={styles.stretch}
+        source={require('@expo/snack-static/react-native-logo.png')}
+      /> </View> ); }</p>
+<p>export default DisplayAnImageWithStyle; ```</p>
+<p></TabItem> <TabItem value="classical"></p>
+<p>```SnackPlayer name=Class%20Component%20Example</p>
+<p>import React, { Component } from ‘react’; import { View, Image, StyleSheet } from ‘react-native’;</p>
+<p>const styles = StyleSheet.create({ stretch: { width: 50, height: 200, resizeMode: ‘stretch’ } });</p>
+<p>class DisplayAnImageWithStyle extends Component { render() { return ( <View> <Image
+          style={styles.stretch}
+          source={require('@expo/snack-static/react-native-logo.png')}
+        /> </View> ); } }</p>
+<p>export default DisplayAnImageWithStyle; ```</p>
+<p></TabItem> </Tabs></p>
+<h2 id="gif-and-webp-support-on-android">GIF and WebP support on Android</h2>
+<p>When building your own native code, GIF and WebP are not supported by default on Android.</p>
+<p>You will need to add some optional modules in <code>android/app/build.gradle</code>, depending on the needs of your app.</p>
+<pre class="groovy"><code>dependencies {
+  // If your app supports Android versions before Ice Cream Sandwich (API level 14)
+  implementation &#39;com.facebook.fresco:animated-base-support:1.3.0&#39;
+
+  // For animated GIF support
+  implementation &#39;com.facebook.fresco:animated-gif:2.0.0&#39;
+
+  // For WebP support, including animated WebP
+  implementation &#39;com.facebook.fresco:animated-webp:2.1.0&#39;
+  implementation &#39;com.facebook.fresco:webpsupport:2.0.0&#39;
+
+  // For WebP support, without animations
+  implementation &#39;com.facebook.fresco:webpsupport:2.0.0&#39;
+}</code></pre>
+<hr />
+<h1 id="reference">Reference</h1>
+<h2 id="props">Props</h2>
+<h3 id="view-props"><a href="view.md#props">View Props</a></h3>
+<p>Inherits <a href="view#props">View Props</a>.</p>
+<hr />
+<h3 id="accessible"><code>accessible</code></h3>
+<p>When true, indicates the image is an accessibility element.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>bool</td>
+<td><code>false</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="accessibilitylabel"><code>accessibilityLabel</code></h3>
+<p>The text that’s read by the screen reader when the user interacts with the image.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>string</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="blurradius"><code>blurRadius</code></h3>
+<p>blurRadius: the blur radius of the blur filter added to the image.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Tip : IOS you will need to increase <code>blurRadius</code> more than <code>5</code></p>
+</blockquote>
+<hr />
+### <code>capInsets</code>
+<div class="label ios">
+iOS
+</div>
+<p>When the image is resized, the corners of the size specified by <code>capInsets</code> will stay a fixed size, but the center content and borders of the image will be stretched. This is useful for creating resizable rounded buttons, shadows, and other resizable assets. More info in the <a href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIImage_Class/index.html#//apple_ref/occ/instm/UIImage/resizableImageWithCapInsets">official Apple documentation</a>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="rect">Rect</a></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="defaultsource"><code>defaultSource</code></h3>
+<p>A static image to display while loading the image source.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="image#imagesource">ImageSource</a></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Note:</strong> On Android, the default source prop is ignored on debug builds.</p>
+</blockquote>
+<hr />
+### <code>fadeDuration</code>
+<div class="label android">
+Android
+</div>
+<p>Fade animation duration in miliseconds.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number</td>
+<td><code>300</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="loadingindicatorsource"><code>loadingIndicatorSource</code></h3>
+<p>Similarly to <code>source</code>, this property represents the resource used to render the loading indicator for the image, displayed until image is ready to be displayed, typically after when it got downloaded from network.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="image#imagesource">ImageSource</a> (<code>uri</code> only), number</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="onerror"><code>onError</code></h3>
+<p>Invoked on load error.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>function(<code>{ nativeEvent: { error } }</code>) =&gt; void</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="onlayout"><code>onLayout</code></h3>
+<p>Invoked on mount and on layout changes.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>function(<a href="layoutevent">LayoutEvent</a>) =&gt; void</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="onload"><code>onLoad</code></h3>
+<p>Invoked when load completes successfully.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>function(<a href="image#imageloadevent">ImageLoadEvent</a>) =&gt; void</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="onloadend"><code>onLoadEnd</code></h3>
+<p>Invoked when load either succeeds or fails.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>function() =&gt; void</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="onloadstart"><code>onLoadStart</code></h3>
+<p>Invoked on load start.</p>
+<p><strong>Example:</strong> <code>onLoadStart={() =&gt; this.setState({loading: true})}</code></p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>function() =&gt; void</td>
+</tr>
+</tbody>
+</table>
+<hr />
+### <code>onPartialLoad</code>
+<div class="label ios">
+iOS
+</div>
+<p>Invoked when a partial load of the image is complete. The definition of what constitutes a “partial load” is loader specific though this is meant for progressive JPEG loads.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>function() =&gt; void</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="onprogress"><code>onProgress</code></h3>
+<p>Invoked on download progress.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>function(<code>{ nativeEvent: { loaded, total } }</code>) =&gt; void</td>
+</tr>
+</tbody>
+</table>
+<hr />
+### <code>progressiveRenderingEnabled</code>
+<div class="label android">
+Android
+</div>
+<p>When <code>true</code>, enables progressive jpeg streaming - https://frescolib.org/docs/progressive-jpegs.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>bool</td>
+<td><code>false</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+### <code>resizeMethod</code>
+<div class="label android">
+Android
+</div>
+<p>The mechanism that should be used to resize the image when the image’s dimensions differ from the image view’s dimensions. Defaults to <code>auto</code>.</p>
+<ul>
+<li><p><code>auto</code>: Use heuristics to pick between <code>resize</code> and <code>scale</code>.</p></li>
+<li><p><code>resize</code>: A software operation which changes the encoded image in memory before it gets decoded. This should be used instead of <code>scale</code> when the image is much larger than the view.</p></li>
+<li><p><code>scale</code>: The image gets drawn downscaled or upscaled. Compared to <code>resize</code>, <code>scale</code> is faster (usually hardware accelerated) and produces higher quality images. This should be used if the image is smaller than the view. It should also be used if the image is slightly bigger than the view.</p></li>
+</ul>
+<p>More details about <code>resize</code> and <code>scale</code> can be found at http://frescolib.org/docs/resizing.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>enum(<code>'auto'</code>, <code>'resize'</code>, <code>'scale'</code>)</td>
+<td><code>'auto'</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="resizemode"><code>resizeMode</code></h3>
+<p>Determines how to resize the image when the frame doesn’t match the raw image dimensions. Defaults to <code>cover</code>.</p>
+<ul>
+<li><p><code>cover</code>: Scale the image uniformly (maintain the image’s aspect ratio) so that both dimensions (width and height) of the image will be equal to or larger than the corresponding dimension of the view (minus padding).</p></li>
+<li><p><code>contain</code>: Scale the image uniformly (maintain the image’s aspect ratio) so that both dimensions (width and height) of the image will be equal to or less than the corresponding dimension of the view (minus padding).</p></li>
+<li><p><code>stretch</code>: Scale width and height independently, This may change the aspect ratio of the src.</p></li>
+<li><p><code>repeat</code>: Repeat the image to cover the frame of the view. The image will keep its size and aspect ratio, unless it is larger than the view, in which case it will be scaled down uniformly so that it is contained in the view.</p></li>
+<li><p><code>center</code>: Center the image in the view along both dimensions. If the image is larger than the view, scale it down uniformly so that it is contained in the view.</p></li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>enum(<code>'cover'</code>, <code>'contain'</code>, <code>'stretch'</code>, <code>'repeat'</code>, <code>'center'</code>)</td>
+<td><code>'cover'</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="source"><code>source</code></h3>
+<p>The image source (either a remote URL or a local file resource).</p>
+<p>This prop can also contain several remote URLs, specified together with their width and height and potentially with scale/other URI arguments. The native side will then choose the best <code>uri</code> to display based on the measured size of the image container. A <code>cache</code> property can be added to control how networked request interacts with the local cache. (For more information see <a href="images#cache-control-ios-only">Cache Control for Images</a>).</p>
+<p>The currently supported formats are <code>png</code>, <code>jpg</code>, <code>jpeg</code>, <code>bmp</code>, <code>gif</code>, <code>webp</code>, <code>psd</code> (iOS only). In addition, iOS supports several RAW image formats. Refer to Apple’s documentation for the current list of supported camera models (for iOS 12, see https://support.apple.com/en-ca/HT208967).</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="image#imagesource">ImageSource</a></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="style"><code>style</code></h3>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="image-style-props#props">Image Style Props</a>, <a href="layout-props#props">Layout Props</a>, <a href="shadow-props#props">Shadow Props</a>, <a href="transforms#props">Transforms</a></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="testid"><code>testID</code></h3>
+<p>A unique identifier for this element to be used in UI Automation testing scripts.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>string</td>
+</tr>
+</tbody>
+</table>
+<h2 id="methods">Methods</h2>
+### <code>abortPrefetch()</code>
+<div class="label android">
+Android
+</div>
+<pre class="jsx"><code>Image.abortPrefetch(requestId);</code></pre>
+<p>Abort prefetch request.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+| requestId
+<div class="label basic required">
+Required
+</div>
+<p>| number | Request id as returned by <code>prefetch()</code>. |</p>
+<hr />
+<h3 id="getsize"><code>getSize()</code></h3>
+<pre class="jsx"><code>Image.getSize(uri, success, [failure]);</code></pre>
+<p>Retrieve the width and height (in pixels) of an image prior to displaying it. This method can fail if the image cannot be found, or fails to download.</p>
+<p>In order to retrieve the image dimensions, the image may first need to be loaded or downloaded, after which it will be cached. This means that in principle you could use this method to preload images, however it is not optimized for that purpose, and may in future be implemented in a way that does not fully load/download the image data. A proper, supported way to preload images will be provided as a separate API.</p>
+<p><strong>Parameters:</strong></p>
+|
+<div data-classname="wideColumn">
+Name
+</div>
+<pre><code>               | Type     | Description                                                                                          |</code></pre>
+| ——————————————————– | ——– | —————————————————————————————————- | | uri
+<div class="label basic required">
+Required
+</div>
+<pre><code> | string   | The location of the image.                                                                           |</code></pre>
+| success
+<div class="label basic required">
+Required
+</div>
+<p>| function | The function that will be called if the image was successfully found and width and height retrieved. | | failure | function | The function that will be called if there was an error, such as failing to retrieve the image. |</p>
+<hr />
+<h3 id="getsizewithheaders"><code>getSizeWithHeaders()</code></h3>
+<pre class="jsx"><code>Image.getSizeWithHeaders(uri, headers, success, [failure]);</code></pre>
+<p>Retrieve the width and height (in pixels) of an image prior to displaying it with the ability to provide the headers for the request. This method can fail if the image cannot be found, or fails to download. It also does not work for static image resources.</p>
+<p>In order to retrieve the image dimensions, the image may first need to be loaded or downloaded, after which it will be cached. This means that in principle you could use this method to preload images, however it is not optimized for that purpose, and may in future be implemented in a way that does not fully load/download the image data. A proper, supported way to preload images will be provided as a separate API.</p>
+<p><strong>Parameters:</strong></p>
+|
+<div data-classname="wideColumn">
+Name
+</div>
+<pre><code>               | Type     | Description                                                                                          |</code></pre>
+| ——————————————————– | ——– | —————————————————————————————————- | | uri
+<div class="label basic required">
+Required
+</div>
+<pre><code> | string   | The location of the image.                                                                           |</code></pre>
+| headers
+<div class="label basic required">
+Required
+</div>
+| object | The headers for the request. | | success
+<div class="label basic required">
+Required
+</div>
+<p>| function | The function that will be called if the image was successfully found and width and height retrieved. | | failure | function | The function that will be called if there was an error, such as failing to retrieve the image. |</p>
+<hr />
+<h3 id="prefetch"><code>prefetch()</code></h3>
+<pre class="jsx"><code>await Image.prefetch(url);</code></pre>
+<p>Prefetches a remote image for later use by downloading it to the disk cache. Returns a promise which resolves to a boolean.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+| url
+<div class="label basic required">
+Required
+</div>
+| string | The remote location of the image. | | callback | function
+<div class="label android">
+Android
+</div>
+<p>| The function that will be called with the <code>requestId</code>. |</p>
+<hr />
+<h3 id="querycache"><code>queryCache()</code></h3>
+<pre class="jsx"><code>await Image.queryCache(urls);</code></pre>
+<p>Perform cache interrogation. Returns a promise which resolves to a mapping from URL to cache status, such as “disk”, “memory” or “disk/memory”. If a requested URL is not in the mapping, it means it’s not in the cache.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+| urls
+<div class="label basic required">
+Required
+</div>
+<p>| array | List of image URLs to check the cache for. |</p>
+<hr />
+<h3 id="resolveassetsource"><code>resolveAssetSource()</code></h3>
+<pre class="jsx"><code>Image.resolveAssetSource(source);</code></pre>
+<p>Resolves an asset reference into an object which has the properties <code>uri</code>, <code>width</code>, and <code>height</code>.</p>
+<p><strong>Parameters:</strong></p>
+|
+<div data-classname="wideColumn">
+Name
+</div>
+<pre><code>              | Type                                     | Description                                                                  |</code></pre>
+| ——————————————————- | —————————————- | —————————————————————————- | | source
+<div class="label basic required">
+Required
+</div>
+<p>| <a href="image#imagesource">ImageSource</a>, number | A number (opaque type returned by <code>require('./foo.png')</code>) or an ImageSource. |</p>
+<h2 id="type-definitions">Type Definitions</h2>
+### ImageCacheEnum
+<div class="label ios">
+iOS
+</div>
+<p>Enum which can be used to set the cache handling or stategy for the potentially cached responses.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>enum(<code>'default'</code>, <code>'reload'</code>, <code>'force-cache'</code>, <code>'only-if-cached'</code>)</td>
+<td><code>'default'</code></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><code>default</code>: Use the native platforms default strategy.</li>
+<li><code>reload</code>: The data for the URL will be loaded from the originating source. No existing cache data should be used to satisfy a URL load request.</li>
+<li><code>force-cache</code>: The existing cached data will be used to satisfy the request, regardless of its age or expiration date. If there is no existing data in the cache corresponding the request, the data is loaded from the originating source.</li>
+<li><code>only-if-cached</code>: The existing cache data will be used to satisfy a request, regardless of its age or expiration date. If there is no existing data in the cache corresponding to a URL load request, no attempt is made to load the data from the originating source, and the load is considered to have failed.</li>
+</ul>
+<h3 id="imageloadevent">ImageLoadEvent</h3>
+<p>Object returned in the <code>onLoad</code> callback.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>object</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Properties:</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>width</td>
+<td>number</td>
+<td>The width of loaded image.</td>
+</tr>
+<tr class="even">
+<td>height</td>
+<td>number</td>
+<td>The height of loaded image.</td>
+</tr>
+<tr class="odd">
+<td>uri</td>
+<td>string</td>
+<td>A string representing the resource identifier for the image.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="imagesource">ImageSource</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>object, array of objects, number</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Properties (if passing as object or array of objects):</strong></p>
+|
+<div data-classname="wideColumn">
+Name
+</div>
+<table>
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 16%" />
+<col style="width: 69%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Description</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>uri</td>
+<td>string</td>
+<td>A string representing the resource identifier for the image, which could be an http address, a local file path, or the name of a static image resource.</td>
+</tr>
+<tr class="even">
+<td>width</td>
+<td>number</td>
+<td>Can be specified if known at build time, in which case the value will be used to set the default <code>&lt;Image/&gt;</code> component dimension.</td>
+</tr>
+<tr class="odd">
+<td>height</td>
+<td>number</td>
+<td>Can be specified if known at build time, in which case the value will be used to set the default <code>&lt;Image/&gt;</code> component dimension.</td>
+</tr>
+<tr class="even">
+<td>scale</td>
+<td>number</td>
+<td>Used to indicate the scale factor of the image. Defaults to <code>1.0</code> if unspecified, meaning that one image pixel equates to one display point / DIP.</td>
+</tr>
+</tbody>
+</table>
+| bundle
+<div class="label ios">
+iOS
+</div>
+| string | The iOS asset bundle which the image is included in. This will default to <code>[NSBundle mainBundle]</code> if not set. | | method | string | The HTTP Method to use. Defaults to <code>'GET'</code> if not specified. | | headers | object | An object representing the HTTP headers to send along with the request for a remote image. | | body | string | The HTTP body to send with the request. This must be a valid UTF-8 string, and will be sent exactly as specified, with no additional encoding (e.g. URL-escaping or base64) applied. | | cache
+<div class="label ios">
+iOS
+</div>
+<p>| <a href="image#imagecacheenum-ios">ImageCacheEnum</a> | Determines how the requests handles potentially cached responses. |</p>
+<p><strong>If passing a number:</strong></p>
+<ul>
+<li><code>number</code> - opaque type returned by something like <code>require('./image.jpg')</code>.</li>
+</ul>
+</body>
+</html>

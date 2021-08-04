@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>SafeAreaView</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">SafeAreaView</h1>
+</header>
+<p>The purpose of <code>SafeAreaView</code> is to render content within the safe area boundaries of a device. It is currently only applicable to iOS devices with iOS version 11 or later.</p>
+<p><code>SafeAreaView</code> renders nested content and automatically applies padding to reflect the portion of the view that is not covered by navigation bars, tab bars, toolbars, and other ancestor views. Moreover, and most importantly, Safe Area’s paddings reflect the physical limitation of the screen, such as rounded corners or camera notches (i.e. the sensor housing area on iPhone X).</p>
+<h2 id="example">Example</h2>
+<p>To use, wrap your top level view with a <code>SafeAreaView</code> with a <code>flex: 1</code> style applied to it. You may also want to use a background color that matches your application’s design.</p>
+<p>```SnackPlayer name=SafeAreaView&amp;supportedPlatforms=ios import React from ‘react’; import { StyleSheet, Text, SafeAreaView } from ‘react-native’;</p>
+<p>const App = () =&gt; { return ( <SafeAreaView style={styles.container}> <Text>Page content</Text> </SafeAreaView> ); }</p>
+<p>const styles = StyleSheet.create({ container: { flex: 1, }, });</p>
+<p>export default App; ```</p>
+<hr />
+<h1 id="reference">Reference</h1>
+<h2 id="props">Props</h2>
+<h3 id="view-props"><a href="view.md#props">View Props</a></h3>
+<p>Inherits <a href="view.md#props">View Props</a>.</p>
+<blockquote>
+<p>As padding is used to implement the behavior of the component, padding rules in styles applied to a <code>SafeAreaView</code> will be ignored and can cause different results depending on the platform. See <a href="https://github.com/facebook/react-native/issues/22211">#22211</a> for details.</p>
+</blockquote>
+<hr />
+<h3 id="emulateunlesssupported"><code>emulateUnlessSupported</code></h3>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>bool</td>
+<td>No</td>
+<td>true</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

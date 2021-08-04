@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Profiling</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Profiling</h1>
+    </header>
+    <p>
+      Use the built-in profiler to get detailed information about work done in
+      the JavaScript thread and main thread side-by-side. Access it by selecting
+      Perf Monitor from the Debug menu.
+    </p>
+    <p>
+      For iOS, Instruments is an invaluable tool, and on Android you should
+      learn to use
+      <a href="profiling.md#profiling-android-ui-performance-with-systrace"
+        ><code>systrace</code></a
+      >.
+    </p>
+    <p>
+      But first,
+      <a href="performance.md#running-in-development-mode-devtrue"
+        ><strong>make sure that Development Mode is OFF!</strong></a
+      >
+      You should see
+      <code
+        >__DEV__ === false, development-level warning are OFF, performance
+        optimizations are ON</code
+      >
+      in your application logs.
+    </p>
+    <p>
+      Another way to profile JavaScript is to use the Chrome profiler while
+      debugging. This won’t give you accurate results as the code is running in
+      Chrome but will give you a general idea of where bottlenecks might be. Run
+      the profiler under Chrome’s <code>Performance</code> tab. A flame graph
+      will appear under <code>User Timing</code>. To view more details in
+      tabular format, click at the <code>Bottom Up</code> tab below and then
+      select <code>DedicatedWorker Thread</code> at the top left menu.
+    </p>
+    <h2 id="profiling-android-ui-performance-with-systrace">
+      Profiling Android UI Performance with <code>systrace</code>
+    </h2>
+    <p>
+      Android supports 10k+ different phones and is generalized to support
+      software rendering: the framework architecture and need to generalize
+      across many hardware targets unfortunately means you get less for free
+      relative to iOS. But sometimes, there are things you can improve – and
+      many times it’s not native code’s fault at all!
+    </p>
+    <p>
+      The first step for debugging this jank is to answer the fundamental
+      question of where your time is being spent during each 16ms frame. For
+      that, we’ll be using a standard Android profiling tool called
+      <code>systrace</code>.
+    </p>
+    <p>
+      <code>systrace</code> is a standard Android marker-based profiling tool
+      (and is installed when you install the Android platform-tools package).
+      Profiled code blocks are surrounded by start/end markers which are then
+      visualized in a colorful chart format. Both the Android SDK and React
+      Native framework provide standard markers that you can visualize.
+    </p>
+    <h3 id="collecting-a-trace">1. Collecting a trace</h3>
+    <p>
+      First, connect a device that exhibits the stuttering you want to
+      investigate to your computer via USB and get it to the point right before
+      the navigation/animation you want to profile. Run <code>systrace</code> as
+      follows:
+    </p>
+    <pre
+      class="shell"
+    ><code>$ &lt;path_to_android_sdk&gt;/platform-tools/systrace/systrace.py --time=10 -o trace.html sched gfx view -a &lt;your_package_name&gt;</code></pre>
+    <p>A quick breakdown of this command:</p>
+    <ul>
+      <li>
+        <code>time</code> is the length of time the trace will be collected in
+        seconds
+      </li>
+      <li>
+        <code>sched</code>, <code>gfx</code>, and <code>view</code> are the
+        android SDK tags (collections of markers) we care about:
+        <code>sched</code> gives you information about what’s running on each
+        core of your phone, <code>gfx</code> gives you graphics info such as
+        frame boundaries, and <code>view</code> gives you information about
+        measure, layout, and draw passes
+      </li>
+      <li>
+        <code>-a &lt;your_package_name&gt;</code> enables app-specific markers,
+        specifically the ones built into the React Native framework.
+        <code>your_package_name</code> can be found in the
+        <code>AndroidManifest.xml</code> of your app and looks like
+        <code>com.example.app</code>
+      </li>
+    </ul>
+    <p>
+      Once the trace starts collecting, perform the animation or interaction you
+      care about. At the end of the trace, systrace will give you a link to the
+      trace which you can open in your browser.
+    </p>
+    <h3 id="reading-the-trace">2. Reading the trace</h3>
+    <p>
+      After opening the trace in your browser (preferably Chrome), you should
+      see something like this:
+    </p>
+    <figure>
+      <img src="/docs/assets/SystraceExample.png" alt="Example" />
+      <figcaption>Example</figcaption>
+    </figure>
+    <blockquote>
+      <p><strong>HINT</strong>: Use the WASD keys to strafe and zoom</p>
+    </blockquote>
+    <p>
+      If your trace .html file isn’t opening correctly, check your browser
+      console for the following:
+    </p>
+    <figure>
+      <img src="/docs/assets/ObjectObserveError.png" alt="ObjectObserveError" />
+      <figcaption>ObjectObserveError</figcaption>
+    </figure>
+    <p>
+      Since <code>Object.observe</code> was deprecated in recent browsers, you
+      may have to open the file from the Google Chrome Tracing tool. You can do
+      so by:
+    </p>
+    <ul>
+      <li>Opening tab in chrome chrome://tracing</li>
+      <li>Selecting load</li>
+      <li>Selecting the html file generated from the previous command.</li>
+    </ul>
+    <blockquote>
+      <p><strong>Enable VSync highlighting</strong></p>
+      <p>
+        Check this checkbox at the top right of the screen to highlight the 16ms
+        frame boundaries:
+      </p>
+      <figure>
+        <img
+          src="/docs/assets/SystraceHighlightVSync.png"
+          alt="Enable VSync Highlighting"
+        />
+        <figcaption>Enable VSync Highlighting</figcaption>
+      </figure>
+      <p>
+        You should see zebra stripes as in the screenshot above. If you don’t,
+        try profiling on a different device: Samsung has been known to have
+        issues displaying vsyncs while the Nexus series is generally pretty
+        reliable.
+      </p>
+    </blockquote>
+    <h3 id="find-your-process">3. Find your process</h3>
+    <p>
+      Scroll until you see (part of) the name of your package. In this case, I
+      was profiling <code>com.facebook.adsmanager</code>, which shows up as
+      <code>book.adsmanager</code> because of silly thread name limits in the
+      kernel.
+    </p>
+    <p>
+      On the left side, you’ll see a set of threads which correspond to the
+      timeline rows on the right. There are a few threads we care about for our
+      purposes: the UI thread (which has your package name or the name UI
+      Thread), <code>mqt_js</code>, and <code>mqt_native_modules</code>. If
+      you’re running on Android 5+, we also care about the Render Thread.
+    </p>
+    <ul>
+      <li>
+        <p>
+          <strong>UI Thread.</strong> This is where standard android
+          measure/layout/draw happens. The thread name on the right will be your
+          package name (in my case book.adsmanager) or UI Thread. The events
+          that you see on this thread should look something like this and have
+          to do with <code>Choreographer</code>, <code>traversals</code>, and
+          <code>DispatchUI</code>:
+        </p>
+        <figure>
+          <img
+            src="/docs/assets/SystraceUIThreadExample.png"
+            alt="UI Thread Example"
+          />
+          <figcaption>UI Thread Example</figcaption>
+        </figure>
+      </li>
+      <li>
+        <p>
+          <strong>JS Thread.</strong> This is where JavaScript is executed. The
+          thread name will be either <code>mqt_js</code> or
+          <code>&lt;...&gt;</code> depending on how cooperative the kernel on
+          your device is being. To identify it if it doesn’t have a name, look
+          for things like <code>JSCall</code>,
+          <code>Bridge.executeJSCall</code>, etc:
+        </p>
+        <figure>
+          <img
+            src="/docs/assets/SystraceJSThreadExample.png"
+            alt="JS Thread Example"
+          />
+          <figcaption>JS Thread Example</figcaption>
+        </figure>
+      </li>
+      <li>
+        <p>
+          <strong>Native Modules Thread.</strong> This is where native module
+          calls (e.g. the <code>UIManager</code>) are executed. The thread name
+          will be either <code>mqt_native_modules</code> or
+          <code>&lt;...&gt;</code>. To identify it in the latter case, look for
+          things like <code>NativeCall</code>,
+          <code>callJavaModuleMethod</code>, and <code>onBatchComplete</code>:
+        </p>
+        <figure>
+          <img
+            src="/docs/assets/SystraceNativeModulesThreadExample.png"
+            alt="Native Modules Thread Example"
+          />
+          <figcaption>Native Modules Thread Example</figcaption>
+        </figure>
+      </li>
+      <li>
+        <p>
+          <strong>Bonus: Render Thread.</strong> If you’re using Android L (5.0)
+          and up, you will also have a render thread in your application. This
+          thread generates the actual OpenGL commands used to draw your UI. The
+          thread name will be either <code>RenderThread</code> or
+          <code>&lt;...&gt;</code>. To identify it in the latter case, look for
+          things like <code>DrawFrame</code> and <code>queueBuffer</code>:
+        </p>
+        <figure>
+          <img
+            src="/docs/assets/SystraceRenderThreadExample.png"
+            alt="Render Thread Example"
+          />
+          <figcaption>Render Thread Example</figcaption>
+        </figure>
+      </li>
+    </ul>
+    <h2 id="identifying-a-culprit">Identifying a culprit</h2>
+    <p>A smooth animation should look something like the following:</p>
+    <figure>
+      <img src="/docs/assets/SystraceWellBehaved.png" alt="Smooth Animation" />
+      <figcaption>Smooth Animation</figcaption>
+    </figure>
+    <p>
+      Each change in color is a frame – remember that in order to display a
+      frame, all our UI work needs to be done by the end of that 16ms period.
+      Notice that no thread is working close to the frame boundary. An
+      application rendering like this is rendering at 60 FPS.
+    </p>
+    <p>If you noticed chop, however, you might see something like this:</p>
+    <figure>
+      <img
+        src="/docs/assets/SystraceBadJS.png"
+        alt="Choppy Animation from JS"
+      />
+      <figcaption>Choppy Animation from JS</figcaption>
+    </figure>
+    <p>
+      Notice that the JS thread is executing almost all the time, and across
+      frame boundaries! This app is not rendering at 60 FPS. In this case,
+      <strong>the problem lies in JS</strong>.
+    </p>
+    <p>You might also see something like this:</p>
+    <figure>
+      <img
+        src="/docs/assets/SystraceBadUI.png"
+        alt="Choppy Animation from UI"
+      />
+      <figcaption>Choppy Animation from UI</figcaption>
+    </figure>
+    <p>
+      In this case, the UI and render threads are the ones that have work
+      crossing frame boundaries. The UI that we’re trying to render on each
+      frame is requiring too much work to be done. In this case,
+      <strong>the problem lies in the native views being rendered</strong>.
+    </p>
+    <p>
+      At this point, you’ll have some very helpful information to inform your
+      next steps.
+    </p>
+    <h2 id="resolving-javascript-issues">Resolving JavaScript issues</h2>
+    <p>
+      If you identified a JS problem, look for clues in the specific JS that
+      you’re executing. In the scenario above, we see
+      <code>RCTEventEmitter</code> being called multiple times per frame. Here’s
+      a zoom-in of the JS thread from the trace above:
+    </p>
+    <figure>
+      <img src="/docs/assets/SystraceBadJS2.png" alt="Too much JS" />
+      <figcaption>Too much JS</figcaption>
+    </figure>
+    <p>
+      This doesn’t seem right. Why is it being called so often? Are they
+      actually different events? The answers to these questions will probably
+      depend on your product code. And many times, you’ll want to look into
+      <a
+        href="https://reactjs.org/docs/react-component.html#shouldcomponentupdate"
+        >shouldComponentUpdate</a
+      >.
+    </p>
+    <h2 id="resolving-native-ui-issues">Resolving native UI Issues</h2>
+    <p>
+      If you identified a native UI problem, there are usually two scenarios:
+    </p>
+    <ol type="1">
+      <li>
+        the UI you’re trying to draw each frame involves too much work on the
+        GPU, or
+      </li>
+      <li>
+        You’re constructing new UI during the animation/interaction
+        (e.g. loading in new content during a scroll).
+      </li>
+    </ol>
+    <h3 id="too-much-gpu-work">Too much GPU work</h3>
+    <p>
+      In the first scenario, you’ll see a trace that has the UI thread and/or
+      Render Thread looking like this:
+    </p>
+    <figure>
+      <img src="/docs/assets/SystraceBadUI.png" alt="Overloaded GPU" />
+      <figcaption>Overloaded GPU</figcaption>
+    </figure>
+    <p>
+      Notice the long amount of time spent in <code>DrawFrame</code> that
+      crosses frame boundaries. This is time spent waiting for the GPU to drain
+      its command buffer from the previous frame.
+    </p>
+    <p>To mitigate this, you should:</p>
+    <ul>
+      <li>
+        investigate using <code>renderToHardwareTextureAndroid</code> for
+        complex, static content that is being animated/transformed (e.g. the
+        <code>Navigator</code> slide/alpha animations)
+      </li>
+      <li>
+        make sure that you are <strong>not</strong> using
+        <code>needsOffscreenAlphaCompositing</code>, which is disabled by
+        default, as it greatly increases the per-frame load on the GPU in most
+        cases.
+      </li>
+    </ul>
+    <p>
+      If these don’t help and you want to dig deeper into what the GPU is
+      actually doing, you can check out
+      <a href="http://www.androiddocs.com/tools/help/gltracer.html"
+        >Tracer for OpenGL ES</a
+      >.
+    </p>
+    <h3 id="creating-new-views-on-the-ui-thread">
+      Creating new views on the UI thread
+    </h3>
+    <p>In the second scenario, you’ll see something more like this:</p>
+    <figure>
+      <img src="/docs/assets/SystraceBadCreateUI.png" alt="Creating Views" />
+      <figcaption>Creating Views</figcaption>
+    </figure>
+    <p>
+      Notice that first the JS thread thinks for a bit, then you see some work
+      done on the native modules thread, followed by an expensive traversal on
+      the UI thread.
+    </p>
+    <p>
+      There isn’t a quick way to mitigate this unless you’re able to postpone
+      creating new UI until after the interaction, or you are able to simplify
+      the UI you’re creating. The react native team is working on an
+      infrastructure level solution for this that will allow new UI to be
+      created and configured off the main thread, allowing the interaction to
+      continue smoothly.
+    </p>
+  </body>
+</html>

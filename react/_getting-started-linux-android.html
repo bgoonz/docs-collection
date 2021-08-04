@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>_getting-started-linux-android</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<h2 id="installing-dependencies">Installing dependencies</h2>
+<p>You will need Node, the React Native command line interface, a JDK, and Android Studio.</p>
+<p>While you can use any editor of your choice to develop your app, you will need to install Android Studio in order to set up the necessary tooling to build your React Native app for Android.</p>
+<h3>
+Node
+</h3>
+<p>Follow the <a href="https://nodejs.org/en/download/package-manager/">installation instructions for your Linux distribution</a> to install Node 12 or newer.</p>
+<h3>
+Java Development Kit
+</h3>
+<p>React Native requires at least the version 8 of the Java SE Development Kit (JDK). You may download and install <a href="http://openjdk.java.net">OpenJDK</a> from <a href="https://adoptopenjdk.net/">AdoptOpenJDK</a> or your system packager. You may also <a href="https://www.oracle.com/java/technologies/javase-jdk14-downloads.html">Download and install Oracle JDK 14</a> if desired.</p>
+<h3>
+Android development environment
+</h3>
+<p>Setting up your development environment can be somewhat tedious if you’re new to Android development. If you’re already familiar with Android development, there are a few things you may need to configure. In either case, please make sure to carefully follow the next few steps.</p>
+<h4>
+<ol type="1">
+<li>Install Android Studio
+</h4></li>
+</ol>
+<p><a href="https://developer.android.com/studio/index.html">Download and install Android Studio</a>. While on Android Studio installation wizard, make sure the boxes next to all of the following items are checked:</p>
+<ul>
+<li><code>Android SDK</code></li>
+<li><code>Android SDK Platform</code></li>
+<li><code>Android Virtual Device</code></li>
+</ul>
+<p>Then, click “Next” to install all of these components.</p>
+<blockquote>
+<p>If the checkboxes are grayed out, you will have a chance to install these components later on.</p>
+</blockquote>
+<p>Once setup has finalized and you’re presented with the Welcome screen, proceed to the next step.</p>
+<h4>
+<ol start="2" type="1">
+<li>Install the Android SDK
+</h4></li>
+</ol>
+<p>Android Studio installs the latest Android SDK by default. Building a React Native app with native code, however, requires the <code>Android 10 (Q)</code> SDK in particular. Additional Android SDKs can be installed through the SDK Manager in Android Studio.</p>
+<p>To do that, open Android Studio, click on “Configure” button and select “SDK Manager”.</p>
+<blockquote>
+<p>The SDK Manager can also be found within the Android Studio “Preferences” dialog, under <strong>Appearance &amp; Behavior</strong> → <strong>System Settings</strong> → <strong>Android SDK</strong>.</p>
+</blockquote>
+<p>Select the “SDK Platforms” tab from within the SDK Manager, then check the box next to “Show Package Details” in the bottom right corner. Look for and expand the <code>Android 10 (Q)</code> entry, then make sure the following items are checked:</p>
+<ul>
+<li><code>Android SDK Platform 29</code></li>
+<li><code>Intel x86 Atom_64 System Image</code> or <code>Google APIs Intel x86 Atom System Image</code></li>
+</ul>
+<p>Next, select the “SDK Tools” tab and check the box next to “Show Package Details” here as well. Look for and expand the “Android SDK Build-Tools” entry, then make sure that <code>29.0.2</code> is selected.</p>
+<p>Finally, click “Apply” to download and install the Android SDK and related build tools.</p>
+<h4>
+<ol start="3" type="1">
+<li>Configure the ANDROID_HOME environment variable
+</h4></li>
+</ol>
+<p>The React Native tools require some environment variables to be set up in order to build apps with native code.</p>
+<p>Add the following lines to your <code>$HOME/.bash_profile</code> or <code>$HOME/.bashrc</code> (if you are using <code>zsh</code> then <code>~/.zprofile</code> or <code>~/.zshrc</code>) config file:</p>
+<pre class="shell"><code>export ANDROID_HOME=$HOME/Android/Sdk
+export PATH=$PATH:$ANDROID_HOME/emulator
+export PATH=$PATH:$ANDROID_HOME/tools
+export PATH=$PATH:$ANDROID_HOME/tools/bin
+export PATH=$PATH:$ANDROID_HOME/platform-tools</code></pre>
+<blockquote>
+<p><code>.bash_profile</code> is specific to <code>bash</code>. If you’re using another shell, you will need to edit the appropriate shell-specific config file.</p>
+</blockquote>
+<p>Type <code>source $HOME/.bash_profile</code> for <code>bash</code> or <code>source $HOME/.zprofile</code> to load the config into your current shell. Verify that ANDROID_HOME has been set by running <code>echo $ANDROID_HOME</code> and the appropriate directories have been added to your path by running <code>echo $PATH</code>.</p>
+<blockquote>
+<p>Please make sure you use the correct Android SDK path. You can find the actual location of the SDK in the Android Studio “Preferences” dialog, under <strong>Appearance &amp; Behavior</strong> → <strong>System Settings</strong> → <strong>Android SDK</strong>.</p>
+</blockquote>
+<h3>
+Watchman
+</h3>
+<p>Follow the <a href="https://facebook.github.io/watchman/docs/install/#buildinstall">Watchman installation guide</a> to compile and install Watchman from source.</p>
+<blockquote>
+<p><a href="https://facebook.github.io/watchman/docs/install/">Watchman</a> is a tool by Facebook for watching changes in the filesystem. It is highly recommended you install it for better performance and increased compatibility in certain edge cases (translation: you may be able to get by without installing this, but your mileage may vary; installing this now may save you from a headache later).</p>
+</blockquote>
+<h3>
+React Native Command Line Interface
+</h3>
+<p>React Native has a built-in command line interface. Rather than install and manage a specific version of the CLI globally, we recommend you access the current version at runtime using <code>npx</code>, which ships with Node.js. With <code>npx react-native &lt;command&gt;</code>, the current stable version of the CLI will be downloaded and executed at the time the command is run.</p>
+<h2>
+Creating a new application
+</h2>
+<blockquote>
+<p>If you previously installed a global <code>react-native-cli</code> package, please remove it as it may cause unexpected issues.</p>
+</blockquote>
+<p>React Native has a built-in command line interface, which you can use to generate a new project. You can access it without installing anything globally using <code>npx</code>, which ships with Node.js. Let’s create a new React Native project called “AwesomeProject”:</p>
+<pre class="shell"><code>npx react-native init AwesomeProject</code></pre>
+<p>This is not necessary if you are integrating React Native into an existing application, if you “ejected” from Expo, or if you’re adding Android support to an existing React Native project (see <a href="integration-with-existing-apps.md">Integration with Existing Apps</a>). You can also use a third-party CLI to init your React Native app, such as <a href="https://github.com/infinitered/ignite">Ignite CLI</a>.</p>
+<h3>
+[Optional] Using a specific version or template
+</h3>
+<p>If you want to start a new project with a specific React Native version, you can use the <code>--version</code> argument:</p>
+<pre class="shell"><code>npx react-native init AwesomeProject --version X.XX.X</code></pre>
+<p>You can also start a project with a custom React Native template, like TypeScript, with <code>--template</code> argument:</p>
+<pre class="shell"><code>npx react-native init AwesomeTSProject --template react-native-template-typescript</code></pre>
+<h2>
+Preparing the Android device
+</h2>
+<p>You will need an Android device to run your React Native Android app. This can be either a physical Android device, or more commonly, you can use an Android Virtual Device which allows you to emulate an Android device on your computer.</p>
+<p>Either way, you will need to prepare the device to run Android apps for development.</p>
+<h3>
+Using a physical device
+</h3>
+<p>If you have a physical Android device, you can use it for development in place of an AVD by plugging it in to your computer using a USB cable and following the instructions <a href="running-on-device.md">here</a>.</p>
+<h3>
+Using a virtual device
+</h3>
+<p>If you use Android Studio to open <code>./AwesomeProject/android</code>, you can see the list of available Android Virtual Devices (AVDs) by opening the “AVD Manager” from within Android Studio. Look for an icon that looks like this:</p>
+<figure>
+<img src="/docs/assets/GettingStartedAndroidStudioAVD.png" alt="Android Studio AVD Manager" /><figcaption>Android Studio AVD Manager</figcaption>
+</figure>
+<p>If you have recently installed Android Studio, you will likely need to <a href="https://developer.android.com/studio/run/managing-avds.html">create a new AVD</a>. Select “Create Virtual Device…”, then pick any Phone from the list and click “Next”, then select the <strong>Q</strong> API Level 29 image.</p>
+<blockquote>
+<p>We recommend configuring <a href="https://developer.android.com/studio/run/emulator-acceleration.html#vm-linux">VM acceleration</a> on your system to improve performance. Once you’ve followed those instructions, go back to the AVD Manager.</p>
+</blockquote>
+<p>Click “Next” then “Finish” to create your AVD. At this point you should be able to click on the green triangle button next to your AVD to launch it, then proceed to the next step.</p>
+<h2>
+Running your React Native application
+</h2>
+<h3>
+Step 1: Start Metro
+</h3>
+<p>First, you will need to start Metro, the JavaScript bundler that ships with React Native. Metro “takes in an entry file and various options, and returns a single JavaScript file that includes all your code and its dependencies.”—<a href="https://facebook.github.io/metro/docs/concepts">Metro Docs</a></p>
+<p>To start Metro, run <code>npx react-native start</code> inside your React Native project folder:</p>
+<pre class="shell"><code>npx react-native start</code></pre>
+<p><code>react-native start</code> starts Metro Bundler.</p>
+<blockquote>
+<p>If you use the Yarn package manager, you can use <code>yarn</code> instead of <code>npx</code> when running React Native commands inside an existing project.</p>
+</blockquote>
+<blockquote>
+<p>If you’re familiar with web development, Metro is a lot like webpack—for React Native apps. Unlike Kotlin or Java, JavaScript isn’t compiled—and neither is React Native. Bundling isn’t the same as compiling, but it can help improve startup performance and translate some platform-specific JavaScript into more widely supported JavaScript.</p>
+</blockquote>
+<h3>
+Step 2: Start your application
+</h3>
+<p>Let Metro Bundler run in its own terminal. Open a new terminal inside your React Native project folder. Run the following:</p>
+<pre class="shell"><code>npx react-native run-android</code></pre>
+<p>If everything is set up correctly, you should see your new app running in your Android emulator shortly.</p>
+<p><code>npx react-native run-android</code> is one way to run your app - you can also run it directly from within Android Studio.</p>
+<blockquote>
+<p>If you can’t get this to work, see the <a href="troubleshooting.md#content">Troubleshooting</a> page.</p>
+</blockquote>
+<h3>
+Modifying your app
+</h3>
+<p>Now that you have successfully run the app, let’s modify it.</p>
+<ul>
+<li>Open <code>App.js</code> in your text editor of choice and edit some lines.</li>
+<li>Press the <code>R</code> key twice or select <code>Reload</code> from the Developer Menu (<code>Ctrl + M</code>) to see your changes!</li>
+</ul>
+<h3>
+That’s it!
+</h3>
+<p>Congratulations! You’ve successfully run and modified your first React Native app.</p>
+<center>
+<img src="/docs/assets/GettingStartedCongratulations.png" width="150"></img>
+</center>
+<h2>
+Now what?
+</h2>
+<ul>
+<li>If you want to add this new React Native code to an existing application, check out the <a href="integration-with-existing-apps.md">Integration guide</a>.</li>
+</ul>
+<p>If you’re curious to learn more about React Native, check out the <a href="getting-started">Introduction to React Native</a>.</p>
+</body>
+</html>

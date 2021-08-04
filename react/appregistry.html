@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>AppRegistry</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">AppRegistry</h1>
+    </header>
+    <div data-classname="banner-native-code-required">
+      <h3>Project with Native Code Required</h3>
+      <p>
+        If you are using the managed <code>expo-cli</code> workflow there is
+        only ever one entry component registered with
+        <code>AppRegistry</code> and it is handled automatically, you do not
+        need to use this API.
+      </p>
+    </div>
+    <p>
+      <code>AppRegistry</code> is the JS entry point to running all React Native
+      apps. App root components should register themselves with
+      <code>AppRegistry.registerComponent</code>, then the native system can
+      load the bundle for the app and then actually run the app when it’s ready
+      by invoking <code>AppRegistry.runApplication</code>.
+    </p>
+    <pre
+      class="jsx"
+    ><code>import { Text, AppRegistry } from &#39;react-native&#39;;
+
+const App = (props) =&gt; (
+  &lt;View&gt;
+    &lt;Text&gt;App1&lt;/Text&gt;
+  &lt;/View&gt;
+);
+
+AppRegistry.registerComponent(&#39;Appname&#39;, () =&gt; App);</code></pre>
+    <p>
+      To “stop” an application when a view should be destroyed, call
+      <code>AppRegistry.unmountApplicationComponentAtRootTag</code> with the tag
+      that was passed into <code>runApplication</code>. These should always be
+      used as a pair.
+    </p>
+    <p>
+      <code>AppRegistry</code> should be required early in the
+      <code>require</code> sequence to make sure the JS execution environment is
+      setup before other modules are required.
+    </p>
+    <hr />
+    <h1 id="reference">Reference</h1>
+    <h2 id="methods">Methods</h2>
+    <h3 id="cancelheadlesstask"><code>cancelHeadlessTask()</code></h3>
+    <pre
+      class="jsx"
+    ><code>static cancelHeadlessTask(taskId, taskKey)</code></pre>
+    <p>Only called from native code. Cancels a headless task.</p>
+    <p><strong>Parameters:</strong></p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    | taskId
+    <div data-classname="label basic required">Required</div>
+    | number | The native id for this task instance that was used when
+    <code>startHeadlessTask</code> was called. | | taskKey
+    <div data-classname="label basic required">Required</div>
+    <p>
+      | string | The key for the task that was used when
+      <code>startHeadlessTask</code> was called. |
+    </p>
+    <hr />
+    <h3 id="enablearchitectureindicator">
+      <code>enableArchitectureIndicator()</code>
+    </h3>
+    <pre
+      class="jsx"
+    ><code>static enableArchitectureIndicator(enabled)</code></pre>
+    <p><strong>Parameters:</strong></p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Name</th>
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    | enabled
+    <div data-classname="label basic required">Required</div>
+    <p>| boolean |</p>
+    <hr />
+    <h3 id="getappkeys"><code>getAppKeys()</code></h3>
+    <pre class="jsx"><code>static getAppKeys()</code></pre>
+    <p>Returns an array of strings.</p>
+    <hr />
+    <h3 id="getregistry"><code>getRegistry()</code></h3>
+    <pre class="jsx"><code>static getRegistry()</code></pre>
+    <p>Returns a <a href="appregistry#registry">Registry</a> object.</p>
+    <hr />
+    <h3 id="getrunnable"><code>getRunnable()</code></h3>
+    <pre class="jsx"><code>static getRunnable(appKey)</code></pre>
+    <p>Returns a <a href="appregistry#runnable">Runnable</a> object.</p>
+    <p><strong>Parameters:</strong></p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Name</th>
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    | appKey
+    <div data-classname="label basic required">Required</div>
+    <p>| string |</p>
+    <hr />
+    <h3 id="getsectionkeys"><code>getSectionKeys()</code></h3>
+    <pre class="jsx"><code>static getSectionKeys()</code></pre>
+    <p>Returns an array of strings.</p>
+    <hr />
+    <h3 id="getsections"><code>getSections()</code></h3>
+    <pre class="jsx"><code>static getSections()</code></pre>
+    <p>Returns a <a href="appregistry#runnables">Runnables</a> object.</p>
+    <hr />
+    <h3 id="registercancellableheadlesstask">
+      <code>registerCancellableHeadlessTask()</code>
+    </h3>
+    <pre
+      class="jsx"
+    ><code>static registerCancellableHeadlessTask(taskKey, taskProvider, taskCancelProvider)</code></pre>
+    <p>
+      Register a headless task which can be cancelled. A headless task is a bit
+      of code that runs without a UI.
+    </p>
+    <p><strong>Parameters:</strong></p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    | taskKey<br />
+    <div data-classname="label basic required two-lines">Required</div>
+    <pre><code>        | string                                               | The native id for this task instance that was used when startHeadlessTask was called.                                                                                                                                               |</code></pre>
+    | taskProvider<br />
+    <div data-classname="label basic required two-lines">Required</div>
+    <pre><code>   | [TaskProvider](appregistry#taskprovider)             | A promise returning function that takes some data passed from the native side as the only argument. When the promise is resolved or rejected the native side is notified of this event and it may decide to destroy the JS context. |</code></pre>
+    | taskCancelProvider<br />
+    <div data-classname="label basic required two-lines">Required</div>
+    <p>
+      | <a href="appregistry#taskcancelprovider">TaskCancelProvider</a> | a void
+      returning function that takes no arguments; when a cancellation is
+      requested, the function being executed by taskProvider should wrap up and
+      return ASAP. |
+    </p>
+    <hr />
+    <h3 id="registercomponent"><code>registerComponent()</code></h3>
+    <pre
+      class="jsx"
+    ><code>static registerComponent(appKey, componentProvider, section?)</code></pre>
+    <p><strong>Parameters:</strong></p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Name</th>
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    | appKey
+    <div data-classname="label basic required">Required</div>
+    <pre><code>        | string            |</code></pre>
+    | componentProvider
+    <div data-classname="label basic required">Required</div>
+    <p>| ComponentProvider | | section | boolean |</p>
+    <hr />
+    <h3 id="registerconfig"><code>registerConfig()</code></h3>
+    <pre class="jsx"><code>static registerConfig(config)</code></pre>
+    <p><strong>Parameters:</strong></p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Name</th>
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    | config
+    <div data-classname="label basic required">Required</div>
+    <p>| <a href="appregistry#appconfig">AppConfig</a> |</p>
+    <hr />
+    <h3 id="registerheadlesstask"><code>registerHeadlessTask()</code></h3>
+    <pre
+      class="jsx"
+    ><code>static registerHeadlessTask(taskKey, taskProvider)</code></pre>
+    <p>
+      Register a headless task. A headless task is a bit of code that runs
+      without a UI.
+    </p>
+    <p>
+      This is a way to run tasks in JavaScript while your app is in the
+      background. It can be used, for example, to sync fresh data, handle push
+      notifications, or play music.
+    </p>
+    <p><strong>Parameters:</strong></p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    | taskKey
+    <div data-classname="label basic required two-lines">Required</div>
+    <pre><code>  | string                                   | The native id for this task instance that was used when startHeadlessTask was called.                                                                                                                                               |</code></pre>
+    | taskProvider
+    <div data-classname="label basic required two-lines">Required</div>
+    <p>
+      | <a href="appregistry#taskprovider">TaskProvider</a> | A promise
+      returning function that takes some data passed from the native side as the
+      only argument. When the promise is resolved or rejected the native side is
+      notified of this event and it may decide to destroy the JS context. |
+    </p>
+    <hr />
+    <h3 id="registerrunnable"><code>registerRunnable()</code></h3>
+    <pre class="jsx"><code>static registerRunnable(appKey, run)</code></pre>
+    <p><strong>Parameters:</strong></p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Name</th>
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    | appKey
+    <div data-classname="label basic required">Required</div>
+    | string | | run
+    <div data-classname="label basic required">Required</div>
+    <pre><code>| function |</code></pre>
+    <hr />
+    <h3 id="registersection"><code>registerSection()</code></h3>
+    <pre
+      class="jsx"
+    ><code>static registerSection(appKey, component)</code></pre>
+    <p><strong>Parameters:</strong></p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Name</th>
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    | appKey
+    <div data-classname="label basic required">Required</div>
+    <pre><code>| string            |</code></pre>
+    | component
+    <div data-classname="label basic required">Required</div>
+    <p>| ComponentProvider |</p>
+    <hr />
+    <h3 id="runapplication"><code>runApplication()</code></h3>
+    <pre
+      class="jsx"
+    ><code>static runApplication(appKey, appParameters)</code></pre>
+    <p>Loads the JavaScript bundle and runs the app.</p>
+    <p><strong>Parameters:</strong></p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Name</th>
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    | appKey
+    <div data-classname="label basic required">Required</div>
+    <pre><code>    | string |</code></pre>
+    | appParameters
+    <div data-classname="label basic required">Required</div>
+    <p>| any |</p>
+    <hr />
+    <h3 id="setcomponentproviderinstrumentationhook">
+      <code>setComponentProviderInstrumentationHook()</code>
+    </h3>
+    <pre
+      class="jsx"
+    ><code>static setComponentProviderInstrumentationHook(hook)</code></pre>
+    <p><strong>Parameters:</strong></p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Name</th>
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    | hook
+    <div data-classname="label basic required">Required</div>
+    <p>| function |</p>
+    <p>
+      A valid <code>hook</code> function accepts the following as arguments:
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Name</th>
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    | component
+    <div data-classname="label basic required">Required</div>
+    <pre><code>           | ComponentProvider  |</code></pre>
+    | scopedPerformanceLogger
+    <div data-classname="label basic required">Required</div>
+    <p>| IPerformanceLogger |</p>
+    <p>The function must also return a React Component.</p>
+    <hr />
+    <h3 id="setwrappercomponentprovider">
+      <code>setWrapperComponentProvider()</code>
+    </h3>
+    <pre
+      class="jsx"
+    ><code>static setWrapperComponentProvider(provider)</code></pre>
+    <p><strong>Parameters:</strong></p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Name</th>
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    | provider
+    <div data-classname="label basic required">Required</div>
+    <p>| ComponentProvider |</p>
+    <hr />
+    <h3 id="startheadlesstask"><code>startHeadlessTask()</code></h3>
+    <pre
+      class="jsx"
+    ><code>static startHeadlessTask(taskId, taskKey, data)</code></pre>
+    <p>Only called from native code. Starts a headless task.</p>
+    <p><strong>Parameters:</strong></p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    | taskId
+    <div data-classname="label basic required">Required</div>
+    | number | The native id for this task instance to keep track of its
+    execution. | | taskKey
+    <div data-classname="label basic required">Required</div>
+    | string | The key for the task to start. | | data
+    <div data-classname="label basic required">Required</div>
+    <pre><code>| any    | The data to pass to the task.                                        |</code></pre>
+    <hr />
+    <h3 id="unmountapplicationcomponentatroottag">
+      <code>unmountApplicationComponentAtRootTag()</code>
+    </h3>
+    <pre
+      class="jsx"
+    ><code>static unmountApplicationComponentAtRootTag(rootTag)</code></pre>
+    <p>Stops an application when a view should be destroyed.</p>
+    <p><strong>Parameters:</strong></p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Name</th>
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    | rootTag
+    <div data-classname="label basic required">Required</div>
+    <p>| number |</p>
+    <h2 id="type-definitions">Type Definitions</h2>
+    <h3 id="appconfig">AppConfig</h3>
+    <p>Application configuration for the <code>registerConfig</code> method.</p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>object</td>
+        </tr>
+      </tbody>
+    </table>
+    <p><strong>Properties:</strong></p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Name</th>
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    | appKey
+    <div data-classname="label basic required">Required</div>
+    <p>
+      | string | | component | ComponentProvider | | run | function | | section
+      | boolean |
+    </p>
+    <blockquote>
+      <p>
+        <strong>Note:</strong> Every config is expected to set either
+        <code>component</code> or <code>run</code> function.
+      </p>
+    </blockquote>
+    <h3 id="registry">Registry</h3>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>object</td>
+        </tr>
+      </tbody>
+    </table>
+    <p><strong>Properties:</strong></p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Name</th>
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>runnables</td>
+          <td>array of <a href="appregistry#runnable">Runnables</a></td>
+        </tr>
+        <tr class="even">
+          <td>sections</td>
+          <td>array of strings</td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="runnable">Runnable</h3>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>object</td>
+        </tr>
+      </tbody>
+    </table>
+    <p><strong>Properties:</strong></p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Name</th>
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>component</td>
+          <td>ComponentProvider</td>
+        </tr>
+        <tr class="even">
+          <td>run</td>
+          <td>function</td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="runnables">Runnables</h3>
+    <p>
+      An object with key of <code>appKey</code> and value of type of
+      <a href="appregistry#runnable"><code>Runnable</code></a
+      >.
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>object</td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="task">Task</h3>
+    <p>
+      A <code>Task</code> is a function that accepts any data as argument and
+      returns a Promise that resolves to <code>undefined</code>.
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>function</td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="taskcanceller">TaskCanceller</h3>
+    <p>
+      A <code>TaskCanceller</code> is a function that accepts no argument and
+      returns void.
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>function</td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="taskcancelprovider">TaskCancelProvider</h3>
+    <p>
+      A valid <code>TaskCancelProvider</code> is a function that returns a
+      <a href="appregistry#taskcanceller"><code>TaskCanceller</code></a
+      >.
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>function</td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="taskprovider">TaskProvider</h3>
+    <p>
+      A valid <code>TaskProvider</code> is a function that returns a
+      <a href="appregistry#task"><code>Task</code></a
+      >.
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>function</td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>

@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>🚧 AsyncStorage</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">🚧 AsyncStorage</h1>
+</header>
+<blockquote>
+<p><strong>Deprecated.</strong> Use one of the <a href="https://reactnative.directory/?search=storage">community packages</a> instead.</p>
+</blockquote>
+<p><code>AsyncStorage</code> is an unencrypted, asynchronous, persistent, key-value storage system that is global to the app. It should be used instead of LocalStorage.</p>
+<p>It is recommended that you use an abstraction on top of <code>AsyncStorage</code> instead of <code>AsyncStorage</code> directly for anything more than light usage since it operates globally.</p>
+<p>On iOS, <code>AsyncStorage</code> is backed by native code that stores small values in a serialized dictionary and larger values in separate files. On Android, <code>AsyncStorage</code> will use either <a href="http://rocksdb.org/">RocksDB</a> or SQLite based on what is available.</p>
+<p>The <code>AsyncStorage</code> JavaScript code is a facade that provides a clear JavaScript API, real <code>Error</code> objects, and non-multi functions. Each method in the API returns a <code>Promise</code> object.</p>
+<p>Importing the <code>AsyncStorage</code> library:</p>
+<pre class="jsx"><code>import { AsyncStorage } from &quot;react-native&quot;;</code></pre>
+<p>Persisting data:</p>
+<pre class="jsx"><code>_storeData = async () =&gt; {
+  try {
+    await AsyncStorage.setItem(&quot;@MySuperStore:key&quot;, &quot;I like to save it.&quot;);
+  } catch (error) {
+    // Error saving data
+  }
+};</code></pre>
+<p>Fetching data:</p>
+<pre class="jsx"><code>_retrieveData = async () =&gt; {
+  try {
+    const value = await AsyncStorage.getItem(&quot;TASKS&quot;);
+    if (value !== null) {
+      // We have data!!
+      console.log(value);
+    }
+  } catch (error) {
+    // Error retrieving data
+  }
+};</code></pre>
+<hr />
+<h1 id="reference">Reference</h1>
+<h2 id="methods">Methods</h2>
+<h3 id="getitem"><code>getItem()</code></h3>
+<pre class="jsx"><code>static getItem(key: string, [callback]: ?(error: ?Error, result: ?string) =&gt; void)</code></pre>
+<p>Fetches an item for a <code>key</code> and invokes a callback upon completion. Returns a <code>Promise</code> object.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<colgroup>
+<col style="width: 6%" />
+<col style="width: 34%" />
+<col style="width: 6%" />
+<col style="width: 52%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>key</td>
+<td>string</td>
+<td>Yes</td>
+<td>Key of the item to fetch.</td>
+</tr>
+<tr class="even">
+<td>callback</td>
+<td><code>?(error: ?Error, result: ?string) =&gt; void</code></td>
+<td>No</td>
+<td>Function that will be called with a result if found or any error.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="setitem"><code>setItem()</code></h3>
+<pre class="jsx"><code>static setItem(key: string, value: string, [callback]: ?(error: ?Error) =&gt; void)</code></pre>
+<p>Sets the value for a <code>key</code> and invokes a callback upon completion. Returns a <code>Promise</code> object.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<colgroup>
+<col style="width: 9%" />
+<col style="width: 30%" />
+<col style="width: 9%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>key</td>
+<td>string</td>
+<td>Yes</td>
+<td>Key of the item to set.</td>
+</tr>
+<tr class="even">
+<td>value</td>
+<td>string</td>
+<td>Yes</td>
+<td>Value to set for the <code>key</code>.</td>
+</tr>
+<tr class="odd">
+<td>callback</td>
+<td><code>?(error: ?Error) =&gt; void</code></td>
+<td>No</td>
+<td>Function that will be called with any error.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="removeitem"><code>removeItem()</code></h3>
+<pre class="jsx"><code>static removeItem(key: string, [callback]: ?(error: ?Error) =&gt; void)</code></pre>
+<p>Removes an item for a <code>key</code> and invokes a callback upon completion. Returns a <code>Promise</code> object.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<colgroup>
+<col style="width: 9%" />
+<col style="width: 30%" />
+<col style="width: 9%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>key</td>
+<td>string</td>
+<td>Yes</td>
+<td>Key of the item to remove.</td>
+</tr>
+<tr class="even">
+<td>callback</td>
+<td><code>?(error: ?Error) =&gt; void</code></td>
+<td>No</td>
+<td>Function that will be called with any error.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="mergeitem"><code>mergeItem()</code></h3>
+<pre class="jsx"><code>static mergeItem(key: string, value: string, [callback]: ?(error: ?Error) =&gt; void)</code></pre>
+<p>Merges an existing <code>key</code> value with an input value, assuming both values are stringified JSON. Returns a <code>Promise</code> object.</p>
+<p><strong>NOTE:</strong> This is not supported by all native implementations.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<colgroup>
+<col style="width: 9%" />
+<col style="width: 30%" />
+<col style="width: 9%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>key</td>
+<td>string</td>
+<td>Yes</td>
+<td>Key of the item to modify.</td>
+</tr>
+<tr class="even">
+<td>value</td>
+<td>string</td>
+<td>Yes</td>
+<td>New value to merge for the <code>key</code>.</td>
+</tr>
+<tr class="odd">
+<td>callback</td>
+<td><code>?(error: ?Error) =&gt; void</code></td>
+<td>No</td>
+<td>Function that will be called with any error.</td>
+</tr>
+</tbody>
+</table>
+<p>Example:</p>
+<pre class="jsx"><code>let UID123_object = {
+  name: &quot;Chris&quot;,
+  age: 30,
+  traits: { hair: &quot;brown&quot;, eyes: &quot;brown&quot; },
+};
+// You only need to define what will be added or updated
+let UID123_delta = {
+  age: 31,
+  traits: { eyes: &quot;blue&quot;, shoe_size: 10 },
+};
+
+AsyncStorage.setItem(&quot;UID123&quot;, JSON.stringify(UID123_object), () =&gt; {
+  AsyncStorage.mergeItem(&quot;UID123&quot;, JSON.stringify(UID123_delta), () =&gt; {
+    AsyncStorage.getItem(&quot;UID123&quot;, (err, result) =&gt; {
+      console.log(result);
+    });
+  });
+});
+
+// Console log result:
+// =&gt; {&#39;name&#39;:&#39;Chris&#39;,&#39;age&#39;:31,&#39;traits&#39;:
+//    {&#39;shoe_size&#39;:10,&#39;hair&#39;:&#39;brown&#39;,&#39;eyes&#39;:&#39;blue&#39;}}</code></pre>
+<hr />
+<h3 id="clear"><code>clear()</code></h3>
+<pre class="jsx"><code>static clear([callback]: ?(error: ?Error) =&gt; void)</code></pre>
+<p>Erases <em>all</em> <code>AsyncStorage</code> for all clients, libraries, etc. You probably don’t want to call this; use <code>removeItem</code> or <code>multiRemove</code> to clear only your app’s keys. Returns a <code>Promise</code> object.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<colgroup>
+<col style="width: 9%" />
+<col style="width: 30%" />
+<col style="width: 9%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>callback</td>
+<td><code>?(error: ?Error) =&gt; void</code></td>
+<td>No</td>
+<td>Function that will be called with any error.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="getallkeys"><code>getAllKeys()</code></h3>
+<pre class="jsx"><code>static getAllKeys([callback]: ?(error: ?Error, keys: ?Array&lt;string&gt;) =&gt; void)</code></pre>
+<p>Gets <em>all</em> keys known to your app; for all callers, libraries, etc. Returns a <code>Promise</code> object.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<colgroup>
+<col style="width: 6%" />
+<col style="width: 37%" />
+<col style="width: 6%" />
+<col style="width: 49%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>callback</td>
+<td><code>?(error: ?Error, keys: ?Array&lt;string&gt;) =&gt; void</code></td>
+<td>No</td>
+<td>Function that will be called with all keys found and any error.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="flushgetrequests"><code>flushGetRequests()</code></h3>
+<pre class="jsx"><code>static flushGetRequests(): [object Object]</code></pre>
+<p>Flushes any pending requests using a single batch call to get the data.</p>
+<hr />
+<h3 id="multiget"><code>multiGet()</code></h3>
+<pre class="jsx"><code>static multiGet(keys: Array&lt;string&gt;, [callback]: ?(errors: ?Array&lt;Error&gt;, result: ?Array&lt;Array&lt;string&gt;&gt;) =&gt; void)</code></pre>
+<p>This allows you to batch the fetching of items given an array of <code>key</code> inputs. Your callback will be invoked with an array of corresponding key-value pairs found:</p>
+<pre><code>multiGet([&#39;k1&#39;, &#39;k2&#39;], cb) -&gt; cb([[&#39;k1&#39;, &#39;val1&#39;], [&#39;k2&#39;, &#39;val2&#39;]])</code></pre>
+<p>The method returns a <code>Promise</code> object.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<colgroup>
+<col style="width: 4%" />
+<col style="width: 33%" />
+<col style="width: 4%" />
+<col style="width: 58%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>keys</td>
+<td><code>Array&lt;string&gt;</code></td>
+<td>Yes</td>
+<td>Array of key for the items to get.</td>
+</tr>
+<tr class="even">
+<td>callback</td>
+<td><code>?(errors: ?Array&lt;Error&gt;, result: ?Array&lt;Array&lt;string&gt;&gt;) =&gt; void</code></td>
+<td>No</td>
+<td>Function that will be called with a key-value array of the results, plus an array of any key-specific errors found.</td>
+</tr>
+</tbody>
+</table>
+<p>Example:</p>
+<pre class="jsx"><code>AsyncStorage.getAllKeys((err, keys) =&gt; {
+  AsyncStorage.multiGet(keys, (err, stores) =&gt; {
+    stores.map((result, i, store) =&gt; {
+      // get at each store&#39;s key/value so you can work with it
+      let key = store[i][0];
+      let value = store[i][1];
+    });
+  });
+});</code></pre>
+<hr />
+<h3 id="multiset"><code>multiSet()</code></h3>
+<pre class="jsx"><code>static multiSet(keyValuePairs: Array&lt;Array&lt;string&gt;&gt;, [callback]: ?(errors: ?Array&lt;Error&gt;) =&gt; void)</code></pre>
+<p>Use this as a batch operation for storing multiple key-value pairs. When the operation completes you’ll get a single callback with any errors:</p>
+<pre><code>multiSet([[&#39;k1&#39;, &#39;val1&#39;], [&#39;k2&#39;, &#39;val2&#39;]], cb);</code></pre>
+<p>The method returns a <code>Promise</code> object.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<colgroup>
+<col style="width: 9%" />
+<col style="width: 25%" />
+<col style="width: 6%" />
+<col style="width: 58%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>keyValuePairs</td>
+<td><code>Array&lt;Array&lt;string&gt;&gt;</code></td>
+<td>Yes</td>
+<td>Array of key-value array for the items to set.</td>
+</tr>
+<tr class="even">
+<td>callback</td>
+<td><code>?(errors: ?Array&lt;Error&gt;) =&gt; void</code></td>
+<td>No</td>
+<td>Function that will be called with an array of any key-specific errors found.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="multiremove"><code>multiRemove()</code></h3>
+<pre class="jsx"><code>static multiRemove(keys: Array&lt;string&gt;, [callback]: ?(errors: ?Array&lt;Error&gt;) =&gt; void)</code></pre>
+<p>Call this to batch the deletion of all keys in the <code>keys</code> array. Returns a <code>Promise</code> object.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<colgroup>
+<col style="width: 6%" />
+<col style="width: 28%" />
+<col style="width: 6%" />
+<col style="width: 58%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>keys</td>
+<td><code>Array&lt;string&gt;</code></td>
+<td>Yes</td>
+<td>Array of key for the items to delete.</td>
+</tr>
+<tr class="even">
+<td>callback</td>
+<td><code>?(errors: ?Array&lt;Error&gt;) =&gt; void</code></td>
+<td>No</td>
+<td>Function that will be called an array of any key-specific errors found.</td>
+</tr>
+</tbody>
+</table>
+<p>Example:</p>
+<pre class="jsx"><code>let keys = [&quot;k1&quot;, &quot;k2&quot;];
+AsyncStorage.multiRemove(keys, (err) =&gt; {
+  // keys k1 &amp; k2 removed, if they existed
+  // do most stuff after removal (if you want)
+});</code></pre>
+<hr />
+<h3 id="multimerge"><code>multiMerge()</code></h3>
+<pre class="jsx"><code>static multiMerge(keyValuePairs: Array&lt;Array&lt;string&gt;&gt;, [callback]: ?(errors: ?Array&lt;Error&gt;) =&gt; void)</code></pre>
+<p>Batch operation to merge in existing and new values for a given set of keys. This assumes that the values are stringified JSON. Returns a <code>Promise</code> object.</p>
+<p><strong>NOTE</strong>: This is not supported by all native implementations.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<colgroup>
+<col style="width: 9%" />
+<col style="width: 25%" />
+<col style="width: 6%" />
+<col style="width: 58%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>keyValuePairs</td>
+<td><code>Array&lt;Array&lt;string&gt;&gt;</code></td>
+<td>Yes</td>
+<td>Array of key-value array for the items to merge.</td>
+</tr>
+<tr class="even">
+<td>callback</td>
+<td><code>?(errors: ?Array&lt;Error&gt;) =&gt; void</code></td>
+<td>No</td>
+<td>Function that will be called with an array of any key-specific errors found.</td>
+</tr>
+</tbody>
+</table>
+<p>Example:</p>
+<pre class="jsx"><code>// first user, initial values
+let UID234_object = {
+  name: &quot;Chris&quot;,
+  age: 30,
+  traits: { hair: &quot;brown&quot;, eyes: &quot;brown&quot; },
+};
+
+// first user, delta values
+let UID234_delta = {
+  age: 31,
+  traits: { eyes: &quot;blue&quot;, shoe_size: 10 },
+};
+
+// second user, initial values
+let UID345_object = {
+  name: &quot;Marge&quot;,
+  age: 25,
+  traits: { hair: &quot;blonde&quot;, eyes: &quot;blue&quot; },
+};
+
+// second user, delta values
+let UID345_delta = {
+  age: 26,
+  traits: { eyes: &quot;green&quot;, shoe_size: 6 },
+};
+
+let multi_set_pairs = [
+  [&quot;UID234&quot;, JSON.stringify(UID234_object)],
+  [&quot;UID345&quot;, JSON.stringify(UID345_object)],
+];
+let multi_merge_pairs = [
+  [&quot;UID234&quot;, JSON.stringify(UID234_delta)],
+  [&quot;UID345&quot;, JSON.stringify(UID345_delta)],
+];
+
+AsyncStorage.multiSet(multi_set_pairs, (err) =&gt; {
+  AsyncStorage.multiMerge(multi_merge_pairs, (err) =&gt; {
+    AsyncStorage.multiGet([&quot;UID234&quot;, &quot;UID345&quot;], (err, stores) =&gt; {
+      stores.map((result, i, store) =&gt; {
+        let key = store[i][0];
+        let val = store[i][1];
+        console.log(key, val);
+      });
+    });
+  });
+});
+
+// Console log results:
+// =&gt; UID234 {&quot;name&quot;:&quot;Chris&quot;,&quot;age&quot;:31,&quot;traits&quot;:{&quot;shoe_size&quot;:10,&quot;hair&quot;:&quot;brown&quot;,&quot;eyes&quot;:&quot;blue&quot;}}
+// =&gt; UID345 {&quot;name&quot;:&quot;Marge&quot;,&quot;age&quot;:26,&quot;traits&quot;:{&quot;shoe_size&quot;:6,&quot;hair&quot;:&quot;blonde&quot;,&quot;eyes&quot;:&quot;green&quot;}}</code></pre>
+</body>
+</html>

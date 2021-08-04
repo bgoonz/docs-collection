@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>State</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">State</h1>
+</header>
+<p>There are two types of data that control a component: <code>props</code> and <code>state</code>. <code>props</code> are set by the parent and they are fixed throughout the lifetime of a component. For data that is going to change, we have to use <code>state</code>.</p>
+<p>In general, you should initialize <code>state</code> in the constructor, and then call <code>setState</code> when you want to change it.</p>
+<p>For example, let’s say we want to make text that blinks all the time. The text itself gets set once when the blinking component gets created, so the text itself is a <code>prop</code>. The “whether the text is currently on or off” changes over time, so that should be kept in <code>state</code>.</p>
+<p>```SnackPlayer name=State import React, { useState, useEffect } from ‘react’; import { Text, View } from ‘react-native’;</p>
+<p>const Blink = (props) =&gt; { const [isShowingText, setIsShowingText] = useState(true);</p>
+<p>useEffect(() =&gt; { const toggle = setInterval(() =&gt; { setIsShowingText(!isShowingText); }, 1000);</p>
+<pre><code> return () =&gt; clearInterval(toggle);</code></pre>
+<p>})</p>
+<p>if (!isShowingText) { return null; }</p>
+<p>return <Text>{props.text}</Text>; }</p>
+<p>const BlinkApp = () =&gt; { return ( &lt;View style={{marginTop: 50}}&gt; <Blink text='I love to blink' /> <Blink text='Yes blinking is so great' /> <Blink text='Why did they ever take this out of HTML' /> <Blink text='Look at me look at me look at me' /> </View> ); }</p>
+<p>export default BlinkApp; ```</p>
+<p>In a real application, you probably won’t be setting state with a timer. You might set state when you have new data from the server, or from user input. You can also use a state container like <a href="https://redux.js.org/">Redux</a> or <a href="https://mobx.js.org/">Mobx</a> to control your data flow. In that case you would use Redux or Mobx to modify your state rather than calling <code>setState</code> directly.</p>
+<p>When setState is called, BlinkApp will re-render its Component. By calling setState within the Timer, the component will re-render every time the Timer ticks.</p>
+<p>State works the same way as it does in React, so for more details on handling state, you can look at the <a href="https://reactjs.org/docs/react-component.html#setstate">React.Component API</a>. At this point, you may have noticed that most of our examples use the default text color. To customize the text color, you will have to <a href="style.md">learn about Style</a>.</p>
+</body>
+</html>

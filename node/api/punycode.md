@@ -1,5 +1,4 @@
-Punycode
-========
+# Punycode
 
 > Stability: 0 - Deprecated
 
@@ -15,30 +14,27 @@ The `punycode` module provides a simple implementation of the Punycode standard.
 
 The `punycode` module is a third-party dependency used by Node.js and made available to developers as a convenience. Fixes or other modifications to the module must be directed to the [Punycode.js](https://github.com/bestiejs/punycode.js) project.
 
-`punycode.decode(string)`
--------------------------
+## `punycode.decode(string)`
 
--   `string` {string}
+- `string` {string}
 
 The `punycode.decode()` method converts a [Punycode](https://tools.ietf.org/html/rfc3492) string of ASCII-only characters to the equivalent string of Unicode codepoints.
 
     punycode.decode('maana-pta'); // 'mañana'
     punycode.decode('--dqo34k'); // '☃-⌘'
 
-`punycode.encode(string)`
--------------------------
+## `punycode.encode(string)`
 
--   `string` {string}
+- `string` {string}
 
 The `punycode.encode()` method converts a string of Unicode codepoints to a [Punycode](https://tools.ietf.org/html/rfc3492) string of ASCII-only characters.
 
     punycode.encode('mañana'); // 'maana-pta'
     punycode.encode('☃-⌘'); // '--dqo34k'
 
-`punycode.toASCII(domain)`
---------------------------
+## `punycode.toASCII(domain)`
 
--   `domain` {string}
+- `domain` {string}
 
 The `punycode.toASCII()` method converts a Unicode string representing an Internationalized Domain Name to [Punycode](https://tools.ietf.org/html/rfc3492). Only the non-ASCII parts of the domain name will be converted. Calling `punycode.toASCII()` on a string that already only contains ASCII characters will have no effect.
 
@@ -47,10 +43,9 @@ The `punycode.toASCII()` method converts a Unicode string representing an Intern
     punycode.toASCII('☃-⌘.com');   // 'xn----dqo34k.com'
     punycode.toASCII('example.com'); // 'example.com'
 
-`punycode.toUnicode(domain)`
-----------------------------
+## `punycode.toUnicode(domain)`
 
--   `domain` {string}
+- `domain` {string}
 
 The `punycode.toUnicode()` method converts a string representing a domain name containing [Punycode](https://tools.ietf.org/html/rfc3492) encoded characters into Unicode. Only the [Punycode](https://tools.ietf.org/html/rfc3492) encoded parts of the domain name are be converted.
 
@@ -59,12 +54,11 @@ The `punycode.toUnicode()` method converts a string representing a domain name c
     punycode.toUnicode('xn----dqo34k.com');  // '☃-⌘.com'
     punycode.toUnicode('example.com');       // 'example.com'
 
-`punycode.ucs2`
----------------
+## `punycode.ucs2`
 
 ### `punycode.ucs2.decode(string)`
 
--   `string` {string}
+- `string` {string}
 
 The `punycode.ucs2.decode()` method returns an array containing the numeric codepoint values of each Unicode symbol in the string.
 
@@ -74,16 +68,15 @@ The `punycode.ucs2.decode()` method returns an array containing the numeric code
 
 ### `punycode.ucs2.encode(codePoints)`
 
--   `codePoints` {integer\[\]}
+- `codePoints` {integer\[\]}
 
 The `punycode.ucs2.encode()` method returns a string based on an array of numeric code point values.
 
     punycode.ucs2.encode([0x61, 0x62, 0x63]); // 'abc'
     punycode.ucs2.encode([0x1D306]); // '\uD834\uDF06'
 
-`punycode.version`
-------------------
+## `punycode.version`
 
--   {string}
+- {string}
 
 Returns a string identifying the current [Punycode.js](https://github.com/bestiejs/punycode.js) version number.

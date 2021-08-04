@@ -13,6 +13,7 @@ tags:
   - Polyfill
 browser-compat: javascript.builtins.Array.reduce
 ---
+
 {{JSRef}}
 
 The **`reduce()`** method executes a **reducer**
@@ -129,16 +130,16 @@ const getMax = (a, b) => Math.max(a, b);
 
 // callback is invoked for each element in the array starting at index 0
 [1, 100].reduce(getMax, 50); // 100
-[    50].reduce(getMax, 10); // 50
+[50].reduce(getMax, 10); // 50
 
 // callback is invoked once for element at index 1
-[1, 100].reduce(getMax);     // 100
+[1, 100].reduce(getMax); // 100
 
 // callback is not invoked
-[    50].reduce(getMax);     // 50
-[      ].reduce(getMax, 1);  // 1
+[50].reduce(getMax); // 50
+[].reduce(getMax, 1); // 1
 
-[      ].reduce(getMax);     // TypeError
+[].reduce(getMax); // TypeError
 ```
 
 ### How reduce() works
@@ -146,9 +147,14 @@ const getMax = (a, b) => Math.max(a, b);
 Suppose the following use of `reduce()` occurred:
 
 ```js
-[0, 1, 2, 3, 4].reduce(function(accumulator, currentValue, currentIndex, array) {
-  return accumulator + currentValue
-})
+[0, 1, 2, 3, 4].reduce(function (
+  accumulator,
+  currentValue,
+  currentIndex,
+  array
+) {
+  return accumulator + currentValue;
+});
 ```
 
 The callback would be invoked four times, with the arguments and return values in each
@@ -219,7 +225,9 @@ instead of a full function. The code below will produce the same output as the c
 the block above:
 
 ```js
-[0, 1, 2, 3, 4].reduce( (accumulator, currentValue, currentIndex, array) => accumulator + currentValue )
+[0, 1, 2, 3, 4].reduce(
+  (accumulator, currentValue, currentIndex, array) => accumulator + currentValue
+);
 ```
 
 If you were to provide an `initialValue` as the second argument
@@ -227,8 +235,8 @@ to `reduce()`, the result would look like this:
 
 ```js
 [0, 1, 2, 3, 4].reduce((accumulator, currentValue, currentIndex, array) => {
-    return accumulator + currentValue
-}, 10)
+  return accumulator + currentValue;
+}, 10);
 ```
 
 <table class="standard-table">
@@ -305,15 +313,15 @@ The value returned by `reduce()` in this case would be `20`.
 // Reference: https://es5.github.io/#x15.4.4.21
 // https://tc39.github.io/ecma262/#sec-array.prototype.reduce
 if (!Array.prototype.reduce) {
-  Object.defineProperty(Array.prototype, 'reduce', {
-    value: function(callback /*, initialValue*/) {
+  Object.defineProperty(Array.prototype, "reduce", {
+    value: function (callback /*, initialValue*/) {
       if (this === null) {
-        throw new TypeError( 'Array.prototype.reduce ' +
-          'called on null or undefined' );
+        throw new TypeError(
+          "Array.prototype.reduce " + "called on null or undefined"
+        );
       }
-      if (typeof callback !== 'function') {
-        throw new TypeError( callback +
-          ' is not a function');
+      if (typeof callback !== "function") {
+        throw new TypeError(callback + " is not a function");
       }
 
       // 1. Let O be ? ToObject(this value).
@@ -336,8 +344,9 @@ if (!Array.prototype.reduce) {
         // 3. If len is 0 and initialValue is not present,
         //    throw a TypeError exception.
         if (k >= len) {
-          throw new TypeError( 'Reduce of empty array ' +
-            'with no initial value' );
+          throw new TypeError(
+            "Reduce of empty array " + "with no initial value"
+          );
         }
         value = o[k++];
       }
@@ -361,7 +370,7 @@ if (!Array.prototype.reduce) {
 
       // 9. Return accumulator.
       return value;
-    }
+    },
   });
 }
 ```
@@ -377,18 +386,18 @@ if (!Array.prototype.reduce) {
 
 ```js
 let sum = [0, 1, 2, 3].reduce(function (accumulator, currentValue) {
-  return accumulator + currentValue
-}, 0)
+  return accumulator + currentValue;
+}, 0);
 // sum is 6
 ```
 
 Alternatively written with an arrow function:
 
 ```js
-let total = [ 0, 1, 2, 3 ].reduce(
-  ( accumulator, currentValue ) => accumulator + currentValue,
+let total = [0, 1, 2, 3].reduce(
+  (accumulator, currentValue) => accumulator + currentValue,
   0
-)
+);
 ```
 
 ### Sum of values in an object array
@@ -397,61 +406,66 @@ To sum up the values contained in an array of objects, you **must** supply
 an `initialValue`, so that each item passes through your function.
 
 ```js
-let initialValue = 0
-let sum = [{x: 1}, {x: 2}, {x: 3}].reduce(function (accumulator, currentValue) {
-    return accumulator + currentValue.x
-}, initialValue)
+let initialValue = 0;
+let sum = [{ x: 1 }, { x: 2 }, { x: 3 }].reduce(function (
+  accumulator,
+  currentValue
+) {
+  return accumulator + currentValue.x;
+},
+initialValue);
 
-console.log(sum) // logs 6
+console.log(sum); // logs 6
 ```
 
 Alternatively written with an arrow function:
 
 ```js
-let initialValue = 0
-let sum = [{x: 1}, {x: 2}, {x: 3}].reduce(
-    (accumulator, currentValue) => accumulator + currentValue.x
-    , initialValue
-)
+let initialValue = 0;
+let sum = [{ x: 1 }, { x: 2 }, { x: 3 }].reduce(
+  (accumulator, currentValue) => accumulator + currentValue.x,
+  initialValue
+);
 
-console.log(sum) // logs 6
+console.log(sum); // logs 6
 ```
 
 ### Flatten an array of arrays
 
 ```js
-let flattened = [[0, 1], [2, 3], [4, 5]].reduce(
-  function(accumulator, currentValue) {
-    return accumulator.concat(currentValue)
-  },
-  []
-)
+let flattened = [
+  [0, 1],
+  [2, 3],
+  [4, 5],
+].reduce(function (accumulator, currentValue) {
+  return accumulator.concat(currentValue);
+}, []);
 // flattened is [0, 1, 2, 3, 4, 5]
 ```
 
 Alternatively written with an arrow function:
 
 ```js
-let flattened = [[0, 1], [2, 3], [4, 5]].reduce(
-  ( accumulator, currentValue ) => accumulator.concat(currentValue),
-  []
-)
+let flattened = [
+  [0, 1],
+  [2, 3],
+  [4, 5],
+].reduce((accumulator, currentValue) => accumulator.concat(currentValue), []);
 ```
 
 ### Counting instances of values in an object
 
 ```js
-let names = ['Alice', 'Bob', 'Tiff', 'Bruce', 'Alice']
+let names = ["Alice", "Bob", "Tiff", "Bruce", "Alice"];
 
 let countedNames = names.reduce(function (allNames, name) {
   if (name in allNames) {
-    allNames[name]++
+    allNames[name]++;
+  } else {
+    allNames[name] = 1;
   }
-  else {
-    allNames[name] = 1
-  }
-  return allNames
-}, {})
+  return allNames;
+}, {});
 // countedNames is:
 // { 'Alice': 2, 'Bob': 1, 'Tiff': 1, 'Bruce': 1 }
 ```
@@ -460,23 +474,23 @@ let countedNames = names.reduce(function (allNames, name) {
 
 ```js
 let people = [
-  { name: 'Alice', age: 21 },
-  { name: 'Max', age: 20 },
-  { name: 'Jane', age: 20 }
+  { name: "Alice", age: 21 },
+  { name: "Max", age: 20 },
+  { name: "Jane", age: 20 },
 ];
 
 function groupBy(objectArray, property) {
   return objectArray.reduce(function (acc, obj) {
-    let key = obj[property]
+    let key = obj[property];
     if (!acc[key]) {
-      acc[key] = []
+      acc[key] = [];
     }
-    acc[key].push(obj)
-    return acc
-  }, {})
+    acc[key].push(obj);
+    return acc;
+  }, {});
 }
 
-let groupedPeople = groupBy(people, 'age')
+let groupedPeople = groupBy(people, "age");
 // groupedPeople is:
 // {
 //   20: [
@@ -492,25 +506,32 @@ let groupedPeople = groupBy(people, 'age')
 ```js
 // friends - an array of objects
 // where object field "books" is a list of favorite books
-let friends = [{
-  name: 'Anna',
-  books: ['Bible', 'Harry Potter'],
-  age: 21
-}, {
-  name: 'Bob',
-  books: ['War and peace', 'Romeo and Juliet'],
-  age: 26
-}, {
-  name: 'Alice',
-  books: ['The Lord of the Rings', 'The Shining'],
-  age: 18
-}]
+let friends = [
+  {
+    name: "Anna",
+    books: ["Bible", "Harry Potter"],
+    age: 21,
+  },
+  {
+    name: "Bob",
+    books: ["War and peace", "Romeo and Juliet"],
+    age: 26,
+  },
+  {
+    name: "Alice",
+    books: ["The Lord of the Rings", "The Shining"],
+    age: 18,
+  },
+];
 
 // allbooks - list which will contain all friends' books +
 // additional list contained in initialValue
-let allbooks = friends.reduce(function(accumulator, currentValue) {
-  return [...accumulator, ...currentValue.books]
-}, ['Alphabet'])
+let allbooks = friends.reduce(
+  function (accumulator, currentValue) {
+    return [...accumulator, ...currentValue.books];
+  },
+  ["Alphabet"]
+);
 
 // allbooks = [
 //   'Alphabet', 'Bible', 'Harry Potter', 'War and peace',
@@ -527,15 +548,19 @@ let allbooks = friends.reduce(function(accumulator, currentValue) {
 > duplicate items have been removed.
 
 ```js
-let myArray = ['a', 'b', 'a', 'b', 'c', 'e', 'e', 'c', 'd', 'd', 'd', 'd']
-let myArrayWithNoDuplicates = myArray.reduce(function (accumulator, currentValue) {
+let myArray = ["a", "b", "a", "b", "c", "e", "e", "c", "d", "d", "d", "d"];
+let myArrayWithNoDuplicates = myArray.reduce(function (
+  accumulator,
+  currentValue
+) {
   if (accumulator.indexOf(currentValue) === -1) {
-    accumulator.push(currentValue)
+    accumulator.push(currentValue);
   }
-  return accumulator
-}, [])
+  return accumulator;
+},
+[]);
 
-console.log(myArrayWithNoDuplicates)
+console.log(myArrayWithNoDuplicates);
 ```
 
 ### Replace .filter().map() with .reduce()
@@ -546,7 +571,7 @@ twice, but you can achieve the same effect while traversing only once with
 can filter and map while traversing once with {{jsxref("Array.forEach()")}}).
 
 ```js
-const numbers = [-5, 6, 2, 0,];
+const numbers = [-5, 6, 2, 0];
 
 const doubledPositiveNumbers = numbers.reduce((accumulator, currentValue) => {
   if (currentValue > 0) {
@@ -573,82 +598,86 @@ function runPromiseInSequence(arr, input) {
   return arr.reduce(
     (promiseChain, currentFunction) => promiseChain.then(currentFunction),
     Promise.resolve(input)
-  )
+  );
 }
 
 // promise function 1
 function p1(a) {
   return new Promise((resolve, reject) => {
-    resolve(a * 5)
-  })
+    resolve(a * 5);
+  });
 }
 
 // promise function 2
 function p2(a) {
   return new Promise((resolve, reject) => {
-    resolve(a * 2)
-  })
+    resolve(a * 2);
+  });
 }
 
 // function 3  - will be wrapped in a resolved promise by .then()
 function f3(a) {
- return a * 3
+  return a * 3;
 }
 
 // promise function 4
 function p4(a) {
   return new Promise((resolve, reject) => {
-    resolve(a * 4)
-  })
+    resolve(a * 4);
+  });
 }
 
-const promiseArr = [p1, p2, f3, p4]
-runPromiseInSequence(promiseArr, 10)
-  .then(console.log)   // 1200
+const promiseArr = [p1, p2, f3, p4];
+runPromiseInSequence(promiseArr, 10).then(console.log); // 1200
 ```
 
 ### Function composition enabling piping
 
 ```js
 // Building-blocks to use for composition
-const double = x => x + x
-const triple = x => 3 * x
-const quadruple = x => 4 * x
+const double = (x) => x + x;
+const triple = (x) => 3 * x;
+const quadruple = (x) => 4 * x;
 
 // Function composition enabling pipe functionality
-const pipe = (...functions) => input => functions.reduce(
-    (acc, fn) => fn(acc),
-    input
-)
+const pipe =
+  (...functions) =>
+  (input) =>
+    functions.reduce((acc, fn) => fn(acc), input);
 
 // Composed functions for multiplication of specific values
-const multiply6 = pipe(double, triple)
-const multiply9 = pipe(triple, triple)
-const multiply16 = pipe(quadruple, quadruple)
-const multiply24 = pipe(double, triple, quadruple)
+const multiply6 = pipe(double, triple);
+const multiply9 = pipe(triple, triple);
+const multiply16 = pipe(quadruple, quadruple);
+const multiply24 = pipe(double, triple, quadruple);
 
 // Usage
-multiply6(6)   // 36
-multiply9(9)   // 81
-multiply16(16) // 256
-multiply24(10) // 240
+multiply6(6); // 36
+multiply9(9); // 81
+multiply16(16); // 256
+multiply24(10); // 240
 ```
 
 ### Write map using reduce
 
 ```js
 if (!Array.prototype.mapUsingReduce) {
-  Array.prototype.mapUsingReduce = function(callback, initialValue) {
-    return this.reduce(function(mappedArray, currentValue, index, array) {
-      mappedArray[index] = callback.call(initialValue, currentValue, index, array)
-      return mappedArray
-    }, [])
-  }
+  Array.prototype.mapUsingReduce = function (callback, initialValue) {
+    return this.reduce(function (mappedArray, currentValue, index, array) {
+      mappedArray[index] = callback.call(
+        initialValue,
+        currentValue,
+        index,
+        array
+      );
+      return mappedArray;
+    }, []);
+  };
 }
 
 [1, 2, , 3].mapUsingReduce(
   (currentValue, index, array) => currentValue + index + array.length
-) // [5, 7, , 10]
+); // [5, 7, , 10]
 ```
 
 ## Specifications

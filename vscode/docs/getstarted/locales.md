@@ -1,5 +1,4 @@
-Display Language
-================
+# Display Language
 
 Visual Studio Code ships by default with English as the display language and other [languages](#available-locales) rely on Language Pack [extensions](/docs/editor/extension-marketplace.md) available from the [Marketplace](https://marketplace.visualstudio.com/search?target=VSCode&category=Language%20Packs&sortBy=Downloads).
 
@@ -9,8 +8,7 @@ VS Code detects the operating system’s UI language and will prompt you to inst
 
 After installing the Language Pack extension and following the prompt to restart, VS Code will use the Language Pack matching your operating system’s UI language.
 
-Changing the Display Language
------------------------------
+## Changing the Display Language
 
 You can also override the default UI language by explicitly setting the VS Code display language using the **Configure Display Language** command.
 
@@ -28,13 +26,11 @@ The **Configure Display Language** command writes to the Runtime Configuration A
 
 The `locale` can also be changed by editing the `argv.json` file directly (**Preferences: Configure Runtime Arguments**) and restarting VS Code.
 
-Available locales
------------------
+## Available locales
 
 <table><thead><tr class="header"><th>Display Language</th><th>Locale</th></tr></thead><tbody><tr class="odd"><td>English (US)</td><td><code>en</code></td></tr><tr class="even"><td>Simplified Chinese</td><td><code>zh-CN</code></td></tr><tr class="odd"><td>Traditional Chinese</td><td><code>zh-TW</code></td></tr><tr class="even"><td>French</td><td><code>fr</code></td></tr><tr class="odd"><td>German</td><td><code>de</code></td></tr><tr class="even"><td>Italian</td><td><code>it</code></td></tr><tr class="odd"><td>Spanish</td><td><code>es</code></td></tr><tr class="even"><td>Japanese</td><td><code>ja</code></td></tr><tr class="odd"><td>Korean</td><td><code>ko</code></td></tr><tr class="even"><td>Russian</td><td><code>ru</code></td></tr><tr class="odd"><td>Bulgarian</td><td><code>bg</code></td></tr><tr class="even"><td>Hungarian</td><td><code>hu</code></td></tr><tr class="odd"><td>Portuguese (Brazil)</td><td><code>pt-br</code></td></tr><tr class="even"><td>Turkish</td><td><code>tr</code></td></tr></tbody></table>
 
-Marketplace Language Packs
---------------------------
+## Marketplace Language Packs
 
 As described above, VS Code ships with English as the default display language, but other languages are available through [Marketplace Language Packs](https://marketplace.visualstudio.com/search?target=VSCode&category=Language%20Packs&sortBy=Downloads).
 
@@ -44,8 +40,7 @@ You can search for Language Packs in the Extensions view (`kb(workbench.view.ext
 
 You can have multiple Language Packs installed and select the current display language with the **Configure Display Language** command.
 
-Setting the Language
---------------------
+## Setting the Language
 
 If you want to use a specific language for a VS Code session, you can use the command-line switch `--locale` to specify a locale when you launch VS Code.
 
@@ -55,8 +50,7 @@ Below is an example of using the `--locale` command-line switch to set the VS Co
 
 **Note**: You must have the appropriate Language Pack installed for the language you specify with the command-line switch. If the matching Language Pack is not installed, VS Code will display English.
 
-Common questions
-----------------
+## Common questions
 
 ### Unable to write to file because the file is dirty
 

@@ -1,5 +1,4 @@
-Worker threads
-==============
+# Worker threads
 
 > Stability: 2 - Stable
 
@@ -41,13 +40,12 @@ When implementing a worker pool, use the [`AsyncResource`](async_hooks.md#async_
 
 Worker threads inherit non-process-specific options by default. Refer to [`Worker constructor options`](#worker_threads_new_worker_filename_options) to know how to customize worker thread options, specifically `argv` and `execArgv` options.
 
-`worker.getEnvironmentData(key)`
---------------------------------
+## `worker.getEnvironmentData(key)`
 
 > Stability: 1 - Experimental
 
--   `key` {any} Any arbitrary, cloneable JavaScript value that can be used as a {Map} key.
--   Returns: {any}
+- `key` {any} Any arbitrary, cloneable JavaScript value that can be used as a {Map} key.
+- Returns: {any}
 
 Within a worker thread, `worker.getEnvironmentData()` returns a clone of data passed to the spawning thread’s `worker.setEnvironmentData()`. Every new `Worker` receives its own copy of the environment data automatically.
 
@@ -65,10 +63,9 @@ Within a worker thread, `worker.getEnvironmentData()` returns a clone of data pa
       console.log(getEnvironmentData('Hello'));  // Prints 'World!'.
     }
 
-`worker.isMainThread`
----------------------
+## `worker.isMainThread`
 
--   {boolean}
+- {boolean}
 
 Is `true` if this code is not running inside of a [`Worker`](#worker_threads_class_worker) thread.
 
@@ -82,8 +79,7 @@ Is `true` if this code is not running inside of a [`Worker`](#worker_threads_cla
       console.log(isMainThread);  // Prints 'false'.
     }
 
-`worker.markAsUntransferable(object)`
--------------------------------------
+## `worker.markAsUntransferable(object)`
 
 Mark an object as not transferable. If `object` occurs in the transfer list of a [`port.postMessage()`](#worker_threads_port_postmessage_value_transferlist) call, it is ignored.
 
@@ -111,13 +107,12 @@ This operation cannot be undone.
 
 There is no equivalent to this API in browsers.
 
-`worker.moveMessagePortToContext(port, contextifiedSandbox)`
-------------------------------------------------------------
+## `worker.moveMessagePortToContext(port, contextifiedSandbox)`
 
--   `port` {MessagePort} The message port to transfer.
--   `contextifiedSandbox` {Object} A [contextified](vm.md#vm_what_does_it_mean_to_contextify_an_object) object as returned by the `vm.createContext()` method.
+- `port` {MessagePort} The message port to transfer.
+- `contextifiedSandbox` {Object} A [contextified](vm.md#vm_what_does_it_mean_to_contextify_an_object) object as returned by the `vm.createContext()` method.
 
--   Returns: {MessagePort}
+- Returns: {MessagePort}
 
 Transfer a `MessagePort` to a different [`vm`](vm.md) Context. The original `port` object is rendered unusable, and the returned `MessagePort` instance takes its place.
 
@@ -125,10 +120,9 @@ The returned `MessagePort` is an object in the target context and inherits from 
 
 However, the created `MessagePort` no longer inherits from [`EventTarget`](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget), and only [`port.onmessage()`](https://developer.mozilla.org/en-US/docs/Web/API/MessagePort/onmessage) can be used to receive events using it.
 
-`worker.parentPort`
--------------------
+## `worker.parentPort`
 
--   {null|MessagePort}
+- {null|MessagePort}
 
 If this thread is a [`Worker`](#worker_threads_class_worker), this is a [`MessagePort`](#worker_threads_class_messageport) allowing communication with the parent thread. Messages sent using `parentPort.postMessage()` are available in the parent thread using `worker.on('message')`, and messages sent from the parent thread using `worker.postMessage()` are available in this thread using `parentPort.on('message')`.
 
@@ -147,12 +141,11 @@ If this thread is a [`Worker`](#worker_threads_class_worker), this is a [`Messag
       });
     }
 
-`worker.receiveMessageOnPort(port)`
------------------------------------
+## `worker.receiveMessageOnPort(port)`
 
--   `port` {MessagePort|BroadcastChannel}
+- `port` {MessagePort|BroadcastChannel}
 
--   Returns: {Object|undefined}
+- Returns: {Object|undefined}
 
 Receive a single message from a given `MessagePort`. If no message is available, `undefined` is returned, otherwise an object with a single `message` property that contains the message payload, corresponding to the oldest message in the `MessagePort`’s queue.
 
@@ -167,23 +160,21 @@ Receive a single message from a given `MessagePort`. If no message is available,
 
 When this function is used, no `'message'` event is emitted and the `onmessage` listener is not invoked.
 
-`worker.resourceLimits`
------------------------
+## `worker.resourceLimits`
 
--   {Object}
-    -   `maxYoungGenerationSizeMb` {number}
-    -   `maxOldGenerationSizeMb` {number}
-    -   `codeRangeSizeMb` {number}
-    -   `stackSizeMb` {number}
+- {Object}
+  - `maxYoungGenerationSizeMb` {number}
+  - `maxOldGenerationSizeMb` {number}
+  - `codeRangeSizeMb` {number}
+  - `stackSizeMb` {number}
 
 Provides the set of JS engine resource constraints inside this Worker thread. If the `resourceLimits` option was passed to the [`Worker`](#worker_threads_class_worker) constructor, this matches its values.
 
 If this is used in the main thread, its value is an empty object.
 
-`worker.SHARE_ENV`
-------------------
+## `worker.SHARE_ENV`
 
--   {symbol}
+- {symbol}
 
 A special value that can be passed as the `env` option of the [`Worker`](#worker_threads_class_worker) constructor, to indicate that the current thread and the Worker thread should share read and write access to the same set of environment variables.
 
@@ -193,25 +184,22 @@ A special value that can be passed as the `env` option of the [`Worker`](#worker
         console.log(process.env.SET_IN_WORKER);  // Prints 'foo'.
       });
 
-`worker.setEnvironmentData(key[, value])`
------------------------------------------
+## `worker.setEnvironmentData(key[, value])`
 
 > Stability: 1 - Experimental
 
--   `key` {any} Any arbitrary, cloneable JavaScript value that can be used as a {Map} key.
--   `value` {any} Any arbitrary, cloneable JavaScript value that will be cloned and passed automatically to all new `Worker` instances. If `value` is passed as `undefined`, any previously set value for the `key` will be deleted.
+- `key` {any} Any arbitrary, cloneable JavaScript value that can be used as a {Map} key.
+- `value` {any} Any arbitrary, cloneable JavaScript value that will be cloned and passed automatically to all new `Worker` instances. If `value` is passed as `undefined`, any previously set value for the `key` will be deleted.
 
 The `worker.setEnvironmentData()` API sets the content of `worker.getEnvironmentData()` in the current thread and all new `Worker` instances spawned from the current context.
 
-`worker.threadId`
------------------
+## `worker.threadId`
 
--   {integer}
+- {integer}
 
 An integer identifier for the current thread. On the corresponding worker object (if there is any), it is available as [`worker.threadId`](#worker_threads_worker_threadid_1). This value is unique for each [`Worker`](#worker_threads_class_worker) instance inside a single process.
 
-`worker.workerData`
--------------------
+## `worker.workerData`
 
 An arbitrary JavaScript value that contains a clone of the data passed to this thread’s `Worker` constructor.
 
@@ -225,8 +213,7 @@ The data is cloned as if using [`postMessage()`](#worker_threads_port_postmessag
       console.log(workerData);  // Prints 'Hello, world!'.
     }
 
-Class: `BroadcastChannel extends EventTarget`
----------------------------------------------
+## Class: `BroadcastChannel extends EventTarget`
 
 > Stability: 1 - Experimental
 
@@ -257,7 +244,7 @@ Instances of `BroadcastChannel` allow asynchronous one-to-many communication wit
 
 ### `new BroadcastChannel(name)`
 
--   `name` {any} The name of the channel to connect to. Any JavaScript value that can be converted to a string using `${name}` is permitted.
+- `name` {any} The name of the channel to connect to. Any JavaScript value that can be converted to a string using `${name}` is permitted.
 
 ### `broadcastChannel.close()`
 
@@ -265,26 +252,25 @@ Closes the `BroadcastChannel` connection.
 
 ### `broadcastChannel.onmessage`
 
--   Type: {Function} Invoked with a single `MessageEvent` argument when a message is received.
+- Type: {Function} Invoked with a single `MessageEvent` argument when a message is received.
 
 ### `broadcastChannel.onmessageerror`
 
--   Type: {Function} Invoked with a received message cannot be deserialized.
+- Type: {Function} Invoked with a received message cannot be deserialized.
 
 ### `broadcastChannel.postMessage(message)`
 
--   `message` {any} Any cloneable JavaScript value.
+- `message` {any} Any cloneable JavaScript value.
 
 ### `broadcastChannel.ref()`
 
-Opposite of `unref()`. Calling `ref()` on a previously `unref()`ed BroadcastChannel does *not* let the program exit if it’s the only active handle left (the default behavior). If the port is `ref()`ed, calling `ref()` again has no effect.
+Opposite of `unref()`. Calling `ref()` on a previously `unref()`ed BroadcastChannel does _not_ let the program exit if it’s the only active handle left (the default behavior). If the port is `ref()`ed, calling `ref()` again has no effect.
 
 ### `broadcastChannel.unref()`
 
 Calling `unref()` on a BroadcastChannel allows the thread to exit if this is the only active handle in the event system. If the BroadcastChannel is already `unref()`ed calling `unref()` again has no effect.
 
-Class: `MessageChannel`
------------------------
+## Class: `MessageChannel`
 
 Instances of the `worker.MessageChannel` class represent an asynchronous, two-way communications channel. The `MessageChannel` has no methods of its own. `new MessageChannel()` yields an object with `port1` and `port2` properties, which refer to linked [`MessagePort`](#worker_threads_class_messageport) instances.
 
@@ -295,10 +281,9 @@ Instances of the `worker.MessageChannel` class represent an asynchronous, two-wa
     port2.postMessage({ foo: 'bar' });
     // Prints: received { foo: 'bar' } from the `port1.on('message')` listener
 
-Class: `MessagePort`
---------------------
+## Class: `MessagePort`
 
--   Extends: {EventTarget}
+- Extends: {EventTarget}
 
 Instances of the `worker.MessagePort` class represent one end of an asynchronous, two-way communications channel. It can be used to transfer structured data, memory regions and other `MessagePort`s between different [`Worker`](#worker_threads_class_worker)s.
 
@@ -322,7 +307,7 @@ The `'close'` event is emitted once either side of the channel has been disconne
 
 ### Event: `'message'`
 
--   `value` {any} The transmitted value
+- `value` {any} The transmitted value
 
 The `'message'` event is emitted for any incoming message, containing the cloned input of [`port.postMessage()`](#worker_threads_port_postmessage_value_transferlist).
 
@@ -330,7 +315,7 @@ Listeners on this event receive a clone of the `value` parameter as passed to `p
 
 ### Event: `'messageerror'`
 
--   `error` {Error} An Error object
+- `error` {Error} An Error object
 
 The `'messageerror'` event is emitted when deserializing a message failed.
 
@@ -344,36 +329,37 @@ The [`'close'` event](#worker_threads_event_close) is emitted on both `MessagePo
 
 ### `port.postMessage(value[, transferList])`
 
--   `value` {any}
--   `transferList` {Object\[\]}
+- `value` {any}
+- `transferList` {Object\[\]}
 
 Sends a JavaScript value to the receiving side of this channel. `value` is transferred in a way which is compatible with the [HTML structured clone algorithm](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm).
 
 In particular, the significant differences to `JSON` are:
 
--   `value` may contain circular references.
--   `value` may contain instances of builtin JS types such as `RegExp`s, `BigInt`s, `Map`s, `Set`s, etc.
--   `value` may contain typed arrays, both using `ArrayBuffer`s and `SharedArrayBuffer`s.
--   `value` may contain [`WebAssembly.Module`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly/Module) instances.
--   `value` may not contain native (C++-backed) objects other than:
-    -   {CryptoKey}s,
-    -   {FileHandle}s,
-    -   {Histogram}s,
-    -   {KeyObject}s,
-    -   {MessagePort}s,
-    -   {net.BlockList}s,
-    -   {net.SocketAddress}es,
-    -   {X509Certificate}s.
+- `value` may contain circular references.
+- `value` may contain instances of builtin JS types such as `RegExp`s, `BigInt`s, `Map`s, `Set`s, etc.
+- `value` may contain typed arrays, both using `ArrayBuffer`s and `SharedArrayBuffer`s.
+- `value` may contain [`WebAssembly.Module`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly/Module) instances.
+- `value` may not contain native (C++-backed) objects other than:
 
-    const { MessageChannel } = require('worker_threads');
-    const { port1, port2 } = new MessageChannel();
+  - {CryptoKey}s,
+  - {FileHandle}s,
+  - {Histogram}s,
+  - {KeyObject}s,
+  - {MessagePort}s,
+  - {net.BlockList}s,
+  - {net.SocketAddress}es,
+  - {X509Certificate}s.
 
-    port1.on('message', (message) => console.log(message));
+  const { MessageChannel } = require('worker_threads');
+  const { port1, port2 } = new MessageChannel();
 
-    const circularData = {};
-    circularData.foo = circularData;
-    // Prints: { foo: [Circular] }
-    port2.postMessage(circularData);
+  port1.on('message', (message) => console.log(message));
+
+  const circularData = {};
+  circularData.foo = circularData;
+  // Prints: { foo: [Circular] }
+  port2.postMessage(circularData);
 
 `transferList` may be a list of [`ArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer), [`MessagePort`](#worker_threads_class_messageport) and [`FileHandle`](fs.md#fs_class_filehandle) objects. After transferring, they are not usable on the sending side of the channel anymore (even if they are not contained in `value`). Unlike with [child processes](child_process.md), transferring handles such as network sockets is currently not supported.
 
@@ -468,7 +454,7 @@ This limitation extends to many built-in objects, such as the global `URL` objec
 
 ### `port.ref()`
 
-Opposite of `unref()`. Calling `ref()` on a previously `unref()`ed port does *not* let the program exit if it’s the only active handle left (the default behavior). If the port is `ref()`ed, calling `ref()` again has no effect.
+Opposite of `unref()`. Calling `ref()` on a previously `unref()`ed port does _not_ let the program exit if it’s the only active handle left (the default behavior). If the port is `ref()`ed, calling `ref()` again has no effect.
 
 If listeners are attached or removed using `.on('message')`, the port is `ref()`ed and `unref()`ed automatically depending on whether listeners for the event exist.
 
@@ -484,27 +470,26 @@ Calling `unref()` on a port allows the thread to exit if this is the only active
 
 If listeners are attached or removed using `.on('message')`, the port is `ref()`ed and `unref()`ed automatically depending on whether listeners for the event exist.
 
-Class: `Worker`
----------------
+## Class: `Worker`
 
--   Extends: {EventEmitter}
+- Extends: {EventEmitter}
 
 The `Worker` class represents an independent JavaScript execution thread. Most Node.js APIs are available inside of it.
 
 Notable differences inside a Worker environment are:
 
--   The [`process.stdin`](process.md#process_process_stdin), [`process.stdout`](process.md#process_process_stdout) and [`process.stderr`](process.md#process_process_stderr) may be redirected by the parent thread.
--   The [`require('worker_threads').isMainThread`](#worker_threads_worker_ismainthread) property is set to `false`.
--   The [`require('worker_threads').parentPort`](#worker_threads_worker_parentport) message port is available.
--   [`process.exit()`](process.md#process_process_exit_code) does not stop the whole program, just the single thread, and [`process.abort()`](process.md#process_process_abort) is not available.
--   [`process.chdir()`](process.md#process_process_chdir_directory) and `process` methods that set group or user ids are not available.
--   [`process.env`](process.md#process_process_env) is a copy of the parent thread’s environment variables, unless otherwise specified. Changes to one copy are not visible in other threads, and are not visible to native add-ons (unless [`worker.SHARE_ENV`](#worker_threads_worker_share_env) is passed as the `env` option to the [`Worker`](#worker_threads_class_worker) constructor).
--   [`process.title`](process.md#process_process_title) cannot be modified.
--   Signals are not delivered through [`process.on('...')`](process.md#process_signal_events).
--   Execution may stop at any point as a result of [`worker.terminate()`](#worker_threads_worker_terminate) being invoked.
--   IPC channels from parent processes are not accessible.
--   The [`trace_events`](tracing.md) module is not supported.
--   Native add-ons can only be loaded from multiple threads if they fulfill [certain conditions](addons.md#addons_worker_support).
+- The [`process.stdin`](process.md#process_process_stdin), [`process.stdout`](process.md#process_process_stdout) and [`process.stderr`](process.md#process_process_stderr) may be redirected by the parent thread.
+- The [`require('worker_threads').isMainThread`](#worker_threads_worker_ismainthread) property is set to `false`.
+- The [`require('worker_threads').parentPort`](#worker_threads_worker_parentport) message port is available.
+- [`process.exit()`](process.md#process_process_exit_code) does not stop the whole program, just the single thread, and [`process.abort()`](process.md#process_process_abort) is not available.
+- [`process.chdir()`](process.md#process_process_chdir_directory) and `process` methods that set group or user ids are not available.
+- [`process.env`](process.md#process_process_env) is a copy of the parent thread’s environment variables, unless otherwise specified. Changes to one copy are not visible in other threads, and are not visible to native add-ons (unless [`worker.SHARE_ENV`](#worker_threads_worker_share_env) is passed as the `env` option to the [`Worker`](#worker_threads_class_worker) constructor).
+- [`process.title`](process.md#process_process_title) cannot be modified.
+- Signals are not delivered through [`process.on('...')`](process.md#process_signal_events).
+- Execution may stop at any point as a result of [`worker.terminate()`](#worker_threads_worker_terminate) being invoked.
+- IPC channels from parent processes are not accessible.
+- The [`trace_events`](tracing.md) module is not supported.
+- Native add-ons can only be loaded from multiple threads if they fulfill [certain conditions](addons.md#addons_worker_support).
 
 Creating `Worker` instances inside of other `Worker`s is possible.
 
@@ -535,33 +520,33 @@ See [`port.postMessage()`](#worker_threads_port_postmessage_value_transferlist) 
 
 ### `new Worker(filename[, options])`
 
--   `filename` {string|URL} The path to the Worker’s main script or module. Must be either an absolute path or a relative path (i.e. relative to the current working directory) starting with `./` or `../`, or a WHATWG `URL` object using `file:` or `data:` protocol. When using a [`data:` URL](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs), the data is interpreted based on MIME type using the [ECMAScript module loader](esm.md#esm_data_imports). If `options.eval` is `true`, this is a string containing JavaScript code rather than a path.
--   `options` {Object}
-    -   `argv` {any\[\]} List of arguments which would be stringified and appended to `process.argv` in the worker. This is mostly similar to the `workerData` but the values are available on the global `process.argv` as if they were passed as CLI options to the script.
-    -   `env` {Object} If set, specifies the initial value of `process.env` inside the Worker thread. As a special value, [`worker.SHARE_ENV`](#worker_threads_worker_share_env) may be used to specify that the parent thread and the child thread should share their environment variables; in that case, changes to one thread’s `process.env` object affect the other thread as well. **Default:** `process.env`.
-    -   `eval` {boolean} If `true` and the first argument is a `string`, interpret the first argument to the constructor as a script that is executed once the worker is online.
-    -   `execArgv` {string\[\]} List of node CLI options passed to the worker. V8 options (such as `--max-old-space-size`) and options that affect the process (such as `--title`) are not supported. If set, this is provided as [`process.execArgv`](process.md#process_process_execargv) inside the worker. By default, options are inherited from the parent thread.
-    -   `stdin` {boolean} If this is set to `true`, then `worker.stdin` provides a writable stream whose contents appear as `process.stdin` inside the Worker. By default, no data is provided.
-    -   `stdout` {boolean} If this is set to `true`, then `worker.stdout` is not automatically piped through to `process.stdout` in the parent.
-    -   `stderr` {boolean} If this is set to `true`, then `worker.stderr` is not automatically piped through to `process.stderr` in the parent.
-    -   `workerData` {any} Any JavaScript value that is cloned and made available as [`require('worker_threads').workerData`](#worker_threads_worker_workerdata). The cloning occurs as described in the [HTML structured clone algorithm](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm), and an error is thrown if the object cannot be cloned (e.g. because it contains `function`s).
-    -   `trackUnmanagedFds` {boolean} If this is set to `true`, then the Worker tracks raw file descriptors managed through [`fs.open()`](fs.md#fs_fs_open_path_flags_mode_callback) and [`fs.close()`](fs.md#fs_fs_close_fd_callback), and closes them when the Worker exits, similar to other resources like network sockets or file descriptors managed through the [`FileHandle`](fs.md#fs_class_filehandle) API. This option is automatically inherited by all nested `Worker`s. **Default:** `true`.
-    -   `transferList` {Object\[\]} If one or more `MessagePort`-like objects are passed in `workerData`, a `transferList` is required for those items or [`ERR_MISSING_MESSAGE_PORT_IN_TRANSFER_LIST`](errors.md#errors_err_missing_message_port_in_transfer_list) is thrown. See [`port.postMessage()`](#worker_threads_port_postmessage_value_transferlist) for more information.
-    -   `resourceLimits` {Object} An optional set of resource limits for the new JS engine instance. Reaching these limits leads to termination of the `Worker` instance. These limits only affect the JS engine, and no external data, including no `ArrayBuffer`s. Even if these limits are set, the process may still abort if it encounters a global out-of-memory situation.
-        -   `maxOldGenerationSizeMb` {number} The maximum size of the main heap in MB.
-        -   `maxYoungGenerationSizeMb` {number} The maximum size of a heap space for recently created objects.
-        -   `codeRangeSizeMb` {number} The size of a pre-allocated memory range used for generated code.
-        -   `stackSizeMb` {number} The default maximum stack size for the thread. Small values may lead to unusable Worker instances. **Default:** `4`.
+- `filename` {string|URL} The path to the Worker’s main script or module. Must be either an absolute path or a relative path (i.e. relative to the current working directory) starting with `./` or `../`, or a WHATWG `URL` object using `file:` or `data:` protocol. When using a [`data:` URL](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs), the data is interpreted based on MIME type using the [ECMAScript module loader](esm.md#esm_data_imports). If `options.eval` is `true`, this is a string containing JavaScript code rather than a path.
+- `options` {Object}
+  - `argv` {any\[\]} List of arguments which would be stringified and appended to `process.argv` in the worker. This is mostly similar to the `workerData` but the values are available on the global `process.argv` as if they were passed as CLI options to the script.
+  - `env` {Object} If set, specifies the initial value of `process.env` inside the Worker thread. As a special value, [`worker.SHARE_ENV`](#worker_threads_worker_share_env) may be used to specify that the parent thread and the child thread should share their environment variables; in that case, changes to one thread’s `process.env` object affect the other thread as well. **Default:** `process.env`.
+  - `eval` {boolean} If `true` and the first argument is a `string`, interpret the first argument to the constructor as a script that is executed once the worker is online.
+  - `execArgv` {string\[\]} List of node CLI options passed to the worker. V8 options (such as `--max-old-space-size`) and options that affect the process (such as `--title`) are not supported. If set, this is provided as [`process.execArgv`](process.md#process_process_execargv) inside the worker. By default, options are inherited from the parent thread.
+  - `stdin` {boolean} If this is set to `true`, then `worker.stdin` provides a writable stream whose contents appear as `process.stdin` inside the Worker. By default, no data is provided.
+  - `stdout` {boolean} If this is set to `true`, then `worker.stdout` is not automatically piped through to `process.stdout` in the parent.
+  - `stderr` {boolean} If this is set to `true`, then `worker.stderr` is not automatically piped through to `process.stderr` in the parent.
+  - `workerData` {any} Any JavaScript value that is cloned and made available as [`require('worker_threads').workerData`](#worker_threads_worker_workerdata). The cloning occurs as described in the [HTML structured clone algorithm](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm), and an error is thrown if the object cannot be cloned (e.g. because it contains `function`s).
+  - `trackUnmanagedFds` {boolean} If this is set to `true`, then the Worker tracks raw file descriptors managed through [`fs.open()`](fs.md#fs_fs_open_path_flags_mode_callback) and [`fs.close()`](fs.md#fs_fs_close_fd_callback), and closes them when the Worker exits, similar to other resources like network sockets or file descriptors managed through the [`FileHandle`](fs.md#fs_class_filehandle) API. This option is automatically inherited by all nested `Worker`s. **Default:** `true`.
+  - `transferList` {Object\[\]} If one or more `MessagePort`-like objects are passed in `workerData`, a `transferList` is required for those items or [`ERR_MISSING_MESSAGE_PORT_IN_TRANSFER_LIST`](errors.md#errors_err_missing_message_port_in_transfer_list) is thrown. See [`port.postMessage()`](#worker_threads_port_postmessage_value_transferlist) for more information.
+  - `resourceLimits` {Object} An optional set of resource limits for the new JS engine instance. Reaching these limits leads to termination of the `Worker` instance. These limits only affect the JS engine, and no external data, including no `ArrayBuffer`s. Even if these limits are set, the process may still abort if it encounters a global out-of-memory situation.
+    - `maxOldGenerationSizeMb` {number} The maximum size of the main heap in MB.
+    - `maxYoungGenerationSizeMb` {number} The maximum size of a heap space for recently created objects.
+    - `codeRangeSizeMb` {number} The size of a pre-allocated memory range used for generated code.
+    - `stackSizeMb` {number} The default maximum stack size for the thread. Small values may lead to unusable Worker instances. **Default:** `4`.
 
 ### Event: `'error'`
 
--   `err` {Error}
+- `err` {Error}
 
 The `'error'` event is emitted if the worker thread throws an uncaught exception. In that case, the worker is terminated.
 
 ### Event: `'exit'`
 
--   `exitCode` {integer}
+- `exitCode` {integer}
 
 The `'exit'` event is emitted once the worker has stopped. If the worker exited by calling [`process.exit()`](process.md#process_process_exit_code), the `exitCode` parameter is the passed exit code. If the worker was terminated, the `exitCode` parameter is `1`.
 
@@ -569,7 +554,7 @@ This is the final event emitted by any `Worker` instance.
 
 ### Event: `'message'`
 
--   `value` {any} The transmitted value
+- `value` {any} The transmitted value
 
 The `'message'` event is emitted when the worker thread has invoked [`require('worker_threads').parentPort.postMessage()`](#worker_threads_worker_postmessage_value_transferlist). See the [`port.on('message')`](#worker_threads_event_message) event for more details.
 
@@ -577,7 +562,7 @@ All messages sent from the worker thread are emitted before the [`'exit'` event]
 
 ### Event: `'messageerror'`
 
--   `error` {Error} An Error object
+- `error` {Error} An Error object
 
 The `'messageerror'` event is emitted when deserializing a message failed.
 
@@ -587,7 +572,7 @@ The `'online'` event is emitted when the worker thread has started executing Jav
 
 ### `worker.getHeapSnapshot()`
 
--   Returns: {Promise} A promise for a Readable Stream containing a V8 heap snapshot
+- Returns: {Promise} A promise for a Readable Stream containing a V8 heap snapshot
 
 Returns a readable stream for a V8 snapshot of the current state of the Worker. See [`v8.getHeapSnapshot()`](v8.md#v8_v8_getheapsnapshot) for more details.
 
@@ -599,12 +584,12 @@ An object that can be used to query performance information from a worker instan
 
 #### `performance.eventLoopUtilization([utilization1[, utilization2]])`
 
--   `utilization1` {Object} The result of a previous call to `eventLoopUtilization()`.
--   `utilization2` {Object} The result of a previous call to `eventLoopUtilization()` prior to `utilization1`.
--   Returns {Object}
-    -   `idle` {number}
-    -   `active` {number}
-    -   `utilization` {number}
+- `utilization1` {Object} The result of a previous call to `eventLoopUtilization()`.
+- `utilization2` {Object} The result of a previous call to `eventLoopUtilization()` prior to `utilization1`.
+- Returns {Object}
+  - `idle` {number}
+  - `active` {number}
+  - `utilization` {number}
 
 The same call as [`perf_hooks` `eventLoopUtilization()`](perf_hooks.md#perf_hooks_performance_eventlooputilization_utilization1_utilization2), except the values of the worker instance are returned.
 
@@ -635,22 +620,22 @@ The event loop utilization of a worker is available only after the [`'online'` e
 
 ### `worker.postMessage(value[, transferList])`
 
--   `value` {any}
--   `transferList` {Object\[\]}
+- `value` {any}
+- `transferList` {Object\[\]}
 
 Send a message to the worker that is received via [`require('worker_threads').parentPort.on('message')`](#worker_threads_event_message). See [`port.postMessage()`](#worker_threads_port_postmessage_value_transferlist) for more details.
 
 ### `worker.ref()`
 
-Opposite of `unref()`, calling `ref()` on a previously `unref()`ed worker does *not* let the program exit if it’s the only active handle left (the default behavior). If the worker is `ref()`ed, calling `ref()` again has no effect.
+Opposite of `unref()`, calling `ref()` on a previously `unref()`ed worker does _not_ let the program exit if it’s the only active handle left (the default behavior). If the worker is `ref()`ed, calling `ref()` again has no effect.
 
 ### `worker.resourceLimits`
 
--   {Object}
-    -   `maxYoungGenerationSizeMb` {number}
-    -   `maxOldGenerationSizeMb` {number}
-    -   `codeRangeSizeMb` {number}
-    -   `stackSizeMb` {number}
+- {Object}
+  - `maxYoungGenerationSizeMb` {number}
+  - `maxOldGenerationSizeMb` {number}
+  - `codeRangeSizeMb` {number}
+  - `stackSizeMb` {number}
 
 Provides the set of JS engine resource constraints for this Worker thread. If the `resourceLimits` option was passed to the [`Worker`](#worker_threads_class_worker) constructor, this matches its values.
 
@@ -658,31 +643,31 @@ If the worker has stopped, the return value is an empty object.
 
 ### `worker.stderr`
 
--   {stream.Readable}
+- {stream.Readable}
 
 This is a readable stream which contains data written to [`process.stderr`](process.md#process_process_stderr) inside the worker thread. If `stderr: true` was not passed to the [`Worker`](#worker_threads_class_worker) constructor, then data is piped to the parent thread’s [`process.stderr`](process.md#process_process_stderr) stream.
 
 ### `worker.stdin`
 
--   {null|stream.Writable}
+- {null|stream.Writable}
 
 If `stdin: true` was passed to the [`Worker`](#worker_threads_class_worker) constructor, this is a writable stream. The data written to this stream will be made available in the worker thread as [`process.stdin`](process.md#process_process_stdin).
 
 ### `worker.stdout`
 
--   {stream.Readable}
+- {stream.Readable}
 
 This is a readable stream which contains data written to [`process.stdout`](process.md#process_process_stdout) inside the worker thread. If `stdout: true` was not passed to the [`Worker`](#worker_threads_class_worker) constructor, then data is piped to the parent thread’s [`process.stdout`](process.md#process_process_stdout) stream.
 
 ### `worker.terminate()`
 
--   Returns: {Promise}
+- Returns: {Promise}
 
 Stop all JavaScript execution in the worker thread as soon as possible. Returns a Promise for the exit code that is fulfilled when the [`'exit'` event](#worker_threads_event_exit) is emitted.
 
 ### `worker.threadId`
 
--   {integer}
+- {integer}
 
 An integer identifier for the referenced thread. Inside the worker thread, it is available as [`require('worker_threads').threadId`](#worker_threads_worker_threadid). This value is unique for each `Worker` instance inside a single process.
 
@@ -690,8 +675,7 @@ An integer identifier for the referenced thread. Inside the worker thread, it is
 
 Calling `unref()` on a worker allows the thread to exit if this is the only active handle in the event system. If the worker is already `unref()`ed calling `unref()` again has no effect.
 
-Notes
------
+## Notes
 
 ### Synchronous blocking of stdio
 

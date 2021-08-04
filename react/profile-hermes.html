@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Profiling with Hermes</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Profiling with Hermes</h1>
+    </header>
+    <p>
+      You can visualize JavaScript’s performance in a React Native app using
+      <a href="https://github.com/facebook/hermes">Hermes</a>. Hermes is a small
+      and lightweight JavaScript engine optimized for running React Native on
+      Android (you can
+      <a href="hermes">read more about using it with React Native here</a>.
+      Hermes helps improve app performance and also exposes ways to analyze the
+      performance of the JavaScript that it runs.
+    </p>
+    <p>
+      In this section, you will learn how to profile your React Native app
+      running on Hermes and how to visualize the profile using
+      <a
+        href="https://developers.google.com/web/tools/chrome-devtools/evaluate-performance/reference"
+        >the Performance tab on Chrome DevTools</a
+      >
+    </p>
+    <blockquote>
+      <p>
+        Be sure to <a href="hermes">enable hermes in your app</a> before you get
+        started!
+      </p>
+    </blockquote>
+    <p>Follow the instructions below to get started profiling:</p>
+    <ol type="1">
+      <li>
+        <a href="profile-hermes.md#record-a-hermes-sampling-profile"
+          >Record a Hermes sampling profile</a
+        >
+      </li>
+      <li>
+        <a href="profile-hermes.md#execute-command-from-cli"
+          >Execute command from CLI</a
+        >
+      </li>
+      <li>
+        <a
+          href="profile-hermes.md#open-the-downloaded-profile-on-chrome-devtools"
+          >Open the downloaded profile on Chrome DevTools</a
+        >
+      </li>
+    </ol>
+    <h2 id="record-a-hermes-sampling-profile">
+      Record a Hermes sampling profile
+    </h2>
+    <p>To record a sampling profiler from the Developer Menu:</p>
+    <ol type="1">
+      <li>Navigate to your running Metro server terminal.</li>
+      <li>Press <code>d</code> to open the <strong>Developer Menu.</strong></li>
+      <li>Select <strong>Enable Sampling Profiler.</strong></li>
+      <li>Execute your JavaScript by in your app (press buttons, etc.)</li>
+      <li>
+        Open the <strong>Developer Menu</strong> by pressing
+        <code>d</code> again.
+      </li>
+      <li>
+        Select <strong>Disable Sampling Profiler</strong> to stop recording and
+        save the sampling profiler.
+      </li>
+    </ol>
+    <p>
+      A toast will show the location where the sampling profiler has been saved,
+      usually in <code>/data/user/0/com.appName/cache/*.cpuprofile</code>
+    </p>
+    <p>
+      <img
+        src="/docs/assets/HermesProfileSaved.png"
+        height="465"
+        width="250"
+        alt="Toast Notification of Profile saving"
+      />
+    </p>
+    <h2 id="execute-command-from-cli">Execute command from CLI</h2>
+    <p>
+      You can use the
+      <a href="https://github.com/react-native-community/cli"
+        >React Native CLI</a
+      >
+      to convert the Hermes tracing profile to Chrome tracing profile, and then
+      pull it to your local machine using:
+    </p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode sh"
+      ><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1"><span class="ex">npx</span> react-native profile-hermes [destinationDir]</a></code></pre>
+    </div>
+    <h3 id="enabling-source-map">Enabling source map</h3>
+    <p>
+      A source map is used to enhance the profile and associate trace events
+      with the application code. You can automatically generate a source map
+      when converting the Hermes tracing profile to a Chrome tracing profile by
+      enabling <code>bundleInDebug</code> if the app is running in development
+      mode. This allows React Native to build the bundle during its running
+      process. Here’s how:
+    </p>
+    <ol type="1">
+      <li>In your app’s <code>android/app/build.gradle</code> file, add:</li>
+    </ol>
+    <div class="sourceCode" id="cb2">
+      <pre
+        class="sourceCode java"
+      ><code class="sourceCode java"><a class="sourceLine" id="cb2-1" title="1">project.<span class="fu">ext</span>.<span class="fu">react</span> = [</a>
+<a class="sourceLine" id="cb2-2" title="2">  bundleInDebug: <span class="kw">true</span>,</a>
+<a class="sourceLine" id="cb2-3" title="3">]</a></code></pre>
+    </div>
+    <blockquote>
+      <p>
+        Be sure to clean the build whenever you make any changes to
+        <code>build.gradle</code>
+      </p>
+    </blockquote>
+    <ol start="2" type="1">
+      <li>Clean the build by running:</li>
+    </ol>
+    <div class="sourceCode" id="cb3">
+      <pre
+        class="sourceCode sh"
+      ><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" title="1"><span class="bu">cd</span> android <span class="kw">&amp;&amp;</span> <span class="ex">./gradlew</span> clean</a></code></pre>
+    </div>
+    <ol start="3" type="1">
+      <li>Run your app:</li>
+    </ol>
+    <div class="sourceCode" id="cb4">
+      <pre
+        class="sourceCode sh"
+      ><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" title="1"><span class="ex">npx</span> react-native run-android</a></code></pre>
+    </div>
+    <h3 id="common-errors">Common errors</h3>
+    <h4 id="adb-no-devicesemulators-found-or-adb-device-offline">
+      <code>adb: no devices/emulators found</code> or
+      <code>adb: device offline</code>
+    </h4>
+    <ul>
+      <li>
+        <strong>Why this happens</strong> The CLI cannot access the device or
+        emulator (through adb) you are using to run the app.
+      </li>
+      <li>
+        <strong>How to fix</strong> Make sure your Android device/emulator is
+        connected and running. The command only works when it can access adb.
+      </li>
+    </ul>
+    <h4 id="there-is-no-file-in-the-cache-directory">
+      <code>There is no file in the cache/ directory</code>
+    </h4>
+    <ul>
+      <li>
+        <strong>Why this happens</strong> The CLI cannot find any
+        <strong>.cpuprofile</strong> file in your app’s
+        <strong>cache/</strong> directory. You might have forgotten to record a
+        profile from the device.
+      </li>
+      <li>
+        <strong>How to fix</strong> Follow the
+        <a href="profile-hermes.md#record-a-hermes-sampling-profile"
+          >instructions</a
+        >
+        to enable/disable profiler from device.
+      </li>
+    </ul>
+    <h4 id="error-your_profile_name.cpuprofile-is-an-empty-file">
+      <code>Error: your_profile_name.cpuprofile is an empty file</code>
+    </h4>
+    <ul>
+      <li>
+        <strong>Why this happens</strong> The profile is empty, it might be
+        because Hermes is not running correctly.
+      </li>
+      <li>
+        <strong>How to fix</strong> Make sure your app is running on the latest
+        version of Hermes.
+      </li>
+    </ul>
+    <h2 id="open-the-downloaded-profile-in-chrome-devtools">
+      Open the downloaded profile in Chrome DevTools
+    </h2>
+    <p>To open the profile in Chrome DevTools:</p>
+    <ol type="1">
+      <li>Open Chrome DevTools.</li>
+      <li>Select the <strong>Performance</strong> tab.</li>
+      <li>Right click and choose <strong>Load profile…</strong></li>
+    </ol>
+    <p>
+      <img
+        src="/docs/assets/openChromeProfile.png"
+        alt="Loading a performance profile on Chrome DevTools"
+      />
+    </p>
+    <h2 id="how-does-the-hermes-profile-transformer-work">
+      How does the Hermes Profile Transformer work?
+    </h2>
+    <p>
+      The Hermes Sample Profile is of the <code>JSON object format</code>, while
+      the format that Google’s DevTools supports is
+      <code>JSON Array Format</code>. (More information about the formats can be
+      found on the
+      <a
+        href="https://docs.google.com/document/d/1CvAClvFfyA5R-PhYUmn5OOQtYMH4h6I0nSsKchNAySU/preview"
+        >Trace Event Format Document</a
+      >)
+    </p>
+    <div class="sourceCode" id="cb5">
+      <pre
+        class="sourceCode ts"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb5-1" title="1"><span class="im">export</span> <span class="kw">interface</span> HermesCPUProfile <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-2" title="2">  traceEvents<span class="op">:</span> SharedEventProperties<span class="op">[];</span></a>
+<a class="sourceLine" id="cb5-3" title="3">  samples<span class="op">:</span> HermesSample<span class="op">[];</span></a>
+<a class="sourceLine" id="cb5-4" title="4">  stackFrames<span class="op">:</span> <span class="op">{</span> <span class="op">[</span>key <span class="kw">in</span> <span class="dt">string</span><span class="op">]:</span> HermesStackFrame <span class="op">};</span></a>
+<a class="sourceLine" id="cb5-5" title="5"><span class="op">}</span></a></code></pre>
+    </div>
+    <p>
+      The Hermes profile has most of its information encoded into the
+      <code>samples</code> and <code>stackFrames</code> properties. Each sample
+      is a snapshot of the function call stack at that particular timestamp as
+      each sample has a <code>sf</code> property which corresponds to a function
+      call.
+    </p>
+    <div class="sourceCode" id="cb6">
+      <pre
+        class="sourceCode ts"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb6-1" title="1"><span class="im">export</span> <span class="kw">interface</span> HermesSample <span class="op">{</span></a>
+<a class="sourceLine" id="cb6-2" title="2">  cpu<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb6-3" title="3">  name<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb6-4" title="4">  ts<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb6-5" title="5">  pid<span class="op">:</span> <span class="dt">number</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb6-6" title="6">  tid<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb6-7" title="7">  weight<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb6-8" title="8">  <span class="co">/**</span></a>
+<a class="sourceLine" id="cb6-9" title="9"><span class="co">   * Will refer to an element in the stackFrames object of the Hermes Profile</span></a>
+<a class="sourceLine" id="cb6-10" title="10"><span class="co">   */</span></a>
+<a class="sourceLine" id="cb6-11" title="11">  sf<span class="op">:</span> <span class="dt">number</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb6-12" title="12">  stackFrameData<span class="op">?:</span> HermesStackFrame<span class="op">;</span></a>
+<a class="sourceLine" id="cb6-13" title="13"><span class="op">}</span></a></code></pre>
+    </div>
+    <p>
+      The information about a function call can be found in
+      <code>stackFrames</code> which contains key-object pairs, where the key is
+      the <code>sf</code> number and the corresponding object gives us all the
+      relevant information about the function including the
+      <code>sf</code> number of its parent function. This parent-child
+      relationship can be traced upwards to find the information of all the
+      functions running at a particular timestamp.
+    </p>
+    <div class="sourceCode" id="cb7">
+      <pre
+        class="sourceCode ts"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb7-1" title="1"><span class="im">export</span> <span class="kw">interface</span> HermesStackFrame <span class="op">{</span></a>
+<a class="sourceLine" id="cb7-2" title="2">  line<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb7-3" title="3">  column<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb7-4" title="4">  funcLine<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb7-5" title="5">  funcColumn<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb7-6" title="6">  name<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb7-7" title="7">  category<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb7-8" title="8">  <span class="co">/**</span></a>
+<a class="sourceLine" id="cb7-9" title="9"><span class="co">   * A parent function may or may not exist</span></a>
+<a class="sourceLine" id="cb7-10" title="10"><span class="co">   */</span></a>
+<a class="sourceLine" id="cb7-11" title="11">  parent<span class="op">?:</span> <span class="dt">number</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb7-12" title="12"><span class="op">}</span></a></code></pre>
+    </div>
+    <p>At this point, you should define a few more terms, namely:</p>
+    <ol type="1">
+      <li>
+        Nodes: The objects corresponding to <code>sf</code> numbers in
+        <code>stackFrames</code>
+      </li>
+      <li>
+        Active Nodes: The nodes which are currently running at a particular
+        timestamp. A node is classified as running if its <code>sf</code> number
+        is in the function call stack. This call stack can be obtained from the
+        <code>sf</code> number of the sample and tracing upwards till parent
+        <code>sf</code>s are available
+      </li>
+    </ol>
+    <p>
+      The <code>samples</code> and the <code>stackFrames</code> in tandem can
+      then be used to generate all the start and end events at the corresponding
+      timestamps, wherein:
+    </p>
+    <ol type="1">
+      <li>
+        Start Nodes/Events: Nodes absent in the previous sample’s function call
+        stack but present in the current sample’s.
+      </li>
+      <li>
+        End Nodes/Events: Nodes present in the previous sample’s function call
+        stack but absent in the current sample’s.
+      </li>
+    </ol>
+    <p>
+      <img
+        src="/docs/assets/CallStackDemo.jpg"
+        height="800"
+        width="600"
+        alt="CallStack Terms Explained"
+      />
+    </p>
+    <p>
+      You can now construct a <code>flamechart</code> of function calls as you
+      have all the function information including its start and end timestamps.
+    </p>
+    <p>
+      The <code>hermes-profile-transformer</code> can convert any profile
+      generated using Hermes into a format that can be directly displayed in
+      Chrome DevTools. More information about this can be found on
+      <a
+        href="https://github.com/react-native-community/hermes-profile-transformer"
+        ><code>@react-native-community/hermes-profile-transformer</code></a
+      >
+    </p>
+  </body>
+</html>

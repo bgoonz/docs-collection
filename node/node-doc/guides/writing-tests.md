@@ -1,29 +1,25 @@
-How to write a test for the Node.js project
-===========================================
+# How to write a test for the Node.js project
 
-What is a test?
----------------
+## What is a test?
 
 Most tests in Node.js core are JavaScript programs that exercise a functionality provided by Node.js and check that it behaves as expected. Tests should exit with code `0` on success. A test will fail if:
 
--   It exits by setting `process.exitCode` to a non-zero number.
-    -   This is usually done by having an assertion throw an uncaught Error.
-    -   Occasionally, using `process.exit(code)` may be appropriate.
--   It never exits. In this case, the test runner will terminate the test because it sets a maximum time limit.
+- It exits by setting `process.exitCode` to a non-zero number.
+  - This is usually done by having an assertion throw an uncaught Error.
+  - Occasionally, using `process.exit(code)` may be appropriate.
+- It never exits. In this case, the test runner will terminate the test because it sets a maximum time limit.
 
 Add tests when:
 
--   Adding new functionality.
--   Fixing regressions and bugs.
--   Expanding test coverage.
+- Adding new functionality.
+- Fixing regressions and bugs.
+- Expanding test coverage.
 
-Test directory structure
-------------------------
+## Test directory structure
 
 See [directory structure overview](https://github.com/nodejs/node/blob/HEAD/test/README.md#test-directories) for outline of existing test and locations. When deciding on whether to expand an existing test file or create a new one, consider going through the files related to the subsystem. For example, look for `test-streams` when writing a test for `lib/streams.js`.
 
-Test structure
---------------
+## Test structure
 
 Let’s analyze this basic test from the Node.js test suite:
 
@@ -100,12 +96,11 @@ The require statements are sorted in [ASCII](https://man7.org/linux/man-pages/ma
 
 This is the body of the test. This test is simple, it just tests that an HTTP server accepts `non-ASCII` characters in the headers of an incoming request. Interesting things to notice:
 
--   If the test doesn’t depend on a specific port number, then always use 0 instead of an arbitrary value, as it allows tests to run in parallel safely, as the operating system will assign a random port. If the test requires a specific port, for example if the test checks that assigning a specific port works as expected, then it is ok to assign a specific port number.
--   The use of `common.mustCall` to check that some callbacks/listeners are called.
--   The HTTP server closes once all the checks have run. This way, the test can exit gracefully. Remember that for a test to succeed, it must exit with a status code of 0.
+- If the test doesn’t depend on a specific port number, then always use 0 instead of an arbitrary value, as it allows tests to run in parallel safely, as the operating system will assign a random port. If the test requires a specific port, for example if the test checks that assigning a specific port works as expected, then it is ok to assign a specific port number.
+- The use of `common.mustCall` to check that some callbacks/listeners are called.
+- The HTTP server closes once all the checks have run. This way, the test can exit gracefully. Remember that for a test to succeed, it must exit with a status code of 0.
 
-General recommendations
------------------------
+## General recommendations
 
 ### Timers
 
@@ -117,7 +112,7 @@ In the event a test needs a timer, consider using the `common.platformTimeout()`
 
 will create a 4-second timeout on most platforms but a longer timeout on slower platforms.
 
-### The *common* API
+### The _common_ API
 
 Make use of the helpers from the `common` module as much as possible. Please refer to the [common file documentation](https://github.com/nodejs/node/tree/HEAD/test/common) for the full details of the helpers.
 
@@ -225,8 +220,8 @@ This only works if you preload `internal/test/binding` by command line flag.
 
 When writing assertions, prefer the strict versions:
 
--   `assert.strictEqual()` over `assert.equal()`
--   `assert.deepStrictEqual()` over `assert.deepEqual()`
+- `assert.strictEqual()` over `assert.equal()`
+- `assert.deepStrictEqual()` over `assert.deepEqual()`
 
 When using `assert.throws()`, if possible, provide the full error message:
 
@@ -253,26 +248,23 @@ In some tests, it can be unclear whether a `console.log()` statement is required
 
 For performance considerations, we only use a selected subset of ES.Next features in JavaScript code in the `lib` directory. However, when writing tests, for the ease of backporting, it is encouraged to use those ES.Next features that can be used directly without a flag in [all maintained branches](https://github.com/nodejs/lts). [node.green](https://node.green/) lists available features in each release, such as:
 
--   `let` and `const` over `var`
--   Template literals over string concatenation
--   Arrow functions when appropriate
+- `let` and `const` over `var`
+- Template literals over string concatenation
+- Arrow functions when appropriate
 
-Naming test files
------------------
+## Naming test files
 
 Test files are named using kebab casing. The first component of the name is `test`. The second is the module or subsystem being tested. The third is usually the method or event name being tested. Subsequent components of the name add more information about what is being tested.
 
 For example, a test for the `beforeExit` event on the `process` object might be named `test-process-before-exit.js`. If the test specifically checked that arrow functions worked correctly with the `beforeExit` event, then it might be named `test-process-before-exit-arrow-functions.js`.
 
-Imported tests
---------------
+## Imported tests
 
 ### Web platform tests
 
 See [`test/wpt`](../../test/wpt/README.md) for more information.
 
-C++ unit test
--------------
+## C++ unit test
 
 C++ code can be tested using [Google Test](https://github.com/google/googletest). Most features in Node.js can be tested using the methods described previously in this document. But there are cases where these might not be enough, for example writing code for Node.js that will only be called when Node.js is embedded.
 

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>useWindowDimensions</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">useWindowDimensions</h1>
+</header>
+<pre class="jsx"><code>import { useWindowDimensions } from &#39;react-native&#39;;</code></pre>
+<p><code>useWindowDimensions</code> automatically updates <code>width</code> and <code>height</code> values when screen size changes. You can get your application window’s width and height like so:</p>
+<pre class="jsx"><code>const { height, width } = useWindowDimensions();</code></pre>
+<h2 id="example">Example</h2>
+<p>```SnackPlayer name=useWindowDimensions&amp;supportedPlatforms=ios,android import React from “react”; import { View, StyleSheet, Text, useWindowDimensions } from “react-native”;</p>
+<p>const App = () =&gt; { const window = useWindowDimensions(); return ( <View style={styles.container}> <Text>{<code>Window Dimensions: height - ${window.height}, width - ${window.width}</code>}</Text> </View> ); } const styles = StyleSheet.create({ container: { flex: 1, justifyContent: “center”, alignItems: “center” } });</p>
+<p>export default App; ```</p>
+<ul>
+<li>The <a href="https://github.com/react-native-community/react-native-hooks#usedimensions">useDimensions</a> hook from the community <a href="https://github.com/react-native-community/react-native-hooks">React native hooks</a> library aims to make handling screen/window size changes easier to work with.</li>
+<li><a href="https://github.com/DaniAkash/react-native-responsive-dimensions">React Native Responsive Dimensions</a> also comes with responsive hooks.</li>
+</ul>
+<h2 id="properties">Properties</h2>
+<h3 id="fontscale"><code>fontScale</code></h3>
+<pre class="jsx"><code>useWindowDimensions().fontScale;</code></pre>
+<p>The scale of the font currently used. Some operating systems allow users to scale their font sizes larger or smaller for reading comfort. This property will let you know what is in effect.</p>
+<hr />
+<h3 id="height"><code>height</code></h3>
+<pre class="jsx"><code>useWindowDimensions().height;</code></pre>
+<p>The height in pixels of the window or screen your app occupies.</p>
+<hr />
+<h3 id="scale"><code>scale</code></h3>
+<pre class="jsx"><code>useWindowDimensions().scale;</code></pre>
+<p>The pixel ratio of the device your app is running on.</p>
+<blockquote>
+<p>A value of <code>1</code> indicates PPI/DPI of 96 (76 on some platforms). <code>2</code> indicates a Retina or high DPI display.</p>
+</blockquote>
+<hr />
+<h3 id="width"><code>width</code></h3>
+<pre class="jsx"><code>useWindowDimensions().width;</code></pre>
+<p>The width in pixels of the window or screen your app occupies.</p>
+</body>
+</html>

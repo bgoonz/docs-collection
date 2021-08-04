@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Animated.ValueXY</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Animated.ValueXY</h1>
+</header>
+<p>2D Value for driving 2D animations, such as pan gestures. Almost identical API to normal <a href="animatedvalue"><code>Animated.Value</code></a>, but multiplexed. Contains two regular <code>Animated.Value</code>s under the hood.</p>
+<h2 id="example">Example</h2>
+<p>```SnackPlayer name=Animated.ValueXY import React, { useRef } from “react”; import { Animated, PanResponder, StyleSheet, View } from “react-native”;</p>
+<p>const DraggableView = () =&gt; { const pan = useRef(new Animated.ValueXY()).current;</p>
+<p>const panResponder = PanResponder.create({ onStartShouldSetPanResponder: () =&gt; true, onPanResponderMove: Animated.event([ null, { dx: pan.x, // x,y are Animated.Value dy: pan.y, }, ]), onPanResponderRelease: () =&gt; { Animated.spring( pan, // Auto-multiplexed { toValue: { x: 0, y: 0 } } // Back to zero ).start(); }, });</p>
+<p>return ( <View style={styles.container}> &lt;Animated.View {…panResponder.panHandlers} style={[pan.getLayout(), styles.box]} /&gt; </View> ); };</p>
+<p>const styles = StyleSheet.create({ container: { flex: 1, justifyContent: “center”, alignItems: “center”, }, box: { backgroundColor: “#61dafb”, width: 80, height: 80, borderRadius: 4, }, });</p>
+<p>export default DraggableView; ```</p>
+<hr />
+<h1 id="reference">Reference</h1>
+<h2 id="methods">Methods</h2>
+<h3 id="setvalue"><code>setValue()</code></h3>
+<pre class="jsx"><code>setValue(value);</code></pre>
+<p>Directly set the value. This will stop any animations running on the value and update all the bound properties.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>value</td>
+<td>number</td>
+<td>Yes</td>
+<td>Value</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="setoffset"><code>setOffset()</code></h3>
+<pre class="jsx"><code>setOffset(offset);</code></pre>
+<p>Sets an offset that is applied on top of whatever value is set, whether via <code>setValue</code>, an animation, or <code>Animated.event</code>. Useful for compensating things like the start of a pan gesture.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>offset</td>
+<td>number</td>
+<td>Yes</td>
+<td>Offset value</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="flattenoffset"><code>flattenOffset()</code></h3>
+<pre class="jsx"><code>flattenOffset();</code></pre>
+<p>Merges the offset value into the base value and resets the offset to zero. The final output of the value is unchanged.</p>
+<hr />
+<h3 id="extractoffset"><code>extractOffset()</code></h3>
+<pre class="jsx"><code>extractOffset();</code></pre>
+<p>Sets the offset value to the base value, and resets the base value to zero. The final output of the value is unchanged.</p>
+<hr />
+<h3 id="addlistener"><code>addListener()</code></h3>
+<pre class="jsx"><code>addListener(callback);</code></pre>
+<p>Adds an asynchronous listener to the value so you can observe updates from animations. This is useful because there is no way to synchronously read the value because it might be driven natively.</p>
+<p>Returns a string that serves as an identifier for the listener.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<colgroup>
+<col style="width: 6%" />
+<col style="width: 6%" />
+<col style="width: 6%" />
+<col style="width: 79%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>callback</td>
+<td>function</td>
+<td>Yes</td>
+<td>The callback function which will receive an object with a <code>value</code> key set to the new value.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="removelistener"><code>removeListener()</code></h3>
+<pre class="jsx"><code>removeListener(id);</code></pre>
+<p>Unregister a listener. The <code>id</code> param shall match the identifier previously returned by <code>addListener()</code>.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>id</td>
+<td>string</td>
+<td>Yes</td>
+<td>Id for the listener being removed.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="removealllisteners"><code>removeAllListeners()</code></h3>
+<pre class="jsx"><code>removeAllListeners();</code></pre>
+<p>Remove all registered listeners.</p>
+<hr />
+<h3 id="stopanimation"><code>stopAnimation()</code></h3>
+<pre class="jsx"><code>stopAnimation([callback]);</code></pre>
+<p>Stops any running animation or tracking. <code>callback</code> is invoked with the final value after stopping the animation, which is useful for updating state to match the animation position with layout.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>callback</td>
+<td>function</td>
+<td>No</td>
+<td>A function that will receive the final value.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="resetanimation"><code>resetAnimation()</code></h3>
+<pre class="jsx"><code>resetAnimation([callback]);</code></pre>
+<p>Stops any animation and resets the value to its original.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>callback</td>
+<td>function</td>
+<td>No</td>
+<td>A function that will receive the original value.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="getlayout"><code>getLayout()</code></h3>
+<pre class="jsx"><code>getLayout();</code></pre>
+<p>Converts <code>{x, y}</code> into <code>{left, top}</code> for use in style, e.g.</p>
+<pre class="jsx"><code>style={this.state.anim.getLayout()}</code></pre>
+<hr />
+<h3 id="gettranslatetransform"><code>getTranslateTransform()</code></h3>
+<pre class="jsx"><code>getTranslateTransform();</code></pre>
+<p>Converts <code>{x, y}</code> into a useable translation transform, e.g.</p>
+<pre class="jsx"><code>style={{
+  transform: this.state.anim.getTranslateTransform()
+}}</code></pre>
+</body>
+</html>

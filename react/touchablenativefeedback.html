@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>TouchableNativeFeedback</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">TouchableNativeFeedback</h1>
+</header>
+<blockquote>
+<p>If you’re looking for a more extensive and future-proof way to handle touch-based input, check out the <a href="pressable.md">Pressable</a> API.</p>
+</blockquote>
+<p>A wrapper for making views respond properly to touches (Android only). On Android this component uses native state drawable to display touch feedback.</p>
+<p>At the moment it only supports having a single View instance as a child node, as it’s implemented by replacing that View with another instance of RCTView node with some additional properties set.</p>
+<p>Background drawable of native feedback touchable can be customized with <code>background</code> property.</p>
+<h2 id="example">Example</h2>
+<p>```SnackPlayer name=TouchableNativeFeedback%20Android%20Component%20Example&amp;supportedPlatforms=android import React, { useState } from “react”; import { Text, View, StyleSheet, TouchableNativeFeedback, StatusBar } from “react-native”;</p>
+<p>const App = () =&gt; { const [rippleColor, setRippleColor] = useState(randomHexColor()); const [rippleOverflow, setRippleOverflow] = useState(false); return ( <View style={styles.container}> &lt;TouchableNativeFeedback onPress={() =&gt; { setRippleColor(randomHexColor()); setRippleOverflow(!rippleOverflow); }} background={TouchableNativeFeedback.Ripple(rippleColor, rippleOverflow)} &gt; <View style={styles.touchable}> <Text style={styles.text}>TouchableNativeFeedback</Text> </View> </TouchableNativeFeedback> </View> ); };</p>
+<p>const randomHexColor = () =&gt; { return “#000000”.replace(/0/g, function() { return (~~(Math.random() * 16)).toString(16); }); };</p>
+<p>const styles = StyleSheet.create({ container: { flex: 1, justifyContent: “center”, paddingTop: StatusBar.currentHeight, backgroundColor: “#ecf0f1”, padding: 8 }, touchable: { flex: 0.5, borderColor: “black”, borderWidth: 1 }, text: { alignSelf: “center” } });</p>
+<p>export default App; ```</p>
+<hr />
+<h1 id="reference">Reference</h1>
+<h2 id="props">Props</h2>
+<h3 id="touchablewithoutfeedback-props"><a href="touchablewithoutfeedback.md#props">TouchableWithoutFeedback Props</a></h3>
+<p>Inherits <a href="touchablewithoutfeedback.md#props">TouchableWithoutFeedback Props</a>.</p>
+<hr />
+<h3 id="background"><code>background</code></h3>
+<p>Determines the type of background drawable that’s going to be used to display feedback. It takes an object with <code>type</code> property and extra data depending on the <code>type</code>. It’s recommended to use one of the static methods to generate that dictionary.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>backgroundPropType</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="useforeground"><code>useForeground</code></h3>
+<p>Set to true to add the ripple effect to the foreground of the view, instead of the background. This is useful if one of your child views has a background of its own, or you’re e.g. displaying images, and you don’t want the ripple to be covered by them.</p>
+<p>Check TouchableNativeFeedback.canUseNativeForeground() first, as this is only available on Android 6.0 and above. If you try to use this on older versions you will get a warning and fallback to background.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>bool</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="hastvpreferredfocus"><code>hasTVPreferredFocus</code></h3>
+<p>TV preferred focus (see documentation for the View component).</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+<th>Platform</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>bool</td>
+<td>No</td>
+<td>Android</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="nextfocusdown"><code>nextFocusDown</code></h3>
+<p>TV next focus down (see documentation for the View component).</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+<th>Platform</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number</td>
+<td>No</td>
+<td>Android</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="nextfocusforward"><code>nextFocusForward</code></h3>
+<p>TV next focus forward (see documentation for the View component).</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+<th>Platform</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number</td>
+<td>No</td>
+<td>Android</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="nextfocusleft"><code>nextFocusLeft</code></h3>
+<p>TV next focus left (see documentation for the View component).</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+<th>Platform</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number</td>
+<td>No</td>
+<td>Android</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="nextfocusright"><code>nextFocusRight</code></h3>
+<p>TV next focus right (see documentation for the View component).</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+<th>Platform</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number</td>
+<td>No</td>
+<td>Android</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="nextfocusup"><code>nextFocusUp</code></h3>
+<p>TV next focus up (see documentation for the View component).</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+<th>Platform</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number</td>
+<td>No</td>
+<td>Android</td>
+</tr>
+</tbody>
+</table>
+<h2 id="methods">Methods</h2>
+<h3 id="selectablebackground"><code>SelectableBackground()</code></h3>
+<pre class="jsx"><code>static SelectableBackground(rippleRadius: ?number)</code></pre>
+<p>Creates an object that represents android theme’s default background for selectable elements (?android:attr/selectableItemBackground). <code>rippleRadius</code> parameter controls the radius of the ripple effect.</p>
+<hr />
+<h3 id="selectablebackgroundborderless"><code>SelectableBackgroundBorderless()</code></h3>
+<pre class="jsx"><code>static SelectableBackgroundBorderless(rippleRadius: ?number)</code></pre>
+<p>Creates an object that represent android theme’s default background for borderless selectable elements (?android:attr/selectableItemBackgroundBorderless). Available on android API level 21+. <code>rippleRadius</code> parameter controls the radius of the ripple effect.</p>
+<hr />
+<h3 id="ripple"><code>Ripple()</code></h3>
+<pre class="jsx"><code>static Ripple(color: string, borderless: boolean, rippleRadius: ?number)</code></pre>
+<p>Creates an object that represents ripple drawable with specified color (as a string). If property <code>borderless</code> evaluates to true the ripple will render outside of the view bounds (see native actionbar buttons as an example of that behavior). This background type is available on Android API level 21+.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>color</td>
+<td>string</td>
+<td>Yes</td>
+<td>The ripple color</td>
+</tr>
+<tr class="even">
+<td>borderless</td>
+<td>boolean</td>
+<td>Yes</td>
+<td>If the ripple can render outside its bounds</td>
+</tr>
+<tr class="odd">
+<td>rippleRadius</td>
+<td>?number</td>
+<td>No</td>
+<td>controls the radius of the ripple effect</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="canusenativeforeground"><code>canUseNativeForeground()</code></h3>
+<pre class="jsx"><code>static canUseNativeForeground()</code></pre>
+</body>
+</html>

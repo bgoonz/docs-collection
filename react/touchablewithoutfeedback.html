@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>TouchableWithoutFeedback</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">TouchableWithoutFeedback</h1>
+    </header>
+    <blockquote>
+      <p>
+        If you’re looking for a more extensive and future-proof way to handle
+        touch-based input, check out the
+        <a href="pressable.md">Pressable</a> API.
+      </p>
+    </blockquote>
+    <p>
+      Do not use unless you have a very good reason. All elements that respond
+      to press should have a visual feedback when touched.
+    </p>
+    <p>
+      <code>TouchableWithoutFeedback</code> supports only one child. If you wish
+      to have several child components, wrap them in a View. Importantly,
+      <code>TouchableWithoutFeedback</code> works by cloning its child and
+      applying responder props to it. It is therefore required that any
+      intermediary components pass through those props to the underlying React
+      Native component.
+    </p>
+    <h2 id="usage-pattern">Usage Pattern</h2>
+    <pre class="jsx"><code>function MyComponent(props) {
+  return (
+    &lt;View {...props} style={{ flex: 1, backgroundColor: &#39;#fff&#39; }}&gt;
+      &lt;Text&gt;My Component&lt;/Text&gt;
+    &lt;/View&gt;
+  );
+}
+
+&lt;TouchableWithoutFeedback onPress={() =&gt; alert(&#39;Pressed!&#39;)}&gt;
+  &lt;MyComponent /&gt;
+&lt;/TouchableWithoutFeedback&gt;;</code></pre>
+    <h2 id="example">Example</h2>
+    <p>
+      ```SnackPlayer name=TouchableWithoutFeedback import React, { useState }
+      from “react”; import { StyleSheet, TouchableWithoutFeedback, Text, View }
+      from “react-native”;
+    </p>
+    <p>
+      const TouchableWithoutFeedbackExample = () =&gt; { const [count, setCount]
+      = useState(0);
+    </p>
+    <p>const onPress = () =&gt; { setCount(count + 1); };</p>
+    <p>
+      return (
+      <View style="{styles.container}">
+        <View style="{styles.countContainer}">
+          <Text style="{styles.countText}">Count: {count}</Text>
+        </View>
+        <TouchableWithoutFeedback onPress="{onPress}">
+          <View style="{styles.button}"> <Text>Touch Here</Text> </View>
+        </TouchableWithoutFeedback>
+      </View>
+      ); }
+    </p>
+    <p>
+      const styles = StyleSheet.create({ container: { flex: 1, justifyContent:
+      “center”, paddingHorizontal: 10 }, button: { alignItems: “center”,
+      backgroundColor: “#DDDDDD”, padding: 10 }, countContainer: { alignItems:
+      “center”, padding: 10 }, countText: { color: “#FF00FF” } });
+    </p>
+    <p>export default TouchableWithoutFeedbackExample; ```</p>
+    <hr />
+    <h1 id="reference">Reference</h1>
+    <h2 id="props">Props</h2>
+    <h3 id="accessibilityignoresinvertcolors">
+      <code>accessibilityIgnoresInvertColors</code>
+    </h3>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+          <th>Required</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>Boolean</td>
+          <td>No</td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    <h3 id="accessible"><code>accessible</code></h3>
+    <p>
+      When <code>true</code>, indicates that the view is an accessibility
+      element. By default, all the touchable elements are accessible.
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+          <th>Required</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>bool</td>
+          <td>No</td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    <h3 id="accessibilitylabel"><code>accessibilityLabel</code></h3>
+    <p>
+      Overrides the text that’s read by the screen reader when the user
+      interacts with the element. By default, the label is constructed by
+      traversing all the children and accumulating all the
+      <code>Text</code> nodes separated by space.
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+          <th>Required</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>string</td>
+          <td>No</td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    <h3 id="accessibilityhint"><code>accessibilityHint</code></h3>
+    <p>
+      An accessibility hint helps users understand what will happen when they
+      perform an action on the accessibility element when that result is not
+      clear from the accessibility label.
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+          <th>Required</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>string</td>
+          <td>No</td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    <h3 id="accessibilityrole"><code>accessibilityRole</code></h3>
+    <p>
+      <code>accessibilityRole</code> communicates the purpose of a component to
+      the user of an assistive technology.
+    </p>
+    <p><code>accessibilityRole</code> can be one of the following:</p>
+    <ul>
+      <li><code>'none'</code> - Used when the element has no role.</li>
+      <li>
+        <code>'button'</code> - Used when the element should be treated as a
+        button.
+      </li>
+      <li>
+        <code>'link'</code> - Used when the element should be treated as a link.
+      </li>
+      <li>
+        <code>'search'</code> - Used when the text field element should also be
+        treated as a search field.
+      </li>
+      <li>
+        <code>'image'</code> - Used when the element should be treated as an
+        image. Can be combined with button or link, for example.
+      </li>
+      <li>
+        <code>'keyboardkey'</code> - Used when the element acts as a keyboard
+        key.
+      </li>
+      <li>
+        <code>'text'</code> - Used when the element should be treated as static
+        text that cannot change.
+      </li>
+      <li>
+        <code>'adjustable'</code> - Used when an element can be “adjusted”
+        (e.g. a slider).
+      </li>
+      <li>
+        <code>'imagebutton'</code> - Used when the element should be treated as
+        a button and is also an image.
+      </li>
+      <li>
+        <code>'header'</code> - Used when an element acts as a header for a
+        content section (e.g. the title of a navigation bar).
+      </li>
+      <li>
+        <code>'summary'</code> - Used when an element can be used to provide a
+        quick summary of current conditions in the app when the app first
+        launches.
+      </li>
+      <li>
+        <code>'alert'</code> - Used when an element contains important text to
+        be presented to the user.
+      </li>
+      <li>
+        <code>'checkbox'</code> - Used when an element represents a checkbox
+        which can be checked, unchecked, or have mixed checked state.
+      </li>
+      <li>
+        <code>'combobox'</code> - Used when an element represents a combo box,
+        which allows the user to select among several choices.
+      </li>
+      <li>
+        <code>'menu'</code> - Used when the component is a menu of choices.
+      </li>
+      <li>
+        <code>'menubar'</code> - Used when a component is a container of
+        multiple menus.
+      </li>
+      <li>
+        <code>'menuitem'</code> - Used to represent an item within a menu.
+      </li>
+      <li>
+        <code>'progressbar'</code> - Used to represent a component which
+        indicates progress of a task.
+      </li>
+      <li><code>'radio'</code> - Used to represent a radio button.</li>
+      <li>
+        <code>'radiogroup'</code> - Used to represent a group of radio buttons.
+      </li>
+      <li><code>'scrollbar'</code> - Used to represent a scroll bar.</li>
+      <li>
+        <code>'spinbutton'</code> - Used to represent a button which opens a
+        list of choices.
+      </li>
+      <li>
+        <code>'switch'</code> - Used to represent a switch which can be turned
+        on and off.
+      </li>
+      <li><code>'tab'</code> - Used to represent a tab.</li>
+      <li><code>'tablist'</code> - Used to represent a list of tabs.</li>
+      <li><code>'timer'</code> - Used to represent a timer.</li>
+      <li>
+        <code>'toolbar'</code> - Used to represent a tool bar (a container of
+        action buttons or components).
+      </li>
+    </ul>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+          <th>Required</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>string</td>
+          <td>No</td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    <h3 id="accessibilitystate"><code>accessibilityState</code></h3>
+    <p>
+      Describes the current state of a component to the user of an assistive
+      technology.
+    </p>
+    <p>
+      See the
+      <a href="accessibility.md#accessibilitystate-ios-android"
+        >Accessibility guide</a
+      >
+      for more information.
+    </p>
+    <table>
+      <colgroup>
+        <col style="width: 92%" />
+        <col style="width: 7%" />
+      </colgroup>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+          <th>Required</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>
+            object: {disabled: bool, selected: bool, checked: bool or ‘mixed’,
+            busy: bool, expanded: bool}
+          </td>
+          <td>No</td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    <h3 id="accessibilityactions"><code>accessibilityActions</code></h3>
+    <p>
+      Accessibility actions allow an assistive technology to programmatically
+      invoke the actions of a component. The
+      <code>accessibilityActions</code> property should contain a list of action
+      objects. Each action object should contain the field name and label.
+    </p>
+    <p>
+      See the
+      <a href="accessibility.md#accessibility-actions">Accessibility guide</a>
+      for more information.
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+          <th>Required</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>array</td>
+          <td>No</td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    <h3 id="onaccessibilityaction"><code>onAccessibilityAction</code></h3>
+    <p>
+      Invoked when the user performs the accessibility actions. The only
+      argument to this function is an event containing the name of the action to
+      perform.
+    </p>
+    <p>
+      See the
+      <a href="accessibility.md#accessibility-actions">Accessibility guide</a>
+      for more information.
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+          <th>Required</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>function</td>
+          <td>No</td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    <h3 id="accessibilityvalue"><code>accessibilityValue</code></h3>
+    <p>
+      Represents the current value of a component. It can be a textual
+      description of a component’s value, or for range-based components, such as
+      sliders and progress bars, it contains range information (minimum,
+      current, and maximum).
+    </p>
+    <p>
+      See the
+      <a href="accessibility.md#accessibilityvalue-ios-android"
+        >Accessibility guide</a
+      >
+      for more information.
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+          <th>Required</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>object: {min: number, max: number, now: number, text: string}</td>
+          <td>No</td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    <h3 id="delaylongpress"><code>delayLongPress</code></h3>
+    <p>
+      Duration (in milliseconds) from <code>onPressIn</code> before
+      <code>onLongPress</code> is called.
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+          <th>Required</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>number</td>
+          <td>No</td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    <h3 id="delaypressin"><code>delayPressIn</code></h3>
+    <p>
+      Duration (in milliseconds), from the start of the touch, before
+      <code>onPressIn</code> is called.
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+          <th>Required</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>number</td>
+          <td>No</td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    <h3 id="delaypressout"><code>delayPressOut</code></h3>
+    <p>
+      Duration (in milliseconds), from the release of the touch, before
+      <code>onPressOut</code> is called.
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+          <th>Required</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>number</td>
+          <td>No</td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    <h3 id="disabled"><code>disabled</code></h3>
+    <p>If true, disable all interactions for this component.</p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+          <th>Required</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>bool</td>
+          <td>No</td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    <h3 id="hitslop"><code>hitSlop</code></h3>
+    <p>
+      This defines how far your touch can start away from the button. This is
+      added to <code>pressRetentionOffset</code> when moving off of the button.
+    </p>
+    <blockquote>
+      <p>
+        The touch area never extends past the parent view bounds and the Z-index
+        of sibling views always takes precedence if a touch hits two overlapping
+        views.
+      </p>
+    </blockquote>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+          <th>Required</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td><a href="rect">Rect</a> or number</td>
+          <td>No</td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="onblur"><code>onBlur</code></h3>
+    <p>Invoked when the item loses focus.</p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+          <th>Required</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>function</td>
+          <td>No</td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    <h3 id="onfocus"><code>onFocus</code></h3>
+    <p>Invoked when the item receives focus.</p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+          <th>Required</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>function</td>
+          <td>No</td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    <h3 id="onlayout"><code>onLayout</code></h3>
+    <p>Invoked on mount and on layout changes.</p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+          <th>Required</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>(<a href="layoutevent">LayoutEvent</a>) =&gt; void</td>
+          <td>No</td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    <h3 id="onlongpress"><code>onLongPress</code></h3>
+    <p>
+      Called if the time after <code>onPressIn</code> lasts longer than 370
+      milliseconds. This time period can be customized with
+      <a href="#delaylongpress"><code>delayLongPress</code></a
+      >.
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+          <th>Required</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>function</td>
+          <td>No</td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    <h3 id="onpress"><code>onPress</code></h3>
+    <p>
+      Called when the touch is released, but not if cancelled (e.g. by a scroll
+      that steals the responder lock). The first function argument is an event
+      in form of <a href="pressevent">PressEvent</a>.
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+          <th>Required</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>function</td>
+          <td>No</td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    <h3 id="onpressin"><code>onPressIn</code></h3>
+    <p>
+      Called as soon as the touchable element is pressed and invoked even before
+      onPress. This can be useful when making network requests. The first
+      function argument is an event in form of
+      <a href="pressevent">PressEvent</a>.
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+          <th>Required</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>function</td>
+          <td>No</td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    <h3 id="onpressout"><code>onPressOut</code></h3>
+    <p>
+      Called as soon as the touch is released even before onPress. The first
+      function argument is an event in form of
+      <a href="pressevent">PressEvent</a>.
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+          <th>Required</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>function</td>
+          <td>No</td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    <h3 id="pressretentionoffset"><code>pressRetentionOffset</code></h3>
+    <p>
+      When the scroll view is disabled, this defines how far your touch may move
+      off of the button, before deactivating the button. Once deactivated, try
+      moving it back and you’ll see that the button is once again reactivated!
+      Move it back and forth several times while the scroll view is disabled.
+      Ensure you pass in a constant to reduce memory allocations.
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+          <th>Required</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td><a href="rect">Rect</a> or number</td>
+          <td>No</td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    <h3 id="nativeid"><code>nativeID</code></h3>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+          <th>Required</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>string</td>
+          <td>No</td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    <h3 id="testid"><code>testID</code></h3>
+    <p>Used to locate this view in end-to-end tests.</p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+          <th>Required</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>string</td>
+          <td>No</td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    <h3 id="touchsounddisabled"><code>touchSoundDisabled</code></h3>
+    <p>If true, doesn’t play a system sound on touch.</p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+          <th>Required</th>
+          <th>Platform</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>Boolean</td>
+          <td>No</td>
+          <td>Android</td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>

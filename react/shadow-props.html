@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Shadow Props</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Shadow Props</h1>
+    </header>
+    <p>
+      ```SnackPlayer name=Shadow%20Props&amp;supportedPlatforms=ios import
+      React, { useState } from “react”; import { Text, View, StyleSheet, Slider
+      } from “react-native”;
+    </p>
+    <p>
+      const ShadowPropSlider = ({ label, value, …props }) =&gt; { return (
+      &lt;&gt; <Text> {label} ({value.toFixed(2)}) </Text> &lt;Slider step={1}
+      value={value} {…props} /&gt; &lt;/&gt; ); }
+    </p>
+    <p>
+      const App = () =&gt; { const [shadowOffsetWidth, setShadowOffsetWidth] =
+      useState(0); const [shadowOffsetHeight, setShadowOffsetHeight] =
+      useState(0); const [shadowRadius, setShadowRadius] = useState(0); const
+      [shadowOpacity, setShadowOpacity] = useState(0.1);
+    </p>
+    <p>
+      return (
+      <View style="{styles.container}">
+        &lt;View style={[ styles.square, { shadowOffset: { width:
+        shadowOffsetWidth, height: -shadowOffsetHeight }, shadowOpacity,
+        shadowRadius } ]} /&gt;
+        <View style="{styles.controls}">
+          &lt;ShadowPropSlider label=“shadowOffset - X” minimumValue={-50}
+          maximumValue={50} value={shadowOffsetWidth} onValueChange={val =&gt;
+          setShadowOffsetWidth(val)} /&gt; &lt;ShadowPropSlider
+          label=“shadowOffset - Y” minimumValue={-50} maximumValue={50}
+          value={shadowOffsetHeight} onValueChange={val =&gt;
+          setShadowOffsetHeight(val)} /&gt; &lt;ShadowPropSlider
+          label=“shadowRadius” minimumValue={0} maximumValue={100}
+          value={shadowRadius} onValueChange={val =&gt; setShadowRadius(val)}
+          /&gt; &lt;ShadowPropSlider label=“shadowOpacity” minimumValue={0}
+          maximumValue={1} step={0.05} value={shadowOpacity} onValueChange={val
+          =&gt; setShadowOpacity(val)} /&gt;
+        </View>
+      </View>
+      ); }
+    </p>
+    <p>
+      const styles = StyleSheet.create({ container: { flex: 1, justifyContent:
+      “space-around”, backgroundColor: “#ecf0f1”, padding: 8 }, square: {
+      alignSelf: “center”, backgroundColor: “white”, borderRadius: 4, height:
+      150, shadowColor: “black”, width: 150 }, controls: { paddingHorizontal: 12
+      } });
+    </p>
+    <p>export default App; ```</p>
+    <h1 id="reference">Reference</h1>
+    <h2 id="props">Props</h2>
+    <h3 id="shadowcolor"><code>shadowColor</code></h3>
+    <p>Sets the drop shadow color.</p>
+    <p>
+      This property will only work on Android API 28 and above. For similar
+      functionality on lower Android APIs, use the
+      <a href="view-style-props#elevation"><code>elevation</code> property</a>.
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td><a href="colors.md">color</a></td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    ### <code>shadowOffset</code>
+    <div class="label ios">iOS</div>
+    <p>Sets the drop shadow offset.</p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>object: {width: number,height: number}</td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    ### <code>shadowOpacity</code>
+    <div class="label ios">iOS</div>
+    <p>
+      Sets the drop shadow opacity (multiplied by the color’s alpha component).
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>number</td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    ### <code>shadowRadius</code>
+    <div class="label ios">iOS</div>
+    <p>Sets the drop shadow blur radius.</p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>number</td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>

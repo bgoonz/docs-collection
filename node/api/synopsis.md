@@ -1,15 +1,12 @@
-Usage and example
-=================
+# Usage and example
 
-Usage
------
+## Usage
 
 `node [options] [V8 options] [script.js | -e "script" | - ] [arguments]`
 
 Please see the [Command-line options](cli.md#cli_command_line_options) document for more information.
 
-Example
--------
+## Example
 
 An example of a [web server](http.md) written with Node.js which responds with `'Hello, World!'`:
 

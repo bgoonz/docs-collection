@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>VirtualizedList</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">VirtualizedList</h1>
+</header>
+<p>Base implementation for the more convenient <a href="flatlist.md"><code>&lt;FlatList&gt;</code></a> and <a href="sectionlist.md"><code>&lt;SectionList&gt;</code></a> components, which are also better documented. In general, this should only really be used if you need more flexibility than <a href="flatlist.md"><code>FlatList</code></a> provides, e.g. for use with immutable data instead of plain arrays.</p>
+<p>Virtualization massively improves memory consumption and performance of large lists by maintaining a finite render window of active items and replacing all items outside of the render window with appropriately sized blank space. The window adapts to scrolling behavior, and items are rendered incrementally with low-pri (after any running interactions) if they are far from the visible area, or with hi-pri otherwise to minimize the potential of seeing blank space.</p>
+<h2 id="example">Example</h2>
+<p>```SnackPlayer name=VirtualizedListExample import React from ‘react’; import { SafeAreaView, View, VirtualizedList, StyleSheet, Text, StatusBar } from ‘react-native’;</p>
+<p>const DATA = [];</p>
+<p>const getItem = (data, index) =&gt; ({ id: Math.random().toString(12).substring(0), title: <code>Item ${index+1}</code> });</p>
+<p>const getItemCount = (data) =&gt; 50;</p>
+<p>const Item = ({ title }) =&gt; ( <View style={styles.item}> <Text style={styles.title}>{title}</Text> </View> );</p>
+<p>const App = () =&gt; { return ( <SafeAreaView style={styles.container}> &lt;VirtualizedList data={DATA} initialNumToRender={4} renderItem={({ item }) =&gt; <Item title={item.title} />} keyExtractor={item =&gt; item.key} getItemCount={getItemCount} getItem={getItem} /&gt; </SafeAreaView> ); }</p>
+<p>const styles = StyleSheet.create({ container: { flex: 1, marginTop: StatusBar.currentHeight, }, item: { backgroundColor: ‘#f9c2ff’, height: 150, justifyContent: ‘center’, marginVertical: 8, marginHorizontal: 16, padding: 20, }, title: { fontSize: 32, }, });</p>
+<p>export default App; ```</p>
+<hr />
+<p>Some caveats:</p>
+<ul>
+<li>Internal state is not preserved when content scrolls out of the render window. Make sure all your data is captured in the item data or external stores like Flux, Redux, or Relay.</li>
+<li>This is a <code>PureComponent</code> which means that it will not re-render if <code>props</code> are shallow-equal. Make sure that everything your <code>renderItem</code> function depends on is passed as a prop (e.g. <code>extraData</code>) that is not <code>===</code> after updates, otherwise your UI may not update on changes. This includes the <code>data</code> prop and parent component state.</li>
+<li>In order to constrain memory and enable smooth scrolling, content is rendered asynchronously offscreen. This means it’s possible to scroll faster than the fill rate and momentarily see blank content. This is a tradeoff that can be adjusted to suit the needs of each application, and we are working on improving it behind the scenes.</li>
+<li>By default, the list looks for a <code>key</code> prop on each item and uses that for the React key. Alternatively, you can provide a custom <code>keyExtractor</code> prop.</li>
+</ul>
+<hr />
+<h1 id="reference">Reference</h1>
+<h2 id="props">Props</h2>
+<h3 id="scrollview-props"><a href="scrollview.md#props">ScrollView Props</a></h3>
+<p>Inherits <a href="scrollview.md#props">ScrollView Props</a>.</p>
+<hr />
+###
+<div class="label required basic">
+Required
+</div>
+<p><strong><code>data</code></strong></p>
+<p>The default accessor functions assume this is an array of objects with shape <code>{key: string}</code> but you can override <code>getItem</code>, <code>getItemCount</code>, and <code>keyExtractor</code> to handle any type of index-based data.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>any</td>
+</tr>
+</tbody>
+</table>
+<hr />
+###
+<div class="label required basic">
+Required
+</div>
+<p><strong><code>getItem</code></strong></p>
+<pre class="jsx"><code>(data: any, index: number) =&gt; object;</code></pre>
+<p>A generic accessor for extracting an item from any sort of data blob.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>function</td>
+</tr>
+</tbody>
+</table>
+<hr />
+###
+<div class="label required basic">
+Required
+</div>
+<p><strong><code>getItemCount</code></strong></p>
+<pre class="jsx"><code>(data: any) =&gt; number;</code></pre>
+<p>Determines how many items are in the data blob.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>function</td>
+</tr>
+</tbody>
+</table>
+<hr />
+###
+<div class="label required basic">
+Required
+</div>
+<p><strong><code>renderItem</code></strong></p>
+<pre class="jsx"><code>(info: any) =&gt; ?React.Element&lt;any&gt;</code></pre>
+<p>Takes an item from <code>data</code> and renders it into the list</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>function</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="cellrenderercomponent"><code>CellRendererComponent</code></h3>
+<p>Each cell is rendered using this element. Can be a React Component Class, or a render function. Defaults to using <a href="view.md"><code>View</code></a>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>component, function</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="itemseparatorcomponent"><code>ItemSeparatorComponent</code></h3>
+<p>Rendered in between each item, but not at the top or bottom. By default, <code>highlighted</code> and <code>leadingItem</code> props are provided. <code>renderItem</code> provides <code>separators.highlight</code>/<code>unhighlight</code> which will update the <code>highlighted</code> prop, but you can also add custom props with <code>separators.updateProps</code>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>component, function</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="listemptycomponent"><code>ListEmptyComponent</code></h3>
+<p>Rendered when the list is empty. Can be a React Component (e.g. <code>SomeComponent</code>), or a React element (e.g. <code>&lt;SomeComponent /&gt;</code>).</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>component, element</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="listitemcomponent"><code>ListItemComponent</code></h3>
+<p>Each data item is rendered using this element. Can be a React Component Class, or a render function.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>component, function</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="listfootercomponent"><code>ListFooterComponent</code></h3>
+<p>Rendered at the bottom of all the items. Can be a React Component (e.g. <code>SomeComponent</code>), or a React element (e.g. <code>&lt;SomeComponent /&gt;</code>).</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>component, element</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="listfootercomponentstyle"><code>ListFooterComponentStyle</code></h3>
+<p>Styling for internal View for <code>ListFooterComponent</code>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ViewStyleProp</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="listheadercomponent"><code>ListHeaderComponent</code></h3>
+<p>Rendered at the top of all the items. Can be a React Component (e.g. <code>SomeComponent</code>), or a React element (e.g. <code>&lt;SomeComponent /&gt;</code>).</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>component, element</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="listheadercomponentstyle"><code>ListHeaderComponentStyle</code></h3>
+<p>Styling for internal View for <code>ListHeaderComponent</code>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="view-style-props">View Style</a></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="debug"><code>debug</code></h3>
+<p><code>debug</code> will turn on extra logging and visual overlays to aid with debugging both usage and implementation, but with a significant perf hit.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>boolean</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="disablevirtualization"><code>disableVirtualization</code></h3>
+<blockquote>
+<p><strong>Deprecated.</strong> Virtualization provides significant performance and memory optimizations, but fully unmounts react instances that are outside of the render window. You should only need to disable this for debugging purposes.</p>
+</blockquote>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>boolean</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="extradata"><code>extraData</code></h3>
+<p>A marker property for telling the list to re-render (since it implements <code>PureComponent</code>). If any of your <code>renderItem</code>, Header, Footer, etc. functions depend on anything outside of the <code>data</code> prop, stick it here and treat it immutably.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>any</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="getitemlayout"><code>getItemLayout</code></h3>
+<pre class="jsx"><code>(
+    data: any,
+    index: number,
+  ) =&gt; {length: number, offset: number, index: number}</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>function</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="horizontal"><code>horizontal</code></h3>
+<p>If <code>true</code>, renders items next to each other horizontally instead of stacked vertically.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>boolean</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="initialnumtorender"><code>initialNumToRender</code></h3>
+<p>How many items to render in the initial batch. This should be enough to fill the screen but not much more. Note these items will never be unmounted as part of the windowed rendering in order to improve perceived performance of scroll-to-top actions.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number</td>
+<td><code>10</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="initialscrollindex"><code>initialScrollIndex</code></h3>
+<p>Instead of starting at the top with the first item, start at <code>initialScrollIndex</code>. This disables the “scroll to top” optimization that keeps the first <code>initialNumToRender</code> items always rendered and immediately renders the items starting at this initial index. Requires <code>getItemLayout</code> to be implemented.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="inverted"><code>inverted</code></h3>
+<p>Reverses the direction of scroll. Uses scale transforms of <code>-1</code>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>boolean</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="listkey"><code>listKey</code></h3>
+<p>A unique identifier for this list. If there are multiple VirtualizedLists at the same level of nesting within another VirtualizedList, this key is necessary for virtualization to work properly.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>string</td>
+<td>True</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="keyextractor"><code>keyExtractor</code></h3>
+<pre class="jsx"><code>(item: object, index: number) =&gt; string;</code></pre>
+<p>Used to extract a unique key for a given item at the specified index. Key is used for caching and as the react key to track item re-ordering. The default extractor checks <code>item.key</code>, then <code>item.id</code>, and then falls back to using the index, like React does.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>function</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="maxtorenderperbatch"><code>maxToRenderPerBatch</code></h3>
+<p>The maximum number of items to render in each incremental render batch. The more rendered at once, the better the fill rate, but responsiveness may suffer because rendering content may interfere with responding to button taps or other interactions.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="onendreached"><code>onEndReached</code></h3>
+<pre class="jsx"><code>(info: {distanceFromEnd: number}) =&gt; void</code></pre>
+<p>Called once when the scroll position gets within <code>onEndReachedThreshold</code> of the rendered content.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>function</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="onendreachedthreshold"><code>onEndReachedThreshold</code></h3>
+<p>How far from the end (in units of visible length of the list) the bottom edge of the list must be from the end of the content to trigger the <code>onEndReached</code> callback. Thus a value of 0.5 will trigger <code>onEndReached</code> when the end of the content is within half the visible length of the list.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="onrefresh"><code>onRefresh</code></h3>
+<pre class="jsx"><code>() =&gt; void</code></pre>
+<p>If provided, a standard <code>RefreshControl</code> will be added for “Pull to Refresh” functionality. Make sure to also set the <code>refreshing</code> prop correctly.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>function</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="onscrolltoindexfailed"><code>onScrollToIndexFailed</code></h3>
+<pre class="jsx"><code>(info: {
+    index: number,
+    highestMeasuredFrameIndex: number,
+    averageItemLength: number,
+  }) =&gt; void</code></pre>
+<p>Used to handle failures when scrolling to an index that has not been measured yet. Recommended action is to either compute your own offset and <code>scrollTo</code> it, or scroll as far as possible and then try again after more items have been rendered.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>function</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="onviewableitemschanged"><code>onViewableItemsChanged</code></h3>
+<p>Called when the viewability of rows changes, as defined by the <code>viewabilityConfig</code> prop.</p>
+<table>
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>(callback: { changed: array of <a href="viewtoken">ViewToken</a>s, viewableItems: array of <a href="viewtoken">ViewToken</a>s }) =&gt; void</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="persistentscrollbar"><code>persistentScrollbar</code></h3>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>bool</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="progressviewoffset"><code>progressViewOffset</code></h3>
+<p>Set this when offset is needed for the loading indicator to show correctly.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="refreshcontrol"><code>refreshControl</code></h3>
+<p>A custom refresh control element. When set, it overrides the default <code>&lt;RefreshControl&gt;</code> component built internally. The onRefresh and refreshing props are also ignored. Only works for vertical VirtualizedList.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>element</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="refreshing"><code>refreshing</code></h3>
+<p>Set this true while waiting for new data from a refresh.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>boolean</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="removeclippedsubviews"><code>removeClippedSubviews</code></h3>
+<p>This may improve scroll performance for large lists.</p>
+<blockquote>
+<p>Note: May have bugs (missing content) in some circumstances - use at your own risk.</p>
+</blockquote>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>boolean</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="renderscrollcomponent"><code>renderScrollComponent</code></h3>
+<pre class="jsx"><code>(props: object) =&gt; element;</code></pre>
+<p>Render a custom scroll component, e.g. with a differently styled <code>RefreshControl</code>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>function</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="viewabilityconfig"><code>viewabilityConfig</code></h3>
+<p>See <code>ViewabilityHelper.js</code> for flow type and further documentation.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ViewabilityConfig</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="viewabilityconfigcallbackpairs"><code>viewabilityConfigCallbackPairs</code></h3>
+<p>List of <code>ViewabilityConfig</code>/<code>onViewableItemsChanged</code> pairs. A specific <code>onViewableItemsChanged</code> will be called when its corresponding <code>ViewabilityConfig</code>’s conditions are met. See <code>ViewabilityHelper.js</code> for flow type and further documentation.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>array of ViewabilityConfigCallbackPair</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="updatecellsbatchingperiod"><code>updateCellsBatchingPeriod</code></h3>
+<p>Amount of time between low-pri item render batches, e.g. for rendering items quite a ways off screen. Similar fill rate/responsiveness tradeoff as <code>maxToRenderPerBatch</code>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="windowsize"><code>windowSize</code></h3>
+<p>Determines the maximum number of items rendered outside of the visible area, in units of visible lengths. So if your list fills the screen, then <code>windowSize={21}</code> (the default) will render the visible screen area plus up to 10 screens above and 10 below the viewport. Reducing this number will reduce memory consumption and may improve performance, but will increase the chance that fast scrolling may reveal momentary blank areas of unrendered content.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>number</td>
+</tr>
+</tbody>
+</table>
+<h2 id="methods">Methods</h2>
+<h3 id="flashscrollindicators"><code>flashScrollIndicators()</code></h3>
+<pre class="jsx"><code>flashScrollIndicators();</code></pre>
+<hr />
+<h3 id="getchildcontext"><code>getChildContext()</code></h3>
+<pre class="jsx"><code>getChildContext () =&gt; Object;</code></pre>
+<p>The <code>Object</code> returned consist of:</p>
+<ul>
+<li>‘virtualizedList’ (Object). This object consist of the following
+<ul>
+<li>getScrollMetrics’ (Function). Returns an object with following properties: <code>{ contentLength: number, dOffset: number, dt: number, offset: number, timestamp: number, velocity: number, visibleLength: number }</code>.</li>
+<li>‘horizontal’ (boolean) - Optional.</li>
+<li>‘getOutermostParentListRef’ (Function).</li>
+<li>‘getNestedChildState’ (Function) - Returns ChildListState .</li>
+<li>‘registerAsNestedChild’ (Function). This accept an object with following properties <code>{ cellKey: string, key: string, ref: VirtualizedList, parentDebugInfo: ListDebugInfo }</code>. It returns a ChildListState</li>
+<li>‘unregisterAsNestedChild’ (Function). This takes an object with following properties, <code>{ key: string, state: ChildListState }</code></li>
+<li>‘debugInfo’ (ListDebugInfo).</li>
+</ul></li>
+</ul>
+<hr />
+<h3 id="getscrollablenode"><code>getScrollableNode()</code></h3>
+<pre class="jsx"><code>getScrollableNode () =&gt; ?number;</code></pre>
+<hr />
+<h3 id="getscrollref"><code>getScrollRef()</code></h3>
+<pre class="jsx"><code>getScrollRef () =&gt; | ?React.ElementRef&lt;typeof ScrollView&gt;
+    | ?React.ElementRef&lt;typeof View&gt;;</code></pre>
+<hr />
+<h3 id="getscrollresponder"><code>getScrollResponder()</code></h3>
+<pre class="jsx"><code>getScrollResponder () =&gt; ?ScrollResponderType;</code></pre>
+<p>Provides a handle to the underlying scroll responder. Note that <code>this._scrollRef</code> might not be a <code>ScrollView</code>, so we need to check that it responds to <code>getScrollResponder</code> before calling it.</p>
+<hr />
+<h3 id="hasmore"><code>hasMore()</code></h3>
+<pre class="jsx"><code>hasMore () =&gt; boolean;</code></pre>
+<hr />
+<h3 id="scrolltoend"><code>scrollToEnd()</code></h3>
+<pre class="jsx"><code>scrollToEnd((params: object));
+
+Valid `params` consist of:
+
+- &#39;animated&#39; (boolean). Optional default is true.</code></pre>
+<hr />
+<h3 id="scrolltoindex"><code>scrollToIndex()</code></h3>
+<pre class="jsx"><code>scrollToIndex((params: object));</code></pre>
+<p>Valid <code>params</code> consist of:</p>
+<ul>
+<li>‘animated’ (boolean). Optional.</li>
+<li>‘index’ (number). Required.</li>
+<li>‘viewOffset’ (number). Optional.</li>
+<li>‘viewPosition’ (number). Optional.</li>
+</ul>
+<hr />
+<h3 id="scrolltoitem"><code>scrollToItem()</code></h3>
+<pre class="jsx"><code>scrollToItem((params: object));</code></pre>
+<p>Valid <code>params</code> consist of:</p>
+<ul>
+<li>‘animated’ (boolean). Optional.</li>
+<li>‘item’ (Item). Required.</li>
+<li>‘viewPosition’ (number). Optional.</li>
+</ul>
+<hr />
+<h3 id="scrolltooffset"><code>scrollToOffset()</code></h3>
+<pre class="jsx"><code>scrollToOffset((params: object));</code></pre>
+<p>Scroll to a specific content pixel offset in the list.</p>
+<p>Param <code>offset</code> expects the offset to scroll to. In case of <code>horizontal</code> is true, the offset is the x-value, in any other case the offset is the y-value.</p>
+<p>Param <code>animated</code> (<code>true</code> by default) defines whether the list should do an animation while scrolling.</p>
+<hr />
+<h3 id="recordinteraction"><code>recordInteraction()</code></h3>
+<pre class="jsx"><code>recordInteraction();</code></pre>
+<hr />
+<h3 id="setnativeprops"><code>setNativeProps()</code></h3>
+<pre class="jsx"><code>setNativeProps((props: Object));</code></pre>
+</body>
+</html>

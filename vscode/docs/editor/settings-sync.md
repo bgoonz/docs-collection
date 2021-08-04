@@ -1,12 +1,10 @@
-Settings Sync
-=============
+# Settings Sync
 
 Settings Sync lets you share your Visual Studio Code configurations such as settings, keybindings, and installed extensions across your machines so you are always working with your favorite setup.
 
 > **Note**: Settings Sync is still in preview.
 
-Turning on Settings Sync
-------------------------
+## Turning on Settings Sync
 
 You can turn on Settings Sync using the **Turn On Settings Sync…** entry in the **Manage** gear menu at the bottom of the Activity Bar.
 
@@ -24,21 +22,19 @@ After making this selection, the browser will open so that you can sign in to yo
 
 After signing in, Settings Sync will be turned on and continue to synchronize your preferences automatically in the background.
 
-Merge or Replace
-----------------
+## Merge or Replace
 
 If you already synced from a machine and turning on sync from another machine, you will be shown with following **Merge or Replace** dialog.
 
 ![Settings Sync Merge or Replace dialog](images/settings-sync/sync-merge-replace.png)
 
--   **Merge**: Selecting this option will merge **local** settings with **remote** settings from the cloud.
--   **Replace Local**: Selecting this option will overwrite **local** settings with remote settings from the cloud.
--   **Merge Manually…**: Selecting this option will open **Merges** view where you can merge preferences one by one.
+- **Merge**: Selecting this option will merge **local** settings with **remote** settings from the cloud.
+- **Replace Local**: Selecting this option will overwrite **local** settings with remote settings from the cloud.
+- **Merge Manually…**: Selecting this option will open **Merges** view where you can merge preferences one by one.
 
 ![Settings Sync Merges](images/settings-sync/sync-merges-view.png)
 
-Configuring synced data
------------------------
+## Configuring synced data
 
 Machine settings (with `machine` or `machine-overridable` [scopes](/updates/v1_34.md#machinespecific-settings)) are not synchronized by default, since their values are specific to a given machine. You can also add or remove settings you want to this list from the Settings editor or using the setting `settingsSync.ignoredSettings`.
 
@@ -52,31 +48,28 @@ All built-in and installed extensions are synchronized along with their global e
 
 Following UI State is synchronized currently:
 
--   Display Language
--   Activity Bar entries
--   Panel entries
--   Views layout and visibility
--   Recently used commands
--   Do not show again notifications
+- Display Language
+- Activity Bar entries
+- Panel entries
+- Views layout and visibility
+- Recently used commands
+- Do not show again notifications
 
 You can always change what is synced via the **Settings Sync: Configure** command or by opening the **Manage** gear menu, selecting **Settings Sync is On**, and then **Settings Sync: Configure**.
 
-Conflicts
----------
+## Conflicts
 
 When synchronizing settings between multiple machines, there may occasionally be conflicts. Conflicts can happen when first setting up sync between machines or when settings change while a machine is offline. When conflicts occur, you will be presented with the following options:
 
--   **Accept Local**: Selecting this option will overwrite **remote** settings in the cloud with your local settings.
--   **Accept Remote**: Selecting this option will overwrite **local** settings with remote settings from the cloud.
--   **Show Conflicts**: Selecting this will display a diff editor similar to the Source Control diff editor, where you can preview the local and remote settings and choose to either accept local or remote or manually resolve the changes in your local settings file and then accept the local file.
+- **Accept Local**: Selecting this option will overwrite **remote** settings in the cloud with your local settings.
+- **Accept Remote**: Selecting this option will overwrite **local** settings with remote settings from the cloud.
+- **Show Conflicts**: Selecting this will display a diff editor similar to the Source Control diff editor, where you can preview the local and remote settings and choose to either accept local or remote or manually resolve the changes in your local settings file and then accept the local file.
 
-Switching Accounts
-------------------
+## Switching Accounts
 
 If at any time you want to sync your data to a different account, you can turn off and turn on Settings Sync again with different account.
 
-Syncing Stable versus Insiders
-------------------------------
+## Syncing Stable versus Insiders
 
 By default, the VS Code Stable and [Insiders](/insiders) builds use different Settings Sync services, and therefore do not share settings. You can sync your Insiders with Stable by selecting the Stable sync service while turning on Settings Sync. This option is only available in VS Code Insiders.
 
@@ -84,8 +77,7 @@ By default, the VS Code Stable and [Insiders](/insiders) builds use different Se
 
 **Note:** Since Insiders builds are newer than Stable builds, syncing them can sometimes lead to data incompatibility. In such cases, Settings sync will be disabled automatically on stable to prevent data inconsistencies. Once newer version of Stable build is released, you can upgrade your stable client and turn on sync to continue syncing.
 
-Restoring data
---------------
+## Restoring data
 
 VS Code always stores local and remote backups of your preferences while syncing and provides views for accessing these. In case something goes wrong, you can restore your data from these views.
 
@@ -99,8 +91,7 @@ Local backups folder in the disk can be accessed via the **Settings Sync: Open L
 
 > **Note**: Local backups are automatically deleted after 30 days. For remote backups the latest 20 versions of each individual resource (settings, extensions, etc.) is retained.
 
-Synced Machines
----------------
+## Synced Machines
 
 VS Code keeps track of the machines synchronizing your preferences and provides a view to access them. Every machine is given a default name based on the type of VS Code (Insiders or Stable) and the platform it is on. You can always update the machine name using the edit action available on the machine entry in the view. You can also disable sync on another machine using **Turn off Settings Sync** context menu action on the machine entry in the view.
 
@@ -108,23 +99,19 @@ VS Code keeps track of the machines synchronizing your preferences and provides 
 
 You can open this view using **Settings Sync: Show Synced Data** command from the Command Palette.
 
-Reporting issues
-----------------
+## Reporting issues
 
 Settings Sync activity can be monitored in the **Log (Settings Sync)** output view. If you experience a problem with Settings Sync, include this log when creating the issue. If your problem is related to authentication, also include the log from the **Account** output view.
 
-How do I delete my data?
-------------------------
+## How do I delete my data?
 
 If you want to remove all your data from our servers, just turn off sync via **Settings Sync is On** menu available under **Manage** gear menu and select the checkbox to clear all cloud data. If you choose to re-enable sync, it will be as if you’re signing in for the first time.
 
-Next steps
-----------
+## Next steps
 
--   [User and Workspace settings](/docs/getstarted/settings.md) - Learn how to configure VS Code to your preferences through user and workspace settings.
+- [User and Workspace settings](/docs/getstarted/settings.md) - Learn how to configure VS Code to your preferences through user and workspace settings.
 
-Common questions
-----------------
+## Common questions
 
 ### Is VS Code Settings Sync the same as the Settings Sync extension?
 
@@ -138,8 +125,7 @@ VS Code Settings Sync supports signing in with either a Microsoft account (for e
 
 Settings Sync uses a dedicated service to store settings and coordinate updates. A service provider API may be exposed in the future to allow for custom Settings Sync backends.
 
-Troubleshooting keychain issues
--------------------------------
+## Troubleshooting keychain issues
 
 Settings Sync persists authentication information to the system keychain. Writing to the keychain can fail in some cases if the keychain is misconfigured.
 
@@ -153,8 +139,7 @@ If the keychain throws the error “No such interface”org.freedesktop.Secret.C
 
 If the error is “Writing login information to the keychain failed with error ‘Unknown or unsupported transport “disabled” for address “disabled:”’”, check that `dbus-launch` has been started by following the instructions in [issue \#120392](https://github.com/microsoft/vscode/issues/120392#issuecomment-814210643).
 
-Can I share settings between VS Code Stable and Insiders?
----------------------------------------------------------
+## Can I share settings between VS Code Stable and Insiders?
 
 Yes. Please refer to the [Syncing Stable versus Insiders](#syncing-stable-versus-insiders) section for more information.
 

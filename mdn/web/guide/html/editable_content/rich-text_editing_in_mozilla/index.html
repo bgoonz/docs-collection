@@ -6,61 +6,150 @@ tags:
   - Midas
   - NeedsMarkupWork
 ---
+
 <div class="note">
-<p id="Introduction"><strong>Note</strong>: This document is out-of-date; you are advised to consult the more up-to-date document available at <a href="/en-US/docs/Web/Guide/HTML/Editable_content">Making content editable</a>.</p>
+  <p id="Introduction">
+    <strong>Note</strong>: This document is out-of-date; you are advised to
+    consult the more up-to-date document available at
+    <a href="/en-US/docs/Web/Guide/HTML/Editable_content"
+      >Making content editable</a
+    >.
+  </p>
 </div>
 
-<p>Mozilla 1.3 introduces an implementation of Microsoft<sup>®</sup> Internet Explorer's designMode feature. The rich-text editing support in Mozilla 1.3 supports the designMode feature which turns HTML documents into rich-text editors. Starting in Firefox 3, Mozilla also supports Internet Explorer's <code>contentEditable</code> attribute which allows any element to become editable or non-editable (the latter for when preventing change to fixed elements in an editable environment).</p>
+<p>
+  Mozilla 1.3 introduces an implementation of Microsoft<sup>®</sup> Internet
+  Explorer's designMode feature. The rich-text editing support in Mozilla 1.3
+  supports the designMode feature which turns HTML documents into rich-text
+  editors. Starting in Firefox 3, Mozilla also supports Internet Explorer's
+  <code>contentEditable</code> attribute which allows any element to become
+  editable or non-editable (the latter for when preventing change to fixed
+  elements in an editable environment).
+</p>
 
 <h3 id="Setting_Up_Rich-Text_Editing">Setting Up Rich-Text Editing</h3>
 
-<p>Rich-text editing is initialized by setting the {{ domxref("Document.designMode", "designMode") }} property of a document to "On", such as the document inside an iframe. Once <code>designMode</code> has been set to "On", the document becomes a rich-text editing area and the user can type into it as if it were a textarea. The most basic keyboard commands such as copy and paste are available, all others need to be implemented by the website.</p>
+<p>
+  Rich-text editing is initialized by setting the {{
+  domxref("Document.designMode", "designMode") }} property of a document to
+  "On", such as the document inside an iframe. Once <code>designMode</code> has
+  been set to "On", the document becomes a rich-text editing area and the user
+  can type into it as if it were a textarea. The most basic keyboard commands
+  such as copy and paste are available, all others need to be implemented by the
+  website.
+</p>
 
-<p>Similarly, setting {{ domxref("HTMLElement.contentEditable", "contentEditable") }} to "true" allows you to make individual elements of a document editable.</p>
+<p>
+  Similarly, setting {{ domxref("HTMLElement.contentEditable",
+  "contentEditable") }} to "true" allows you to make individual elements of a
+  document editable.
+</p>
 
 <h3 id="Executing_Commands">Executing Commands</h3>
 
-<p>When an HTML document has been switched to designMode, the document object exposes the {{ domxref("document.execCommand") }} method which allows one to run <a href="/en-US/docs/Web/API/Document/execCommand#commands">commands</a> to manipulate the contents of the editable region. Most commands affect the document's selection (bold, italics, etc), while others insert new elements (adding a link) or affect an entire line (indenting). When using <code>contentEditable</code>, calling <code>execCommand</code> will affect the currently active editable element.</p>
+<p>
+  When an HTML document has been switched to designMode, the document object
+  exposes the {{ domxref("document.execCommand") }} method which allows one to
+  run
+  <a href="/en-US/docs/Web/API/Document/execCommand#commands">commands</a> to
+  manipulate the contents of the editable region. Most commands affect the
+  document's selection (bold, italics, etc), while others insert new elements
+  (adding a link) or affect an entire line (indenting). When using
+  <code>contentEditable</code>, calling <code>execCommand</code> will affect the
+  currently active editable element.
+</p>
 
 <h3 id="Internet_Explorer_Differences">Internet Explorer Differences</h3>
 
-<p>One major difference between Mozilla and Internet Explorer that affects designMode is the generated code in the editable document: while Internet Explorer uses HTML tags (em, i, etc), Mozilla 1.3 will generate by default spans with inline style rules. The <code>styleWithCSS</code> command can be used to toggle between CSS and HTML markup creation.</p>
+<p>
+  One major difference between Mozilla and Internet Explorer that affects
+  designMode is the generated code in the editable document: while Internet
+  Explorer uses HTML tags (em, i, etc), Mozilla 1.3 will generate by default
+  spans with inline style rules. The <code>styleWithCSS</code> command can be
+  used to toggle between CSS and HTML markup creation.
+</p>
 
 <p><strong>Figure 1 : Generated HTML differences</strong></p>
 
 <p>Mozilla:</p>
 
-<pre class="brush: html">&lt;span style="font-weight: bold;"&gt;I love geckos.&lt;/span&gt;
+<pre class="brush: html">
+&lt;span style="font-weight: bold;"&gt;I love geckos.&lt;/span&gt;
 &lt;span style="font-weight: bold; font-style: italic;
     text-decoration: underline;"&gt;Dinosaurs are big.&lt;/span&gt;
 </pre>
 
 <p>Internet Explorer:</p>
 
-<pre class="brush: html">&lt;STRONG&gt;I love geckos.&lt;/STRONG&gt;
+<pre class="brush: html">
+&lt;STRONG&gt;I love geckos.&lt;/STRONG&gt;
 &lt;STRONG&gt;&lt;EM&gt;&lt;U&gt;Dinosaurs are big.&lt;/U&gt;&lt;/EM&gt;&lt;/STRONG&gt;
 </pre>
 
-<p>Another difference between Mozilla and IE is how to access the document object of an iframe, which is usually used in conjunction with designMode. Mozilla uses the W3C standard way, namely <code>IFrameElement.<a href="https://www.w3.org/TR/DOM-Level-2-HTML/html.html#ID-38538621">contentDocument</a></code>, while IE requires <code>IFrameElement.document</code>.</p>
+<p>
+  Another difference between Mozilla and IE is how to access the document object
+  of an iframe, which is usually used in conjunction with designMode. Mozilla
+  uses the W3C standard way, namely
+  <code
+    >IFrameElement.<a
+      href="https://www.w3.org/TR/DOM-Level-2-HTML/html.html#ID-38538621"
+      >contentDocument</a
+    ></code
+  >, while IE requires <code>IFrameElement.document</code>.
+</p>
 
-<p><em><strong>DevEdge</strong></em> provides a JavaScript helper class, <code><a href="/en-US/docs/Web/Guide/HTML/Editable_content/Rich-Text_Editing_in_Mozilla/Class_xbDesignMode">xbDesignMode</a></code>, which is a wrapper for the designMode feature which hides the differences between IE and Mozilla.</p>
+<p>
+  <em><strong>DevEdge</strong></em> provides a JavaScript helper class,
+  <code
+    ><a
+      href="/en-US/docs/Web/Guide/HTML/Editable_content/Rich-Text_Editing_in_Mozilla/Class_xbDesignMode"
+      >xbDesignMode</a
+    ></code
+  >, which is a wrapper for the designMode feature which hides the differences
+  between IE and Mozilla.
+</p>
 
-<p><br>
- <strong>Event Handling Disabled</strong></p>
+<p>
+  <br />
+  <strong>Event Handling Disabled</strong>
+</p>
 
-<p>A further difference for Mozilla is that once a document is switched to designMode, all events on that particular document are disabled. Once designMode is turned off however (as this now seems possible in Mozilla 1.5) the events become active again.</p>
+<p>
+  A further difference for Mozilla is that once a document is switched to
+  designMode, all events on that particular document are disabled. Once
+  designMode is turned off however (as this now seems possible in Mozilla 1.5)
+  the events become active again.
+</p>
 
-<p><strong>More information</strong> can be found in the <a href="/en-US/Migrate_apps_from_Internet_Explorer_to_Mozilla#rich_text_editing">Rich text editing</a> section of <a href="/en-US/Migrate_apps_from_Internet_Explorer_to_Mozilla">Migrate apps from Internet Explorer to Mozilla</a>.</p>
+<p>
+  <strong>More information</strong> can be found in the
+  <a
+    href="/en-US/Migrate_apps_from_Internet_Explorer_to_Mozilla#rich_text_editing"
+    >Rich text editing</a
+  >
+  section of
+  <a href="/en-US/Migrate_apps_from_Internet_Explorer_to_Mozilla"
+    >Migrate apps from Internet Explorer to Mozilla</a
+  >.
+</p>
 
 <h3 id="Examples">Examples</h3>
 
 <h4 id="Example_1">Example 1</h4>
 
-<p>The first example is an HTML document setting its own <code>designMode</code> to "On". This makes the entire document editable in Mozilla 1.3. Internet Explorer, however, does not allow javascript to change the current document's designMode. For it to work in Internet Explorer, the <code>contentEditable</code> attribute of the body tag needs to be set to "true".</p>
+<p>
+  The first example is an HTML document setting its own
+  <code>designMode</code> to "On". This makes the entire document editable in
+  Mozilla 1.3. Internet Explorer, however, does not allow javascript to change
+  the current document's designMode. For it to work in Internet Explorer, the
+  <code>contentEditable</code> attribute of the body tag needs to be set to
+  "true".
+</p>
 
 <p><strong>Figure 2 : First example</strong></p>
 
-<pre class="brush: js">HTML:
+<pre class="brush: js">
+HTML:
 &lt;body contentEditable="true" onload="load()"&gt;
 
 JavaScript:
@@ -71,11 +160,18 @@ function load(){
 
 <h4 id="Example_2">Example 2</h4>
 
-<p>The second example is a simple rich text editing page, where text can be bolded/italicized/underlined, new links can be added and the color of text changed. The example page consists of an iframe, which will be the rich editing area, as well as elements for basic editing commands such as bold/italics/text color.</p>
+<p>
+  The second example is a simple rich text editing page, where text can be
+  bolded/italicized/underlined, new links can be added and the color of text
+  changed. The example page consists of an iframe, which will be the rich
+  editing area, as well as elements for basic editing commands such as
+  bold/italics/text color.
+</p>
 
 <p><strong>Figure 3 : Setting up rich-text editing</strong></p>
 
-<pre class="brush: js">HTML:
+<pre class="brush: js">
+HTML:
 &lt;body onload="load()"&gt;
 
 JavaScript:
@@ -94,11 +190,19 @@ function getIFrameDocument(aID){
 }
 </pre>
 
-<p>The example contains a <code>doRichEditCommand</code> function that makes it easier to execute commands on the iframe's document and keeps the HTML code clean. The function executed the requested command using <code>execCommand()</code> and then sets focus back to the editable document, as clicking on a button will set focus on the button itself, which breaks the editing flow.</p>
+<p>
+  The example contains a <code>doRichEditCommand</code> function that makes it
+  easier to execute commands on the iframe's document and keeps the HTML code
+  clean. The function executed the requested command using
+  <code>execCommand()</code> and then sets focus back to the editable document,
+  as clicking on a button will set focus on the button itself, which breaks the
+  editing flow.
+</p>
 
 <p><strong>Figure 4 : Executing Rich Editing Commands</strong></p>
 
-<pre class="brush: js">HTML:
+<pre class="brush: js">
+HTML:
 &lt;button onclick="doRichEditCommand('bold')" style="font-weight:bold;"&gt;B&lt;/button&gt;
 
 JavaScript:
@@ -108,10 +212,13 @@ function doRichEditCommand(aName, aArg){
 }
 </pre>
 
-<h3 id="Example_a_simple_but_complete_Rich_Text_Editor">Example: a simple but complete Rich Text Editor</h3>
+<h3 id="Example_a_simple_but_complete_Rich_Text_Editor">
+  Example: a simple but complete Rich Text Editor
+</h3>
 
-<div style="height: 500px; width: auto; overflow: auto;">
-<pre class="brush: html">&lt;!doctype html&gt;
+<div style="height: 500px; width: auto; overflow: auto">
+  <pre class="brush: html">
+&lt;!doctype html&gt;
 &lt;html&gt;
 &lt;head&gt;
 &lt;title&gt;Rich Text Editor&lt;/title&gt;
@@ -261,33 +368,85 @@ img.intLink { border: 0; }
 &lt;/form&gt;
 &lt;/body&gt;
 &lt;/html&gt;
-</pre>
+</pre
+  >
 </div>
 
-<div class="note"><strong>Note:</strong> if you want to see how to standardize the creation and the insertion of your editor in your page, please see our <a class="internal" href="/@api/deki/files/6243/=rich-text-editor.zip" title="rich-text-editor.zip">more complete rich-text editor example</a>.</div>
+<div class="note">
+  <strong>Note:</strong> if you want to see how to standardize the creation and
+  the insertion of your editor in your page, please see our
+  <a
+    class="internal"
+    href="/@api/deki/files/6243/=rich-text-editor.zip"
+    title="rich-text-editor.zip"
+    >more complete rich-text editor example</a
+  >.
+</div>
 
 <h3 id="Resources">Resources</h3>
 
 <ul>
- <li><a href="https://mozilla.org/editor/midas-spec.html">mozilla.org's rich-text editing Specification</a></li>
- <li><a href="https://mozilla.org/editor/midasdemo/">mozilla.org's rich-text editing Demo</a></li>
- <li><a href="https://www.mozilla.org/editor/ie2midas.html">Converting an app using document.designMode from IE to Mozilla at mozilla.org</a></li>
- <li><code><a href="/en-US/docs/Web/API/Document/designMode">designMode</a></code></li>
- <li><a href="https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms537834(v=vs.85)">MSDN: How to Create an HTML Editor Application</a></li>
- <li><a href="http://www.kevinroth.com/rte/demo.htm">A closed source, cross-browser rich-text editing demo</a></li>
- <li><a href="/en-US/docs/Web/Guide/HTML/Editable_content/Rich-Text_Editing_in_Mozilla/Class_xbDesignMode">xbDesignMode; a JavaScript helper class for easier cross-browser development using designMode.</a></li>
- <li><a href="http://starkravingfinkle.org/blog/2007/07/firefox-3-contenteditable/">Firefox 3 and contentEditable</a></li>
+  <li>
+    <a href="https://mozilla.org/editor/midas-spec.html"
+      >mozilla.org's rich-text editing Specification</a
+    >
+  </li>
+  <li>
+    <a href="https://mozilla.org/editor/midasdemo/"
+      >mozilla.org's rich-text editing Demo</a
+    >
+  </li>
+  <li>
+    <a href="https://www.mozilla.org/editor/ie2midas.html"
+      >Converting an app using document.designMode from IE to Mozilla at
+      mozilla.org</a
+    >
+  </li>
+  <li>
+    <code
+      ><a href="/en-US/docs/Web/API/Document/designMode">designMode</a></code
+    >
+  </li>
+  <li>
+    <a
+      href="https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms537834(v=vs.85)"
+      >MSDN: How to Create an HTML Editor Application</a
+    >
+  </li>
+  <li>
+    <a href="http://www.kevinroth.com/rte/demo.htm"
+      >A closed source, cross-browser rich-text editing demo</a
+    >
+  </li>
+  <li>
+    <a
+      href="/en-US/docs/Web/Guide/HTML/Editable_content/Rich-Text_Editing_in_Mozilla/Class_xbDesignMode"
+      >xbDesignMode; a JavaScript helper class for easier cross-browser
+      development using designMode.</a
+    >
+  </li>
+  <li>
+    <a
+      href="http://starkravingfinkle.org/blog/2007/07/firefox-3-contenteditable/"
+      >Firefox 3 and contentEditable</a
+    >
+  </li>
 </ul>
 
 <div class="originaldocinfo">
-<h3 id="Original_Document_Information">Original Document Information</h3>
+  <h3 id="Original_Document_Information">Original Document Information</h3>
 
-<ul>
- <li>Author(s): Doron Rosenberg, Netscape Communications</li>
- <li>Published: 04 Apr 2003</li>
- <li>Revised: 01 Jul 2003</li>
- <li>Revised: 24 Apr 2005, Joel Coreson</li>
- <li>Revised: 28 Nov 2006, <a class="link-mailto" href="mailto:kkuhns@ComputronicsUSA.com">Ken Kuhns</a>, <a href="http://www.ComputronicsUSA.com">ComputronicsUSA</a></li>
- <li>Revised: 19 Dec 2007, Mark Finkle</li>
-</ul>
+  <ul>
+    <li>Author(s): Doron Rosenberg, Netscape Communications</li>
+    <li>Published: 04 Apr 2003</li>
+    <li>Revised: 01 Jul 2003</li>
+    <li>Revised: 24 Apr 2005, Joel Coreson</li>
+    <li>
+      Revised: 28 Nov 2006,
+      <a class="link-mailto" href="mailto:kkuhns@ComputronicsUSA.com"
+        >Ken Kuhns</a
+      >, <a href="http://www.ComputronicsUSA.com">ComputronicsUSA</a>
+    </li>
+    <li>Revised: 19 Dec 2007, Mark Finkle</li>
+  </ul>
 </div>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Using List Views</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Using List Views</h1>
+</header>
+<p>React Native provides a suite of components for presenting lists of data. Generally, you’ll want to use either <a href="flatlist.md">FlatList</a> or <a href="sectionlist.md">SectionList</a>.</p>
+<p>The <code>FlatList</code> component displays a scrolling list of changing, but similarly structured, data. <code>FlatList</code> works well for long lists of data, where the number of items might change over time. Unlike the more generic <a href="using-a-scrollview.md"><code>ScrollView</code></a>, the <code>FlatList</code> only renders elements that are currently showing on the screen, not all the elements at once.</p>
+<p>The <code>FlatList</code> component requires two props: <code>data</code> and <code>renderItem</code>. <code>data</code> is the source of information for the list. <code>renderItem</code> takes one item from the source and returns a formatted component to render.</p>
+<p>This example creates a basic <code>FlatList</code> of hardcoded data. Each item in the <code>data</code> props is rendered as a <code>Text</code> component. The <code>FlatListBasics</code> component then renders the <code>FlatList</code> and all <code>Text</code> components.</p>
+<p>```SnackPlayer name=FlatList%20Basics import React from ‘react’; import { FlatList, StyleSheet, Text, View } from ‘react-native’;</p>
+<p>const styles = StyleSheet.create({ container: { flex: 1, paddingTop: 22 }, item: { padding: 10, fontSize: 18, height: 44, }, });</p>
+<p>const FlatListBasics = () =&gt; { return ( <View style={styles.container}> &lt;FlatList data={[ {key: ‘Devin’}, {key: ‘Dan’}, {key: ‘Dominic’}, {key: ‘Jackson’}, {key: ‘James’}, {key: ‘Joel’}, {key: ‘John’}, {key: ‘Jillian’}, {key: ‘Jimmy’}, {key: ‘Julie’}, ]} renderItem={({item}) =&gt; <Text style={styles.item}>{item.key}</Text>} /&gt; </View> ); }</p>
+<p>export default FlatListBasics; ```</p>
+<p>If you want to render a set of data broken into logical sections, maybe with section headers, similar to <code>UITableView</code>s on iOS, then a <a href="sectionlist.md">SectionList</a> is the way to go.</p>
+<p>```SnackPlayer name=SectionList%20Basics import React from ‘react’; import { SectionList, StyleSheet, Text, View } from ‘react-native’;</p>
+<p>const styles = StyleSheet.create({ container: { flex: 1, paddingTop: 22 }, sectionHeader: { paddingTop: 2, paddingLeft: 10, paddingRight: 10, paddingBottom: 2, fontSize: 14, fontWeight: ‘bold’, backgroundColor: ‘rgba(247,247,247,1.0)’, }, item: { padding: 10, fontSize: 18, height: 44, }, })</p>
+<p>const SectionListBasics = () =&gt; { return ( <View style={styles.container}> &lt;SectionList sections={[ {title: ‘D’, data: [‘Devin’, ‘Dan’, ‘Dominic’]}, {title: ‘J’, data: [‘Jackson’, ‘James’, ‘Jillian’, ‘Jimmy’, ‘Joel’, ‘John’, ‘Julie’]}, ]} renderItem={({item}) =&gt; <Text style={styles.item}>{item}</Text>} renderSectionHeader={({section}) =&gt; <Text style={styles.sectionHeader}>{section.title}</Text>} keyExtractor={(item, index) =&gt; index} /&gt; </View> ); }</p>
+<p>export default SectionListBasics; ```</p>
+<p>One of the most common uses for a list view is displaying data that you fetch from a server. To do that, you will need to <a href="network.md">learn about networking in React Native</a>.</p>
+</body>
+</html>

@@ -1,12 +1,10 @@
-Key Bindings for Visual Studio Code
-===================================
+# Key Bindings for Visual Studio Code
 
 Visual Studio Code lets you perform most tasks directly from the keyboard. This page lists out the default bindings (keyboard shortcuts) and describes how you can update them.
 
 > **Note:** If you visit this page on a Mac, you will see the key bindings for the Mac. If you visit using Windows or Linux, you will see the keys for that platform. If you need the key bindings for another platform, hover your mouse over the key you are interested in.
 
-Keyboard Shortcuts editor
--------------------------
+## Keyboard Shortcuts editor
 
 Visual Studio Code provides a rich and easy keyboard shortcuts editing experience using **Keyboard Shortcuts** editor. It lists all available commands with and without keybindings and you can easily change / remove / reset their keybindings using the available actions. It also has a search box on the top that helps you in finding commands or keybindings. You can open this editor by going to the menu under **File** &gt; **Preferences** &gt; **Keyboard Shortcuts**. (**Code** &gt; **Preferences** &gt; **Keyboard Shortcuts** on macOS)
 
@@ -16,26 +14,23 @@ Most importantly, you can see keybindings according to your keyboard layout. For
 
 For doing more advanced keyboard shortcut customization, read [Advanced Customization](/docs/getstarted/keybindings.md#advanced-customization).
 
-Keymap extensions
------------------
+## Keymap extensions
 
 Keyboard shortcuts are vital to productivity and changing keyboarding habits can be tough. To help with this, **File** &gt; **Preferences** &gt; **Keymaps** shows you a list of popular keymap extensions. These extensions modify the VS Code shortcuts to match those of other editors so you don’t need to learn new keyboard shortcuts. There is also a [Keymaps category](https://marketplace.visualstudio.com/search?target=VSCode&category=Keymaps&sortBy=Downloads) of extensions in the Marketplace.
 
 > Tip: Click on an extension tile above to read the description and reviews to decide which extension is best for you. See more in the [Marketplace](https://marketplace.visualstudio.com/vscode).
 
-Keyboard Shortcuts Reference
-----------------------------
+## Keyboard Shortcuts Reference
 
 We also have a printable version of these keyboard shortcuts. **Help** &gt; **Keyboard Shortcut Reference** displays a condensed PDF version suitable for printing as an easy reference.
 
 Below are links to the three platform-specific versions (US English keyboard):
 
--   [Windows](https://go.microsoft.com/fwlink/?linkid=832145)
--   [macOS](https://go.microsoft.com/fwlink/?linkid=832143)
--   [Linux](https://go.microsoft.com/fwlink/?linkid=832144)
+- [Windows](https://go.microsoft.com/fwlink/?linkid=832145)
+- [macOS](https://go.microsoft.com/fwlink/?linkid=832143)
+- [Linux](https://go.microsoft.com/fwlink/?linkid=832144)
 
-Detecting keybinding conflicts
-------------------------------
+## Detecting keybinding conflicts
 
 If you have many extensions installed or you have [customized](/docs/getstarted/keybindings.md#advanced-customization) your keyboard shortcuts, you can sometimes have keybinding conflicts where the same keyboard shortcut is mapped to several commands. This can result in confusing behavior, especially if different keybindings are going in and out of scope as you move around the editor.
 
@@ -47,8 +42,7 @@ Pick a command with the keybinding you think is overloaded and you can see if mu
 
 ![show keybinding conflicts result](images/keybinding/show-conflicts-result.png)
 
-Troubleshooting keybindings
----------------------------
+## Troubleshooting keybindings
 
 To troubleshoot keybindings problems, you can execute the command **Developer: Toggle Keyboard Shortcuts Troubleshooting**. This will activate logging of dispatched keyboard shortcuts and will open an output panel with the corresponding log file.
 
@@ -66,42 +60,39 @@ For example, when pressing `cmd+/` in a code editor on macOS, the logging output
 
 The first keydown event is for the `MetaLeft` key (`cmd`) and cannot be dispatched. The second keydown event is for the `Slash` key (`/`) and is dispatched as `meta+[Slash]`. There were two keybinding entries mapped from `meta+[Slash]` and the one that matched was for the command `editor.action.commentLine`, which has the `when` condition `editorTextFocus && !editorReadonly` and is a built-in keybinding entry.
 
-Viewing modified keybindings
-----------------------------
+## Viewing modified keybindings
 
 You can view any user modified keyboard shortcuts in VS Code in the **Keyboard Shortcuts** editor with the **Show User Keybindings** command in the **More Actions** (**…**) menu. This applies the `@source:user` filter to the **Keyboard Shortcuts** editor (**Source** is ‘User’).
 
 ![Default Keyboard Shortcuts](images/keybinding/user-keyboard-shortcuts.png)
 
-Advanced customization
-----------------------
+## Advanced customization
 
 All keyboard shortcuts in VS Code can be customized via the `keybindings.json` file.
 
--   To configure keyboard shortcuts through the JSON file, open **Keyboard Shortcuts** editor and select the **Open Keyboard Shortcuts (JSON)** button on the right of the editor title bar.
--   This will open your `keybindings.json` file where you can overwrite the [Default Keybindings](/docs/getstarted/keybindings.md#default-keybindings).
+- To configure keyboard shortcuts through the JSON file, open **Keyboard Shortcuts** editor and select the **Open Keyboard Shortcuts (JSON)** button on the right of the editor title bar.
+- This will open your `keybindings.json` file where you can overwrite the [Default Keybindings](/docs/getstarted/keybindings.md#default-keybindings).
 
 ![Open Keyboard Shortcuts JSON button](images/keybinding/open-keyboard-shortcuts-json.png)
 
 You can also open the `keybindings.json` file from the Command Palette (`kb(workbench.action.showCommands)`) with the **Preferences: Open Keyboard Shortcuts (JSON)** command.
 
-Keyboard rules
---------------
+## Keyboard rules
 
 Each rule consists of:
 
--   a `key` that describes the pressed keys.
--   a `command` containing the identifier of the command to execute.
--   an **optional** `when` clause containing a boolean expression that will be evaluated depending on the current **context**.
+- a `key` that describes the pressed keys.
+- a `command` containing the identifier of the command to execute.
+- an **optional** `when` clause containing a boolean expression that will be evaluated depending on the current **context**.
 
 Chords (two separate keypress actions) are described by separating the two keypresses with a space. For example, `kbstyle(Ctrl+K Ctrl+C)`.
 
 When a key is pressed:
 
--   the rules are evaluated from **bottom** to **top**.
--   the first rule that matches, both the `key` and in terms of `when`, is accepted.
--   no more rules are processed.
--   if a rule is found and has a `command` set, the `command` is executed.
+- the rules are evaluated from **bottom** to **top**.
+- the first rule that matches, both the `key` and in terms of `when`, is accepted.
+- no more rules are processed.
+- if a rule is found and has a `command` set, the `command` is executed.
 
 The additional `keybindings.json` rules are appended at runtime to the bottom of the default rules, thus allowing them to overwrite the default rules. The `keybindings.json` file is watched by VS Code so editing it while VS Code is running will update the rules at runtime.
 
@@ -124,8 +115,7 @@ The keyboard shortcuts dispatching is done by analyzing a list of rules that are
     { "key": "ctrl+k enter",    "command": "workbench.action.keepEditor" },
     { "key": "ctrl+k ctrl+w",   "command": "workbench.action.closeAllEditors" },
 
-Accepted keys
--------------
+## Accepted keys
 
 The `key` is made up of modifiers and the key itself.
 
@@ -135,16 +125,15 @@ The following modifiers are accepted:
 
 The following keys are accepted:
 
--   `kbstyle(f1-f19)`, `kbstyle(a-z)`, `kbstyle(0-9)`
--   `` kbstyle(`) ``, `kbstyle(-)`, `kbstyle(=)`, `kbstyle([)`, `kbstyle(])`, `kbstyle(\)`, `kbstyle(;)`, `kbstyle(')`, `kbstyle(,)`, `kbstyle(.)`, `kbstyle(/)`
--   `kbstyle(left)`, `kbstyle(up)`, `kbstyle(right)`, `kbstyle(down)`, `kbstyle(pageup)`, `kbstyle(pagedown)`, `kbstyle(end)`, `kbstyle(home)`
--   `kbstyle(tab)`, `kbstyle(enter)`, `kbstyle(escape)`, `kbstyle(space)`, `kbstyle(backspace)`, `kbstyle(delete)`
--   `kbstyle(pausebreak)`, `kbstyle(capslock)`, `kbstyle(insert)`
--   `kbstyle(numpad0-numpad9)`, `kbstyle(numpad_multiply)`, `kbstyle(numpad_add)`, `kbstyle(numpad_separator)`
--   `kbstyle(numpad_subtract)`, `kbstyle(numpad_decimal)`, `kbstyle(numpad_divide)`
+- `kbstyle(f1-f19)`, `kbstyle(a-z)`, `kbstyle(0-9)`
+- `` kbstyle(`) ``, `kbstyle(-)`, `kbstyle(=)`, `kbstyle([)`, `kbstyle(])`, `kbstyle(\)`, `kbstyle(;)`, `kbstyle(')`, `kbstyle(,)`, `kbstyle(.)`, `kbstyle(/)`
+- `kbstyle(left)`, `kbstyle(up)`, `kbstyle(right)`, `kbstyle(down)`, `kbstyle(pageup)`, `kbstyle(pagedown)`, `kbstyle(end)`, `kbstyle(home)`
+- `kbstyle(tab)`, `kbstyle(enter)`, `kbstyle(escape)`, `kbstyle(space)`, `kbstyle(backspace)`, `kbstyle(delete)`
+- `kbstyle(pausebreak)`, `kbstyle(capslock)`, `kbstyle(insert)`
+- `kbstyle(numpad0-numpad9)`, `kbstyle(numpad_multiply)`, `kbstyle(numpad_add)`, `kbstyle(numpad_separator)`
+- `kbstyle(numpad_subtract)`, `kbstyle(numpad_decimal)`, `kbstyle(numpad_divide)`
 
-Command arguments
------------------
+## Command arguments
 
 You can invoke a command with arguments. This is useful if you often perform the same operation on a specific file or folder. You can add a custom keyboard shortcut to do exactly what you want.
 
@@ -158,8 +147,7 @@ The type command will receive `{"text": "Hello World"}` as its first argument an
 
 For more information on commands that take arguments, refer to [Built-in Commands](/api/references/commands.md).
 
-Removing a specific key binding rule
-------------------------------------
+## Removing a specific key binding rule
 
 You can write a key binding rule that targets the removal of a specific default key binding. With the `keybindings.json`, it was always possible to redefine all the key bindings of VS Code, but it can be difficult to make a small tweak, especially around overloaded keys, such as `kbstyle(Tab)` or `kbstyle(Escape)`. To remove a specific key binding, add a `-` to the `command` and the rule will be a removal rule.
 
@@ -175,27 +163,26 @@ Here is an example:
     // To remove the second rule, for example, add in keybindings.json:
     { "key": "tab", "command": "-jumpToNextSnippetPlaceholder" }
 
-Keyboard layouts
-----------------
+## Keyboard layouts
 
 > **Note:** This section relates only to key bindings, not to typing in the editor.
 
 The keys above are string representations for virtual keys and do not necessarily relate to the produced character when they are pressed. More precisely:
 
--   Reference: [Virtual-Key Codes (Windows)](https://msdn.microsoft.com/library/windows/desktop/dd375731)
--   `kbstyle(tab)` for `VK_TAB` (`0x09`)
--   `kbstyle(;)` for `VK_OEM_1` (`0xBA`)
--   `kbstyle(=)` for `VK_OEM_PLUS` (`0xBB`)
--   `kbstyle(,)` for `VK_OEM_COMMA` (`0xBC`)
--   `kbstyle(-)` for `VK_OEM_MINUS` (`0xBD`)
--   `kbstyle(.)` for `VK_OEM_PERIOD` (`0xBE`)
--   `kbstyle(/)` for `VK_OEM_2` (`0xBF`)
--   `` kbstyle(`) `` for `VK_OEM_3` (`0xC0`)
--   `kbstyle([)` for `VK_OEM_4` (`0xDB`)
--   `kbstyle(\)` for `VK_OEM_5` (`0xDC`)
--   `kbstyle(])` for `VK_OEM_6` (`0xDD`)
--   `kbstyle(')` for `VK_OEM_7` (`0xDE`)
--   etc.
+- Reference: [Virtual-Key Codes (Windows)](https://msdn.microsoft.com/library/windows/desktop/dd375731)
+- `kbstyle(tab)` for `VK_TAB` (`0x09`)
+- `kbstyle(;)` for `VK_OEM_1` (`0xBA`)
+- `kbstyle(=)` for `VK_OEM_PLUS` (`0xBB`)
+- `kbstyle(,)` for `VK_OEM_COMMA` (`0xBC`)
+- `kbstyle(-)` for `VK_OEM_MINUS` (`0xBD`)
+- `kbstyle(.)` for `VK_OEM_PERIOD` (`0xBE`)
+- `kbstyle(/)` for `VK_OEM_2` (`0xBF`)
+- `` kbstyle(`) `` for `VK_OEM_3` (`0xC0`)
+- `kbstyle([)` for `VK_OEM_4` (`0xDB`)
+- `kbstyle(\)` for `VK_OEM_5` (`0xDC`)
+- `kbstyle(])` for `VK_OEM_6` (`0xDD`)
+- `kbstyle(')` for `VK_OEM_7` (`0xDE`)
+- etc.
 
 Different keyboard layouts usually reposition the above virtual keys or change the characters produced when they are pressed. When using a different keyboard layout than the standard US, Visual Studio Code does the following:
 
@@ -213,8 +200,7 @@ There is also a widget that helps input the key binding rule when editing `keybi
 
 > **Note:** On Linux, Visual Studio Code detects your current keyboard layout on start-up and then caches this information. For a good experience, we recommend restarting VS Code if you change your keyboard layout.
 
-Keyboard layout-independent bindings
-------------------------------------
+## Keyboard layout-independent bindings
 
 Using scan codes, it is possible to define keybindings which do not change with the change of the keyboard layout. For example:
 
@@ -223,16 +209,15 @@ Using scan codes, it is possible to define keybindings which do not change with 
 
 Accepted scan codes:
 
--   `kbstyle([F1]-[F19])`, `kbstyle([KeyA]-[KeyZ])`, `kbstyle([Digit0]-[Digit9])`
--   `kbstyle([Backquote])`, `kbstyle([Minus])`, `kbstyle([Equal])`, `kbstyle([BracketLeft])`, `kbstyle([BracketRight])`, `kbstyle([Backslash])`, `kbstyle([Semicolon])`, `kbstyle([Quote])`, `kbstyle([Comma])`, `kbstyle([Period])`, `kbstyle([Slash])`
--   `kbstyle([ArrowLeft])`, `kbstyle([ArrowUp])`, `kbstyle([ArrowRight])`, `kbstyle([ArrowDown])`, `kbstyle([PageUp])`, `kbstyle([PageDown])`, `kbstyle([End])`, `kbstyle([Home])`
--   `kbstyle([Tab])`, `kbstyle([Enter])`, `kbstyle([Escape])`, `kbstyle([Space])`, `kbstyle([Backspace])`, `kbstyle([Delete])`
--   `kbstyle([Pause])`, `kbstyle([CapsLock])`, `kbstyle([Insert])`
--   `kbstyle([Numpad0]-[Numpad9])`, `kbstyle([NumpadMultiply])`, `kbstyle([NumpadAdd])`, `kbstyle([NumpadComma])`
--   `kbstyle([NumpadSubtract])`, `kbstyle([NumpadDecimal])`, `kbstyle([NumpadDivide])`
+- `kbstyle([F1]-[F19])`, `kbstyle([KeyA]-[KeyZ])`, `kbstyle([Digit0]-[Digit9])`
+- `kbstyle([Backquote])`, `kbstyle([Minus])`, `kbstyle([Equal])`, `kbstyle([BracketLeft])`, `kbstyle([BracketRight])`, `kbstyle([Backslash])`, `kbstyle([Semicolon])`, `kbstyle([Quote])`, `kbstyle([Comma])`, `kbstyle([Period])`, `kbstyle([Slash])`
+- `kbstyle([ArrowLeft])`, `kbstyle([ArrowUp])`, `kbstyle([ArrowRight])`, `kbstyle([ArrowDown])`, `kbstyle([PageUp])`, `kbstyle([PageDown])`, `kbstyle([End])`, `kbstyle([Home])`
+- `kbstyle([Tab])`, `kbstyle([Enter])`, `kbstyle([Escape])`, `kbstyle([Space])`, `kbstyle([Backspace])`, `kbstyle([Delete])`
+- `kbstyle([Pause])`, `kbstyle([CapsLock])`, `kbstyle([Insert])`
+- `kbstyle([Numpad0]-[Numpad9])`, `kbstyle([NumpadMultiply])`, `kbstyle([NumpadAdd])`, `kbstyle([NumpadComma])`
+- `kbstyle([NumpadSubtract])`, `kbstyle([NumpadDecimal])`, `kbstyle([NumpadDivide])`
 
-when clause contexts
---------------------
+## when clause contexts
 
 VS Code gives you fine control over when your key bindings are enabled through the optional `when` clause. If your key binding doesn’t have a `when` clause, the key binding is globally available at all times. A `when` clause evaluates to either Boolean true or false for enabling key bindings.
 
@@ -259,8 +244,7 @@ You can find some of the available `when` clause contexts in the [when clause co
 
 The list there isn’t exhaustive and you can find other `when` clause contexts by searching and filtering in the Keyboard Shortcuts editor (**Preferences: Open Keyboard Shortcuts** ) or reviewing the Default Keybindings JSON file (**Preferences: Open Default Keyboard Shortcuts (JSON)**).
 
-Custom keybindings for refactorings
------------------------------------
+## Custom keybindings for refactorings
 
 The `editor.action.codeAction` command lets you configure keybindings for specific [Refactorings](/docs/editor/refactoring.md) (Code Actions). For example, the keybinding below triggers the **Extract function** refactoring Code Actions:
 
@@ -274,8 +258,7 @@ The `editor.action.codeAction` command lets you configure keybindings for specif
 
 This is covered in depth in the [Refactoring](/docs/editor/refactoring.md#keybindings-for-code-actions) topic where you can learn about different kinds of Code Actions and how to prioritize them in the case of multiple possible refactorings.
 
-Default Keyboard Shortcuts
---------------------------
+## Default Keyboard Shortcuts
 
 You can view all default keyboard shortcuts in VS Code in the **Keyboard Shortcuts** editor with the **Show Default Keybindings** command in the **More Actions** (**…**) menu. This applies the `@source:default` filter to the **Keyboard Shortcuts** editor (**Source** is ‘Default’).
 
@@ -335,17 +318,15 @@ Some commands included below do not have default keyboard shortcuts and so are d
 
 <table><colgroup><col style="width: 35%" /><col style="width: 15%" /><col style="width: 50%" /></colgroup><thead><tr class="header"><th>Command</th><th>Key</th><th>Command id</th></tr></thead><tbody><tr class="odd"><td>Install Extension</td><td><code>kb(workbench.extensions.action.installExtension)</code></td><td><code>workbench.extensions.action.installExtension</code></td></tr><tr class="even"><td>Show Installed Extensions</td><td><code>kb(workbench.extensions.action.showInstalledExtensions)</code></td><td><code>workbench.extensions.action.showInstalledExtensions</code></td></tr><tr class="odd"><td>Show Outdated Extensions</td><td><code>kb(workbench.extensions.action.listOutdatedExtensions)</code></td><td><code>workbench.extensions.action.listOutdatedExtensions</code></td></tr><tr class="even"><td>Show Recommended Extensions</td><td><code>kb(workbench.extensions.action.showRecommendedExtensions)</code></td><td><code>workbench.extensions.action.showRecommendedExtensions</code></td></tr><tr class="odd"><td>Show Popular Extensions</td><td><code>kb(workbench.extensions.action.showPopularExtensions)</code></td><td><code>workbench.extensions.action.showPopularExtensions</code></td></tr><tr class="even"><td>Update All Extensions</td><td><code>kb(workbench.extensions.action.updateAllExtensions)</code></td><td><code>workbench.extensions.action.updateAllExtensions</code></td></tr></tbody></table>
 
-Next steps
-----------
+## Next steps
 
 Now that you know about our Key binding support, what’s next…
 
--   [Language Support](/docs/languages/overview.md) - Our Good, Better, Best language grid to see what you can expect
--   [Debugging](/docs/editor/debugging.md) - This is where VS Code really shines
--   [Node.js](/docs/nodejs/nodejs-tutorial.md) - End to end Node.js scenario with a sample app
+- [Language Support](/docs/languages/overview.md) - Our Good, Better, Best language grid to see what you can expect
+- [Debugging](/docs/editor/debugging.md) - This is where VS Code really shines
+- [Node.js](/docs/nodejs/nodejs-tutorial.md) - End to end Node.js scenario with a sample app
 
-Common questions
-----------------
+## Common questions
 
 ### How can I find out what command is bound to a specific key?
 

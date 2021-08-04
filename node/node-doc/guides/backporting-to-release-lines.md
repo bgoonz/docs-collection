@@ -1,25 +1,20 @@
-How to backport a pull request to a release line
-================================================
+# How to backport a pull request to a release line
 
-Staging branches
-----------------
+## Staging branches
 
 Each release line has a staging branch that the releaser will use as a scratch pad while preparing a release. The branch name is formatted as follows: `vN.x-staging` where `N` is the major release number.
 
 For the active staging branches see the [Release Schedule](https://github.com/nodejs/Release#release-schedule).
 
-What needs to be backported?
-----------------------------
+## What needs to be backported?
 
 If a cherry-pick from master does not land cleanly on a staging branch, the releaser will mark the pull request with a particular label for that release line (e.g. `backport-requested-vN.x`), specifying to our tooling that this pull request should not be included. The releaser will then add a comment requesting that a backport pull request be made.
 
-What can be backported?
------------------------
+## What can be backported?
 
 The “Current” release line is much more lenient than the LTS release lines in what can be landed. Our LTS release lines (see the [Release Plan](https://github.com/nodejs/Release#release-plan)) require that commits mature in the Current release for at least 2 weeks before they can be landed in an LTS staging branch. Only after “maturation” will those commits be cherry-picked or backported.
 
-How to submit a backport pull request
--------------------------------------
+## How to submit a backport pull request
 
 For the following steps, let’s assume that a backport is needed for the v10.x release line. All commands will use the `v10.x-staging` branch as the target branch. In order to submit a backport pull request to another branch, simply replace that with the staging branch for the targeted release line.
 

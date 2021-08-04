@@ -10,6 +10,7 @@ tags:
   - Polyfill
 browser-compat: javascript.builtins.Array.fill
 ---
+
 {{JSRef}}
 
 The **`fill()`** method changes all
@@ -22,9 +23,9 @@ array.
 ## Syntax
 
 ```js
-fill(value)
-fill(value, start)
-fill(value, start, end)
+fill(value);
+fill(value, start);
+fill(value, start, end);
 ```
 
 ### Parameters
@@ -52,12 +53,11 @@ The modified array, filled with `value`.
 
 ```js
 if (!Array.prototype.fill) {
-  Object.defineProperty(Array.prototype, 'fill', {
-    value: function(value) {
-
+  Object.defineProperty(Array.prototype, "fill", {
+    value: function (value) {
       // Steps 1-2.
       if (this == null) {
-        throw new TypeError('this is null or not defined');
+        throw new TypeError("this is null or not defined");
       }
 
       var O = Object(this);
@@ -70,19 +70,20 @@ if (!Array.prototype.fill) {
       var relativeStart = start >> 0;
 
       // Step 8.
-      var k = relativeStart < 0 ?
-        Math.max(len + relativeStart, 0) :
-        Math.min(relativeStart, len);
+      var k =
+        relativeStart < 0
+          ? Math.max(len + relativeStart, 0)
+          : Math.min(relativeStart, len);
 
       // Steps 9-10.
       var end = arguments[2];
-      var relativeEnd = end === undefined ?
-        len : end >> 0;
+      var relativeEnd = end === undefined ? len : end >> 0;
 
       // Step 11.
-      var finalValue = relativeEnd < 0 ?
-        Math.max(len + relativeEnd, 0) :
-        Math.min(relativeEnd, len);
+      var finalValue =
+        relativeEnd < 0
+          ? Math.max(len + relativeEnd, 0)
+          : Math.min(relativeEnd, len);
 
       // Step 12.
       while (k < finalValue) {
@@ -92,7 +93,7 @@ if (!Array.prototype.fill) {
 
       // Step 13.
       return O;
-    }
+    },
   });
 }
 ```
@@ -126,7 +127,7 @@ This example shows how to create a matrix of all 1, like the _ones()_ function o
 
 ```js
 const arr = new Array(3);
-for (let i=0; i<arr.length; i++) {
+for (let i = 0; i < arr.length; i++) {
   arr[i] = new Array(4).fill(1); // Creating an array of size 4 and filled of 1
 }
 arr[0][0] = 10;

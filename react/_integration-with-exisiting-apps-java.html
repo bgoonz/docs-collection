@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>_integration-with-exisiting-apps-java</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <h2 id="key-concepts">Key Concepts</h2>
+    <p>
+      The keys to integrating React Native components into your Android
+      application are to:
+    </p>
+    <ol type="1">
+      <li>Set up React Native dependencies and directory structure.</li>
+      <li>Develop your React Native components in JavaScript.</li>
+      <li>
+        Add a <code>ReactRootView</code> to your Android app. This view will
+        serve as the container for your React Native component.
+      </li>
+      <li>Start the React Native server and run your native application.</li>
+      <li>
+        Verify that the React Native aspect of your application works as
+        expected.
+      </li>
+    </ol>
+    <h2 id="prerequisites">Prerequisites</h2>
+    <p>
+      Follow the React Native CLI Quickstart in the
+      <a href="environment-setup">environment setup guide</a> to configure your
+      development environment for building React Native apps for Android.
+    </p>
+    <h3 id="set-up-directory-structure">1. Set up directory structure</h3>
+    <p>
+      To ensure a smooth experience, create a new folder for your integrated
+      React Native project, then copy your existing Android project to an
+      <code>/android</code> subfolder.
+    </p>
+    <h3 id="install-javascript-dependencies">
+      2. Install JavaScript dependencies
+    </h3>
+    <p>
+      Go to the root directory for your project and create a new
+      <code>package.json</code> file with the following contents:
+    </p>
+    <pre><code>{
+  &quot;name&quot;: &quot;MyReactNativeApp&quot;,
+  &quot;version&quot;: &quot;0.0.1&quot;,
+  &quot;private&quot;: true,
+  &quot;scripts&quot;: {
+    &quot;start&quot;: &quot;yarn react-native start&quot;
+  }
+}</code></pre>
+    <p>
+      Next, make sure you have
+      <a href="https://yarnpkg.com/lang/en/docs/install/"
+        >installed the yarn package manager</a
+      >.
+    </p>
+    <p>
+      Install the <code>react</code> and <code>react-native</code> packages.
+      Open a terminal or command prompt, then navigate to the directory with
+      your <code>package.json</code> file and run:
+    </p>
+    <pre class="shell"><code>$ yarn add react-native</code></pre>
+    <p>
+      This will print a message similar to the following (scroll up in the yarn
+      output to see it):
+    </p>
+    <blockquote>
+      <p>
+        warning “react-native@0.52.2” has unmet peer dependency “react@16.2.0”.
+      </p>
+    </blockquote>
+    <p>This is OK, it means we also need to install React:</p>
+    <pre class="shell"><code>$ yarn add react@version_printed_above</code></pre>
+    <p>
+      Yarn has created a new <code>/node_modules</code> folder. This folder
+      stores all the JavaScript dependencies required to build your project.
+    </p>
+    <p>Add <code>node_modules/</code> to your <code>.gitignore</code> file.</p>
+    <h2 id="adding-react-native-to-your-app">
+      Adding React Native to your app
+    </h2>
+    <h3 id="configuring-maven">Configuring maven</h3>
+    <p>
+      Add the React Native and JSC dependency to your app’s
+      <code>build.gradle</code> file:
+    </p>
+    <pre class="gradle"><code>dependencies {
+    implementation &quot;com.android.support:appcompat-v7:27.1.1&quot;
+    ...
+    implementation &quot;com.facebook.react:react-native:+&quot; // From node_modules
+    implementation &quot;org.webkit:android-jsc:+&quot;
+}</code></pre>
+    <blockquote>
+      <p>
+        If you want to ensure that you are always using a specific React Native
+        version in your native build, replace <code>+</code> with an actual
+        React Native version you’ve downloaded from <code>npm</code>.
+      </p>
+    </blockquote>
+    <p>
+      Add an entry for the local React Native and JSC maven directories to the
+      top-level <code>build.gradle</code>. Be sure to add it to the
+      “allprojects” block, above other maven repositories:
+    </p>
+    <pre class="gradle"><code>allprojects {
+    repositories {
+        maven {
+            // All of React Native (JS, Android binaries) is installed from npm
+            url &quot;$rootDir/../node_modules/react-native/android&quot;
+        }
+        maven {
+            // Android JSC is installed from npm
+            url(&quot;$rootDir/../node_modules/jsc-android/dist&quot;)
+        }
+        ...
+    }
+    ...
+}</code></pre>
+    <blockquote>
+      <p>
+        Make sure that the path is correct! You shouldn’t run into any “Failed
+        to resolve: com.facebook.react:react-native:0.x.x” errors after running
+        Gradle sync in Android Studio.
+      </p>
+    </blockquote>
+    <h3 id="enable-native-modules-autolinking">
+      Enable native modules autolinking
+    </h3>
+    <p>
+      To use the power of
+      <a
+        href="https://github.com/react-native-community/cli/blob/master/docs/autolinking.md"
+        >autolinking</a
+      >, we have to apply it a few places. First add the following entry to
+      <code>settings.gradle</code>:
+    </p>
+    <pre
+      class="gradle"
+    ><code>apply from: file(&quot;../node_modules/@react-native-community/cli-platform-android/native_modules.gradle&quot;); applyNativeModulesSettingsGradle(settings)</code></pre>
+    <p>
+      Next add the following entry at the very bottom of the
+      <code>app/build.gradle</code>:
+    </p>
+    <pre
+      class="gradle"
+    ><code>apply from: file(&quot;../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle&quot;); applyNativeModulesAppBuildGradle(project)</code></pre>
+    <h3 id="configuring-permissions">Configuring permissions</h3>
+    <p>
+      Next, make sure you have the Internet permission in your
+      <code>AndroidManifest.xml</code>:
+    </p>
+    <pre><code>&lt;uses-permission android:name=&quot;android.permission.INTERNET&quot; /&gt;</code></pre>
+    <p>
+      If you need to access to the <code>DevSettingsActivity</code> add to your
+      <code>AndroidManifest.xml</code>:
+    </p>
+    <pre><code>&lt;activity android:name=&quot;com.facebook.react.devsupport.DevSettingsActivity&quot; /&gt;</code></pre>
+    <p>
+      This is only used in dev mode when reloading JavaScript from the
+      development server, so you can strip this in release builds if you need
+      to.
+    </p>
+    <h3 id="cleartext-traffic-api-level-28">
+      Cleartext Traffic (API level 28+)
+    </h3>
+    <blockquote>
+      <p>
+        Starting with Android 9 (API level 28), cleartext traffic is disabled by
+        default; this prevents your application from connecting to the
+        <a href="https://facebook.github.io/metro/">Metro bundler</a>. The
+        changes below allow cleartext traffic in debug builds.
+      </p>
+    </blockquote>
+    <h4
+      id="apply-the-usescleartexttraffic-option-to-your-debug-androidmanifest.xml"
+    >
+      1. Apply the <code>usesCleartextTraffic</code> option to your Debug
+      <code>AndroidManifest.xml</code>
+    </h4>
+    <div class="sourceCode" id="cb10">
+      <pre
+        class="sourceCode xml"
+      ><code class="sourceCode xml"><a class="sourceLine" id="cb10-1" title="1"><span class="co">&lt;!-- ... --&gt;</span></a>
+<a class="sourceLine" id="cb10-2" title="2"><span class="kw">&lt;application</span></a>
+<a class="sourceLine" id="cb10-3" title="3"><span class="ot">  android:usesCleartextTraffic=</span><span class="st">&quot;true&quot;</span><span class="ot"> tools:targetApi=</span><span class="st">&quot;28&quot;</span> <span class="kw">&gt;</span></a>
+<a class="sourceLine" id="cb10-4" title="4">  <span class="co">&lt;!-- ... --&gt;</span></a>
+<a class="sourceLine" id="cb10-5" title="5"><span class="kw">&lt;/application&gt;</span></a>
+<a class="sourceLine" id="cb10-6" title="6"><span class="co">&lt;!-- ... --&gt;</span></a></code></pre>
+    </div>
+    <p>This is not required for Release builds.</p>
+    <p>
+      To learn more about Network Security Config and the cleartext traffic
+      policy
+      <a
+        href="https://developer.android.com/training/articles/security-config#CleartextTrafficPermitted"
+        >see this link</a
+      >.
+    </p>
+    <h3 id="code-integration">Code integration</h3>
+    <p>
+      Now we will actually modify the native Android application to integrate
+      React Native.
+    </p>
+    <h4 id="the-react-native-component">The React Native component</h4>
+    <p>
+      The first bit of code we will write is the actual React Native code for
+      the new “High Score” screen that will be integrated into our application.
+    </p>
+    <h5 id="create-a-index.js-file">1. Create a <code>index.js</code> file</h5>
+    <p>
+      First, create an empty <code>index.js</code> file in the root of your
+      React Native project.
+    </p>
+    <p>
+      <code>index.js</code> is the starting point for React Native applications,
+      and it is always required. It can be a small file that
+      <code>require</code>s other file that are part of your React Native
+      component or application, or it can contain all the code that is needed
+      for it. In our case, we will put everything in <code>index.js</code>.
+    </p>
+    <h5 id="add-your-react-native-code">2. Add your React Native code</h5>
+    <p>
+      In your <code>index.js</code>, create your component. In our sample here,
+      we will add a <code>&lt;Text&gt;</code> component within a styled
+      <code>&lt;View&gt;</code>:
+    </p>
+    <pre class="jsx"><code>import React from &#39;react&#39;;
+import {
+  AppRegistry,
+  StyleSheet,
+  Text,
+  View
+} from &#39;react-native&#39;;
+
+const HelloWorld = () =&gt; {
+  return (
+    &lt;View style={styles.container}&gt;
+      &lt;Text style={styles.hello}&gt;Hello, World&lt;/Text&gt;
+    &lt;/View&gt;
+  );
+};
+var styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: &#39;center&#39;
+  },
+  hello: {
+    fontSize: 20,
+    textAlign: &#39;center&#39;,
+    margin: 10
+  }
+});
+
+AppRegistry.registerComponent(
+  &#39;MyReactNativeApp&#39;,
+  () =&gt; HelloWorld
+);</code></pre>
+    <h5 id="configure-permissions-for-development-error-overlay">
+      3. Configure permissions for development error overlay
+    </h5>
+    <p>
+      If your app is targeting the Android <code>API level 23</code> or greater,
+      make sure you have the permission
+      <code>android.permission.SYSTEM_ALERT_WINDOW</code> enabled for the
+      development build. You can check this with
+      <code>Settings.canDrawOverlays(this);</code>. This is required in dev
+      builds because React Native development errors must be displayed above all
+      the other windows. Due to the new permissions system introduced in the API
+      level 23 (Android M), the user needs to approve it. This can be achieved
+      by adding the following code to your Activity’s in
+      <code>onCreate()</code> method.
+    </p>
+    <div class="sourceCode" id="cb12">
+      <pre
+        class="sourceCode java"
+      ><code class="sourceCode java"><a class="sourceLine" id="cb12-1" title="1"><span class="kw">private</span> <span class="dt">final</span> <span class="dt">int</span> OVERLAY_PERMISSION_REQ_CODE = <span class="dv">1</span>;  <span class="co">// Choose any value</span></a>
+<a class="sourceLine" id="cb12-2" title="2"></a>
+<a class="sourceLine" id="cb12-3" title="3">...</a>
+<a class="sourceLine" id="cb12-4" title="4"></a>
+<a class="sourceLine" id="cb12-5" title="5"><span class="kw">if</span> (Build.<span class="fu">VERSION</span>.<span class="fu">SDK_INT</span> &gt;= Build.<span class="fu">VERSION_CODES</span>.<span class="fu">M</span>) {</a>
+<a class="sourceLine" id="cb12-6" title="6">    <span class="kw">if</span> (!Settings.<span class="fu">canDrawOverlays</span>(<span class="kw">this</span>)) {</a>
+<a class="sourceLine" id="cb12-7" title="7">        Intent intent = <span class="kw">new</span> <span class="fu">Intent</span>(Settings.<span class="fu">ACTION_MANAGE_OVERLAY_PERMISSION</span>,</a>
+<a class="sourceLine" id="cb12-8" title="8">                                   Uri.<span class="fu">parse</span>(<span class="st">&quot;package:&quot;</span> + <span class="fu">getPackageName</span>()));</a>
+<a class="sourceLine" id="cb12-9" title="9">        <span class="fu">startActivityForResult</span>(intent, OVERLAY_PERMISSION_REQ_CODE);</a>
+<a class="sourceLine" id="cb12-10" title="10">    }</a>
+<a class="sourceLine" id="cb12-11" title="11">}</a></code></pre>
+    </div>
+    <p>
+      Finally, the <code>onActivityResult()</code> method (as shown in the code
+      below) has to be overridden to handle the permission Accepted or Denied
+      cases for consistent UX. Also, for integrating Native Modules which use
+      <code>startActivityForResult</code>, we need to pass the result to the
+      <code>onActivityResult</code> method of our
+      <code>ReactInstanceManager</code> instance.
+    </p>
+    <div class="sourceCode" id="cb13">
+      <pre
+        class="sourceCode java"
+      ><code class="sourceCode java"><a class="sourceLine" id="cb13-1" title="1"><span class="at">@Override</span></a>
+<a class="sourceLine" id="cb13-2" title="2"><span class="kw">protected</span> <span class="dt">void</span> <span class="fu">onActivityResult</span>(<span class="dt">int</span> requestCode, <span class="dt">int</span> resultCode, Intent data) {</a>
+<a class="sourceLine" id="cb13-3" title="3">    <span class="kw">if</span> (requestCode == OVERLAY_PERMISSION_REQ_CODE) {</a>
+<a class="sourceLine" id="cb13-4" title="4">        <span class="kw">if</span> (Build.<span class="fu">VERSION</span>.<span class="fu">SDK_INT</span> &gt;= Build.<span class="fu">VERSION_CODES</span>.<span class="fu">M</span>) {</a>
+<a class="sourceLine" id="cb13-5" title="5">            <span class="kw">if</span> (!Settings.<span class="fu">canDrawOverlays</span>(<span class="kw">this</span>)) {</a>
+<a class="sourceLine" id="cb13-6" title="6">                <span class="co">// SYSTEM_ALERT_WINDOW permission not granted</span></a>
+<a class="sourceLine" id="cb13-7" title="7">            }</a>
+<a class="sourceLine" id="cb13-8" title="8">        }</a>
+<a class="sourceLine" id="cb13-9" title="9">    }</a>
+<a class="sourceLine" id="cb13-10" title="10">    mReactInstanceManager.<span class="fu">onActivityResult</span>( <span class="kw">this</span>, requestCode, resultCode, data );</a>
+<a class="sourceLine" id="cb13-11" title="11">}</a></code></pre>
+    </div>
+    <h4 id="the-magic-reactrootview">The Magic: <code>ReactRootView</code></h4>
+    <p>
+      Let’s add some native code in order to start the React Native runtime and
+      tell it to render our JS component. To do this, we’re going to create an
+      <code>Activity</code> that creates a <code>ReactRootView</code>, starts a
+      React application inside it and sets it as the main content view.
+    </p>
+    <blockquote>
+      <p>
+        If you are targeting Android version &lt;5, use the
+        <code>AppCompatActivity</code> class from the
+        <code>com.android.support:appcompat</code> package instead of
+        <code>Activity</code>.
+      </p>
+    </blockquote>
+    <div class="sourceCode" id="cb14">
+      <pre
+        class="sourceCode java"
+      ><code class="sourceCode java"><a class="sourceLine" id="cb14-1" title="1"><span class="kw">public</span> <span class="kw">class</span> MyReactActivity <span class="kw">extends</span> Activity <span class="kw">implements</span> DefaultHardwareBackBtnHandler {</a>
+<a class="sourceLine" id="cb14-2" title="2">    <span class="kw">private</span> ReactRootView mReactRootView;</a>
+<a class="sourceLine" id="cb14-3" title="3">    <span class="kw">private</span> ReactInstanceManager mReactInstanceManager;</a>
+<a class="sourceLine" id="cb14-4" title="4"></a>
+<a class="sourceLine" id="cb14-5" title="5">    <span class="at">@Override</span></a>
+<a class="sourceLine" id="cb14-6" title="6">    <span class="kw">protected</span> <span class="dt">void</span> <span class="fu">onCreate</span>(Bundle savedInstanceState) {</a>
+<a class="sourceLine" id="cb14-7" title="7">        <span class="kw">super</span>.<span class="fu">onCreate</span>(savedInstanceState);</a>
+<a class="sourceLine" id="cb14-8" title="8">        SoLoader.<span class="fu">init</span>(<span class="kw">this</span>, <span class="kw">false</span>);</a>
+<a class="sourceLine" id="cb14-9" title="9"></a>
+<a class="sourceLine" id="cb14-10" title="10">        mReactRootView = <span class="kw">new</span> <span class="fu">ReactRootView</span>(<span class="kw">this</span>);</a>
+<a class="sourceLine" id="cb14-11" title="11">        <span class="bu">List</span>&lt;ReactPackage&gt; packages = <span class="kw">new</span> <span class="fu">PackageList</span>(<span class="fu">getApplication</span>()).<span class="fu">getPackages</span>();</a>
+<a class="sourceLine" id="cb14-12" title="12">        <span class="co">// Packages that cannot be autolinked yet can be added manually here, for example:</span></a>
+<a class="sourceLine" id="cb14-13" title="13">        <span class="co">// packages.add(new MyReactNativePackage());</span></a>
+<a class="sourceLine" id="cb14-14" title="14">        <span class="co">// Remember to include them in `settings.gradle` and `app/build.gradle` too.</span></a>
+<a class="sourceLine" id="cb14-15" title="15"></a>
+<a class="sourceLine" id="cb14-16" title="16">        mReactInstanceManager = ReactInstanceManager.<span class="fu">builder</span>()</a>
+<a class="sourceLine" id="cb14-17" title="17">                .<span class="fu">setApplication</span>(<span class="fu">getApplication</span>())</a>
+<a class="sourceLine" id="cb14-18" title="18">                .<span class="fu">setCurrentActivity</span>(<span class="kw">this</span>)</a>
+<a class="sourceLine" id="cb14-19" title="19">                .<span class="fu">setBundleAssetName</span>(<span class="st">&quot;index.android.bundle&quot;</span>)</a>
+<a class="sourceLine" id="cb14-20" title="20">                .<span class="fu">setJSMainModulePath</span>(<span class="st">&quot;index&quot;</span>)</a>
+<a class="sourceLine" id="cb14-21" title="21">                .<span class="fu">addPackages</span>(packages)</a>
+<a class="sourceLine" id="cb14-22" title="22">                .<span class="fu">setUseDeveloperSupport</span>(BuildConfig.<span class="fu">DEBUG</span>)</a>
+<a class="sourceLine" id="cb14-23" title="23">                .<span class="fu">setInitialLifecycleState</span>(LifecycleState.<span class="fu">RESUMED</span>)</a>
+<a class="sourceLine" id="cb14-24" title="24">                .<span class="fu">build</span>();</a>
+<a class="sourceLine" id="cb14-25" title="25">        <span class="co">// The string here (e.g. &quot;MyReactNativeApp&quot;) has to match</span></a>
+<a class="sourceLine" id="cb14-26" title="26">        <span class="co">// the string in AppRegistry.registerComponent() in index.js</span></a>
+<a class="sourceLine" id="cb14-27" title="27">        mReactRootView.<span class="fu">startReactApplication</span>(mReactInstanceManager, <span class="st">&quot;MyReactNativeApp&quot;</span>, <span class="kw">null</span>);</a>
+<a class="sourceLine" id="cb14-28" title="28"></a>
+<a class="sourceLine" id="cb14-29" title="29">        <span class="fu">setContentView</span>(mReactRootView);</a>
+<a class="sourceLine" id="cb14-30" title="30">    }</a>
+<a class="sourceLine" id="cb14-31" title="31"></a>
+<a class="sourceLine" id="cb14-32" title="32">    <span class="at">@Override</span></a>
+<a class="sourceLine" id="cb14-33" title="33">    <span class="kw">public</span> <span class="dt">void</span> <span class="fu">invokeDefaultOnBackPressed</span>() {</a>
+<a class="sourceLine" id="cb14-34" title="34">        <span class="kw">super</span>.<span class="fu">onBackPressed</span>();</a>
+<a class="sourceLine" id="cb14-35" title="35">    }</a>
+<a class="sourceLine" id="cb14-36" title="36">}</a></code></pre>
+    </div>
+    <blockquote>
+      <p>
+        If you are using a starter kit for React Native, replace the
+        “HelloWorld” string with the one in your index.js file (it’s the first
+        argument to the <code>AppRegistry.registerComponent()</code> method).
+      </p>
+    </blockquote>
+    <p>Perform a “Sync Project files with Gradle” operation.</p>
+    <p>
+      If you are using Android Studio, use <code>Alt + Enter</code> to add all
+      missing imports in your MyReactActivity class. Be careful to use your
+      package’s <code>BuildConfig</code> and not the one from the
+      <code>facebook</code> package.
+    </p>
+    <p>
+      We need set the theme of <code>MyReactActivity</code> to
+      <code>Theme.AppCompat.Light.NoActionBar</code> because some React Native
+      UI components rely on this theme.
+    </p>
+    <div class="sourceCode" id="cb15">
+      <pre
+        class="sourceCode xml"
+      ><code class="sourceCode xml"><a class="sourceLine" id="cb15-1" title="1"><span class="kw">&lt;activity</span></a>
+<a class="sourceLine" id="cb15-2" title="2"><span class="ot">  android:name=</span><span class="st">&quot;.MyReactActivity&quot;</span></a>
+<a class="sourceLine" id="cb15-3" title="3"><span class="ot">  android:label=</span><span class="st">&quot;@string/app_name&quot;</span></a>
+<a class="sourceLine" id="cb15-4" title="4"><span class="ot">  android:theme=</span><span class="st">&quot;@style/Theme.AppCompat.Light.NoActionBar&quot;</span><span class="kw">&gt;</span></a>
+<a class="sourceLine" id="cb15-5" title="5"><span class="kw">&lt;/activity&gt;</span></a></code></pre>
+    </div>
+    <blockquote>
+      <p>
+        A <code>ReactInstanceManager</code> can be shared by multiple activities
+        and/or fragments. You will want to make your own
+        <code>ReactFragment</code> or <code>ReactActivity</code> and have a
+        singleton <em>holder</em> that holds a
+        <code>ReactInstanceManager</code>. When you need the
+        <code>ReactInstanceManager</code> (e.g., to hook up the
+        <code>ReactInstanceManager</code> to the lifecycle of those Activities
+        or Fragments) use the one provided by the singleton.
+      </p>
+    </blockquote>
+    <p>
+      Next, we need to pass some activity lifecycle callbacks to the
+      <code>ReactInstanceManager</code> and <code>ReactRootView</code>:
+    </p>
+    <div class="sourceCode" id="cb16">
+      <pre
+        class="sourceCode java"
+      ><code class="sourceCode java"><a class="sourceLine" id="cb16-1" title="1"><span class="at">@Override</span></a>
+<a class="sourceLine" id="cb16-2" title="2"><span class="kw">protected</span> <span class="dt">void</span> <span class="fu">onPause</span>() {</a>
+<a class="sourceLine" id="cb16-3" title="3">    <span class="kw">super</span>.<span class="fu">onPause</span>();</a>
+<a class="sourceLine" id="cb16-4" title="4"></a>
+<a class="sourceLine" id="cb16-5" title="5">    <span class="kw">if</span> (mReactInstanceManager != <span class="kw">null</span>) {</a>
+<a class="sourceLine" id="cb16-6" title="6">        mReactInstanceManager.<span class="fu">onHostPause</span>(<span class="kw">this</span>);</a>
+<a class="sourceLine" id="cb16-7" title="7">    }</a>
+<a class="sourceLine" id="cb16-8" title="8">}</a>
+<a class="sourceLine" id="cb16-9" title="9"></a>
+<a class="sourceLine" id="cb16-10" title="10"><span class="at">@Override</span></a>
+<a class="sourceLine" id="cb16-11" title="11"><span class="kw">protected</span> <span class="dt">void</span> <span class="fu">onResume</span>() {</a>
+<a class="sourceLine" id="cb16-12" title="12">    <span class="kw">super</span>.<span class="fu">onResume</span>();</a>
+<a class="sourceLine" id="cb16-13" title="13"></a>
+<a class="sourceLine" id="cb16-14" title="14">    <span class="kw">if</span> (mReactInstanceManager != <span class="kw">null</span>) {</a>
+<a class="sourceLine" id="cb16-15" title="15">        mReactInstanceManager.<span class="fu">onHostResume</span>(<span class="kw">this</span>, <span class="kw">this</span>);</a>
+<a class="sourceLine" id="cb16-16" title="16">    }</a>
+<a class="sourceLine" id="cb16-17" title="17">}</a>
+<a class="sourceLine" id="cb16-18" title="18"></a>
+<a class="sourceLine" id="cb16-19" title="19"><span class="at">@Override</span></a>
+<a class="sourceLine" id="cb16-20" title="20"><span class="kw">protected</span> <span class="dt">void</span> <span class="fu">onDestroy</span>() {</a>
+<a class="sourceLine" id="cb16-21" title="21">    <span class="kw">super</span>.<span class="fu">onDestroy</span>();</a>
+<a class="sourceLine" id="cb16-22" title="22"></a>
+<a class="sourceLine" id="cb16-23" title="23">    <span class="kw">if</span> (mReactInstanceManager != <span class="kw">null</span>) {</a>
+<a class="sourceLine" id="cb16-24" title="24">        mReactInstanceManager.<span class="fu">onHostDestroy</span>(<span class="kw">this</span>);</a>
+<a class="sourceLine" id="cb16-25" title="25">    }</a>
+<a class="sourceLine" id="cb16-26" title="26">    <span class="kw">if</span> (mReactRootView != <span class="kw">null</span>) {</a>
+<a class="sourceLine" id="cb16-27" title="27">        mReactRootView.<span class="fu">unmountReactApplication</span>();</a>
+<a class="sourceLine" id="cb16-28" title="28">    }</a>
+<a class="sourceLine" id="cb16-29" title="29">}</a></code></pre>
+    </div>
+    <p>We also need to pass back button events to React Native:</p>
+    <div class="sourceCode" id="cb17">
+      <pre
+        class="sourceCode java"
+      ><code class="sourceCode java"><a class="sourceLine" id="cb17-1" title="1"><span class="at">@Override</span></a>
+<a class="sourceLine" id="cb17-2" title="2"> <span class="kw">public</span> <span class="dt">void</span> <span class="fu">onBackPressed</span>() {</a>
+<a class="sourceLine" id="cb17-3" title="3">    <span class="kw">if</span> (mReactInstanceManager != <span class="kw">null</span>) {</a>
+<a class="sourceLine" id="cb17-4" title="4">        mReactInstanceManager.<span class="fu">onBackPressed</span>();</a>
+<a class="sourceLine" id="cb17-5" title="5">    } <span class="kw">else</span> {</a>
+<a class="sourceLine" id="cb17-6" title="6">        <span class="kw">super</span>.<span class="fu">onBackPressed</span>();</a>
+<a class="sourceLine" id="cb17-7" title="7">    }</a>
+<a class="sourceLine" id="cb17-8" title="8">}</a></code></pre>
+    </div>
+    <p>
+      This allows JavaScript to control what happens when the user presses the
+      hardware back button (e.g. to implement navigation). When JavaScript
+      doesn’t handle the back button press, your
+      <code>invokeDefaultOnBackPressed</code> method will be called. By default
+      this finishes your <code>Activity</code>.
+    </p>
+    <p>
+      Finally, we need to hook up the dev menu. By default, this is activated by
+      (rage) shaking the device, but this is not very useful in emulators. So we
+      make it show when you press the hardware menu button (use
+      <code>Ctrl + M</code> if you’re using Android Studio emulator):
+    </p>
+    <div class="sourceCode" id="cb18">
+      <pre
+        class="sourceCode java"
+      ><code class="sourceCode java"><a class="sourceLine" id="cb18-1" title="1"><span class="at">@Override</span></a>
+<a class="sourceLine" id="cb18-2" title="2"><span class="kw">public</span> <span class="dt">boolean</span> <span class="fu">onKeyUp</span>(<span class="dt">int</span> keyCode, <span class="bu">KeyEvent</span> event) {</a>
+<a class="sourceLine" id="cb18-3" title="3">    <span class="kw">if</span> (keyCode == <span class="bu">KeyEvent</span>.<span class="fu">KEYCODE_MENU</span> &amp;&amp; mReactInstanceManager != <span class="kw">null</span>) {</a>
+<a class="sourceLine" id="cb18-4" title="4">        mReactInstanceManager.<span class="fu">showDevOptionsDialog</span>();</a>
+<a class="sourceLine" id="cb18-5" title="5">        <span class="kw">return</span> <span class="kw">true</span>;</a>
+<a class="sourceLine" id="cb18-6" title="6">    }</a>
+<a class="sourceLine" id="cb18-7" title="7">    <span class="kw">return</span> <span class="kw">super</span>.<span class="fu">onKeyUp</span>(keyCode, event);</a>
+<a class="sourceLine" id="cb18-8" title="8">}</a></code></pre>
+    </div>
+    <p>Now your activity is ready to run some JavaScript code.</p>
+    <h3 id="test-your-integration">Test your integration</h3>
+    <p>
+      You have now done all the basic steps to integrate React Native with your
+      current application. Now we will start the
+      <a href="https://facebook.github.io/metro/">Metro bundler</a> to build the
+      <code>index.bundle</code> package and the server running on localhost to
+      serve it.
+    </p>
+    <h5 id="run-the-packager">1. Run the packager</h5>
+    <p>
+      To run your app, you need to first start the development server. To do
+      this, run the following command in the root directory of your React Native
+      project:
+    </p>
+    <pre class="shell"><code>$ yarn start</code></pre>
+    <h5 id="run-the-app">2. Run the app</h5>
+    <p>Now build and run your Android app as normal.</p>
+    <p>
+      Once you reach your React-powered activity inside the app, it should load
+      the JavaScript code from the development server and display:
+    </p>
+    <figure>
+      <img src="/docs/assets/EmbeddedAppAndroid.png" alt="Screenshot" />
+      <figcaption>Screenshot</figcaption>
+    </figure>
+    <h3 id="creating-a-release-build-in-android-studio">
+      Creating a release build in Android Studio
+    </h3>
+    <p>
+      You can use Android Studio to create your release builds too! It’s as
+      quick as creating release builds of your previously-existing native
+      Android app. There’s one additional step, which you’ll have to do before
+      every release build. You need to execute the following to create a React
+      Native bundle, which will be included with your native Android app:
+    </p>
+    <pre
+      class="shell"
+    ><code>$ npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/com/your-company-name/app-package-name/src/main/assets/index.android.bundle --assets-dest android/com/your-company-name/app-package-name/src/main/res/</code></pre>
+    <blockquote>
+      <p>
+        Don’t forget to replace the paths with correct ones and create the
+        assets folder if it doesn’t exist.
+      </p>
+    </blockquote>
+    <p>
+      Now, create a release build of your native app from within Android Studio
+      as usual and you should be good to go!
+    </p>
+    <h3 id="now-what">Now what?</h3>
+    <p>
+      At this point you can continue developing your app as usual. Refer to our
+      <a href="debugging">debugging</a> and
+      <a href="running-on-device">deployment</a> docs to learn more about
+      working with React Native.
+    </p>
+  </body>
+</html>

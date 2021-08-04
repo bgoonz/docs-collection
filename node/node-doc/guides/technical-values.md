@@ -1,5 +1,4 @@
-Technical values and priorities
-===============================
+# Technical values and priorities
 
 The project uses these technical values to establish priorities and guide collaboration.
 
@@ -7,17 +6,15 @@ These are the shared values as of this writing and will evolve. We hope they are
 
 The factors influencing every discussion/decision are different and priority 1 does not always trump priority 2 and so on.
 
-Values and priority level
--------------------------
+## Values and priority level
 
--   Priority 1 - Developer experience
--   Priority 2 - Stability
--   Priority 3 - Operational qualities
--   Priority 4 - Node.js maintainer experience
--   Priority 5 - Up to date technology and APIs
+- Priority 1 - Developer experience
+- Priority 2 - Stability
+- Priority 3 - Operational qualities
+- Priority 4 - Node.js maintainer experience
+- Priority 5 - Up to date technology and APIs
 
-Value descriptions
-------------------
+## Value descriptions
 
 ### 1 - Developer experience
 

@@ -55,7 +55,7 @@ An example in Node.js looks like this:
 
 To update your code to use the environment variables, look for any occurrences of the hostname and update to use the value obtained from the environment variable _servicename_\_SERVICE_HOST.
 
-Even if you usually don’t specify the port used by the target service when calling it, you will need to use the _servicename_\_SERVICE_PORT environment variable. Specifying the port allows Bridge to Kubernetes to avoid the conflicts happening when a specific port isn’t available on the development machine. You don’t need to change the port on which your service listens for this to work: you just need to make sure that when your service calls other services, it calls them using both the _servicename_\_SERVICE_HOST and _servicename_\_SERVICE_PORT environment variables.
+Even if you usually don’t specify the port used by the target service when calling it, you will need to use the _servicename_\_SERVICE*PORT environment variable. Specifying the port allows Bridge to Kubernetes to avoid the conflicts happening when a specific port isn’t available on the development machine. You don’t need to change the port on which your service listens for this to work: you just need to make sure that when your service calls other services, it calls them using both the \_servicename*\_SERVICE*HOST and \_servicename*\_SERVICE_PORT environment variables.
 
 If you reuse the same code elsewhere in the cluster, that is fine, because these environment variables are available in every pod in the cluster. If you reuse the same code outside of a Kubernetes cluster, you either have to set up the equivalent environment variables or modify the code appropriately for the new platform or hosting service.
 

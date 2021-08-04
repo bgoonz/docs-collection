@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Props</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Props</h1>
+</header>
+<p>Most components can be customized when they are created, with different parameters. These created parameters are called <code>props</code>, short for properties.</p>
+<p>For example, one basic React Native component is the <code>Image</code>. When you create an image, you can use a prop named <code>source</code> to control what image it shows.</p>
+<p>```SnackPlayer name=Props import React from ‘react’; import { Image } from ‘react-native’;</p>
+<p>const Bananas = () =&gt; { let pic = { uri: ‘https://upload.wikimedia.org/wikipedia/commons/d/de/Bananavarieties.jpg’ }; return ( &lt;Image source={pic} style={{width: 193, height: 110, marginTop:50}}/&gt; ); }</p>
+<p>export default Bananas; ```</p>
+<p>Notice the braces surrounding <code>{pic}</code> - these embed the variable <code>pic</code> into JSX. You can put any JavaScript expression inside braces in JSX.</p>
+<p>Your own components can also use <code>props</code>. This lets you make a single component that is used in many different places in your app, with slightly different properties in each place by referring to <code>props</code> in your <code>render</code> function. Here’s an example:</p>
+<p>```SnackPlayer name=Props import React from ‘react’; import { Text, View } from ‘react-native’;</p>
+<p>const Greeting = (props) =&gt; { return ( &lt;View style={{alignItems: ‘center’}}&gt; <Text>Hello {props.name}!</Text> </View> ); }</p>
+<p>export default LotsOfGreetings = () =&gt; { return ( &lt;View style={{alignItems: ‘center’, top: 50}}&gt; <Greeting name='Rexxar' /> <Greeting name='Jaina' /> <Greeting name='Valeera' /> </View> ); } ```</p>
+<p>Using <code>name</code> as a prop lets us customize the <code>Greeting</code> component, so we can reuse that component for each of our greetings. This example also uses the <code>Greeting</code> component in JSX, similar to the <a href="intro-react-native-components">Core Components</a>. The power to do this is what makes React so cool - if you find yourself wishing that you had a different set of UI primitives to work with, you can invent new ones.</p>
+<p>The other new thing going on here is the <a href="view.md"><code>View</code></a> component. A <a href="view.md"><code>View</code></a> is useful as a container for other components, to help control style and layout.</p>
+<p>With <code>props</code> and the basic <a href="text.md"><code>Text</code></a>, <a href="image.md"><code>Image</code></a>, and <a href="view.md"><code>View</code></a> components, you can build a wide variety of static screens. To learn how to make your app change over time, you need to <a href="state.md">learn about State</a>.</p>
+</body>
+</html>

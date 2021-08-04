@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Easing</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Easing</h1>
+</header>
+<p>The <code>Easing</code> module implements common easing functions. This module is used by <a href="animated.md#timing">Animated.timing()</a> to convey physically believable motion in animations.</p>
+<p>You can find a visualization of some common easing functions at http://easings.net/</p>
+<h3 id="predefined-animations">Predefined animations</h3>
+<p>The <code>Easing</code> module provides several predefined animations through the following methods:</p>
+<ul>
+<li><a href="easing.md#back"><code>back</code></a> provides a basic animation where the object goes slightly back before moving forward</li>
+<li><a href="easing.md#bounce"><code>bounce</code></a> provides a bouncing animation</li>
+<li><a href="easing.md#ease"><code>ease</code></a> provides a basic inertial animation</li>
+<li><a href="easing.md#elastic"><code>elastic</code></a> provides a basic spring interaction</li>
+</ul>
+<h3 id="standard-functions">Standard functions</h3>
+<p>Three standard easing functions are provided:</p>
+<ul>
+<li><a href="easing.md#linear"><code>linear</code></a></li>
+<li><a href="easing.md#quad"><code>quad</code></a></li>
+<li><a href="easing.md#cubic"><code>cubic</code></a></li>
+</ul>
+<p>The <a href="easing.md#poly"><code>poly</code></a> function can be used to implement quartic, quintic, and other higher power functions.</p>
+<h3 id="additional-functions">Additional functions</h3>
+<p>Additional mathematical functions are provided by the following methods:</p>
+<ul>
+<li><a href="easing.md#bezier"><code>bezier</code></a> provides a cubic bezier curve</li>
+<li><a href="easing.md#circle"><code>circle</code></a> provides a circular function</li>
+<li><a href="easing.md#sin"><code>sin</code></a> provides a sinusoidal function</li>
+<li><a href="easing.md#exp"><code>exp</code></a> provides an exponential function</li>
+</ul>
+<p>The following helpers are used to modify other easing functions.</p>
+<ul>
+<li><a href="easing.md#in"><code>in</code></a> runs an easing function forwards</li>
+<li><a href="easing.md#inout"><code>inOut</code></a> makes any easing function symmetrical</li>
+<li><a href="easing.md#out"><code>out</code></a> runs an easing function backwards</li>
+</ul>
+<h2 id="example">Example</h2>
+<p>```SnackPlayer name=Easing%20Demo import React from “react”; import { Animated, Easing, SectionList, StatusBar, StyleSheet, Text, TouchableOpacity, View } from “react-native”;</p>
+<p>const App = () =&gt; { let opacity = new Animated.Value(0);</p>
+<p>const animate = easing =&gt; { opacity.setValue(0); Animated.timing(opacity, { toValue: 1, duration: 1200, easing }).start(); };</p>
+<p>const size = opacity.interpolate({ inputRange: [0, 1], outputRange: [0, 80] });</p>
+<p>const animatedStyles = [ styles.box, { opacity, width: size, height: size } ];</p>
+<p>return ( <View style={styles.container}> <StatusBar hidden={true} /> <Text style={styles.title}> Press rows below to preview the Easing! </Text> <View style={styles.boxContainer}> &lt;Animated.View style={animatedStyles} /&gt; </View> &lt;SectionList style={styles.list} sections={SECTIONS} keyExtractor={(item) =&gt; item.title} renderItem={({ item }) =&gt; ( &lt;TouchableOpacity onPress={() =&gt; animate(item.easing)} style={styles.listRow} &gt; <Text>{item.title}</Text> </TouchableOpacity> )} renderSectionHeader={({ section: { title } }) =&gt; ( <Text style={styles.listHeader}>{title}</Text> )} /&gt; </View> ); };</p>
+<p>const SECTIONS = [ { title: “Predefined animations”, data: [ { title: “Bounce”, easing: Easing.bounce }, { title: “Ease”, easing: Easing.ease }, { title: “Elastic”, easing: Easing.elastic(4) } ] }, { title: “Standard functions”, data: [ { title: “Linear”, easing: Easing.linear }, { title: “Quad”, easing: Easing.quad }, { title: “Cubic”, easing: Easing.cubic } ] }, { title: “Additional functions”, data: [ { title: “Bezier”, easing: Easing.bezier(0, 2, 1, -1) }, { title: “Circle”, easing: Easing.circle }, { title: “Sin”, easing: Easing.sin }, { title: “Exp”, easing: Easing.exp } ] }, { title: “Combinations”, data: [ { title: “In + Bounce”, easing: Easing.in(Easing.bounce) }, { title: “Out + Exp”, easing: Easing.out(Easing.exp) }, { title: “InOut + Elastic”, easing: Easing.inOut(Easing.elastic(1)) } ] }];</p>
+<p>const styles = StyleSheet.create({ container: { flex: 1, backgroundColor: “#20232a” }, title: { marginTop: 10, textAlign: “center”, color: “#61dafb” }, boxContainer: { height: 160, alignItems: “center” }, box: { marginTop: 32, borderRadius: 4, backgroundColor: “#61dafb” }, list: { backgroundColor: “#fff” }, listHeader: { paddingHorizontal: 8, paddingVertical: 4, backgroundColor: “#f4f4f4”, color: “#999”, fontSize: 12, textTransform: “uppercase” }, listRow: { padding: 8 } });</p>
+<p>export default App; ```</p>
+<hr />
+<h1 id="reference">Reference</h1>
+<h2 id="methods">Methods</h2>
+<h3 id="step0"><code>step0()</code></h3>
+<pre class="jsx"><code>static step0(n)</code></pre>
+<p>A stepping function, returns 1 for any positive value of <code>n</code>.</p>
+<hr />
+<h3 id="step1"><code>step1()</code></h3>
+<pre class="jsx"><code>static step1(n)</code></pre>
+<p>A stepping function, returns 1 if <code>n</code> is greater than or equal to 1.</p>
+<hr />
+<h3 id="linear"><code>linear()</code></h3>
+<pre class="jsx"><code>static linear(t)</code></pre>
+<p>A linear function, <code>f(t) = t</code>. Position correlates to elapsed time one to one.</p>
+<p>http://cubic-bezier.com/#0,0,1,1</p>
+<hr />
+<h3 id="ease"><code>ease()</code></h3>
+<pre class="jsx"><code>static ease(t)</code></pre>
+<p>A basic inertial interaction, similar to an object slowly accelerating to speed.</p>
+<p>http://cubic-bezier.com/#.42,0,1,1</p>
+<hr />
+<h3 id="quad"><code>quad()</code></h3>
+<pre class="jsx"><code>static quad(t)</code></pre>
+<p>A quadratic function, <code>f(t) = t * t</code>. Position equals the square of elapsed time.</p>
+<p>http://easings.net/#easeInQuad</p>
+<hr />
+<h3 id="cubic"><code>cubic()</code></h3>
+<pre class="jsx"><code>static cubic(t)</code></pre>
+<p>A cubic function, <code>f(t) = t * t * t</code>. Position equals the cube of elapsed time.</p>
+<p>http://easings.net/#easeInCubic</p>
+<hr />
+<h3 id="poly"><code>poly()</code></h3>
+<pre class="jsx"><code>static poly(n)</code></pre>
+<p>A power function. Position is equal to the Nth power of elapsed time.</p>
+<p>n = 4: http://easings.net/#easeInQuart n = 5: http://easings.net/#easeInQuint</p>
+<hr />
+<h3 id="sin"><code>sin()</code></h3>
+<pre class="jsx"><code>static sin(t)</code></pre>
+<p>A sinusoidal function.</p>
+<p>http://easings.net/#easeInSine</p>
+<hr />
+<h3 id="circle"><code>circle()</code></h3>
+<pre class="jsx"><code>static circle(t)</code></pre>
+<p>A circular function.</p>
+<p>http://easings.net/#easeInCirc</p>
+<hr />
+<h3 id="exp"><code>exp()</code></h3>
+<pre class="jsx"><code>static exp(t)</code></pre>
+<p>An exponential function.</p>
+<p>http://easings.net/#easeInExpo</p>
+<hr />
+<h3 id="elastic"><code>elastic()</code></h3>
+<pre class="jsx"><code>static elastic(bounciness)</code></pre>
+<p>A basic elastic interaction, similar to a spring oscillating back and forth.</p>
+<p>Default bounciness is 1, which overshoots a little bit once. 0 bounciness doesn’t overshoot at all, and bounciness of N &gt; 1 will overshoot about N times.</p>
+<p>http://easings.net/#easeInElastic</p>
+<hr />
+<h3 id="back"><code>back()</code></h3>
+<pre class="jsx"><code>static back(s)</code></pre>
+<p>Use with <code>Animated.parallel()</code> to create a basic effect where the object animates back slightly as the animation starts.</p>
+<hr />
+<h3 id="bounce"><code>bounce()</code></h3>
+<pre class="jsx"><code>static bounce(t)</code></pre>
+<p>Provides a basic bouncing effect.</p>
+<p>http://easings.net/#easeInBounce</p>
+<hr />
+<h3 id="bezier"><code>bezier()</code></h3>
+<pre class="jsx"><code>static bezier(x1, y1, x2, y2)</code></pre>
+<p>Provides a cubic bezier curve, equivalent to CSS Transitions’ <code>transition-timing-function</code>.</p>
+<p>A useful tool to visualize cubic bezier curves can be found at http://cubic-bezier.com/</p>
+<hr />
+<h3 id="in"><code>in()</code></h3>
+<!-- prettier-ignore-start -->
+<pre class="jsx"><code>static in(easing);</code></pre>
+<!-- prettier-ignore-end -->
+<p>Runs an easing function forwards.</p>
+<hr />
+<h3 id="out"><code>out()</code></h3>
+<pre class="jsx"><code>static out(easing)</code></pre>
+<p>Runs an easing function backwards.</p>
+<hr />
+<h3 id="inout"><code>inOut()</code></h3>
+<pre class="jsx"><code>static inOut(easing)</code></pre>
+<p>Makes any easing function symmetrical. The easing function will run forwards for half of the duration, then backwards for the rest of the duration.</p>
+</body>
+</html>

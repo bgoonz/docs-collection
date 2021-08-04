@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Appearance</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Appearance</h1>
+</header>
+<p>import Tabs from ‘<span class="citation" data-cites="theme/Tabs">@theme/Tabs</span>’; import TabItem from ‘<span class="citation" data-cites="theme/TabItem">@theme/TabItem</span>’; import constants from ‘<span class="citation" data-cites="site/core/TabsConstants">@site/core/TabsConstants</span>’;</p>
+<pre class="jsx"><code>import { Appearance } from &#39;react-native&#39;;</code></pre>
+<p>The <code>Appearance</code> module exposes information about the user’s appearance preferences, such as their preferred color scheme (light or dark).</p>
+<h4 id="developer-notes">Developer notes</h4>
+<p>&lt;Tabs groupId=“guide” defaultValue=“web” values={constants.getDevNotesTabs([“android”, “ios”, “web”])}&gt;</p>
+<p><TabItem value="web"></p>
+<blockquote>
+<p>The <code>Appearance</code> API is inspired by the <a href="https://drafts.csswg.org/mediaqueries-5/">Media Queries draft</a> from the W3C. The color scheme preference is modeled after the <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme"><code>prefers-color-scheme</code> CSS media feature</a>.</p>
+</blockquote>
+<p></TabItem> <TabItem value="android"></p>
+<blockquote>
+<p>The color scheme preference will map to the user’s Light or <a href="https://developer.android.com/guide/topics/ui/look-and-feel/darktheme">Dark theme</a> preference on Android 10 (API level 29) devices and higher.</p>
+</blockquote>
+<p></TabItem> <TabItem value="ios"></p>
+<blockquote>
+<p>The color scheme preference will map to the user’s Light or <a href="https://developer.apple.com/design/human-interface-guidelines/ios/visual-design/dark-mode/">Dark Mode</a> preference on iOS 13 devices and higher.</p>
+</blockquote>
+<p></TabItem> </Tabs></p>
+<h2 id="example">Example</h2>
+<p>You can use the <code>Appearance</code> module to determine if the user prefers a dark color scheme:</p>
+<pre class="jsx"><code>const colorScheme = Appearance.getColorScheme();
+if (colorScheme === &#39;dark&#39;) {
+  // Use dark color scheme
+}</code></pre>
+<p>Although the color scheme is available immediately, this may change (e.g. scheduled color scheme change at sunrise or sunset). Any rendering logic or styles that depend on the user preferred color scheme should try to call this function on every render, rather than caching the value. For example, you may use the <a href="usecolorscheme"><code>useColorScheme</code></a> React hook as it provides and subscribes to color scheme updates, or you may use inline styles rather than setting a value in a <code>StyleSheet</code>.</p>
+<hr />
+<h1 id="reference">Reference</h1>
+<h2 id="methods">Methods</h2>
+<h3 id="getcolorscheme"><code>getColorScheme()</code></h3>
+<pre class="jsx"><code>static getColorScheme()</code></pre>
+<p>Indicates the current user preferred color scheme. The value may be updated later, either through direct user action (e.g. theme selection in device settings) or on a schedule (e.g. light and dark themes that follow the day/night cycle).</p>
+<p>Supported color schemes:</p>
+<ul>
+<li><code>light</code>: The user prefers a light color theme.</li>
+<li><code>dark</code>: The user prefers a dark color theme.</li>
+<li>null: The user has not indicated a preferred color theme.</li>
+</ul>
+<p>See also: <code>useColorScheme</code> hook.</p>
+<blockquote>
+<p>Note: <code>getColorScheme()</code> will always return <code>light</code> when debugging with Chrome.</p>
+</blockquote>
+<hr />
+<h3 id="addchangelistener"><code>addChangeListener()</code></h3>
+<pre class="jsx"><code>static addChangeListener(listener)</code></pre>
+<p>Add an event handler that is fired when appearance preferences change.</p>
+<hr />
+<h3 id="removechangelistener"><code>removeChangeListener()</code></h3>
+<pre class="jsx"><code>static removeChangeListener(listener)</code></pre>
+<blockquote>
+<p><strong>Deprecated.</strong> Use the <code>remove()</code> method on the event subscription returned by <a href="#addchangelistener"><code>addChangeListener()</code></a>.</p>
+</blockquote>
+</body>
+</html>

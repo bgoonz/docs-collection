@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>🚧 AlertIOS</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">🚧 AlertIOS</h1>
+    </header>
+    <blockquote>
+      <p>
+        <strong>Deprecated.</strong> Use
+        <a href="alert"><code>Alert</code></a> instead.
+      </p>
+    </blockquote>
+    <p>
+      <code>AlertIOS</code> provides functionality to create an iOS alert dialog
+      with a message or create a prompt for user input.
+    </p>
+    <p>Creating an iOS alert:</p>
+    <pre class="jsx"><code>AlertIOS.alert(
+  &#39;Sync Complete&#39;,
+  &#39;All your data are belong to us.&#39;
+);</code></pre>
+    <p>Creating an iOS prompt:</p>
+    <pre
+      class="jsx"
+    ><code>AlertIOS.prompt(&#39;Enter a value&#39;, null, (text) =&gt;
+  console.log(&#39;You entered &#39; + text)
+);</code></pre>
+    <p>
+      We recommend using the <a href="alert"><code>Alert.alert</code></a> method
+      for cross-platform support if you don’t need to create iOS-only prompts.
+    </p>
+    <hr />
+    <h1 id="reference">Reference</h1>
+    <h2 id="methods">Methods</h2>
+    <h3 id="alert"><code>alert()</code></h3>
+    <pre
+      class="jsx"
+    ><code>static alert(title: string, [message]: string, [callbackOrButtons]: ?(() =&gt; void), ButtonsArray, [type]: AlertType): [object Object]</code></pre>
+    <p>Create and display a popup alert.</p>
+    <p><strong>Parameters:</strong></p>
+    <table>
+      <colgroup>
+        <col style="width: 3%" />
+        <col style="width: 11%" />
+        <col style="width: 1%" />
+        <col style="width: 82%" />
+      </colgroup>
+      <thead>
+        <tr class="header">
+          <th>Name</th>
+          <th>Type</th>
+          <th>Required</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>title</td>
+          <td>string</td>
+          <td>Yes</td>
+          <td>The dialog’s title. Passing null or ’’ will hide the title.</td>
+        </tr>
+        <tr class="even">
+          <td>message</td>
+          <td>string</td>
+          <td>No</td>
+          <td>An optional message that appears below the dialog’s title.</td>
+        </tr>
+        <tr class="odd">
+          <td>callbackOrButtons</td>
+          <td>
+            ?(() =&gt; void),<a href="alertios#buttonsarray">ButtonsArray</a>
+          </td>
+          <td>No</td>
+          <td>
+            This optional argument should be either a single-argument function
+            or an array of buttons. If passed a function, it will be called when
+            the user taps ‘OK’. If passed an array of button configurations,
+            each button should include a <code>text</code> key, as well as
+            optional <code>onPress</code> and <code>style</code> keys.
+            <code>style</code> should be one of ‘default’, ‘cancel’ or
+            ‘destructive’.
+          </td>
+        </tr>
+        <tr class="even">
+          <td>type</td>
+          <td><a href="alertios#alerttype">AlertType</a></td>
+          <td>No</td>
+          <td>Deprecated, do not use.</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>Example with custom buttons:</p>
+    <pre class="jsx"><code>AlertIOS.alert(
+  &#39;Update available&#39;,
+  &#39;Keep your app up to date to enjoy the latest features&#39;,
+  [
+    {
+      text: &#39;Cancel&#39;,
+      onPress: () =&gt; console.log(&#39;Cancel Pressed&#39;),
+      style: &#39;cancel&#39;
+    },
+    {
+      text: &#39;Install&#39;,
+      onPress: () =&gt; console.log(&#39;Install Pressed&#39;)
+    }
+  ]
+);</code></pre>
+    <hr />
+    <h3 id="prompt"><code>prompt()</code></h3>
+    <pre
+      class="jsx"
+    ><code>static prompt(title: string, [message]: string, [callbackOrButtons]: ?((text: string) =&gt; void), ButtonsArray, [type]: AlertType, [defaultValue]: string, [keyboardType]: string): [object Object]</code></pre>
+    <p>Create and display a prompt to enter some text.</p>
+    <p><strong>Parameters:</strong></p>
+    <table>
+      <colgroup>
+        <col style="width: 3%" />
+        <col style="width: 13%" />
+        <col style="width: 1%" />
+        <col style="width: 81%" />
+      </colgroup>
+      <thead>
+        <tr class="header">
+          <th>Name</th>
+          <th>Type</th>
+          <th>Required</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>title</td>
+          <td>string</td>
+          <td>Yes</td>
+          <td>The dialog’s title.</td>
+        </tr>
+        <tr class="even">
+          <td>message</td>
+          <td>string</td>
+          <td>No</td>
+          <td>An optional message that appears above the text input.</td>
+        </tr>
+        <tr class="odd">
+          <td>callbackOrButtons</td>
+          <td>
+            ?((text: string) =&gt; void),<a href="alertios#buttonsarray"
+              >ButtonsArray</a
+            >
+          </td>
+          <td>No</td>
+          <td>
+            This optional argument should be either a single-argument function
+            or an array of buttons. If passed a function, it will be called with
+            the prompt’s value when the user taps ‘OK’. If passed an array of
+            button configurations, each button should include a
+            <code>text</code> key, as well as optional <code>onPress</code> and
+            <code>style</code> keys (see example). <code>style</code> should be
+            one of ‘default’, ‘cancel’ or ‘destructive’.
+          </td>
+        </tr>
+        <tr class="even">
+          <td>type</td>
+          <td><a href="alertios#alerttype">AlertType</a></td>
+          <td>No</td>
+          <td>
+            This configures the text input. One of ‘plain-text’, ‘secure-text’
+            or ‘login-password’.
+          </td>
+        </tr>
+        <tr class="odd">
+          <td>defaultValue</td>
+          <td>string</td>
+          <td>No</td>
+          <td>The default text in text input.</td>
+        </tr>
+        <tr class="even">
+          <td>keyboardType</td>
+          <td>string</td>
+          <td>No</td>
+          <td>
+            The keyboard type of first text field(if exists). One of ‘default’,
+            ‘email-address’, ‘numeric’, ‘phone-pad’, ‘ascii-capable’,
+            ‘numbers-and-punctuation’, ‘url’, ‘number-pad’, ‘name-phone-pad’,
+            ‘decimal-pad’, ‘twitter’ or ‘web-search’.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p>Example with custom buttons:</p>
+    <pre class="jsx"><code>AlertIOS.prompt(
+  &#39;Enter password&#39;,
+  &#39;Enter your password to claim your $1.5B in lottery winnings&#39;,
+  [
+    {
+      text: &#39;Cancel&#39;,
+      onPress: () =&gt; console.log(&#39;Cancel Pressed&#39;),
+      style: &#39;cancel&#39;
+    },
+    {
+      text: &#39;OK&#39;,
+      onPress: (password) =&gt;
+        console.log(&#39;OK Pressed, password: &#39; + password)
+    }
+  ],
+  &#39;secure-text&#39;
+);</code></pre>
+    <p>,</p>
+    <p>Example with the default button and a custom callback:</p>
+    <pre class="jsx"><code>AlertIOS.prompt(
+  &#39;Update username&#39;,
+  null,
+  (text) =&gt; console.log(&#39;Your username is &#39; + text),
+  null,
+  &#39;default&#39;
+);</code></pre>
+    <h2 id="type-definitions">Type Definitions</h2>
+    <h3 id="alerttype">AlertType</h3>
+    <p>An Alert button type</p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>$Enum</td>
+        </tr>
+      </tbody>
+    </table>
+    <p><strong>Constants:</strong></p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Value</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>default</td>
+          <td>Default alert with no inputs</td>
+        </tr>
+        <tr class="even">
+          <td>plain-text</td>
+          <td>Plain text input alert</td>
+        </tr>
+        <tr class="odd">
+          <td>secure-text</td>
+          <td>Secure text input alert</td>
+        </tr>
+        <tr class="even">
+          <td>login-password</td>
+          <td>Login and password alert</td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    <h3 id="alertbuttonstyle">AlertButtonStyle</h3>
+    <p>An Alert button style</p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>$Enum</td>
+        </tr>
+      </tbody>
+    </table>
+    <p><strong>Constants:</strong></p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Value</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>default</td>
+          <td>Default button style</td>
+        </tr>
+        <tr class="even">
+          <td>cancel</td>
+          <td>Cancel button style</td>
+        </tr>
+        <tr class="odd">
+          <td>destructive</td>
+          <td>Destructive button style</td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    <h3 id="buttonsarray">ButtonsArray</h3>
+    <p>Array or buttons</p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>Array</td>
+        </tr>
+      </tbody>
+    </table>
+    <p><strong>Properties:</strong></p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>[text]</td>
+          <td>string</td>
+          <td>Button label</td>
+        </tr>
+        <tr class="even">
+          <td>[onPress]</td>
+          <td>function</td>
+          <td>Callback function when button pressed</td>
+        </tr>
+        <tr class="odd">
+          <td>[style]</td>
+          <td><a href="alertios#alertbuttonstyle">AlertButtonStyle</a></td>
+          <td>Button style</td>
+        </tr>
+      </tbody>
+    </table>
+    <p><strong>Constants:</strong></p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Value</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>text</td>
+          <td>Button label</td>
+        </tr>
+        <tr class="even">
+          <td>onPress</td>
+          <td>Callback function when button pressed</td>
+        </tr>
+        <tr class="odd">
+          <td>style</td>
+          <td>Button style</td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>

@@ -1,5 +1,4 @@
-Process
-=======
+# Process
 
 The `process` object provides information about, and control over, the current Node.js process. While it is available as a global, it is recommended to explicitly access it via require or import:
 
@@ -7,8 +6,7 @@ The `process` object provides information about, and control over, the current N
 
     const process = require('process');
 
-Process events
---------------
+## Process events
 
 The `process` object is an instance of [`EventEmitter`](events.md#events_class_eventemitter).
 
@@ -18,9 +16,9 @@ The `'beforeExit'` event is emitted when Node.js empties its event loop and has 
 
 The listener callback function is invoked with the value of [`process.exitCode`](#process_process_exitcode) passed as the only argument.
 
-The `'beforeExit'` event is *not* emitted for conditions causing explicit termination, such as calling [`process.exit()`](#process_process_exit_code) or uncaught exceptions.
+The `'beforeExit'` event is _not_ emitted for conditions causing explicit termination, such as calling [`process.exit()`](#process_process_exit_code) or uncaught exceptions.
 
-The `'beforeExit'` should *not* be used as an alternative to the `'exit'` event unless the intention is to schedule additional work.
+The `'beforeExit'` should _not_ be used as an alternative to the `'exit'` event unless the intention is to schedule additional work.
 
     import process from 'process';
 
@@ -62,12 +60,12 @@ If the Node.js process is spawned with an IPC channel (see the [Child Process](c
 
 ### Event: `'exit'`
 
--   `code` {integer}
+- `code` {integer}
 
 The `'exit'` event is emitted when the Node.js process is about to exit as a result of either:
 
--   The `process.exit()` method being called explicitly;
--   The Node.js event loop no longer having any additional work to perform.
+- The `process.exit()` method being called explicitly;
+- The Node.js event loop no longer having any additional work to perform.
 
 There is no way to prevent the exiting of the event loop at this point, and once all `'exit'` listeners have finished running the Node.js process will terminate.
 
@@ -105,8 +103,8 @@ Listener functions **must** only perform **synchronous** operations. The Node.js
 
 ### Event: `'message'`
 
--   `message` { Object | boolean | number | string | null } a parsed JSON object or a serializable primitive value.
--   `sendHandle` {net.Server|net.Socket} a [`net.Server`](net.md#net_class_net_server) or [`net.Socket`](net.md#net_class_net_socket) object, or undefined.
+- `message` { Object | boolean | number | string | null } a parsed JSON object or a serializable primitive value.
+- `sendHandle` {net.Server|net.Socket} a [`net.Server`](net.md#net_class_net_server) or [`net.Socket`](net.md#net_class_net_socket) object, or undefined.
 
 If the Node.js process is spawned with an IPC channel (see the [Child Process](child_process.md) and [Cluster](cluster.md) documentation), the `'message'` event is emitted whenever a message sent by a parent process using [`childprocess.send()`](child_process.md#child_process_subprocess_send_message_sendhandle_options_callback) is received by the child process.
 
@@ -116,16 +114,16 @@ If the `serialization` option was set to `advanced` used when spawning the proce
 
 ### Event: `'multipleResolves'`
 
--   `type` {string} The resolution type. One of `'resolve'` or `'reject'`.
--   `promise` {Promise} The promise that resolved or rejected more than once.
--   `value` {any} The value with which the promise was either resolved or rejected after the original resolve.
+- `type` {string} The resolution type. One of `'resolve'` or `'reject'`.
+- `promise` {Promise} The promise that resolved or rejected more than once.
+- `value` {any} The value with which the promise was either resolved or rejected after the original resolve.
 
 The `'multipleResolves'` event is emitted whenever a `Promise` has been either:
 
--   Resolved more than once.
--   Rejected more than once.
--   Rejected after resolve.
--   Resolved after reject.
+- Resolved more than once.
+- Rejected more than once.
+- Rejected after resolve.
+- Resolved after reject.
 
 This is useful for tracking potential errors in an application while using the `Promise` constructor, as multiple resolutions are silently swallowed. However, the occurrence of this event does not necessarily indicate an error. For example, [`Promise.race()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/race) can trigger a `'multipleResolves'` event.
 
@@ -185,7 +183,7 @@ This is useful for tracking potential errors in an application while using the `
 
 ### Event: `'rejectionHandled'`
 
--   `promise` {Promise} The late handled promise.
+- `promise` {Promise} The late handled promise.
 
 The `'rejectionHandled'` event is emitted whenever a `Promise` has been rejected and an error handler was attached to it (using [`promise.catch()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/catch), for example) later than one turn of the Node.js event loop.
 
@@ -223,8 +221,8 @@ In this example, the `unhandledRejections` `Map` will grow and shrink over time,
 
 ### Event: `'uncaughtException'`
 
--   `err` {Error} The uncaught exception.
--   `origin` {string} Indicates if the exception originates from an unhandled rejection or from an synchronous error. Can either be `'uncaughtException'` or `'unhandledRejection'`. The latter is only used in conjunction with the [`--unhandled-rejections`](cli.md#cli_unhandled_rejections_mode) flag set to `strict` or `throw` and an unhandled rejection.
+- `err` {Error} The uncaught exception.
+- `origin` {string} Indicates if the exception originates from an unhandled rejection or from an synchronous error. Can either be `'uncaughtException'` or `'unhandledRejection'`. The latter is only used in conjunction with the [`--unhandled-rejections`](cli.md#cli_unhandled_rejections_mode) flag set to `strict` or `throw` and an unhandled rejection.
 
 The `'uncaughtException'` event is emitted when an uncaught JavaScript exception bubbles all the way back to the event loop. By default, Node.js handles such exceptions by printing the stack trace to `stderr` and exiting with code 1, overriding any previously set [`process.exitCode`](#process_process_exitcode). Adding a handler for the `'uncaughtException'` event overrides this default behavior. Alternatively, change the [`process.exitCode`](#process_process_exitcode) in the `'uncaughtException'` handler which will result in the process exiting with the provided exit code. Otherwise, in the presence of such handler the process will exit with 0.
 
@@ -268,7 +266,7 @@ It is possible to monitor `'uncaughtException'` events without overriding the de
 
 #### Warning: Using `'uncaughtException'` correctly
 
-`'uncaughtException'` is a crude mechanism for exception handling intended to be used only as a last resort. The event *should not* be used as an equivalent to `On Error Resume Next`. Unhandled exceptions inherently mean that an application is in an undefined state. Attempting to resume application code without properly recovering from the exception can cause additional unforeseen and unpredictable issues.
+`'uncaughtException'` is a crude mechanism for exception handling intended to be used only as a last resort. The event _should not_ be used as an equivalent to `On Error Resume Next`. Unhandled exceptions inherently mean that an application is in an undefined state. Attempting to resume application code without properly recovering from the exception can cause additional unforeseen and unpredictable issues.
 
 Exceptions thrown from within the event handler will not be caught. Instead the process will exit with a non-zero exit code and the stack trace will be printed. This is to avoid infinite recursion.
 
@@ -280,8 +278,8 @@ To restart a crashed application in a more reliable way, whether `'uncaughtExcep
 
 ### Event: `'uncaughtExceptionMonitor'`
 
--   `err` {Error} The uncaught exception.
--   `origin` {string} Indicates if the exception originates from an unhandled rejection or from synchronous errors. Can either be `'uncaughtException'` or `'unhandledRejection'`. The latter is only used in conjunction with the [`--unhandled-rejections`](cli.md#cli_unhandled_rejections_mode) flag set to `strict` or `throw` and an unhandled rejection.
+- `err` {Error} The uncaught exception.
+- `origin` {string} Indicates if the exception originates from an unhandled rejection or from synchronous errors. Can either be `'uncaughtException'` or `'unhandledRejection'`. The latter is only used in conjunction with the [`--unhandled-rejections`](cli.md#cli_unhandled_rejections_mode) flag set to `strict` or `throw` and an unhandled rejection.
 
 The `'uncaughtExceptionMonitor'` event is emitted before an `'uncaughtException'` event is emitted or a hook installed via [`process.setUncaughtExceptionCaptureCallback()`](#process_process_setuncaughtexceptioncapturecallback_fn) is called.
 
@@ -309,8 +307,8 @@ Installing an `'uncaughtExceptionMonitor'` listener does not change the behavior
 
 ### Event: `'unhandledRejection'`
 
--   `reason` {Error|any} The object with which the promise was rejected (typically an [`Error`](errors.md#errors_class_error) object).
--   `promise` {Promise} The rejected promise.
+- `reason` {Error|any} The object with which the promise was rejected (typically an [`Error`](errors.md#errors_class_error) object).
+- `promise` {Promise} The rejected promise.
 
 The `'unhandledRejection'` event is emitted whenever a `Promise` is rejected and no error handler is attached to the promise within a turn of the event loop. When programming with Promises, exceptions are encapsulated as “rejected promises”. Rejections can be caught and handled using [`promise.catch()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/catch) and are propagated through a `Promise` chain. The `'unhandledRejection'` event is useful for detecting and keeping track of promises that were rejected whose rejections have not yet been handled.
 
@@ -362,10 +360,10 @@ In this example case, it is possible to track the rejection as a developer error
 
 ### Event: `'warning'`
 
--   `warning` {Error} Key properties of the warning are:
-    -   `name` {string} The name of the warning. **Default:** `'Warning'`.
-    -   `message` {string} A system-provided description of the warning.
-    -   `stack` {string} A stack trace to the location in the code where the warning was issued.
+- `warning` {Error} Key properties of the warning are:
+  - `name` {string} The name of the warning. **Default:** `'Warning'`.
+  - `message` {string} A system-provided description of the warning.
+  - `stack` {string} A stack trace to the location in the code where the warning was issued.
 
 The `'warning'` event is emitted whenever Node.js emits a process warning.
 
@@ -419,7 +417,7 @@ The `*-deprecation` command-line flags only affect warnings that use the name `'
 
 ### Event: `'worker'`
 
--   `worker` {Worker} The {Worker} that was created.
+- `worker` {Worker} The {Worker} that was created.
 
 The `'worker'` event is emitted after a new {Worker} thread has been created.
 
@@ -431,11 +429,11 @@ See the [`process.emitWarning()`](#process_process_emitwarning_warning_type_code
 
 There are no strict guidelines for warning types (as identified by the `name` property) emitted by Node.js. New types of warnings can be added at any time. A few of the warning types that are most common include:
 
--   `'DeprecationWarning'` - Indicates use of a deprecated Node.js API or feature. Such warnings must include a `'code'` property identifying the [deprecation code](deprecations.md).
--   `'ExperimentalWarning'` - Indicates use of an experimental Node.js API or feature. Such features must be used with caution as they may change at any time and are not subject to the same strict semantic-versioning and long-term support policies as supported features.
--   `'MaxListenersExceededWarning'` - Indicates that too many listeners for a given event have been registered on either an `EventEmitter` or `EventTarget`. This is often an indication of a memory leak.
--   `'TimeoutOverflowWarning'` - Indicates that a numeric value that cannot fit within a 32-bit signed integer has been provided to either the `setTimeout()` or `setInterval()` functions.
--   `'UnsupportedWarning'` - Indicates use of an unsupported option or feature that will be ignored rather than treated as an error. One example is use of the HTTP response status message when using the HTTP/2 compatibility API.
+- `'DeprecationWarning'` - Indicates use of a deprecated Node.js API or feature. Such warnings must include a `'code'` property identifying the [deprecation code](deprecations.md).
+- `'ExperimentalWarning'` - Indicates use of an experimental Node.js API or feature. Such features must be used with caution as they may change at any time and are not subject to the same strict semantic-versioning and long-term support policies as supported features.
+- `'MaxListenersExceededWarning'` - Indicates that too many listeners for a given event have been registered on either an `EventEmitter` or `EventTarget`. This is often an indication of a memory leak.
+- `'TimeoutOverflowWarning'` - Indicates that a numeric value that cannot fit within a 32-bit signed integer has been provided to either the `setTimeout()` or `setInterval()` functions.
+- `'UnsupportedWarning'` - Indicates use of an unsupported option or feature that will be ignored rather than treated as an error. One example is use of the HTTP response status message when using the HTTP/2 compatibility API.
 
 ### Signal events
 
@@ -481,43 +479,41 @@ The name of each event will be the uppercase common name for the signal (e.g. `'
     process.on('SIGINT', handle);
     process.on('SIGTERM', handle);
 
--   `'SIGUSR1'` is reserved by Node.js to start the [debugger](debugger.md). It’s possible to install a listener but doing so might interfere with the debugger.
--   `'SIGTERM'` and `'SIGINT'` have default handlers on non-Windows platforms that reset the terminal mode before exiting with code `128 + signal number`. If one of these signals has a listener installed, its default behavior will be removed (Node.js will no longer exit).
--   `'SIGPIPE'` is ignored by default. It can have a listener installed.
--   `'SIGHUP'` is generated on Windows when the console window is closed, and on other platforms under various similar conditions. See signal(7). It can have a listener installed, however Node.js will be unconditionally terminated by Windows about 10 seconds later. On non-Windows platforms, the default behavior of `SIGHUP` is to terminate Node.js, but once a listener has been installed its default behavior will be removed.
--   `'SIGTERM'` is not supported on Windows, it can be listened on.
--   `'SIGINT'` from the terminal is supported on all platforms, and can usually be generated with Ctrl+C (though this may be configurable). It is not generated when [terminal raw mode](tty.md#tty_readstream_setrawmode_mode) is enabled and Ctrl+C is used.
--   `'SIGBREAK'` is delivered on Windows when Ctrl+Break is pressed. On non-Windows platforms, it can be listened on, but there is no way to send or generate it.
--   `'SIGWINCH'` is delivered when the console has been resized. On Windows, this will only happen on write to the console when the cursor is being moved, or when a readable tty is used in raw mode.
--   `'SIGKILL'` cannot have a listener installed, it will unconditionally terminate Node.js on all platforms.
--   `'SIGSTOP'` cannot have a listener installed.
--   `'SIGBUS'`, `'SIGFPE'`, `'SIGSEGV'` and `'SIGILL'`, when not raised artificially using kill(2), inherently leave the process in a state from which it is not safe to call JS listeners. Doing so might cause the process to stop responding.
--   `0` can be sent to test for the existence of a process, it has no effect if the process exists, but will throw an error if the process does not exist.
+- `'SIGUSR1'` is reserved by Node.js to start the [debugger](debugger.md). It’s possible to install a listener but doing so might interfere with the debugger.
+- `'SIGTERM'` and `'SIGINT'` have default handlers on non-Windows platforms that reset the terminal mode before exiting with code `128 + signal number`. If one of these signals has a listener installed, its default behavior will be removed (Node.js will no longer exit).
+- `'SIGPIPE'` is ignored by default. It can have a listener installed.
+- `'SIGHUP'` is generated on Windows when the console window is closed, and on other platforms under various similar conditions. See signal(7). It can have a listener installed, however Node.js will be unconditionally terminated by Windows about 10 seconds later. On non-Windows platforms, the default behavior of `SIGHUP` is to terminate Node.js, but once a listener has been installed its default behavior will be removed.
+- `'SIGTERM'` is not supported on Windows, it can be listened on.
+- `'SIGINT'` from the terminal is supported on all platforms, and can usually be generated with Ctrl+C (though this may be configurable). It is not generated when [terminal raw mode](tty.md#tty_readstream_setrawmode_mode) is enabled and Ctrl+C is used.
+- `'SIGBREAK'` is delivered on Windows when Ctrl+Break is pressed. On non-Windows platforms, it can be listened on, but there is no way to send or generate it.
+- `'SIGWINCH'` is delivered when the console has been resized. On Windows, this will only happen on write to the console when the cursor is being moved, or when a readable tty is used in raw mode.
+- `'SIGKILL'` cannot have a listener installed, it will unconditionally terminate Node.js on all platforms.
+- `'SIGSTOP'` cannot have a listener installed.
+- `'SIGBUS'`, `'SIGFPE'`, `'SIGSEGV'` and `'SIGILL'`, when not raised artificially using kill(2), inherently leave the process in a state from which it is not safe to call JS listeners. Doing so might cause the process to stop responding.
+- `0` can be sent to test for the existence of a process, it has no effect if the process exists, but will throw an error if the process does not exist.
 
 Windows does not support signals so has no equivalent to termination by signal, but Node.js offers some emulation with [`process.kill()`](#process_process_kill_pid_signal), and [`subprocess.kill()`](child_process.md#child_process_subprocess_kill_signal): \* Sending `SIGINT`, `SIGTERM`, and `SIGKILL` will cause the unconditional termination of the target process, and afterwards, subprocess will report that the process was terminated by signal. \* Sending signal `0` can be used as a platform independent way to test for the existence of a process.
 
-`process.abort()`
------------------
+## `process.abort()`
 
 The `process.abort()` method causes the Node.js process to exit immediately and generate a core file.
 
 This feature is not available in [`Worker`](worker_threads.md#worker_threads_class_worker) threads.
 
-`process.allowedNodeEnvironmentFlags`
--------------------------------------
+## `process.allowedNodeEnvironmentFlags`
 
--   {Set}
+- {Set}
 
 The `process.allowedNodeEnvironmentFlags` property is a special, read-only `Set` of flags allowable within the [`NODE_OPTIONS`](cli.md#cli_node_options_options) environment variable.
 
 `process.allowedNodeEnvironmentFlags` extends `Set`, but overrides `Set.prototype.has` to recognize several different possible flag representations. `process.allowedNodeEnvironmentFlags.has()` will return `true` in the following cases:
 
--   Flags may omit leading single (`-`) or double (`--`) dashes; e.g., `inspect-brk` for `--inspect-brk`, or `r` for `-r`.
--   Flags passed through to V8 (as listed in `--v8-options`) may replace one or more *non-leading* dashes for an underscore, or vice-versa; e.g., `--perf_basic_prof`, `--perf-basic-prof`, `--perf_basic-prof`, etc.
--   Flags may contain one or more equals (`=`) characters; all characters after and including the first equals will be ignored; e.g., `--stack-trace-limit=100`.
--   Flags *must* be allowable within [`NODE_OPTIONS`](cli.md#cli_node_options_options).
+- Flags may omit leading single (`-`) or double (`--`) dashes; e.g., `inspect-brk` for `--inspect-brk`, or `r` for `-r`.
+- Flags passed through to V8 (as listed in `--v8-options`) may replace one or more _non-leading_ dashes for an underscore, or vice-versa; e.g., `--perf_basic_prof`, `--perf-basic-prof`, `--perf_basic-prof`, etc.
+- Flags may contain one or more equals (`=`) characters; all characters after and including the first equals will be ignored; e.g., `--stack-trace-limit=100`.
+- Flags _must_ be allowable within [`NODE_OPTIONS`](cli.md#cli_node_options_options).
 
-When iterating over `process.allowedNodeEnvironmentFlags`, flags will appear only *once*; each will begin with one or more dashes. Flags passed through to V8 will contain underscores instead of non-leading dashes:
+When iterating over `process.allowedNodeEnvironmentFlags`, flags will appear only _once_; each will begin with one or more dashes. Flags passed through to V8 will contain underscores instead of non-leading dashes:
 
     import { allowedNodeEnvironmentFlags } from 'process';
 
@@ -539,12 +535,11 @@ When iterating over `process.allowedNodeEnvironmentFlags`, flags will appear onl
 
 The methods `add()`, `clear()`, and `delete()` of `process.allowedNodeEnvironmentFlags` do nothing, and will fail silently.
 
-If Node.js was compiled *without* [`NODE_OPTIONS`](cli.md#cli_node_options_options) support (shown in [`process.config`](#process_process_config)), `process.allowedNodeEnvironmentFlags` will contain what *would have* been allowable.
+If Node.js was compiled _without_ [`NODE_OPTIONS`](cli.md#cli_node_options_options) support (shown in [`process.config`](#process_process_config)), `process.allowedNodeEnvironmentFlags` will contain what _would have_ been allowable.
 
-`process.arch`
---------------
+## `process.arch`
 
--   {string}
+- {string}
 
 The operating system CPU architecture for which the Node.js binary was compiled. Possible values are: `'arm'`, `'arm64'`, `'ia32'`, `'mips'`,`'mipsel'`, `'ppc'`, `'ppc64'`, `'s390'`, `'s390x'`, `'x32'`, and `'x64'`.
 
@@ -556,10 +551,9 @@ The operating system CPU architecture for which the Node.js binary was compiled.
 
     console.log(`This processor architecture is ${process.arch}`);
 
-`process.argv`
---------------
+## `process.argv`
 
--   {string\[\]}
+- {string\[\]}
 
 The `process.argv` property returns an array containing the command-line arguments passed when the Node.js process was launched. The first element will be [`process.execPath`](#process_process_execpath). See `process.argv0` if access to the original value of `argv[0]` is needed. The second element will be the path to the JavaScript file being executed. The remaining elements will be any additional command-line arguments.
 
@@ -591,10 +585,9 @@ Would generate the output:
     3: two=three
     4: four
 
-`process.argv0`
----------------
+## `process.argv0`
 
--   {string}
+- {string}
 
 The `process.argv0` property stores a read-only copy of the original value of `argv[0]` passed when Node.js starts.
 
@@ -604,10 +597,9 @@ The `process.argv0` property stores a read-only copy of the original value of `a
     > process.argv0
     'customArgv0'
 
-`process.channel`
------------------
+## `process.channel`
 
--   {Object}
+- {Object}
 
 If the Node.js process was spawned with an IPC channel (see the [Child Process](child_process.md) documentation), the `process.channel` property is a reference to the IPC channel. If no IPC channel exists, this property is `undefined`.
 
@@ -623,10 +615,9 @@ This method makes the IPC channel not keep the event loop of the process running
 
 Typically, this is managed through the number of `'disconnect'` and `'message'` listeners on the `process` object. However, this method can be used to explicitly request a specific behavior.
 
-`process.chdir(directory)`
---------------------------
+## `process.chdir(directory)`
 
--   `directory` {string}
+- `directory` {string}
 
 The `process.chdir()` method changes the current working directory of the Node.js process or throws an exception if doing so fails (for instance, if the specified `directory` does not exist).
 
@@ -652,10 +643,9 @@ The `process.chdir()` method changes the current working directory of the Node.j
 
 This feature is not available in [`Worker`](worker_threads.md#worker_threads_class_worker) threads.
 
-`process.config`
-----------------
+## `process.config`
 
--   {Object}
+- {Object}
 
 The `process.config` property returns an `Object` containing the JavaScript representation of the configure options used to compile the current Node.js executable. This is the same as the `config.gypi` file that was produced when running the `./configure` script.
 
@@ -691,22 +681,20 @@ The `process.config` property is **not** read-only and there are existing module
 
 Modifying the `process.config` property, or any child-property of the `process.config` object has been deprecated. The `process.config` will be made read-only in a future release.
 
-`process.connected`
--------------------
+## `process.connected`
 
--   {boolean}
+- {boolean}
 
 If the Node.js process is spawned with an IPC channel (see the [Child Process](child_process.md) and [Cluster](cluster.md) documentation), the `process.connected` property will return `true` so long as the IPC channel is connected and will return `false` after `process.disconnect()` is called.
 
 Once `process.connected` is `false`, it is no longer possible to send messages over the IPC channel using `process.send()`.
 
-`process.cpuUsage([previousValue])`
------------------------------------
+## `process.cpuUsage([previousValue])`
 
--   `previousValue` {Object} A previous return value from calling `process.cpuUsage()`
--   Returns: {Object}
-    -   `user` {integer}
-    -   `system` {integer}
+- `previousValue` {Object} A previous return value from calling `process.cpuUsage()`
+- Returns: {Object}
+  - `user` {integer}
+  - `system` {integer}
 
 The `process.cpuUsage()` method returns the user and system CPU time usage of the current process, in an object with properties `user` and `system`, whose values are microsecond values (millionth of a second). These values measure time spent in user and system code respectively, and may end up being greater than actual elapsed time if multiple CPU cores are performing work for this process.
 
@@ -736,10 +724,9 @@ The result of a previous call to `process.cpuUsage()` can be passed as the argum
     console.log(cpuUsage(startUsage));
     // { user: 514883, system: 11226 }
 
-`process.cwd()`
----------------
+## `process.cwd()`
 
--   Returns: {string}
+- Returns: {string}
 
 The `process.cwd()` method returns the current working directory of the Node.js process.
 
@@ -751,10 +738,9 @@ The `process.cwd()` method returns the current working directory of the Node.js 
 
     console.log(`Current directory: ${cwd()}`);
 
-`process.debugPort`
--------------------
+## `process.debugPort`
 
--   {number}
+- {number}
 
 The port used by the Node.js debugger when enabled.
 
@@ -766,8 +752,7 @@ The port used by the Node.js debugger when enabled.
 
     process.debugPort = 5858;
 
-`process.disconnect()`
-----------------------
+## `process.disconnect()`
 
 If the Node.js process is spawned with an IPC channel (see the [Child Process](child_process.md) and [Cluster](cluster.md) documentation), the `process.disconnect()` method will close the IPC channel to the parent process, allowing the child process to exit gracefully once there are no other connections keeping it alive.
 
@@ -775,12 +760,11 @@ The effect of calling `process.disconnect()` is the same as calling [`ChildProce
 
 If the Node.js process was not spawned with an IPC channel, `process.disconnect()` will be `undefined`.
 
-`process.dlopen(module, filename[, flags])`
--------------------------------------------
+## `process.dlopen(module, filename[, flags])`
 
--   `module` {Object}
--   `filename` {string}
--   `flags` {os.constants.dlopen} **Default:** `os.constants.dlopen.RTLD_LAZY`
+- `module` {Object}
+- `filename` {string}
+- `flags` {os.constants.dlopen} **Default:** `os.constants.dlopen.RTLD_LAZY`
 
 The `process.dlopen()` method allows dynamically loading shared objects. It is primarily used by `require()` to load C++ Addons, and should not be used directly, except in special cases. In other words, [`require()`](globals.md#globals_require) should be preferred over `process.dlopen()` unless there are specific reasons such as custom dlopen flags or loading from ES modules.
 
@@ -807,15 +791,14 @@ The example below shows how to load a C++ Addon, named `local.node`, that export
     dlopen(module, join(__dirname, 'local.node'), constants.dlopen.RTLD_NOW);
     module.exports.foo();
 
-`process.emitWarning(warning[, options])`
------------------------------------------
+## `process.emitWarning(warning[, options])`
 
--   `warning` {string|Error} The warning to emit.
--   `options` {Object}
-    -   `type` {string} When `warning` is a `String`, `type` is the name to use for the *type* of warning being emitted. **Default:** `'Warning'`.
-    -   `code` {string} A unique identifier for the warning instance being emitted.
-    -   `ctor` {Function} When `warning` is a `String`, `ctor` is an optional function used to limit the generated stack trace. **Default:** `process.emitWarning`.
-    -   `detail` {string} Additional text to include with the error.
+- `warning` {string|Error} The warning to emit.
+- `options` {Object}
+  - `type` {string} When `warning` is a `String`, `type` is the name to use for the _type_ of warning being emitted. **Default:** `'Warning'`.
+  - `code` {string} A unique identifier for the warning instance being emitted.
+  - `ctor` {Function} When `warning` is a `String`, `ctor` is an optional function used to limit the generated stack trace. **Default:** `process.emitWarning`.
+  - `detail` {string} Additional text to include with the error.
 
 The `process.emitWarning()` method can be used to emit custom or application specific process warnings. These can be listened for by adding a handler to the [`'warning'`](#process_event_warning) event.
 
@@ -865,13 +848,12 @@ In this example, an `Error` object is generated internally by `process.emitWarni
 
 If `warning` is passed as an `Error` object, the `options` argument is ignored.
 
-`process.emitWarning(warning[, type[, code]][, ctor])`
-------------------------------------------------------
+## `process.emitWarning(warning[, type[, code]][, ctor])`
 
--   `warning` {string|Error} The warning to emit.
--   `type` {string} When `warning` is a `String`, `type` is the name to use for the *type* of warning being emitted. **Default:** `'Warning'`.
--   `code` {string} A unique identifier for the warning instance being emitted.
--   `ctor` {Function} When `warning` is a `String`, `ctor` is an optional function used to limit the generated stack trace. **Default:** `process.emitWarning`.
+- `warning` {string|Error} The warning to emit.
+- `type` {string} When `warning` is a `String`, `type` is the name to use for the _type_ of warning being emitted. **Default:** `'Warning'`.
+- `code` {string} A unique identifier for the warning instance being emitted.
+- `ctor` {Function} When `warning` is a `String`, `ctor` is an optional function used to limit the generated stack trace. **Default:** `process.emitWarning`.
 
 The `process.emitWarning()` method can be used to emit custom or application specific process warnings. These can be listened for by adding a handler to the [`'warning'`](#process_event_warning) event.
 
@@ -959,9 +941,9 @@ While process warnings use `Error` objects, the process warning mechanism is **n
 
 The following additional handling is implemented if the warning `type` is `'DeprecationWarning'`:
 
--   If the `--throw-deprecation` command-line flag is used, the deprecation warning is thrown as an exception rather than being emitted as an event.
--   If the `--no-deprecation` command-line flag is used, the deprecation warning is suppressed.
--   If the `--trace-deprecation` command-line flag is used, the deprecation warning is printed to `stderr` along with the full stack trace.
+- If the `--throw-deprecation` command-line flag is used, the deprecation warning is thrown as an exception rather than being emitted as an event.
+- If the `--no-deprecation` command-line flag is used, the deprecation warning is suppressed.
+- If the `--trace-deprecation` command-line flag is used, the deprecation warning is printed to `stderr` along with the full stack trace.
 
 ### Avoiding duplicate warnings
 
@@ -993,10 +975,9 @@ As a best practice, warnings should be emitted only once per process. To do so, 
     emitMyWarning();
     // Emits nothing
 
-`process.env`
--------------
+## `process.env`
 
--   {Object}
+- {Object}
 
 The `process.env` property returns an object containing the user environment. See environ(7).
 
@@ -1083,10 +1064,9 @@ On Windows operating systems, environment variables are case-insensitive.
 
 Unless explicitly specified when creating a [`Worker`](worker_threads.md#worker_threads_class_worker) instance, each [`Worker`](worker_threads.md#worker_threads_class_worker) thread has its own copy of `process.env`, based on its parent thread’s `process.env`, or whatever was specified as the `env` option to the [`Worker`](worker_threads.md#worker_threads_class_worker) constructor. Changes to `process.env` will not be visible across [`Worker`](worker_threads.md#worker_threads_class_worker) threads, and only the main thread can make changes that are visible to the operating system or to native add-ons.
 
-`process.execArgv`
-------------------
+## `process.execArgv`
 
--   {string\[\]}
+- {string\[\]}
 
 The `process.execArgv` property returns the set of Node.js-specific command-line options passed when the Node.js process was launched. These options do not appear in the array returned by the [`process.argv`](#process_process_argv) property, and do not include the Node.js executable, the name of the script, or any options following the script name. These options are useful in order to spawn child processes with the same execution environment as the parent.
 
@@ -1102,19 +1082,17 @@ And `process.argv`:
 
 Refer to [`Worker` constructor](worker_threads.md#worker_threads_new_worker_filename_options) for the detailed behavior of worker threads with this property.
 
-`process.execPath`
-------------------
+## `process.execPath`
 
--   {string}
+- {string}
 
 The `process.execPath` property returns the absolute pathname of the executable that started the Node.js process. Symbolic links, if any, are resolved.
 
     '/usr/local/bin/node'
 
-`process.exit([code])`
-----------------------
+## `process.exit([code])`
 
--   `code` {integer} The exit code. **Default:** `0`.
+- `code` {integer} The exit code. **Default:** `0`.
 
 The `process.exit()` method instructs Node.js to terminate the process synchronously with an exit status of `code`. If `code` is omitted, exit uses either the ‘success’ code `0` or the value of `process.exitCode` if it has been set. Node.js will not terminate until all the [`'exit'`](#process_event_exit) event listeners are called.
 
@@ -1132,9 +1110,9 @@ The shell that executed Node.js should see the exit code as `1`.
 
 Calling `process.exit()` will force the process to exit as quickly as possible even if there are still asynchronous operations pending that have not yet completed fully, including I/O operations to `process.stdout` and `process.stderr`.
 
-In most situations, it is not actually necessary to call `process.exit()` explicitly. The Node.js process will exit on its own *if there is no additional work pending* in the event loop. The `process.exitCode` property can be set to tell the process which exit code to use when the process exits gracefully.
+In most situations, it is not actually necessary to call `process.exit()` explicitly. The Node.js process will exit on its own _if there is no additional work pending_ in the event loop. The `process.exitCode` property can be set to tell the process which exit code to use when the process exits gracefully.
 
-For instance, the following example illustrates a *misuse* of the `process.exit()` method that could lead to data printed to stdout being truncated and lost:
+For instance, the following example illustrates a _misuse_ of the `process.exit()` method that could lead to data printed to stdout being truncated and lost:
 
     import { exit } from 'process';
 
@@ -1152,9 +1130,9 @@ For instance, the following example illustrates a *misuse* of the `process.exit(
       exit(1);
     }
 
-The reason this is problematic is because writes to `process.stdout` in Node.js are sometimes *asynchronous* and may occur over multiple ticks of the Node.js event loop. Calling `process.exit()`, however, forces the process to exit *before* those additional writes to `stdout` can be performed.
+The reason this is problematic is because writes to `process.stdout` in Node.js are sometimes _asynchronous_ and may occur over multiple ticks of the Node.js event loop. Calling `process.exit()`, however, forces the process to exit _before_ those additional writes to `stdout` can be performed.
 
-Rather than calling `process.exit()` directly, the code *should* set the `process.exitCode` and allow the process to exit naturally by avoiding scheduling any additional work for the event loop:
+Rather than calling `process.exit()` directly, the code _should_ set the `process.exitCode` and allow the process to exit naturally by avoiding scheduling any additional work for the event loop:
 
     import process from 'process';
 
@@ -1174,21 +1152,19 @@ Rather than calling `process.exit()` directly, the code *should* set the `proces
       process.exitCode = 1;
     }
 
-If it is necessary to terminate the Node.js process due to an error condition, throwing an *uncaught* error and allowing the process to terminate accordingly is safer than calling `process.exit()`.
+If it is necessary to terminate the Node.js process due to an error condition, throwing an _uncaught_ error and allowing the process to terminate accordingly is safer than calling `process.exit()`.
 
 In [`Worker`](worker_threads.md#worker_threads_class_worker) threads, this function stops the current thread rather than the current process.
 
-`process.exitCode`
-------------------
+## `process.exitCode`
 
--   {integer}
+- {integer}
 
 A number which will be the process exit code, when the process either exits gracefully, or is exited via [`process.exit()`](#process_process_exit_code) without specifying a code.
 
 Specifying a code to [`process.exit(code)`](#process_process_exit_code) will override any previous setting of `process.exitCode`.
 
-`process.getegid()`
--------------------
+## `process.getegid()`
 
 The `process.getegid()` method returns the numerical effective group identity of the Node.js process. (See getegid(2).)
 
@@ -1206,10 +1182,9 @@ The `process.getegid()` method returns the numerical effective group identity of
 
 This function is only available on POSIX platforms (i.e. not Windows or Android).
 
-`process.geteuid()`
--------------------
+## `process.geteuid()`
 
--   Returns: {Object}
+- Returns: {Object}
 
 The `process.geteuid()` method returns the numerical effective user identity of the process. (See geteuid(2).)
 
@@ -1227,10 +1202,9 @@ The `process.geteuid()` method returns the numerical effective user identity of 
 
 This function is only available on POSIX platforms (i.e. not Windows or Android).
 
-`process.getgid()`
-------------------
+## `process.getgid()`
 
--   Returns: {Object}
+- Returns: {Object}
 
 The `process.getgid()` method returns the numerical group identity of the process. (See getgid(2).)
 
@@ -1248,10 +1222,9 @@ The `process.getgid()` method returns the numerical group identity of the proces
 
 This function is only available on POSIX platforms (i.e. not Windows or Android).
 
-`process.getgroups()`
----------------------
+## `process.getgroups()`
 
--   Returns: {integer\[\]}
+- Returns: {integer\[\]}
 
 The `process.getgroups()` method returns an array with the supplementary group IDs. POSIX leaves it unspecified if the effective group ID is included but Node.js ensures it always is.
 
@@ -1269,10 +1242,9 @@ The `process.getgroups()` method returns an array with the supplementary group I
 
 This function is only available on POSIX platforms (i.e. not Windows or Android).
 
-`process.getuid()`
-------------------
+## `process.getuid()`
 
--   Returns: {integer}
+- Returns: {integer}
 
 The `process.getuid()` method returns the numeric user identity of the process. (See getuid(2).)
 
@@ -1290,20 +1262,18 @@ The `process.getuid()` method returns the numeric user identity of the process. 
 
 This function is only available on POSIX platforms (i.e. not Windows or Android).
 
-`process.hasUncaughtExceptionCaptureCallback()`
------------------------------------------------
+## `process.hasUncaughtExceptionCaptureCallback()`
 
--   Returns: {boolean}
+- Returns: {boolean}
 
 Indicates whether a callback has been set using [`process.setUncaughtExceptionCaptureCallback()`](#process_process_setuncaughtexceptioncapturecallback_fn).
 
-`process.hrtime([time])`
-------------------------
+## `process.hrtime([time])`
 
 > Stability: 3 - Legacy. Use [`process.hrtime.bigint()`](#process_process_hrtime_bigint) instead.
 
--   `time` {integer\[\]} The result of a previous call to `process.hrtime()`
--   Returns: {integer\[\]}
+- `time` {integer\[\]} The result of a previous call to `process.hrtime()`
+- Returns: {integer\[\]}
 
 This is the legacy version of [`process.hrtime.bigint()`](#process_process_hrtime_bigint) before `bigint` was introduced in JavaScript.
 
@@ -1341,10 +1311,9 @@ These times are relative to an arbitrary time in the past, and not related to th
       // Benchmark took 1000000552 nanoseconds
     }, 1000);
 
-`process.hrtime.bigint()`
--------------------------
+## `process.hrtime.bigint()`
 
--   Returns: {bigint}
+- Returns: {bigint}
 
 The `bigint` version of the [`process.hrtime()`](#process_process_hrtime_time) method returning the current high-resolution real time in nanoseconds as a `bigint`.
 
@@ -1376,11 +1345,10 @@ Unlike [`process.hrtime()`](#process_process_hrtime_time), it does not support a
       // Benchmark took 1154389282 nanoseconds
     }, 1000);
 
-`process.initgroups(user, extraGroup)`
---------------------------------------
+## `process.initgroups(user, extraGroup)`
 
--   `user` {string|number} The user name or numeric identifier.
--   `extraGroup` {string|number} A group name or numeric identifier.
+- `user` {string|number} The user name or numeric identifier.
+- `extraGroup` {string|number} A group name or numeric identifier.
 
 The `process.initgroups()` method reads the `/etc/group` file and initializes the group access list, using all groups of which the user is a member. This is a privileged operation that requires that the Node.js process either have `root` access or the `CAP_SETGID` capability.
 
@@ -1404,11 +1372,10 @@ Use care when dropping privileges:
 
 This function is only available on POSIX platforms (i.e. not Windows or Android). This feature is not available in [`Worker`](worker_threads.md#worker_threads_class_worker) threads.
 
-`process.kill(pid[, signal])`
------------------------------
+## `process.kill(pid[, signal])`
 
--   `pid` {number} A process ID
--   `signal` {string|number} The signal to send, either as a string or number. **Default:** `'SIGTERM'`.
+- `pid` {number} A process ID
+- `signal` {string|number} The signal to send, either as a string or number. **Default:** `'SIGTERM'`.
 
 The `process.kill()` method sends the `signal` to the process identified by `pid`.
 
@@ -1446,26 +1413,24 @@ Even though the name of this function is `process.kill()`, it is really just a s
 
 When `SIGUSR1` is received by a Node.js process, Node.js will start the debugger. See [Signal Events](#process_signal_events).
 
-`process.mainModule`
---------------------
+## `process.mainModule`
 
 > Stability: 0 - Deprecated: Use [`require.main`](modules.md#modules_accessing_the_main_module) instead.
 
--   {Object}
+- {Object}
 
 The `process.mainModule` property provides an alternative way of retrieving [`require.main`](modules.md#modules_accessing_the_main_module). The difference is that if the main module changes at runtime, [`require.main`](modules.md#modules_accessing_the_main_module) may still refer to the original main module in modules that were required before the change occurred. Generally, it’s safe to assume that the two refer to the same module.
 
 As with [`require.main`](modules.md#modules_accessing_the_main_module), `process.mainModule` will be `undefined` if there is no entry script.
 
-`process.memoryUsage()`
------------------------
+## `process.memoryUsage()`
 
--   Returns: {Object}
-    -   `rss` {integer}
-    -   `heapTotal` {integer}
-    -   `heapUsed` {integer}
-    -   `external` {integer}
-    -   `arrayBuffers` {integer}
+- Returns: {Object}
+  - `rss` {integer}
+  - `heapTotal` {integer}
+  - `heapUsed` {integer}
+  - `external` {integer}
+  - `arrayBuffers` {integer}
 
 Returns an object describing the memory usage of the Node.js process measured in bytes.
 
@@ -1493,19 +1458,18 @@ Returns an object describing the memory usage of the Node.js process measured in
     //  arrayBuffers: 9386
     // }
 
--   `heapTotal` and `heapUsed` refer to V8’s memory usage.
--   `external` refers to the memory usage of C++ objects bound to JavaScript objects managed by V8.
--   `rss`, Resident Set Size, is the amount of space occupied in the main memory device (that is a subset of the total allocated memory) for the process, including all C++ and JavaScript objects and code.
--   `arrayBuffers` refers to memory allocated for `ArrayBuffer`s and `SharedArrayBuffer`s, including all Node.js [`Buffer`](buffer.md)s. This is also included in the `external` value. When Node.js is used as an embedded library, this value may be `0` because allocations for `ArrayBuffer`s may not be tracked in that case.
+- `heapTotal` and `heapUsed` refer to V8’s memory usage.
+- `external` refers to the memory usage of C++ objects bound to JavaScript objects managed by V8.
+- `rss`, Resident Set Size, is the amount of space occupied in the main memory device (that is a subset of the total allocated memory) for the process, including all C++ and JavaScript objects and code.
+- `arrayBuffers` refers to memory allocated for `ArrayBuffer`s and `SharedArrayBuffer`s, including all Node.js [`Buffer`](buffer.md)s. This is also included in the `external` value. When Node.js is used as an embedded library, this value may be `0` because allocations for `ArrayBuffer`s may not be tracked in that case.
 
 When using [`Worker`](worker_threads.md#worker_threads_class_worker) threads, `rss` will be a value that is valid for the entire process, while the other fields will only refer to the current thread.
 
 The `process.memoryUsage()` method iterates over each page to gather information about memory usage which might be slow depending on the program memory allocations.
 
-`process.memoryUsage.rss()`
----------------------------
+## `process.memoryUsage.rss()`
 
--   Returns: {integer}
+- Returns: {integer}
 
 The `process.memoryUsage.rss()` method returns an integer representing the Resident Set Size (RSS) in bytes.
 
@@ -1523,11 +1487,10 @@ This is the same value as the `rss` property provided by `process.memoryUsage()`
     console.log(memoryUsage.rss());
     // 35655680
 
-`process.nextTick(callback[, ...args])`
----------------------------------------
+## `process.nextTick(callback[, ...args])`
 
--   `callback` {Function}
--   `...args` {any} Additional arguments to pass when invoking the `callback`
+- `callback` {Function}
+- `...args` {any} Additional arguments to pass when invoking the `callback`
 
 `process.nextTick()` adds `callback` to the “next tick queue”. This queue is fully drained after the current operation on the JavaScript stack runs to completion and before the event loop is allowed to continue. It’s possible to create an infinite loop if one were to recursively call `process.nextTick()`. See the [Event Loop](https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/#process-nexttick) guide for more background.
 
@@ -1555,7 +1518,7 @@ This is the same value as the `rss` property provided by `process.memoryUsage()`
     // scheduled
     // nextTick callback
 
-This is important when developing APIs in order to give users the opportunity to assign event handlers *after* an object has been constructed but before any I/O has occurred:
+This is important when developing APIs in order to give users the opportunity to assign event handlers _after_ an object has been constructed but before any I/O has occurred:
 
     import { nextTick } from 'process';
 
@@ -1659,7 +1622,7 @@ The [`queueMicrotask()`](globals.md#globals_queuemicrotask_callback) API is an a
     // 2
     // 3
 
-For *most* userland use cases, the `queueMicrotask()` API provides a portable and reliable mechanism for deferring execution that works across multiple JavaScript platform environments and should be favored over `process.nextTick()`. In simple scenarios, `queueMicrotask()` can be a drop-in replacement for `process.nextTick()`.
+For _most_ userland use cases, the `queueMicrotask()` API provides a portable and reliable mechanism for deferring execution that works across multiple JavaScript platform environments and should be favored over `process.nextTick()`. In simple scenarios, `queueMicrotask()` can be a drop-in replacement for `process.nextTick()`.
 
     console.log('start');
     queueMicrotask(() => {
@@ -1689,17 +1652,15 @@ There are minor differences in the way errors raised from within the next tick q
 
 When in doubt, unless the specific capabilities of `process.nextTick()` are needed, use `queueMicrotask()`.
 
-`process.noDeprecation`
------------------------
+## `process.noDeprecation`
 
--   {boolean}
+- {boolean}
 
 The `process.noDeprecation` property indicates whether the `--no-deprecation` flag is set on the current Node.js process. See the documentation for the [`'warning'` event](#process_event_warning) and the [`emitWarning()` method](#process_process_emitwarning_warning_type_code_ctor) for more information about this flag’s behavior.
 
-`process.pid`
--------------
+## `process.pid`
 
--   {integer}
+- {integer}
 
 The `process.pid` property returns the PID of the process.
 
@@ -1711,22 +1672,21 @@ The `process.pid` property returns the PID of the process.
 
     console.log(`This process is pid ${pid}`);
 
-`process.platform`
-------------------
+## `process.platform`
 
--   {string}
+- {string}
 
 The `process.platform` property returns a string identifying the operating system platform on which the Node.js process is running.
 
 Currently possible values are:
 
--   `'aix'`
--   `'darwin'`
--   `'freebsd'`
--   `'linux'`
--   `'openbsd'`
--   `'sunos'`
--   `'win32'`
+- `'aix'`
+- `'darwin'`
+- `'freebsd'`
+- `'linux'`
+- `'openbsd'`
+- `'sunos'`
+- `'win32'`
 
 <!-- -->
 
@@ -1740,10 +1700,9 @@ Currently possible values are:
 
 The value `'android'` may also be returned if the Node.js is built on the Android operating system. However, Android support in Node.js [is experimental](https://github.com/nodejs/node/blob/HEAD/BUILDING.md#androidandroid-based-devices-eg-firefox-os).
 
-`process.ppid`
---------------
+## `process.ppid`
 
--   {integer}
+- {integer}
 
 The `process.ppid` property returns the PID of the parent of the current process.
 
@@ -1755,43 +1714,42 @@ The `process.ppid` property returns the PID of the parent of the current process
 
     console.log(`The parent process is pid ${ppid}`);
 
-`process.release`
------------------
+## `process.release`
 
--   {Object}
+- {Object}
 
 The `process.release` property returns an `Object` containing metadata related to the current release, including URLs for the source tarball and headers-only tarball.
 
 `process.release` contains the following properties:
 
--   `name` {string} A value that will always be `'node'`.
--   `sourceUrl` {string} an absolute URL pointing to a *`.tar.gz`* file containing the source code of the current release.
--   `headersUrl`{string} an absolute URL pointing to a *`.tar.gz`* file containing only the source header files for the current release. This file is significantly smaller than the full source file and can be used for compiling Node.js native add-ons.
--   `libUrl` {string} an absolute URL pointing to a *`node.lib`* file matching the architecture and version of the current release. This file is used for compiling Node.js native add-ons. *This property is only present on Windows builds of Node.js and will be missing on all other platforms.*
--   `lts` {string} a string label identifying the [LTS](https://github.com/nodejs/Release) label for this release. This property only exists for LTS releases and is `undefined` for all other release types, including *Current* releases. Valid values include the LTS Release code names (including those that are no longer supported).
-    -   `'Dubnium'` for the 10.x LTS line beginning with 10.13.0.
-    -   `'Erbium'` for the 12.x LTS line beginning with 12.13.0. For other LTS Release code names, see [Node.js Changelog Archive](https://github.com/nodejs/node/blob/HEAD/doc/changelogs/CHANGELOG_ARCHIVE.md)
+- `name` {string} A value that will always be `'node'`.
+- `sourceUrl` {string} an absolute URL pointing to a _`.tar.gz`_ file containing the source code of the current release.
+- `headersUrl`{string} an absolute URL pointing to a _`.tar.gz`_ file containing only the source header files for the current release. This file is significantly smaller than the full source file and can be used for compiling Node.js native add-ons.
+- `libUrl` {string} an absolute URL pointing to a _`node.lib`_ file matching the architecture and version of the current release. This file is used for compiling Node.js native add-ons. _This property is only present on Windows builds of Node.js and will be missing on all other platforms._
+- `lts` {string} a string label identifying the [LTS](https://github.com/nodejs/Release) label for this release. This property only exists for LTS releases and is `undefined` for all other release types, including _Current_ releases. Valid values include the LTS Release code names (including those that are no longer supported).
 
-    {
-      name: 'node',
-      lts: 'Erbium',
-      sourceUrl: 'https://nodejs.org/download/release/v12.18.1/node-v12.18.1.tar.gz',
-      headersUrl: 'https://nodejs.org/download/release/v12.18.1/node-v12.18.1-headers.tar.gz',
-      libUrl: 'https://nodejs.org/download/release/v12.18.1/win-x64/node.lib'
-    }
+  - `'Dubnium'` for the 10.x LTS line beginning with 10.13.0.
+  - `'Erbium'` for the 12.x LTS line beginning with 12.13.0. For other LTS Release code names, see [Node.js Changelog Archive](https://github.com/nodejs/node/blob/HEAD/doc/changelogs/CHANGELOG_ARCHIVE.md)
+
+  {
+  name: 'node',
+  lts: 'Erbium',
+  sourceUrl: 'https://nodejs.org/download/release/v12.18.1/node-v12.18.1.tar.gz',
+  headersUrl: 'https://nodejs.org/download/release/v12.18.1/node-v12.18.1-headers.tar.gz',
+  libUrl: 'https://nodejs.org/download/release/v12.18.1/win-x64/node.lib'
+  }
 
 In custom builds from non-release versions of the source tree, only the `name` property may be present. The additional properties should not be relied upon to exist.
 
-`process.report`
-----------------
+## `process.report`
 
--   {Object}
+- {Object}
 
 `process.report` is an object whose methods are used to generate diagnostic reports for the current process. Additional documentation is available in the [report documentation](report.md).
 
 ### `process.report.compact`
 
--   {boolean}
+- {boolean}
 
 Write reports in a compact format, single-line JSON, more easily consumable by log processing systems than the default multi-line format designed for human consumption.
 
@@ -1805,7 +1763,7 @@ Write reports in a compact format, single-line JSON, more easily consumable by l
 
 ### `process.report.directory`
 
--   {string}
+- {string}
 
 Directory where the report is written. The default value is the empty string, indicating that reports are written to the current working directory of the Node.js process.
 
@@ -1819,7 +1777,7 @@ Directory where the report is written. The default value is the empty string, in
 
 ### `process.report.filename`
 
--   {string}
+- {string}
 
 Filename where the report is written. If set to the empty string, the output filename will be comprised of a timestamp, PID, and sequence number. The default value is the empty string.
 
@@ -1833,8 +1791,8 @@ Filename where the report is written. If set to the empty string, the output fil
 
 ### `process.report.getReport([err])`
 
--   `err` {Error} A custom error used for reporting the JavaScript stack.
--   Returns: {Object}
+- `err` {Error} A custom error used for reporting the JavaScript stack.
+- Returns: {Object}
 
 Returns a JavaScript Object representation of a diagnostic report for the running process. The report’s JavaScript stack trace is taken from `err`, if present.
 
@@ -1860,7 +1818,7 @@ Additional documentation is available in the [report documentation](report.md).
 
 ### `process.report.reportOnFatalError`
 
--   {boolean}
+- {boolean}
 
 If `true`, a diagnostic report is generated on fatal errors, such as out of memory errors or failed C++ assertions.
 
@@ -1874,7 +1832,7 @@ If `true`, a diagnostic report is generated on fatal errors, such as out of memo
 
 ### `process.report.reportOnSignal`
 
--   {boolean}
+- {boolean}
 
 If `true`, a diagnostic report is generated when the process receives the signal specified by `process.report.signal`.
 
@@ -1888,7 +1846,7 @@ If `true`, a diagnostic report is generated when the process receives the signal
 
 ### `process.report.reportOnUncaughtException`
 
--   {boolean}
+- {boolean}
 
 If `true`, a diagnostic report is generated on uncaught exception.
 
@@ -1902,7 +1860,7 @@ If `true`, a diagnostic report is generated on uncaught exception.
 
 ### `process.report.signal`
 
--   {string}
+- {string}
 
 The signal used to trigger the creation of a diagnostic report. Defaults to `'SIGUSR2'`.
 
@@ -1916,10 +1874,10 @@ The signal used to trigger the creation of a diagnostic report. Defaults to `'SI
 
 ### `process.report.writeReport([filename][, err])`
 
--   `filename` {string} Name of the file where the report is written. This should be a relative path, that will be appended to the directory specified in `process.report.directory`, or the current working directory of the Node.js process, if unspecified.
--   `err` {Error} A custom error used for reporting the JavaScript stack.
+- `filename` {string} Name of the file where the report is written. This should be a relative path, that will be appended to the directory specified in `process.report.directory`, or the current working directory of the Node.js process, if unspecified.
+- `err` {Error} A custom error used for reporting the JavaScript stack.
 
--   Returns: {string} Returns the filename of the generated report.
+- Returns: {string} Returns the filename of the generated report.
 
 Writes a diagnostic report to a file. If `filename` is not provided, the default filename includes the date, time, PID, and a sequence number. The report’s JavaScript stack trace is taken from `err`, if present.
 
@@ -1933,26 +1891,25 @@ Writes a diagnostic report to a file. If `filename` is not provided, the default
 
 Additional documentation is available in the [report documentation](report.md).
 
-`process.resourceUsage()`
--------------------------
+## `process.resourceUsage()`
 
--   Returns: {Object} the resource usage for the current process. All of these values come from the `uv_getrusage` call which returns a [`uv_rusage_t` struct](https://docs.libuv.org/en/v1.x/misc.html#c.uv_rusage_t).
-    -   `userCPUTime` {integer} maps to `ru_utime` computed in microseconds. It is the same value as [`process.cpuUsage().user`](#process_process_cpuusage_previousvalue).
-    -   `systemCPUTime` {integer} maps to `ru_stime` computed in microseconds. It is the same value as [`process.cpuUsage().system`](#process_process_cpuusage_previousvalue).
-    -   `maxRSS` {integer} maps to `ru_maxrss` which is the maximum resident set size used in kilobytes.
-    -   `sharedMemorySize` {integer} maps to `ru_ixrss` but is not supported by any platform.
-    -   `unsharedDataSize` {integer} maps to `ru_idrss` but is not supported by any platform.
-    -   `unsharedStackSize` {integer} maps to `ru_isrss` but is not supported by any platform.
-    -   `minorPageFault` {integer} maps to `ru_minflt` which is the number of minor page faults for the process, see [this article for more details](https://en.wikipedia.org/wiki/Page_fault#Minor).
-    -   `majorPageFault` {integer} maps to `ru_majflt` which is the number of major page faults for the process, see [this article for more details](https://en.wikipedia.org/wiki/Page_fault#Major). This field is not supported on Windows.
-    -   `swappedOut` {integer} maps to `ru_nswap` but is not supported by any platform.
-    -   `fsRead` {integer} maps to `ru_inblock` which is the number of times the file system had to perform input.
-    -   `fsWrite` {integer} maps to `ru_oublock` which is the number of times the file system had to perform output.
-    -   `ipcSent` {integer} maps to `ru_msgsnd` but is not supported by any platform.
-    -   `ipcReceived` {integer} maps to `ru_msgrcv` but is not supported by any platform.
-    -   `signalsCount` {integer} maps to `ru_nsignals` but is not supported by any platform.
-    -   `voluntaryContextSwitches` {integer} maps to `ru_nvcsw` which is the number of times a CPU context switch resulted due to a process voluntarily giving up the processor before its time slice was completed (usually to await availability of a resource). This field is not supported on Windows.
-    -   `involuntaryContextSwitches` {integer} maps to `ru_nivcsw` which is the number of times a CPU context switch resulted due to a higher priority process becoming runnable or because the current process exceeded its time slice. This field is not supported on Windows.
+- Returns: {Object} the resource usage for the current process. All of these values come from the `uv_getrusage` call which returns a [`uv_rusage_t` struct](https://docs.libuv.org/en/v1.x/misc.html#c.uv_rusage_t).
+  - `userCPUTime` {integer} maps to `ru_utime` computed in microseconds. It is the same value as [`process.cpuUsage().user`](#process_process_cpuusage_previousvalue).
+  - `systemCPUTime` {integer} maps to `ru_stime` computed in microseconds. It is the same value as [`process.cpuUsage().system`](#process_process_cpuusage_previousvalue).
+  - `maxRSS` {integer} maps to `ru_maxrss` which is the maximum resident set size used in kilobytes.
+  - `sharedMemorySize` {integer} maps to `ru_ixrss` but is not supported by any platform.
+  - `unsharedDataSize` {integer} maps to `ru_idrss` but is not supported by any platform.
+  - `unsharedStackSize` {integer} maps to `ru_isrss` but is not supported by any platform.
+  - `minorPageFault` {integer} maps to `ru_minflt` which is the number of minor page faults for the process, see [this article for more details](https://en.wikipedia.org/wiki/Page_fault#Minor).
+  - `majorPageFault` {integer} maps to `ru_majflt` which is the number of major page faults for the process, see [this article for more details](https://en.wikipedia.org/wiki/Page_fault#Major). This field is not supported on Windows.
+  - `swappedOut` {integer} maps to `ru_nswap` but is not supported by any platform.
+  - `fsRead` {integer} maps to `ru_inblock` which is the number of times the file system had to perform input.
+  - `fsWrite` {integer} maps to `ru_oublock` which is the number of times the file system had to perform output.
+  - `ipcSent` {integer} maps to `ru_msgsnd` but is not supported by any platform.
+  - `ipcReceived` {integer} maps to `ru_msgrcv` but is not supported by any platform.
+  - `signalsCount` {integer} maps to `ru_nsignals` but is not supported by any platform.
+  - `voluntaryContextSwitches` {integer} maps to `ru_nvcsw` which is the number of times a CPU context switch resulted due to a process voluntarily giving up the processor before its time slice was completed (usually to await availability of a resource). This field is not supported on Windows.
+  - `involuntaryContextSwitches` {integer} maps to `ru_nivcsw` which is the number of times a CPU context switch resulted due to a higher priority process becoming runnable or because the current process exceeded its time slice. This field is not supported on Windows.
 
 <!-- -->
 
@@ -2006,15 +1963,14 @@ Additional documentation is available in the [report documentation](report.md).
       }
     */
 
-`process.send(message[, sendHandle[, options]][, callback])`
-------------------------------------------------------------
+## `process.send(message[, sendHandle[, options]][, callback])`
 
--   `message` {Object}
--   `sendHandle` {net.Server|net.Socket}
--   `options` {Object} used to parameterize the sending of certain types of handles.`options` supports the following properties:
-    -   `keepOpen` {boolean} A value that can be used when passing instances of `net.Socket`. When `true`, the socket is kept open in the sending process. **Default:** `false`.
--   `callback` {Function}
--   Returns: {boolean}
+- `message` {Object}
+- `sendHandle` {net.Server|net.Socket}
+- `options` {Object} used to parameterize the sending of certain types of handles.`options` supports the following properties:
+  - `keepOpen` {boolean} A value that can be used when passing instances of `net.Socket`. When `true`, the socket is kept open in the sending process. **Default:** `false`.
+- `callback` {Function}
+- Returns: {boolean}
 
 If Node.js is spawned with an IPC channel, the `process.send()` method can be used to send messages to the parent process. Messages will be received as a [`'message'`](child_process.md#child_process_event_message) event on the parent’s [`ChildProcess`](child_process.md#child_process_class_childprocess) object.
 
@@ -2022,10 +1978,9 @@ If Node.js was not spawned with an IPC channel, `process.send` will be `undefine
 
 The message goes through serialization and parsing. The resulting message might not be the same as what is originally sent.
 
-`process.setegid(id)`
----------------------
+## `process.setegid(id)`
 
--   `id` {string|number} A group name or ID
+- `id` {string|number} A group name or ID
 
 The `process.setegid()` method sets the effective group identity of the process. (See setegid(2).) The `id` can be passed as either a numeric ID or a group name string. If a group name is specified, this method blocks while resolving the associated a numeric ID.
 
@@ -2055,10 +2010,9 @@ The `process.setegid()` method sets the effective group identity of the process.
 
 This function is only available on POSIX platforms (i.e. not Windows or Android). This feature is not available in [`Worker`](worker_threads.md#worker_threads_class_worker) threads.
 
-`process.seteuid(id)`
----------------------
+## `process.seteuid(id)`
 
--   `id` {string|number} A user name or ID
+- `id` {string|number} A user name or ID
 
 The `process.seteuid()` method sets the effective user identity of the process. (See seteuid(2).) The `id` can be passed as either a numeric ID or a username string. If a username is specified, the method blocks while resolving the associated numeric ID.
 
@@ -2088,10 +2042,9 @@ The `process.seteuid()` method sets the effective user identity of the process. 
 
 This function is only available on POSIX platforms (i.e. not Windows or Android). This feature is not available in [`Worker`](worker_threads.md#worker_threads_class_worker) threads.
 
-`process.setgid(id)`
---------------------
+## `process.setgid(id)`
 
--   `id` {string|number} The group name or ID
+- `id` {string|number} The group name or ID
 
 The `process.setgid()` method sets the group identity of the process. (See setgid(2).) The `id` can be passed as either a numeric ID or a group name string. If a group name is specified, this method blocks while resolving the associated numeric ID.
 
@@ -2121,10 +2074,9 @@ The `process.setgid()` method sets the group identity of the process. (See setgi
 
 This function is only available on POSIX platforms (i.e. not Windows or Android). This feature is not available in [`Worker`](worker_threads.md#worker_threads_class_worker) threads.
 
-`process.setgroups(groups)`
----------------------------
+## `process.setgroups(groups)`
 
--   `groups` {integer\[\]}
+- `groups` {integer\[\]}
 
 The `process.setgroups()` method sets the supplementary group IDs for the Node.js process. This is a privileged operation that requires the Node.js process to have `root` or the `CAP_SETGID` capability.
 
@@ -2154,10 +2106,9 @@ The `groups` array can contain numeric group IDs, group names, or both.
 
 This function is only available on POSIX platforms (i.e. not Windows or Android). This feature is not available in [`Worker`](worker_threads.md#worker_threads_class_worker) threads.
 
-`process.setuid(id)`
---------------------
+## `process.setuid(id)`
 
--   `id` {integer | string}
+- `id` {integer | string}
 
 The `process.setuid(id)` method sets the user identity of the process. (See setuid(2).) The `id` can be passed as either a numeric ID or a username string. If a username is specified, the method blocks while resolving the associated numeric ID.
 
@@ -2187,12 +2138,11 @@ The `process.setuid(id)` method sets the user identity of the process. (See setu
 
 This function is only available on POSIX platforms (i.e. not Windows or Android). This feature is not available in [`Worker`](worker_threads.md#worker_threads_class_worker) threads.
 
-`process.setSourceMapsEnabled(val)`
------------------------------------
+## `process.setSourceMapsEnabled(val)`
 
 > Stability: 1 - Experimental
 
--   `val` {boolean}
+- `val` {boolean}
 
 This function enables or disables the [Source Map v3](https://sourcemaps.info/spec.html) support for stack traces.
 
@@ -2200,10 +2150,9 @@ It provides same features as launching Node.js process with commandline options 
 
 Only source maps in JavaScript files that are loaded after source maps has been enabled will be parsed and loaded.
 
-`process.setUncaughtExceptionCaptureCallback(fn)`
--------------------------------------------------
+## `process.setUncaughtExceptionCaptureCallback(fn)`
 
--   `fn` {Function|null}
+- `fn` {Function|null}
 
 The `process.setUncaughtExceptionCaptureCallback()` function sets a function that will be invoked when an uncaught exception occurs, which will receive the exception value itself as its first argument.
 
@@ -2213,10 +2162,9 @@ To unset the capture function, `process.setUncaughtExceptionCaptureCallback(null
 
 Using this function is mutually exclusive with using the deprecated [`domain`](domain.md) built-in module.
 
-`process.stderr`
-----------------
+## `process.stderr`
 
--   {Stream}
+- {Stream}
 
 The `process.stderr` property returns a stream connected to `stderr` (fd `2`). It is a [`net.Socket`](net.md#net_class_net_socket) (which is a [Duplex](stream.md#stream_duplex_and_transform_streams) stream) unless fd `2` refers to a file, in which case it is a [Writable](stream.md#stream_writable_streams) stream.
 
@@ -2224,14 +2172,13 @@ The `process.stderr` property returns a stream connected to `stderr` (fd `2`). I
 
 ### `process.stderr.fd`
 
--   {number}
+- {number}
 
 This property refers to the value of underlying file descriptor of `process.stderr`. The value is fixed at `2`. In [`Worker`](worker_threads.md#worker_threads_class_worker) threads, this field does not exist.
 
-`process.stdin`
----------------
+## `process.stdin`
 
--   {Stream}
+- {Stream}
 
 The `process.stdin` property returns a stream connected to `stdin` (fd `0`). It is a [`net.Socket`](net.md#net_class_net_socket) (which is a [Duplex](stream.md#stream_duplex_and_transform_streams) stream) unless fd `0` refers to a file, in which case it is a [Readable](stream.md#stream_readable_streams) stream.
 
@@ -2243,14 +2190,13 @@ In “old” streams mode the `stdin` stream is paused by default, so one must c
 
 ### `process.stdin.fd`
 
--   {number}
+- {number}
 
 This property refers to the value of underlying file descriptor of `process.stdin`. The value is fixed at `0`. In [`Worker`](worker_threads.md#worker_threads_class_worker) threads, this field does not exist.
 
-`process.stdout`
-----------------
+## `process.stdout`
 
--   {Stream}
+- {Stream}
 
 The `process.stdout` property returns a stream connected to `stdout` (fd `1`). It is a [`net.Socket`](net.md#net_class_net_socket) (which is a [Duplex](stream.md#stream_duplex_and_transform_streams) stream) unless fd `1` refers to a file, in which case it is a [Writable](stream.md#stream_writable_streams) stream.
 
@@ -2268,7 +2214,7 @@ For example, to copy `process.stdin` to `process.stdout`:
 
 ### `process.stdout.fd`
 
--   {number}
+- {number}
 
 This property refers to the value of underlying file descriptor of `process.stdout`. The value is fixed at `1`. In [`Worker`](worker_threads.md#worker_threads_class_worker) threads, this field does not exist.
 
@@ -2278,15 +2224,15 @@ This property refers to the value of underlying file descriptor of `process.stdo
 
 1.  They are used internally by [`console.log()`](console.md#console_console_log_data_args) and [`console.error()`](console.md#console_console_error_data_args), respectively.
 2.  Writes may be synchronous depending on what the stream is connected to and whether the system is Windows or POSIX:
-    -   Files: *synchronous* on Windows and POSIX
-    -   TTYs (Terminals): *asynchronous* on Windows, *synchronous* on POSIX
-    -   Pipes (and sockets): *synchronous* on Windows, *asynchronous* on POSIX
+    - Files: _synchronous_ on Windows and POSIX
+    - TTYs (Terminals): _asynchronous_ on Windows, _synchronous_ on POSIX
+    - Pipes (and sockets): _synchronous_ on Windows, _asynchronous_ on POSIX
 
 These behaviors are partly for historical reasons, as changing them would create backward incompatibility, but they are also expected by some users.
 
 Synchronous writes avoid problems such as output written with `console.log()` or `console.error()` being unexpectedly interleaved, or not written at all if `process.exit()` is called before an asynchronous write completes. See [`process.exit()`](#process_process_exit_code) for more information.
 
-***Warning***: Synchronous writes block the event loop until the write has completed. This can be near instantaneous in the case of output to a file, but under high system load, pipes that are not being read at the receiving end, or with slow terminals or file systems, its possible for the event loop to be blocked often enough and long enough to have severe negative performance impacts. This may not be a problem when writing to an interactive terminal session, but consider this particularly careful when doing production logging to the process output streams.
+**_Warning_**: Synchronous writes block the event loop until the write has completed. This can be near instantaneous in the case of output to a file, but under high system load, pipes that are not being read at the receiving end, or with slow terminals or file systems, its possible for the event loop to be blocked often enough and long enough to have severe negative performance impacts. This may not be a problem when writing to an interactive terminal session, but consider this particularly careful when doing production logging to the process output streams.
 
 To check if a stream is connected to a [TTY](tty.md#tty_tty) context, check the `isTTY` property.
 
@@ -2303,10 +2249,9 @@ For instance:
 
 See the [TTY](tty.md#tty_tty) documentation for more information.
 
-`process.throwDeprecation`
---------------------------
+## `process.throwDeprecation`
 
--   {boolean}
+- {boolean}
 
 The initial value of `process.throwDeprecation` indicates whether the `--throw-deprecation` flag is set on the current Node.js process. `process.throwDeprecation` is mutable, so whether or not deprecation warnings result in errors may be altered at runtime. See the documentation for the [`'warning'` event](#process_event_warning) and the [`emitWarning()` method](#process_process_emitwarning_warning_type_code_ctor) for more information.
 
@@ -2324,10 +2269,9 @@ The initial value of `process.throwDeprecation` indicates whether the `--throw-d
     Thrown:
     [DeprecationWarning: test] { name: 'DeprecationWarning' }
 
-`process.title`
----------------
+## `process.title`
 
--   {string}
+- {string}
 
 The `process.title` property returns the current process title (i.e. returns the current value of `ps`). Assigning a new value to `process.title` modifies the current value of `ps`.
 
@@ -2335,24 +2279,21 @@ When a new value is assigned, different platforms will impose different maximum 
 
 Assigning a value to `process.title` might not result in an accurate label within process manager applications such as macOS Activity Monitor or Windows Services Manager.
 
-`process.traceDeprecation`
---------------------------
+## `process.traceDeprecation`
 
--   {boolean}
+- {boolean}
 
 The `process.traceDeprecation` property indicates whether the `--trace-deprecation` flag is set on the current Node.js process. See the documentation for the [`'warning'` event](#process_event_warning) and the [`emitWarning()` method](#process_process_emitwarning_warning_type_code_ctor) for more information about this flag’s behavior.
 
-`process.umask()`
------------------
+## `process.umask()`
 
 > Stability: 0 - Deprecated. Calling `process.umask()` with no argument causes the process-wide umask to be written twice. This introduces a race condition between threads, and is a potential security vulnerability. There is no safe, cross-platform alternative API.
 
 `process.umask()` returns the Node.js process’s file mode creation mask. Child processes inherit the mask from the parent process.
 
-`process.umask(mask)`
----------------------
+## `process.umask(mask)`
 
--   `mask` {string|integer}
+- `mask` {string|integer}
 
 `process.umask(mask)` sets the Node.js process’s file mode creation mask. Child processes inherit the mask from the parent process. Returns the previous mask.
 
@@ -2374,19 +2315,17 @@ The `process.traceDeprecation` property indicates whether the `--trace-deprecati
 
 In [`Worker`](worker_threads.md#worker_threads_class_worker) threads, `process.umask(mask)` will throw an exception.
 
-`process.uptime()`
-------------------
+## `process.uptime()`
 
--   Returns: {number}
+- Returns: {number}
 
 The `process.uptime()` method returns the number of seconds the current Node.js process has been running.
 
 The return value includes fractions of a second. Use `Math.floor()` to get whole seconds.
 
-`process.version`
------------------
+## `process.version`
 
--   {string}
+- {string}
 
 The `process.version` property contains the Node.js version string.
 
@@ -2400,12 +2339,11 @@ The `process.version` property contains the Node.js version string.
     console.log(`Version: ${version}`);
     // Version: v14.8.0
 
-To get the version string without the prepended *v*, use `process.versions.node`.
+To get the version string without the prepended _v_, use `process.versions.node`.
 
-`process.versions`
-------------------
+## `process.versions`
 
--   {Object}
+- {Object}
 
 The `process.versions` property returns an object listing the version strings of Node.js and its dependencies. `process.versions.modules` indicates the current ABI version, which is increased whenever a C++ API changes. Node.js will refuse to load modules that were compiled against a different module ABI version.
 
@@ -2435,21 +2373,20 @@ Will generate an object similar to:
       tz: '2018e',
       unicode: '11.0' }
 
-Exit codes
-----------
+## Exit codes
 
 Node.js will normally exit with a `0` status code when no more async operations are pending. The following status codes are used in other cases:
 
--   `1` **Uncaught Fatal Exception**: There was an uncaught exception, and it was not handled by a domain or an [`'uncaughtException'`](#process_event_uncaughtexception) event handler.
--   `2`: Unused (reserved by Bash for builtin misuse)
--   `3` **Internal JavaScript Parse Error**: The JavaScript source code internal in the Node.js bootstrapping process caused a parse error. This is extremely rare, and generally can only happen during development of Node.js itself.
--   `4` **Internal JavaScript Evaluation Failure**: The JavaScript source code internal in the Node.js bootstrapping process failed to return a function value when evaluated. This is extremely rare, and generally can only happen during development of Node.js itself.
--   `5` **Fatal Error**: There was a fatal unrecoverable error in V8. Typically a message will be printed to stderr with the prefix `FATAL ERROR`.
--   `6` **Non-function Internal Exception Handler**: There was an uncaught exception, but the internal fatal exception handler function was somehow set to a non-function, and could not be called.
--   `7` **Internal Exception Handler Run-Time Failure**: There was an uncaught exception, and the internal fatal exception handler function itself threw an error while attempting to handle it. This can happen, for example, if an [`'uncaughtException'`](#process_event_uncaughtexception) or `domain.on('error')` handler throws an error.
--   `8`: Unused. In previous versions of Node.js, exit code 8 sometimes indicated an uncaught exception.
--   `9` **Invalid Argument**: Either an unknown option was specified, or an option requiring a value was provided without a value.
--   `10` **Internal JavaScript Run-Time Failure**: The JavaScript source code internal in the Node.js bootstrapping process threw an error when the bootstrapping function was called. This is extremely rare, and generally can only happen during development of Node.js itself.
--   `12` **Invalid Debug Argument**: The `--inspect` and/or `--inspect-brk` options were set, but the port number chosen was invalid or unavailable.
--   `13` **Unfinished Top-Level Await**: `await` was used outside of a function in the top-level code, but the passed `Promise` never resolved.
--   `>128` **Signal Exits**: If Node.js receives a fatal signal such as `SIGKILL` or `SIGHUP`, then its exit code will be `128` plus the value of the signal code. This is a standard POSIX practice, since exit codes are defined to be 7-bit integers, and signal exits set the high-order bit, and then contain the value of the signal code. For example, signal `SIGABRT` has value `6`, so the expected exit code will be `128` + `6`, or `134`.
+- `1` **Uncaught Fatal Exception**: There was an uncaught exception, and it was not handled by a domain or an [`'uncaughtException'`](#process_event_uncaughtexception) event handler.
+- `2`: Unused (reserved by Bash for builtin misuse)
+- `3` **Internal JavaScript Parse Error**: The JavaScript source code internal in the Node.js bootstrapping process caused a parse error. This is extremely rare, and generally can only happen during development of Node.js itself.
+- `4` **Internal JavaScript Evaluation Failure**: The JavaScript source code internal in the Node.js bootstrapping process failed to return a function value when evaluated. This is extremely rare, and generally can only happen during development of Node.js itself.
+- `5` **Fatal Error**: There was a fatal unrecoverable error in V8. Typically a message will be printed to stderr with the prefix `FATAL ERROR`.
+- `6` **Non-function Internal Exception Handler**: There was an uncaught exception, but the internal fatal exception handler function was somehow set to a non-function, and could not be called.
+- `7` **Internal Exception Handler Run-Time Failure**: There was an uncaught exception, and the internal fatal exception handler function itself threw an error while attempting to handle it. This can happen, for example, if an [`'uncaughtException'`](#process_event_uncaughtexception) or `domain.on('error')` handler throws an error.
+- `8`: Unused. In previous versions of Node.js, exit code 8 sometimes indicated an uncaught exception.
+- `9` **Invalid Argument**: Either an unknown option was specified, or an option requiring a value was provided without a value.
+- `10` **Internal JavaScript Run-Time Failure**: The JavaScript source code internal in the Node.js bootstrapping process threw an error when the bootstrapping function was called. This is extremely rare, and generally can only happen during development of Node.js itself.
+- `12` **Invalid Debug Argument**: The `--inspect` and/or `--inspect-brk` options were set, but the port number chosen was invalid or unavailable.
+- `13` **Unfinished Top-Level Await**: `await` was used outside of a function in the top-level code, but the passed `Promise` never resolved.
+- `>128` **Signal Exits**: If Node.js receives a fatal signal such as `SIGKILL` or `SIGHUP`, then its exit code will be `128` plus the value of the signal code. This is a standard POSIX practice, since exit codes are defined to be 7-bit integers, and signal exits set the high-order bit, and then contain the value of the signal code. For example, signal `SIGABRT` has value `6`, so the expected exit code will be `128` + `6`, or `134`.

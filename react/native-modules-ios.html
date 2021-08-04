@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>iOS Native Modules</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">iOS Native Modules</h1>
+    </header>
+    <p>
+      Welcome to Native Modules for iOS. Please start by reading the
+      <a href="native-modules-intro">Native Modules Intro</a> for an intro to
+      what native modules are.
+    </p>
+    <h2 id="create-a-calendar-native-module">
+      Create a Calendar Native Module
+    </h2>
+    <p>
+      In the following guide you will create a native module,
+      <code>CalendarModule</code>, that will allow you to access Apple’s
+      calendar APIs from JavaScript. By the end you will be able to call
+      <code
+        >CalendarModule.createCalendarEvent('Dinner Party', 'My House');</code
+      >
+      from JavaScript, invoking a native method that creates a calendar event.
+    </p>
+    <blockquote>
+      <p>
+        The React Native team is currently working on a re-architecture of the
+        Native Module system. This new system is called TurboModules, and it
+        will help facilitate more efficient type-safe communication between
+        JavaScript and native, without relying on the React Native bridge. It
+        will also enable new extensions that weren’t possible with the legacy
+        Native Module system. You can read more about it
+        <a
+          href="https://github.com/react-native-community/discussions-and-proposals/issues/40"
+          >here</a
+        >. Throughout these docs we have added notes around parts of Native
+        Modules that will change in the TurboModules release and how you can
+        best prepare for a smooth upgrade to TurboModules.
+      </p>
+    </blockquote>
+    <h3 id="setup">Setup</h3>
+    <p>
+      To get started, open up the iOS project within your React Native
+      application in Xcode. You can find your iOS project here within a React
+      Native app:
+    </p>
+    <figure>
+      <img
+        src="/docs/assets/native-modules-ios-open-project.png"
+        width="500"
+        alt="Image of opening up an iOS project within a React Native app inside of xCode."
+      />
+      <figcaption>Image of where you can find your iOS project</figcaption>
+    </figure>
+    <p>
+      We recommend using Xcode to write your native code. Xcode is built for iOS
+      development, and using it will help you to quickly resolve smaller errors
+      like code syntax.
+    </p>
+    <h3 id="create-custom-native-module-files">
+      Create Custom Native Module Files
+    </h3>
+    <p>
+      The first step is to create our main custom native module header and
+      implementation files. Create a new file called
+      <code>RCTCalendarModule.h</code>
+    </p>
+    <figure>
+      <img
+        src="/docs/assets/native-modules-ios-add-class.png"
+        width="500"
+        alt="Image of creating a class called  RCTCalendarModule.h."
+      />
+      <figcaption>
+        Image of creating a custom native module file within the same folder as
+        AppDelegate
+      </figcaption>
+    </figure>
+    <p>and add the following to it:</p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode objectivec"
+      ><code class="sourceCode objectivec"><a class="sourceLine" id="cb1-1" title="1"><span class="co">//  RCTCalendarModule.h</span></a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="pp">#import </span><span class="im">&lt;React/RCTBridgeModule.h&gt;</span></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="kw">@interface</span> RCTCalendarModule : NSObject &lt;RCTBridgeModule&gt;</a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="kw">@end</span></a></code></pre>
+    </div>
+    <p>
+      You can use any name that fits the native module you are building. Name
+      the class <code>RCTCalendarModule</code> since you are creating a calendar
+      native module. Since ObjC does not have language-level support for
+      namespaces like Java or C++, convention is to prepend the class name with
+      a substring. This could be an abbreviation of your application name or
+      your infra name. RCT, in this example, refers to React.
+    </p>
+    <p>
+      As you can see below, the CalendarModule class implements the
+      <code>RCTBridgeModule</code> protocol. A native module is an Objective-C
+      class that implements the <code>RCTBridgeModule</code> protocol.
+    </p>
+    <p>
+      Next up, let’s start implementing the native module. Create the
+      corresponding implementation file, <code>RCTCalendarModule.m</code>, in
+      the same folder and include the following content:
+    </p>
+    <div class="sourceCode" id="cb2">
+      <pre
+        class="sourceCode objectivec"
+      ><code class="sourceCode objectivec"><a class="sourceLine" id="cb2-1" title="1"><span class="co">// RCTCalendarModule.m</span></a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="pp">#import </span><span class="im">&quot;RCTCalendarModule.h&quot;</span></a>
+<a class="sourceLine" id="cb2-3" title="3"></a>
+<a class="sourceLine" id="cb2-4" title="4"><span class="kw">@implementation</span> RCTCalendarModule</a>
+<a class="sourceLine" id="cb2-5" title="5"></a>
+<a class="sourceLine" id="cb2-6" title="6"><span class="co">// To export a module named RCTCalendarModule</span></a>
+<a class="sourceLine" id="cb2-7" title="7">RCT_EXPORT_MODULE();</a>
+<a class="sourceLine" id="cb2-8" title="8"></a>
+<a class="sourceLine" id="cb2-9" title="9"><span class="kw">@end</span></a></code></pre>
+    </div>
+    <h3 id="module-name">Module Name</h3>
+    <p>
+      For now, your <code>RCTCalendarModule.m</code> native module only includes
+      a <code>RCT_EXPORT_MODULE</code> macro, which exports and registers the
+      native module class with React Native. The
+      <code>RCT_EXPORT_MODULE</code> macro also takes an optional argument that
+      specifies the name that the module will be accessible as in your
+      JavaScript code.
+    </p>
+    <p>
+      This argument is not a string literal. In the example below
+      <code>RCT_EXPORT_MODULE(CalendarModuleFoo)</code> is passed, not
+      <code>RCT_EXPORT_MODULE("CalendarModuleFoo")</code>.
+    </p>
+    <div class="sourceCode" id="cb3">
+      <pre
+        class="sourceCode objectivec"
+      ><code class="sourceCode objectivec"><a class="sourceLine" id="cb3-1" title="1"><span class="co">// To export a module named CalendarModuleFoo</span></a>
+<a class="sourceLine" id="cb3-2" title="2">RCT_EXPORT_MODULE(CalendarModuleFoo);</a></code></pre>
+    </div>
+    <p>The native module can then be accessed in JS like this:</p>
+    <pre
+      class="jsx"
+    ><code>const { CalendarModuleFoo } = ReactNative.NativeModules;</code></pre>
+    <p>
+      If you do not specify a name, the JavaScript module name will match the
+      Objective-C class name, with any “RCT” or “RK” prefixes removed.
+    </p>
+    <p>
+      Let’s follow the example below and call
+      <code>RCT_EXPORT_MODULE</code> without any arguments. As a result, the
+      module will be exposed to React Native using the name
+      <code>CalendarModule</code>, since that is the Objective-C class name,
+      with RCT removed.
+    </p>
+    <div class="sourceCode" id="cb5">
+      <pre
+        class="sourceCode objectivec"
+      ><code class="sourceCode objectivec"><a class="sourceLine" id="cb5-1" title="1"><span class="co">// Without passing in a name this will export the native module name as the Objective-C class name with “RCT” removed</span></a>
+<a class="sourceLine" id="cb5-2" title="2">RCT_EXPORT_MODULE();</a></code></pre>
+    </div>
+    <p>The native module can then be accessed in JS like this:</p>
+    <pre
+      class="jsx"
+    ><code>const { CalendarModule } = ReactNative.NativeModules;</code></pre>
+    <h3 id="export-a-native-method-to-javascript">
+      Export a Native Method to JavaScript
+    </h3>
+    <p>
+      React Native will not expose any methods in a native module to JavaScript
+      unless explicitly told to. This can be done using the
+      <code>RCT_EXPORT_METHOD</code> macro. Methods written in the
+      <code>RCT_EXPORT_METHOD</code> macro are asynchronous and the return type
+      is therefore always void. In order to pass a result from a
+      <code>RCT_EXPORT_METHOD</code> method to JavaScript you can use callbacks
+      or emit events (covered below). Let’s go ahead and set up a native method
+      for our <code>CalendarModule</code> native module using the
+      <code>RCT_EXPORT_METHOD</code> macro. Call it
+      <code>createCalendarEvent()</code> and for now have it take in name and
+      location arguments as strings. Argument type options will be covered
+      shortly.
+    </p>
+    <div class="sourceCode" id="cb7">
+      <pre
+        class="sourceCode objectivec"
+      ><code class="sourceCode objectivec"><a class="sourceLine" id="cb7-1" title="1">RCT_EXPORT_METHOD(createCalendarEvent:(NSString *)name location:(NSString *)location)</a>
+<a class="sourceLine" id="cb7-2" title="2">{</a>
+<a class="sourceLine" id="cb7-3" title="3">}</a></code></pre>
+    </div>
+    <blockquote>
+      <p>
+        Please note that the <code>RCT_EXPORT_METHOD</code> macro will not be
+        necessary with TurboModules unless your method relies on RCT argument
+        conversion (see argument types below). Ultimately, React Native will
+        remove <code>RCT_EXPORT_MACRO,</code> so we discourage people from using
+        <code>RCTConvert</code>. Instead, you can do the argument conversion
+        within the method body.
+      </p>
+    </blockquote>
+    <p>
+      Before you build out the <code>createCalendarEvent()</code> method’s
+      functionality, add a console log in the method so you can confirm it has
+      been invoked from JavaScript in your React Native application. Use the
+      <code>RCTLog</code> APIs from React. Let’s import that header at the top
+      of your file and then add the log call.
+    </p>
+    <div class="sourceCode" id="cb8">
+      <pre
+        class="sourceCode objectivec"
+      ><code class="sourceCode objectivec"><a class="sourceLine" id="cb8-1" title="1"><span class="pp">#import </span><span class="im">&lt;React/RCTLog.h&gt;</span></a>
+<a class="sourceLine" id="cb8-2" title="2">RCT_EXPORT_METHOD(createCalendarEvent:(NSString *)name location:(NSString *)location)</a>
+<a class="sourceLine" id="cb8-3" title="3">{</a>
+<a class="sourceLine" id="cb8-4" title="4"> RCTLogInfo(<span class="st">@&quot;Pretending to create an event %@ at %@&quot;</span>, name, location);</a>
+<a class="sourceLine" id="cb8-5" title="5">}</a></code></pre>
+    </div>
+    <h3 id="synchronous-methods">Synchronous Methods</h3>
+    <p>
+      You can use the <code>RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD</code> to
+      create a synchronous native method.
+    </p>
+    <div class="sourceCode" id="cb9">
+      <pre
+        class="sourceCode objectivec"
+      ><code class="sourceCode objectivec"><a class="sourceLine" id="cb9-1" title="1">RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(getName)</a>
+<a class="sourceLine" id="cb9-2" title="2">{</a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="kw">return</span> [[UIDevice currentDevice] name];</a>
+<a class="sourceLine" id="cb9-4" title="4">}</a></code></pre>
+    </div>
+    <p>
+      The return type of this method must be of object type (id) and should be
+      serializable to JSON. This means that the hook can only return nil or JSON
+      values (e.g. NSNumber, NSString, NSArray, NSDictionary).
+    </p>
+    <p>
+      At the moment, we do not recommend using synchronous methods, since
+      calling methods synchronously can have strong performance penalties and
+      introduce threading-related bugs to your native modules. Additionally,
+      please note that if you choose to use
+      <code>RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD</code>, your app can no
+      longer use the Google Chrome debugger. This is because synchronous methods
+      require the JS VM to share memory with the app. For the Google Chrome
+      debugger, React Native runs inside the JS VM in Google Chrome, and
+      communicates asynchronously with the mobile devices via WebSockets.
+    </p>
+    <h3 id="test-what-you-have-built">Test What You Have Built</h3>
+    <p>
+      At this point you have set up the basic scaffolding for your native module
+      in iOS. Test that out by accessing the native module and invoking it’s
+      exported method in JavaScript.
+    </p>
+    <p>
+      Find a place in your application where you would like to add a call to the
+      native module’s <code>createCalendarEvent()</code> method. Below is an
+      example of a component, <code>NewModuleButton</code> you can add in your
+      app. You can invoke the native module inside
+      <code>NewModuleButton</code>’s <code>onPress()</code> function.
+    </p>
+    <pre class="jsx"><code>import React from &#39;react&#39;;
+import { NativeModules, Button } from &#39;react-native&#39;;
+
+const NewModuleButton = () =&gt; {
+  const onPress = () =&gt; {
+    console.log(&#39;We will invoke the native module here!&#39;);
+  };
+
+  return (
+    &lt;Button
+      title=&quot;Click to invoke your native module!&quot;
+      color=&quot;#841584&quot;
+      onPress={onPress}
+    /&gt;
+  );
+};
+
+export default NewModuleButton;</code></pre>
+    <p>
+      In order to access your native module from JavaScript you need to first
+      import <code>NativeModules</code> from React Native:
+    </p>
+    <pre
+      class="jsx"
+    ><code>import { NativeModules } from &#39;react-native&#39;;</code></pre>
+    <p>
+      You can then access the <code>CalendarModule</code> native module off of
+      <code>NativeModules</code>.
+    </p>
+    <pre
+      class="jsx"
+    ><code>const { CalendarModule } = NativeModules;</code></pre>
+    <p>
+      Now that you have the CalendarModule native module available, you can
+      invoke your native method <code>createCalendarEvent()</code>. Below it is
+      added to the <code>onPress()</code> method in
+      <code>NewModuleButton</code>:
+    </p>
+    <pre class="jsx"><code>const onPress = () =&gt; {
+  CalendarModule.createCalendarEvent(&#39;testName&#39;, &#39;testLocation&#39;);
+};</code></pre>
+    <p>
+      The final step is to rebuild the React Native app so that you can have the
+      latest native code (with your new native module!) available. In your
+      command line, where the react native application is located, run the
+      following :
+    </p>
+    <pre class="shell"><code>npx react-native run-ios</code></pre>
+    <h3 id="building-as-you-iterate">Building as You Iterate</h3>
+    <p>
+      As you work through these guides and iterate on your native module, you
+      will need to do a native rebuild of your application to access your most
+      recent changes from JavaScript. This is because the code that you are
+      writing sits within the native part of your application. While React
+      Native’s metro bundler can watch for changes in JavaScript and rebuild JS
+      bundle on the fly for you, it will not do so for native code. So if you
+      want to test your latest native changes you need to rebuild by using the
+      <code>npx react-native run-ios</code> command.
+    </p>
+    <h3 id="recap">Recap✨</h3>
+    <p>
+      You should now be able to invoke your
+      <code>createCalendarEvent()</code> method on your native module in
+      JavaScript. Since you are using <code>RCTLog</code> in the function, you
+      can confirm your native method is being invoked by
+      <a href="https://reactnative.dev/docs/debugging#chrome-developer-tools"
+        >enabling debug mode in your app</a
+      >
+      and looking at the JS console in Chrome or the mobile app debugger
+      Flipper. You should see your
+      <code
+        >RCTLogInfo(@"Pretending to create an event %@ at %@", name,
+        location);</code
+      >
+      message each time you invoke the native module method.
+    </p>
+    <figure>
+      <img
+        src="/docs/assets/native-modules-ios-logs.png"
+        width="1000"
+        alt="Image of logs."
+      />
+      <figcaption>Image of iOS logs in Flipper</figcaption>
+    </figure>
+    <p>
+      At this point you have created an iOS native module and invoked a method
+      on it from JavaScript in your React Native application. You can read on to
+      learn more about things like what argument types your native module method
+      takes and how to setup callbacks and promises within your native module.
+    </p>
+    <h2 id="beyond-a-calendar-native-module">
+      Beyond a Calendar Native Module
+    </h2>
+    <h3 id="better-native-module-export">Better Native Module Export</h3>
+    <p>
+      Importing your native module by pulling it off of
+      <code>NativeModules</code> like above is a bit clunky.
+    </p>
+    <p>
+      To save consumers of your native module from needing to do that each time
+      they want to access your native module, you can create a JavaScript
+      wrapper for the module. Create a new JavaScript file named
+      NativeCalendarModule.js with the following content:
+    </p>
+    <pre class="jsx"><code>/**
+* This exposes the native CalendarModule module as a JS module. This has a
+* function &#39;createCalendarEvent&#39; which takes the following parameters:
+
+* 1. String name: A string representing the name of the event
+* 2. String location: A string representing the location of the event
+*/
+import { NativeModules } from &#39;react-native&#39;;
+const { CalendarModule } = NativeModules;
+export default CalendarModule;</code></pre>
+    <p>
+      This JavaScript file also becomes a good location for you to add any
+      JavaScript side functionality. For example, if you use a type system like
+      TypeScript you can add type annotations for your native module here. While
+      React Native does not yet support Native to JS type safety, with these
+      type annotations, all your JS code will be type safe. These annotations
+      will also make it easier for you to switch to type-safe native modules
+      down the line. Below is an example of adding type safety to the Calendar
+      Module:
+    </p>
+    <pre class="jsx"><code>/**
+* This exposes the native CalendarModule module as a JS module. This has a
+* function &#39;createCalendarEvent&#39; which takes the following parameters:
+*
+* 1. String name: A string representing the name of the event
+* 2. String location: A string representing the location of the event
+*/
+import { NativeModules } from &#39;react-native&#39;;
+const { CalendarModule } = NativeModules
+interface CalendarInterface {
+   createCalendarEvent(name: string, location: string): void;
+}
+export default CalendarModule as CalendarInterface;</code></pre>
+    <p>
+      In your other JavaScript files you can access the native module and invoke
+      its method like this:
+    </p>
+    <pre
+      class="jsx"
+    ><code>import NativeCalendarModule from &#39;./NativeCalendarModule&#39;;
+NativeCalendarModule.createCalendarEvent(&#39;foo&#39;, &#39;bar&#39;);</code></pre>
+    <blockquote>
+      <p>
+        Note this assumes that the place you are importing
+        <code>CalendarModule</code> is in the same hierarchy as
+        <code>CalendarModule.js</code>. Please update the relative import as
+        necessary.
+      </p>
+    </blockquote>
+    <h3 id="argument-types">Argument Types</h3>
+    <p>
+      When a native module method is invoked in JavaScript, React Native
+      converts the arguments from JS objects to their Objective-C/Swift object
+      analogues. So for example, if your Objective-C Native Module method
+      accepts a NSNumber, in JS you need to call the method with a number. React
+      Native will handle the conversion for you. Below is a list of the argument
+      types supported for native module methods and the JavaScript equivalents
+      they map to.
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Objective-C</th>
+          <th>JavaScript</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>NSString</td>
+          <td>string, ?string</td>
+        </tr>
+        <tr class="even">
+          <td>BOOL</td>
+          <td>boolean</td>
+        </tr>
+        <tr class="odd">
+          <td>NSNumber</td>
+          <td>?boolean</td>
+        </tr>
+        <tr class="even">
+          <td>double</td>
+          <td>number</td>
+        </tr>
+        <tr class="odd">
+          <td>NSNumber</td>
+          <td>?number</td>
+        </tr>
+        <tr class="even">
+          <td>NSArray</td>
+          <td>Array, ?Array</td>
+        </tr>
+        <tr class="odd">
+          <td>NSDictionary</td>
+          <td>Object, ?Object</td>
+        </tr>
+        <tr class="even">
+          <td>RCTResponseSenderBlock</td>
+          <td>Function (success)</td>
+        </tr>
+        <tr class="odd">
+          <td>RCTResponseSenderBlock, RCTResponseErrorBlock</td>
+          <td>Function (failure)</td>
+        </tr>
+        <tr class="even">
+          <td>RCTPromiseResolveBlock, RCTPromiseRejectBlock</td>
+          <td>Promise</td>
+        </tr>
+      </tbody>
+    </table>
+    <blockquote>
+      <p>
+        The following types are currently supported but will not be supported in
+        TurboModules. Please avoid using them.
+      </p>
+      <ul>
+        <li>Function (failure) -&gt; RCTResponseErrorBlock</li>
+        <li>Number -&gt; NSInteger</li>
+        <li>Number -&gt; CGFloat</li>
+        <li>Number -&gt; float</li>
+      </ul>
+    </blockquote>
+    <p>
+      For iOS, you can also write native module methods with any argument type
+      that is supported by the <code>RCTConvert</code> class (see
+      <a
+        href="https://github.com/facebook/react-native/blob/master/React/Base/RCTConvert.h"
+        >RCTConvert</a
+      >
+      for details about what is supported). The RCTConvert helper functions all
+      accept a JSON value as input and map it to a native Objective-C type or
+      class.
+    </p>
+    <h3 id="exporting-constants">Exporting Constants</h3>
+    <p>
+      A native module can export constants by overriding the native method
+      <code>constantsToExport()</code>. Below
+      <code>constantsToExport()</code> is overriden, and returns a Dictionary
+      that contains a default event name property you can access in JavaScript
+      like so:
+    </p>
+    <div class="sourceCode" id="cb18">
+      <pre
+        class="sourceCode objectivec"
+      ><code class="sourceCode objectivec"><a class="sourceLine" id="cb18-1" title="1">- (NSDictionary *)constantsToExport</a>
+<a class="sourceLine" id="cb18-2" title="2">{</a>
+<a class="sourceLine" id="cb18-3" title="3"> <span class="kw">return</span> @{ <span class="st">@&quot;DEFAULT_EVENT_NAME&quot;</span>: <span class="st">@&quot;New Event&quot;</span> };</a>
+<a class="sourceLine" id="cb18-4" title="4">}</a></code></pre>
+    </div>
+    <p>
+      The constant can then be accessed by invoking
+      <code>getConstants()</code> on the native module in JS like so:
+    </p>
+    <div class="sourceCode" id="cb19">
+      <pre
+        class="sourceCode objectivec"
+      ><code class="sourceCode objectivec"><a class="sourceLine" id="cb19-1" title="1"><span class="dt">const</span> { DEFAULT_EVENT_NAME } = CalendarModule.getConstants();</a>
+<a class="sourceLine" id="cb19-2" title="2">console.log(DEFAULT_EVENT_NAME);</a></code></pre>
+    </div>
+    <p>
+      Technically, it is possible to access constants exported in
+      <code>constantsToExport()</code> directly off the
+      <code>NativeModule</code> object. This will no longer be supported with
+      TurboModules, so we encourage the community to switch to the above
+      approach to avoid necessary migration down the line.
+    </p>
+    <blockquote>
+      <p>
+        Note that the constants are exported only at initialization time, so if
+        you change <code>constantsToExport()</code> values at runtime it won’t
+        affect the JavaScript environment.
+      </p>
+    </blockquote>
+    <p>
+      For iOS, if you override <code>constantsToExport()</code> then you should
+      also implement <code>+ requiresMainQueueSetup</code> to let React Native
+      know if your module needs to be initialized on the main thread, before any
+      JavaScript code executes. Otherwise you will see a warning that in the
+      future your module may be initialized on a background thread unless you
+      explicitly opt out with <code>+ requiresMainQueueSetup:</code>. If your
+      module does not require access to UIKit, then you should respond to
+      <code>+ requiresMainQueueSetup</code> with NO.
+    </p>
+    <h3 id="callbacks">Callbacks</h3>
+    <p>
+      Native modules also support a unique kind of argument - a callback.
+      Callbacks are used to pass data from Objective-C to JavaScript for
+      asynchronous methods. They can also be used to asynchronously execute JS
+      from the native side.
+    </p>
+    <p>
+      For iOS, callbacks are implemented using the type
+      <code>RCTResponseSenderBlock</code>. Below the callback parameter
+      <code>myCallBack</code> is added to the
+      <code>createCalendarEventMethod()</code>:
+    </p>
+    <div class="sourceCode" id="cb20">
+      <pre
+        class="sourceCode objectivec"
+      ><code class="sourceCode objectivec"><a class="sourceLine" id="cb20-1" title="1">RCT_EXPORT_METHOD(createCalendarEvent:(NSString *)title</a>
+<a class="sourceLine" id="cb20-2" title="2">                location:(NSString *)location</a>
+<a class="sourceLine" id="cb20-3" title="3">                myCallback:(RCTResponseSenderBlock)callback)</a></code></pre>
+    </div>
+    <p>
+      You can then invoke the callback in your native function, providing
+      whatever result you want to pass to JavaScript in an array. Note that
+      <code>RCTResponseSenderBlock</code> accepts only one argument - an array
+      of parameters to pass to the JavaScript callback. Below you will pass back
+      the ID of an event created in an earlier call.
+    </p>
+    <blockquote>
+      <p>
+        It is important to highlight that the callback is not invoked
+        immediately after the native function completes—remember the
+        communication is asynchronous.
+      </p>
+    </blockquote>
+    <div class="sourceCode" id="cb21">
+      <pre
+        class="sourceCode objectivec"
+      ><code class="sourceCode objectivec"><a class="sourceLine" id="cb21-1" title="1">RCT_EXPORT_METHOD(createCalendarEvent:(NSString *)title location:(NSString *)location callback: (RCTResponseSenderBlock)callback)</a>
+<a class="sourceLine" id="cb21-2" title="2">{</a>
+<a class="sourceLine" id="cb21-3" title="3"> NSInteger eventId = ...</a>
+<a class="sourceLine" id="cb21-4" title="4"> callback(@[@(eventId)]);</a>
+<a class="sourceLine" id="cb21-5" title="5"></a>
+<a class="sourceLine" id="cb21-6" title="6"> RCTLogInfo(<span class="st">@&quot;Pretending to create an event %@ at %@&quot;</span>, title, location);</a>
+<a class="sourceLine" id="cb21-7" title="7">}</a></code></pre>
+    </div>
+    <p>This method could then be accessed in JavaScript using the following:</p>
+    <pre class="jsx"><code>const onSubmit = () =&gt; {
+  CalendarModule.createCalendarEvent(
+    &#39;Party&#39;,
+    &#39;04-12-2020&#39;,
+    (eventId) =&gt; {
+      console.log(`Created a new event with id ${eventId}`);
+    }
+  );
+};</code></pre>
+    <p>
+      A native module is supposed to invoke its callback only once. It can,
+      however, store the callback and invoke it later. This pattern is often
+      used to wrap iOS APIs that require delegates— see
+      <a
+        href="https://github.com/facebook/react-native/blob/3a11f0536ea65b87dc0f006665f16a87cfa14b5e/React/CoreModules/RCTAlertManager.mm"
+        ><code>RCTAlertManager</code></a
+      >
+      for an example. If the callback is never invoked, some memory is leaked.
+    </p>
+    <p>
+      There are two approaches to error handling with callbacks. The first is to
+      follow Node’s convention and treat the first argument passed to the
+      callback array as an error object.
+    </p>
+    <div class="sourceCode" id="cb23">
+      <pre
+        class="sourceCode objectivec"
+      ><code class="sourceCode objectivec"><a class="sourceLine" id="cb23-1" title="1">RCT_EXPORT_METHOD(createCalendarEventCallback:(NSString *)title location:(NSString *)location callback: (RCTResponseSenderBlock)callback)</a>
+<a class="sourceLine" id="cb23-2" title="2">{</a>
+<a class="sourceLine" id="cb23-3" title="3">  NSNumber *eventId = [NSNumber numberWithInt:<span class="dv">123</span>];</a>
+<a class="sourceLine" id="cb23-4" title="4">  callback(@[[NSNull null], eventId]);</a>
+<a class="sourceLine" id="cb23-5" title="5">}</a></code></pre>
+    </div>
+    <p>
+      In JavaScript, you can then check the first argument to see if an error
+      was passed through:
+    </p>
+    <pre class="jsx"><code>const onPress = () =&gt; {
+  CalendarModule.createCalendarEventCallback(
+    &#39;testName&#39;,
+    &#39;testLocation&#39;,
+    (error, eventId) =&gt; {
+      if (error) {
+        console.error(`Error found! ${error}`);
+      }
+      console.log(`event id ${eventId} returned`);
+    }
+  );
+};</code></pre>
+    <p>
+      Another option is to use two separate callbacks: onFailure and onSuccess.
+    </p>
+    <div class="sourceCode" id="cb25">
+      <pre
+        class="sourceCode objectivec"
+      ><code class="sourceCode objectivec"><a class="sourceLine" id="cb25-1" title="1">RCT_EXPORT_METHOD(createCalendarEventCallback:(NSString *)title</a>
+<a class="sourceLine" id="cb25-2" title="2">                  location:(NSString *)location</a>
+<a class="sourceLine" id="cb25-3" title="3">                  errorCallback: (RCTResponseSenderBlock)errorCallback</a>
+<a class="sourceLine" id="cb25-4" title="4">                  successCallback: (RCTResponseSenderBlock)successCallback)</a>
+<a class="sourceLine" id="cb25-5" title="5">{</a>
+<a class="sourceLine" id="cb25-6" title="6">  @try {</a>
+<a class="sourceLine" id="cb25-7" title="7">    NSNumber *eventId = [NSNumber numberWithInt:<span class="dv">123</span>];</a>
+<a class="sourceLine" id="cb25-8" title="8">    successCallback(@[eventId]);</a>
+<a class="sourceLine" id="cb25-9" title="9">  }</a>
+<a class="sourceLine" id="cb25-10" title="10"></a>
+<a class="sourceLine" id="cb25-11" title="11">  @catch ( NSException *e ) {</a>
+<a class="sourceLine" id="cb25-12" title="12">    errorCallback(@[e]);</a>
+<a class="sourceLine" id="cb25-13" title="13">  }</a>
+<a class="sourceLine" id="cb25-14" title="14">}</a></code></pre>
+    </div>
+    <p>
+      Then in JavaScript you can add a separate callback for error and success
+      responses:
+    </p>
+    <pre class="jsx"><code>const onPress = () =&gt; {
+  CalendarModule.createCalendarEventCallback(
+    &#39;testName&#39;,
+    &#39;testLocation&#39;,
+    (error) =&gt; {
+      console.error(`Error found! ${error}`);
+    },
+    (eventId) =&gt; {
+      console.log(`event id ${eventId} returned`);
+    }
+  );
+};</code></pre>
+    <p>
+      If you want to pass error-like objects to JavaScript, use
+      <code>RCTMakeError</code> from
+      <a
+        href="https://github.com/facebook/react-native/blob/master/React/Base/RCTUtils.h"
+        ><code>RCTUtils.h.</code></a
+      >
+      Right now this only passes an Error-shaped dictionary to JavaScript, but
+      React Native aims to automatically generate real JavaScript Error objects
+      in the future. You can also provide a
+      <code>RCTResponseErrorBlock</code> argument, which is used for error
+      callbacks and accepts an <code>NSError \* object</code>. Please note that
+      this argument type will not be supported with TurboModules.
+    </p>
+    <h3 id="promises">Promises</h3>
+    <p>
+      Native modules can also fulfill a promise, which can simplify your
+      JavaScript, especially when using ES2016’s
+      <code>async/await</code> syntax. When the last parameter of a native
+      module method is a <code>RCTPromiseResolveBlock</code> and
+      <code>RCTPromiseRejectBlock</code>, its corresponding JS method will
+      return a JS Promise object.
+    </p>
+    <p>
+      Refactoring the above code to use a promise instead of callbacks looks
+      like this:
+    </p>
+    <div class="sourceCode" id="cb27">
+      <pre
+        class="sourceCode objectivec"
+      ><code class="sourceCode objectivec"><a class="sourceLine" id="cb27-1" title="1">RCT_EXPORT_METHOD(createCalendarEvent:(NSString *)title</a>
+<a class="sourceLine" id="cb27-2" title="2">                 location:(NSString *)location</a>
+<a class="sourceLine" id="cb27-3" title="3">                 resolver:(RCTPromiseResolveBlock)resolve</a>
+<a class="sourceLine" id="cb27-4" title="4">                 rejecter:(RCTPromiseRejectBlock)reject)</a>
+<a class="sourceLine" id="cb27-5" title="5">{</a>
+<a class="sourceLine" id="cb27-6" title="6"> NSInteger eventId = createCalendarEvent();</a>
+<a class="sourceLine" id="cb27-7" title="7"> <span class="kw">if</span> (eventId) {</a>
+<a class="sourceLine" id="cb27-8" title="8">    resolve(@(eventId));</a>
+<a class="sourceLine" id="cb27-9" title="9">  } <span class="kw">else</span> {</a>
+<a class="sourceLine" id="cb27-10" title="10">    reject(<span class="st">@&quot;event_failure&quot;</span>, <span class="st">@&quot;no event id returned&quot;</span>, nil);</a>
+<a class="sourceLine" id="cb27-11" title="11">  }</a>
+<a class="sourceLine" id="cb27-12" title="12">}</a></code></pre>
+    </div>
+    <p>
+      The JavaScript counterpart of this method returns a Promise. This means
+      you can use the <code>await</code> keyword within an async function to
+      call it and wait for its result:
+    </p>
+    <pre class="jsx"><code>const onSubmit = async () =&gt; {
+  try {
+    const eventId = await CalendarModule.createCalendarEvent(
+      &#39;Party&#39;,
+      &#39;my house&#39;
+    );
+    console.log(`Created a new event with id ${eventId}`);
+  } catch (e) {
+    console.error(e);
+  }
+};</code></pre>
+    <h3 id="sending-events-to-javascript">Sending Events to JavaScript</h3>
+    <p>
+      Native modules can signal events to JavaScript without being invoked
+      directly. For example, you might want to signal to JavaScript a reminder
+      that a calendar event from the native iOS calendar app will occur soon.
+      The preferred way to do this is to subclass <code>RCTEventEmitter</code>,
+      implement <code>supportedEvents</code> and call self
+      <code>sendEventWithName</code>:
+    </p>
+    <p>
+      Update your header class to import <code>RCTEventEmitter</code> and
+      subclass <code>RCTEventEmitter</code>:
+    </p>
+    <div class="sourceCode" id="cb29">
+      <pre
+        class="sourceCode objectivec"
+      ><code class="sourceCode objectivec"><a class="sourceLine" id="cb29-1" title="1"><span class="co">//  CalendarModule.h</span></a>
+<a class="sourceLine" id="cb29-2" title="2"></a>
+<a class="sourceLine" id="cb29-3" title="3"><span class="pp">#import </span><span class="im">&lt;React/RCTBridgeModule.h&gt;</span></a>
+<a class="sourceLine" id="cb29-4" title="4"><span class="pp">#import </span><span class="im">&lt;React/RCTEventEmitter.h&gt;</span></a>
+<a class="sourceLine" id="cb29-5" title="5"></a>
+<a class="sourceLine" id="cb29-6" title="6"><span class="kw">@interface</span> CalendarModule : RCTEventEmitter &lt;RCTBridgeModule&gt;</a>
+<a class="sourceLine" id="cb29-7" title="7"><span class="kw">@end</span></a></code></pre>
+    </div>
+    <p>
+      JavaScript code can subscribe to these events by creating a new
+      <code>NativeEventEmitter</code> instance around your module.
+    </p>
+    <p>
+      You will receive a warning if you expend resources unnecessarily by
+      emitting an event while there are no listeners. To avoid this, and to
+      optimize your module’s workload (e.g. by unsubscribing from upstream
+      notifications or pausing background tasks), you can override
+      <code>startObserving</code> and <code>stopObserving</code> in your
+      <code>RCTEventEmitter</code> subclass.
+    </p>
+    <div class="sourceCode" id="cb30">
+      <pre
+        class="sourceCode objectivec"
+      ><code class="sourceCode objectivec"><a class="sourceLine" id="cb30-1" title="1"><span class="kw">@implementation</span> CalendarManager</a>
+<a class="sourceLine" id="cb30-2" title="2">{</a>
+<a class="sourceLine" id="cb30-3" title="3">  bool hasListeners;</a>
+<a class="sourceLine" id="cb30-4" title="4">}</a>
+<a class="sourceLine" id="cb30-5" title="5"></a>
+<a class="sourceLine" id="cb30-6" title="6"><span class="co">// Will be called when this module&#39;s first listener is added.</span></a>
+<a class="sourceLine" id="cb30-7" title="7">-(<span class="dt">void</span>)startObserving {</a>
+<a class="sourceLine" id="cb30-8" title="8">    hasListeners = YES;</a>
+<a class="sourceLine" id="cb30-9" title="9">    <span class="co">// Set up any upstream listeners or background tasks as necessary</span></a>
+<a class="sourceLine" id="cb30-10" title="10">}</a>
+<a class="sourceLine" id="cb30-11" title="11"></a>
+<a class="sourceLine" id="cb30-12" title="12"><span class="co">// Will be called when this module&#39;s last listener is removed, or on dealloc.</span></a>
+<a class="sourceLine" id="cb30-13" title="13">-(<span class="dt">void</span>)stopObserving {</a>
+<a class="sourceLine" id="cb30-14" title="14">    hasListeners = NO;</a>
+<a class="sourceLine" id="cb30-15" title="15">    <span class="co">// Remove upstream listeners, stop unnecessary background tasks</span></a>
+<a class="sourceLine" id="cb30-16" title="16">}</a>
+<a class="sourceLine" id="cb30-17" title="17"></a>
+<a class="sourceLine" id="cb30-18" title="18">- (<span class="dt">void</span>)calendarEventReminderReceived:(NSNotification *)notification</a>
+<a class="sourceLine" id="cb30-19" title="19">{</a>
+<a class="sourceLine" id="cb30-20" title="20">  NSString *eventName = notification.userInfo[<span class="st">@&quot;name&quot;</span>];</a>
+<a class="sourceLine" id="cb30-21" title="21">  <span class="kw">if</span> (hasListeners) { <span class="co">// Only send events if anyone is listening</span></a>
+<a class="sourceLine" id="cb30-22" title="22">    [<span class="kw">self</span> sendEventWithName:<span class="st">@&quot;EventReminder&quot;</span> body:@{<span class="st">@&quot;name&quot;</span>: eventName}];</a>
+<a class="sourceLine" id="cb30-23" title="23">  }</a>
+<a class="sourceLine" id="cb30-24" title="24">}</a></code></pre>
+    </div>
+    <h3 id="threading">Threading</h3>
+    <p>
+      Unless the native module provides its own method queue, it shouldn’t make
+      any assumptions about what thread it’s being called on. Currently, if a
+      native module doesn’t provide a method queue, React Native will create a
+      separate GCD queue for it and invoke its methods there. Please note that
+      this is an implementation detail and might change. If you want to
+      explicitly provide a method queue for a native module, override the
+      <code>(dispatch_queue_t) methodQueue</code> method in the native module.
+      For example, if it needs to use a main-thread-only iOS API, it should
+      specify this via:
+    </p>
+    <div class="sourceCode" id="cb31">
+      <pre
+        class="sourceCode objectivec"
+      ><code class="sourceCode objectivec"><a class="sourceLine" id="cb31-1" title="1">- (dispatch_queue_t)methodQueue</a>
+<a class="sourceLine" id="cb31-2" title="2">{</a>
+<a class="sourceLine" id="cb31-3" title="3">  <span class="kw">return</span> dispatch_get_main_queue();</a>
+<a class="sourceLine" id="cb31-4" title="4">}</a></code></pre>
+    </div>
+    <p>
+      Similarly, if an operation may take a long time to complete, the native
+      module can specify its own queue to run operations on. Again, currently
+      React Native will provide a separate method queue for your native module,
+      but this is an implementation detail you should not rely on. If you don’t
+      provide your own method queue, in the future, your native module’s long
+      running operations may end up blocking async calls being executed on other
+      unrelated native modules. The <code>RCTAsyncLocalStorage</code> module
+      here, for example, creates its own queue so the React queue isn’t blocked
+      waiting on potentially slow disk access.
+    </p>
+    <div class="sourceCode" id="cb32">
+      <pre
+        class="sourceCode objectivec"
+      ><code class="sourceCode objectivec"><a class="sourceLine" id="cb32-1" title="1">- (dispatch_queue_t)methodQueue</a>
+<a class="sourceLine" id="cb32-2" title="2">{</a>
+<a class="sourceLine" id="cb32-3" title="3"> <span class="kw">return</span> dispatch_queue_create(<span class="st">&quot;com.facebook.React.AsyncLocalStorageQueue&quot;</span>, DISPATCH_QUEUE_SERIAL);</a>
+<a class="sourceLine" id="cb32-4" title="4">}</a></code></pre>
+    </div>
+    <p>
+      The specified <code>methodQueue</code> will be shared by all of the
+      methods in your module. If only one of your methods is long-running (or
+      needs to be run on a different queue than the others for some reason), you
+      can use <code>dispatch_async</code> inside the method to perform that
+      particular method’s code on another queue, without affecting the others:
+    </p>
+    <div class="sourceCode" id="cb33">
+      <pre
+        class="sourceCode objectivec"
+      ><code class="sourceCode objectivec"><a class="sourceLine" id="cb33-1" title="1">RCT_EXPORT_METHOD(doSomethingExpensive:(NSString *)param callback:(RCTResponseSenderBlock)callback)</a>
+<a class="sourceLine" id="cb33-2" title="2">{</a>
+<a class="sourceLine" id="cb33-3" title="3"> dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, <span class="dv">0</span>), ^{</a>
+<a class="sourceLine" id="cb33-4" title="4">   <span class="co">// Call long-running code on background thread</span></a>
+<a class="sourceLine" id="cb33-5" title="5">   ...</a>
+<a class="sourceLine" id="cb33-6" title="6">   <span class="co">// You can invoke callback from any thread/queue</span></a>
+<a class="sourceLine" id="cb33-7" title="7">   callback(@[...]);</a>
+<a class="sourceLine" id="cb33-8" title="8"> });</a>
+<a class="sourceLine" id="cb33-9" title="9">}</a></code></pre>
+    </div>
+    <blockquote>
+      <p>Sharing dispatch queues between modules</p>
+      <p>
+        The <code>methodQueue</code> method will be called once when the module
+        is initialized, and then retained by React Native, so there is no need
+        to keep a reference to the queue yourself, unless you wish to make use
+        of it within your module. However, if you wish to share the same queue
+        between multiple modules then you will need to ensure that you retain
+        and return the same queue instance for each of them.
+      </p>
+    </blockquote>
+    <h3 id="dependency-injection">Dependency Injection</h3>
+    <p>
+      React Native will create and initialize any registered native modules
+      automatically. However, you may wish to create and initialize your own
+      module instances to, for example, inject dependencies.
+    </p>
+    <p>
+      You can do this by creating a class that implements the
+      <code>RCTBridgeDelegate</code> Protocol, initializing an
+      <code>RCTBridge</code> with the delegate as an argument and initialising a
+      <code>RCTRootView</code> with the initialized bridge.
+    </p>
+    <div class="sourceCode" id="cb34">
+      <pre
+        class="sourceCode objectivec"
+      ><code class="sourceCode objectivec"><a class="sourceLine" id="cb34-1" title="1">id&lt;RCTBridgeDelegate&gt; moduleInitialiser = [[classThatImplementsRCTBridgeDelegate alloc] init];</a>
+<a class="sourceLine" id="cb34-2" title="2"></a>
+<a class="sourceLine" id="cb34-3" title="3">RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:moduleInitialiser launchOptions:nil];</a>
+<a class="sourceLine" id="cb34-4" title="4"></a>
+<a class="sourceLine" id="cb34-5" title="5">RCTRootView *rootView = [[RCTRootView alloc]</a>
+<a class="sourceLine" id="cb34-6" title="6">                        initWithBridge:bridge</a>
+<a class="sourceLine" id="cb34-7" title="7">                            moduleName:kModuleName</a>
+<a class="sourceLine" id="cb34-8" title="8">                     initialProperties:nil];</a></code></pre>
+    </div>
+    <h3 id="exporting-swift">Exporting Swift</h3>
+    <p>
+      Swift doesn’t have support for macros, so exposing native modules and
+      their methods to JavaScript inside React Native requires a bit more setup.
+      However, it works relatively the same. Let’s say you have the same
+      <code>CalendarModule</code> but as a Swift class:
+    </p>
+    <pre class="swift"><code>// CalendarManager.swift
+
+@objc(CalendarManager)
+class CalendarManager: NSObject {
+
+ @objc(addEvent:location:date:)
+ func addEvent(_ name: String, location: String, date: NSNumber) -&gt; Void {
+   // Date is ready to use!
+ }
+
+ @objc
+ func constantsToExport() -&gt; [String: Any]! {
+   return [&quot;someKey&quot;: &quot;someValue&quot;]
+ }
+
+}</code></pre>
+    <blockquote>
+      <p>
+        It is important to use the <code>@objc</code> modifiers to ensure the
+        class and functions are exported properly to the Objective-C runtime.
+      </p>
+    </blockquote>
+    <p>
+      Then create a private implementation file that will register the required
+      information with React Native:
+    </p>
+    <div class="sourceCode" id="cb36">
+      <pre
+        class="sourceCode objectivec"
+      ><code class="sourceCode objectivec"><a class="sourceLine" id="cb36-1" title="1"><span class="co">// CalendarManagerBridge.m</span></a>
+<a class="sourceLine" id="cb36-2" title="2"><span class="pp">#import </span><span class="im">&lt;React/RCTBridgeModule.h&gt;</span></a>
+<a class="sourceLine" id="cb36-3" title="3"></a>
+<a class="sourceLine" id="cb36-4" title="4"><span class="kw">@interface</span> RCT_EXTERN_MODULE(CalendarManager, NSObject)</a>
+<a class="sourceLine" id="cb36-5" title="5"></a>
+<a class="sourceLine" id="cb36-6" title="6">RCT_EXTERN_METHOD(addEvent:(NSString *)name location:(NSString *)location date:(nonnull NSNumber *)date)</a>
+<a class="sourceLine" id="cb36-7" title="7"></a>
+<a class="sourceLine" id="cb36-8" title="8"><span class="kw">@end</span></a></code></pre>
+    </div>
+    <p>
+      For those of you new to Swift and Objective-C, whenever you
+      <a
+        href="https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/BuildingCocoaApps/MixandMatch.html"
+        >mix the two languages in an iOS project</a
+      >, you will also need an additional bridging file, known as a bridging
+      header, to expose the Objective-C files to Swift. Xcode will offer to
+      create this header file for you if you add your Swift file to your app
+      through the Xcode <code>File&gt;New File</code> menu option. You will need
+      to import <code>RCTBridgeModule.h</code> in this header file.
+    </p>
+    <div class="sourceCode" id="cb37">
+      <pre
+        class="sourceCode objectivec"
+      ><code class="sourceCode objectivec"><a class="sourceLine" id="cb37-1" title="1"><span class="co">// CalendarManager-Bridging-Header.h</span></a>
+<a class="sourceLine" id="cb37-2" title="2"><span class="pp">#import </span><span class="im">&lt;React/RCTBridgeModule.h&gt;</span></a></code></pre>
+    </div>
+    <p>
+      You can also use <code>RCT_EXTERN_REMAP_MODULE</code> and
+      <code>_RCT_EXTERN_REMAP_METHOD</code> to alter the JavaScript name of the
+      module or methods you are exporting. For more information see
+      <a
+        href="https://github.com/facebook/react-native/blob/master/React/Base/RCTBridgeModule.h"
+        ><code>RCTBridgeModule</code></a
+      >.
+    </p>
+    <blockquote>
+      <p>
+        Important when making third party modules: Static libraries with Swift
+        are only supported in Xcode 9 and later. In order for the Xcode project
+        to build when you use Swift in the iOS static library you include in the
+        module, your main app project must contain Swift code and a bridging
+        header itself. If your app project does not contain any Swift code, a
+        workaround can be a single empty .swift file and an empty bridging
+        header.
+      </p>
+    </blockquote>
+    <h3 id="reserved-method-names">Reserved Method Names</h3>
+    <h4 id="invalidate">invalidate()</h4>
+    <p>
+      Native modules can conform to the
+      <a
+        href="https://github.com/facebook/react-native/blob/0.62-stable/React/Base/RCTInvalidating.h"
+        >RCTInvalidating</a
+      >
+      protocol on iOS by implementing the <code>invalidate()</code> method. This
+      method
+      <a
+        href="https://github.com/facebook/react-native/blob/0.62-stable/ReactCommon/turbomodule/core/platform/ios/RCTTurboModuleManager.mm#L456"
+        >can be invoked</a
+      >
+      when the native bridge is invalidated (ie: on devmode reload). Please use
+      this mechanism as necessary to do the required cleanup for your native
+      module.
+    </p>
+  </body>
+</html>

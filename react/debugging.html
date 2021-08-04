@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Debugging</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Debugging</h1>
+</header>
+<p>import Tabs from ‘<span class="citation" data-cites="theme/Tabs">@theme/Tabs</span>’; import TabItem from ‘<span class="citation" data-cites="theme/TabItem">@theme/TabItem</span>’; import constants from ‘<span class="citation" data-cites="site/core/TabsConstants">@site/core/TabsConstants</span>’;</p>
+<h2 id="accessing-the-in-app-developer-menu">Accessing the In-App Developer Menu</h2>
+<p>You can access the developer menu by shaking your device or by selecting “Shake Gesture” inside the Hardware menu in the iOS Simulator. You can also use the <code>⌘D</code> keyboard shortcut when your app is running in the iOS Simulator, or <code>⌘M</code> when running in an Android emulator on Mac OS and <code>Ctrl+M</code> on Windows and Linux. Alternatively for Android, you can run the command <code>adb shell input keyevent 82</code> to open the dev menu (82 being the Menu key code).</p>
+<p><img src="/docs/assets/DeveloperMenu.png" /></p>
+<blockquote>
+<p>The Developer Menu is disabled in release (production) builds.</p>
+</blockquote>
+<h2 id="enabling-fast-refresh">Enabling Fast Refresh</h2>
+<p>Fast Refresh is a React Native feature that allows you to get near-instant feedback for changes in your React components. While debugging, it can help to have <a href="fast-refresh.md">Fast Refresh</a> enabled. Fast Refresh is enabled by default, and you can toggle “Enable Fast Refresh” in the React Native developer menu. When enabled, most of your edits should be visible within a second or two.</p>
+<h2 id="enabling-keyboard-shortcuts">Enabling Keyboard Shortcuts</h2>
+<p>React Native supports a few keyboard shortcuts in the iOS Simulator. They are described below. To enable them, open the Hardware menu, select Keyboard, and make sure that “Connect Hardware Keyboard” is checked.</p>
+<h2 id="logbox">LogBox</h2>
+<p>Errors and warnings in development builds are displayed in LogBox inside your app.</p>
+<blockquote>
+<p>LogBox is automatically disabled in release (production) builds.</p>
+</blockquote>
+<h3 id="console-errors-and-warnings">Console Errors and Warnings</h3>
+<p>Console errors and warnings are displayed as on-screen notifications with a red or yellow badge, and the number of errors or warning in the console respectively. To view a console error or warnings, tap the notification to view the full screen information about the log and to paginate through all of the logs in the console.</p>
+<p>These notifications can be hidden using <code>LogBox.ignoreAllLogs()</code>. This is useful when giving product demos, for example. Additionally, notifications can be hidden on a per-log basis via <code>LogBox.ignoreLogs()</code>. This is useful when there’s a noisy warning that cannot be fixed, like those in a third-party dependency.</p>
+<blockquote>
+<p>Ignore logs as a last resort and create a task to fix any logs that are ignored.</p>
+</blockquote>
+<pre class="jsx"><code>import { LogBox } from &quot;react-native&quot;;
+
+// Ignore log notification by message:
+LogBox.ignoreLogs([&quot;Warning: ...&quot;]);
+
+// Ignore all log notifications:
+LogBox.ignoreAllLogs();</code></pre>
+<h3 id="unhandled-errors">Unhandled Errors</h3>
+<p>Unhandled JavaScript errors such as <code>undefined is not a function</code> will automatically open a full screen LogBox error with the source of the error. These errors are dismissable and minimizable so that you can see the state of your app when these errors occur, but should always be addressed.</p>
+<h3 id="syntax-errors">Syntax Errors</h3>
+<p>When syntax error occurs the full screen LogBox error will automatically open with the stack trace and location of the syntax error. This error is not dismissable because it represents invalid JavaScript execution that must be fixed before continuing with your app. To dismiss these errors, fix the syntax error and either save to automatically dismiss (with Fast Refresh enabled) or cmd+r to reload (with Fast Refresh disabled).</p>
+<h2 id="chrome-developer-tools">Chrome Developer Tools</h2>
+<p>To debug the JavaScript code in Chrome, select “Debug JS Remotely” from the Developer Menu. This will open a new tab at <a href="http://localhost:8081/debugger-ui">http://localhost:8081/debugger-ui</a>.</p>
+<p>Select <code>Tools → Developer Tools</code> from the Chrome Menu to open the <a href="https://developer.chrome.com/devtools">Developer Tools</a>. You may also access the DevTools using keyboard shortcuts (<code>⌘⌥I</code> on macOS, <code>Ctrl</code> <code>Shift</code> <code>I</code> on Windows). You may also want to enable <a href="http://stackoverflow.com/questions/2233339/javascript-is-there-a-way-to-get-chrome-to-break-on-all-errors/17324511#17324511">Pause On Caught Exceptions</a> for a better debugging experience.</p>
+<blockquote>
+<p>Note: on Android, if the times between the debugger and device have drifted; things such as animation, event behavior, etc., might not work properly or the results may not be accurate. Please correct this by running <code>adb shell "date `date +%m%d%H%M%Y.%S%3N`"</code> on your debugger machine. Root access is required for the use in real device.</p>
+</blockquote>
+<blockquote>
+<p>Note: the React Developer Tools Chrome extension does not work with React Native, but you can use its standalone version instead. Read <a href="debugging.md#react-developer-tools">this section</a> to learn how.</p>
+</blockquote>
+<h3 id="debugging-using-a-custom-javascript-debugger">Debugging using a custom JavaScript debugger</h3>
+<p>To use a custom JavaScript debugger in place of Chrome Developer Tools, set the <code>REACT_DEBUGGER</code> environment variable to a command that will start your custom debugger. You can then select “Debug JS Remotely” from the Developer Menu to start debugging.</p>
+<p>The debugger will receive a list of all project roots, separated by a space. For example, if you set <code>REACT_DEBUGGER="node /path/to/launchDebugger.js --port 2345 --type ReactNative"</code>, then the command <code>node /path/to/launchDebugger.js --port 2345 --type ReactNative /path/to/reactNative/app</code> will be used to start your debugger.</p>
+<blockquote>
+<p>Custom debugger commands executed this way should be short-lived processes, and they shouldn’t produce more than 200 kilobytes of output.</p>
+</blockquote>
+<h2 id="safari-developer-tools">Safari Developer Tools</h2>
+<p>You can use Safari to debug the iOS version of your app without having to enable “Debug JS Remotely”.</p>
+<ul>
+<li>Enable Develop menu in Safari: <code>Preferences → Advanced → Select "Show Develop menu in menu bar"</code></li>
+<li>Select your app’s JSContext: <code>Develop → Simulator → JSContext</code></li>
+<li>Safari’s Web Inspector should open which has a Console and a Debugger</li>
+</ul>
+<p>While sourcemaps may not be enabled by default, you can follow <a href="http://blog.nparashuram.com/2019/10/debugging-react-native-ios-apps-with.html">this guide</a> or <a href="https://www.youtube.com/watch?v=GrGqIIz51k4">video</a> to enable them and set break points at the right places in the source code.</p>
+<p>However, every time the app is reloaded (using live reload, or by manually reloading), a new JSContext is created. Choosing “Automatically Show Web Inspectors for JSContexts” saves you from having to select the latest JSContext manually.</p>
+<h2 id="react-developer-tools">React Developer Tools</h2>
+<p>You can use <a href="https://github.com/facebook/react/tree/master/packages/react-devtools">the standalone version of React Developer Tools</a> to debug the React component hierarchy. To use it, install the <code>react-devtools</code> package globally:</p>
+<blockquote>
+<p>Note: Version 4 of <code>react-devtools</code> requires <code>react-native</code> version 0.62 or higher to work properly.</p>
+</blockquote>
+<p><Tabs groupId="package-manager" defaultValue={constants.defaultPackageManager} values={constants.packageManagers}> <TabItem value="npm"></p>
+<pre class="shell"><code>npm install -g react-devtools</code></pre>
+<p></TabItem> <TabItem value="yarn"></p>
+<pre class="shell"><code>yarn global add react-devtools</code></pre>
+<p></TabItem> </Tabs></p>
+<p>Now run <code>react-devtools</code> from the terminal to launch the standalone DevTools app:</p>
+<pre class="shell"><code>react-devtools</code></pre>
+<figure>
+<img src="/docs/assets/ReactDevTools.png" alt="React DevTools" /><figcaption>React DevTools</figcaption>
+</figure>
+<p>It should connect to your simulator within a few seconds.</p>
+<blockquote>
+<p>Note: if you prefer to avoid global installations, you can add <code>react-devtools</code> as a project dependency. Add the <code>react-devtools</code> package to your project using <code>npm install --save-dev react-devtools</code>, then add <code>"react-devtools": "react-devtools"</code> to the <code>scripts</code> section in your <code>package.json</code>, and then run <code>npm run react-devtools</code> from your project folder to open the DevTools.</p>
+</blockquote>
+<h3 id="integration-with-react-native-inspector">Integration with React Native Inspector</h3>
+<p>Open the in-app developer menu and choose “Toggle Inspector”. It will bring up an overlay that lets you tap on any UI element and see information about it:</p>
+<figure>
+<img src="/docs/assets/Inspector.gif" alt="React Native Inspector" /><figcaption>React Native Inspector</figcaption>
+</figure>
+<p>However, when <code>react-devtools</code> is running, Inspector will enter a collapsed mode, and instead use the DevTools as primary UI. In this mode, clicking on something in the simulator will bring up the relevant components in the DevTools:</p>
+<figure>
+<img src="/docs/assets/ReactDevToolsInspector.gif" alt="React DevTools Inspector Integration" /><figcaption>React DevTools Inspector Integration</figcaption>
+</figure>
+<p>You can choose “Toggle Inspector” in the same menu to exit this mode.</p>
+<h3 id="inspecting-component-instances">Inspecting Component Instances</h3>
+<p>When debugging JavaScript in Chrome, you can inspect the props and state of the React components in the browser console.</p>
+<p>First, follow the instructions for debugging in Chrome to open the Chrome console.</p>
+<p>Make sure that the dropdown in the top left corner of the Chrome console says <code>debuggerWorker.js</code>. <strong>This step is essential.</strong></p>
+<p>Then select a React component in React DevTools. There is a search box at the top that helps you find one by name. As soon as you select it, it will be available as <code>$r</code> in the Chrome console, letting you inspect its props, state, and instance properties.</p>
+<figure>
+<img src="/docs/assets/ReactDevToolsDollarR.gif" alt="React DevTools Chrome Console Integration" /><figcaption>React DevTools Chrome Console Integration</figcaption>
+</figure>
+<h2 id="performance-monitor">Performance Monitor</h2>
+<p>You can enable a performance overlay to help you debug performance problems by selecting “Perf Monitor” in the Developer Menu.</p>
+<hr style={{marginTop: 25, marginBottom: 25}} />
+<h2 id="debugging-application-state">Debugging Application State</h2>
+<p><a href="https://github.com/infinitered/reactotron">Reactotron</a> is an open-source desktop app that allows you to inspect Redux or MobX-State-Tree application state as well as view custom logs, run custom commands such as resetting state, store and restore state snapshots, and other helpful debugging features for React Native apps.</p>
+<p>You can view installation instructions <a href="https://github.com/infinitered/reactotron">in the README</a>. If you’re using Expo, here is an article detailing <a href="https://shift.infinite.red/start-using-reactotron-in-your-expo-project-today-in-3-easy-steps-a03d11032a7a">how to install on Expo</a>.</p>
+<h1 id="native-debugging">Native Debugging</h1>
+<div data-classname="banner-native-code-required">
+<h3>
+Projects with Native Code Only
+</h3>
+<p>
+The following section only applies to projects with native code exposed. If you are using the managed <code>expo-cli</code> workflow, see the guide on <a href="https://docs.expo.io/versions/latest/workflow/customizing/" target="_blank">ejecting</a> to use this API.
+</p>
+</div>
+<h2 id="accessing-console-logs">Accessing console logs</h2>
+<p>You can display the console logs for an iOS or Android app by using the following commands in a terminal while the app is running:</p>
+<pre class="shell"><code>npx react-native log-ios
+npx react-native log-android</code></pre>
+<p>You may also access these through <code>Debug → Open System Log...</code> in the iOS Simulator or by running <code>adb logcat *:S ReactNative:V ReactNativeJS:V</code> in a terminal while an Android app is running on a device or emulator.</p>
+<blockquote>
+<p>If you’re using Create React Native App or Expo CLI, console logs already appear in the same terminal output as the bundler.</p>
+</blockquote>
+<h2 id="debugging-on-a-device-with-chrome-developer-tools">Debugging on a device with Chrome Developer Tools</h2>
+<blockquote>
+<p>If you’re using Create React Native App or Expo CLI, this is configured for you already.</p>
+</blockquote>
+<p>On iOS devices, open the file <a href="https://github.com/facebook/react-native/blob/master/React/CoreModules/RCTWebSocketExecutor.mm"><code>RCTWebSocketExecutor.mm</code></a> and change “localhost” to the IP address of your computer, then select “Debug JS Remotely” from the Developer Menu.</p>
+<p>On Android 5.0+ devices connected via USB, you can use the <a href="http://developer.android.com/tools/help/adb.html"><code>adb</code> command line tool</a> to setup port forwarding from the device to your computer:</p>
+<p><code>adb reverse tcp:8081 tcp:8081</code></p>
+<!-- alex ignore host-hostess -->
+<p>Alternatively, select “Dev Settings” from the Developer Menu, then update the “Debug server host for device” setting to match the IP address of your computer.</p>
+<blockquote>
+<p>If you run into any issues, it may be possible that one of your Chrome extensions is interacting in unexpected ways with the debugger. Try disabling all of your extensions and re-enabling them one-by-one until you find the problematic extension.</p>
+</blockquote>
+<h2 id="debugging-native-code">Debugging native code</h2>
+<p>When working with native code, such as when writing native modules, you can launch the app from Android Studio or Xcode and take advantage of the native debugging features (setting up breakpoints, etc.) as you would in case of building a standard native app.</p>
+</body>
+</html>

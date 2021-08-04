@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>AppState</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">AppState</h1>
+</header>
+<p>import Tabs from ‘<span class="citation" data-cites="theme/Tabs">@theme/Tabs</span>’; import TabItem from ‘<span class="citation" data-cites="theme/TabItem">@theme/TabItem</span>’; import constants from ‘<span class="citation" data-cites="site/core/TabsConstants">@site/core/TabsConstants</span>’;</p>
+<p><code>AppState</code> can tell you if the app is in the foreground or background, and notify you when the state changes.</p>
+<p>AppState is frequently used to determine the intent and proper behavior when handling push notifications.</p>
+<h3 id="app-states">App States</h3>
+<ul>
+<li><code>active</code> - The app is running in the foreground</li>
+<li><code>background</code> - The app is running in the background. The user is either:
+<ul>
+<li>in another app</li>
+<li>on the home screen</li>
+<li>[Android] on another <code>Activity</code> (even if it was launched by your app)</li>
+</ul></li>
+<li>[iOS] <code>inactive</code> - This is a state that occurs when transitioning between foreground &amp; background, and during periods of inactivity such as entering the Multitasking view or in the event of an incoming call</li>
+</ul>
+<p>For more information, see <a href="https://developer.apple.com/documentation/uikit/app_and_scenes/managing_your_app_s_life_cycle">Apple’s documentation</a></p>
+<h2 id="basic-usage">Basic Usage</h2>
+<p>To see the current state, you can check <code>AppState.currentState</code>, which will be kept up-to-date. However, <code>currentState</code> will be null at launch while <code>AppState</code> retrieves it over the bridge.</p>
+<p><Tabs groupId="syntax" defaultValue={constants.defaultSyntax} values={constants.syntax}> <TabItem value="functional"></p>
+<p>```SnackPlayer name=AppState%20Function%20Component%20Example import React, { useRef, useState, useEffect } from “react”; import { AppState, StyleSheet, Text, View } from “react-native”;</p>
+<p>const AppStateExample = () =&gt; { const appState = useRef(AppState.currentState); const [appStateVisible, setAppStateVisible] = useState(appState.current);</p>
+<p>useEffect(() =&gt; { const subscription = AppState.addEventListener(“change”, nextAppState =&gt; { if ( appState.current.match(/inactive|background/) &amp;&amp; nextAppState === “active” ) { console.log(“App has come to the foreground!”); }</p>
+<pre><code>  appState.current = nextAppState;
+  setAppStateVisible(appState.current);
+  console.log(&quot;AppState&quot;, appState.current);
+});
+
+return () =&gt; {
+  subscription.remove();
+};</code></pre>
+<p>}, []);</p>
+<p>return ( <View style={styles.container}> <Text>Current state is: {appStateVisible}</Text> </View> ); };</p>
+<p>const styles = StyleSheet.create({ container: { flex: 1, justifyContent: “center”, alignItems: “center”, }, });</p>
+<p>export default AppStateExample; ```</p>
+<p>If you don’t want to see the AppState update from <code>active</code> to <code>inactive</code> on iOS you can remove the state variable and use the <code>appState.current</code> value.</p>
+<p></TabItem> <TabItem value="classical"></p>
+<p>```SnackPlayer name=AppState%20Class%20Component%20Example import React, { Component } from “react”; import { AppState, StyleSheet, Text, View } from “react-native”;</p>
+<p>class AppStateExample extends Component { state = { appState: AppState.currentState };</p>
+<p>componentDidMount() { this.appStateSubscription = AppState.addEventListener( “change”, nextAppState =&gt; { if ( this.state.appState.match(/inactive|background/) &amp;&amp; nextAppState === “active” ) { console.log(“App has come to the foreground!”); } this.setState({ appState: nextAppState }); } ); }</p>
+<p>componentWillUnmount() { this.appStateSubscription.remove(); }</p>
+<p>render() { return ( <View style={styles.container}> <Text>Current state is: {this.state.appState}</Text> </View> ); } }</p>
+<p>const styles = StyleSheet.create({ container: { flex: 1, justifyContent: “center”, alignItems: “center” } });</p>
+<p>export default AppStateExample; ```</p>
+<p></TabItem> </Tabs></p>
+<p>This example will only ever appear to say “Current state is: active” because the app is only visible to the user when in the <code>active</code> state, and the null state will happen only momentarily. If you want to experiment with the code we recommend to use your own device instead of embedded preview.</p>
+<hr />
+<h1 id="reference">Reference</h1>
+<h2 id="events">Events</h2>
+<h3 id="change"><code>change</code></h3>
+<p>This event is received when the app state has changed. The listener is called with one of <a href="appstate#app-states">the current app state values</a>.</p>
+<h3 id="memorywarning"><code>memoryWarning</code></h3>
+<p>This event is used in the need of throwing memory warning or releasing it.</p>
+### <code>focus</code>
+<div class="label android">
+Android
+</div>
+<p>Received when the app gains focus (the user is interacting with the app).</p>
+### <code>blur</code>
+<div class="label android">
+Android
+</div>
+<p>Received when the user is not actively interacting with the app. Useful in situations when the user pulls down the <a href="https://developer.android.com/guide/topics/ui/notifiers/notifications#bar-and-drawer">notification drawer</a>. <code>AppState</code> won’t change but the <code>blur</code> event will get fired.</p>
+<h2 id="methods">Methods</h2>
+<h3 id="addeventlistener"><code>addEventListener()</code></h3>
+<pre class="jsx"><code>addEventListener(type, handler);</code></pre>
+<p>Add a handler to AppState changes by listening to the <code>change</code> event type and providing the handler</p>
+<hr />
+<h3 id="removeeventlistener"><code>removeEventListener()</code></h3>
+<pre class="jsx"><code>removeEventListener(type, handler);</code></pre>
+<blockquote>
+<p><strong>Deprecated.</strong> Use the <code>remove()</code> method on the event subscription returned by <a href="#addeventlistener"><code>addEventListener()</code></a>.</p>
+</blockquote>
+<h2 id="properties">Properties</h2>
+<h3 id="currentstate"><code>currentState</code></h3>
+<pre class="jsx"><code>AppState.currentState;</code></pre>
+</body>
+</html>

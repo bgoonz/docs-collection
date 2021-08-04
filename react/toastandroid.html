@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>ToastAndroid</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">ToastAndroid</h1>
+</header>
+<p>React Native’s ToastAndroid API exposes the Android platform’s ToastAndroid module as a JS module. It provides the method <code>show(message, duration)</code> which takes the following parameters:</p>
+<ul>
+<li><em>message</em> A string with the text to toast</li>
+<li><em>duration</em> The duration of the toast—either <code>ToastAndroid.SHORT</code> or <code>ToastAndroid.LONG</code></li>
+</ul>
+<p>You can alternatively use <code>showWithGravity(message, duration, gravity)</code> to specify where the toast appears in the screen’s layout. May be <code>ToastAndroid.TOP</code>, <code>ToastAndroid.BOTTOM</code> or <code>ToastAndroid.CENTER</code>.</p>
+<p>The ‘showWithGravityAndOffset(message, duration, gravity, xOffset, yOffset)’ method adds the ability to specify an offset with in pixels.</p>
+<p>```SnackPlayer name=Toast%20Android%20API%20Example&amp;supportedPlatforms=android import React from “react”; import { View, StyleSheet, ToastAndroid, Button, StatusBar } from “react-native”;</p>
+<p>const App = () =&gt; { const showToast = () =&gt; { ToastAndroid.show(“A pikachu appeared nearby !”, ToastAndroid.SHORT); };</p>
+<p>const showToastWithGravity = () =&gt; { ToastAndroid.showWithGravity( “All Your Base Are Belong To Us”, ToastAndroid.SHORT, ToastAndroid.CENTER ); };</p>
+<p>const showToastWithGravityAndOffset = () =&gt; { ToastAndroid.showWithGravityAndOffset( “A wild toast appeared!”, ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50 ); };</p>
+<p>return ( <View style={styles.container}> &lt;Button title=“Toggle Toast” onPress={() =&gt; showToast()} /&gt; &lt;Button title=“Toggle Toast With Gravity” onPress={() =&gt; showToastWithGravity()} /&gt; &lt;Button title=“Toggle Toast With Gravity &amp; Offset” onPress={() =&gt; showToastWithGravityAndOffset()} /&gt; </View> ); };</p>
+<p>const styles = StyleSheet.create({ container: { flex: 1, justifyContent: “center”, paddingTop: StatusBar.currentHeight, backgroundColor: “#888888”, padding: 8 } });</p>
+<p>export default App; ```</p>
+<h3 id="imperative-hack">Imperative hack</h3>
+<p>The ToastAndroid API is imperative, but there is a way to expose a declarative component from it as in this example:</p>
+<p>```SnackPlayer name=Advanced%20Toast%20Android%20API%20Example&amp;supportedPlatforms=android import React, { useState, useEffect } from “react”; import { View, StyleSheet, ToastAndroid, Button, StatusBar } from “react-native”;</p>
+<p>const Toast = ({ visible, message }) =&gt; { if (visible) { ToastAndroid.showWithGravityAndOffset( message, ToastAndroid.LONG, ToastAndroid.BOTTOM, 25, 50 ); return null; } return null; };</p>
+<p>const App = () =&gt; { const [visibleToast, setvisibleToast] = useState(false);</p>
+<p>useEffect(() =&gt; setvisibleToast(false), [visibleToast]);</p>
+<p>const handleButtonPress = () =&gt; { setvisibleToast(true); };</p>
+<p>return ( <View style={styles.container}> <Toast visible={visibleToast} message="Example" /> &lt;Button title=“Toggle Toast” onPress={() =&gt; handleButtonPress()} /&gt; </View> ); };</p>
+<p>const styles = StyleSheet.create({ container: { flex: 1, justifyContent: “center”, paddingTop: StatusBar.currentHeight, backgroundColor: “#888888”, padding: 8 } });</p>
+<p>export default App; ```</p>
+<hr />
+<h1 id="reference">Reference</h1>
+<h2 id="methods">Methods</h2>
+<h3 id="show"><code>show()</code></h3>
+<pre class="jsx"><code>static show(message, duration)</code></pre>
+<hr />
+<h3 id="showwithgravity"><code>showWithGravity()</code></h3>
+<pre class="jsx"><code>static showWithGravity(message, duration, gravity)</code></pre>
+<hr />
+<h3 id="showwithgravityandoffset"><code>showWithGravityAndOffset()</code></h3>
+<pre class="jsx"><code>static showWithGravityAndOffset(message, duration, gravity, xOffset, yOffset)</code></pre>
+<h2 id="properties">Properties</h2>
+<h3 id="short"><code>SHORT</code></h3>
+<p>Indicates the duration on the screen.</p>
+<pre class="jsx"><code>ToastAndroid.SHORT;</code></pre>
+<hr />
+<h3 id="long"><code>LONG</code></h3>
+<p>Indicates the duration on the screen.</p>
+<pre class="jsx"><code>ToastAndroid.LONG;</code></pre>
+<hr />
+<h3 id="top"><code>TOP</code></h3>
+<p>Indicates the position on the screen.</p>
+<pre class="jsx"><code>ToastAndroid.TOP;</code></pre>
+<hr />
+<h3 id="bottom"><code>BOTTOM</code></h3>
+<p>Indicates the position on the screen.</p>
+<pre class="jsx"><code>ToastAndroid.BOTTOM;</code></pre>
+<hr />
+<h3 id="center"><code>CENTER</code></h3>
+<p>Indicates the position on the screen.</p>
+<pre class="jsx"><code>ToastAndroid.CENTER;</code></pre>
+</body>
+</html>

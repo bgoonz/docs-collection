@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Share</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Share</h1>
+</header>
+<p>import Tabs from ‘<span class="citation" data-cites="theme/Tabs">@theme/Tabs</span>’; import TabItem from ‘<span class="citation" data-cites="theme/TabItem">@theme/TabItem</span>’; import constants from ‘<span class="citation" data-cites="site/core/TabsConstants">@site/core/TabsConstants</span>’;</p>
+<h2 id="example">Example</h2>
+<p><Tabs groupId="syntax" defaultValue={constants.defaultSyntax} values={constants.syntax}> <TabItem value="functional"></p>
+<p>```SnackPlayer name=Function%20Component%20Example&amp;supportedPlatforms=ios,android import React from ‘react’; import { Share, View, Button } from ‘react-native’;</p>
+<p>const ShareExample = () =&gt; { const onShare = async () =&gt; { try { const result = await Share.share({ message: ‘React Native | A framework for building native apps using React’, }); if (result.action === Share.sharedAction) { if (result.activityType) { // shared with activity type of result.activityType } else { // shared } } else if (result.action === Share.dismissedAction) { // dismissed } } catch (error) { alert(error.message); } }; return ( &lt;View style={{ marginTop: 50 }}&gt; <Button onPress={onShare} title="Share" /> </View> ); };</p>
+<p>export default ShareExample; ```</p>
+<p></TabItem> <TabItem value="classical"></p>
+<p>```SnackPlayer name=Class%20Component%20Example&amp;supportedPlatforms=ios,android import React, { Component } from ‘react’; import { Share, View, Button } from ‘react-native’;</p>
+<p>class ShareExample extends Component { onShare = async () =&gt; { try { const result = await Share.share({ message: ‘React Native | A framework for building native apps using React’, });</p>
+<pre><code>  if (result.action === Share.sharedAction) {
+    if (result.activityType) {
+      // shared with activity type of result.activityType
+    } else {
+      // shared
+    }
+  } else if (result.action === Share.dismissedAction) {
+    // dismissed
+  }
+} catch (error) {
+  alert(error.message);
+}</code></pre>
+<p>};</p>
+<p>render() { return ( &lt;View style={{ marginTop: 50 }}&gt; <Button onPress={this.onShare} title="Share" /> </View> ); } }</p>
+<p>export default ShareExample; ```</p>
+<p></TabItem> </Tabs></p>
+<h1 id="reference">Reference</h1>
+<h2 id="methods">Methods</h2>
+<h3 id="share"><code>share()</code></h3>
+<pre class="jsx"><code>static share(content, options)</code></pre>
+<p>Open a dialog to share text content.</p>
+<p>In iOS, returns a Promise which will be invoked with an object containing <code>action</code> and <code>activityType</code>. If the user dismissed the dialog, the Promise will still be resolved with action being <code>Share.dismissedAction</code> and all the other keys being undefined. Note that some share options will not appear or work on the iOS simulator.</p>
+<p>In Android, returns a Promise which will always be resolved with action being <code>Share.sharedAction</code>.</p>
+<p><strong>Properties:</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+| content
+<div data-classname="label basic required">
+Required
+</div>
+| object | <code>message</code> - a message to share<br/><code>url</code> - a URL to share
+<div class="label ios">
+iOS
+</div>
+<br/><code>title</code> - title of the message
+<div class="label android">
+Android
+</div>
+<hr/>
+At least one of <code>url</code> and <code>message</code> is required. | | options | object | <code>dialogTitle</code>
+<div class="label android">
+Android
+</div>
+<br/><code>excludedActivityTypes</code>
+<div class="label ios">
+iOS
+</div>
+<br/><code>subject</code> - a subject to share via email
+<div class="label ios">
+iOS
+</div>
+<br/><code>tintColor</code>
+<div class="label ios">
+iOS
+</div>
+<p>|</p>
+<hr />
+<h2 id="properties">Properties</h2>
+<h3 id="sharedaction"><code>sharedAction</code></h3>
+<pre class="jsx"><code>static sharedAction</code></pre>
+<p>The content was successfully shared.</p>
+<hr />
+### <code>dismissedAction</code>
+<div class="label ios">
+iOS
+</div>
+<pre class="jsx"><code>static dismissedAction</code></pre>
+<p>The dialog has been dismissed.</p>
+</body>
+</html>

@@ -9,6 +9,7 @@ tags:
   - hasOwnProperty
 browser-compat: javascript.builtins.Object.hasOwnProperty
 ---
+
 {{JSRef}}
 
 The **`hasOwnProperty()`** method returns a boolean indicating
@@ -20,7 +21,7 @@ inheriting it).
 ## Syntax
 
 ```js
-hasOwnProperty(prop)
+hasOwnProperty(prop);
 ```
 
 ### Parameters
@@ -50,9 +51,9 @@ check whether an index exists.
 ```js
 o = new Object();
 o.propOne = null;
-o.hasOwnProperty('propOne');   // returns true
+o.hasOwnProperty("propOne"); // returns true
 o.propTwo = undefined;
-o.hasOwnProperty('propTwo');   // returns true
+o.hasOwnProperty("propTwo"); // returns true
 ```
 
 ## Examples
@@ -64,9 +65,9 @@ named `prop`:
 
 ```js
 o = new Object();
-o.hasOwnProperty('prop');   // returns false
-o.prop = 'exists';
-o.hasOwnProperty('prop');   // returns true
+o.hasOwnProperty("prop"); // returns false
+o.prop = "exists";
+o.hasOwnProperty("prop"); // returns true
 ```
 
 ### Direct vs. inherited properties
@@ -76,10 +77,10 @@ through the prototype chain:
 
 ```js
 o = new Object();
-o.prop = 'exists';
-o.hasOwnProperty('prop');             // returns true
-o.hasOwnProperty('toString');         // returns false
-o.hasOwnProperty('hasOwnProperty');   // returns false
+o.prop = "exists";
+o.hasOwnProperty("prop"); // returns true
+o.hasOwnProperty("toString"); // returns false
+o.hasOwnProperty("hasOwnProperty"); // returns false
 ```
 
 ### Iterating over the properties of an object
@@ -93,15 +94,13 @@ based on the lack of non-enumerable properties shown in the loop that
 
 ```js
 var buz = {
-  fog: 'stack'
+  fog: "stack",
 };
 
 for (var name in buz) {
   if (buz.hasOwnProperty(name)) {
-    console.log('this is fog (' +
-      name + ') for sure. Value: ' + buz[name]);
-  }
-  else {
+    console.log("this is fog (" + name + ") for sure. Value: " + buz[name]);
+  } else {
     console.log(name); // toString or something else
   }
 }
@@ -115,21 +114,21 @@ to use an _external_ `hasOwnProperty` to get correct results:
 
 ```js
 var foo = {
-  hasOwnProperty: function() {
+  hasOwnProperty: function () {
     return false;
   },
-  bar: 'Here be dragons'
+  bar: "Here be dragons",
 };
 
-foo.hasOwnProperty('bar'); // always returns false
+foo.hasOwnProperty("bar"); // always returns false
 
 // Use another Object's hasOwnProperty
 // and call it with 'this' set to foo
-({}).hasOwnProperty.call(foo, 'bar'); // true
+({}.hasOwnProperty.call(foo, "bar")); // true
 
 // It's also possible to use the hasOwnProperty property
 // from the Object prototype for this purpose
-Object.prototype.hasOwnProperty.call(foo, 'bar'); // true
+Object.prototype.hasOwnProperty.call(foo, "bar"); // true
 ```
 
 Note that in the last case there are no newly created objects.

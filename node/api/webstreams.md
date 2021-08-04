@@ -1,5 +1,4 @@
-Web Streams API
-===============
+# Web Streams API
 
 > Stability: 1 - Experimental
 
@@ -17,16 +16,15 @@ An implementation of the [WHATWG Streams Standard](https://streams.spec.whatwg.o
       TransformStream,
     } = require('stream/web');
 
-Overview
---------
+## Overview
 
 The [WHATWG Streams Standard](https://streams.spec.whatwg.org/) (or “web streams”) defines an API for handling streaming data. It is similar to the Node.js [Streams](stream.md) API but emerged later and has become the “standard” API for streaming data across many JavaScript environments.
 
 There are three primary types of objects
 
--   `ReadableStream` - Represents a source of streaming data.
--   `WritableStream` - Represents a destination for streaming data.
--   `TransformStream` - Represents an algorithm for transforming streaming data.
+- `ReadableStream` - Represents a source of streaming data.
+- `WritableStream` - Represents a destination for streaming data.
+- `TransformStream` - Represents an algorithm for transforming streaming data.
 
 ### Example `ReadableStream`
 
@@ -82,47 +80,46 @@ This example creates a simple `ReadableStream` that pushes the current `performa
         console.log(value);
     })();
 
-API
----
+## API
 
 ### Class: `ReadableStream`
 
 #### `new ReadableStream([underlyingSource [, strategy]])`
 
--   `underlyingSource` {Object}
-    -   `start` {Function} A user-defined function that is invoked immediately when the `ReadableStream` is created.
-        -   `controller` {ReadableStreamDefaultController|ReadableByteStreamController}
-        -   Returns: `undefined` or a promise fulfilled with `undefined`.
-    -   `pull` {Function} A user-defined function that is called repeatedly when the `ReadableStream` internal queue is not full. The operation may be sync or async. If async, the function will not be called again until the previously returned promise is fulfilled.
-        -   `controller` {ReadableStreamDefaultController|ReadableByteStreamController}
-        -   Returns: A promise fulfilled with `undefined`.
-    -   `cancel` {Function} A user-defined function that is called when the `ReadableStream` is canceled.
-        -   `reason` {any}
-        -   Returns: A promise fulfilled with `undefined`.
-    -   `type` {string} Must be `'bytes'` or `undefined`.
-    -   `autoAllocateChunkSize` {number} Used only when `type` is equal to `'bytes'`.
--   `strategy` {Object}
-    -   `highWaterMark` {number} The maximum internal queue size before backpressure is applied.
-    -   `size` {Function} A user-defined function used to identify the size of each chunk of data.
-        -   `chunk` {any}
-        -   Returns: {number}
+- `underlyingSource` {Object}
+  - `start` {Function} A user-defined function that is invoked immediately when the `ReadableStream` is created.
+    - `controller` {ReadableStreamDefaultController|ReadableByteStreamController}
+    - Returns: `undefined` or a promise fulfilled with `undefined`.
+  - `pull` {Function} A user-defined function that is called repeatedly when the `ReadableStream` internal queue is not full. The operation may be sync or async. If async, the function will not be called again until the previously returned promise is fulfilled.
+    - `controller` {ReadableStreamDefaultController|ReadableByteStreamController}
+    - Returns: A promise fulfilled with `undefined`.
+  - `cancel` {Function} A user-defined function that is called when the `ReadableStream` is canceled.
+    - `reason` {any}
+    - Returns: A promise fulfilled with `undefined`.
+  - `type` {string} Must be `'bytes'` or `undefined`.
+  - `autoAllocateChunkSize` {number} Used only when `type` is equal to `'bytes'`.
+- `strategy` {Object}
+  - `highWaterMark` {number} The maximum internal queue size before backpressure is applied.
+  - `size` {Function} A user-defined function used to identify the size of each chunk of data.
+    - `chunk` {any}
+    - Returns: {number}
 
 #### `readableStream.locked`
 
--   Type: {boolean} Set to `true` if there is an active reader for this {ReadableStream}.
+- Type: {boolean} Set to `true` if there is an active reader for this {ReadableStream}.
 
 The `readableStream.locked` property is `false` by default, and is switch to `true` while there is an active reader consuming the stream’s data.
 
 #### `readableStream.cancel([reason])`
 
--   `reason` {any}
--   Returns: A promise fulfilled with `undefined` once cancelation has been completed.
+- `reason` {any}
+- Returns: A promise fulfilled with `undefined` once cancelation has been completed.
 
 #### `readableStream.getReader([options])`
 
--   `options` {Object}
-    -   `mode` {string} `'byob'` or `undefined`
--   Returns: {ReadableStreamDefaultReader|ReadableStreamBYOBReader}
+- `options` {Object}
+  - `mode` {string} `'byob'` or `undefined`
+- Returns: {ReadableStreamDefaultReader|ReadableStreamBYOBReader}
 
 <!-- -->
 
@@ -146,15 +143,15 @@ Causes the `readableStream.locked` to be `true`.
 
 #### `readableStream.pipeThrough(transform[, options])`
 
--   `transform` {Object}
-    -   `readable` {ReadableStream} The `ReadableStream` to which `transform.writable` will push the potentially modified data is receives from this `ReadableStream`.
-    -   `writable` {WritableStream} The `WritableStream` to which this `ReadableStream`’s data will be written.
--   `options` {Object}
-    -   `preventAbort` {boolean} When `true`, errors in this `ReadableStream` will not cause `transform.writable` to be aborted.
-    -   `preventCancel` {boolean} When `true`, errors in the destination `transform.writable` is not cause this `ReadableStream` to be canceled.
-    -   `preventClose` {boolean} When `true`, closing this `ReadableStream` will no cause `transform.writable` to be closed.
-    -   `signal` {AbortSignal} Allows the transfer of data to be canceled using an {AbortController}.
--   Returns: {ReadableStream} From `transform.readable`.
+- `transform` {Object}
+  - `readable` {ReadableStream} The `ReadableStream` to which `transform.writable` will push the potentially modified data is receives from this `ReadableStream`.
+  - `writable` {WritableStream} The `WritableStream` to which this `ReadableStream`’s data will be written.
+- `options` {Object}
+  - `preventAbort` {boolean} When `true`, errors in this `ReadableStream` will not cause `transform.writable` to be aborted.
+  - `preventCancel` {boolean} When `true`, errors in the destination `transform.writable` is not cause this `ReadableStream` to be canceled.
+  - `preventClose` {boolean} When `true`, closing this `ReadableStream` will no cause `transform.writable` to be closed.
+  - `signal` {AbortSignal} Allows the transfer of data to be canceled using an {AbortController}.
+- Returns: {ReadableStream} From `transform.readable`.
 
 Connects this {ReadableStream} to the pair of {ReadableStream} and {WritableStream} provided in the `transform` argument such that the data from this {ReadableStream} is written in to `transform.writable`, possibly transformed, then pushed to `transform.readable`. Once the pipeline is configured, `transform.readable` is returned.
 
@@ -208,19 +205,19 @@ Causes the `readableStream.locked` to be `true` while the pipe operation is acti
 
 #### `readableStream.pipeTo(destination, options)`
 
--   `destination` {WritableStream} A {WritableStream} to which this `ReadableStream`’s data will be written.
--   `options` {Object}
-    -   `preventAbort` {boolean} When `true`, errors in this `ReadableStream` will not cause `transform.writable` to be aborted.
-    -   `preventCancel` {boolean} When `true`, errors in the destination `transform.writable` is not cause this `ReadableStream` to be canceled.
-    -   `preventClose` {boolean} When `true`, closing this `ReadableStream` will no cause `transform.writable` to be closed.
-    -   `signal` {AbortSignal} Allows the transfer of data to be canceled using an {AbortController}.
--   Returns: A promise fulfilled with `undefined`
+- `destination` {WritableStream} A {WritableStream} to which this `ReadableStream`’s data will be written.
+- `options` {Object}
+  - `preventAbort` {boolean} When `true`, errors in this `ReadableStream` will not cause `transform.writable` to be aborted.
+  - `preventCancel` {boolean} When `true`, errors in the destination `transform.writable` is not cause this `ReadableStream` to be canceled.
+  - `preventClose` {boolean} When `true`, closing this `ReadableStream` will no cause `transform.writable` to be closed.
+  - `signal` {AbortSignal} Allows the transfer of data to be canceled using an {AbortController}.
+- Returns: A promise fulfilled with `undefined`
 
 Causes the `readableStream.locked` to be `true` while the pipe operation is active.
 
 #### `readableStream.tee()`
 
--   Returns: {ReadableStream\[\]}
+- Returns: {ReadableStream\[\]}
 
 Returns a pair of new {ReadableStream} instances to which this `ReadableStream`’s data will be forwarded. Each will receive the same data.
 
@@ -228,8 +225,8 @@ Causes the `readableStream.locked` to be `true`.
 
 #### `readableStream.values([options])`
 
--   `options` {Object}
-    -   `preventCancel` {boolean} When `true`, prevents the {ReadableStream} from being closed when the async iterator abruptly terminates. **Defaults**: `false`
+- `options` {Object}
+  - `preventCancel` {boolean} When `true`, prevents the {ReadableStream} from being closed when the async iterator abruptly terminates. **Defaults**: `false`
 
 Creates and returns an async iterator usable for consuming this `ReadableStream`’s data.
 
@@ -281,26 +278,26 @@ By default, calling `readableStream.getReader()` with no arguments will return a
 
 #### `new ReadableStreamDefaultReader(stream)`
 
--   `stream` {ReadableStream}
+- `stream` {ReadableStream}
 
 Creates a new {ReadableStreamDefaultReader} that is locked to the given {ReadableStream}.
 
 #### `readableStreamDefaultReader.cancel([reason])`
 
--   `reason` {any}
--   Returns: A promise fulfilled with `undefined`.
+- `reason` {any}
+- Returns: A promise fulfilled with `undefined`.
 
 Cancels the {ReadableStream} and returns a promise that is fulfilled when the underlying stream has been canceled.
 
 #### `readableStreamDefaultReader.closed`
 
--   Type: {Promise} Fulfilled with `undefined` when the associated {ReadableStream} is closed or this reader’s lock is released.
+- Type: {Promise} Fulfilled with `undefined` when the associated {ReadableStream} is closed or this reader’s lock is released.
 
 #### `readableStreamDefaultReader.read()`
 
--   Returns: A promise fulfilled with an object:
-    -   `value` {ArrayBuffer}
-    -   `done` {boolean}
+- Returns: A promise fulfilled with an object:
+  - `value` {ArrayBuffer}
+  - `done` {boolean}
 
 Requests the next chunk of data from the underlying {ReadableStream} and returns a promise that is fulfilled with the data once it is available.
 
@@ -310,7 +307,7 @@ Releases this reader’s lock on the underlying {ReadableStream}.
 
 ### Class: `ReadableStreamBYOBReader`
 
-The `ReadableStreamBYOBReader` is an alternative consumer for byte-oriented {ReadableStream}’s (those that are created with `underlyingSource.type` set equal to ``` 'bytes`` when the ```ReadableStream\` was created).
+The `ReadableStreamBYOBReader` is an alternative consumer for byte-oriented {ReadableStream}’s (those that are created with `underlyingSource.type` set equal to ` 'bytes`` when the `ReadableStream\` was created).
 
 The `BYOB` is short for “bring your own buffer”. This is a pattern that allows for more efficient reading of byte-oriented data that avoids extraneous copying.
 
@@ -372,31 +369,31 @@ The `BYOB` is short for “bring your own buffer”. This is a pattern that allo
 
 #### `new ReadableStreamBYOBReader(stream)`
 
--   `stream` {ReadableStream}
+- `stream` {ReadableStream}
 
 Creates a new `ReadableStreamBYOBReader` that is locked to the given {ReadableStream}.
 
 #### `readableStreamBYOBReader.cancel([reason])`
 
--   `reason` {any}
--   Returns: A promise fulfilled with `undefined`.
+- `reason` {any}
+- Returns: A promise fulfilled with `undefined`.
 
 Cancels the {ReadableStream} and returns a promise that is fulfilled when the underlying stream has been canceled.
 
 #### `readableStreamBYOBReader.closed`
 
--   Type: {Promise} Fulfilled with `undefined` when the associated {ReadableStream} is closed or this reader’s lock is released.
+- Type: {Promise} Fulfilled with `undefined` when the associated {ReadableStream} is closed or this reader’s lock is released.
 
 #### `readableStreamBYOBReader.read(view)`
 
--   `view` {Buffer|TypedArray|DataView}
--   Returns: A promise fulfilled with an object:
-    -   `value` {ArrayBuffer}
-    -   `done` {boolean}
+- `view` {Buffer|TypedArray|DataView}
+- Returns: A promise fulfilled with an object:
+  - `value` {ArrayBuffer}
+  - `done` {boolean}
 
 Requests the next chunk of data from the underlying {ReadableStream} and returns a promise that is fulfilled with the data once it is available.
 
-Do not pass a pooled {Buffer} object instance in to this method. Pooled `Buffer` objects are created using `Buffer.allocUnsafe()`, or `Buffer.from()`, or are often returned by various `fs` module callbacks. These types of `Buffer`s use a shared underlying {ArrayBuffer} object that contains all of the data from all of the pooled `Buffer` instances. When a `Buffer`, {TypedArray}, or {DataView} is passed in to `readableStreamBYOBReader.read()`, the view’s underlying `ArrayBuffer` is *detached*, invalidating all existing views that may exist on that `ArrayBuffer`. This can have disastrous consequences for your application.
+Do not pass a pooled {Buffer} object instance in to this method. Pooled `Buffer` objects are created using `Buffer.allocUnsafe()`, or `Buffer.from()`, or are often returned by various `fs` module callbacks. These types of `Buffer`s use a shared underlying {ArrayBuffer} object that contains all of the data from all of the pooled `Buffer` instances. When a `Buffer`, {TypedArray}, or {DataView} is passed in to `readableStreamBYOBReader.read()`, the view’s underlying `ArrayBuffer` is _detached_, invalidating all existing views that may exist on that `ArrayBuffer`. This can have disastrous consequences for your application.
 
 #### `readableStreamBYOBReader.releaseLock()`
 
@@ -412,19 +409,19 @@ Closes the {ReadableStream} to which this controller is associated.
 
 #### `readableStreamDefaultController.desiredSize`
 
--   Type: {number}
+- Type: {number}
 
 Returns the amount of data remaining to fill the {ReadableStream}’s queue.
 
 #### `readableStreamDefaultController.enqueue(chunk)`
 
--   `chunk` {any}
+- `chunk` {any}
 
 Appends a new chunk of data to the {ReadableStream}’s queue.
 
 #### `readableStreamDefaultController.error(error)`
 
--   `error` {any}
+- `error` {any}
 
 Signals an error that causes the {ReadableStream} to error and close.
 
@@ -434,7 +431,7 @@ Every {ReadableStream} has a controller that is responsible for the internal sta
 
 #### `readableByteStreamController.byobRequest`
 
--   Type: {ReadableStreamBYOBRequest}
+- Type: {ReadableStreamBYOBRequest}
 
 #### `readableByteStreamController.close()`
 
@@ -442,19 +439,19 @@ Closes the {ReadableStream} to which this controller is associated.
 
 #### `readableByteStreamController.desiredSize`
 
--   Type: {number}
+- Type: {number}
 
 Returns the amount of data remaining to fill the {ReadableStream}’s queue.
 
 #### `readableByteStreamController.enqueue(chunk)`
 
--   `chunk`: {Buffer|TypedArray|DataView}
+- `chunk`: {Buffer|TypedArray|DataView}
 
 Appends a new chunk of data to the {ReadableStream}’s queue.
 
 #### `readableByteStreamController.error(error)`
 
--   `error` {any}
+- `error` {any}
 
 Signals an error that causes the {ReadableStream} to error and close.
 
@@ -464,19 +461,19 @@ When using `ReadableByteStreamController` in byte-oriented streams, and when usi
 
 #### `readableStreamBYOBRequest.respond(bytesWritten)`
 
--   `bytesWritten` {number}
+- `bytesWritten` {number}
 
 Signals that a `bytesWritten` number of bytes have been written to `readableStreamBYOBRequest.view`.
 
 #### `readableStreamBYOBRequest.respondWithNewView(view)`
 
--   `view` {Buffer|TypedArray|DataView}
+- `view` {Buffer|TypedArray|DataView}
 
 Signals that the request has been fulfilled with bytes written to a new `Buffer`, `TypedArray`, or `DataView`.
 
 #### `readableStreamBYOBRequest.view`
 
--   Type: {Buffer|TypedArray|DataView}
+- Type: {Buffer|TypedArray|DataView}
 
 ### Class: `WritableStream`
 
@@ -496,48 +493,48 @@ The `WritableStream` is a destination to which stream data is sent.
 
 #### `new WritableStream([underlyingSink[, strategy]])`
 
--   `underlyingSink` {Object}
-    -   `start` {Function} A user-defined function that is invoked immediately when the `WritableStream` is created.
-        -   `controller` {WritableStreamDefaultController}
-        -   Returns: `undefined` or a promise fulfilled with `undefined`.
-    -   `write` {Function} A user-defined function that is invoked when a chunk of data has been written to the `WritableStream`.
-        -   `chunk` {any}
-        -   `controller` {WritableStreamDefaultController}
-        -   Returns: A promise fulfilled with `undefined`.
-    -   `close` {Function} A user-defined function that is called when the `WritableStream` is closed.
-        -   Returns: A promise fulfilled with `undefined`.
-    -   `abort` {Function} A user-defined function that is called to abruptly close the `WritableStream`.
-        -   `reason` {any}
-        -   Returns: A promise fulfilled with `undefined`.
-    -   `type` {any} The `type` option is reserved for future use and *must* be undefined.
--   `strategy` {Object}
-    -   `highWaterMark` {number} The maximum internal queue size before backpressure is applied.
-    -   `size` {Function} A user-defined function used to identify the size of each chunk of data.
-        -   `chunk` {any}
-        -   Returns: {number}
+- `underlyingSink` {Object}
+  - `start` {Function} A user-defined function that is invoked immediately when the `WritableStream` is created.
+    - `controller` {WritableStreamDefaultController}
+    - Returns: `undefined` or a promise fulfilled with `undefined`.
+  - `write` {Function} A user-defined function that is invoked when a chunk of data has been written to the `WritableStream`.
+    - `chunk` {any}
+    - `controller` {WritableStreamDefaultController}
+    - Returns: A promise fulfilled with `undefined`.
+  - `close` {Function} A user-defined function that is called when the `WritableStream` is closed.
+    - Returns: A promise fulfilled with `undefined`.
+  - `abort` {Function} A user-defined function that is called to abruptly close the `WritableStream`.
+    - `reason` {any}
+    - Returns: A promise fulfilled with `undefined`.
+  - `type` {any} The `type` option is reserved for future use and _must_ be undefined.
+- `strategy` {Object}
+  - `highWaterMark` {number} The maximum internal queue size before backpressure is applied.
+  - `size` {Function} A user-defined function used to identify the size of each chunk of data.
+    - `chunk` {any}
+    - Returns: {number}
 
 #### `writableStream.abort([reason])`
 
--   `reason` {any}
--   Returns: A promise fulfilled with `undefined`.
+- `reason` {any}
+- Returns: A promise fulfilled with `undefined`.
 
 Abruptly terminates the `WritableStream`. All queued writes will be canceled with their associated promises rejected.
 
 #### `writableStream.close()`
 
--   Returns: A promise fulfilled with `undefined`.
+- Returns: A promise fulfilled with `undefined`.
 
 Closes the `WritableStream` when no additional writes are expected.
 
 #### `writableStream.getWriter()`
 
--   Returns: {WritableStreamDefaultWriter}
+- Returns: {WritableStreamDefaultWriter}
 
 Creates and creates a new writer instance that can be used to write data into the `WritableStream`.
 
 #### `writableStream.locked`
 
--   Type: {boolean}
+- Type: {boolean}
 
 The `writableStream.locked` property is `false` by default, and is switched to `true` while there is an active writer attached to this `WritableStream`.
 
@@ -559,36 +556,36 @@ A {WritableStream} instance can be transferred using a {MessagePort}.
 
 #### `new WritableStreamDefaultWriter(stream)`
 
--   `stream` {WritableStream}
+- `stream` {WritableStream}
 
 Creates a new `WritableStreamDefaultWriter` that is locked to the given `WritableStream`.
 
 #### `writableStreamDefaultWriter.abort([reason])`
 
--   `reason` {any}
--   Returns: A promise fulfilled with `undefined`.
+- `reason` {any}
+- Returns: A promise fulfilled with `undefined`.
 
 Abruptly terminates the `WritableStream`. All queued writes will be canceled with their associated promises rejected.
 
 #### `writableStreamDefaultWriter.close()`
 
--   Returns: A promise fulfilled with `undefined`.
+- Returns: A promise fulfilled with `undefined`.
 
 Closes the `WritableStream` when no additional writes are expected.
 
 #### `writableStreamDefaultWriter.closed`
 
--   Type: A promise that is fulfilled with `undefined` when the associated {WritableStream} is closed or this writer’s lock is released.
+- Type: A promise that is fulfilled with `undefined` when the associated {WritableStream} is closed or this writer’s lock is released.
 
 #### `writableStreamDefaultWriter.desiredSize`
 
--   Type: {number}
+- Type: {number}
 
 The amount of data required to fill the {WritableStream}’s queue.
 
 #### `writableStreamDefaultWriter.ready`
 
--   type: A promise that is fulfilled with `undefined` when the writer is ready to be used.
+- type: A promise that is fulfilled with `undefined` when the writer is ready to be used.
 
 #### `writableStreamDefaultWriter.releaseLock()`
 
@@ -596,8 +593,8 @@ Releases this writer’s lock on the underlying {ReadableStream}.
 
 #### `writableStreamDefaultWriter.write([chunk])`
 
--   `chunk`: {any}
--   Returns: A promise fulfilled with `undefined`.
+- `chunk`: {any}
+- Returns: A promise fulfilled with `undefined`.
 
 Appends a new chunk of data to the {WritableStream}’s queue.
 
@@ -607,17 +604,17 @@ The `WritableStreamDefaultController` manage’s the {WritableStream}’s intern
 
 #### `writableStreamDefaultController.abortReason`
 
--   Type: {any} The `reason` value passed to `writableStream.abort()`.
+- Type: {any} The `reason` value passed to `writableStream.abort()`.
 
 #### `writableStreamDefaultController.error(error)`
 
--   `error` {any}
+- `error` {any}
 
 Called by user-code to signal that an error has occurred while processing the `WritableStream` data. When called, the {WritableStream} will be aborted, with currently pending writes canceled.
 
 #### `writableStreamDefaultController.signal`
 
--   Type: {AbortSignal} An `AbortSignal` that can be used to cancel pending write or close operations when a {WritableStream} is aborted.
+- Type: {AbortSignal} An `AbortSignal` that can be used to cancel pending write or close operations when a {WritableStream} is aborted.
 
 ### Class: `TransformStream`
 
@@ -640,37 +637,37 @@ A `TransformStream` consists of a {ReadableStream} and a {WritableStream} that a
 
 #### `new TransformStream([transformer[, writableStrategy[, readableStrategy]]])`
 
--   `transformer` {Object}
-    -   `start` {Function} A user-defined function that is invoked immediately when the `TransformStream` is created.
-        -   `controller` {TransformStreamDefaultController}
-        -   Returns: `undefined` or a promise fulfilled with `undefined`
-    -   `transform` {Function} A user-defined function that receives, and potentially modifies, a chunk of data written to `transformStream.writable`, before forwarding that on to `transformStream.readable`.
-        -   `chunk` {any}
-        -   `controller` {TransformStreamDefaultController}
-        -   Returns: A promise fulfilled with `undefined`.
-    -   `flush` {Function} A user-defined function that is called immediately before the writable side of the `TransformStream` is closed, signaling the end of the transformation process.
-        -   `controller` {TransformStreamDefaultController}
-        -   Returns: A promise fulfilled with `undefined`.
-    -   `readableType` {any} the `readableType` option is reserved for future use and *must* be \`undefined.
-    -   `writableType` {any} the `writableType` option is reserved for future use and *must* be \`undefined.
--   `writableStrategy` {Object}
-    -   `highWaterMark` {number} The maximum internal queue size before backpressure is applied.
-    -   `size` {Function} A user-defined function used to identify the size of each chunk of data.
-        -   `chunk` {any}
-        -   Returns: {number}
--   `readableStrategy` {Object}
-    -   `highWaterMark` {number} The maximum internal queue size before backpressure is applied.
-    -   `size` {Function} A user-defined function used to identify the size of each chunk of data.
-        -   `chunk` {any}
-        -   Returns: {number}
+- `transformer` {Object}
+  - `start` {Function} A user-defined function that is invoked immediately when the `TransformStream` is created.
+    - `controller` {TransformStreamDefaultController}
+    - Returns: `undefined` or a promise fulfilled with `undefined`
+  - `transform` {Function} A user-defined function that receives, and potentially modifies, a chunk of data written to `transformStream.writable`, before forwarding that on to `transformStream.readable`.
+    - `chunk` {any}
+    - `controller` {TransformStreamDefaultController}
+    - Returns: A promise fulfilled with `undefined`.
+  - `flush` {Function} A user-defined function that is called immediately before the writable side of the `TransformStream` is closed, signaling the end of the transformation process.
+    - `controller` {TransformStreamDefaultController}
+    - Returns: A promise fulfilled with `undefined`.
+  - `readableType` {any} the `readableType` option is reserved for future use and _must_ be \`undefined.
+  - `writableType` {any} the `writableType` option is reserved for future use and _must_ be \`undefined.
+- `writableStrategy` {Object}
+  - `highWaterMark` {number} The maximum internal queue size before backpressure is applied.
+  - `size` {Function} A user-defined function used to identify the size of each chunk of data.
+    - `chunk` {any}
+    - Returns: {number}
+- `readableStrategy` {Object}
+  - `highWaterMark` {number} The maximum internal queue size before backpressure is applied.
+  - `size` {Function} A user-defined function used to identify the size of each chunk of data.
+    - `chunk` {any}
+    - Returns: {number}
 
 #### `transformStream.readable`
 
--   Type: {ReadableStream}
+- Type: {ReadableStream}
 
 #### `transformStream.writable`
 
--   Type: {WritableStream}
+- Type: {WritableStream}
 
 #### Transferring with postMessage()
 
@@ -693,19 +690,19 @@ The `TransformStreamDefaultController` manages the internal state of the `Transf
 
 #### `transformStreamDefaultController.desiredSize`
 
--   Type: {number}
+- Type: {number}
 
 The amount of data required to fill the readable side’s queue.
 
 #### `transformStreamDefaultController.enqueue([chunk])`
 
--   `chunk` {any}
+- `chunk` {any}
 
 Appends a chunk of data to the readable side’s queue.
 
 #### `transformStreamDefaultController.error([reason])`
 
--   `reason` {any}
+- `reason` {any}
 
 Signals to both the readable and writable side that an error has occurred while processing the transform data, causing both sides to be abruptly closed.
 
@@ -717,35 +714,35 @@ Closes the readable side of the transport and causes the writable side to be abr
 
 #### `new ByteLengthQueuingStrategy(options)`
 
--   `options` {Object}
-    -   `highWaterMark` {number}
+- `options` {Object}
+  - `highWaterMark` {number}
 
 #### `byteLengthQueuingStrategy.highWaterMark`
 
--   Type: {number}
+- Type: {number}
 
 #### `byteLengthQueuingStrategy.size`
 
--   Type: {Function}
-    -   `chunk` {any}
-    -   Returns: {number}
+- Type: {Function}
+  - `chunk` {any}
+  - Returns: {number}
 
 ### Class: `CountQueuingStrategy`
 
 #### `new CountQueuingStrategy(options)`
 
--   `options` {Object}
-    -   `highWaterMark` {number}
+- `options` {Object}
+  - `highWaterMark` {number}
 
 #### `countQueuingStrategy.highWaterMark`
 
--   Type: {number}
+- Type: {number}
 
 #### `countQueuingStrategy.size`
 
--   Type: {Function}
-    -   `chunk` {any}
-    -   Returns: {number}
+- Type: {Function}
+  - `chunk` {any}
+  - Returns: {number}
 
 ### Class: `TextEncoderStream`
 
@@ -755,79 +752,79 @@ Creates a new `TextEncoderStream` instance.
 
 #### `textEncoderStream.encoding`
 
--   Type: {string}
+- Type: {string}
 
 The encoding supported by the `TextEncoderStream` instance.
 
 #### `textEncoderStream.readable`
 
--   Type: {ReadableStream}
+- Type: {ReadableStream}
 
 #### `textEncoderStream.writable`
 
--   Type: {WritableStream}
+- Type: {WritableStream}
 
 ### Class: `TextDecoderStream`
 
 #### `new TextDecoderStream([encoding[, options]])`
 
--   `encoding` {string} Identifies the `encoding` that this `TextDecoder` instance supports. **Default:** `'utf-8'`.
--   `options` {Object}
-    -   `fatal` {boolean} `true` if decoding failures are fatal.
-    -   `ignoreBOM` {boolean} When `true`, the `TextDecoderStream` will include the byte order mark in the decoded result. When `false`, the byte order mark will be removed from the output. This option is only used when `encoding` is `'utf-8'`, `'utf-16be'` or `'utf-16le'`. **Default:** `false`.
+- `encoding` {string} Identifies the `encoding` that this `TextDecoder` instance supports. **Default:** `'utf-8'`.
+- `options` {Object}
+  - `fatal` {boolean} `true` if decoding failures are fatal.
+  - `ignoreBOM` {boolean} When `true`, the `TextDecoderStream` will include the byte order mark in the decoded result. When `false`, the byte order mark will be removed from the output. This option is only used when `encoding` is `'utf-8'`, `'utf-16be'` or `'utf-16le'`. **Default:** `false`.
 
 Creates a new `TextDecoderStream` instance.
 
 #### `textDecoderStream.encoding`
 
--   Type: {string}
+- Type: {string}
 
 The encoding supported by the `TextDecoderStream` instance.
 
 #### `textDecoderStream.fatal`
 
--   Type: {boolean}
+- Type: {boolean}
 
 The value will be `true` if decoding errors result in a `TypeError` being thrown.
 
 #### `textDecoderStream.ignoreBOM`
 
--   Type: {boolean}
+- Type: {boolean}
 
 The value will be `true` if the decoding result will include the byte order mark.
 
 #### `textDecoderStream.readable`
 
--   Type: {ReadableStream}
+- Type: {ReadableStream}
 
 #### `textDecoderStream.writable`
 
--   Type: {WritableStream}
+- Type: {WritableStream}
 
 ### Class: `CompressionStream`
 
 #### `new CompressionStream(format)`
 
--   `format` {string} One of either `'deflate'` or `'gzip'`.
+- `format` {string} One of either `'deflate'` or `'gzip'`.
 
 #### `compressionStream.readable`
 
--   Type: {ReadableStream}
+- Type: {ReadableStream}
 
 #### `compressionStream.writable`
 
--   Type: {WritableStream}
+- Type: {WritableStream}
 
 ### Class: `DecompressionStream`
 
 #### `new DecompressionStream(format)`
 
--   `format` {string} One of either `'deflate'` or `'gzip'`.
+- `format` {string} One of either `'deflate'` or `'gzip'`.
 
 #### `decompressionStream.readable`
 
--   Type: {ReadableStream}
+- Type: {ReadableStream}
 
 #### `deccompressionStream.writable`
 
--   Type: {WritableStream}
+- Type: {WritableStream}

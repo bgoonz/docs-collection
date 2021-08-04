@@ -1,30 +1,26 @@
-Jupyter Notebooks in VS Code
-============================
+# Jupyter Notebooks in VS Code
 
 [Jupyter](https://jupyter-notebook.readthedocs.io/en/latest/) (formerly IPython Notebook) is an open-source project that lets you easily combine Markdown text and executable Python source code on one canvas called a **notebook**. Visual Studio Code supports working with Jupyter Notebooks natively, and through [Python code files](/docs/python/jupyter-support-py.md). This topic covers the native support available for Jupyter Notebooks and demonstrates how to:
 
--   Create, open, and save Jupyter Notebooks
--   Work with Jupyter code cells
--   View, inspect, and filter variables using the Variable Explorer and Data Viewer
--   Connect to a remote Jupyter server
--   Debug a Jupyter Notebook
+- Create, open, and save Jupyter Notebooks
+- Work with Jupyter code cells
+- View, inspect, and filter variables using the Variable Explorer and Data Viewer
+- Connect to a remote Jupyter server
+- Debug a Jupyter Notebook
 
-Setting up your environment
----------------------------
+## Setting up your environment
 
 To work with Python in Jupyter Notebooks, you must activate an Anaconda environment in VS Code, or another Python environment in which you’ve installed the [Jupyter package](https://pypi.org/project/jupyter/). To select an environment, use the **Python: Select Interpreter** command from the Command Palette (`kb(workbench.action.showCommands)`).
 
 Once the appropriate environment is activated, you can create and open a Jupyter Notebook, connect to a remote Jupyter server for running code cells, and export a Jupyter Notebook as a Python file.
 
-Workspace Trust
----------------
+## Workspace Trust
 
 When getting started with Notebooks, you’ll want to make sure that you are working in a trusted workspace. Harmful code can be embedded in notebooks and the [Workspace Trust](/docs/editor/workspace-trust.md) feature allows you to indicate which folders and their contents should allow or restrict automatic code execution.
 
 If you attempt to open a notebook when VS Code is in an untrusted workspace running [Restricted Mode](/docs/editor/workspace-trust.md#restricted-mode), you will not be able to execute cells and rich outputs will be hidden.
 
-Create or open a Jupyter Notebook
----------------------------------
+## Create or open a Jupyter Notebook
 
 You can create a Jupyter Notebook by running the **Jupyter: Create Blank New Jupyter Notebook** command from the Command Palette (`kb(workbench.action.showCommands)`) or by creating a new `.ipynb` file in your workspace.
 
@@ -40,8 +36,7 @@ After selecting a kernel, the language picker located in the bottom right of eac
 
 If you have an existing Jupyter Notebook, you can open it by right-clicking on the file and opening with VS Code, or through the VS Code File Explorer.
 
-Running cells
--------------
+## Running cells
 
 Once you have a Notebook, you can run a code cell using the **Run** icon to the left of the cell and the output will appear directly below the code cell.
 
@@ -53,13 +48,11 @@ You can run multiple cells by using **Run All**, **Run All Above**, or **Run All
 
 ![Run Jupyter code cells](images/jupyter/native-code-runs.png)
 
-Save your Jupyter Notebook
---------------------------
+## Save your Jupyter Notebook
 
 You can save your Jupyter Notebook using the keyboard shortcut `kbstyle(Ctrl+S)` or **File** &gt; **Save**.
 
-Export your Jupyter Notebook
-----------------------------
+## Export your Jupyter Notebook
 
 You can export a Jupyter Notebook as a Python file (`.py`), a PDF, or an HTML file. To export, select the **Export** action on the main toolbar. You’ll then be presented with a dropdown of file format options.
 
@@ -67,8 +60,7 @@ You can export a Jupyter Notebook as a Python file (`.py`), a PDF, or an HTML fi
 
 > **Note:** For PDF export, you must have [TeX installed](https://nbconvert.readthedocs.io/en/latest/install.html#installing-tex). If you don’t, you will be notified that you need to install it when you select the PDF option. Also, be aware that if you have SVG-only output in your Notebook, they will not be displayed in the PDF. To have SVG graphics in a PDF, either ensure that your output includes a non-SVG image format or else you can first export to HTML and then save as PDF using your browser.
 
-Work with code cells in the Notebook Editor
--------------------------------------------
+## Work with code cells in the Notebook Editor
 
 The Notebook Editor makes it easy to create, edit, and run code cells within your Jupyter Notebook.
 
@@ -189,8 +181,7 @@ To toggle line numbering for the entire notebook, use `kbstyle(Shift+L)` when in
 
 ![Line numbers enabled for notebook](images/jupyter/notebook-toggle-line-num.png)
 
-Table of Contents
------------------
+## Table of Contents
 
 To navigate through your notebook, open the File Explorer in the Activity bar. Then open the **Outline** tab in the Side bar.
 
@@ -198,15 +189,13 @@ To navigate through your notebook, open the File Explorer in the Activity bar. T
 
 > **Note:** By default, the outline will only show Markdown. To show code cells, enable the following setting: **Notebook &gt; Outline: Show Code Cells**.
 
-IntelliSense support in the Jupyter Notebook Editor
----------------------------------------------------
+## IntelliSense support in the Jupyter Notebook Editor
 
 The Python Jupyter Notebook Editor window has full IntelliSense – code completions, member lists, quick info for methods, and parameter hints. You can be just as productive typing in the Notebook Editor window as you are in the code editor.
 
 ![IntelliSense support](images/jupyter/intellisense.png)
 
-Variable Explorer and Data Viewer
----------------------------------
+## Variable Explorer and Data Viewer
 
 Within a Python Notebook, it’s possible to view, inspect, sort, and filter the variables within your current Jupyter session. By selecting the **Variables** icon in the main toolbar after running code and cells, you’ll see a list of the current variables, which will automatically update as variables are used in code. The variables pane will open at the bottom of the notebook.
 
@@ -218,8 +207,7 @@ For additional information about your variables, you can also double-click on a 
 
 ![Data Viewer](images/jupyter/data-viewer.png)
 
-Saving plots
-------------
+## Saving plots
 
 To save a plot from your notebook, simply hover over the output and select the **Save** icon in the top right.
 
@@ -227,8 +215,7 @@ To save a plot from your notebook, simply hover over the output and select the *
 
 > **Note:** There is support for rendering plots created with [matplotlib](https://matplotlib.org/) and [Altair](https://altair-viz.github.io/index.html).
 
-Custom notebook diffing
------------------------
+## Custom notebook diffing
 
 Under the hood, Jupyter Notebooks are JSON files. The segments in a JSON file are rendered as cells that are comprised of three components: input, output, and metadata. Comparing changes made in a notebook using lined-based diffing is difficult and hard to parse. The rich diffing editor for notebooks allows you to easily see changes for each component of a cell.
 
@@ -238,8 +225,7 @@ You can even customize what types of changes you want displayed within your diff
 
 To learn more about Git integration within VS Code, visit [Version Control in VS Code](/docs/editor/versioncontrol.md).
 
-Debug a Jupyter Notebook
-------------------------
+## Debug a Jupyter Notebook
 
 If you need additional debug support in order to diagnose an issue in your code cells, you can export it as a Python file. Once exported as a Python file, the VS Code debugger lets you step through your code, set breakpoints, examine state, and analyze problems. Using the debugger is a helpful way to find and correct issues in notebook code. To debug your Python file:
 
@@ -253,8 +239,8 @@ If you need additional debug support in order to diagnose an issue in your code 
 
 3.  After saving the `.py` file, to start the debugger, use one of the following options:
 
-    -   For the whole Notebook, open the Command Palette (`kb(workbench.action.showCommands)`) and run the **Python: Debug Current File in Python Interactive Window** command.
-    -   For an individual cell, use the **Debug Cell** action that appears above the cell. The debugger specifically starts on the code in that cell. By default, **Debug Cell** steps into user code. If you want to step into non-user code, you need to uncheck **Data Science: Debug Just My Code** in the Python extension settings (`kb(workbench.action.openSettings)`).
+    - For the whole Notebook, open the Command Palette (`kb(workbench.action.showCommands)`) and run the **Python: Debug Current File in Python Interactive Window** command.
+    - For an individual cell, use the **Debug Cell** action that appears above the cell. The debugger specifically starts on the code in that cell. By default, **Debug Cell** steps into user code. If you want to step into non-user code, you need to uncheck **Data Science: Debug Just My Code** in the Python extension settings (`kb(workbench.action.openSettings)`).
 
 4.  To familiarize yourself with the general debugging features of VS Code, such as inspecting variables, setting breakpoints, and other activities, review [VS Code debugging](/docs/editor/debugging.md).
 
@@ -262,8 +248,7 @@ If you need additional debug support in order to diagnose an issue in your code 
 
 6.  When you’re satisfied that all your code is correct, use the Python Interactive window to export the Python file as a Jupyter Notebook (`.ipynb`).
 
-Connect to a remote Jupyter server
-----------------------------------
+## Connect to a remote Jupyter server
 
 You can offload intensive computation in a Jupyter Notebook to other computers by connecting to a remote Jupyter server. Once connected, code cells run on the remote server rather than the local computer.
 

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Platform Specific Code</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Platform Specific Code</h1>
+    </header>
+    <p>
+      When building a cross-platform app, you’ll want to re-use as much code as
+      possible. Scenarios may arise where it makes sense for the code to be
+      different, for example you may want to implement separate visual
+      components for Android and iOS.
+    </p>
+    <p>
+      React Native provides two ways to organize your code and separate it by
+      platform:
+    </p>
+    <ul>
+      <li>
+        Using the
+        <a href="platform-specific-code.md#platform-module"
+          ><code>Platform</code> module</a
+        >.
+      </li>
+      <li>
+        Using
+        <a href="platform-specific-code.md#platform-specific-extensions"
+          >platform-specific file extensions</a
+        >.
+      </li>
+    </ul>
+    <p>
+      Certain components may have properties that work on one platform only. All
+      of these props are annotated with <code>@platform</code> and have a small
+      badge next to them on the website.
+    </p>
+    <h2 id="platform-module">Platform module</h2>
+    <p>
+      React Native provides a module that detects the platform in which the app
+      is running. You can use the detection logic to implement platform-specific
+      code. Use this option when only small parts of a component are
+      platform-specific.
+    </p>
+    <pre
+      class="jsx"
+    ><code>import { Platform, StyleSheet } from &#39;react-native&#39;;
+
+const styles = StyleSheet.create({
+  height: Platform.OS === &#39;ios&#39; ? 200 : 100
+});</code></pre>
+    <p>
+      <code>Platform.OS</code> will be <code>ios</code> when running on iOS and
+      <code>android</code> when running on Android.
+    </p>
+    <p>
+      There is also a <code>Platform.select</code> method available, that given
+      an object where keys can be one of
+      <code>'ios' | 'android' | 'native' | 'default'</code>, returns the most
+      fitting value for the platform you are currently running on. That is, if
+      you’re running on a phone, <code>ios</code> and <code>android</code> keys
+      will take preference. If those are not specified, <code>native</code> key
+      will be used and then the <code>default</code> key.
+    </p>
+    <pre
+      class="jsx"
+    ><code>import { Platform, StyleSheet } from &#39;react-native&#39;;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    ...Platform.select({
+      ios: {
+        backgroundColor: &#39;red&#39;
+      },
+      android: {
+        backgroundColor: &#39;green&#39;
+      },
+      default: {
+        // other platforms, web for example
+        backgroundColor: &#39;blue&#39;
+      }
+    })
+  }
+});</code></pre>
+    <p>
+      This will result in a container having <code>flex: 1</code> on all
+      platforms, a red background color on iOS, a green background color on
+      Android, and a blue background color on other platforms.
+    </p>
+    <p>
+      Since it accepts <code>any</code> value, you can also use it to return
+      platform-specific components, like below:
+    </p>
+    <pre class="jsx"><code>const Component = Platform.select({
+  ios: () =&gt; require(&#39;ComponentIOS&#39;),
+  android: () =&gt; require(&#39;ComponentAndroid&#39;)
+})();
+
+&lt;Component /&gt;;</code></pre>
+    <pre class="jsx"><code>const Component = Platform.select({
+  native: () =&gt; require(&#39;ComponentForNative&#39;),
+  default: () =&gt; require(&#39;ComponentForWeb&#39;)
+})();
+
+&lt;Component /&gt;;</code></pre>
+    <h3 id="detecting-the-android-version">Detecting the Android version</h3>
+    <p>
+      On Android, the <code>Platform</code> module can also be used to detect
+      the version of the Android Platform in which the app is running:
+    </p>
+    <pre class="jsx"><code>import { Platform } from &#39;react-native&#39;;
+
+if (Platform.Version === 25) {
+  console.log(&#39;Running on Nougat!&#39;);
+}</code></pre>
+    <p>
+      <strong>Note</strong>: <code>Version</code> is set to the Android API
+      version not the Android OS version. To find a mapping please refer to
+      <a href="https://en.wikipedia.org/wiki/Android_version_history#Overview"
+        >Android Version History</a
+      >.
+    </p>
+    <h3 id="detecting-the-ios-version">Detecting the iOS version</h3>
+    <p>
+      On iOS, the <code>Version</code> is a result of
+      <code>-[UIDevice systemVersion]</code>, which is a string with the current
+      version of the operating system. An example of the system version is
+      “10.3”. For example, to detect the major version number on iOS:
+    </p>
+    <pre class="jsx"><code>import { Platform } from &#39;react-native&#39;;
+
+const majorVersionIOS = parseInt(Platform.Version, 10);
+if (majorVersionIOS &lt;= 9) {
+  console.log(&#39;Work around a change in behavior&#39;);
+}</code></pre>
+    <h2 id="platform-specific-extensions">Platform-specific extensions</h2>
+    <p>
+      When your platform-specific code is more complex, you should consider
+      splitting the code out into separate files. React Native will detect when
+      a file has a <code>.ios.</code> or <code>.android.</code> extension and
+      load the relevant platform file when required from other components.
+    </p>
+    <p>For example, say you have the following files in your project:</p>
+    <pre class="shell"><code>BigButton.ios.js
+BigButton.android.js</code></pre>
+    <p>You can then require the component as follows:</p>
+    <pre
+      class="jsx"
+    ><code>import BigButton from &#39;./BigButton&#39;;</code></pre>
+    <p>
+      React Native will automatically pick up the right file based on the
+      running platform.
+    </p>
+    <h2 id="native-specific-extensions-i.e.-sharing-code-with-nodejs-and-web">
+      Native-specific extensions (i.e. sharing code with NodeJS and Web)
+    </h2>
+    <p>
+      You can also use the <code>.native.js</code> extension when a module needs
+      to be shared between NodeJS/Web and React Native but it has no Android/iOS
+      differences. This is especially useful for projects that have common code
+      shared among React Native and ReactJS.
+    </p>
+    <p>For example, say you have the following files in your project:</p>
+    <pre
+      class="shell"
+    ><code>Container.js # picked up by Webpack, Rollup or any other Web bundler
+Container.native.js # picked up by the React Native bundler for both Android and iOS (Metro)</code></pre>
+    <p>
+      You can still require it without the <code>.native</code> extension, as
+      follows:
+    </p>
+    <pre
+      class="jsx"
+    ><code>import Container from &#39;./Container&#39;;</code></pre>
+    <p>
+      <strong>Pro tip:</strong> Configure your Web bundler to ignore
+      <code>.native.js</code> extensions in order to avoid having unused code in
+      your production bundle, thus reducing the final bundle size.
+    </p>
+  </body>
+</html>

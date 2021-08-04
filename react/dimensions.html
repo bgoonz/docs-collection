@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Dimensions</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Dimensions</h1>
+</header>
+<p>import Tabs from ‘<span class="citation" data-cites="theme/Tabs">@theme/Tabs</span>’; import TabItem from ‘<span class="citation" data-cites="theme/TabItem">@theme/TabItem</span>’; import constants from ‘<span class="citation" data-cites="site/core/TabsConstants">@site/core/TabsConstants</span>’;</p>
+<blockquote>
+<p><a href="usewindowdimensions"><code>useWindowDimensions</code></a> is the preferred API for React components. Unlike <code>Dimensions</code>, it updates as the window’s dimensions update. This works nicely with the React paradigm.</p>
+</blockquote>
+<pre class="jsx"><code>import { Dimensions } from &#39;react-native&#39;;</code></pre>
+<p>You can get the application window’s width and height using the following code:</p>
+<pre class="jsx"><code>const windowWidth = Dimensions.get(&#39;window&#39;).width;
+const windowHeight = Dimensions.get(&#39;window&#39;).height;</code></pre>
+<blockquote>
+<p>Although dimensions are available immediately, they may change (e.g due to device rotation, foldable devices etc) so any rendering logic or styles that depend on these constants should try to call this function on every render, rather than caching the value (for example, using inline styles rather than setting a value in a <code>StyleSheet</code>).</p>
+</blockquote>
+<p>If you are targeting foldable devices or devices which can change the screen size or app window size, you can use the event listener available in the Dimensions module as shown in the below example.</p>
+<h2 id="example">Example</h2>
+<p><Tabs groupId="syntax" defaultValue={constants.defaultSyntax} values={constants.syntax}> <TabItem value="functional"></p>
+<p>```SnackPlayer name=Dimensions import React, { useState, useEffect } from “react”; import { View, StyleSheet, Text, Dimensions } from “react-native”;</p>
+<p>const window = Dimensions.get(“window”); const screen = Dimensions.get(“screen”);</p>
+<p>const App = () =&gt; { const [dimensions, setDimensions] = useState({ window, screen });</p>
+<p>useEffect(() =&gt; { const subscription = Dimensions.addEventListener( “change”, ({ window, screen }) =&gt; { setDimensions({ window, screen }); } ); return () =&gt; subscription?.remove(); });</p>
+<p>return ( <View style={styles.container}> <Text style={styles.header}>Window Dimensions</Text> {Object.entries(dimensions.window).map(([key, value]) =&gt; ( <Text>{key} - {value}</Text> ))} <Text style={styles.header}>Screen Dimensions</Text> {Object.entries(dimensions.screen).map(([key, value]) =&gt; ( <Text>{key} - {value}</Text> ))} </View> ); }</p>
+<p>const styles = StyleSheet.create({ container: { flex: 1, justifyContent: “center”, alignItems: “center” }, header: { fontSize: 16, marginVertical: 10 } });</p>
+<p>export default App; ```</p>
+<p></TabItem> <TabItem value="classical"></p>
+<p>```SnackPlayer name=Dimensions import React, { Component } from “react”; import { View, StyleSheet, Text, Dimensions } from “react-native”;</p>
+<p>const window = Dimensions.get(“window”); const screen = Dimensions.get(“screen”);</p>
+<p>class App extends Component { state = { dimensions: { window, screen } };</p>
+<p>onChange = ({ window, screen }) =&gt; { this.setState({ dimensions: { window, screen } }); };</p>
+<p>componentDidMount() { this.dimensionsSubscription = Dimensions.addEventListener(“change”, this.onChange); }</p>
+<p>componentWillUnmount() { this.dimensionsSubscription?.remove(); }</p>
+<p>render() { const { dimensions: { window, screen } } = this.state;</p>
+<pre><code>return (
+  &lt;View style={styles.container}&gt;
+    &lt;Text style={styles.header}&gt;Window Dimensions&lt;/Text&gt;
+    {Object.entries(window).map(([key, value]) =&gt; (
+      &lt;Text&gt;{key} - {value}&lt;/Text&gt;
+    ))}
+    &lt;Text style={styles.header}&gt;Screen Dimensions&lt;/Text&gt;
+    {Object.entries(screen).map(([key, value]) =&gt; (
+      &lt;Text&gt;{key} - {value}&lt;/Text&gt;
+    ))}
+  &lt;/View&gt;
+);</code></pre>
+<p>} }</p>
+<p>const styles = StyleSheet.create({ container: { flex: 1, justifyContent: “center”, alignItems: “center” }, header: { fontSize: 16, marginVertical: 10 } });</p>
+<p>export default App; ```</p>
+<p></TabItem> </Tabs></p>
+<h1 id="reference">Reference</h1>
+<h2 id="methods">Methods</h2>
+<h3 id="addeventlistener"><code>addEventListener()</code></h3>
+<pre class="jsx"><code>static addEventListener(type, handler)</code></pre>
+<p>Add an event handler. Supported events:</p>
+<ul>
+<li><code>change</code>: Fires when a property within the <code>Dimensions</code> object changes. The argument to the event handler is a <a href="#dimensionsvalue"><code>DimensionsValue</code></a> type object.</li>
+</ul>
+<hr />
+<h3 id="get"><code>get()</code></h3>
+<pre class="jsx"><code>static get(dim)</code></pre>
+<p>Initial dimensions are set before <code>runApplication</code> is called so they should be available before any other require’s are run, but may be updated later.</p>
+<p>Example: <code>const {height, width} = Dimensions.get('window');</code></p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+| dim
+<div data-classname="label basic required two-lines">
+Required
+</div>
+<p>| string | Name of dimension as defined when calling <code>set</code>. Returns value for the dimension. |</p>
+<blockquote>
+<p>For Android the <code>window</code> dimension will exclude the size used by the <code>status bar</code> (if not translucent) and <code>bottom navigation bar</code></p>
+</blockquote>
+<hr />
+<h3 id="removeeventlistener"><code>removeEventListener()</code></h3>
+<pre class="jsx"><code>static removeEventListener(type, handler)</code></pre>
+<blockquote>
+<p><strong>Deprecated.</strong> Use the <code>remove()</code> method on the event subscription returned by <a href="#addeventlistener"><code>addEventListener()</code></a>.</p>
+</blockquote>
+<hr />
+<h3 id="set"><code>set()</code></h3>
+<pre class="jsx"><code>static set(dims)</code></pre>
+<p>This should only be called from native code by sending the <code>didUpdateDimensions</code> event.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+| dims
+<div data-classname="label basic required">
+Required
+</div>
+<p>| object | String-keyed object of dimensions to set. |</p>
+<hr />
+<h2 id="type-definitions">Type Definitions</h2>
+<h3 id="dimensionsvalue">DimensionsValue</h3>
+<p><strong>Properties:</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>window</td>
+<td><a href="dimensions#displaymetrics">DisplayMetrics</a></td>
+<td>Size of the visible Application window.</td>
+</tr>
+<tr class="even">
+<td>screen</td>
+<td><a href="dimensions#displaymetrics">DisplayMetrics</a></td>
+<td>Size of the device’s screen.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="displaymetrics">DisplayMetrics</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>object</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Properties:</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>width</td>
+<td>number</td>
+</tr>
+<tr class="even">
+<td>height</td>
+<td>number</td>
+</tr>
+<tr class="odd">
+<td>scale</td>
+<td>number</td>
+</tr>
+<tr class="even">
+<td>fontScale</td>
+<td>number</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

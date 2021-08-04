@@ -1,24 +1,21 @@
-Data Science in VS Code tutorial
-================================
+# Data Science in VS Code tutorial
 
 This tutorial demonstrates using Visual Studio Code and the Microsoft Python extension with common data science libraries to explore a basic data science scenario. Specifically, using passenger data from the Titanic, you will learn how to set up a data science environment, import and clean data, create a machine learning model for predicting survival on the Titanic, and evaluate the accuracy of the generated model.
 
-Prerequisites
--------------
+## Prerequisites
 
 The following installations are required for the completion of the tutorial. If you do not have them already, install them prior to beginning.
 
--   [Visual Studio Code](https://code.visualstudio.com/)
--   The [Python extension for VS Code](https://marketplace.visualstudio.com/items?itemName=ms-python.python) from the Visual Studio Marketplace. For additional details on installing extensions, see [Extension Marketplace](/docs/editor/extension-gallery.md). The Python extension is named **Python** and published by Microsoft.
+- [Visual Studio Code](https://code.visualstudio.com/)
+- The [Python extension for VS Code](https://marketplace.visualstudio.com/items?itemName=ms-python.python) from the Visual Studio Marketplace. For additional details on installing extensions, see [Extension Marketplace](/docs/editor/extension-gallery.md). The Python extension is named **Python** and published by Microsoft.
 
-    [![Python extension on Marketplace](images/data-science-tutorial/python-extension-marketplace.png)](https://marketplace.visualstudio.com/items?itemName=ms-python.python)
+  [![Python extension on Marketplace](images/data-science-tutorial/python-extension-marketplace.png)](https://marketplace.visualstudio.com/items?itemName=ms-python.python)
 
--   [Miniconda with Python 3.7](https://docs.conda.io/en/latest/miniconda.html)
+- [Miniconda with Python 3.7](https://docs.conda.io/en/latest/miniconda.html)
 
-    > **Note**: If you already have the full Anaconda distribution installed, you don’t need to install Miniconda. Alternatively, if you’d prefer not to use Anaconda or Miniconda, you can create a Python virtual environment and install the packages needed for the tutorial using pip. If you go this route, you will need to install the following packages: pandas, jupyter, seaborn, scikit-learn, keras, and tensorflow.
+  > **Note**: If you already have the full Anaconda distribution installed, you don’t need to install Miniconda. Alternatively, if you’d prefer not to use Anaconda or Miniconda, you can create a Python virtual environment and install the packages needed for the tutorial using pip. If you go this route, you will need to install the following packages: pandas, jupyter, seaborn, scikit-learn, keras, and tensorflow.
 
-Set up a data science environment
----------------------------------
+## Set up a data science environment
 
 Visual Studio Code and the Python extension provide a great editor for data science scenarios. With native support for Jupyter notebooks combined with Anaconda, it’s easy to get started. In this section, you will create a workspace for the tutorial, create an Anaconda environment with the data science modules needed for the tutorial, and create a Jupyter notebook that you’ll use for creating a machine learning model.
 
@@ -47,8 +44,7 @@ Visual Studio Code and the Python extension provide a great editor for data scie
 
     ![Viewing a new Jupyter Notebook](images/data-science-tutorial/notebook-editor.png)
 
-Prepare the data
-----------------
+## Prepare the data
 
 This tutorial uses the [Titanic dataset](http://biostat.mc.vanderbilt.edu/wiki/pub/Main/DataSets/titanic.html) available on [OpenML.org](https://www.openml.org/d/40945), which is obtained from Vanderbilt University’s Department of Biostatistics at <http://biostat.mc.vanderbilt.edu/DataSets>. The Titanic data provides information about the survival of passengers on the Titanic, as well as characteristics about the passengers such as age and ticket class. Using this data, the tutorial will establish a model for predicting whether a given passenger would have survived the sinking of the Titanic. This section shows how to load and manipulate data in your Jupyter notebook.
 
@@ -126,8 +122,7 @@ This tutorial uses the [Titanic dataset](http://biostat.mc.vanderbilt.edu/wiki/p
 
     > **Note**: Although age had a low direct correlation, it was kept because it seems reasonable that it might still have correlation in conjunction with other inputs.
 
-Train and evaluate a model
---------------------------
+## Train and evaluate a model
 
 With the dataset ready, you can now begin creating a model. For this section you’ll use the [scikit-learn](https://scikit-learn.org/stable/) library (as it offers some useful helper functions) to do pre-processing of the dataset, train a classification model to determine survivability on the Titanic, and then use that model with test data to determine its accuracy.
 
@@ -161,8 +156,7 @@ With the dataset ready, you can now begin creating a model. For this section you
 
     Looking at the result of the test data, you’ll see that the trained algorithm had a ~75% success rate at estimating survival.
 
-(Optional) Use a neural network to increase accuracy
-----------------------------------------------------
+## (Optional) Use a neural network to increase accuracy
 
 A neural network is a model that uses weights and activation functions, modeling aspects of human neurons, to determine an outcome based on provided inputs. Unlike the machine learning algorithm you looked at previously, neural networks are a form of deep learning wherein you don’t need to know an ideal algorithm for your problem set ahead of time. It can be used for many different scenarios and classification is one of them. For this section, you’ll use the [Keras](https://keras.io/) library with [TensorFlow](https://www.tensorflow.org/) to construct the neural network, and explore how it handles the Titanic dataset.
 
@@ -179,9 +173,9 @@ A neural network is a model that uses weights and activation functions, modeling
         model.add(Dense(5, kernel_initializer = 'uniform', activation = 'relu'))
         model.add(Dense(1, kernel_initializer = 'uniform', activation = 'sigmoid'))
 
-    -   The first layer will be set to have a dimension of 5, since you have 5 inputs: sex, pclass, age, relatives, and fare.
-    -   The last layer must output 1, since you want a 1-dimensional output indicating whether a passenger would survive.
-    -   The middle layer was kept at 5 for simplicity, although that value could have been different.
+    - The first layer will be set to have a dimension of 5, since you have 5 inputs: sex, pclass, age, relatives, and fare.
+    - The last layer must output 1, since you want a 1-dimensional output indicating whether a passenger would survive.
+    - The middle layer was kept at 5 for simplicity, although that value could have been different.
 
     The rectified linear unit (relu) activation function is used as a good general activation function for the first two layers, while the sigmoid activation function is required for the final layer as the output you want (of whether a passenger survives or not) needs to be scaled in the range of 0-1 (the probability of a passenger surviving).
 
@@ -209,11 +203,10 @@ A neural network is a model that uses weights and activation functions, modeling
 
     Similar to the training, you’ll notice that you were able to get close to 80% accuracy in predicting survival of passengers. This result was better than the 75% accuracy from the Naive Bayes Classifier tried previously.
 
-Next steps
-----------
+## Next steps
 
 Now that you’re familiar with the basics of performing machine learning within Visual Studio Code, here are some other Microsoft resources and tutorials to check out.
 
--   Learn more about working with [Jupyter Notebooks in Visual Studio Code](https://youtu.be/FSdIoJdSnig) (video).
--   [Get started with Azure Machine Learning for VS Code](https://docs.microsoft.com/azure/machine-learning/service/how-to-vscode-tools) to deploy and optimize your model using the power of Azure.
--   Find additional data to explore on [Azure Open Data Sets](https://azure.microsoft.com/services/open-datasets/).
+- Learn more about working with [Jupyter Notebooks in Visual Studio Code](https://youtu.be/FSdIoJdSnig) (video).
+- [Get started with Azure Machine Learning for VS Code](https://docs.microsoft.com/azure/machine-learning/service/how-to-vscode-tools) to deploy and optimize your model using the power of Azure.
+- Find additional data to explore on [Azure Open Data Sets](https://azure.microsoft.com/services/open-datasets/).

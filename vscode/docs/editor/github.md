@@ -1,5 +1,4 @@
-Working with GitHub in VS Code
-==============================
+# Working with GitHub in VS Code
 
 Using [GitHub](https://github.com) with Visual Studio Code lets you share your source code and collaborate with others. GitHub integration is provided through the [GitHub Pull Requests and Issues](https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-pull-request-github) extension.
 
@@ -9,8 +8,7 @@ To get started with the GitHub in VS Code, you’ll need to [create an account](
 
 If you’re new to source control and want to start there, you can learn about VS Code’s [source control integration](/docs/editor/versioncontrol.md).
 
-Getting started with GitHub Pull Requests and Issues
-----------------------------------------------------
+## Getting started with GitHub Pull Requests and Issues
 
 Once you’ve installed the [GitHub Pull Requests and Issues](https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-pull-request-github) extension, you’ll need to sign in. Follow the prompts to authenticate with GitHub in the browser and return to VS Code.
 
@@ -18,8 +16,7 @@ Once you’ve installed the [GitHub Pull Requests and Issues](https://marketplac
 
 If you are not redirected to VS Code, you can add your authorization token manually. In the browser window, you will receive your authorization token. Copy the token, and switch back to VS Code. Select **Signing in to github.com…** in the Status bar, paste the token, and hit `kbstyle(Enter)`.
 
-Setting up a repository
------------------------
+## Setting up a repository
 
 ### Cloning a repository
 
@@ -41,8 +38,7 @@ Note that there are several ways to authenticate to GitHub, including using your
 
 > **Note**: If you’d like to work on a repository without cloning the contents to you local machine, you can install the [Remote Repositories](https://marketplace.visualstudio.com/items?itemName=github.remotehub) extension to browse and edit directly on GitHub. You can learn more below in the [Remote Repositories extension](/docs/editor/github.md#remote-repositories-extension) section.
 
-Editor integration
-------------------
+## Editor integration
 
 ### Hovers
 
@@ -69,8 +65,7 @@ You can also configure which files show these suggestions using the settings **G
       "python"
     ]
 
-Pull requests
--------------
+## Pull requests
 
 From the **Pull Requests** view you can view, manage, and create pull requests.
 
@@ -102,8 +97,7 @@ From the description page, you can also easily checkout the pull request locally
 
 The diff editors from this view use the local file, so file navigation, IntelliSense, and editing work as normal. You can add comments within the editor on these diffs. Both adding single comments and creating a whole review is supported.
 
-Issues
-------
+## Issues
 
 ### Creating issues
 
@@ -132,8 +126,7 @@ From the **Issues** view, you can see your issues and work on them. By default, 
 
 If your workflow doesn’t involve creating a branch, or if you want to be prompted to enter a branch name every time, you can skip that step by turning off the **GitHub Issues: Use Branch For Issues** (`githubIssues.useBranchForIssues`) setting.
 
-Remote Repositories extension
------------------------------
+## Remote Repositories extension
 
 The GitHub [Remote Repositories](https://marketplace.visualstudio.com/items?itemName=github.remotehub) extension lets you quickly browse, search, edit, and commit to any remote GitHub repository directly from within Visual Studio Code, without needing to clone the repository locally. This can be fast and convenient for many scenarios, where you just need to review source code or make a small change to a file or asset.
 

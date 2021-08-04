@@ -8,6 +8,7 @@ tags:
   - Reference
 browser-compat: javascript.builtins.Error
 ---
+
 {{JSRef}}
 
 `Error` objects are thrown when runtime errors occur. The `Error` object can also be used as a base object for user-defined exceptions. See below for standard built-in error types.
@@ -79,9 +80,9 @@ Usually you create an `Error` object with the intention of raising it using the 
 
 ```js
 try {
-  throw new Error('Whoops!')
+  throw new Error("Whoops!");
 } catch (e) {
-  console.error(e.name + ': ' + e.message)
+  console.error(e.name + ": " + e.message);
 }
 ```
 
@@ -91,15 +92,14 @@ You can choose to handle only specific error types by testing the error type wit
 
 ```js
 try {
-  foo.bar()
+  foo.bar();
 } catch (e) {
   if (e instanceof EvalError) {
-    console.error(e.name + ': ' + e.message)
+    console.error(e.name + ": " + e.message);
   } else if (e instanceof RangeError) {
-    console.error(e.name + ': ' + e.message)
+    console.error(e.name + ": " + e.message);
   }
   // ... etc
-  
   else {
     // If none of our cases matched leave the Error unhandled
     throw e;
@@ -121,29 +121,28 @@ See ["What's a good way to extend Error in JavaScript?"](http://stackoverflow.c
 
 ```js
 class CustomError extends Error {
-  constructor(foo = 'bar', ...params) {
+  constructor(foo = "bar", ...params) {
     // Pass remaining arguments (including vendor specific ones) to parent constructor
-    super(...params)
+    super(...params); // Maintains proper stack trace for where our error was thrown (only available on V8)
 
-    // Maintains proper stack trace for where our error was thrown (only available on V8)
     if (Error.captureStackTrace) {
-      Error.captureStackTrace(this, CustomError)
+      Error.captureStackTrace(this, CustomError);
     }
 
-    this.name = 'CustomError'
+    this.name = "CustomError";
     // Custom debugging information
-    this.foo = foo
-    this.date = new Date()
+    this.foo = foo;
+    this.date = new Date();
   }
 }
 
 try {
-  throw new CustomError('baz', 'bazMessage')
-} catch(e) {
-  console.error(e.name)    //CustomError
-  console.error(e.foo)     //baz
-  console.error(e.message) //bazMessage
-  console.error(e.stack)   //stacktrace
+  throw new CustomError("baz", "bazMessage");
+} catch (e) {
+  console.error(e.name); //CustomError
+  console.error(e.foo); //baz
+  console.error(e.message); //bazMessage
+  console.error(e.stack); //stacktrace
 }
 ```
 
@@ -154,7 +153,7 @@ try {
 ```js
 function CustomError(foo, message, fileName, lineNumber) {
   var instance = new Error(message, fileName, lineNumber);
-  instance.name = 'CustomError';
+  instance.name = "CustomError";
   instance.foo = foo;
   Object.setPrototypeOf(instance, Object.getPrototypeOf(this));
   if (Error.captureStackTrace) {
@@ -168,19 +167,19 @@ CustomError.prototype = Object.create(Error.prototype, {
     value: Error,
     enumerable: false,
     writable: true,
-    configurable: true
-  }
+    configurable: true,
+  },
 });
 
-if (Object.setPrototypeOf){
+if (Object.setPrototypeOf) {
   Object.setPrototypeOf(CustomError, Error);
 } else {
   CustomError.__proto__ = Error;
 }
 
 try {
-  throw new CustomError('baz', 'bazMessage');
-} catch(e){
+  throw new CustomError("baz", "bazMessage");
+} catch (e) {
   console.error(e.name); //CustomError
   console.error(e.foo); //baz
   console.error(e.message); //bazMessage

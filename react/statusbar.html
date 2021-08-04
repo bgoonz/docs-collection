@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>StatusBar</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">StatusBar</h1>
+    </header>
+    <p>Component to control the app status bar.</p>
+    <h3 id="usage-with-navigator">Usage with Navigator</h3>
+    <p>
+      It is possible to have multiple <code>StatusBar</code> components mounted
+      at the same time. The props will be merged in the order the
+      <code>StatusBar</code> components were mounted.
+    </p>
+    <p>
+      ```SnackPlayer
+      name=StatusBar%20Component%20Example&amp;supportedPlatforms=android,ios
+      import React, { useState } from ‘react’; import { Button, Platform,
+      SafeAreaView, StatusBar, StyleSheet, Text, View } from ‘react-native’;
+    </p>
+    <p>
+      const STYLES = [‘default’, ‘dark-content’, ‘light-content’]; const
+      TRANSITIONS = [‘fade’, ‘slide’, ‘none’];
+    </p>
+    <p>
+      const App = () =&gt; { const [hidden, setHidden] = useState(false); const
+      [statusBarStyle, setStatusBarStyle] = useState(STYLES[0]); const
+      [statusBarTransition, setStatusBarTransition] = useState(TRANSITIONS[0]);
+    </p>
+    <p>const changeStatusBarVisibility = () =&gt; setHidden(!hidden);</p>
+    <p>
+      const changeStatusBarStyle = () =&gt; { const styleId =
+      STYLES.indexOf(statusBarStyle) + 1; if (styleId === STYLES.length) {
+      setStatusBarStyle(STYLES[0]); } else { setStatusBarStyle(STYLES[styleId]);
+      } };
+    </p>
+    <p>
+      const changeStatusBarTransition = () =&gt; { const transition =
+      TRANSITIONS.indexOf(statusBarTransition) + 1; if (transition ===
+      TRANSITIONS.length) { setStatusBarTransition(TRANSITIONS[0]); } else {
+      setStatusBarTransition(TRANSITIONS[transition]); } };
+    </p>
+    <p>
+      return (
+      <SafeAreaView style="{styles.container}">
+        <StatusBar
+          animated="{true}"
+          backgroundColor="#61dafb"
+          barStyle="{statusBarStyle}"
+          showHideTransition="{statusBarTransition}"
+          hidden="{hidden}"
+        />
+        <Text style="{styles.textStyle}">
+          StatusBar Visibility:{‘’} {hidden ? ‘Hidden’ : ‘Visible’}
+        </Text>
+        <Text style="{styles.textStyle}">
+          StatusBar Style:{‘’} {statusBarStyle}
+        </Text>
+        {Platform.OS === ‘ios’ ? (
+        <Text style="{styles.textStyle}">
+          StatusBar Transition:{‘’} {statusBarTransition}
+        </Text>
+        ) : null}
+        <View style="{styles.buttonsContainer}">
+          <button
+            title="Toggle StatusBar"
+            onPress="{changeStatusBarVisibility}"
+          />
+          <button
+            title="Change StatusBar Style"
+            onPress="{changeStatusBarStyle}"
+          />
+          {Platform.OS === ‘ios’ ? (
+          <button
+            title="Change StatusBar Transition"
+            onPress="{changeStatusBarTransition}"
+          />
+          ) : null}
+        </View>
+      </SafeAreaView>
+      ); };
+    </p>
+    <p>
+      const styles = StyleSheet.create({ container: { flex: 1, justifyContent:
+      ‘center’, backgroundColor: ‘#ECF0F1’ }, buttonsContainer: { padding: 10 },
+      textStyle: { textAlign: ‘center’, marginBottom: 8 } });
+    </p>
+    <p>export default App; ```</p>
+    <h3 id="imperative-api">Imperative API</h3>
+    <p>
+      For cases where using a component is not ideal, there is also an
+      imperative API exposed as static functions on the component. It is however
+      not recommended to use the static API and the component for the same prop
+      because any value set by the static API will get overridden by the one set
+      by the component in the next render.
+    </p>
+    <hr />
+    <h1 id="reference">Reference</h1>
+    <h2 id="constants">Constants</h2>
+    ### <code>currentHeight</code>
+    <div class="label android">Android</div>
+    <p>
+      The height of the status bar, which includes the notch height, if present.
+    </p>
+    <hr />
+    <h2 id="props">Props</h2>
+    <h3 id="animated"><code>animated</code></h3>
+    <p>
+      If the transition between status bar property changes should be animated.
+      Supported for <code>backgroundColor</code>, <code>barStyle</code> and
+      <code>hidden</code> properties.
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+          <th>Required</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>boolean</td>
+          <td>No</td>
+          <td><code>false</code></td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    ### <code>backgroundColor</code>
+    <div class="label android">Android</div>
+    <p>The background color of the status bar.</p>
+    <table>
+      <colgroup>
+        <col style="width: 16%" />
+        <col style="width: 8%" />
+        <col style="width: 75%" />
+      </colgroup>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+          <th>Required</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td><a href="colors">color</a></td>
+          <td>No</td>
+          <td>
+            default system StatusBar background color, or
+            <code>'black'</code> if not defined
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    <h3 id="barstyle"><code>barStyle</code></h3>
+    <p>Sets the color of the status bar text.</p>
+    <p>
+      On Android, this will only have an impact on API versions 23 and above.
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+          <th>Required</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td><a href="statusbar#statusbarstyle">StatusBarStyle</a></td>
+          <td>No</td>
+          <td><code>'default'</code></td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    <h3 id="hidden"><code>hidden</code></h3>
+    <p>If the status bar is hidden.</p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+          <th>Required</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>boolean</td>
+          <td>No</td>
+          <td><code>false</code></td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    ### <code>networkActivityIndicatorVisible</code>
+    <div class="label ios">iOS</div>
+    <p>If the network activity indicator should be visible.</p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>boolean</td>
+          <td><code>false</code></td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    ### <code>showHideTransition</code>
+    <div class="label ios">iOS</div>
+    <p>
+      The transition effect when showing and hiding the status bar using the
+      <code>hidden</code> prop.
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td><a href="statusbar#statusbaranimation">StatusBarAnimation</a></td>
+          <td><code>'fade'</code></td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    ### <code>translucent</code>
+    <div class="label android">Android</div>
+    <p>
+      If the status bar is translucent. When translucent is set to
+      <code>true</code>, the app will draw under the status bar. This is useful
+      when using a semi transparent status bar color.
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>boolean</td>
+          <td><code>false</code></td>
+        </tr>
+      </tbody>
+    </table>
+    <h2 id="methods">Methods</h2>
+    <h3 id="popstackentry"><code>popStackEntry()</code></h3>
+    <pre class="jsx"><code>static popStackEntry(entry: any)</code></pre>
+    <p>Get and remove the last StatusBar entry from the stack.</p>
+    <p><strong>Parameters:</strong></p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    | entry
+    <div class="label basic required">Required</div>
+    <p>| any | Entry returned from <code>pushStackEntry</code>. |</p>
+    <hr />
+    <h3 id="pushstackentry"><code>pushStackEntry()</code></h3>
+    <pre class="jsx"><code>static pushStackEntry(props: any)</code></pre>
+    <p>
+      Push a StatusBar entry onto the stack. The return value should be passed
+      to <code>popStackEntry</code> when complete.
+    </p>
+    <p><strong>Parameters:</strong></p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    | props
+    <div class="label basic required">Required</div>
+    <p>
+      | any | Object containing the StatusBar props to use in the stack entry. |
+    </p>
+    <hr />
+    <h3 id="replacestackentry"><code>replaceStackEntry()</code></h3>
+    <pre
+      class="jsx"
+    ><code>static replaceStackEntry(entry: any, props: any)</code></pre>
+    <p>Replace an existing StatusBar stack entry with new props.</p>
+    <p><strong>Parameters:</strong></p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    | entry
+    <div class="label basic required">Required</div>
+    | any | Entry returned from <code>pushStackEntry</code> to replace. | |
+    props
+    <div class="label basic required">Required</div>
+    <p>
+      | any | Object containing the StatusBar props to use in the replacement
+      stack entry. |
+    </p>
+    <hr />
+    ### <code>setBackgroundColor()</code>
+    <div class="label android">Android</div>
+    <pre
+      class="jsx"
+    ><code>static setBackgroundColor(color: string, [animated]: boolean)</code></pre>
+    <p>Set the background color for the status bar.</p>
+    <p><strong>Parameters:</strong></p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    | color
+    <div class="label basic required">Required</div>
+    <p>
+      | string | Background color. | | animated | boolean | Animate the style
+      change. |
+    </p>
+    <hr />
+    <h3 id="setbarstyle"><code>setBarStyle()</code></h3>
+    <pre
+      class="jsx"
+    ><code>static setBarStyle(style: StatusBarStyle, [animated]: boolean)</code></pre>
+    <p>Set the status bar style.</p>
+    <p><strong>Parameters:</strong></p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    | style
+    <div class="label basic required">Required</div>
+    <p>
+      | <a href="statusbar#statusbarstyle">StatusBarStyle</a> | Status bar style
+      to set. | | animated | boolean | Animate the style change. |
+    </p>
+    <hr />
+    <h3 id="sethidden"><code>setHidden()</code></h3>
+    <pre
+      class="jsx"
+    ><code>static setHidden(hidden: boolean, [animation]: StatusBarAnimation)</code></pre>
+    <p>Show or hide the status bar.</p>
+    <p><strong>Parameters:</strong></p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    | hidden
+    <div class="label basic required">Required</div>
+    | boolean | Hide the status bar. | | animation
+    <div class="label ios">iOS</div>
+    <pre><code>          | [StatusBarAnimation](statusbar#statusbaranimation) | Animation when changing the status bar hidden property. |</code></pre>
+    <hr />
+    ### <code>setNetworkActivityIndicatorVisible()</code>
+    <div class="label ios">iOS</div>
+    <pre
+      class="jsx"
+    ><code>static setNetworkActivityIndicatorVisible(visible: boolean)</code></pre>
+    <p>Control the visibility of the network activity indicator.</p>
+    <p><strong>Parameters:</strong></p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    | visible
+    <div class="label basic required">Required</div>
+    <p>| boolean | Show the indicator. |</p>
+    <hr />
+    ### <code>setTranslucent()</code>
+    <div class="label android">Android</div>
+    <pre
+      class="jsx"
+    ><code>static setTranslucent(translucent: boolean)</code></pre>
+    <p>Control the translucency of the status bar.</p>
+    <p><strong>Parameters:</strong></p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    | translucent
+    <div class="label basic required">Required</div>
+    <p>| boolean | Set as translucent. |</p>
+    <h2 id="type-definitions">Type Definitions</h2>
+    <h3 id="statusbaranimation">StatusBarAnimation</h3>
+    <p>Status bar animation type for transitions on the iOS.</p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>enum</td>
+        </tr>
+      </tbody>
+    </table>
+    <p><strong>Constants:</strong></p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Value</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td><code>'fade'</code></td>
+          <td>string</td>
+          <td>Fade animation</td>
+        </tr>
+        <tr class="even">
+          <td><code>'slide'</code></td>
+          <td>string</td>
+          <td>Slide animation</td>
+        </tr>
+        <tr class="odd">
+          <td><code>'none'</code></td>
+          <td>string</td>
+          <td>No animation</td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    <h3 id="statusbarstyle">StatusBarStyle</h3>
+    <p>Status bar style type.</p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>enum</td>
+        </tr>
+      </tbody>
+    </table>
+    <p><strong>Constants:</strong></p>
+    <table>
+      <colgroup>
+        <col style="width: 18%" />
+        <col style="width: 6%" />
+        <col style="width: 74%" />
+      </colgroup>
+      <thead>
+        <tr class="header">
+          <th>Value</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td><code>'default'</code></td>
+          <td>string</td>
+          <td>Default status bar style (dark for iOS, light for Android)</td>
+        </tr>
+        <tr class="even">
+          <td><code>'light-content'</code></td>
+          <td>string</td>
+          <td>Dark background, white texts and icons</td>
+        </tr>
+        <tr class="odd">
+          <td><code>'dark-content'</code></td>
+          <td>string</td>
+          <td>
+            Light background, dark texts and icons (requires API&gt;=23 on
+            Android)
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>
