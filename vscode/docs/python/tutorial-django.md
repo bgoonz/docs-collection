@@ -1,5 +1,4 @@
-Django Tutorial in Visual Studio Code
-=====================================
+# Django Tutorial in Visual Studio Code
 
 Django is a high-level Python framework designed for rapid, secure, and scalable web development. Django includes rich support for URL routing, page templates, and working with data.
 
@@ -9,22 +8,20 @@ The completed code project from this Django tutorial can be found on GitHub: [py
 
 If you have any problems, feel free to file an issue for this tutorial in the [VS Code documentation repository](https://github.com/microsoft/vscode-docs/issues).
 
-Prerequisites
--------------
+## Prerequisites
 
 To successfully complete this Django tutorial, you must do the following (which are the same steps as in the [general Python tutorial](/docs/python/python-tutorial.md)):
 
 1.  Install the [Python extension](https://marketplace.visualstudio.com/items?itemName=ms-python.python).
 
 2.  Install a version of Python 3 (for which this tutorial is written). Options include:
-    -   (All operating systems) A download from [python.org](https://www.python.org/downloads/); typically use the **Download Python 3.9.1** button that appears first on the page (or whatever is the latest version).
-    -   (Linux) The built-in Python 3 installation works well, but to install other Python packages you must run `sudo apt install python3-pip` in the terminal.
-    -   (macOS) An installation through [Homebrew](https://brew.sh/) on macOS using `brew install python3` (the system install of Python on macOS is not supported).
-    -   (All operating systems) A download from [Anaconda](https://www.anaconda.com/download/) (for data science purposes).
+    - (All operating systems) A download from [python.org](https://www.python.org/downloads/); typically use the **Download Python 3.9.1** button that appears first on the page (or whatever is the latest version).
+    - (Linux) The built-in Python 3 installation works well, but to install other Python packages you must run `sudo apt install python3-pip` in the terminal.
+    - (macOS) An installation through [Homebrew](https://brew.sh/) on macOS using `brew install python3` (the system install of Python on macOS is not supported).
+    - (All operating systems) A download from [Anaconda](https://www.anaconda.com/download/) (for data science purposes).
 3.  On Windows, make sure the location of your Python interpreter is included in your PATH environment variable. You can check the location by running `path` at the command prompt. If the Python interpreter’s folder isn’t included, open Windows Settings, search for “environment”, select **Edit environment variables for your account**, then edit the **Path** variable to include that folder.
 
-Create a project environment for the Django tutorial
-----------------------------------------------------
+## Create a project environment for the Django tutorial
 
 In this section, you create a virtual environment in which Django is installed. Using a virtual environment avoids installing Django into a global Python environment and gives you exact control over the libraries used in an application. A virtual environment also makes it easy to [Create a requirements.txt file for the environment](#create-a-requirementstxt-file-for-the-environment).
 
@@ -72,8 +69,7 @@ In this section, you create a virtual environment in which Django is installed. 
 
 You now have a self-contained environment ready for writing Django code. VS Code activates the environment automatically when you use [**Terminal: Create New Integrated Terminal**](/docs/editor/integrated-terminal.md) (`kb(workbench.action.terminal.new)`). If you open a separate command prompt or terminal, activate the environment by running `source env/bin/activate` (Linux/macOS) or `env\Scripts\Activate.ps1` (Windows). You know the environment is activated when the command prompt shows **(env)** at the beginning.
 
-Create and run a minimal Django app
------------------------------------
+## Create and run a minimal Django app
 
 In Django terminology, a “Django project” is composed of several site-level configuration files along with one or more “apps” that you deploy to a web host to create a full web application. A Django project can contain multiple apps, each of which typically has an independent function in the project, and the same app can be in multiple Django projects. An app, for its part, is just a Python package that follows certain conventions that Django expects.
 
@@ -87,14 +83,14 @@ To create a minimal Django app, then, it’s necessary to first create the Djang
 
     This `startproject` command assumes (by use of `.` at the end) that the current folder is your project folder, and creates the following within it:
 
-    -   `manage.py`: The Django command-line administrative utility for the project. You run administrative commands for the project using `python manage.py <command> [options]`.
+    - `manage.py`: The Django command-line administrative utility for the project. You run administrative commands for the project using `python manage.py <command> [options]`.
 
-    -   A subfolder named `web_project`, which contains the following files:
-        -   `__init__.py`: an empty file that tells Python that this folder is a Python package.
-        -   `asgi.py`: an entry point for [ASGI-compatible](https://asgi.readthedocs.io/en/latest/) web servers to serve your project. You typically leave this file as-is as it provides the hooks for production web servers.
-        -   `settings.py`: contains settings for Django project, which you modify in the course of developing a web app.
-        -   `urls.py`: contains a table of contents for the Django project, which you also modify in the course of development.
-        -   `wsgi.py`: an entry point for WSGI-compatible web servers to serve your project. You typically leave this file as-is as it provides the hooks for production web servers.
+    - A subfolder named `web_project`, which contains the following files:
+      - `__init__.py`: an empty file that tells Python that this folder is a Python package.
+      - `asgi.py`: an entry point for [ASGI-compatible](https://asgi.readthedocs.io/en/latest/) web servers to serve your project. You typically leave this file as-is as it provides the hooks for production web servers.
+      - `settings.py`: contains settings for Django project, which you modify in the course of developing a web app.
+      - `urls.py`: contains a table of contents for the Django project, which you also modify in the course of development.
+      - `wsgi.py`: an entry point for WSGI-compatible web servers to serve your project. You typically leave this file as-is as it provides the hooks for production web servers.
 
 2.  Create an empty development database by running the following command:
 
@@ -113,7 +109,7 @@ To create a minimal Django app, then, it’s necessary to first create the Djang
         Starting development server at http://127.0.0.1:8000/
         Quit the server with CTRL-BREAK.
 
-    Django’s built-in web server is intended *only* for local development purposes. When you deploy to a web host, however, Django uses the host’s web server instead. The `wsgi.py` and `asgi.py` modules in the Django project take care of hooking into the production servers.
+    Django’s built-in web server is intended _only_ for local development purposes. When you deploy to a web host, however, Django uses the host’s web server instead. The `wsgi.py` and `asgi.py` modules in the Django project take care of hooking into the production servers.
 
     If you want to use a different port than the default 8000, specify the port number on the command line, such as `python manage.py runserver 5000`.
 
@@ -163,8 +159,7 @@ To create a minimal Django app, then, it’s necessary to first create the Djang
 
     ![Django tutorial: the basic Django app running in a browser](images/django-tutorial/app-in-browser-01.png)
 
-Create a debugger launch profile
---------------------------------
+## Create a debugger launch profile
 
 You’re probably already wondering if there’s an easier way to run the server and test the app without typing `python manage.py runserver` each time. Fortunately, there is! You can create a customized launch profile in VS Code, which is also used for the inevitable exercise of debugging.
 
@@ -199,8 +194,7 @@ You’re probably already wondering if there’s an easier way to run the server
 
 7.  You can now use the **Run** &gt; **Start Debugging** at any time to test the app, which also has the benefit of automatically saving all modified files.
 
-Explore the debugger
---------------------
+## Explore the debugger
 
 Debugging gives you the opportunity to pause a running program on a particular line of code. When a program is paused, you can examine variables, run code in the Debug Console panel, and otherwise take advantage of the features described on [Debugging](/docs/python/debugging.md). Running the debugger also automatically saves any modified files before the debugging session begins.
 
@@ -210,7 +204,7 @@ Debugging gives you the opportunity to pause a running program on a particular l
 
         path("hello/<name>", views.hello_there, name="hello_there"),
 
-    The first argument to `path` defines a route “hello/” that accepts a variable string called *name*. The string is passed to the `views.hello_there` function specified in the second argument to `path`.
+    The first argument to `path` defines a route “hello/” that accepts a variable string called _name_. The string is passed to the `views.hello_there` function specified in the second argument to `path`.
 
     URL routes are case-sensitive. For example, the route `/hello/<name>` is distinct from `/Hello/<name>`. If you want the same view function to handle both, define paths for each variant.
 
@@ -243,13 +237,13 @@ Debugging gives you the opportunity to pause a running program on a particular l
 
 3.  Set a breakpoint at the first line of code in the `hello_there` function (`now = datetime.now()`) by doing any one of the following:
 
-    -   With the cursor on that line, press `kb(editor.debug.action.toggleBreakpoint)`, or,
-    -   With the cursor on that line, select the **Run** &gt; **Toggle Breakpoint** menu command, or,
-    -   Click directly in the margin to the left of the line number (a faded red dot appears when hovering there).
+    - With the cursor on that line, press `kb(editor.debug.action.toggleBreakpoint)`, or,
+    - With the cursor on that line, select the **Run** &gt; **Toggle Breakpoint** menu command, or,
+    - Click directly in the margin to the left of the line number (a faded red dot appears when hovering there).
 
     The breakpoint appears as a red dot in the left margin:
 
-    ![Django tutorial: a breakpoint set on the first line of the hello\_there function](images/django-tutorial/debug-breakpoint-set.png)
+    ![Django tutorial: a breakpoint set on the first line of the hello_there function](images/django-tutorial/debug-breakpoint-set.png)
 
 4.  Start the debugger by selecting the **Run** &gt; **Start Debugging** menu command, or selecting the green **Start Debugging** arrow next to the list (`kb(workbench.action.debug.continue)`):
 
@@ -299,19 +293,17 @@ Debugging gives you the opportunity to pause a running program on a particular l
 
 > **Tip**: To make it easier to repeatedly navigate to a specific URL like `http://127.0.0.1:8000/hello/VSCode`, output that URL using a `print` statement somewhere in a file like `views.py`. The URL appears in the VS Code Terminal where you can use `kbstyle(Ctrl+click)` to open it in a browser.
 
-Go to Definition and Peek Definition commands
----------------------------------------------
+## Go to Definition and Peek Definition commands
 
 During your work with Django or any other library, you may want to examine the code in those libraries themselves. VS Code provides two convenient commands that navigate directly to the definitions of classes and other objects in any code:
 
--   **Go to Definition** jumps from your code into the code that defines an object. For example, in `views.py`, right-click on `HttpResponse` in the `home` function and select **Go to Definition** (or use `kb(editor.action.revealDefinition)`), which navigates to the class definition in the Django library.
+- **Go to Definition** jumps from your code into the code that defines an object. For example, in `views.py`, right-click on `HttpResponse` in the `home` function and select **Go to Definition** (or use `kb(editor.action.revealDefinition)`), which navigates to the class definition in the Django library.
 
--   **Peek Definition** (`kb(editor.action.peekDefinition)`, also on the right-click context menu), is similar, but displays the class definition directly in the editor (making space in the editor window to avoid obscuring any code). Press `kbstyle(Escape)` to close the Peek window or use the **x** in the upper right corner.
+- **Peek Definition** (`kb(editor.action.peekDefinition)`, also on the right-click context menu), is similar, but displays the class definition directly in the editor (making space in the editor window to avoid obscuring any code). Press `kbstyle(Escape)` to close the Peek window or use the **x** in the upper right corner.
 
-    ![Django tutorial: Peek Definition showing the Flask class inline](images/django-tutorial/peek-definition.png)
+  ![Django tutorial: Peek Definition showing the Flask class inline](images/django-tutorial/peek-definition.png)
 
-Use a template to render a page
--------------------------------
+## Use a template to render a page
 
 The app you’ve created so far in this tutorial generates only plain text web pages from Python code. Although it’s possible to generate HTML directly in code, developers avoid such a practice because it opens the app to [cross-site scripting (XSS) attacks](https://en.wikipedia.org/wiki/Cross-site_scripting). In the `hello_there` function of this tutorial, for example, one might think to format the output in code with something like `content = "<h1>Hello there, " + clean_name + "!</h1>`, where the result in `content` is given directly to a browser. This opening allows an attacker to place malicious HTML, including JavaScript code, in the URL that ends up in `clean_name` and thus ends up being run in the browser.
 
@@ -327,7 +319,7 @@ In this section, you start by creating a single page using a template. In subseq
 
 2.  Inside the `hello` folder, create a folder named `templates`, and then another subfolder named `hello` to match the app name (this two-tiered folder structure is typical Django convention).
 
-3.  In the `templates/hello` folder, create a file named `hello_there.html` with the contents below. This template contains two placeholders for data values named “name”, and “date”, which are delineated by pairs of curly braces, `\{{` and `}}`. All other invariant text is part of the template, along with formatting markup (such as `<strong>`). As you can see, template placeholders can also include formatting, the expressions after the pipe `|` symbols, in this case using Django’s built-in [date filter](https://docs.djangoproject.com/en/3.1/ref/templates/builtins/#date) and [time filter](https://docs.djangoproject.com/en/3.1/ref/templates/builtins/#time). The code, then needs only to pass the datetime *value* rather than a pre-formatted string:
+3.  In the `templates/hello` folder, create a file named `hello_there.html` with the contents below. This template contains two placeholders for data values named “name”, and “date”, which are delineated by pairs of curly braces, `\{{` and `}}`. All other invariant text is part of the template, along with formatting markup (such as `<strong>`). As you can see, template placeholders can also include formatting, the expressions after the pipe `|` symbols, in this case using Django’s built-in [date filter](https://docs.djangoproject.com/en/3.1/ref/templates/builtins/#date) and [time filter](https://docs.djangoproject.com/en/3.1/ref/templates/builtins/#time). The code, then needs only to pass the datetime _value_ rather than a pre-formatted string:
 
         <!DOCTYPE html>
         <html>
@@ -344,7 +336,7 @@ In this section, you start by creating a single page using a template. In subseq
 
         from django.shortcuts import render
 
-5.  Also in `views.py`, modify the `hello_there` function to use `django.shortcuts.render` method to load a template and to provide the *template context*. The context is the set of variables for use within the template. The `render` function takes the request object, followed by the path to to the template *relative to the `templates` folder*, then the context object. (Developers typically name the templates the same as the functions that use them, but matching names are not required because you always refer to the exact filename in your code.)
+5.  Also in `views.py`, modify the `hello_there` function to use `django.shortcuts.render` method to load a template and to provide the _template context_. The context is the set of variables for use within the template. The `render` function takes the request object, followed by the path to to the template _relative to the `templates` folder_, then the context object. (Developers typically name the templates the same as the functions that use them, but matching names are not required because you always refer to the exact filename in your code.)
 
         def hello_there(request, name):
             return render(
@@ -362,8 +354,7 @@ In this section, you start by creating a single page using a template. In subseq
 
 7.  Also try navigating to a /hello/name URL using a name like `<a%20value%20that%20could%20be%20HTML>` to see Django’s automatic escaping at work. The “name” value shows up as plain text in the browser rather than as rendering an actual element.
 
-Serve static files
-------------------
+## Serve static files
 
 Static files are pieces of content that your web app returns as-is for certain requests, such as CSS files. Serving static files requires that the `INSTALLED_APPS` list in `settings.py` contains `django.contrib.staticfiles`, which is included by default.
 
@@ -419,8 +410,7 @@ For production deployments, you typically collect all the static files from your
 
 3.  In practice, run `collectstatic` any time you change static files and before deploying into production.
 
-Create multiple templates that extend a base template
------------------------------------------------------
+## Create multiple templates that extend a base template
 
 Because most web apps have more than one page, and because those pages typically share many common elements, developers separate those common elements into a base page template that other page templates then extend. (This is also called template inheritance, meaning the extended pages inherit elements from the base page.)
 
@@ -566,10 +556,9 @@ With all the page templates in place, save `views.py`, run the app, and open a b
 
 ![Django tutorial: app rendering a common nav bar from the base template](images/django-tutorial/full-app.png)
 
-Work with data, data models, and migrations
--------------------------------------------
+## Work with data, data models, and migrations
 
-Many web apps work with information stored in a database, and Django makes it easy to represent the objects in that database using *models*. In Django, a model is a Python class, derived from `django.db.models.Model`, that represents a specific database object, typically a table. You place these classes in an app’s `models.py` file.
+Many web apps work with information stored in a database, and Django makes it easy to represent the objects in that database using _models_. In Django, a model is a Python class, derived from `django.db.models.Model`, that represents a specific database object, typically a table. You place these classes in an app’s `models.py` file.
 
 With Django, your work with your database almost exclusively through the models you define in code. Django’s “migrations” then handle all the details of the underlying database automatically as you evolve the models over time. The general workflow is as follows:
 
@@ -577,7 +566,7 @@ With Django, your work with your database almost exclusively through the models 
 2.  Run `python manage.py makemigrations` to generate scripts in the `migrations` folder that migrate the database from its current state to the new state.
 3.  Run `python manage.py migrate` to apply the scripts to the actual database.
 
-The migration scripts effectively record all the incremental changes you make to your data models over time. By applying the migrations, Django updates the database to match your models. Because each incremental change has its own script, Django can automatically migrate *any* previous version of a database (including a new database) to the current version. As a result, you need concern yourself only with your models in `models.py`, never with the underlying database schema or the migration scripts. You let Django do that part!
+The migration scripts effectively record all the incremental changes you make to your data models over time. By applying the migrations, Django updates the database to match your models. Because each incremental change has its own script, Django can automatically migrate _any_ previous version of a database (including a new database) to the current version. As a result, you need concern yourself only with your models in `models.py`, never with the underlying database schema or the migration scripts. You let Django do that part!
 
 In code, too, you work exclusively with your model classes to store and retrieve data; Django handles the underlying details. The one exception is that you can write data into your database using the Django administrative utility [loaddata command](https://docs.djangoproject.com/en/3.1/ref/django-admin/#loaddata). This utility is often used to initialize a data set after the `migrate` command has initialized the schema.
 
@@ -741,7 +730,7 @@ With your models in place and the database migrated, you can store and retrieve 
 
         from django.views.generic import ListView
 
-13. Also in `views.py`, replace the `home` function with a *class* named `HomeListView`, derived from `ListView`, which ties itself to the `LogMessage` model and implements a function `get_context_data` to generate the context for the template.
+13. Also in `views.py`, replace the `home` function with a _class_ named `HomeListView`, derived from `ListView`, which ties itself to the `LogMessage` model and implements a function `get_context_data` to generate the context for the template.
 
         # Remove the old home function if you want; it's no longer used
 
@@ -776,8 +765,7 @@ With your models in place and the database migrated, you can store and retrieve 
 
 18. Stop the app when you’re done.
 
-Use the debugger with page templates
-------------------------------------
+## Use the debugger with page templates
 
 As shown in the previous section, page templates can contain procedural directives like `{% for message in message_list %}` and `{% if message_list %}`, rather than only passive, declarative elements like `{% url %}` and `{% block %}`. As a result, you can have programming errors inside templates as with any other procedural code.
 
@@ -797,8 +785,7 @@ Fortunately, the Python Extension for VS Code provides template debugging when y
 
 5.  When you’re ready, select Continue (`kb(workbench.action.debug.continue)`) to finish running the app and view the rendered page in the browser. Stop the debugger when you’re done.
 
-Optional activities
--------------------
+## Optional activities
 
 The following sections describe additional steps that you might find helpful in your work with Python and Visual Studio Code.
 
@@ -849,12 +836,11 @@ You can customize the administrative interface as much as you like. For example,
 
 The [Docker extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker) makes it easy to build, manage, and deploy containerized applications from Visual Studio Code. If you’re interested in learning how to create a Python container for the Django app developed in this tutorial, check out the [Python in a container](/docs/containers/quickstart-python.md) tutorial, which will walk you through how to:
 
--   Create a `Dockerfile` file describing a simple Python container.
--   Build, run, and verify the functionality of a [Django](https://www.djangoproject.com/) app.
--   Debug the app running in a container.
+- Create a `Dockerfile` file describing a simple Python container.
+- Build, run, and verify the functionality of a [Django](https://www.djangoproject.com/) app.
+- Debug the app running in a container.
 
-Next steps
-----------
+## Next steps
 
 Congratulations on completing this walkthrough of working with Django in Visual Studio Code!
 
@@ -866,10 +852,10 @@ To try your app on a production website, check out the tutorial [Deploy Python a
 
 You may also want to review the following articles in the VS Code docs that are relevant to Python:
 
--   [Editing Python code](/docs/python/editing.md)
--   [Linting](/docs/python/linting.md)
--   [Managing Python environments](/docs/python/environments.md)
--   [Debugging Python](/docs/python/debugging.md)
--   [Testing](/docs/python/testing.md)
+- [Editing Python code](/docs/python/editing.md)
+- [Linting](/docs/python/linting.md)
+- [Managing Python environments](/docs/python/environments.md)
+- [Debugging Python](/docs/python/debugging.md)
+- [Testing](/docs/python/testing.md)
 
 If you encountered any problems in the course of this tutorial, feel free to file an issue in the [VS Code documentation repository](https://github.com/microsoft/vscode-docs/issues).

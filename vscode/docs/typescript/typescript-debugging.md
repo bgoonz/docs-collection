@@ -1,10 +1,8 @@
-Debugging TypeScript
-====================
+# Debugging TypeScript
 
 Visual Studio Code supports TypeScript debugging through its built-in [Node.js debugger](/docs/nodejs/nodejs-debugging.md) and [Edge and Chrome debugger](/docs/nodejs/browser-debugging.md).
 
-JavaScript source map support
------------------------------
+## JavaScript source map support
 
 TypeScript debugging supports JavaScript source maps. To generate source maps for your TypeScript files, compile with the `--sourcemap` option or set the `sourceMap` property in the `tsconfig.json` file to `true`.
 
@@ -54,13 +52,11 @@ There is full IntelliSense with suggestions and information for `launch.json` to
 
 Also see [Node.js Debugging](/docs/nodejs/nodejs-debugging.md) for examples and further explanations.
 
-Mapping the output location
----------------------------
+## Mapping the output location
 
 If generated (transpiled) JavaScript files do not live next to their source, you can help the VS Code debugger locate them by setting the `outFiles` attribute in the launch configuration. Whenever you set a breakpoint in the original source, VS Code tries to find the generated source by searching the files specified by glob patterns in `outFiles`.
 
-Client-side debugging
----------------------
+## Client-side debugging
 
 TypeScript is great for writing client-side code as well as Node.js applications and you can debug client-side source code with the [built-in Edge and Chrome debugger](/docs/nodejs/browser-debugging.md).
 
@@ -117,8 +113,7 @@ The Run view configuration dropdown will now show the new configuration **Launch
 
 ![client-side debug breakpoint](images/debugging/client-side-debug-breakpoint.png)
 
-Common questions
-----------------
+## Common questions
 
 ### Cannot launch program because corresponding JavaScript cannot be found
 

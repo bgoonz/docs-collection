@@ -1,10 +1,8 @@
-Compiling TypeScript
-====================
+# Compiling TypeScript
 
 [TypeScript](https://www.typescriptlang.org) is a typed superset of JavaScript that compiles to plain JavaScript. It offers classes, modules, and interfaces to help you build robust components. The [TypeScript language specification](https://github.com/microsoft/TypeScript/tree/master/doc) has full details about the language.
 
-Install the TypeScript compiler
--------------------------------
+## Install the TypeScript compiler
 
 Visual Studio Code includes TypeScript language support but does not include the TypeScript compiler, `tsc`. You will need to install the TypeScript compiler either globally or in your workspace to transpile TypeScript source code to JavaScript (`tsc HelloWorld.ts`).
 
@@ -27,8 +25,7 @@ It is important to keep in mind that VS Code’s TypeScript language service is 
 
 Later in the article, we’ll discuss how you can [change](#using-newer-typescript-versions) the version of TypeScript language service that VS Code uses.
 
-tsconfig.json
--------------
+## tsconfig.json
 
 Typically the first step in any new TypeScript project is to add a `tsconfig.json` file. A `tsconfig.json` file defines the TypeScript [project settings](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html), such as the compiler options and the files that should be included. To do this, open up the folder where you want to store your source and add a new file named `tsconfig.json`. Once in this file, IntelliSense (`kb(editor.action.triggerSuggest)`) will help you along the way.
 
@@ -46,8 +43,7 @@ A simple `tsconfig.json` looks like this for ES5, **CommonJS** [modules](http://
 
 Now when you create a `.ts` file as part of the project we will offer up rich editing experiences and syntax validation.
 
-Transpile TypeScript into JavaScript
-------------------------------------
+## Transpile TypeScript into JavaScript
 
 VS Code integrates with `tsc` through our integrated [task runner](/docs/editor/tasks.md). We can use this to transpile `.ts` files into `.js` files. Another benefit of using VS Code tasks is that you get integrated error and warning detection displayed in the [Problems](/docs/editor/editingevolved.md#errors-warnings) panel. Let’s walk through transpiling a simple TypeScript Hello World program.
 
@@ -121,15 +117,13 @@ You can also use the keyboard to open the list `kb(workbench.actions.view.proble
 
 > **Tip:** Tasks offer rich support for many actions. Check the [Tasks](/docs/editor/tasks.md) topic for more information on how to configure them.
 
-JavaScript source map support
------------------------------
+## JavaScript source map support
 
 TypeScript debugging supports JavaScript source maps. To generate source maps for your TypeScript files, compile with the `--sourcemap` option or set the `sourceMap` property in the `tsconfig.json` file to `true`.
 
 In-lined source maps (a source map where the content is stored as a data URL instead of a separate file) are also supported, although in-lined source is not yet supported.
 
-Output location for generated files
------------------------------------
+## Output location for generated files
 
 Having the generated JavaScript file in the same folder at the TypeScript source will quickly get cluttered on larger projects. You can specify the output directory for the compiler with the `outDir` attribute.
 
@@ -141,8 +135,7 @@ Having the generated JavaScript file in the same folder at the TypeScript source
         }
     }
 
-Hiding derived JavaScript files
--------------------------------
+## Hiding derived JavaScript files
 
 When you are working with TypeScript, you often don’t want to see generated JavaScript files in the File Explorer or in Search results. VS Code offers filtering capabilities with a `files.exclude` [workspace setting](/docs/getstarted/settings.md) and you can easily create an expression to hide those derived files:
 
@@ -163,15 +156,14 @@ To exclude JavaScript files generated from both `.ts` and `.tsx` source files, u
 
 This is a bit of a trick. The search glob pattern is used as a key. The settings above use two different glob patterns to provide two unique keys but the search will still match the same files.
 
-Using newer TypeScript versions
--------------------------------
+## Using newer TypeScript versions
 
 VS Code ships with a recent stable version of the TypeScript language service and uses this by default to provide IntelliSense in your workspace. The workspace version of TypeScript is independent of the version of TypeScript you use to compile your `*.ts` files. You can just use VS Code’s built-in TypeScript version for IntelliSense without worry for most common cases, but sometimes you may need to change the version of TypeScript VS Code uses for IntelliSense.
 
 Reasons for doing this include:
 
--   Trying out the latest TypeScript features by switching to the TypeScript nightly build (`typescript@next`).
--   Making sure you are using the same version of TypeScript for IntelliSense that you use to compile your code.
+- Trying out the latest TypeScript features by switching to the TypeScript nightly build (`typescript@next`).
+- Making sure you are using the same version of TypeScript for IntelliSense that you use to compile your code.
 
 The active TypeScript version and its install location are displayed in the Status Bar when viewing a TypeScript file:
 
@@ -213,15 +205,13 @@ The simplest way to try out the latest TypeScript features in VS Code is to inst
 
 This extension automatically replaces VS Code’s built-in TypeScript version with the latest TypeScript nightly build. Just make sure you [switch back to using VS Code’s TypeScript version](#using-the-workspace-version-of-typescript) if you’ve configured your TypeScript version with the **TypeScript: Select TypeScript Version** command.
 
-Mixed TypeScript and JavaScript projects
-----------------------------------------
+## Mixed TypeScript and JavaScript projects
 
 It is possible to have mixed TypeScript and JavaScript projects. To enable JavaScript inside a TypeScript project, you can set the `allowJs` property to `true` in the `tsconfig.json`.
 
 > **Tip:** The `tsc` compiler does not detect the presence of a `jsconfig.json` file automatically. Use the `–p` argument to make `tsc` use your `jsconfig.json` file, e.g. `tsc -p jsconfig.json`.
 
-Working with large projects
----------------------------
+## Working with large projects
 
 If you are working in a codebase with hundreds or thousands of TypeScript files, here are some steps you can take to improve both the editing experience in VS Code as well as compile times on the command line.
 
@@ -237,15 +227,13 @@ Instead of structuring your source code as a single large project, you can impro
 
 See the [TypeScript documentation](https://www.typescriptlang.org/docs/handbook/project-references.html) for details on how to use project references and best practices for working with them.
 
-Next steps
-----------
+## Next steps
 
 Read on to find out about:
 
--   [Debugging TypeScript](/docs/typescript/typescript-debugging.md) - Configure the debugger for your TypeScript project.
+- [Debugging TypeScript](/docs/typescript/typescript-debugging.md) - Configure the debugger for your TypeScript project.
 
-Common questions
-----------------
+## Common questions
 
 ### How do I resolve a TypeScript “Cannot compile external module” error?
 
@@ -263,12 +251,12 @@ No, the TypeScript language service that ships with Visual Studio 2015 and 2017 
 
 By default, VS Code TypeScript displays code style issues as warnings instead of errors. This applies to:
 
--   Variable is declared but never used
--   Property is declared but its value is never read
--   Unreachable code detected
--   Unused label
--   Fall through case in switch
--   Not all code paths return a value
+- Variable is declared but never used
+- Property is declared but its value is never read
+- Unreachable code detected
+- Unused label
+- Fall through case in switch
+- Not all code paths return a value
 
 Treating these as warnings is consistent with other tools, such as TSLint. These will still be displayed as errors when you run `tsc` from the command line.
 

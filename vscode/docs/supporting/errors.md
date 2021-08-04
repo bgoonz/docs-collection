@@ -1,10 +1,8 @@
-Common Error Cases
-==================
+# Common Error Cases
 
 Some errors that occur when using Visual Studio Code can be worked around or resolved by you. This topic describes several common error conditions, listed by error code number, and what you can do to resolve them.
 
-20002
------
+## 20002
 
 **Error:** Cannot find ‘/usr/bin/gnome-terminal’ for launching your Node.js program
 
@@ -12,11 +10,10 @@ On Linux, the VS Code Node.js debugger requires the [gnome-terminal](https://hel
 
 There are two options for solving this problem:
 
--   Install the gnome-terminal by running the command `sudo apt-get install gnome-terminal` (or the equivalent of your Linux distribution).
--   Manually launch your program in debug mode by passing a `--inspect` or `--inspect-brk` option to Node.js and then attach the VS Code debugger to port 9229 on ‘localhost’.
+- Install the gnome-terminal by running the command `sudo apt-get install gnome-terminal` (or the equivalent of your Linux distribution).
+- Manually launch your program in debug mode by passing a `--inspect` or `--inspect-brk` option to Node.js and then attach the VS Code debugger to port 9229 on ‘localhost’.
 
-20003
------
+## 20003
 
 **Error:** Attribute ‘program’ is not absolute; consider adding ‘${workspaceFolder}/’ as a prefix to make it absolute.
 
@@ -56,8 +53,7 @@ In previous versions of VS Code, you were allowed to use relative paths in your 
 
 > **Tip:** See the VS Code [debugging](/docs/editor/debugging.md) documentation for more information about `launch.json`, [debugger configuration](/docs/editor/debugging.md#launch-configurations), and [variable substitution](/docs/editor/variables-reference.md).
 
-Didn’t find a solution?
------------------------
+## Didn’t find a solution?
 
 ### GitHub issues
 

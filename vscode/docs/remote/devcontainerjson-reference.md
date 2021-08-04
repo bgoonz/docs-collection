@@ -1,12 +1,10 @@
-devcontainer.json reference
-===========================
+# devcontainer.json reference
 
 A `devcontainer.json` file in your project tells Visual Studio Code how to access (or create) a **development container** with a well-defined tool and runtime stack. This container can be used to run an application or to separate tools, libraries, or runtimes needed for working with a codebase. It can be used with the [Remote - Containers](https://aka.ms/vscode-remote/download/containers) extension or [GitHub Codespaces](https://github.com/features/codespaces).
 
 [Set up a folder to run in a container](/docs/remote/create-dev-container.md#set-up-a-folder-to-run-in-a-container) has more information on configuring a dev container or use the **Remote-Containers: Add Development Container Configuration Files…** or **Codespaces: Add DevelopmentContainer Configuration Files…** commands from the Command Palette (`kbstyle(F1)`) to add a wide variety of base configurations from the [vscode-dev-containers repository](https://github.com/microsoft/vscode-dev-containers/tree/main/containers).
 
-devcontainer.json properties
-----------------------------
+## devcontainer.json properties
 
 While some devcontainer.json properties apply generally, others are only used in specific scenarios. The following table will outline the properties that apply in each situation.
 
@@ -79,8 +77,7 @@ By contrast, the array format will keep the single quotes and write them to stan
 
     "postAttachCommand": ["echo", "foo='bar'"]
 
-Variables in devcontainer.json
-------------------------------
+## Variables in devcontainer.json
 
 Variables can be referenced in certain string values in `devcontainer.json` in the following format: **${variableName}**. The following is a list of available variables you can use.
 
@@ -94,8 +91,7 @@ Variables can be referenced in certain string values in `devcontainer.json` in t
 <br />
 ⚠️ Not yet supported when using Clone Repository in Container Volume.</td></tr><tr class="even"><td><code>${containerWorkspaceFolderBasename}</code></td><td>Any</td><td>Name of the folder where the workspace files can be found in the container.</td></tr></tbody></table>
 
-Lifecycle scripts
------------------
+## Lifecycle scripts
 
 When creating and working with a dev container, you may need different commands to be run at different points in the container’s lifecycle. The table below has the properties that determine how the container is created and takes shape over time, in the order in which they are run (for example, `onCreateCommand` will run after `initializeCommand`).
 
@@ -105,8 +101,7 @@ The `waitFor` property allows you to configure when the VS Code UI may connect t
 
 By default, the `waitFor` property is set to `updateContentCommand`. This allows you to use `onCreateCommand` or `updateContentCommand` for steps that must happen before VS Code connects while still using `postCreateCommand` for steps that can happen behind the scenes afterwards.
 
-Attached container configuration reference
-------------------------------------------
+## Attached container configuration reference
 
 [Attached container configuration files](/docs/remote/attach-container.md#attached-container-configuration-files) are similar to `devcontainer.json` and supports a subset of its properties.
 
@@ -114,8 +109,7 @@ Attached container configuration reference
 For example: <code>"remoteEnv": { "PATH": "${containerEnv:PATH}:/some/other/path" }</code></td></tr><tr class="even"><td><code>remoteUser</code></td><td>string</td><td>Overrides the user that VS Code runs as in the container (along with sub-processes like terminals, tasks, or debugging). Defaults to the user the container as a whole is running as (often <code>root</code>).</td></tr><tr class="odd"><td><code>postAttachCommand</code></td><td>string,<br />
 array</td><td>A command string or list of command arguments to run after VS Code attaches to the container. Use <code>&amp;&amp;</code> in a string to execute multiple commands. For example, <code>"yarn install"</code> or <code>"apt-get update &amp;&amp; apt-get install -y curl"</code>. The array syntax <code>["yarn", "install"]</code> will invoke the command (in this case <code>yarn</code>) directly without using a shell. Not set by default.</td></tr></tbody></table>
 
-Variables in attached container configuration files
----------------------------------------------------
+## Variables in attached container configuration files
 
 Variables can be referenced in certain string values in attached configuration files in the following format: **${variableName}**. The following table is a list of available variables you can use.
 

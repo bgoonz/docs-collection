@@ -1,12 +1,10 @@
-Remote Development Tips and Tricks
-==================================
+# Remote Development Tips and Tricks
 
 This article covers troubleshooting tips and tricks for each of the Visual Studio Code [Remote Development](https://aka.ms/vscode-remote/download/extension) extensions. See the [SSH](/docs/remote/ssh.md), [Containers](/docs/remote/containers.md), and [WSL](/docs/remote/wsl.md) articles for details on setting up and working with each specific extension. Or try the introductory [Tutorials](/docs/remote/ssh-tutorial.md) to help get you running quickly in a remote environment.
 
 For tips and questions about [GitHub Codespaces](https://github.com/features/codespaces), see the [GitHub Codespaces documentation](https://docs.github.com/github/developing-online-with-codespaces).
 
-SSH tips
---------
+## SSH tips
 
 SSH is powerful and flexible, but this also adds some setup complexity. This section includes some tips and tricks for getting the Remote - SSH extension up and running in different environments.
 
@@ -34,41 +32,41 @@ If you do not have a key, run the following command in a **local** terminal / Po
 
 Run one of the following commands, in a **local terminal window** replacing user and host name as appropriate to copy your local public key to the SSH host.
 
--   Connecting to a **macOS or Linux** SSH host:
+- Connecting to a **macOS or Linux** SSH host:
 
-        export USER_AT_HOST="your-user-name-on-host@hostname"
-        export PUBKEYPATH="$HOME/.ssh/id_rsa.pub"
+      export USER_AT_HOST="your-user-name-on-host@hostname"
+      export PUBKEYPATH="$HOME/.ssh/id_rsa.pub"
 
-        ssh-copy-id -i "$PUBKEYPATH" "$USER_AT_HOST"
+      ssh-copy-id -i "$PUBKEYPATH" "$USER_AT_HOST"
 
--   Connecting to a **Windows** SSH host:
+- Connecting to a **Windows** SSH host:
 
-        export USER_AT_HOST="your-user-name-on-host@hostname"
-        export PUBKEYPATH="$HOME/.ssh/id_rsa.pub"
+      export USER_AT_HOST="your-user-name-on-host@hostname"
+      export PUBKEYPATH="$HOME/.ssh/id_rsa.pub"
 
-        ssh $USER_AT_HOST "powershell New-Item -Force -ItemType Directory -Path \"\$HOME\\.ssh\"; Add-Content -Force -Path \"\$HOME\\.ssh\\authorized_keys\" -Value '$(tr -d '\n\r' < "$PUBKEYPATH")'"
+      ssh $USER_AT_HOST "powershell New-Item -Force -ItemType Directory -Path \"\$HOME\\.ssh\"; Add-Content -Force -Path \"\$HOME\\.ssh\\authorized_keys\" -Value '$(tr -d '\n\r' < "$PUBKEYPATH")'"
 
-    You may want to validate that the `authorized_key` file in the `.ssh` folder for your **remote user on the SSH host** is owned by you and no other user has permission to access it. See the [OpenSSH wiki](https://github.com/PowerShell/Win32-OpenSSH/wiki/Security-protection-of-various-files-in-Win32-OpenSSH#authorized_keys) for details.
+  You may want to validate that the `authorized_key` file in the `.ssh` folder for your **remote user on the SSH host** is owned by you and no other user has permission to access it. See the [OpenSSH wiki](https://github.com/PowerShell/Win32-OpenSSH/wiki/Security-protection-of-various-files-in-Win32-OpenSSH#authorized_keys) for details.
 
 **Authorize your Windows machine to connect**
 
 Run one of the following commands, in a **local PowerShell** window replacing user and host name as appropriate to copy your local public key to the SSH host.
 
--   Connecting to a **macOS or Linux** SSH host:
+- Connecting to a **macOS or Linux** SSH host:
 
-        $USER_AT_HOST="your-user-name-on-host@hostname"
-        $PUBKEYPATH="$HOME\.ssh\id_rsa.pub"
+      $USER_AT_HOST="your-user-name-on-host@hostname"
+      $PUBKEYPATH="$HOME\.ssh\id_rsa.pub"
 
-        $pubKey=(Get-Content "$PUBKEYPATH" | Out-String); ssh "$USER_AT_HOST" "mkdir -p ~/.ssh && chmod 700 ~/.ssh && echo '${pubKey}' >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"
+      $pubKey=(Get-Content "$PUBKEYPATH" | Out-String); ssh "$USER_AT_HOST" "mkdir -p ~/.ssh && chmod 700 ~/.ssh && echo '${pubKey}' >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"
 
--   Connecting to a **Windows** SSH host:
+- Connecting to a **Windows** SSH host:
 
-        $USER_AT_HOST="your-user-name-on-host@hostname"
-        $PUBKEYPATH="$HOME\.ssh\id_rsa.pub"
+      $USER_AT_HOST="your-user-name-on-host@hostname"
+      $PUBKEYPATH="$HOME\.ssh\id_rsa.pub"
 
-        Get-Content "$PUBKEYPATH" | Out-String | ssh $USER_AT_HOST "powershell `"New-Item -Force -ItemType Directory -Path `"`$HOME\.ssh`"; Add-Content -Force -Path `"`$HOME\.ssh\authorized_keys`" `""
+      Get-Content "$PUBKEYPATH" | Out-String | ssh $USER_AT_HOST "powershell `"New-Item -Force -ItemType Directory -Path `"`$HOME\.ssh`"; Add-Content -Force -Path `"`$HOME\.ssh\authorized_keys`" `""
 
-    Validate that the `authorized_key` file in the `.ssh` folder for your **remote user on the SSH host** is owned by you and no other user has permission to access it. See the [OpenSSH wiki](https://github.com/PowerShell/Win32-OpenSSH/wiki/Security-protection-of-various-files-in-Win32-OpenSSH#authorized_keys) for details.
+  Validate that the `authorized_key` file in the `.ssh` folder for your **remote user on the SSH host** is owned by you and no other user has permission to access it. See the [OpenSSH wiki](https://github.com/PowerShell/Win32-OpenSSH/wiki/Security-protection-of-various-files-in-Win32-OpenSSH#authorized_keys) for details.
 
 ### Improving your security with a dedicated key
 
@@ -188,9 +186,9 @@ If you are behind a proxy and are unable to connect to your SSH host, you may ne
 
 The remote machine must have internet access to be able to download the VS Code Server and extensions from the Marketplace. See the [FAQ for details](/docs/remote/faq.md#what-are-the-connectivity-requirements-for-vs-code-server) on connectivity requirements.
 
-**Set HTTP\_PROXY / HTTPS\_PROXY on the remote host**
+**Set HTTP_PROXY / HTTPS_PROXY on the remote host**
 
-If your remote host is behind a proxy, you may need to set the HTTP\_PROXY or HTTPS\_PROXY environment variable on the **SSH host**. Open your `~/.bashrc` file add the following (replacing `proxy.fqdn.or.ip:3128` with the appropriate hostname / IP and port):
+If your remote host is behind a proxy, you may need to set the HTTP_PROXY or HTTPS_PROXY environment variable on the **SSH host**. Open your `~/.bashrc` file add the following (replacing `proxy.fqdn.or.ip:3128` with the appropriate hostname / IP and port):
 
     export HTTP_PROXY=http://proxy.fqdn.or.ip:3128
     export HTTPS_PROXY=$HTTP_PROXY
@@ -225,9 +223,9 @@ To access your config file, run **Remote-SSH: Open Configuration File…** in th
 
 If you are connecting to an SSH remote host and are either:
 
--   Connecting with two-factor authentication
--   Using password authentication
--   Using an SSH key with a passphrase when the [SSH Agent](#setting-up-the-ssh-agent) is not running or accessible
+- Connecting with two-factor authentication
+- Using password authentication
+- Using an SSH key with a passphrase when the [SSH Agent](#setting-up-the-ssh-agent) is not running or accessible
 
 then VS Code should automatically prompt you to enter needed information. If you do not see the prompt, enable the `remote.SSH.showLoginTerminal` [setting](/docs/getstarted/settings.md) in VS Code. This setting displays the terminal whenever VS Code runs an SSH command. You can then enter your authentication code, password, or passphrase when the terminal appears.
 
@@ -433,8 +431,7 @@ The VS Code Server was previously installed under `~/.vscode-remote` so you can 
 
 You may want to use SSH to connect to a WSL distro running on your remote machine. Check out [this guide](https://www.hanselman.com/blog/the-easy-way-how-to-ssh-into-bash-and-wsl2-on-windows-10-from-an-external-machine) to learn how to SSH into Bash and WSL 2 on Windows 10 from an external machine.
 
-Container tips
---------------
+## Container tips
 
 This section includes some tips and tricks for getting the Remote - Containers extension up and running in different environments.
 
@@ -596,12 +593,12 @@ This is a [well known issue](https://github.com/debuerreotype/docker-debian-arti
 
 There are two ways to resolve this error:
 
--   **Option 1**: Remove any containers that depend on the image, remove the image, and then try building again. This should download an updated image that is not affected by the problem. See [cleaning out unused containers and images](#cleaning-out-unused-containers-and-images) for details.
+- **Option 1**: Remove any containers that depend on the image, remove the image, and then try building again. This should download an updated image that is not affected by the problem. See [cleaning out unused containers and images](#cleaning-out-unused-containers-and-images) for details.
 
--   **Option 2**: If you don’t want to delete your containers or images, add this line into your Dockerfile before any `apt` or `apt-get` command. It adds the needed source lists for Jessie:
+- **Option 2**: If you don’t want to delete your containers or images, add this line into your Dockerfile before any `apt` or `apt-get` command. It adds the needed source lists for Jessie:
 
-        # Add archived sources to source list if base image uses Debian 8 / Jessie
-        RUN cat /etc/*-release | grep -q jessie && printf "deb http://archive.debian.org/debian/ jessie main\ndeb-src http://archive.debian.org/debian/ jessie main\ndeb http://security.debian.org jessie/updates main\ndeb-src http://security.debian.org jessie/updates main" > /etc/apt/sources.list
+      # Add archived sources to source list if base image uses Debian 8 / Jessie
+      RUN cat /etc/*-release | grep -q jessie && printf "deb http://archive.debian.org/debian/ jessie main\ndeb-src http://archive.debian.org/debian/ jessie main\ndeb http://security.debian.org jessie/updates main\ndeb-src http://security.debian.org jessie/updates main" > /etc/apt/sources.list
 
 ### Resolving Docker Hub sign in errors when an email is used
 
@@ -650,20 +647,19 @@ Once you are done, press `kbstyle(Ctrl+C)` in the terminal / PowerShell to close
 
 See the [Advanced Container Configuration](/docs/remote/containers-advanced.md) article for information on the following topics:
 
--   [Adding environment variables](/docs/remote/containers-advanced.md#adding-environment-variables)
--   [Adding another volume mount](/docs/remote/containers-advanced.md#adding-another-volume-mount)
--   [Changing or removing the default source code mount](/docs/remote/containers-advanced.md#changing-the-default-source-code-mount)
--   [Adding a non-root user to your dev container](/docs/remote/containers-advanced.md#adding-a-nonroot-user-to-your-dev-container)
--   [Improving container disk performance](/docs/remote/containers-advanced.md#improving-container-disk-performance)
--   [Avoiding extension reinstalls on container rebuild](/docs/remote/containers-advanced.md#avoiding-extension-reinstalls-on-container-rebuild)
--   [Setting the project name for Docker Compose](/docs/remote/containers-advanced.md#setting-the-project-name-for-docker-compose)
--   [Using Docker or Kubernetes from inside a container](/docs/remote/containers-advanced.md#using-docker-or-kubernetes-from-a-container)
--   [Connecting to multiple containers at once](/docs/remote/containers-advanced.md#connecting-to-multiple-containers-at-once)
--   [Developing inside a container on a remote Docker Machine or SSH host](/docs/remote/containers-advanced.md#developing-inside-a-container-on-a-remote-docker-host)
--   [Reducing Dockerfile build warnings](/docs/remote/containers-advanced.md#reducing-dockerfile-build-warnings)
+- [Adding environment variables](/docs/remote/containers-advanced.md#adding-environment-variables)
+- [Adding another volume mount](/docs/remote/containers-advanced.md#adding-another-volume-mount)
+- [Changing or removing the default source code mount](/docs/remote/containers-advanced.md#changing-the-default-source-code-mount)
+- [Adding a non-root user to your dev container](/docs/remote/containers-advanced.md#adding-a-nonroot-user-to-your-dev-container)
+- [Improving container disk performance](/docs/remote/containers-advanced.md#improving-container-disk-performance)
+- [Avoiding extension reinstalls on container rebuild](/docs/remote/containers-advanced.md#avoiding-extension-reinstalls-on-container-rebuild)
+- [Setting the project name for Docker Compose](/docs/remote/containers-advanced.md#setting-the-project-name-for-docker-compose)
+- [Using Docker or Kubernetes from inside a container](/docs/remote/containers-advanced.md#using-docker-or-kubernetes-from-a-container)
+- [Connecting to multiple containers at once](/docs/remote/containers-advanced.md#connecting-to-multiple-containers-at-once)
+- [Developing inside a container on a remote Docker Machine or SSH host](/docs/remote/containers-advanced.md#developing-inside-a-container-on-a-remote-docker-host)
+- [Reducing Dockerfile build warnings](/docs/remote/containers-advanced.md#reducing-dockerfile-build-warnings)
 
-WSL tips
---------
+## WSL tips
 
 ### First time start: VS Code Server prerequisites
 
@@ -769,11 +765,11 @@ You can help us investigate this problem by sending us the core dump file. To ge
 
 In a Windows command prompt:
 
--   Run `code --locate-extension ms-vscode-remote.remote-wsl` to determine the Remote-WSL extension folder.
--   `cd` to the path that is returned.
--   Open the `wslServer.sh` script with VS Code, `code .\scripts\wslServer.sh`.
--   On the 3rd last line (before `export VSCODE_AGENT_FOLDER="$HOME/$DATAFOLDER"`), add `ulimit -C unlimited`.
--   Start the Remote-WSL window running the remote server and wait for the segmentation fault.
+- Run `code --locate-extension ms-vscode-remote.remote-wsl` to determine the Remote-WSL extension folder.
+- `cd` to the path that is returned.
+- Open the `wslServer.sh` script with VS Code, `code .\scripts\wslServer.sh`.
+- On the 3rd last line (before `export VSCODE_AGENT_FOLDER="$HOME/$DATAFOLDER"`), add `ulimit -C unlimited`.
+- Start the Remote-WSL window running the remote server and wait for the segmentation fault.
 
 The core file will be in the Remote-WSL extension folder from above.
 
@@ -831,13 +827,11 @@ If you clone a Git repository using SSH and your SSH key has a passphrase, VS Co
 
 Either use an SSH key without a passphrase, clone using HTTPS, or run `git push` from the command line to work around the issue.
 
-GitHub Codespaces tips
-----------------------
+## GitHub Codespaces tips
 
 For tips and questions about [GitHub Codespaces](https://github.com/features/codespaces), see the [GitHub Codespaces documentation](https://docs.github.com/github/developing-online-with-codespaces). You can also check out the [known web limitations and adaptations](/docs/remote/codespaces.md#known-limitations-and-adaptations) that may impact your Codespaces.
 
-Extension tips
---------------
+## Extension tips
 
 While many extensions will work unmodified, there are a few issues that can prevent certain features from working as expected. In some cases, you can use another command to work around the issue, while in others, the extension may need to be modified. This section provides a quick reference for common issues and tips on resolving them. You can also refer to the main extension article on [Supporting Remote Development](/api/advanced-topics/remote-extensions) for an in-depth guide on modifying extensions to support remote extension hosts.
 
@@ -911,8 +905,8 @@ If an incompatible extension has been installed on a remote host, container, or 
 
 2.  Next, use a separate terminal / command prompt to connect to the remote host, container, or WSL.
 
-    -   If SSH or WSL, connect to the environment accordingly (run `ssh` to connect to the server or open WSL terminal).
-    -   If using a container, identify the container ID by calling `docker ps -a` and looking through the list for an image with the correct name. If the container is stopped, run `docker run -it <id> /bin/sh`. If it is running, run `docker exec -it <id> /bin/sh`.
+    - If SSH or WSL, connect to the environment accordingly (run `ssh` to connect to the server or open WSL terminal).
+    - If using a container, identify the container ID by calling `docker ps -a` and looking through the list for an image with the correct name. If the container is stopped, run `docker run -it <id> /bin/sh`. If it is running, run `docker exec -it <id> /bin/sh`.
 
 3.  Once you are connected, run `rm -rf ~/.vscode-server/extensions` for VS Code stable and/or `rm -rf ~/.vscode-server-insiders/extensions` for VS Code Insiders to remove all extensions.
 
@@ -922,9 +916,9 @@ Native modules bundled with (or dynamically acquired for) a VS Code extension mu
 
 **Resolution:** Extensions need to be modified to solve this problem. They will need to include (or dynamically acquire) both sets of binaries (Electron and standard Node.js) for the “modules” version in Node.js that VS Code ships and then check to see if `context.executionContext === vscode.ExtensionExecutionContext.Remote` in their activation function to set up the correct binaries. See the [extension author’s guide](/api/advanced-topics/remote-extensions#using-native-node.js-modules) for details.
 
-### Extension only fails on non-x86\_64 hosts or Alpine Linux
+### Extension only fails on non-x86_64 hosts or Alpine Linux
 
-If an extension works on Debian 9+, Ubuntu 16.04+, or RHEL / CentOS 7+ remote SSH hosts, containers, or WSL, but fails on supported non-x86\_64 hosts (for example, ARMv7l) or Alpine Linux containers, the extension may only include native code or runtimes that do not support these platforms. For example, the extensions may only include x86\_64 compiled versions of native modules or runtimes. For Alpine Linux, the included native code or runtimes may not work due to [fundamental differences](https://wiki.musl-libc.org/functional-differences-from-glibc.html) between how `libc` is implemented in Alpine Linux (`musl`) and other distributions (`glibc`).
+If an extension works on Debian 9+, Ubuntu 16.04+, or RHEL / CentOS 7+ remote SSH hosts, containers, or WSL, but fails on supported non-x86_64 hosts (for example, ARMv7l) or Alpine Linux containers, the extension may only include native code or runtimes that do not support these platforms. For example, the extensions may only include x86_64 compiled versions of native modules or runtimes. For Alpine Linux, the included native code or runtimes may not work due to [fundamental differences](https://wiki.musl-libc.org/functional-differences-from-glibc.html) between how `libc` is implemented in Alpine Linux (`musl`) and other distributions (`glibc`).
 
 **Resolution:** Extensions will need to opt-in to supporting these platforms by compiling / including binaries for these additional targets. It is important to note that some third-party npm modules may also include native code that can cause this problem. So, in some cases you may need to work with the npm module author to add additional compilation targets. See the [extension author’s guide](/api/advanced-topics/remote-extensions#supporting-nonx8664-hosts-or-alpine-linux-containers) for details.
 
@@ -946,8 +940,7 @@ Extensions that access locally attached devices will be unable to connect to the
 
 **Resolution:** None currently. We are investigating the best approach to solve this problem.
 
-Questions and feedback
-----------------------
+## Questions and feedback
 
 ### Reporting issues
 
@@ -969,6 +962,6 @@ If you’re experiencing issues using other extensions remotely (for example, ot
 
 We have a variety of other remote resources:
 
--   See [Remote Development FAQ](/docs/remote/faq.md).
--   Search on [Stack Overflow](https://stackoverflow.com/questions/tagged/vscode-remote).
--   Add a [feature request](https://aka.ms/vscode-remote/feature-requests) or [report a problem](https://aka.ms/vscode-remote/issues/new).
+- See [Remote Development FAQ](/docs/remote/faq.md).
+- Search on [Stack Overflow](https://stackoverflow.com/questions/tagged/vscode-remote).
+- Add a [feature request](https://aka.ms/vscode-remote/feature-requests) or [report a problem](https://aka.ms/vscode-remote/issues/new).

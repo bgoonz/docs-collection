@@ -1,8 +1,6 @@
-Develop with containers
-=======================
+# Develop with containers
 
-What are development containers?
---------------------------------
+## What are development containers?
 
 Containers are pieces of software that package code and all of the dependencies that code needs to run, including the runtime, tools, libraries, and settings. Development containers specifically let you code within this piece of software, providing a separate coding environment from your computer.
 
@@ -16,8 +14,7 @@ In the diagram below, you’ll see an example of three dev containers: one for P
 
 ![Container Architecture Diagram](images/containers/container-architecture.png)
 
-Get started with dev containers in VS Code
-------------------------------------------
+## Get started with dev containers in VS Code
 
 ### Prerequisites
 
@@ -33,23 +30,21 @@ Rather than creating dev containers from scratch, Remote - Containers has severa
 
 Below is a list of sample dev containers we’d recommend starting out with:
 
--   [Try Out Development Containers: Python](https://github.com/microsoft/vscode-remote-try-python)
--   [Try Out Development Containers: Java](https://github.com/microsoft/vscode-remote-try-java)
--   [Try Out Development Containers: C++](https://github.com/microsoft/vscode-remote-try-cpp)
--   [Try Out Development Containers: Node.js](https://github.com/microsoft/vscode-remote-try-node)
--   [Try Out Development Containers: .NET Core](https://github.com/microsoft/vscode-remote-try-dotnetcore)
--   [Try Out Development Containers: Go](https://github.com/microsoft/vscode-remote-try-go)
--   [Try Out Development Containers: PHP](https://github.com/microsoft/vscode-remote-try-php)
--   [Try Out Development Containers: Rust](https://github.com/microsoft/vscode-remote-try-rust)
+- [Try Out Development Containers: Python](https://github.com/microsoft/vscode-remote-try-python)
+- [Try Out Development Containers: Java](https://github.com/microsoft/vscode-remote-try-java)
+- [Try Out Development Containers: C++](https://github.com/microsoft/vscode-remote-try-cpp)
+- [Try Out Development Containers: Node.js](https://github.com/microsoft/vscode-remote-try-node)
+- [Try Out Development Containers: .NET Core](https://github.com/microsoft/vscode-remote-try-dotnetcore)
+- [Try Out Development Containers: Go](https://github.com/microsoft/vscode-remote-try-go)
+- [Try Out Development Containers: PHP](https://github.com/microsoft/vscode-remote-try-php)
+- [Try Out Development Containers: Rust](https://github.com/microsoft/vscode-remote-try-rust)
 
-Learning resources
-------------------
+## Learning resources
 
 To learn how to get started with the Remote - Containers extension, check out this 5-minute introductory video:
 
 You can also read more in our [Development Containers in Education](/blogs/2020/07/27/containers-edu.md) blog post.
 
-Next steps
-----------
+## Next steps
 
 We also highly recommend checking out the step-by-step [Containers tutorial](/docs/remote/containers-tutorial.md).

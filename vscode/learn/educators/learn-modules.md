@@ -1,5 +1,4 @@
-Microsoft Learn modules
-=======================
+# Microsoft Learn modules
 
 If you’re looking for resources for your students to get started with Visual Studio Code, check out this curated list of Microsoft Learn modules. These modules are designed to walk you through step-by-step to set up your work environment or finish a small project, all while familiarizing you with the VS Code interface.
 
@@ -10,7 +9,7 @@ If you’re looking for resources for your students to get started with Visual S
     <a href="https://docs.microsoft.com/learn/modules/python-install-vscode"><img src="/assets/learn/educators/learn-modules/learn-python-vscode.png" alt="Python module" aria-hidden="true" class="thumb"/></a>
     </a>
 
-  
+
 
     <div class="info">
         <a href="https://docs.microsoft.com/learn/modules/use-git-from-vs-code/"><h2 class="title faux-h3">Use Git version-control tools</h2></a>
@@ -19,7 +18,7 @@ If you’re looking for resources for your students to get started with Visual S
     <a href="https://docs.microsoft.com/learn/modules/use-git-from-vs-code/"><img src="/assets/learn/educators/learn-modules/learn-git.png" alt="Git module" aria-hidden="true" class="thumb"/></a>
     </a>
 
-  
+
 
     <div class="info">
         <a href="https://docs.microsoft.com/learn/modules/basic-python-nasa/"><h2 class="title faux-h3">Write basic Python in Notebooks</h2></a>
@@ -28,7 +27,7 @@ If you’re looking for resources for your students to get started with Visual S
     <a href="https://docs.microsoft.com/learn/modules/basic-python-nasa/"><img src="/assets/learn/educators/learn-modules/learn-python-notebooks.png" alt="Python module" aria-hidden="true" class="thumb"/></a>
     </a>
 
-  
+
 
     <div class="info">
         <a href="https://docs.microsoft.com/learn/modules/build-node-cosmos-app-vscode/"><h2 class="title faux-h3">Build a Node.js app for Azure Cosmos DB</h2></a>
@@ -36,5 +35,3 @@ If you’re looking for resources for your students to get started with Visual S
     <p class="description">Build a database app to store and query data in Azure Cosmos DB by using Visual Studio Code and Node.js.</p>
     <a href="https://docs.microsoft.com/learn/modules/build-node-cosmos-app-vscode/"><img src="/assets/learn/educators/learn-modules/learn-node-app.png" alt="Learn Node" aria-hidden="true" class="thumb"/></a>
     </a>
-
-  

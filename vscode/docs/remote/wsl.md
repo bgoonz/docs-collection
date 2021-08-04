@@ -1,5 +1,4 @@
-Developing in WSL
-=================
+# Developing in WSL
 
 The **Visual Studio Code Remote - WSL** extension lets you use the [Windows Subsystem for Linux (WSL)](https://docs.microsoft.com/windows/wsl) as your full-time development environment right from VS Code. You can develop in a Linux-based environment, use Linux-specific toolchains and utilities, and run and debug your Linux-based applications all from the comfort of Windows.
 
@@ -9,8 +8,7 @@ The extension runs commands and other extensions directly in WSL so you can edit
 
 This lets VS Code provide a **local-quality development experience** — including full IntelliSense (completions), code navigation, and debugging — **regardless of where your code is hosted**.
 
-Getting started
----------------
+## Getting started
 
 **Note**: After reviewing this topic, you can get started with the introductory [WSL tutorial](/docs/remote/wsl-tutorial.md).
 
@@ -84,15 +82,13 @@ To force that a file is opened add `--goto` or use:
 
 `code --file-uri vscode-remote://wsl+Ubuntu/home/ubuntu/fileWithoutExtension`
 
-Working with Git
-----------------
+## Working with Git
 
 If you are working with the same repository in WSL and Windows, be sure to set up consistent line endings. See [tips and tricks](/docs/remote/troubleshooting.md#resolving-git-line-ending-issues-in-containers-resulting-in-many-modified-files) for details.
 
 You can also avoid passwords by configuring WSL to use the Windows Git credential manager. See [tips and tricks](/docs/remote/troubleshooting.md#sharing-git-credentials-between-windows-and-wsl) for details.
 
-Managing extensions
--------------------
+## Managing extensions
 
 VS Code runs extensions in one of two places: locally on the UI / client side, or in WSL. While extensions that affect the VS Code UI, like themes and snippets, are installed locally, most extensions will reside inside WSL.
 
@@ -112,8 +108,7 @@ You can also install all locally installed extensions inside WSL by going to the
 
 ![Install all extensions](images/wsl/install-all-extn-wsl.png)
 
-Opening a terminal in WSL
--------------------------
+## Opening a terminal in WSL
 
 Opening a terminal in WSL from VS Code is simple. Once folder is opened in WSL, **any terminal window** you open in VS Code (**Terminal &gt; New Terminal**) will automatically run in WSL rather than locally.
 
@@ -121,20 +116,17 @@ You can also use the `code` command line from this same terminal window to perfo
 
 ![Using the code CLI](images/wsl/code-command-in-terminal.png)
 
-Debugging in WSL
-----------------
+## Debugging in WSL
 
 Once you’ve opened a folder in WSL, you can use VS Code’s debugger in the same way you would when running the application locally. For example, if you select a launch configuration in `launch.json` and start debugging (`kb(workbench.action.debug.start)`), the application will start on remote host and attach the debugger to it.
 
 See the [debugging](/docs/editor/debugging.md) documentation for details on configuring VS Code’s debugging features in `.vscode/launch.json`.
 
-WSL specific settings
----------------------
+## WSL specific settings
 
 VS Code’s local user settings are also reused when you have opened a folder in WSL. While this keeps your user experience consistent, you may want to vary some of these settings between your local machine and WSL. Fortunately, once you have connected to WSL, you can also set WSL specific settings by running the **Preferences: Open Remote Settings** command from the Command Palette (`kbstyle(F1)`) or by selecting the **Remote** tab in the Settings editor. These will override any local settings you have in place whenever you open a folder in WSL.
 
-Advanced: Environment setup script
-----------------------------------
+## Advanced: Environment setup script
 
 When VS Code Remote is started in WSL, no shell startup scripts are run. This was done to avoid issues with startup scripts that are tuned for shells. If you want to run additional commands or modify the environment this can be done in a setup script `~/.vscode-server/server-env-setup` (Insiders: `~/.vscode-server-insiders/server-env-setup`). If present, the script is processed before the server is started.
 
@@ -142,8 +134,7 @@ The script needs to be a valid Bourne shell script. Be aware that an invalid scr
 
 Check the WSL log (Remote WSL: Open WSL Log) for output and errors.
 
-Advanced: Opening a WSL 2 folder in a container
------------------------------------------------
+## Advanced: Opening a WSL 2 folder in a container
 
 If you are using WSL 2 and [Docker Desktop’s WSL 2 back-end](https://docs.docker.com/docker-for-windows/wsl-tech-preview/), you can use the [Remote - Containers](/docs/remote/containers.md) extension to work with source code stored inside WSL! Just follow these steps:
 
@@ -169,8 +160,7 @@ If you are using WSL 2 and [Docker Desktop’s WSL 2 back-end](https://docs.dock
 
 See the [Remote - Containers documentation](/docs/remote/containers.md) for more information.
 
-Known limitations
------------------
+## Known limitations
 
 This section contains a list of common know issues with WSL. The intent is not to provide a complete list of issues but to highlight some of the common problems seen with WSL.
 
@@ -208,8 +198,7 @@ Many extensions will work in WSL without modification. However, in some cases, c
 
 In addition, some extensions installed in an WSL when using an Alpine Linux-based distribution may not work due to `glibc` dependencies in native code inside the extension. See the [Remote Development with Linux](/docs/remote/linux.md) article for details.
 
-Common questions
-----------------
+## Common questions
 
 ### Why am I asked to change the default distro?
 
@@ -233,11 +222,11 @@ Some extensions rely on libraries not found in the vanilla install of certain WS
 
 The Remote - WSL extension and VS Code Server require outbound HTTPS (port 443) connectivity to:
 
--   `update.code.visualstudio.com`
--   `marketplace.visualstudio.com`
--   `vscode.blob.core.windows.net`
--   `*.vo.msecnd.net` (Azure CDN)
--   `*.gallerycdn.vsassets.io` (Azure CDN)
+- `update.code.visualstudio.com`
+- `marketplace.visualstudio.com`
+- `vscode.blob.core.windows.net`
+- `*.vo.msecnd.net` (Azure CDN)
+- `*.gallerycdn.vsassets.io` (Azure CDN)
 
 Some extensions (like C\#) download secondary dependencies from `download.microsoft.com` or `download.visualstudio.microsoft.com`. Others (like [Visual Studio Live Share](https://docs.microsoft.com/visualstudio/liveshare/reference/connectivity#requirements-for-connection-modes)) may have additional connectivity requirements. Consult the extension’s documentation for details if you run into trouble.
 
@@ -249,15 +238,15 @@ Proxy settings might be missing on either the Windows or the WSL side.
 
 When a remote window is opened out of VSCode, the Remote - WSL extension tries to download the VSCode server on the Windows side. It therefore uses the Window side proxy configuration:
 
--   inherited from the OS settings
--   as described in [Network Connections in Visual Studio Code](/docs/setup/network)
+- inherited from the OS settings
+- as described in [Network Connections in Visual Studio Code](/docs/setup/network)
 
 When the remote VSCode is started from a WSL terminal, the download is done using `wget` in the WSL distro. Proxy settings can be configured in:
 
--   wget proxy settings: <https://stackoverflow.com/questions/11211705/how-to-set-proxy-for-wget>
--   manually in the [server setup script](/docs/remote/wsl.md#advanced-environment-setup-script)
+- wget proxy settings: <https://stackoverflow.com/questions/11211705/how-to-set-proxy-for-wget>
+- manually in the [server setup script](/docs/remote/wsl.md#advanced-environment-setup-script)
 
-Once the server is up and running the proxy settings on the *Remote* tab are used.
+Once the server is up and running the proxy settings on the _Remote_ tab are used.
 
 ### Can I force an extension to run locally / remotely ?
 
@@ -276,11 +265,10 @@ A value of `"ui"` instead of `"workspace"` will force the extension to run on th
 
 The VS Code extension API abstracts away local/remote details so most extensions will work without modification. However, given extensions can use any node module or runtime they want, there are situations where adjustments may need to be made. We recommend you test your extension to be sure that no updates are required. See [Supporting Remote Development](/api/advanced-topics/remote-extensions.md) for details.
 
-Questions or feedback
----------------------
+## Questions or feedback
 
--   See [Tips and Tricks](/docs/remote/troubleshooting.md#wsl-tips) or the [FAQ](/docs/remote/faq.md).
--   Search on [Stack Overflow](https://stackoverflow.com/questions/tagged/vscode-remote).
--   Add a [feature requests](https://aka.ms/vscode-remote/feature-requests) or [report a problem](https://aka.ms/vscode-remote/issues/new).
--   Contribute to [our documentation](https://github.com/microsoft/vscode-docs) or [VS Code itself](https://github.com/microsoft/vscode).
--   See our [CONTRIBUTING](https://aka.ms/vscode-remote/contributing) guide for details.
+- See [Tips and Tricks](/docs/remote/troubleshooting.md#wsl-tips) or the [FAQ](/docs/remote/faq.md).
+- Search on [Stack Overflow](https://stackoverflow.com/questions/tagged/vscode-remote).
+- Add a [feature requests](https://aka.ms/vscode-remote/feature-requests) or [report a problem](https://aka.ms/vscode-remote/issues/new).
+- Contribute to [our documentation](https://github.com/microsoft/vscode-docs) or [VS Code itself](https://github.com/microsoft/vscode).
+- See our [CONTRIBUTING](https://aka.ms/vscode-remote/contributing) guide for details.

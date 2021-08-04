@@ -1,10 +1,8 @@
-Remote development in WSL
-=========================
+# Remote development in WSL
 
 This tutorial walks you through enabling [Windows Subsystem for Linux](https://docs.microsoft.com/windows/wsl/install-win10) (WSL) and running Visual Studio Code in WSL using the [Remote - WSL](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-wsl) extension.
 
-Prerequisites
--------------
+## Prerequisites
 
 You need [Visual Studio Code](https://code.visualstudio.com/) installed.
 
@@ -26,8 +24,7 @@ The Remote Status bar item can quickly show you in which context VS Code is runn
 
 ![Remote - WSL commands](images/wsl-tutorial/remote-wsl-commands.png)
 
-Enable WSL
-----------
+## Enable WSL
 
 Windows Subsystem for Linux (WSL) is an optional feature on Windows 10. You can enable it through the Windows Features dialog or PowerShell.
 
@@ -57,8 +54,7 @@ After restarting Windows, you can check that you have WSL enabled by opening a C
 
 WSL is enabled, but you haven’t installed a Linux distribution yet.
 
-Install a Linux distro
-----------------------
+## Install a Linux distro
 
 You install Linux distributions for WSL from the Microsoft Store. You can use the store app, or search for a Linux distro in the Windows search bar. Choose the Linux distribution you want to install (for example Ubuntu) and follow the prompts.
 
@@ -72,8 +68,7 @@ And when done, select **Launch** to get started. This will open a Linux terminal
 
 ![Linux terminal](images/wsl-tutorial/linux-terminal.png)
 
-Python development
-------------------
+## Python development
 
 If you don’t have Python already installed, run the following commands to install Python3 and pip, the package manager for Python, into your Linux installation.
 
@@ -92,7 +87,7 @@ Start with the canonical “Hello World” app. Create a new folder called “he
 
 In a remote Linux environment (this WSL distro is technically another machine without UI, that just happens to be running locally on your computer), your development tools and experiences are pretty limited. You can run [Vim](https://stackoverflow.blog/2017/05/23/stack-overflow-helping-one-million-developers-exit-vim/) in the terminal to edit your file, or you can edit the sources on the Windows side through the `\\wsl$` mount:
 
-![\\wsl$ mount](images/wsl-tutorial/wsl$-mount.png)
+![\wsl$ mount](images/wsl-tutorial/wsl$-mount.png)
 
 The problem with this model is that the Python runtime, pip, or any conda packages for that matter, are not installed on Windows.
 
@@ -100,8 +95,7 @@ The problem with this model is that the Python runtime, pip, or any conda packag
 
 Remember, Python is installed in the Linux distro, which means if you’re editing Python files on the Windows side, you can’t run or debug them unless you install the same Python development stack on Windows. And that defeats the purpose of having an isolated Linux instance set up with all your Python tools and runtimes!
 
-Run in WSL
-----------
+## Run in WSL
 
 In the WSL terminal, make sure you are in the helloWorld folder, and type in `'code .'` to launch Visual Studio Code. The `'.'` argument tells VS Code to open the current folder.
 
@@ -131,8 +125,7 @@ You’ll start a new instance of the bash shell in WSL, again from VS Code runni
 
 ![Remote - WSL Status bar](images/wsl-tutorial/wsl-status-bar.png)
 
-Edit and debug
---------------
+## Edit and debug
 
 ### Installing the Python extension (and additional tools)
 
@@ -190,7 +183,7 @@ Congratulations, you’ve successfully completed this tutorial!
 
 Next, check out the other Remote Development extensions.
 
--   [Remote - SSH](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-ssh)
--   [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+- [Remote - SSH](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-ssh)
+- [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
 
 Or get them all by installing the [Remote Development](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack) Extension Pack.

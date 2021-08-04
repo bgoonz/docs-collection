@@ -1,8 +1,6 @@
-Visual Studio Code on Windows
-=============================
+# Visual Studio Code on Windows
 
-Installation
-------------
+## Installation
 
 1.  Download the [Visual Studio Code installer](https://go.microsoft.com/fwlink/?LinkID=534107) for Windows.
 2.  Once it is downloaded, run the installer (VSCodeUserSetup-{version}.exe). This will only take a minute.
@@ -14,8 +12,7 @@ Alternatively, you can also download a [Zip archive](/docs/?dv=winzip), extract 
 
 > **Tip:** Setup will add Visual Studio Code to your `%PATH%`, so from the console you can type ‘code .’ to open VS Code on that folder. You will need to restart your console after the installation for the change to the `%PATH%` environmental variable to take effect.
 
-User setup versus system setup
-------------------------------
+## User setup versus system setup
 
 VS Code provides both Windows user and system level setups. Installing the [user setup](https://go.microsoft.com/fwlink/?LinkID=534107) does not require Administrator privileges as the location will be under your user Local AppData (LOCALAPPDATA) folder. User setup also provides a smoother background update experience.
 
@@ -23,20 +20,17 @@ The [system setup](https://go.microsoft.com/fwlink/?linkid=852157) requires elev
 
 See the [Download Visual Studio Code](/download) page for a complete list of available installation options.
 
-32-bit versions
----------------
+## 32-bit versions
 
 If you need to run a 32-bit version of VS Code, both a 32-bit [Installer](https://go.microsoft.com/fwlink/?LinkId=723965) and [Zip archive](https://go.microsoft.com/fwlink/?LinkID=733265) are available.
 
-Updates
--------
+## Updates
 
 VS Code ships monthly [releases](/updates) and supports auto-update when a new release is available. If you’re prompted by VS Code, accept the newest update and it will be installed (you won’t need to do anything else to get the latest bits).
 
 > Note: You can [disable auto-update](/docs/supporting/faq.md#how-do-i-opt-out-of-vs-code-autoupdates) if you prefer to update VS Code on your own schedule.
 
-Windows Subsystem for Linux
----------------------------
+## Windows Subsystem for Linux
 
 Windows is a popular operating system and it can be a great cross-platform development environment. This section describes cross-platform features such as the [Windows Subsystem for Linux](https://docs.microsoft.com/windows/wsl/install-win10) (WSL) and the new Windows Terminal.
 
@@ -56,18 +50,16 @@ See the [Developing in WSL](/docs/remote/wsl.md) documentation to learn more or 
 
 Available from the Microsoft Store, the [Windows Terminal (Preview)](https://www.microsoft.com/p/windows-terminal-preview/9n0dx20hk701?SilentAuth=1&wa=wsignin1.0&activetab=pivot%3Aoverviewtab) lets you easily open PowerShell, Command Prompt, and WSL terminals in a multiple tab shell.
 
-Next steps
-----------
+## Next steps
 
 Once you have installed VS Code, these topics will help you learn more about VS Code:
 
--   [Additional Components](/docs/setup/additional-components.md) - Learn how to install Git, Node.js, TypeScript, and tools like Yeoman.
--   [User Interface](/docs/getstarted/userinterface.md) - A quick orientation to VS Code.
--   [User/Workspace Settings](/docs/getstarted/settings.md) - Learn how to configure VS Code to your preferences through settings.
--   [Tips and Tricks](/docs/getstarted/tips-and-tricks.md) - Lets you jump right in and learn how to be productive with VS Code.
+- [Additional Components](/docs/setup/additional-components.md) - Learn how to install Git, Node.js, TypeScript, and tools like Yeoman.
+- [User Interface](/docs/getstarted/userinterface.md) - A quick orientation to VS Code.
+- [User/Workspace Settings](/docs/getstarted/settings.md) - Learn how to configure VS Code to your preferences through settings.
+- [Tips and Tricks](/docs/getstarted/tips-and-tricks.md) - Lets you jump right in and learn how to be productive with VS Code.
 
-Common questions
-----------------
+## Common questions
 
 ### What command-line arguments are supported by the Windows Setup?
 

@@ -1,8 +1,6 @@
-Visual Studio Code on macOS
-===========================
+# Visual Studio Code on macOS
 
-Installation
-------------
+## Installation
 
 1.  [Download Visual Studio Code](https://go.microsoft.com/fwlink/?LinkID=534106) for macOS.
 2.  Open the browser’s download list and locate the downloaded archive.
@@ -10,17 +8,16 @@ Installation
 4.  Drag `Visual Studio Code.app` to the `Applications` folder, making it available in the macOS Launchpad.
 5.  Add VS Code to your Dock by right-clicking on the icon to bring up the context menu and choosing **Options**, **Keep in Dock**.
 
-Launching from the command line
--------------------------------
+## Launching from the command line
 
 You can also run VS Code from the terminal by typing ‘code’ after adding it to the path:
 
--   Launch VS Code.
--   Open the **Command Palette** (`kbstyle(Cmd+Shift+P)`) and type ‘shell command’ to find the **Shell Command: Install ‘code’ command in PATH** command.
+- Launch VS Code.
+- Open the **Command Palette** (`kbstyle(Cmd+Shift+P)`) and type ‘shell command’ to find the **Shell Command: Install ‘code’ command in PATH** command.
 
 ![macOS shell commands](images/mac/shell-command.png)
 
--   Restart the terminal for the new `$PATH` value to take effect. You’ll be able to type ‘code .’ in any folder to start editing files in that folder.
+- Restart the terminal for the new `$PATH` value to take effect. You’ll be able to type ‘code .’ in any folder to start editing files in that folder.
 
 > **Note:** If you still have the old `code` alias in your `.bash_profile` (or equivalent) from an early VS Code version, remove it and replace it by executing the **Shell Command: Install ‘code’ command in PATH** command.
 
@@ -44,43 +41,37 @@ Start a new terminal to pick up your `.bash_profile` changes.
     export PATH="\$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
     EOF
 
-Touch Bar support
------------------
+## Touch Bar support
 
 Out of the box VS Code adds actions to navigate in editor history as well as the full Debug tool bar to control the debugger on your Touch Bar:
 
 ![macOS Touch Bar](images/mac/touchbar.gif)
 
-Mojave privacy protections
---------------------------
+## Mojave privacy protections
 
 After upgrading to macOS Mojave version, you may see dialogs saying “Visual Studio Code would like to access your {calendar/contacts/photos}.” This is due to the new privacy protections in Mojave and is not specific to VS Code. The same dialogs may be displayed when running other applications as well. The dialog is shown once for each type of personal data and it is fine to choose **Don’t Allow** since VS Code does not need access to those folders. You can read a more detailed explanation in this [blog post](https://discuss.atom.io/t/why-does-macos-say-that-atom-wants-to-access-my-calendar-contacts-photos-etc).
 
-Updates
--------
+## Updates
 
 VS Code ships monthly [releases](/updates) and supports auto-update when a new release is available. If you’re prompted by VS Code, accept the newest update and it will get installed (you won’t need to do anything else to get the latest bits).
 
 > Note: You can [disable auto-update](/docs/supporting/faq.md#how-do-i-opt-out-of-vs-code-autoupdates) if you prefer to update VS Code on your own schedule.
 
-Preferences menu
-----------------
+## Preferences menu
 
 You can configure VS Code through [settings](/docs/getstarted/settings.md), [color themes](/docs/getstarted/themes.md), and [custom keybindings](/docs/getstarted/keybindings.md) available through the **Code** &gt; **Preferences** menu group.
 
 You may see mention of **File** &gt; **Preferences** in documentation, which is the **Preferences** menu group location on Windows and Linux. On a macOS, the **Preferences** menu group is under **Code**, not **File**.
 
-Next steps
-----------
+## Next steps
 
 Once you have installed VS Code, these topics will help you learn more about VS Code:
 
--   [Additional Components](/docs/setup/additional-components.md) - Learn how to install Git, Node.js, TypeScript, and tools like Yeoman.
--   [User Interface](/docs/getstarted/userinterface.md) - A quick orientation around VS Code.
--   [User/Workspace Settings](/docs/getstarted/settings.md) - Learn how to configure VS Code to your preferences settings.
+- [Additional Components](/docs/setup/additional-components.md) - Learn how to install Git, Node.js, TypeScript, and tools like Yeoman.
+- [User Interface](/docs/getstarted/userinterface.md) - A quick orientation around VS Code.
+- [User/Workspace Settings](/docs/getstarted/settings.md) - Learn how to configure VS Code to your preferences settings.
 
-Common questions
-----------------
+## Common questions
 
 ### Why do I see “Visual Studio Code would like access to your calendar.”
 

@@ -1,8 +1,6 @@
-Collaborate with Live Share
-===========================
+# Collaborate with Live Share
 
-What is Live Share?
--------------------
+## What is Live Share?
 
 [Live Share](https://docs.microsoft.com/visualstudio/liveshare) enables you to quickly collaborate with a friend, classmate, or professor on the same code without the need to sync code or to configure the same development tools, settings, or environment.
 
@@ -16,8 +14,7 @@ You can also debug together using VS Code’s debugging features, like hovers, l
 
 For more details about what you can do with Live Share, visit the [how-to-guide](https://docs.microsoft.com/visualstudio/liveshare/use/vscode) or read the quick-start below.
 
-Get started with Live Share
----------------------------
+## Get started with Live Share
 
 To get started with using Live Share in VS Code, you’ll need to download the [Live Share Extension Pack](https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare-pack) from the Extension Marketplace.
 

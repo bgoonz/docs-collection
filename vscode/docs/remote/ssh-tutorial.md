@@ -1,12 +1,10 @@
-Remote development over SSH
-===========================
+# Remote development over SSH
 
 This tutorial walks you through creating and connecting to a virtual machine (VM) on Azure using the Visual Studio Code [Remote - SSH](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-ssh) extension. You’ll create a Node.js Express web app to show how you can edit and debug on a remote machine with VS Code just like you could if the source code was local.
 
 > **Note**: Your Linux VM can be hosted anywhere - on your local host, on premise, in Azure, or in any other cloud, as long as the chosen Linux distribution meets these [prerequisites](/docs/remote/linux.md#local-linux-prerequisites).
 
-Prerequisites
--------------
+## Prerequisites
 
 To get started, you need to have done the following steps:
 
@@ -32,8 +30,7 @@ The Remote Status bar item can quickly show you in which context VS Code is runn
 
 ![Remote - SSH commands](images/ssh-tutorial/remote-ssh-commands.png)
 
-Create a virtual machine
-------------------------
+## Create a virtual machine
 
 If you don’t have an existing Linux virtual machine, you can create a new VM through the [Azure portal](https://portal.azure.com). In the Azure portal, search for “Virtual Machines”, and choose **Add**. From there, you can select your Azure subscription and create a new resource group, if you don’t already have one.
 
@@ -45,8 +42,7 @@ Now you can specify details of your VM, such as the name, the size, and the base
 
 ![Virtual machine instance details](images/ssh-tutorial/vm-instance-details.png)
 
-Set up SSH
-----------
+## Set up SSH
 
 There are several authentication methods into a VM, including an SSH public/private key pair or a username and password. We strongly recommend using key-based authentication (if you use a username/password, you’ll be prompted to enter your credentials more than once by the extension). If you’re on Windows and have already created keys using PuttyGen, you can [reuse them](/docs/remote/troubleshooting.md#reusing-a-key-generated-in-puttygen).
 
@@ -62,8 +58,7 @@ This will generate the SSH key. Press `kbstyle(Enter)` at the following prompt t
 
 You will then be prompted to enter a secure passphrase, but you can leave that blank. You should now have a `id_rsa.pub` file which contains your new public SSH key.
 
-Add SSH key to your VM
-----------------------
+## Add SSH key to your VM
 
 In the previous step, you generated an SSH key pair. Select **Use existing public key** in the dropdown for **SSH public key source** so that you can use the public key you just generated. Take the public key and paste it into your VM setup, by copying the entire contents of the `id_rsa.pub` in the **SSH public key**. You also want to allow your VM to accept inbound SSH traffic by selecting **Allow selected ports** and choosing **SSH (22)** from the **Select inbound ports** dropdown list.
 
@@ -79,8 +74,7 @@ Select **Review and Create**, then **Create**, and Azure will deploy your VM for
 
 Once the deployment is finished (it may take several minutes), go to the new resource view for your virtual machine.
 
-Connect using SSH
------------------
+## Connect using SSH
 
 Now that you’ve created an SSH host, let’s connect to it!
 
@@ -124,8 +118,7 @@ You can use the bash shell to browse the file system on the VM. You can also bro
 
 ![Remote open folder](images/ssh-tutorial/remote-open-folder.png)
 
-Create your Node.js application
--------------------------------
+## Create your Node.js application
 
 In this step, you will create a simple Node.js application. You will use an application generator to quickly scaffold out the application from a terminal.
 
@@ -187,8 +180,7 @@ The server will now forward traffic on port 3000 to your local machine. When you
 
 ![Running Express Application](images/ssh-tutorial/express.png)
 
-Edit and debug
---------------
+## Edit and debug
 
 From the Visual Studio Code File Explorer (`kb(workbench.view.explorer)`), navigate to your new `myExpressApp` folder and double-click the `app.js` file to open it in the editor.
 
@@ -228,7 +220,7 @@ Congratulations, you’ve successfully completed this tutorial!
 
 Next, check out the other Remote Development extensions.
 
--   [Remote - WSL](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-wsl)
--   [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+- [Remote - WSL](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-wsl)
+- [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
 
 Or get them all by installing the [Remote Development](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack) Extension Pack.

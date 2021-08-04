@@ -1,17 +1,14 @@
-Remote development in Containers
-================================
+# Remote development in Containers
 
 This tutorial walks you through running Visual Studio Code in a [Docker](https://www.docker.com/) container using the [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension. You need no prior knowledge of Docker to complete this tutorial.
 
 Running VS Code **inside** a Docker container can be useful for many reasons, but in this walkthrough we’ll focus on using a Docker container to set up a development environment that is isolated from your local environment.
 
-Prerequisites
--------------
+## Prerequisites
 
 You need [Visual Studio Code](https://code.visualstudio.com/) installed.
 
-Install Docker
---------------
+## Install Docker
 
 Docker is needed to create and manage your containers.
 
@@ -34,8 +31,7 @@ Once Docker is running, you can confirm that everything is working by opening a 
     docker --version
     # Docker version 18.09.2, build 6247962
 
-Install the extension
----------------------
+## Install the extension
 
 The Remote - Containers extension lets you run Visual Studio Code inside a Docker container.
 
@@ -53,8 +49,7 @@ The Remote Status bar item can quickly show you in which context VS Code is runn
 
 ![Remote - Containers commands](images/containers-tutorial/remote-containers-commands.png)
 
-Get the sample
---------------
+## Get the sample
 
 To create a Docker container, we are going to open a GitHub repository with a Node.js project.
 
@@ -78,8 +73,7 @@ Once the container is running and you’re connected, you should see your remote
 
 ![Building image](images/containers-tutorial/connected.png)
 
-Check your environment
-----------------------
+## Check your environment
 
 One of the useful things about developing in a container is that you can use specific versions of dependencies that your application needs without impacting your local development environment.
 
@@ -101,8 +95,7 @@ We can now hit `kb(workbench.action.debug.start)`, which will run the applicatio
 
 You can end your session in the container and go back to running VS Code locally with **File** &gt; **Close Remote Connection**.
 
-How it works
-------------
+## How it works
 
 This next section describes in more detail how the Remote - Containers extension sets up and configures your containers.
 
@@ -150,13 +143,12 @@ This has been a brief overview of what is possible using dev containers. As a ne
 
 Check out the other Remote Development extensions.
 
--   [Remote - SSH](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-ssh)
--   [Remote - WSL](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-wsl)
+- [Remote - SSH](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-ssh)
+- [Remote - WSL](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-wsl)
 
 Or get them all by installing the [Remote Development](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack) Extension Pack.
 
-Troubleshooting
----------------
+## Troubleshooting
 
 ### Verify Docker context
 

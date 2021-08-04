@@ -1,10 +1,8 @@
-Learn to code with Visual Studio Code
-=====================================
+# Learn to code with Visual Studio Code
 
 Learning to code is intimidating, so set yourself up for success with a tool built for you. Visual Studio Code is a free coding editor that helps you start coding quickly. Use it to code in any programming language, without switching editors. Visual Studio Code has support for many languages, including Python, Java, C++, JavaScript, and more. Ready to get started? Check out these [introductory videos](https://www.youtube.com/watch?v=Uvf2FVS1F8k&list=PLj6YeMhvp2S4oEV_bT1Uk3oXfpvGW6Xqy) or check out our [coding packs for Java, Python, and .NET](/learn/educators/installers.md).
 
-Why VS Code?
-------------
+## Why VS Code?
 
 <img src="/assets/learn/get-started/overview/vscode2.png" alt="VS Code" class="thumb" />
 

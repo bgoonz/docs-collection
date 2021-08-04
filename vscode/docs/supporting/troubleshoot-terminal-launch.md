@@ -1,5 +1,4 @@
-Troubleshoot Terminal launch failures
-=====================================
+# Troubleshoot Terminal launch failures
 
 If you are new to using the Visual Studio Code Integrated Terminal, you can learn more in the [Integrated Terminal](/docs/editor/integrated-terminal.md) user guide. There you can read how to [configure](/docs/editor/integrated-terminal.md#configuration) the terminal, as well as review answers to [common questions](/docs/editor/integrated-terminal.md#common-questions).
 
@@ -7,21 +6,20 @@ Below are specific troubleshooting steps, if the user guide hasn’t helped you 
 
 > **Note**: If you’re on Windows, review the [common issues on Windows](#common-issues-on-windows) section first.
 
-Troubleshooting steps
----------------------
+## Troubleshooting steps
 
 To troubleshoot Integrated Terminal launch failures in Visual Studio Code, follow these steps to diagnose issues:
 
 1.  **Check your user settings.** Review these `terminal.integrated` [settings](/docs/getstarted/settings.md) that could affect the launch:
 
-    -   `terminal.integrated.shell.{platform}` - The path of the shell that the terminal uses.
-    -   `terminal.integrated.shellArgs.{platform}` - The command-line arguments when launching the shell process.
-    -   `terminal.integrated.cwd` - The current working directory (cwd) for the shell process.
-    -   `terminal.integrated.env.{platform}` - Environment variables that will be added to the shell process.
-    -   `terminal.integrated.inheritEnv` - Whether new shells should inherit their environment from VS Code.
-    -   `terminal.integrated.automationShell.{platform}` - Shell path for automation-related terminal usage like tasks and debug.
-    -   `terminal.integrated.splitCwd` - Controls the current working directory a split terminal starts with.
-    -   `terminal.integrated.windowsEnableConpty` - Whether to use ConPTY for Windows terminal process communication.
+    - `terminal.integrated.shell.{platform}` - The path of the shell that the terminal uses.
+    - `terminal.integrated.shellArgs.{platform}` - The command-line arguments when launching the shell process.
+    - `terminal.integrated.cwd` - The current working directory (cwd) for the shell process.
+    - `terminal.integrated.env.{platform}` - Environment variables that will be added to the shell process.
+    - `terminal.integrated.inheritEnv` - Whether new shells should inherit their environment from VS Code.
+    - `terminal.integrated.automationShell.{platform}` - Shell path for automation-related terminal usage like tasks and debug.
+    - `terminal.integrated.splitCwd` - Controls the current working directory a split terminal starts with.
+    - `terminal.integrated.windowsEnableConpty` - Whether to use ConPTY for Windows terminal process communication.
 
     You can review settings in the Settings editor (**File** &gt; **Preferences** &gt; **Settings**) and search for specific settings by the setting ID.
 
@@ -41,23 +39,20 @@ To troubleshoot Integrated Terminal launch failures in Visual Studio Code, follo
 
 4.  **Enable trace logging.** You can enable [trace logging](https://github.com/microsoft/vscode/wiki/Terminal-Issues#enabling-trace-logging) and capture a log when launching the terminal. Logging often reveals what is wrong as all arguments used to create the terminal process/pty are recorded. Bad shell names, arguments, or environment variables can cause the terminal to not launch. Keep this log for later if your problem isn’t solved.
 
-Additional troubleshooting steps
---------------------------------
+## Additional troubleshooting steps
 
 If none of these steps helped solve the issue, you can also try:
 
--   Ask about it on [Stack Overflow](https://stackoverflow.com/), often launch issues are related to environment setup and not a problem with VS Code.
--   If the terminal is being launched from an extension, report the issue to the extension by opening the issue reporter (Help &gt; Report Issue) and set File On = “An Extension”
--   If you believe it to be a bug with VS Code, report the issue using the issue reporter (**Help** &gt; **Report Issue**). The issue reporter will autofill relevant information, see [Creating great terminal issues](https://github.com/microsoft/vscode/wiki/Terminal-Issues#creating-great-terminal-issues) for what else to include in the report.
--   If you’re on Windows 10 1809 (build 17763) or below, the issue is related to the legacy “winpty” backend. Upgrading to Windows 1903 (build 18362) will move you onto the new “conpty” backend that is built by Microsoft and could fix your problem.
+- Ask about it on [Stack Overflow](https://stackoverflow.com/), often launch issues are related to environment setup and not a problem with VS Code.
+- If the terminal is being launched from an extension, report the issue to the extension by opening the issue reporter (Help &gt; Report Issue) and set File On = “An Extension”
+- If you believe it to be a bug with VS Code, report the issue using the issue reporter (**Help** &gt; **Report Issue**). The issue reporter will autofill relevant information, see [Creating great terminal issues](https://github.com/microsoft/vscode/wiki/Terminal-Issues#creating-great-terminal-issues) for what else to include in the report.
+- If you’re on Windows 10 1809 (build 17763) or below, the issue is related to the legacy “winpty” backend. Upgrading to Windows 1903 (build 18362) will move you onto the new “conpty” backend that is built by Microsoft and could fix your problem.
 
-Exit codes
-----------
+## Exit codes
 
 The exit codes displayed in the terminal launch failure notification are returned from the shell process and are not generated by VS Code. There are many available shells that can be used in the terminal and hundreds of possible exit codes. Try searching on the internet for your specific shell and exit code (for example, “PowerShell 4294901760”) and you may find specific suggestions or known issues related to your terminal launch failure.
 
-Common issues on Windows
-------------------------
+## Common issues on Windows
 
 ### Make sure compatibility mode is disabled
 
@@ -69,8 +64,8 @@ This can happen if Windows Subsystem for Linux (WSL) is not set up with a valid 
 
 **Note:** ‘docker-desktop-data’ is not a valid distribution.
 
--   Open PowerShell and enter `wslconfig.exe /l` to confirm WSL is installed correctly and list the currently available Linux distributions within your system. Confirm a valid distribution has **(default)** next to it.
--   To change the default distribution, enter `wslconfig.exe /setdefault "distributionNameAsShownInList"`
+- Open PowerShell and enter `wslconfig.exe /l` to confirm WSL is installed correctly and list the currently available Linux distributions within your system. Confirm a valid distribution has **(default)** next to it.
+- To change the default distribution, enter `wslconfig.exe /setdefault "distributionNameAsShownInList"`
 
 ### The terminal not working when running the 32-bit Windows client on 64-bit Windows?
 

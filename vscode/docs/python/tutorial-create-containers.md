@@ -1,12 +1,10 @@
-Create Docker containers for Python
-===================================
+# Create Docker containers for Python
 
 This tutorial walks you through the full process of containerizing an existing Python application using [Docker](https://www.docker.com/) and pushing the app image to a Docker registry, all within Visual Studio Code. The tutorial also demonstrates how to use base container images that include production-ready web servers (uwsgi and nginx), and how to configure those servers for both [Django](https://www.djangoproject.com/) and [Flask](https://flask.palletsprojects.com) web apps, which is helpful to know no matter what your deployment target.
 
 If you have any problems, feel free to file an issue for this tutorial in the [VS Code documentation repository](https://github.com/microsoft/vscode-docs/issues).
 
-An introduction to containers
------------------------------
+## An introduction to containers
 
 Docker is a system that allows you to deploy and run apps using **containers** rather than setting up dedicated environments like virtual machines. A container is a lightweight runtime environment that shares the resources of the host operating system with other containers. Docker is the layer that sits above the operating system to manage resources on behalf of containers.
 
@@ -16,14 +14,13 @@ Images, for their part, are built in multiple **layers**. The lowest or **base**
 
 You experience the basics of containers and images in the course of this tutorial. For additional background, including helpful diagrams, refer to the [Docker documentation](https://docs.docker.com/get-started/).
 
-Prerequisites
--------------
+## Prerequisites
 
--   [Visual Studio Code](https://code.visualstudio.com/)
--   Python and the Python extension as described on [Python Tutorial - Prerequisites](/docs/python/python-tutorial.md).
--   [Docker Community Edition](https://www.docker.com/community-edition). To verify your installation, run the command `docker --version`, which should show output like `Docker version 18.06.1-ce, build e68fc7a`.
--   The [Docker extension for VS Code](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker), which helps you manage local Docker images, provides Docker commands, and simplifies deployment of app images to Azure. You can find an overview of the extension on the [vscode-docker GitHub repository](https://github.com/microsoft/vscode-docker)
--   Suitable [app code](#app-code)
+- [Visual Studio Code](https://code.visualstudio.com/)
+- Python and the Python extension as described on [Python Tutorial - Prerequisites](/docs/python/python-tutorial.md).
+- [Docker Community Edition](https://www.docker.com/community-edition). To verify your installation, run the command `docker --version`, which should show output like `Docker version 18.06.1-ce, build e68fc7a`.
+- The [Docker extension for VS Code](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker), which helps you manage local Docker images, provides Docker commands, and simplifies deployment of app images to Azure. You can find an overview of the extension on the [vscode-docker GitHub repository](https://github.com/microsoft/vscode-docker)
+- Suitable [app code](#app-code)
 
 > <a href="vscode:extension/ms-azuretools.vscode-docker" class="tutorial-install-extension-btn">Install the Docker extension</a>
 
@@ -31,14 +28,13 @@ Prerequisites
 
 If you don’t already have an app you’d like to work with, use one of the following samples, which already include the Docker-related files described in this tutorial:
 
--   [python-sample-vscode-django-tutorial](https://github.com/microsoft/python-sample-vscode-django-tutorial), which is the result of following the [Django Tutorial](/docs/python/tutorial-django.md).
+- [python-sample-vscode-django-tutorial](https://github.com/microsoft/python-sample-vscode-django-tutorial), which is the result of following the [Django Tutorial](/docs/python/tutorial-django.md).
 
--   [python-sample-vscode-flask-tutorial](https://github.com/microsoft/python-sample-vscode-flask-tutorial), which is the result of following the [Flask Tutorial](/docs/python/tutorial-flask.md).
+- [python-sample-vscode-flask-tutorial](https://github.com/microsoft/python-sample-vscode-flask-tutorial), which is the result of following the [Flask Tutorial](/docs/python/tutorial-flask.md).
 
 After verifying that your app runs properly, generate a `requirements.txt` file (using `pip freeze > requirements.txt`, for example) so that those dependencies can be automatically installed in the Docker image. The samples each include a `requirements.txt` file.
 
-Create a container registry
----------------------------
+## Create a container registry
 
 As mentioned earlier, a container registry is an online repository for container images that allows a cloud service, like Azure App Service, to acquire the image whenever it needs to start a container instance. Because the registry manages images separate from container instances, the same image in a registry can be used to start any number of concurrent instances, as happens when scaling out a web app to handle increased loads.
 
@@ -46,9 +42,9 @@ Because setting up a registry is a one-time affair, you do that step now before 
 
 Registry options include the following:
 
--   The [Azure Container Registry (ACR)](https://azure.microsoft.com/services/container-registry/), a private, secure, hosted registry for your images.
--   [Docker Hub](https://hub.docker.com/), Docker’s own hosted registry that provides a free way to share images.
--   A private registry running on your own server, as described on [Docker registry](https://docs.docker.com/registry/) in the Docker documentation.
+- The [Azure Container Registry (ACR)](https://azure.microsoft.com/services/container-registry/), a private, secure, hosted registry for your images.
+- [Docker Hub](https://hub.docker.com/), Docker’s own hosted registry that provides a free way to share images.
+- A private registry running on your own server, as described on [Docker registry](https://docs.docker.com/registry/) in the Docker documentation.
 
 To create an Azure Container Registry, as shown later in this tutorial, do the following:
 
@@ -58,15 +54,13 @@ To create an Azure Container Registry, as shown later in this tutorial, do the f
 
     ![Docker explorer in VS Code showing registries](images/create-containers/registries.png)
 
-Create a container image
-------------------------
+## Create a container image
 
 A container image is a bundle of your app code and its dependencies. To create an image, Docker needs a `Dockerfile` that describes how to structure the app code in the container and how to get that code running. The `Dockerfile`, in other words, is the template for your image. The Docker extension helps you create these files with customization for production servers.
 
 > **Note**: The Python samples linked earlier in this article already contain the necessary Docker files. The instructions here help you create files for an app of your own.
 
-Create the Docker files
------------------------
+## Create the Docker files
 
 1.  In VS Code, open the **Command Palette** (`kb(workbench.action.showCommands)`) and select the **Docker: Add Docker files to workspace** command.
 
@@ -76,16 +70,15 @@ Create the Docker files
 
 4.  With all this information, the Docker extension creates the following files:
 
-    -   The `Dockerfile` file describes the contents of your app’s layer in the image. Your app layer is added on top of the base image indicated in the `Dockerfile`.. By default, the name of the image is the name of the workspace folder in VS Code.
+    - The `Dockerfile` file describes the contents of your app’s layer in the image. Your app layer is added on top of the base image indicated in the `Dockerfile`.. By default, the name of the image is the name of the workspace folder in VS Code.
 
-    -   A `.dockerignore` file that reduces image size by excluding files and folders that aren’t needed in the image, such as `.git` and `.vscode`. For Python, add another line to the file for `__pycache__`.
+    - A `.dockerignore` file that reduces image size by excluding files and folders that aren’t needed in the image, such as `.git` and `.vscode`. For Python, add another line to the file for `__pycache__`.
 
-    -   `docker-compose.yml` and `docker-compose.debug.yml` files that are used with [Docker compose](https://docs.docker.com/compose/overview/). For the purposes of this tutorial, you can ignore or delete these files.
+    - `docker-compose.yml` and `docker-compose.debug.yml` files that are used with [Docker compose](https://docs.docker.com/compose/overview/). For the purposes of this tutorial, you can ignore or delete these files.
 
 > **Tip:** VS Code provides great support for Docker files. See the [Working with Docker](/docs/azure/docker.md) article to learn about rich language features like smart suggestions, completions, and error detection.
 
-Using production servers
-------------------------
+## Using production servers
 
 For Python, the Docker extension by default specifies the base image `python:alpine` in the `Dockerfile` and includes commands to run only the Flask development server. These defaults obviously don’t accommodate Django, for one, and when deploying to the cloud, as with Azure App Service, you should also use production-ready web servers instead of a development server. (If you’ve used Flask, you’re probably accustomed to seeing the development server’s warning in this regard!)
 
@@ -165,7 +158,7 @@ The following steps summarize the configuration used in the [python-sample-vscod
         threads = 2
         processes = 4
 
-4.  To serve static files, copy the *nginx.conf* file from the [django-react-devcontainer repo](https://github.com/qubitron/django-react-devcontainer/blob/master/nginx.conf) into your Django project folder.
+4.  To serve static files, copy the _nginx.conf_ file from the [django-react-devcontainer repo](https://github.com/qubitron/django-react-devcontainer/blob/master/nginx.conf) into your Django project folder.
 
 5.  Modify the `Dockerfile` to indicate the location of `uwsgi.ini`, set the location of static files for nginx, and make sure the SQLite database file is writable. (The `Dockerfile` in the sample contains further explanatory comments that are omitted here.)
 
@@ -196,8 +189,7 @@ The following steps summarize the configuration used in the [python-sample-vscod
 >
 >     SECURITY WARNING: You are building a Docker image from Windows against a non-Windows Docker host. All files and directories added to build context will have '-rwxr-xr-x' permissions. It is recommended to double check and reset permissions for sensitive files and directories.
 
-Build and test the image
-------------------------
+## Build and test the image
 
 With the necessary `Dockerfile` in place, you’re ready to build the Docker image and run it locally:
 
@@ -245,8 +237,7 @@ In addition, on the top of the Docker explorer, next to the refresh button, is a
 
 ![System Prune command in the Docker explorer](images/create-containers/system-prune-command.png)
 
-Push the image to a registry
-----------------------------
+## Push the image to a registry
 
 Once you’re confident that your image works, the next step is to push it to your container registry:
 
@@ -260,8 +251,7 @@ Once you’re confident that your image works, the next step is to push it to yo
 
 > **Tip:** The first time you push an image, you see that VS Code uploads all of the different layers that make up the image. Subsequent push operations, however, upload only those layers that have changed. Because it’s typically only your app code that’s changes, those uploads happen much more quickly, making for a tight edit-build-deploy-test loop. To see this, make a small change to your code, rebuild the image, and then push again to the registry. The whole process typically completes in a matter of seconds.
 
-Next steps
-----------
+## Next steps
 
 Now that you’ve created a container with your app, you’re ready to deploy it to any container-ready cloud service. For details on deploying to Azure App Service, see [Deploy a container](https://docs.microsoft.com/azure/python/tutorial-deploy-containers-01).
 

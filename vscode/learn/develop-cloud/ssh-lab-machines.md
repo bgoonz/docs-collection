@@ -1,8 +1,6 @@
-VS Code Remote SSH
-==================
+# VS Code Remote SSH
 
-What is SSH?
-------------
+## What is SSH?
 
 SSH, or the secure shell protocol, lets you access a remote computer or virtual machine securely over a network connection.
 
@@ -12,8 +10,7 @@ You can also take advantage of any tools or dependencies installed on that remot
 
 In the classroom, you might SSH into lab machines to access computers with certain dependencies required for an assignment (like a specific version of Python or a C++ compiler), a different operating system than your own, or source code or automatic tests pre-loaded from your professor.
 
-Get started with SSH in VS Code
--------------------------------
+## Get started with SSH in VS Code
 
 To get started with using SSH in VS Code, you’ll need to download the [Remote - SSH extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-ssh) from the Extension Marketplace.
 
@@ -23,7 +20,6 @@ Check out the following video to see an example of using Remote - SSH in action:
 
 As demonstrated above, we can SSH into a more powerful virtual machine to greatly speed up the execution time of our programs.
 
-Next steps
-----------
+## Next steps
 
 We also highly recommend checking out the step-by-step [SSH tutorial](/docs/remote/ssh-tutorial.md).

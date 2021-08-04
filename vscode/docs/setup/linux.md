@@ -1,8 +1,6 @@
-Visual Studio Code on Linux
-===========================
+# Visual Studio Code on Linux
 
-Installation
-------------
+## Installation
 
 See the [Download Visual Studio Code](/download) page for a complete list of available installation options.
 
@@ -100,15 +98,13 @@ The [VS Code .rpm package (64-bit)](https://go.microsoft.com/fwlink/?LinkID=7608
 
 Note that other binaries are also available on the [VS Code download page](/Download).
 
-Updates
--------
+## Updates
 
 VS Code ships monthly and you can see when a new release is available by checking the [release notes](/updates). If the VS Code repository was installed correctly, then your system package manager should handle auto-updating in the same way as other packages on the system.
 
 **Note:** Updates are automatic and run in the background for the [Snap package](#snap).
 
-Node.js
--------
+## Node.js
 
 Node.js is a popular platform and runtime for easily building and running JavaScript applications. It also includes [npm](https://www.npmjs.com/), a Package Manager for Node.js modules. You’ll see Node.js and npm mentioned frequently in our documentation and some optional VS Code tooling requires Node.js (for example, the VS Code [extension generator](/api/get-started/your-first-extension.md)).
 
@@ -116,8 +112,7 @@ If you’d like to install Node.js on Linux, see [Installing Node.js via package
 
 To learn more about JavaScript and Node.js, see our [Node.js tutorial](/docs/nodejs/nodejs-tutorial.md), where you’ll learn about running and debugging Node.js applications with VS Code.
 
-Setting VS Code as the default text editor
-------------------------------------------
+## Setting VS Code as the default text editor
 
 ### xdg-open
 
@@ -135,8 +130,7 @@ If Visual Studio Code doesn’t show up as an alternative to `editor`, you need 
 
     sudo update-alternatives --install editor /usr/bin/editor $(which code)
 
-Windows as a Linux developer machine
-------------------------------------
+## Windows as a Linux developer machine
 
 Another option for Linux development with VS Code is to use a Windows machine with the [Windows Subsystem for Linux](https://docs.microsoft.com/windows/wsl/install-win10) (WSL).
 
@@ -148,17 +142,15 @@ When coupled with the [Remote - WSL](https://marketplace.visualstudio.com/items?
 
 See the [Developing in WSL](/docs/remote/wsl.md) documentation to learn more or try the [Working in WSL](/docs/remote/wsl-tutorial.md) introductory tutorial.
 
-Next steps
-----------
+## Next steps
 
 Once you have installed VS Code, these topics will help you learn more about it:
 
--   [Additional Components](/docs/setup/additional-components.md) - Learn how to install Git, Node.js, TypeScript, and tools like Yeoman.
--   [User Interface](/docs/getstarted/userinterface.md) - A quick orientation to VS Code.
--   [User/Workspace Settings](/docs/getstarted/settings.md) - Learn how to configure VS Code to your preferences through settings.
+- [Additional Components](/docs/setup/additional-components.md) - Learn how to install Git, Node.js, TypeScript, and tools like Yeoman.
+- [User Interface](/docs/getstarted/userinterface.md) - A quick orientation to VS Code.
+- [User/Workspace Settings](/docs/getstarted/settings.md) - Learn how to configure VS Code to your preferences through settings.
 
-Common questions
-----------------
+## Common questions
 
 ### Azure VM Issues
 

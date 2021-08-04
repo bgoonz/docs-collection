@@ -1,19 +1,16 @@
-Python settings reference
-=========================
+# Python settings reference
 
 The Python Extension for Visual Studio Code is highly configurable. This page describes the key settings you can work with.
 
 For general information about working with settings in VS Code, refer to [User and workspace settings](/docs/getstarted/settings.md), as well as the [Variables reference](/docs/editor/variables-reference.md) for information about predefined variable support.
 
-General settings
-----------------
+## General settings
 
 <table style="width:99%;"><colgroup><col style="width: 33%" /><col style="width: 33%" /><col style="width: 33%" /></colgroup><thead><tr class="header"><th>Setting<br />
 (python.)</th><th>Default</th><th>Description</th></tr></thead><tbody><tr class="odd"><td>condaPath</td><td><code>"conda"</code></td><td>Path to the <code>conda</code> executable.</td></tr><tr class="even"><td>defaultInterpreterPath</td><td><code>"python"</code></td><td>Path to the default Python interpreter to be used by the Python extension on the first time it loads for a workspace, or the path to a folder containing the Python interpreter. Can use variables like <code>${workspaceFolder}</code> and <code>${workspaceFolder}/.venv</code>. Using a path to a folder allows anyone working with a project to create an environment in the <code>.venv</code> folder as appropriate to their operating system, rather than having to specify an exact platform-dependent path. <code>settings.json</code> file can then be included in a source code repository. <strong>Note</strong>: Changes to this setting made after an interpreter has been selected for a workspace will not be applied or considered by the Python extension. As well, the Python extension doesn’t automatically add or change this setting.</td></tr><tr class="odd"><td>pipenvPath</td><td><code>"pipenv"</code></td><td>Path to the pipenv executable to use for activation.</td></tr><tr class="even"><td>disableInstallationCheck</td><td><code>false</code></td><td>If set to <code>true</code>, disables a warning from the extension if no Python interpreter is installed. On macOS, also disables a warning that appears if you’re using the OS-installed Python interpreter. It’s generally recommended to install a separate interpreter on macOS.</td></tr><tr class="odd"><td>venvFolders</td><td><code>[]</code></td><td>Paths to folders where virtual environments are created. Depending on the virtualization tool used, it can be the project itself: <code>${workspaceFolder}</code>, or separate folders for all virtual environments located side by side: <code>.\envs</code>, <code>~/.virtualenvs</code>, and so on.</td></tr><tr class="even"><td>envFile</td><td><code>"${workspaceFolder}/</code><br />
 <code>.env"</code></td><td>Absolute path to a file containing environment variable definitions. See <a href="/docs/python/environments.md#environment-variable-definitions-file">Configuring Python environments - environment variable definitions file</a>.</td></tr><tr class="odd"><td>globalModuleInstallation</td><td><code>false</code></td><td>Specifies whether to install packages for the current user only using the <code>--user</code> command-line argument (the default), or to install for all users in the global environment (when set to <code>true</code>). Ignored when using a virtual environment. For more information on the <code>--user</code>argument, see <a href="https://pip.pypa.io/en/stable/user_guide/#user-installs">pip - User Installs</a>.</td></tr><tr class="even"><td>poetryPath</td><td><code>"poetry"</code></td><td>Specifies the location of the <a href="https://poetry.eustace.io/">Poetry dependency manager</a> executable, if installed. The default value <code>"poetry"</code> assumes the executable is in the current path. The Python extension uses this setting to install packages when Poetry is available and there’s a <code>poetry.lock</code> file in the workspace folder.</td></tr><tr class="odd"><td>terminal.launchArgs</td><td><code>[]</code></td><td>Launch arguments that are given to the Python interpreter when you run a file using commands such as <strong>Python: Run Python File in Terminal</strong>. In the <code>launchArgs</code> list, each item is a top-level command-line element that’s separated by a space (quoted values that contain spaces are a single top-level element and are thus one item in the list). For example, for the arguments <code>--a --b --c {"value1" : 1, "value2" : 2}</code>, the list items should be <code>["--a", "--b", "--c", "{\"value1\" : 1, \"value2\" : 2}\""]</code>. Note that Visual Studio code ignores this setting when debugging because it instead uses arguments from your selected debugging configuration in <code>launch.json</code>.</td></tr><tr class="even"><td>terminal.executeInFileDir</td><td><code>false</code></td><td>Indicates whether to run a file in the file’s directory instead of the current folder.</td></tr><tr class="odd"><td>terminal.activateEnvironment</td><td><code>true</code></td><td>Indicates whether to automatically activate the environment you select using the <strong>Python: Select Interpreter</strong> command when a new terminal is created. For example, when this setting is <code>true</code> and you select a virtual environment, the extension automatically runs the environment’s <em>activate</em> command when creating a new terminal (<code>source env/bin/activate</code> on macOS/Linux; <code>env\scripts\activate</code> on Windows).</td></tr><tr class="even"><td>terminal.activateEnvInCurrentTerminal</td><td><code>false</code></td><td>Specifies whether to activate the currently open terminal when the Python extension is activated, using the virtual environment selected.</td></tr><tr class="odd"><td>logging.level</td><td><code>error</code></td><td>Specifies the level of logging to be performed by the extension. The possible levels of logging, in increasing level of information provided, are <code>off</code>, <code>error</code>, <code>warn</code>, <code>info</code>, and <code>debug</code>. When set to <code>off</code>, which is not recommended, basic information will still be shown such as startup information and commands run by the Python extension. At the <code>error</code> level, basic information and errors will be shown. At the <code>warn</code> level, basic, error, and warning information will be shown. At the <code>info</code> level, basic, error, warning, and additional information like method execution times and return values will be shown. At this time, the <code>debug</code> level doesn’t display additional information.</td></tr><tr class="even"><td>insidersChannel</td><td><code>off</code></td><td>Specifies whether to participate in the Insiders program and the channel to use. Set to <code>weekly</code> or <code>daily</code> to automatically download and install the latest Insiders builds of the Python extension, which include upcoming features and bug fixes.</td></tr></tbody></table>
 
-Workspace symbol (tags) settings
---------------------------------
+## Workspace symbol (tags) settings
 
 Workspace symbols are symbols in C source code generated by the ctags tool (described on [Wikipedia](https://en.wikipedia.org/wiki/Ctags) and on [ctags.sourceforge.net](http://ctags.sourceforge.net/ctags.html)). To quote Wikipedia, ctags “generates an index (or tag) file of names found in source and header files of various programming languages.” Where Python is concerned, ctags makes it easier to jump to defined functions and other symbols in C/C++ extension modules.
 
@@ -21,8 +18,7 @@ Workspace symbols are symbols in C source code generated by the ctags tool (desc
 (python.workspaceSymbols.)</th><th>Default</th><th>Description</th></tr></thead><tbody><tr class="odd"><td>tagFilePath</td><td><code>"${workspaceFolder}/</code><br />
 <code>.vscode/tags"</code></td><td>Fully qualified path to tag file (an exuberant ctag file), used to provide workspace symbols.</td></tr><tr class="even"><td>enabled</td><td><code>true</code></td><td>Specifies whether to enable the Workspace Symbol provider.</td></tr><tr class="odd"><td>rebuildOnStart</td><td><code>true</code></td><td>Specifies whether to rebuild the tags file on start.</td></tr><tr class="even"><td>rebuildOnFileSave</td><td><code>true</code></td><td>Specifies whether to rebuild the tags file on when saving a Python file.</td></tr><tr class="odd"><td>ctagsPath</td><td><code>"ctags"</code></td><td>Fully qualified path to the ctags executable; default value assumes it’s in the current environment.</td></tr><tr class="even"><td>exclusionPatterns</td><td><code>["**/site-packages/**"]</code></td><td>Pattern used to exclude files and folders from ctags.</td></tr></tbody></table>
 
-Code analysis settings
-----------------------
+## Code analysis settings
 
 ### IntelliSense engine settings
 
@@ -75,26 +71,22 @@ The `disabled`, `errors`, `warnings`, and `information` settings can contain the
 
 To suppress the “undefined-variable” messages, for example, use the setting `"python.analysis.disabled": ["undefined-variable"]`. To suppress those messages and “too-many-function-arguments” messages as well, use the setting `"python.analysis.disabled": ["undefined-variable", "too-many-function-arguments"]`. You can similarly set `"python.analysis.errors"`, `"python.analysis.warnings"`, and `"python.analysis.information"` to control the visibility and severity of the diagnostics.
 
-AutoComplete settings
----------------------
+## AutoComplete settings
 
 <table><colgroup><col style="width: 25%" /><col style="width: 25%" /><col style="width: 25%" /><col style="width: 25%" /></colgroup><thead><tr class="header"><th>Setting<br />
 (python.autoComplete.)</th><th>Default</th><th>Description</th><th>See also</th></tr></thead><tbody><tr class="odd"><td>addBrackets</td><td><code>false</code></td><td>Specifies whether VS Code automatically adds parentheses (<code>()</code>) when autocompleting a function name.</td><td><a href="/docs/python/editing.md#autocomplete-and-intellisense">Editing</a></td></tr><tr class="even"><td>extraPaths</td><td><code>[]</code></td><td>Specifies locations of additional packages for which to load autocomplete data.</td><td><a href="/docs/python/editing.md#autocomplete-and-intellisense">Editing</a></td></tr></tbody></table>
 
-Formatting settings
--------------------
+## Formatting settings
 
 <table><colgroup><col style="width: 25%" /><col style="width: 25%" /><col style="width: 25%" /><col style="width: 25%" /></colgroup><thead><tr class="header"><th>Setting<br />
 (python.formatting.)</th><th>Default</th><th>Description</th><th>See also</th></tr></thead><tbody><tr class="odd"><td>provider</td><td><code>"autopep8"</code></td><td>Specifies the formatter to use, either “autopep8”, “black”, or “yapf”.</td><td><a href="/docs/python/editing.md#formatting">Editing - Formatting</a></td></tr><tr class="even"><td>autopep8Path</td><td><code>"autopep8"</code></td><td>Path to autopep8</td><td><a href="/docs/python/editing.md#formatting">Editing - Formatting</a></td></tr><tr class="odd"><td>autopep8Args</td><td><code>[]</code></td><td>Arguments for autopep8, where each top-level element that’s separated by a space is a separate item in the list.</td><td><a href="/docs/python/editing.md#formatting">Editing - Formatting</a></td></tr><tr class="even"><td>blackPath</td><td><code>"black"</code></td><td>Path to black</td><td><a href="/docs/python/editing.md#formatting">Editing - Formatting</a></td></tr><tr class="odd"><td>blackArgs</td><td><code>[]</code></td><td>Arguments for black, where each top-level element that’s separated by a space is a separate item in the list.</td><td><a href="/docs/python/editing.md#formatting">Editing - Formatting</a></td></tr><tr class="even"><td>yapfPath</td><td><code>"yapf"</code></td><td>Path to yapf</td><td><a href="/docs/python/editing.md#formatting">Editing - Formatting</a></td></tr><tr class="odd"><td>yapfArgs</td><td><code>[]</code></td><td>Arguments for yapf, where each top-level element that’s separated by a space is a separate item in the list.</td><td><a href="/docs/python/editing.md#formatting">Editing - Formatting</a></td></tr></tbody></table>
 
-Refactoring - Sort Imports settings
------------------------------------
+## Refactoring - Sort Imports settings
 
 <table><colgroup><col style="width: 25%" /><col style="width: 25%" /><col style="width: 25%" /><col style="width: 25%" /></colgroup><thead><tr class="header"><th>Setting<br />
 (python.sortImports.)</th><th>Default</th><th>Description</th><th>See also</th></tr></thead><tbody><tr class="odd"><td>path</td><td><code>""</code></td><td>Path to isort script</td><td><a href="/docs/python/editing.md#sort-imports">Editing - Refactoring - Sort Imports</a></td></tr><tr class="even"><td>args</td><td><code>[]</code></td><td>Arguments for isort, each argument as a separate item in the array.</td><td><a href="/docs/python/editing.md#sort-imports">Editing - Refactoring - Sort Imports</a></td></tr></tbody></table>
 
-Linting settings
-----------------
+## Linting settings
 
 ### General
 
@@ -136,8 +128,7 @@ Linting settings
 <table><colgroup><col style="width: 25%" /><col style="width: 25%" /><col style="width: 25%" /><col style="width: 25%" /></colgroup><thead><tr class="header"><th>Setting<br />
 (python.linting.)</th><th>Default</th><th>Description</th><th>See also</th></tr></thead><tbody><tr class="odd"><td>pylamaEnabled</td><td><code>false</code></td><td>Specifies whether to enable pylama.</td><td><a href="/docs/python/linting.md">Linting</a></td></tr><tr class="even"><td>pylamaArgs</td><td><code>[]</code></td><td>Additional arguments for pylama, where each top-level element that’s separated by a space is a separate item in the list.</td><td><a href="/docs/python/linting.md">Linting</a></td></tr><tr class="odd"><td>pylamaPath</td><td><code>"pylama"</code></td><td>The path to pylama.</td><td><a href="/docs/python/linting.md">Linting</a></td></tr></tbody></table>
 
-Testing settings
-----------------
+## Testing settings
 
 ### General settings
 
@@ -159,34 +150,32 @@ Testing settings
 <table><colgroup><col style="width: 25%" /><col style="width: 25%" /><col style="width: 25%" /><col style="width: 25%" /></colgroup><thead><tr class="header"><th>Setting<br />
 (python.testing.)</th><th>Default</th><th>Description</th><th>See also</th></tr></thead><tbody><tr class="odd"><td>nosetestsEnabled</td><td><code>false</code></td><td>Specifies whether Nose is enabled for testing.</td><td><a href="/docs/python/testing.md">Testing</a></td></tr><tr class="even"><td>nosetestPath</td><td><code>"nosetests"</code></td><td>Path to Nose. Use a full path if pytest is located outside the current environment.</td><td><a href="/docs/python/testing.md">Testing</a></td></tr><tr class="odd"><td>nosetestArgs</td><td><code>[]</code></td><td>Arguments to pass to Nose, where each top-level element that’s separated by a space is a separate item in the list.</td><td><a href="/docs/python/testing.md">Testing</a></td></tr></tbody></table>
 
-Predefined variables
---------------------
+## Predefined variables
 
 The Python extension settings support predefined variables. Similar to the general VS Code settings, variables use the **${variableName}** syntax. Specifically, the extension supports the following variables:
 
--   **${cwd}** - the task runner’s current working directory on startup
--   **${workspaceFolder}** - the path of the folder opened in VS Code
--   **${workspaceRootFolderName}** - the name of the folder opened in VS Code without any slashes (/)
--   **${workspaceFolderBasename}** - the name of the folder opened in VS Code without any slashes (/)
--   **${file}** - the current opened file
--   **${relativeFile}** - the current opened file relative to `workspaceFolder`
--   **${relativeFileDirname}** - the current opened file’s dirname relative to `workspaceFolder`
--   **${fileBasename}** - the current opened file’s basename
--   **${fileBasenameNoExtension}** - the current opened file’s basename with no file extension
--   **${fileDirname}** - the current opened file’s dirname
--   **${fileExtname}** - the current opened file’s extension
+- **${cwd}** - the task runner’s current working directory on startup
+- **${workspaceFolder}** - the path of the folder opened in VS Code
+- **${workspaceRootFolderName}** - the name of the folder opened in VS Code without any slashes (/)
+- **${workspaceFolderBasename}** - the name of the folder opened in VS Code without any slashes (/)
+- **${file}** - the current opened file
+- **${relativeFile}** - the current opened file relative to `workspaceFolder`
+- **${relativeFileDirname}** - the current opened file’s dirname relative to `workspaceFolder`
+- **${fileBasename}** - the current opened file’s basename
+- **${fileBasenameNoExtension}** - the current opened file’s basename with no file extension
+- **${fileDirname}** - the current opened file’s dirname
+- **${fileExtname}** - the current opened file’s extension
 
--   **${lineNumber}** - the current selected line number in the active file
--   **${selectedText}** - the current selected text in the active file
--   **${execPath}** - the path to the running VS Code executable
+- **${lineNumber}** - the current selected line number in the active file
+- **${selectedText}** - the current selected text in the active file
+- **${execPath}** - the path to the running VS Code executable
 
 For additional information about predefined variables and example usages, see the [Variables reference](/docs/editor/variables-reference.md) in the general VS Code docs.
 
-Next steps
-----------
+## Next steps
 
--   [Python environments](/docs/python/environments.md) - Control which Python interpreter is used for editing and debugging.
--   [Editing code](/docs/python/editing.md) - Learn about autocomplete, IntelliSense, formatting, and refactoring for Python.
--   [Linting](/docs/python/linting.md) - Enable, configure, and apply a variety of Python linters.
--   [Debugging](/docs/python/debugging.md) - Learn to debug Python both locally and remotely.
--   [Testing](/docs/python/testing.md) - Configure test environments and discover, run, and debug tests.
+- [Python environments](/docs/python/environments.md) - Control which Python interpreter is used for editing and debugging.
+- [Editing code](/docs/python/editing.md) - Learn about autocomplete, IntelliSense, formatting, and refactoring for Python.
+- [Linting](/docs/python/linting.md) - Enable, configure, and apply a variety of Python linters.
+- [Debugging](/docs/python/debugging.md) - Learn to debug Python both locally and remotely.
+- [Testing](/docs/python/testing.md) - Configure test environments and discover, run, and debug tests.
