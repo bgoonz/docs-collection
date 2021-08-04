@@ -1,30 +1,28 @@
-Editing Python in Visual Studio Code
-====================================
+# Editing Python in Visual Studio Code
 
 The Python extension provides many features for editing Python source code in Visual Studio Code:
 
--   [Autocomplete and IntelliSense](#autocomplete-and-intellisense)
--   [Quick Fixes](#quick-fixes)
--   [Run Selection/Line in Terminal (REPL)](#run-selectionline-in-terminal-repl)
--   [Formatting](#formatting)
--   [Refactoring](#refactoring)
+- [Autocomplete and IntelliSense](#autocomplete-and-intellisense)
+- [Quick Fixes](#quick-fixes)
+- [Run Selection/Line in Terminal (REPL)](#run-selectionline-in-terminal-repl)
+- [Formatting](#formatting)
+- [Refactoring](#refactoring)
 
 Also see [Linting](/docs/python/linting.md) and [Jupyter Support](/docs/datascience/jupyter-notebooks.md).
 
-Autocomplete and IntelliSense
------------------------------
+## Autocomplete and IntelliSense
 
 Autocomplete and IntelliSense are provided for all files within the current working folder and for Python packages that are installed in standard locations.
 
 While editing, you can right-click different identifiers to take advantage of several convenient commands
 
--   **Go to Definition** (`kb(editor.action.revealDefinition)`) jumps from your code into the code that defines an object. This command is helpful when you’re working with libraries.
+- **Go to Definition** (`kb(editor.action.revealDefinition)`) jumps from your code into the code that defines an object. This command is helpful when you’re working with libraries.
 
--   **Peek Definition** (`kb(editor.action.peekDefinition)`), is similar, but displays the definition directly in the editor (making space in the editor window to avoid obscuring any code). Press `kbstyle(Escape)` to close the Peek window or use the **x** in the upper right corner.
+- **Peek Definition** (`kb(editor.action.peekDefinition)`), is similar, but displays the definition directly in the editor (making space in the editor window to avoid obscuring any code). Press `kbstyle(Escape)` to close the Peek window or use the **x** in the upper right corner.
 
--   **Go to Declaration** jumps to the point at which the variable or other object is declared in your code.
+- **Go to Declaration** jumps to the point at which the variable or other object is declared in your code.
 
--   **Peek Declaration** is similar, but displays the declaration directly in the editor. Again, use `kbstyle(Escape)` or the **x** in the upper right corner to close the Peek window.
+- **Peek Declaration** is similar, but displays the declaration directly in the editor. Again, use `kbstyle(Escape)` or the **x** in the upper right corner to close the Peek window.
 
 ### Customize IntelliSense behavior
 
@@ -66,8 +64,7 @@ If autocomplete and IntelliSense are not working for a custom module, check the 
 
 <table><colgroup><col style="width: 50%" /><col style="width: 50%" /></colgroup><thead><tr class="header"><th>Cause</th><th>Solution</th></tr></thead><tbody><tr class="odd"><td>The path to the python interpreter is incorrect</td><td>Check the <code>pythonPath</code> setting. Restart VS Code if you make a correction.</td></tr><tr class="even"><td>The custom module is located in a non-standard location (not installed using pip).</td><td>Add the location to the <code>python.autoComplete.extraPaths</code> setting and restart VS Code.</td></tr></tbody></table>
 
-Quick Fixes
------------
+## Quick Fixes
 
 The add imports Quick Fix allows you to quickly complete import statements. Begin by typing a package name within the editor and you will notice a Code Action is available to automatically complete the line of source code (as long as you have the module installed within the environment). Hover over the text (marked with a squiggle) and then select the Code Action light bulb when it appears. You can then select from a list of potential imports. Note that the functionality in the below examples is provided by the Pylance language server.
 
@@ -79,8 +76,7 @@ The add imports Code Action also recognizes some of the popular abbreviations fo
 
 The import suggestions list is ordered with import statements for packages (or modules) at the top, followed by statements for additional modules and/or members (classes, objects, etc.) from specified packages.
 
-Run Selection/Line in Terminal (REPL)
--------------------------------------
+## Run Selection/Line in Terminal (REPL)
 
 The **Python: Run Selection/Line in Python Terminal** command (`kbstyle(Shift+Enter)`) is a simple way to take whatever code is selected, or the code on the current line if there is no selection, and run it in the Python Terminal. An identical **Run Selection/Line in Python Terminal** command is also available on the context menu for a selection in the editor.
 
@@ -92,8 +88,7 @@ The command opens the Python Terminal if necessary; you can also open the intera
 
 On first use of the **Python: Run Selection/Line in Python Terminal** command, VS Code may send the text to the REPL before that environment is ready, in which case the selection or line is not run. If you encounter this behavior, try the command again when the REPL has finished loading.
 
-Formatting
-----------
+## Formatting
 
 Formatting makes code easier to read by human beings by applying specific rules and conventions for line spacing, indents, spacing around operators, and so on (see an example on the [autopep8](https://pypi.org/project/autopep8/) page). Formatting doesn’t affect the functionality of the code itself. ([Linting](/docs/python/linting.md), on the other hand, analyzes code for common syntactical, stylistic, and functional errors as well as unconventional programming practices that can lead to errors. Although there is a little overlap between formatting and linting, the two capabilities are complementary.)
 
@@ -131,8 +126,7 @@ If formatting fails, check the following possible causes:
 
 <table><colgroup><col style="width: 50%" /><col style="width: 50%" /></colgroup><thead><tr class="header"><th>Cause</th><th>Solution</th></tr></thead><tbody><tr class="odd"><td>The path to the python interpreter is incorrect.</td><td>Check the <code>pythonPath</code> setting.</td></tr><tr class="even"><td>The formatter is not installed in the current environment.</td><td>Open a command prompt, navigate to the location specified in the <code>pythonPath</code> setting, and run <code>pip install</code> for the formatter.</td></tr><tr class="odd"><td>The path to the formatter is incorrect.</td><td>Check the value of the appropriate <code>python.formatting.&lt;formatter&gt;Path</code> setting.</td></tr><tr class="even"><td>Custom arguments for the formatter are incorrect.</td><td>Check that the appropriate <code>python.formatting.&lt;formatter&gt;Path</code> setting does not contain arguments, and that <code>python.formatting.&lt;formatter&gt;Args</code> contains a list of individual top-level argument elements such as <code>"python.formatting.yapfArgs": ["--style", "{based_on_style: chromium, indent_width: 20}"]</code>.</td></tr><tr class="odd"><td>Pop up with warning message <code>Black does not support the "Format Select" command.</code></td><td><code>black</code> does not support formatting sections of code, it can be prevented with the following settings <code>"[python]": {"editor.formatOnPaste": false, "editor.formatOnSaveMode": "file"}</code>.</td></tr></tbody></table>
 
-Refactoring
------------
+## Refactoring
 
 The Python extension adds the following refactoring commands: **Extract Variable**, **Extract Method**, and **Sort Imports**.
 
@@ -142,9 +136,9 @@ Extracts all similar occurrences of the selected text within the current scope, 
 
 Invoked by:
 
--   Context Menu: right-click a selection and select **Extract Variable**.
--   Command Palette (`kb(workbench.action.showCommands)`), then **Python Refactor: Extract Variable**.
--   Assign a keyboard shortcut to the `python.refactorExtractVariable` command.
+- Context Menu: right-click a selection and select **Extract Variable**.
+- Command Palette (`kb(workbench.action.showCommands)`), then **Python Refactor: Extract Variable**.
+- Assign a keyboard shortcut to the `python.refactorExtractVariable` command.
 
 ![Refactoring a variable](images/editing/refactorExtractVar.gif)
 
@@ -154,9 +148,9 @@ Extracts all similar occurrences of the selected expression or block within the 
 
 Invoked by:
 
--   Context Menu: right-click a selection and select **Extract Method**.
--   Command Palette (`kb(workbench.action.showCommands)`), then **Python Refactor: Extract Method**.
--   Assign a keyboard shortcut to the `python.refactorExtractMethod` command.
+- Context Menu: right-click a selection and select **Extract Method**.
+- Command Palette (`kb(workbench.action.showCommands)`), then **Python Refactor: Extract Method**.
+- Assign a keyboard shortcut to the `python.refactorExtractMethod` command.
 
 ![Refactoring code into a method](images/editing/refactorExtractMethod.gif)
 
@@ -166,9 +160,9 @@ Sort Imports uses the isort package to consolidate specific imports from the sam
 
 Invoked by:
 
--   Right-click in editor and select **Sort Imports** (no selection is required)
--   Command Palette (`kb(workbench.action.showCommands)`), then **Python Refactor: Sort Imports**
--   Assign a keyboard shortcut to the `python.sortImports` command
+- Right-click in editor and select **Sort Imports** (no selection is required)
+- Command Palette (`kb(workbench.action.showCommands)`), then **Python Refactor: Sort Imports**
+- Assign a keyboard shortcut to the `python.sortImports` command
 
 ![Sorting import statements](images/editing/sortImports.gif)
 
@@ -182,12 +176,11 @@ Further configurations can be stored in an `.isort.cfg` file as documented on [i
 
 > **Note**: For those migrating from isort4 to isort5, some CLI flags and config options have changed, refer to the project’s [isort5 upgrade guide](https://pycqa.github.io/isort/docs/upgrade_guides/5.0.0.html).
 
-Next steps
-----------
+## Next steps
 
--   [Linting](/docs/python/linting.md) - Enable, configure, and apply a variety of Python linters.
--   [Debugging](/docs/python/debugging.md) - Learn to debug Python both locally and remotely.
--   [Testing](/docs/python/testing.md) - Configure test environments and discover, run, and debug tests.
--   [Basic Editing](/docs/editor/codebasics.md) - Learn about the powerful VS Code editor.
--   [Code Navigation](/docs/editor/editingevolved.md) - Move quickly through your source code.
--   [IntelliSense](/docs/editor/intellisense.md) - Learn about IntelliSense features.
+- [Linting](/docs/python/linting.md) - Enable, configure, and apply a variety of Python linters.
+- [Debugging](/docs/python/debugging.md) - Learn to debug Python both locally and remotely.
+- [Testing](/docs/python/testing.md) - Configure test environments and discover, run, and debug tests.
+- [Basic Editing](/docs/editor/codebasics.md) - Learn about the powerful VS Code editor.
+- [Code Navigation](/docs/editor/editingevolved.md) - Move quickly through your source code.
+- [IntelliSense](/docs/editor/intellisense.md) - Learn about IntelliSense features.

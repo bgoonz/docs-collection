@@ -1,5 +1,4 @@
-Node.js tutorial in Visual Studio Code
-======================================
+# Node.js tutorial in Visual Studio Code
 
 [Node.js](https://nodejs.org/) is a platform for building fast and scalable server applications using JavaScript. Node.js is the runtime and [npm](https://www.npmjs.com/) is the Package Manager for Node.js modules.
 
@@ -13,8 +12,7 @@ To test that you have Node.js installed correctly on your computer, open a new t
 
 > **Windows Subsystem for Linux**: If you are on Windows, WSL is a great way to do Node.js development. You can run Linux distributions on Windows and install Node.js into the Linux environment. When coupled with the [Remote - WSL](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-wsl) extension, you get full VS Code editing and debugging support while running in the context of WSL. To learn more, go to [Developing in WSL](/docs/remote/wsl.md) or try the [Working in WSL](/docs/remote/wsl-tutorial.md) tutorial.
 
-Hello World
------------
+## Hello World
 
 Let’s get started by creating the simplest Node.js application, “Hello World”.
 
@@ -89,8 +87,7 @@ Now that you’ve seen VS Code in action with “Hello World”, the next sectio
 
 > **Note:** We’re done with the “Hello World” example so navigate out of that folder before you create an Express app. You can delete the “Hello” folder if you want as it is not required for the rest of the walkthrough.
 
-An Express application
-----------------------
+## An Express application
 
 [Express](https://expressjs.com/) is a very popular application framework for building and running Node.js applications. You can scaffold (create) a new Express application using the Express Generator tool. The Express Generator is shipped as an npm module and installed by using the npm command-line tool `npm`.
 
@@ -123,8 +120,7 @@ The Node.js web server will start and you can browse to <http://localhost:3000> 
 
 ![Your first Node Express App](images/nodejs/express.png)
 
-Great code editing
-------------------
+## Great code editing
 
 Close the browser and from a terminal in the `myExpressApp` folder, stop the Node.js server by pressing `kbstyle(CTRL+C)`.
 
@@ -146,8 +142,7 @@ You can also write code that references modules in other files. For example, in 
 
 ![Express.Router IntelliSense](images/nodejs/moduleintellisense.png)
 
-Debug your Express app
-----------------------
+## Debug your Express app
 
 You will need to create a debugger configuration file `launch.json` for your Express application. Click on the Run icon in the **Activity Bar** and then the Configure gear icon at the top of the Run view to create a default `launch.json` file. Select the **Node.js** environment by ensuring that the `type` property in `configurations` is set to `"node"`. When the file is first created, VS Code will look in `package.json` for a `start` script and will use that value as the `program` (which in this case is `"${workspaceFolder}\\bin\\www`) for the **Launch Program** configuration.
 
@@ -167,21 +162,19 @@ Save the new file and make sure **Launch Program** is selected in the configurat
 
 ![Debug session](images/nodejs/debugsession.png)
 
-Deploy your application
------------------------
+## Deploy your application
 
 If you’d like to learn how to deploy your web application, check out the [Deploying Applications to Azure](/docs/azure/deployment.md) tutorials where we show how to run your website in Azure.
 
-------------------------------------------------------------------------
+---
 
-Next steps
-----------
+## Next steps
 
 There is much more to explore with Visual Studio Code, please try the following topics:
 
--   [Settings](/docs/getstarted/settings.md) - Learn how to customize VS Code for how you like to work.
--   [Debugging](/docs/editor/debugging.md) - This is where VS Code really shines.
--   [Video: Getting started with Node.js debugging](https://www.youtube.com/watch?v=2oFKNL7vYV8) - Learn how to attach to a running Node.js process.
--   [Node.js debugging](/docs/nodejs/nodejs-debugging.md) - Learn more about VS Code’s built-in Node.js debugging.
--   [Debugging recipes](/docs/nodejs/debugging-recipes.md) - Examples for scenarios like client-side and container debugging.
--   [Tasks](/docs/editor/tasks.md) - Running tasks with Gulp, Grunt and Jake. Showing Errors and Warnings.
+- [Settings](/docs/getstarted/settings.md) - Learn how to customize VS Code for how you like to work.
+- [Debugging](/docs/editor/debugging.md) - This is where VS Code really shines.
+- [Video: Getting started with Node.js debugging](https://www.youtube.com/watch?v=2oFKNL7vYV8) - Learn how to attach to a running Node.js process.
+- [Node.js debugging](/docs/nodejs/nodejs-debugging.md) - Learn more about VS Code’s built-in Node.js debugging.
+- [Debugging recipes](/docs/nodejs/debugging-recipes.md) - Examples for scenarios like client-side and container debugging.
+- [Tasks](/docs/editor/tasks.md) - Running tasks with Gulp, Grunt and Jake. Showing Errors and Warnings.

@@ -1,12 +1,10 @@
-Linting Python in Visual Studio Code
-====================================
+# Linting Python in Visual Studio Code
 
-Linting highlights syntactical and stylistic problems in your Python source code, which oftentimes helps you identify and correct subtle programming errors or unconventional coding practices that can lead to errors. For example, linting detects use of an uninitialized or undefined variable, calls to undefined functions, missing parentheses, and even more subtle issues such as attempting to redefine built-in types or functions. Linting is thus distinct from [Formatting](/docs/python/editing.md#formatting) because linting analyzes how the code runs and detects errors whereas formatting only restructures how code *appears*.
+Linting highlights syntactical and stylistic problems in your Python source code, which oftentimes helps you identify and correct subtle programming errors or unconventional coding practices that can lead to errors. For example, linting detects use of an uninitialized or undefined variable, calls to undefined functions, missing parentheses, and even more subtle issues such as attempting to redefine built-in types or functions. Linting is thus distinct from [Formatting](/docs/python/editing.md#formatting) because linting analyzes how the code runs and detects errors whereas formatting only restructures how code _appears_.
 
 By default, stylistic and syntactical code detection is enabled by the Language Server. If you require third-party linters for additional problem detection, however, you can enable them by using the **Python: Select Linter** command and selecting the appropriate linter. You can easily enable and disable all linting by using the **Python: Enable Linting** command.
 
-Enable linters
---------------
+## Enable linters
 
 To enable linters other than the default PyLint, open the Command Palette (`kb(workbench.action.showCommands)`) and select the **Python: Select Linter** command. This command adds `"python.linting.<linter>Enabled": true` to your settings, where `<linter>` is the name of the chosen linter. See [Specific linters](#specific-linters) for details.
 
@@ -16,27 +14,24 @@ Enabling a linter prompts you to install the required packages in your selected 
 
 > **Note**: If you’re using a global environment and VS Code is not running elevated, linter installation may fail. In that case, either run VS Code elevated, or manually run the Python package manager to install the linter at an elevated command prompt for the same environment: for example `sudo pip3 install pylint` (macOS/Linux) or `pip install pylint` (Windows, at an elevated prompt)
 
-Disable linting
----------------
+## Disable linting
 
 You can disable all Python linting with the **Python: Enable Linting** command, which shows a dropdown with the current linting state and options to turn Python linting `on` or `off`.
 
 ![Python Enable Linting command dropdown](images/linting/enable-linting-dropdown.png)
 
-Run linting
------------
+## Run linting
 
 To perform linting:
 
--   Linting runs automatically when you save a file.
--   Open the Command Palette (`kb(workbench.action.showCommands)`), then enter and select **Python: Run Linting**.
+- Linting runs automatically when you save a file.
+- Open the Command Palette (`kb(workbench.action.showCommands)`), then enter and select **Python: Run Linting**.
 
 Issues are shown in the **Problems** panel and as underlines in the code editor. Hovering over an underlined issue displays the details:
 
 ![Linting messages in the editor and the Problems panel](images/linting/lint-messages.png)
 
-General linting settings
-------------------------
+## General linting settings
 
 The remainder of this article describes settings for linting in general as well as specific linters. You can add any of the settings to your user `settings.json` file (opened with the **File** &gt; **Preferences** &gt; **Settings** command `kb(workbench.action.openSettings)`). Refer to [User and Workspace settings](/docs/getstarted/settings.md) to find out more about working with settings in VS Code generally.
 
@@ -49,8 +44,7 @@ You can easily change `python.linting.enabled` by using the **Python: Enable Lin
 
 When enabling `lintOnSave`, you might also want to enable the generic `files.autoSave` option (see [Save / Auto Save](/docs/editor/codebasics.md#save-auto-save)). The combination provides frequent linting feedback in your code as you type.
 
-Specific linters
-----------------
+## Specific linters
 
 The following table provides a summary of available Python linters and their basic settings. Only Pylint is enabled by default. For descriptions of individual settings, see the [Linter settings reference](/docs/python/settings-reference.md#linting-settings).
 
@@ -73,8 +67,7 @@ A custom path is generally unnecessary as the Python extension resolves the path
 
 The sections that follow provide additional details for those individual linters linked in the table. In general, custom rules must be specified in a separate file as required by the linter you’re using.
 
-Pylint
-------
+## Pylint
 
 Pylint messages fall into the categories in the following table with the indicated mapping to VS Code categories. You can change the setting to change the mapping.
 
@@ -85,18 +78,18 @@ Pylint messages fall into the categories in the following table with the indicat
 
 Python in Visual Studio code is configured by default to use a set of linting rules that are friendly to the largest number of Python developers:
 
--   Enable all Error (E) and Fatal (F) messages.
--   Disable all Convention (C) and Refactor (R) messages.
--   Disable all Warning (W) messages except the following:
-    -   unreachable (W0101): Unreachable code
-    -   duplicate-key (W0109): Duplicate key %r in dictionary
-    -   unnecessary-semicolon (W0301): Unnecessary semicolon
-    -   global-variable-not-assigned (W0602): Using global for %r but no assignment is done
-    -   unused-variable (W0612): Unused variable %r
-    -   binary-op-exception (W0711): Exception to catch is the result of a binary “%s” operation
-    -   bad-format-string (W1302): Invalid format string
-    -   anomalous-backslash-in-string (W1401): Anomalous backslash in string
-    -   bad-open-mode (W1501): “%s” is not a valid mode for open
+- Enable all Error (E) and Fatal (F) messages.
+- Disable all Convention (C) and Refactor (R) messages.
+- Disable all Warning (W) messages except the following:
+  - unreachable (W0101): Unreachable code
+  - duplicate-key (W0109): Duplicate key %r in dictionary
+  - unnecessary-semicolon (W0301): Unnecessary semicolon
+  - global-variable-not-assigned (W0602): Using global for %r but no assignment is done
+  - unused-variable (W0612): Unused variable %r
+  - binary-op-exception (W0711): Exception to catch is the result of a binary “%s” operation
+  - bad-format-string (W1302): Invalid format string
+  - anomalous-backslash-in-string (W1401): Anomalous backslash in string
+  - bad-open-mode (W1501): “%s” is not a valid mode for open
 
 These rules are applied through the following default arguments passed to Pylint:
 
@@ -140,8 +133,7 @@ For PowerShell you have to explicitly specify a UTF-8 output encoding:
 
 The generated file contains sections for all the Pylint options, along with documentation in the comments.
 
-pydocstyle
-----------
+## pydocstyle
 
 ### Command-line arguments and configuration files
 
@@ -157,12 +149,12 @@ More details can be found in the [pydocstyle documentation](https://www.pydocsty
 
 Options can also be read from a `[pydocstyle]` section of any of the following configuration files:
 
--   `setup.cfg`
--   `tox.ini`
--   `.pydocstyle`
--   `.pydocstyle.ini`
--   `.pydocstylerc`
--   `.pydocstylerc.ini`
+- `setup.cfg`
+- `tox.ini`
+- `.pydocstyle`
+- `.pydocstyle.ini`
+- `.pydocstylerc`
+- `.pydocstylerc.ini`
 
 For more information, see [Configuration Files](https://www.pydocstyle.org/en/2.1.1/usage.html#configuration-files).
 
@@ -170,8 +162,7 @@ For more information, see [Configuration Files](https://www.pydocstyle.org/en/2.
 
 The Python extension maps all pydocstyle errors to the Convention (C) category.
 
-pycodestyle (pep8)
-------------------
+## pycodestyle (pep8)
 
 ### Command-line arguments and configuration files
 
@@ -188,8 +179,7 @@ The Python extension maps pycodestyle message categories to VS Code categories t
 <table style="width:99%;"><colgroup><col style="width: 33%" /><col style="width: 33%" /><col style="width: 33%" /></colgroup><thead><tr class="header"><th>pycodestyle category</th><th>Applicable setting<br />
 (python.linting.)</th><th>VS Code category mapping</th></tr></thead><tbody><tr class="odd"><td>W</td><td>pycodestyleCategorySeverity.W</td><td>Warning</td></tr><tr class="even"><td>E</td><td>pycodestyleCategorySeverity.E</td><td>Error</td></tr></tbody></table>
 
-Prospector
-----------
+## Prospector
 
 ### Command-line arguments and configuration files
 
@@ -211,8 +201,7 @@ If you also have a `.pylintrc` file that enables the `too-many-arguments` warnin
 
 The Python extension maps all Prospector errors and warnings to the Error (E) category.
 
-Flake8
-------
+## Flake8
 
 ### Command-line arguments and configuration files
 
@@ -235,8 +224,7 @@ The Python extension maps flake8 message categories to VS Code categories throug
 <table style="width:99%;"><colgroup><col style="width: 33%" /><col style="width: 33%" /><col style="width: 33%" /></colgroup><thead><tr class="header"><th>Flake8 category</th><th>Applicable setting<br />
 (python.linting.)</th><th>VS Code category mapping</th></tr></thead><tbody><tr class="odd"><td>F</td><td>flake8CategorySeverity.F</td><td>Error</td></tr><tr class="even"><td>E</td><td>flake8CategorySeverity.E</td><td>Error</td></tr><tr class="odd"><td>W</td><td>flake8CategorySeverity.W</td><td>Warning</td></tr></tbody></table>
 
-mypy
-----
+## mypy
 
 ### Message category mapping
 
@@ -245,15 +233,13 @@ The Python extension maps mypy message categories to VS Code categories through 
 <table style="width:99%;"><colgroup><col style="width: 33%" /><col style="width: 33%" /><col style="width: 33%" /></colgroup><thead><tr class="header"><th>mypy category</th><th>Applicable setting<br />
 (python.linting.)</th><th>VS Code category mapping</th></tr></thead><tbody><tr class="odd"><td>error</td><td>mypyCategorySeverity.error</td><td>Error</td></tr><tr class="even"><td>note</td><td>mypyCategorySeverity.note</td><td>Information</td></tr></tbody></table>
 
-Troubleshooting linting
------------------------
+## Troubleshooting linting
 
 <table style="width:99%;"><colgroup><col style="width: 33%" /><col style="width: 33%" /><col style="width: 33%" /></colgroup><thead><tr class="header"><th>Error message</th><th>Cause</th><th>Solution</th></tr></thead><tbody><tr class="odd"><td>… unable to import &lt;module_name&gt;</td><td>The Python extension is using the wrong version of Pylint.</td><td>Ensure that the <code>pythonPath</code> setting points to a valid Python installation where Pylint is installed. Alternately, set the <code>python.linting.pylintPath</code> to an appropriate version of Pylint for the Python interpreter being used.</td></tr><tr class="even"><td>Linting with &lt;linter&gt; failed …</td><td>The path to the Python interpreter is incorrect.</td><td>Check the <code>pythonPath</code> setting (see <a href="/docs/python/environments.md">Environments</a>).</td></tr><tr class="odd"><td></td><td>The linter has not been installed in the current Python environment.</td><td>Open a command window, navigate to the location of the Python interpreter in the <code>pythonPath</code> setting, and run <code>pip install</code> for the linter.</td></tr><tr class="even"><td></td><td>The path to the linter is incorrect.</td><td>Ensure that the appropriate <code>python.linting.&lt;linter&gt;Path</code> setting for the linter is correct.</td></tr><tr class="odd"><td></td><td>Custom arguments are defined incorrectly.</td><td>Check the appropriate <code>python.linting.&lt;linter&gt;Args</code> settings, and that the value of the setting is a list of the argument elements that are separated by spaces. For example, <code>"python.linting.pylintPath": "pylint --load-plugins pylint_django"</code> is incorrect. The correct syntax is <code>"python.linting.pylintArgs": ["--load-plugins", "pylint_django"]</code>.</td></tr></tbody></table>
 
-Next steps
-----------
+## Next steps
 
--   [Debugging](/docs/python/debugging.md) - Learn to debug Python both locally and remotely.
--   [Testing](/docs/python/testing.md) - Configure test environments and discover, run, and debug tests.
--   [Basic Editing](/docs/editor/codebasics.md) - Learn about the powerful VS Code editor.
--   [Code Navigation](/docs/editor/editingevolved.md) - Move quickly through your source code.
+- [Debugging](/docs/python/debugging.md) - Learn to debug Python both locally and remotely.
+- [Testing](/docs/python/testing.md) - Configure test environments and discover, run, and debug tests.
+- [Basic Editing](/docs/editor/codebasics.md) - Learn about the powerful VS Code editor.
+- [Code Navigation](/docs/editor/editingevolved.md) - Move quickly through your source code.

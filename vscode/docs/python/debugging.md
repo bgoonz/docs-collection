@@ -1,14 +1,12 @@
-Python debugging in VS Code
-===========================
+# Python debugging in VS Code
 
 The Python extension supports debugging of several types of Python applications. For a short walkthrough of basic debugging, see [Tutorial - Configure and run the debugger](/docs/python/python-tutorial.md#configure-and-run-the-debugger). Also see the [Flask tutorial](/docs/python/tutorial-flask.md). Both tutorials demonstrate core skills like setting breakpoints and stepping through code.
 
 **For general debugging features** such as inspecting variables, setting breakpoints, and other activities that aren’t language-dependent, review [VS Code debugging](/docs/editor/debugging.md).
 
-This article addresses only those considerations that are specific to Python, mainly Python-specific debugging *configurations*, including the necessary steps for specific app types and remote debugging.
+This article addresses only those considerations that are specific to Python, mainly Python-specific debugging _configurations_, including the necessary steps for specific app types and remote debugging.
 
-Initialize configurations
--------------------------
+## Initialize configurations
 
 A configuration drives VS Code’s behavior during a debugging session. Configurations are defined in a `launch.json` file that’s stored in a `.vscode` folder in your workspace.
 
@@ -36,8 +34,7 @@ To generate a `launch.json` file with Python configurations, do the following st
 
 The details of configuration properties are covered later in this article under [Standard configuration and options](#set-configuration-options). Additional configurations are also described in this article under [Debugging specific app types](#debugging-specific-app-types).
 
-Additional configurations
--------------------------
+## Additional configurations
 
 By default, VS Code shows only the most common configurations provided by the Python extension. You can select other configurations to include in `launch.json` by using the **Add Configuration** command shown in the list and the `launch.json` editor. When you use the command, VS Code prompts you with a list of all available configurations (be sure to scroll down to see all the Python options):
 
@@ -53,8 +50,7 @@ During debugging, the Status Bar shows the current configuration and the current
 
 By default, the debugger uses the same interpreter selected for your workspace, just like other features of Python extension for VS Code. To use a different interpreter for debugging specifically, set the value for `python` in `launch.json` for the applicable debugger configuration. Alternately, select the named interpreter on the Status Bar to select a different one.
 
-Basic debugging
----------------
+## Basic debugging
 
 The simplest way to begin debugging a Python file is to use the **Run** view and click the **Run and Debug** button. When no configuration has been previously set, you will be presented with a list of debugging options. Select the appropriate option to quickly begin debugging your code.
 
@@ -66,8 +62,7 @@ For information about creating and using debugging configurations see the [Initi
 
 ![Start debugging](images/debugging/debug-start-button.png)
 
-Command line debugging
-----------------------
+## Command line debugging
 
 The debugger can also be run from the command line. The debugger command line syntax is as follows:
 
@@ -120,8 +115,7 @@ The associated configuration file would then look as follows.
 
 > **Note**: `[<arg>]` can be used to pass command-line arguments along to the app being launched.
 
-Debugging by attaching over a network connection
-------------------------------------------------
+## Debugging by attaching over a network connection
 
 ### Local script debugging
 
@@ -242,8 +236,7 @@ Now that an SSH tunnel has been set up to the remote computer, you can begin you
 
     On this toolbar, the disconnect button (`kb(workbench.action.debug.stop)`) stops the debugger and allows the remote program to run to completion. The restart button (`kb(workbench.action.debug.restart)`) restarts the debugger on the local computer but does **not** restart the remote program. Use the restart button only when you’ve already restarted the remote program and need to reattach the debugger.
 
-Set configuration options
--------------------------
+## Set configuration options
 
 When you first create `launch.json`, there are two standard configurations that run the active file in the editor in either the integrated terminal (inside VS Code) or the external terminal (outside of VS Code):
 
@@ -290,8 +283,8 @@ Identifies the type of debugger to use; leave this set to `python` for Python co
 
 Specifies the mode in which to start debugging:
 
--   `launch`: start the debugger on the file specified in `program`
--   `attach`: attach the debugger to an already running process. See [Remote debugging](#remote-script-debugging-with-ssh) for an example.
+- `launch`: start the debugger on the file specified in `program`
+- `attach`: attach the debugger to an already running process. See [Remote debugging](#remote-script-debugging-with-ssh) for an example.
 
 ### `program`
 
@@ -400,8 +393,7 @@ Optional path to a file that contains environment variable definitions. See [Con
 
 If set to `true`, enables debugging of [gevent monkey-patched code](https://www.gevent.org/intro.html).
 
-Breakpoints and logpoints
--------------------------
+## Breakpoints and logpoints
 
 The Python extension supports [breakpoints](/docs/editor/debugging.md#breakpoints) and [logpoints](/docs/editor/debugging.md#logpoints) for debugging code. For a short walkthrough of basic debugging and using breakpoints, see [Tutorial - Configure and run the debugger](/docs/python/python-tutorial.md#configure-and-run-the-debugger).
 
@@ -417,8 +409,7 @@ In your Python code, you can call `debugpy.breakpoint()` at any point where you 
 
 The Python extension automatically detects breakpoints that are set on non-executable lines, such as `pass` statements or the middle of a multiline statement. In such cases, running the debugger moves the breakpoint to the nearest valid line to ensure that code execution stops at that point.
 
-Debugging specific app types
-----------------------------
+## Debugging specific app types
 
 The configuration dropdown provides a variety of different options for general app types:
 
@@ -468,25 +459,23 @@ If you want to run Flask’s development server in development mode, use the fol
 
 <span id="debugger-not-working"></span>
 
-Troubleshooting
----------------
+## Troubleshooting
 
 There are many reasons why the debugger may not work. Oftentimes the debug console reveals specific causes, but two specific reasons are as follows:
 
--   The path to the python executable is incorrect: check the path of your selected interpreter by running the **Python: Select Interpreter** command and looking at the current value:
+- The path to the python executable is incorrect: check the path of your selected interpreter by running the **Python: Select Interpreter** command and looking at the current value:
 
-    ![Troubleshooting wrong Python interpreter when debugging](images/debugging/debug-troubleshooting-wrong-path.png)
+  ![Troubleshooting wrong Python interpreter when debugging](images/debugging/debug-troubleshooting-wrong-path.png)
 
--   There are invalid expressions in the watch window: clear all expressions from the Watch window and restart the debugger.
--   If you’re working with a multi-threaded app that uses native thread APIs (such as the Win32 `CreateThread` function rather than the Python threading APIs), it’s presently necessary to include the following source code at the top of whichever file you want to debug:
+- There are invalid expressions in the watch window: clear all expressions from the Watch window and restart the debugger.
+- If you’re working with a multi-threaded app that uses native thread APIs (such as the Win32 `CreateThread` function rather than the Python threading APIs), it’s presently necessary to include the following source code at the top of whichever file you want to debug:
 
-        import debugpy
-        debugpy.debug_this_thread()
+      import debugpy
+      debugpy.debug_this_thread()
 
-Next steps
-----------
+## Next steps
 
--   [Python environments](/docs/python/environments.md) - Control which Python interpreter is used for editing and debugging.
--   [Testing](/docs/python/testing.md) - Configure test environments and discover, run, and debug tests.
--   [Settings reference](/docs/python/settings-reference.md) - Explore the full range of Python-related settings in VS Code.
--   [General debugging](/docs/editor/debugging.md) - Learn about the debugging features of VS Code.
+- [Python environments](/docs/python/environments.md) - Control which Python interpreter is used for editing and debugging.
+- [Testing](/docs/python/testing.md) - Configure test environments and discover, run, and debug tests.
+- [Settings reference](/docs/python/settings-reference.md) - Explore the full range of Python-related settings in VS Code.
+- [General debugging](/docs/editor/debugging.md) - Learn about the debugging features of VS Code.

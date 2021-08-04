@@ -1,21 +1,19 @@
-Python Interactive window
-=========================
+# Python Interactive window
 
 [Jupyter](https://jupyter-notebook.readthedocs.io/en/latest/) (formerly IPython Notebook) is an open-source project that lets you easily combine Markdown text and executable Python source code on one canvas called a **notebook**. Visual Studio Code supports working with [Jupyter Notebooks natively](/docs/datascience/jupyter-notebooks.md), as well as through Python code files. This topic covers the support offered through Python code files and demonstrates how to:
 
--   Work with Jupyter-like code cells
--   Run code in the Python Interactive Window
--   View, inspect, and filter variables using the Variable explorer and data viewer
--   Connect to a remote Jupyter server
--   Debug a Jupyter notebook
--   Export a Jupyter notebook
+- Work with Jupyter-like code cells
+- Run code in the Python Interactive Window
+- View, inspect, and filter variables using the Variable explorer and data viewer
+- Connect to a remote Jupyter server
+- Debug a Jupyter notebook
+- Export a Jupyter notebook
 
 To work with Jupyter notebooks, you must activate an Anaconda environment in VS Code, or another Python environment in which you’ve installed the [Jupyter package](https://pypi.org/project/jupyter/). To select an environment, use the **Python: Select Interpreter** command from the Command Palette (`kb(workbench.action.showCommands)`).
 
 Once the appropriate environment is activated, you can create and run Jupyter-like code cells, connect to a remote Jupyter server for running code cells, and export Python files as Jupyter notebooks.
 
-Jupyter code cells
-------------------
+## Jupyter code cells
 
 You define Jupyter-like code cells within Python code using a `# %%` comment:
 
@@ -51,8 +49,7 @@ The following table lists additional commands and keyboard shortcuts supported w
 
 <table><thead><tr class="header"><th>Command</th><th>Keyboard shortcut</th></tr></thead><tbody><tr class="odd"><td>Python: Go to Next Cell</td><td><code>kbstyle(Ctrl+Alt+])</code></td></tr><tr class="even"><td>Python: Go to Previous Cell</td><td><code>kbstyle(Ctrl+Alt+[)</code></td></tr><tr class="odd"><td>Python: Extend Selection by Cell Above</td><td><code>kbstyle(Ctrl+Shift+Alt+[)</code></td></tr><tr class="even"><td>Python: Extend Selection by Cell Below</td><td><code>kbstyle(Ctrl+Shift+Alt+])</code></td></tr><tr class="odd"><td>Python: Move Selected Cells Up</td><td><code>kbstyle(Ctrl+; U)</code></td></tr><tr class="even"><td>Python: Move Selected Cells Down</td><td><code>kbstyle(Ctrl+; D)</code></td></tr><tr class="odd"><td>Python: Insert Cell Above</td><td><code>kbstyle(Ctrl+; A)</code></td></tr><tr class="even"><td>Python: Insert Cell Below</td><td><code>kbstyle(Ctrl+; B)</code></td></tr><tr class="odd"><td>Python: Insert Cell Below Position</td><td><code>kbstyle(Ctrl+; S)</code></td></tr><tr class="even"><td>Python: Delete Selected Cells</td><td><code>kbstyle(Ctrl+; X)</code></td></tr><tr class="odd"><td>Python: Change Cell to Code</td><td><code>kbstyle(Ctrl+; C)</code></td></tr><tr class="even"><td>Python: Change Cell to Markdown</td><td><code>kbstyle(Ctrl+; M)</code></td></tr></tbody></table>
 
-Python Interactive window
--------------------------
+## Python Interactive window
 
 The **Python Interactive** window, mentioned in the previous section, can be used as a standalone console with arbitrary code (with or without code cells). To use the window as a console, open it with the **Jupyter: Create Interactive Window** command from the Command Palette. You can then type in code, using `kbstyle(Enter)` to go to a new line and `kbstyle(Shift+Enter)` to run the code.
 
@@ -82,8 +79,7 @@ The Python Interactive window also supports [Visual Studio Live Share](https://v
 
 This feature requires the [Live Share extensions](https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare-pack) to be installed on both host and guest machines.
 
-Variable explorer and data viewer
----------------------------------
+## Variable explorer and data viewer
 
 Within the Python Interactive window, it’s possible to view, inspect, and filter the variables within your current Jupyter session. By expanding the **Variables** section after running code and cells, you’ll see a list of the current variables, which will automatically update as variables are used in code.
 
@@ -95,8 +91,7 @@ For additional information about your variables, you can also double-click on a 
 
 > **Note:** Variable explorer is enabled by default, but can be turned off in settings (Python &gt; Data Science: Show Jupyter Variable Explorer).
 
-Connect to a remote Jupyter server
-----------------------------------
+## Connect to a remote Jupyter server
 
 You can offload intensive computation in a Jupyter notebook to other computers by connecting to a remote Jupyter server. Once connected, code cells run on the remote server rather than the local computer.
 
@@ -114,8 +109,7 @@ To connect to a remote Jupyter server:
 
 > **Note:** For added security, Microsoft recommends configuring your Jupyter server with security precautions such as SSL and token support. This helps ensure that requests sent to the Jupyter server are authenticated and connections to the remote server are encrypted. For guidance about securing a notebook server, see the [Jupyter docs](https://jupyter-notebook.readthedocs.io/en/stable/public_server.html#securing-a-notebook-server).
 
-Convert Jupyter notebooks to Python code file
----------------------------------------------
+## Convert Jupyter notebooks to Python code file
 
 When you’ve activated an environment with Jupyter installed, you can open a Jupyter notebook file (`.ipynb`) in VS Code and then convert it to Python code. Once you’ve converted the file, you can run the code as you would with any other Python file and also use the VS Code debugger. Opening and debugging notebooks in VS Code is a convenient way to find and resolve code bugs, which is difficult to do directly in a Jupyter notebook.
 
@@ -129,8 +123,7 @@ Select the convert icon followed by “Python Script”, wait a few seconds, and
 
 > **Note:** The first time you run code cells in a Python file, the Python extension starts a Jupyter server. It may take some time for the server to start up and for the **Python Interactive** window to appear with the results of the code.
 
-Debug a Jupyter notebook
-------------------------
+## Debug a Jupyter notebook
 
 The Visual Studio Code debugger lets you step through your code, set breakpoints, examine state, and analyze problems. Using the debugger is a helpful way to find and correct issues in notebook code.
 
@@ -140,8 +133,8 @@ The Visual Studio Code debugger lets you step through your code, set breakpoints
 
 3.  To start the debugger, use one of the following options:
 
-    -   For the whole notebook, open the Command Palette (`kb(workbench.action.showCommands)`) and run the **Jupyter: Debug Current File in Python Interactive Window** command.
-    -   For an individual cell, use the **Debug Cell** adornment that appears above the cell. The debugger specifically starts on the code in that cell. By default, **Debug Cell** just steps into user code. If you want to step into non-user code, you need to uncheck **Data Science: Debug Just My Code** in the Python extension settings (`kb(workbench.action.openSettings)`).
+    - For the whole notebook, open the Command Palette (`kb(workbench.action.showCommands)`) and run the **Jupyter: Debug Current File in Python Interactive Window** command.
+    - For an individual cell, use the **Debug Cell** adornment that appears above the cell. The debugger specifically starts on the code in that cell. By default, **Debug Cell** just steps into user code. If you want to step into non-user code, you need to uncheck **Data Science: Debug Just My Code** in the Python extension settings (`kb(workbench.action.openSettings)`).
 
 4.  To familiarize yourself with the general debugging features of VS Code, such as inspecting variables, setting breakpoints, and other activities, review [VS Code debugging](/docs/editor/debugging.md).
 
@@ -149,13 +142,12 @@ The Visual Studio Code debugger lets you step through your code, set breakpoints
 
 6.  When you’re satisfied that all your code is correct. Save the file, then export the notebook as described in the following section. You can then upload the notebook to your normal Jupyter environment.
 
-Export a Jupyter notebook
--------------------------
+## Export a Jupyter notebook
 
 In addition to opening a Jupyter notebook, you can also use one of the following commands from the Command Palette (`kb(workbench.action.showCommands)`) to export content from a Python file in VS Code to a Jupyter notebook (with the `.ipynb` extension).
 
--   **Jupyter: Export Current Python File as Jupyter Notebook**: creates a Jupyter notebook from the contents of the current file, using the `# %%` and `# %% [markdown]` delimiters to specify their respective cell types.
--   **Jupyter: Export Current Python File and Output as Jupyter Notebook**: creates a Jupyter notebook from the contents of the current file and includes output from code cells.
--   **Jupyter: Export Interactive Window as Jupyter Notebook**: creates a Jupyter notebook from the contents of the Python Interactive window.
+- **Jupyter: Export Current Python File as Jupyter Notebook**: creates a Jupyter notebook from the contents of the current file, using the `# %%` and `# %% [markdown]` delimiters to specify their respective cell types.
+- **Jupyter: Export Current Python File and Output as Jupyter Notebook**: creates a Jupyter notebook from the contents of the current file and includes output from code cells.
+- **Jupyter: Export Interactive Window as Jupyter Notebook**: creates a Jupyter notebook from the contents of the Python Interactive window.
 
 After exporting the contents, VS Code displays a prompt through which you can open the notebook in a browser.

@@ -1,5 +1,4 @@
-JavaScript extensions for VS Code
-=================================
+# JavaScript extensions for VS Code
 
 Visual Studio Code supports many features for JavaScript and Node.js development. The features that ship with the downloaded product are the core features: debugging, IntelliSense, code navigation, etc.
 
@@ -7,8 +6,7 @@ In addition, to these core features, you can install a large number of quality e
 
 > **Tip:** To see how to install and manage your extensions, please refer to the [extension documentation](/docs/editor/extension-marketplace.md).
 
-Finding extensions
-------------------
+## Finding extensions
 
 You can find JavaScript extensions by typing `JavaScript` in the Extension view search bar. Alternatively, you can find JavaScript extensions using tags: “tag:javascript”. Search for more extensions in VS Code or in the [Marketplace](https://marketplace.visualstudio.com/vscode).
 
@@ -16,8 +14,7 @@ In addition you can search for `Node.js` extensions.
 
 > Tip: The extensions shown above are dynamically queried. Click on an extension tile above to read the description and reviews to decide which extension is best for you. See more in the [Marketplace](https://marketplace.visualstudio.com/vscode).
 
-Recommended extensions
-----------------------
+## Recommended extensions
 
 If you are just getting started, here are the extensions we recommend trying out.
 

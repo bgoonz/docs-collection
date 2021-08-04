@@ -1,10 +1,8 @@
-Coding Pack for Python
-======================
+# Coding Pack for Python
 
 The Coding Pack for Python helps you quickly set up a Python coding environment with Visual Studio Code. The standalone installer helps you install a Python interpreter, Visual Studio Code, extensions that provide support for Python in Visual Studio Code, and a number of common and useful Python packages.
 
-Getting started
----------------
+## Getting started
 
 With the Coding Pack for Python, it’s easy to get started developing with Python and VS Code.
 
@@ -25,31 +23,29 @@ With the Coding Pack for Python, it’s easy to get started developing with Pyth
 
 > **Note**: If there are any issues installing components, you can use the steps discussed in [Manual installation](#manual-installation)
 
-What’s installed by the Coding Pack for Python
-----------------------------------------------
+## What’s installed by the Coding Pack for Python
 
 The Coding Pack for Python installs the key components you need to use Visual Studio Code for Python development. Specifically, it installs:
 
--   Visual Studio Code
--   Visual Studio Code extensions:
-    -   Python
-    -   Pylance
-    -   Live Share
-    -   Gather
--   The Python runtime (CPython 3.8.5)
--   Useful Python packages
-    -   jupyter
-    -   numpy
-    -   sklearn
-    -   pandas
-    -   Matplotlib
+- Visual Studio Code
+- Visual Studio Code extensions:
+  - Python
+  - Pylance
+  - Live Share
+  - Gather
+- The Python runtime (CPython 3.8.5)
+- Useful Python packages
+  - jupyter
+  - numpy
+  - sklearn
+  - pandas
+  - Matplotlib
 
 Along with the tools and packages necessary for Python development, the Coding Pack also configures common user settings and PowerShell. This includes Python extension settings, such as the default interpreter and language server, as well as execution policies to allow for virtual environment activation in the terminal.
 
 > **Note**: If there was an existing version of Visual Studio Code installed on your machine, your settings.json will not be overwritten and you’ll need to configure Python settings yourself.
 
-Manual installation
--------------------
+## Manual installation
 
 If you have any problems during installation, the following manual steps can be used to complete your installation.
 
@@ -128,8 +124,7 @@ To help you get started quickly, the Coding Pack for Python sets a few key setti
 2.  If a terminal is not already opened, select Terminal &gt; New Terminal from the main toolbar
 3.  Once the terminal has opened, enter the following command: `Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned`
 
-Uninstalling the Coding Pack for Python
----------------------------------------
+## Uninstalling the Coding Pack for Python
 
 If you need to uninstall (or repair) your Coding Pack for Python installation, you can use the following steps.
 

@@ -1,10 +1,8 @@
-Working with JavaScript
-=======================
+# Working with JavaScript
 
 This topic describes some of the advanced JavaScript features supported by Visual Studio Code. Using the TypeScript language service, VS Code can provide smart completions (IntelliSense) as well as type checking for JavaScript.
 
-IntelliSense
-------------
+## IntelliSense
 
 Visual Studio Code’s JavaScript [IntelliSense](/docs/editor/intellisense.md) provides intelligent code completion, parameter info, references search, and many other advanced language features. Our JavaScript IntelliSense is powered by the [JavaScript language service](https://github.com/microsoft/TypeScript/wiki/JavaScript-Language-Service-in-Visual-Studio) developed by the TypeScript team. While IntelliSense should just work for most JavaScript projects without any configuration, you can make IntelliSense even more useful with [JSDoc](/docs/languages/javascript.md#jsdoc-support) or by configuring a `jsconfig.json` project.
 
@@ -60,14 +58,13 @@ For example, on Windows, you would add a path like this to your `settings.json` 
       "typescript.npm": "C:\\Program Files\\nodejs\\npm.cmd"
     }
 
-JavaScript projects (jsconfig.json)
------------------------------------
+## JavaScript projects (jsconfig.json)
 
 The presence of a [jsconfig.json](/docs/languages/jsconfig.md) file in a directory indicates that the directory is the root of a JavaScript project. `jsconfig.json` specifies the root files and the options for the language features provided by the [JavaScript language service](https://github.com/microsoft/TypeScript/wiki/JavaScript-Language-Service-in-Visual-Studio). For common setups, a `jsconfig.json` file is not required, however, there are situations when you will want to add a `jsconfig.json`.
 
--   Not all files should be in your JavaScript project (for example, you want to exclude some files from showing IntelliSense). This situation is common with front-end and back-end code.
--   Your workspace contains more than one project context. In this situation, you should add a `jsconfig.json` file at the root folder for each project.
--   You are using the TypeScript compiler to down-level compile JavaScript source code.
+- Not all files should be in your JavaScript project (for example, you want to exclude some files from showing IntelliSense). This situation is common with front-end and back-end code.
+- Your workspace contains more than one project context. In this situation, you should add a `jsconfig.json` file at the root folder for each project.
+- You are using the TypeScript compiler to down-level compile JavaScript source code.
 
 ### Location of jsconfig.json
 
@@ -122,8 +119,7 @@ It is possible to have mixed TypeScript and JavaScript projects. To start migrat
 
 > **Note:** `jsconfig.json` is the same as a `tsconfig.json` file, only with `allowJs` set to true. See [the documentation for `tsconfig.json`](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html) here to see other available options.
 
-Type checking JavaScript
-------------------------
+## Type checking JavaScript
 
 VS Code allows you to leverage some of TypeScript’s advanced type checking and error reporting functionality in regular JavaScript files. This is a great way to catch common programming mistakes. These type checks also enable some exciting [Quick Fixes]() for JavaScript, including **Add missing import** and **Add missing property**.
 
@@ -236,8 +232,7 @@ Now create a `globals.d.ts` file somewhere your workspace:
 
 `d.ts` files are type declarations. In this case, `globals.d.ts` lets TypeScript know that a global `CAN_NOTIFY` exists and that a `webkitNotifications` property exists on `window`. You can read more about writing `d.ts` in the [TypeScript documentation](https://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html). `d.ts` files do not change how JavaScript is evaluated, they are used only for providing better JavaScript language support.
 
-Using tasks
------------
+## Using tasks
 
 ### Using the TypeScript compiler
 
@@ -269,8 +264,7 @@ Once you have added this, you can start **Babel** with the `kb(workbench.action.
 
 > **Tip:** For help with Babel CLI, see the instructions in [Using Babel](https://babeljs.io/docs/setup/#installation). The example above uses the CLI option.
 
-Disable JavaScript support
---------------------------
+## Disable JavaScript support
 
 If you prefer to use JavaScript language features supported by other JavaScript language tools such as [Flow](https://flow.org/), you can disable VS Code’s built-in JavaScript support. You do this by disabling the built-in TypeScript language extension **TypeScript and JavaScript Language Features** (vscode.typescript-language-features) which also provides the JavaScript language support.
 

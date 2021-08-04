@@ -1,12 +1,10 @@
-Using Ember in Visual Studio Code
-=================================
+# Using Ember in Visual Studio Code
 
 [Ember](https://emberjs.com/) is a popular JavaScript framework for building web application user interfaces. The Visual Studio Code editor supports Ember.js IntelliSense and code navigation out of the box.
 
 ![Welcome to app](images/emberjs/tomster-logo.png)
 
-Welcome to Ember
-----------------
+## Welcome to Ember
 
 We’ll be using the [Ember CLI](https://ember-cli.com/) for this tutorial. To install and use the command line interface as well as run the Ember.js application server, you’ll need the [Node.js](https://nodejs.org/) JavaScript runtime and [npm](https://www.npmjs.com/) (the Node.js package manager) installed. npm is included with Node.js which you can install from [Node.js downloads](https://nodejs.org/en/download/).
 
@@ -42,8 +40,7 @@ Now expand the `app` folder and select the `app.js` file. You’ll notice that V
 
 ![react bracket matching](images/emberjs/bracket-matching.png)
 
-IntelliSense
-------------
+## IntelliSense
 
 As you start typing in `app.js`, you’ll see smart suggestions or completions.
 
@@ -67,15 +64,13 @@ Through the TypeScript language service, VS Code can also provide type definitio
 
 Press `kbstyle(Escape)` to close the Peek window.
 
-Extensions
-----------
+## Extensions
 
 The VS Code Marketplace has many community created extensions for Ember.js development which add features like code snippets and advanced code suggestions. You can search in the Extensions view (`kb(workbench.view.extensions)`) by typing ‘ember’.
 
 ![Ember.js extensions](images/emberjs/ember-extensions.png)
 
-Common questions
-----------------
+## Common questions
 
 ### Can I debug Ember client side code with VS Code?
 

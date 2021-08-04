@@ -1,5 +1,4 @@
-Office Add-ins with Visual Studio Code
-======================================
+# Office Add-ins with Visual Studio Code
 
 [Office Add-ins](https://docs.microsoft.com/office/dev/add-ins/overview/office-add-ins) run inside an Office application and can interact with contents of the Office document using the rich JavaScript API.
 
@@ -7,8 +6,7 @@ Office Add-ins with Visual Studio Code
 
 Under the hood, an Office Add-in is just a web app that you can host anywhere. Using a `manifest.xml` file, you tell the Office application where your web app is located and how you want it to appear. The Office application takes care of hosting it within Office.
 
-Create a new Office Add-in project
-----------------------------------
+## Create a new Office Add-in project
 
 First follow the instructions to [Create an Office Add-in using any editor](https://developer.microsoft.com/office/blogs/creating-office-add-ins-with-any-editor-introducing-yo-office) to install the necessary prerequisites, and use the Yeoman generator `yo office` to create a new add-in project.
 
@@ -16,8 +14,7 @@ The following table lists the project attributes to select in the Yeoman generat
 
 <table><thead><tr class="header"><th style="text-align: left;">Option</th><th style="text-align: left;">Value</th></tr></thead><tbody><tr class="odd"><td style="text-align: left;">New subfolder</td><td style="text-align: left;">(Accept the default)</td></tr><tr class="even"><td style="text-align: left;">Add-in name</td><td style="text-align: left;">Outlook Add-in</td></tr><tr class="odd"><td style="text-align: left;">Supported Office application</td><td style="text-align: left;">(Select Outlook)</td></tr><tr class="even"><td style="text-align: left;">Create new add-in</td><td style="text-align: left;">Yes, I want a new add-in</td></tr><tr class="odd"><td style="text-align: left;">Add <a href="https://www.typescriptlang.org/">TypeScript</a></td><td style="text-align: left;">No</td></tr><tr class="even"><td style="text-align: left;">Choose framework</td><td style="text-align: left;">Jquery</td></tr></tbody></table>
 
-Use Visual Studio Code to develop your Office Add-in
-----------------------------------------------------
+## Use Visual Studio Code to develop your Office Add-in
 
 Visual Studio Code is a great tool to help you develop your custom Office Add-ins for Outlook, Word, Excel, PowerPoint, regardless of whether the Add-ins run in web clients, Windows clients, iOS clients or on macOS!
 
@@ -39,8 +36,7 @@ VS Code does not currently support client-side debugging. To debug your client-s
 
 If you are using Node.js or [ASP.NET Core](https://asp.net) for server-side logic that supports your Office Add-in, refer to the [Debugging](/docs/editor/debugging.md) page to configure VS Code for debugging either of these runtimes.
 
-Install the Add-in
-------------------
+## Install the Add-in
 
 Office Add-ins must be installed, or registered, with the Office application in order to load. This is done using the `manifest.xml` file you modified earlier.
 
@@ -88,17 +84,15 @@ To install an Add-in within an Office application, select the **Insert** tab and
 
 You can select Add-ins you’ve uploaded to your Office 365 tenancy’s App Catalog using the Office Add-ins dialog (listed under **My Organization**) or acquire Add-ins from the Office Store.
 
-Next steps
-----------
+## Next steps
 
 Check out the other pages on the VS Code site to find out how you can use more capabilities of the editor when creating custom Office Add-ins:
 
--   [Language Overview](/docs/languages/overview.md) - You can write Office Add-ins in many languages. Find out what VS Code has to offer.
--   [User Interface](/docs/getstarted/userinterface.md) - Just starting out with VS Code? This is worth reviewing.
--   [Basic Editing](/docs/editor/codebasics.md) - Learn about the powerful VS Code editor.
+- [Language Overview](/docs/languages/overview.md) - You can write Office Add-ins in many languages. Find out what VS Code has to offer.
+- [User Interface](/docs/getstarted/userinterface.md) - Just starting out with VS Code? This is worth reviewing.
+- [Basic Editing](/docs/editor/codebasics.md) - Learn about the powerful VS Code editor.
 
-Common questions
-----------------
+## Common questions
 
 ### Can I create an Office Add-in with the generator and use VS Code regardless of the language or client-side framework?
 

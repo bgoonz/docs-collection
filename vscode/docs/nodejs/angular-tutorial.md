@@ -1,12 +1,10 @@
-Using Angular in Visual Studio Code
-===================================
+# Using Angular in Visual Studio Code
 
 [Angular](https://angular.io/) is a popular JavaScript library developed by Google for building web application user interfaces. The Visual Studio Code editor supports Angular IntelliSense and code navigation out of the box.
 
 ![Welcome to app](images/angular/Welcome-to-app.png)
 
-Welcome to Angular
-------------------
+## Welcome to Angular
 
 We’ll be using the [Angular CLI](https://cli.angular.io/) for this tutorial. To install and use the command line interface as well as run the Angular application server, you’ll need the [Node.js](https://nodejs.org/) JavaScript runtime and [npm](https://www.npmjs.com/) (the Node.js package manager) installed. npm is included with Node.js which you can install from [Node.js downloads](https://nodejs.org/en/download/).
 
@@ -64,8 +62,7 @@ Through the TypeScript language service, VS Code can also provide type definitio
 
 Press `kbstyle(Escape)` to close the Peek window.
 
-Hello World!
-------------
+## Hello World!
 
 Let’s update the sample application to “Hello World”. Go back to the `app.component.ts` file and change the `title` string in `AppComponent` to “Hello World”.
 
@@ -86,8 +83,7 @@ Once you save the `app.component.ts` file, the running instance of the server wi
 
 ![hello world](images/angular/hello-world.png)
 
-Debugging Angular
------------------
+## Debugging Angular
 
 To debug the client side Angular code, we’ll use the built-in JavaScript debugger.
 
@@ -128,8 +124,7 @@ You can step through your source code (`kb(workbench.action.debug.stepOver)`), i
 
 For more information about the debugger and its available options, check out our documentation on [browser debugging](/docs/nodejs/browser-debugging.md).
 
-Popular Starter Kits
---------------------
+## Popular Starter Kits
 
 In this tutorial, we used the Angular CLI to create a simple Angular application. There are lots of great samples and starter kits available to help build your first Angular application.
 
@@ -145,8 +140,7 @@ If you’d like to see a full MEAN (MongoDB, Express, Angular, Node.js) stack ex
 
 [React](https://facebook.github.io/react/) is another popular web framework. If you’d like to see an example of React working with VS Code, check out the [Using React in VS Code](/docs/nodejs/reactjs-tutorial.md) tutorial. It will walk you through creating an React application and configuring the `launch.json` file for the JavaScript debugger.
 
-Angular Extensions
-------------------
+## Angular Extensions
 
 In addition to the functionality, VS Code provides out of the box, you can install VS Code extensions for greater functionality.
 

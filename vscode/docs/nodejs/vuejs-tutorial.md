@@ -1,16 +1,14 @@
-Using Vue in Visual Studio Code
-===============================
+# Using Vue in Visual Studio Code
 
 [Vue.js](https://vuejs.org/) is a popular JavaScript library for building web application user interfaces and Visual Studio Code has built-in support for the Vue.js building blocks of [HTML](/docs/languages/html.md), [CSS](/docs/languages/css.md), and [JavaScript](/docs/languages/javascript.md). For a richer Vue.js development environment, you can install the [Vetur](https://marketplace.visualstudio.com/items?itemName=octref.vetur) extension which supports Vue.js IntelliSense, code snippets, formatting, and more.
 
-------------------------------------------------------------------------
+---
 
 ![welcome to Vue](images/vuejs/welcome-to-vue.png)
 
-------------------------------------------------------------------------
+---
 
-Welcome to Vue
---------------
+## Welcome to Vue
 
 We’ll be using the [Vue CLI](https://cli.vuejs.org/) for this tutorial. If you are new to the Vue.js framework, you can find great documentation and tutorials on the [vuejs.org](https://vuejs.org) website.
 
@@ -42,8 +40,7 @@ To open your Vue application in VS Code, from a terminal (or command prompt), na
 
 VS Code will launch and display your Vue application in the File Explorer.
 
-Vetur extension
----------------
+## Vetur extension
 
 Now expand the `src` folder and select the `App.vue` file. You’ll notice that VS Code doesn’t show any syntax highlighting and it treats the file as **Plain Text** as you can see in the lower right Status Bar. You’ll also see a notification recommending the [Vetur](https://marketplace.visualstudio.com/items?itemName=octref.vetur) extension for the `.vue` file type.
 
@@ -59,8 +56,7 @@ Now you should see that `.vue` is a recognized file type for the Vue language an
 
 ![vue language features](images/vuejs/vue-language-features.png)
 
-IntelliSense
-------------
+## IntelliSense
 
 As you start typing in `App.vue`, you’ll see smart suggestions or completions both for HTML and CSS but also for Vue.js specific items like declarations (`v-bind`, `v-for`) in the Vue `template` section:
 
@@ -78,8 +74,7 @@ VS Code through the Vue extension language service can also provide type definit
 
 Press `kbstyle(Escape)` to close the Peek window.
 
-Hello World!
-------------
+## Hello World!
 
 Let’s update the sample application to “Hello World!”. In `App.vue` replace the HelloWorld component `msg` custom attribute text with “Hello World!”.
 
@@ -94,14 +89,13 @@ Once you save the `App.vue` file (`kb(workbench.action.files.save)`), restart th
 
 > **Tip**: VS Code supports Auto Save, which by default saves your files after a delay. Check the **Auto Save** option in the **File** menu to turn on Auto Save or directly configure the `files.autoSave` user [setting](/docs/getstarted/settings.md).
 
-------------------------------------------------------------------------
+---
 
 ![hello world](images/vuejs/hello-world.png)
 
-------------------------------------------------------------------------
+---
 
-Linting
--------
+## Linting
 
 Linters analyze your source code and can warn you about potential problems before you run your application. The Vue ESLint plugin ([eslint-plugin-vue](https://www.npmjs.com/package/eslint-plugin-vue)) checks for Vue.js specific syntax errors which are shown in the editor as red squigglies and are also displayed in the **Problems** panel (**View** &gt; **Problems** `kb(workbench.actions.view.problems)`).
 
@@ -109,8 +103,7 @@ Below you can see an error when the Vue linter detects more than one root elemen
 
 ![Vue linting](images/vuejs/vue-linting.png)
 
-Debugging
----------
+## Debugging
 
 You can debug client side Vue.js code with the built-in JavaSCript debugger. You can learn more from the [Vue.js debugging in VS Code](https://github.com/microsoft/vscode-recipes/tree/main/vuejs-cli) recipe on the VS Code debugging [recipes](https://github.com/microsoft/vscode-recipes) site.
 
@@ -118,8 +111,7 @@ You can debug client side Vue.js code with the built-in JavaSCript debugger. You
 
 Another popular tool for debugging Vue.js is the [vue-devtools](https://github.com/vuejs/vue-devtools) plug-in.
 
-Other extensions
-----------------
+## Other extensions
 
 Vetur is only one of many Vue.js extensions available for VS Code. You can search in the Extensions view (`kb(workbench.view.extensions)`) by typing ‘vue’.
 

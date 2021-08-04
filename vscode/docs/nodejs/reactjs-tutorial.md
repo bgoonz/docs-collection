@@ -1,12 +1,10 @@
-Using React in Visual Studio Code
-=================================
+# Using React in Visual Studio Code
 
 [React](https://facebook.github.io/react/) is a popular JavaScript library developed by Facebook for building web application user interfaces. The Visual Studio Code editor supports React.js IntelliSense and code navigation out of the box.
 
 ![Welcome to React](images/reactjs/welcome-to-react.png)
 
-Welcome to React
-----------------
+## Welcome to React
 
 We’ll be using the `create-react-app` [generator](https://reactjs.org/docs/create-a-new-react-app.html#create-react-app) for this tutorial. To use the generator as well as run the React application server, you’ll need [Node.js](https://nodejs.org/) JavaScript runtime and [npm](https://www.npmjs.com/) (Node.js package manager) installed. npm is included with Node.js which you can download and install from [Node.js downloads](https://nodejs.org/en/download/).
 
@@ -68,8 +66,7 @@ Through the TypeScript language service, VS Code can also provide type definitio
 
 Press `kbstyle(Escape)` to close the Peek window.
 
-Hello World!
-------------
+## Hello World!
 
 Let’s update the sample application to “Hello World!”. Create a new H1 header with “Hello, world!” and replace the `<App />` tag in `ReactDOM.render` with `element`.
 
@@ -90,8 +87,7 @@ Once you save the `index.js` file, the running instance of the server will updat
 
 ![Hello, world](images/reactjs/hello-world.png)
 
-Debugging React
----------------
+## Debugging React
 
 To debug the client side React code, we’ll use the built-in JavaScript debugger.
 
@@ -136,8 +132,7 @@ For more information about the debugger and its available options, check out our
 
 If you are using [webpack](https://webpack.js.org/) together with your React app, you can have a more efficient workflow by taking advantage of webpack’s HMR mechanism which enables you to have live editing and debugging directly from VS Code. You can learn more in this [Live edit and debug your React apps directly from VS Code](https://medium.com/@auchenberg/live-edit-and-debug-your-react-apps-directly-from-vs-code-without-leaving-the-editor-3da489ed905f) blog post and the [webpack Hot Module Replacement documentation](https://webpack.js.org/concepts/hot-module-replacement/).
 
-Linting
--------
+## Linting
 
 Linters analyze your source code and can warn you about potential problems before you run your application. The JavaScript language services included with VS Code has syntax error checking support by default, which you can see in action in the **Problems** panel (**View** &gt; **Problems** `kb(workbench.actions.view.problems)`).
 
@@ -200,8 +195,7 @@ Now when you mistakenly have multiple semicolons on a line, you’ll see an erro
 
 ![Extra semicolon error](images/reactjs/extra-semi-error.png)
 
-Popular Starter Kits
---------------------
+## Popular Starter Kits
 
 In this tutorial, we used the `create-react-app` generator to create a simple React application. There are lots of great samples and starter kits available to help build your first React application.
 
@@ -221,8 +215,7 @@ See the details at [Adding TypeScript](https://create-react-app.dev/docs/adding-
 
 [Angular](https://angular.io/) is another popular web framework. If you’d like to see an example of Angular working with VS Code, check out the [Debugging with Angular CLI](https://github.com/microsoft/vscode-recipes/tree/main/Angular-CLI) recipe. It will walk you through creating an Angular application and configuring the `launch.json` file for the JavaScript debugger.
 
-Common questions
-----------------
+## Common questions
 
 ### Can I get IntelliSense within declarative JSX?
 
