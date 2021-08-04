@@ -1,15 +1,16 @@
 ---
-title: 'Error: SSL certificate problem, verify that the CA cert is OK'
-intro: 'This error means your CA root certificate is out of date. If your CA root certificate needs to be updated, you won''t be able to push or pull from {% data variables.product.product_name %} repositories.'
+title: "Error: SSL certificate problem, verify that the CA cert is OK"
+intro: "This error means your CA root certificate is out of date. If your CA root certificate needs to be updated, you won't be able to push or pull from {% data variables.product.product_name %} repositories."
 redirect_from:
   - /articles/error-ssl-certificate-problem-verify-that-the-ca-cert-is-ok
   - /github/authenticating-to-github/error-ssl-certificate-problem-verify-that-the-ca-cert-is-ok
 versions:
-  fpt: '*'
+  fpt: "*"
 topics:
   - SSH
 shortTitle: SSL certificate problem
 ---
+
 The error you receive may look like the following:
 
 ```shell

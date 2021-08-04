@@ -1,10 +1,10 @@
 ---
 title: Automating Dependabot with GitHub Actions
-intro: 'Examples of how you can use {% data variables.product.prodname_actions %} to automate common {% data variables.product.prodname_dependabot %} related tasks.'
-permissions: 'People with write permissions to a repository can configure {% data variables.product.prodname_actions %} to respond to {% data variables.product.prodname_dependabot %}-created pull requests.'
+intro: "Examples of how you can use {% data variables.product.prodname_actions %} to automate common {% data variables.product.prodname_dependabot %} related tasks."
+permissions: "People with write permissions to a repository can configure {% data variables.product.prodname_actions %} to respond to {% data variables.product.prodname_dependabot %}-created pull requests."
 miniTocMaxHeadingLevel: 3
 versions:
-  free-pro-team: '*'
+  free-pro-team: "*"
 type: how_to
 topics:
   - Actions
@@ -39,11 +39,11 @@ If your workflow needs access to secrets or a `GITHUB_TOKEN` with write permissi
 Below is a simple example of a `pull_request` workflow that might now be failing:
 
 {% raw %}
+
 ```yaml
 ### This workflow now has no secrets and a read-only token
 name: Dependabot Workflow
-on:
-  pull_request
+on: pull_request
 
 jobs:
   dependabot:
@@ -53,6 +53,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 ```
+
 {% endraw %}
 
 You can replace `pull_request` with `pull_request_target`, which is used for pull requests from forks, and explicitly check out the pull request `HEAD`.
@@ -64,12 +65,12 @@ You can replace `pull_request` with `pull_request_target`, which is used for pul
 {% endwarning %}
 
 {% raw %}
+
 ```yaml
 ### This workflow has access to secrets and a read-write token
 name: Dependabot Workflow
-on:
-  pull_request_target
-  
+on: pull_request_target
+
 permissions:
   # Downscope as necessary, since you now have a read-write token
 
@@ -84,6 +85,7 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
 ```
+
 {% endraw %}
 
 It is also strongly recommended that you downscope the permissions granted to the `GITHUB_TOKEN` in order to avoid leaking a token with more privilege than necessary. For more information, see "[Permissions for the `GITHUB_TOKEN`](/actions/reference/authentication-in-a-workflow#permissions-for-the-github_token)."
@@ -95,11 +97,11 @@ As there is no `pull_request_target` equivalent for `push` events, you will have
 The first workflow performs any untrusted work:
 
 {% raw %}
+
 ```yaml
 ### This workflow doesn't have access to secrets and has a read-only token
 name: Dependabot Untrusted Workflow
-on:
-  push
+on: push
 
 jobs:
   check-dependabot:
@@ -108,18 +110,20 @@ jobs:
     steps:
       - uses: ...
 ```
+
 {% endraw %}
 
 The second workflow performs trusted work after the first workflow completes successfully:
 
 {% raw %}
+
 ```yaml
 ### This workflow has access to secrets and a read-write token
 name: Dependabot Trusted Workflow
 on:
   workflow_run:
     workflows: ["Dependabot Untrusted Workflow"]
-    types: 
+    types:
       - completed
 
 permissions:
@@ -132,6 +136,7 @@ jobs:
     steps:
       - uses: ...
 ```
+
 {% endraw %}
 
 ### Manually re-running a workflow
@@ -149,6 +154,7 @@ A large amount of automation requires knowing information about the contents of 
 The `dependabot/fetch-metadata` action provides all that information for you:
 
 {% raw %}
+
 ```yaml
 name: Dependabot auto-label
 on: pull_request_target
@@ -171,8 +177,9 @@ jobs:
       # The following properties are now available:
       #  - steps.metadata.outputs.dependency-names
       #  - steps.metadata.outputs.dependency-type
-      #  - steps.metadata.outputs.update-type      
+      #  - steps.metadata.outputs.update-type
 ```
+
 {% endraw %}
 
 For more information, see the [`dependabot/fetch-metadata`](https://github.com/dependabot/fetch-metadata) repository.
@@ -184,6 +191,7 @@ If you have other automation or triage workflows based on {% data variables.prod
 For example, if you want to flag all production dependency updates with a label:
 
 {% raw %}
+
 ```yaml
 name: Dependabot auto-label
 on: pull_request_target
@@ -209,6 +217,7 @@ jobs:
         env:
           PR_URL: ${{github.event.pull_request.html_url}}
 ```
+
 {% endraw %}
 
 ### Approve a pull request
@@ -216,6 +225,7 @@ jobs:
 If you want to automatically approve Dependabot pull requests, you can use the {% data variables.product.prodname_cli %} in a workflow:
 
 {% raw %}
+
 ```yaml
 name: Dependabot auto-approve
 on: pull_request_target
@@ -239,6 +249,7 @@ jobs:
           PR_URL: ${{github.event.pull_request.html_url}}
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 ```
+
 {% endraw %}
 
 ### Enable auto-merge on a pull request
@@ -248,6 +259,7 @@ If you want to auto-merge your pull requests, you can use {% data variables.prod
 Here is an example of enabling auto-merge for all patch updates to `my-dependency`:
 
 {% raw %}
+
 ```yaml
 name: Dependabot auto-merge
 on: pull_request_target
@@ -273,6 +285,7 @@ jobs:
           PR_URL: ${{github.event.pull_request.html_url}}
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 ```
+
 {% endraw %}
 
 ## Troubleshooting failed workflow runs

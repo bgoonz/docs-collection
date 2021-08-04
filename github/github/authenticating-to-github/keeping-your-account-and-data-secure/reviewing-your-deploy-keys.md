@@ -5,19 +5,18 @@ redirect_from:
   - /articles/reviewing-your-deploy-keys
   - /github/authenticating-to-github/reviewing-your-deploy-keys
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Identity
   - Access management
 shortTitle: Deploy keys
 ---
+
 {% data reusables.repositories.navigate-to-repo %}
-{% data reusables.repositories.sidebar-settings %}
-3. In the left sidebar, click **Deploy keys**.
-![Deploy keys setting](/assets/images/help/settings/settings-sidebar-deploy-keys.png)
-4. On the Deploy keys page, take note of the deploy keys associated with your account. For those that you don't recognize, or that are out-of-date, click **Delete**. If there are valid deploy keys you'd like to keep, click **Approve**.
-	![Deploy key list](/assets/images/help/settings/settings-deploy-key-review.png)
+{% data reusables.repositories.sidebar-settings %} 3. In the left sidebar, click **Deploy keys**.
+![Deploy keys setting](/assets/images/help/settings/settings-sidebar-deploy-keys.png) 4. On the Deploy keys page, take note of the deploy keys associated with your account. For those that you don't recognize, or that are out-of-date, click **Delete**. If there are valid deploy keys you'd like to keep, click **Approve**.
+![Deploy key list](/assets/images/help/settings/settings-deploy-key-review.png)
 
 For more information, see "[Managing deploy keys](/guides/managing-deploy-keys)."

@@ -1,6 +1,6 @@
 ---
 title: Requirements for listing an app
-intro: 'Apps on {% data variables.product.prodname_marketplace %} must meet the requirements outlined on this page before the listing can be published.'
+intro: "Apps on {% data variables.product.prodname_marketplace %} must meet the requirements outlined on this page before the listing can be published."
 redirect_from:
   - /apps/adding-integrations/listing-apps-on-github-marketplace/requirements-for-listing-an-app-on-github-marketplace/
   - /apps/marketplace/listing-apps-on-github-marketplace/requirements-for-listing-an-app-on-github-marketplace/
@@ -10,11 +10,12 @@ redirect_from:
   - /marketplace/getting-started/requirements-for-listing-an-app-on-github-marketplace
   - /developers/github-marketplace/requirements-for-listing-an-app
 versions:
-  fpt: '*'
+  fpt: "*"
 topics:
   - Marketplace
 shortTitle: Listing requirements
 ---
+
 <!--UI-LINK: Displayed as a link on the https://github.com/marketplace/new page.-->
 
 The requirements for listing an app on {% data variables.product.prodname_marketplace %} vary according to whether you want to offer a free or a paid app.
@@ -47,7 +48,7 @@ To protect your customers, we recommend that you also follow security best pract
 
 ## Considerations for free apps
 
-{% data reusables.marketplace.free-apps-encouraged %} 
+{% data reusables.marketplace.free-apps-encouraged %}
 
 ## Requirements for paid apps
 

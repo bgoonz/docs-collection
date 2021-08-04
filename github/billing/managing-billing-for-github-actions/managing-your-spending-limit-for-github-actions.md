@@ -1,12 +1,12 @@
 ---
 title: Managing your spending limit for GitHub Actions
-intro: 'You can set a spending limit for {% data variables.product.prodname_actions %} usage.'
-product: '{% data reusables.gated-features.actions %}'
+intro: "You can set a spending limit for {% data variables.product.prodname_actions %} usage."
+product: "{% data reusables.gated-features.actions %}"
 redirect_from:
   - /github/setting-up-and-managing-billing-and-payments-on-github/managing-your-spending-limit-for-github-actions
   - /github/setting-up-and-managing-billing-and-payments-on-github/managing-billing-for-github-actions/managing-your-spending-limit-for-github-actions
 versions:
-  fpt: '*'
+  fpt: "*"
 type: how_to
 topics:
   - Actions
@@ -16,6 +16,7 @@ topics:
   - User account
 shortTitle: Spending limits for Actions
 ---
+
 ## About spending limits for {% data variables.product.prodname_actions %}
 
 {% data reusables.github-actions.actions-billing %}
@@ -56,7 +57,8 @@ Enterprise owners and billing managers can manage the spending limit for {% data
 {% data reusables.enterprise-accounts.access-enterprise %}
 {% data reusables.enterprise-accounts.settings-tab %}
 {% data reusables.enterprise-accounts.billing-tab %}
+
 1. Above "{% data variables.product.prodname_actions %} and Packages monthly usage", click **Spending Limit**.
-  ![Spending limit tab](/assets/images/help/settings/spending-limit-tab-enterprise.png)
-{% data reusables.dotcom_billing.monthly-spending-limit %}
-{% data reusables.dotcom_billing.update-spending-limit %}
+   ![Spending limit tab](/assets/images/help/settings/spending-limit-tab-enterprise.png)
+   {% data reusables.dotcom_billing.monthly-spending-limit %}
+   {% data reusables.dotcom_billing.update-spending-limit %}

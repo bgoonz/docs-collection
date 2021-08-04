@@ -1,6 +1,6 @@
 ---
 title: Upgrading your GitHub subscription
-intro: 'You can upgrade the subscription for any type of {% data variables.product.product_name %} account at any time.'
+intro: "You can upgrade the subscription for any type of {% data variables.product.product_name %} account at any time."
 redirect_from:
   - /github/setting-up-and-managing-billing-and-payments-on-github/upgrading-your-github-subscription
   - /articles/upgrading-your-personal-account-s-billing-plan/
@@ -20,7 +20,7 @@ redirect_from:
   - /articles/upgrading-your-github-subscription
   - /github/setting-up-and-managing-billing-and-payments-on-github/managing-billing-for-your-github-account/upgrading-your-github-subscription
 versions:
-  fpt: '*'
+  fpt: "*"
 type: how_to
 topics:
   - Organizations
@@ -29,19 +29,21 @@ topics:
   - User account
 shortTitle: Upgrade your subscription
 ---
+
 ## Upgrading your personal account's subscription
 
 You can upgrade your personal account from {% data variables.product.prodname_free_user %} to {% data variables.product.prodname_pro %} to get advanced code review tools on private repositories. {% data reusables.gated-features.more-info %}
 
 {% data reusables.user_settings.access_settings %}
 {% data reusables.user_settings.billing_plans %}
+
 1. Next to "Current plan", click **Upgrade**.
-  ![Upgrade button](/assets/images/help/billing/settings_billing_user_upgrade.png)
+   ![Upgrade button](/assets/images/help/billing/settings_billing_user_upgrade.png)
 2. Under "Pro" on the "Compare plans" page, click **Upgrade to Pro**.
-{% data reusables.dotcom_billing.choose-monthly-or-yearly-billing %}
-{% data reusables.dotcom_billing.show-plan-details %}
-{% data reusables.dotcom_billing.enter-payment-info %}
-{% data reusables.dotcom_billing.finish_upgrade %}
+   {% data reusables.dotcom_billing.choose-monthly-or-yearly-billing %}
+   {% data reusables.dotcom_billing.show-plan-details %}
+   {% data reusables.dotcom_billing.enter-payment-info %}
+   {% data reusables.dotcom_billing.finish_upgrade %}
 
 ## Upgrading your organization's subscription
 
@@ -77,11 +79,9 @@ If you'd like additional users to have access to your {% data variables.product.
 
 {% data reusables.dotcom_billing.switch-legacy-billing %} For more information, see "[About per-user pricing](/articles/about-per-user-pricing)."
 
-{% data reusables.organizations.billing-settings %}
-5. To the right of your plan name, use the **Edit** drop-down menu, and select **Edit plan**.
-  ![Edit drop-down menu](/assets/images/help/billing/per-user-upgrade-button.png)
-6. To the right of "Advanced tools for teams", click **Upgrade now**.
-  ![Upgrade now button](/assets/images/help/billing/per-user-upgrade-now-button.png)
+{% data reusables.organizations.billing-settings %} 5. To the right of your plan name, use the **Edit** drop-down menu, and select **Edit plan**.
+![Edit drop-down menu](/assets/images/help/billing/per-user-upgrade-button.png) 6. To the right of "Advanced tools for teams", click **Upgrade now**.
+![Upgrade now button](/assets/images/help/billing/per-user-upgrade-now-button.png)
 {% data reusables.dotcom_billing.choose_org_plan %}
 {% data reusables.dotcom_billing.choose-monthly-or-yearly-billing %}
 {% data reusables.dotcom_billing.owned_by_business %}

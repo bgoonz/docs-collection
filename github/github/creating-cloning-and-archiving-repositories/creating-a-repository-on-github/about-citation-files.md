@@ -1,18 +1,20 @@
 ---
 title: About CITATION files
-intro: 'You can add a CITATION file to your repository to help users correctly cite your software.'
+intro: "You can add a CITATION file to your repository to help users correctly cite your software."
 versions:
-  fpt: '*'
-  ghes: '>=3.3'
-  ghae: 'issue-4651'
+  fpt: "*"
+  ghes: ">=3.3"
+  ghae: "issue-4651"
 topics:
   - Repositories
 ---
+
 ## About CITATION files
 
-You can add a `CITATION.cff` file to the root of a repository to let others know how you would like them to cite your work. The citation file format is plain text with human- and machine-readable citation information. 
+You can add a `CITATION.cff` file to the root of a repository to let others know how you would like them to cite your work. The citation file format is plain text with human- and machine-readable citation information.
 
 Example CITATION.cff:
+
 ```
 cff-version: 1.2.0
 message: "If you use this software, please cite it as below."

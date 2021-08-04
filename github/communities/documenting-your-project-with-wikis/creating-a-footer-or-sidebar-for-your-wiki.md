@@ -6,11 +6,11 @@ redirect_from:
   - /articles/creating-a-sidebar/
   - /articles/creating-a-footer-or-sidebar-for-your-wiki
   - /github/building-a-strong-community/creating-a-footer-or-sidebar-for-your-wiki
-product: '{% data reusables.gated-features.wikis %}'
+product: "{% data reusables.gated-features.wikis %}"
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Community
 shortTitle: Create footer or sidebar
@@ -19,26 +19,18 @@ shortTitle: Create footer or sidebar
 ## Creating a footer
 
 {% data reusables.repositories.navigate-to-repo %}
-{% data reusables.repositories.sidebar-wiki %}
-3. At the bottom of the page, click **Add a custom footer**.
-  ![Wiki add footer section](/assets/images/help/wiki/wiki_add_footer.png)
-4. Use the text editor to type the content you want your footer to have.
-  ![Wiki WYSIWYG](/assets/images/help/wiki/wiki-footer.png)
-5. Enter a commit message describing the footer you’re adding.
-  ![Wiki commit message](/assets/images/help/wiki/wiki_commit_message.png)
-6. To commit your changes to the wiki, click **Save Page**.
+{% data reusables.repositories.sidebar-wiki %} 3. At the bottom of the page, click **Add a custom footer**.
+![Wiki add footer section](/assets/images/help/wiki/wiki_add_footer.png) 4. Use the text editor to type the content you want your footer to have.
+![Wiki WYSIWYG](/assets/images/help/wiki/wiki-footer.png) 5. Enter a commit message describing the footer you’re adding.
+![Wiki commit message](/assets/images/help/wiki/wiki_commit_message.png) 6. To commit your changes to the wiki, click **Save Page**.
 
 ## Creating a sidebar
 
 {% data reusables.repositories.navigate-to-repo %}
-{% data reusables.repositories.sidebar-wiki %}
-3. Click **Add a custom sidebar**.
-  ![Wiki add sidebar section](/assets/images/help/wiki/wiki_add_sidebar.png)
-4. Use the text editor to add your page's content.
-  ![Wiki WYSIWYG](/assets/images/help/wiki/wiki-sidebar.png)
-5. Enter a commit message describing the sidebar you’re adding.
-  ![Wiki commit message](/assets/images/help/wiki/wiki_commit_message.png)
-6. To commit your changes to the wiki, click **Save Page**.
+{% data reusables.repositories.sidebar-wiki %} 3. Click **Add a custom sidebar**.
+![Wiki add sidebar section](/assets/images/help/wiki/wiki_add_sidebar.png) 4. Use the text editor to add your page's content.
+![Wiki WYSIWYG](/assets/images/help/wiki/wiki-sidebar.png) 5. Enter a commit message describing the sidebar you’re adding.
+![Wiki commit message](/assets/images/help/wiki/wiki_commit_message.png) 6. To commit your changes to the wiki, click **Save Page**.
 
 ## Creating a footer or sidebar locally
 

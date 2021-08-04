@@ -1,8 +1,8 @@
 ---
 title: About dependency review
-intro: 'Dependency review lets you catch vulnerable dependencies before you introduce them to your environment, and provides information on license, dependents, and age of dependencies.'
+intro: "Dependency review lets you catch vulnerable dependencies before you introduce them to your environment, and provides information on license, dependents, and age of dependencies."
 versions:
-  fpt: '*'
+  fpt: "*"
 type: overview
 topics:
   - Advanced Security
@@ -13,6 +13,7 @@ topics:
 redirect_from:
   - /code-security/supply-chain-security/about-dependency-review
 ---
+
 {% note %}
 
 **Note:** Dependency review is currently in beta and subject to change.
@@ -27,8 +28,8 @@ If a pull request targets your repository's default branch and contains changes 
 
 Dependency review is available in:
 
-* All public repositories. 
-* Private repositories owned by organizations with an {% data variables.product.prodname_advanced_security %} license that have the dependency graph enabled. For more information, see "[Exploring the dependencies of a repository](/github/visualizing-repository-data-with-graphs/exploring-the-dependencies-of-a-repository#enabling-and-disabling-the-dependency-graph-for-a-private-repository)."
+- All public repositories.
+- Private repositories owned by organizations with an {% data variables.product.prodname_advanced_security %} license that have the dependency graph enabled. For more information, see "[Exploring the dependencies of a repository](/github/visualizing-repository-data-with-graphs/exploring-the-dependencies-of-a-repository#enabling-and-disabling-the-dependency-graph-for-a-private-repository)."
 
 Sometimes you might just want to update the version of one dependency in a manifest and generate a pull request. However, if the updated version of this direct dependency also has updated dependencies, your pull request may have more changes than you expected. The dependency review for each manifest and lock file provides an easy way to see what has changed, and whether any of the new dependency versions contain known vulnerabilities.
 

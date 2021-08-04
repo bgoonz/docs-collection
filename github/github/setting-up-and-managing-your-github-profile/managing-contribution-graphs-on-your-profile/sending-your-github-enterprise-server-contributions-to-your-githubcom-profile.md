@@ -1,21 +1,23 @@
 ---
 title: Sending your GitHub Enterprise Server contributions to your GitHub.com profile
-intro: 'You can highlight your work on {% data variables.product.prodname_ghe_server %} by sending the contribution counts to your {% data variables.product.prodname_dotcom_the_website %} profile.'
+intro: "You can highlight your work on {% data variables.product.prodname_ghe_server %} by sending the contribution counts to your {% data variables.product.prodname_dotcom_the_website %} profile."
 redirect_from:
   - /articles/sending-your-github-enterprise-contributions-to-your-github-com-profile/
   - /articles/sending-your-github-enterprise-server-contributions-to-your-github-com-profile
   - /articles/sending-your-github-enterprise-server-contributions-to-your-githubcom-profile
   - /github/setting-up-and-managing-your-github-profile/sending-your-github-enterprise-server-contributions-to-your-githubcom-profile
 versions:
-  fpt: '*'
-  ghes: '*'
+  fpt: "*"
+  ghes: "*"
 topics:
   - Profiles
 shortTitle: Send your contributions
 ---
+
 {% note %}
 
 **Notes:**
+
 - The connection between your accounts is governed by <a href="/articles/github-privacy-statement/" class="dotcom-only">GitHub's Privacy Statement</a> and users enabling the connection agree to the <a href="/articles/github-terms-of-service/" class="dotcom-only">GitHub's Terms of Service</a>.
 
 - Before you can connect your {% data variables.product.prodname_ghe_server %} profile to your {% data variables.product.prodname_dotcom_the_website %} profile, a site administrator must enable {% data variables.product.prodname_github_connect %} and enable contribution sharing between the environments. For more information, contact your {% data variables.product.prodname_ghe_server %} site administrator.
@@ -32,6 +34,5 @@ For more information about how contributions are calculated, see "[Managing cont
 {% data reusables.github-connect.access-profile-settings %}
 {% data reusables.github-connect.github-connect-tab-user-settings %}
 {% data reusables.github-connect.connect-dotcom-and-enterprise %}
-{% data reusables.github-connect.authorize-connection %}
-6. Under "Contributions", select **Send my contribution counts to {% data variables.product.prodname_dotcom_the_website %}**, then click **Update contributions.**
+{% data reusables.github-connect.authorize-connection %} 6. Under "Contributions", select **Send my contribution counts to {% data variables.product.prodname_dotcom_the_website %}**, then click **Update contributions.**
 ![Send contributions checkbox and update contributions button](/assets/images/help/settings/send-and-update-contributions.png)

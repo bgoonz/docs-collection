@@ -1,10 +1,10 @@
 ---
 title: Keeping your dependencies updated automatically
-intro: '{% data variables.product.prodname_dependabot %} can maintain your repository''s dependencies automatically.'
+intro: "{% data variables.product.prodname_dependabot %} can maintain your repository's dependencies automatically."
 redirect_from:
   - /github/administering-a-repository/keeping-your-dependencies-updated-automatically
 versions:
-  fpt: '*'
+  fpt: "*"
 topics:
   - Repositories
   - Dependabot
@@ -24,4 +24,3 @@ children:
   - /keeping-your-actions-up-to-date-with-dependabot
 shortTitle: Auto-update dependencies
 ---
-

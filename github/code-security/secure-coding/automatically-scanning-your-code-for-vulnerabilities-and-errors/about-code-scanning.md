@@ -1,20 +1,21 @@
 ---
 title: About code scanning
-intro: 'You can use {% data variables.product.prodname_code_scanning %} to find security vulnerabilities and errors in the code for your project on {% data variables.product.prodname_dotcom %}.'
-product: '{% data reusables.gated-features.code-scanning %}'
+intro: "You can use {% data variables.product.prodname_code_scanning %} to find security vulnerabilities and errors in the code for your project on {% data variables.product.prodname_dotcom %}."
+product: "{% data reusables.gated-features.code-scanning %}"
 redirect_from:
   - /github/managing-security-vulnerabilities/about-automated-code-scanning
   - /github/finding-security-vulnerabilities-and-errors-in-your-code/about-code-scanning
   - /code-security/secure-coding/about-code-scanning
 versions:
-  fpt: '*'
-  ghes: '>=3.0'
-  ghae: '*'
+  fpt: "*"
+  ghes: ">=3.0"
+  ghae: "*"
 type: overview
 topics:
   - Advanced Security
   - Code scanning
 ---
+
 <!--For this article in earlier GHES versions, see /content/github/finding-security-vulnerabilities-and-errors-in-your-code-->
 
 {% data reusables.code-scanning.beta %}
@@ -28,8 +29,8 @@ You can use {% data variables.product.prodname_code_scanning %} to find, triage,
 
 If {% data variables.product.prodname_code_scanning %} finds a potential vulnerability or error in your code, {% data variables.product.prodname_dotcom %} displays an alert in the repository. After you fix the code that triggered the alert, {% data variables.product.prodname_dotcom %} closes the alert. For more information, see "[Managing {% data variables.product.prodname_code_scanning %} alerts for your repository](/code-security/secure-coding/managing-code-scanning-alerts-for-your-repository)."
 
-To monitor results from {% data variables.product.prodname_code_scanning %} across your repositories or your organization, you can use webhooks and the {% data variables.product.prodname_code_scanning %} API. For information about the webhooks for {% data variables.product.prodname_code_scanning %}, see 
-"[Webhook events and payloads](/developers/webhooks-and-events/webhook-events-and-payloads#code_scanning_alert)." For information about API endpoints, see  "[{% data variables.product.prodname_code_scanning_capc %}](/rest/reference/code-scanning)." 
+To monitor results from {% data variables.product.prodname_code_scanning %} across your repositories or your organization, you can use webhooks and the {% data variables.product.prodname_code_scanning %} API. For information about the webhooks for {% data variables.product.prodname_code_scanning %}, see
+"[Webhook events and payloads](/developers/webhooks-and-events/webhook-events-and-payloads#code_scanning_alert)." For information about API endpoints, see "[{% data variables.product.prodname_code_scanning_capc %}](/rest/reference/code-scanning)."
 
 To get started with {% data variables.product.prodname_code_scanning %}, see "[Setting up {% data variables.product.prodname_code_scanning %} for a repository](/code-security/secure-coding/setting-up-code-scanning-for-a-repository)."
 
@@ -43,7 +44,7 @@ To get started with {% data variables.product.prodname_code_scanning %}, see "[S
 
 ## About tools for {% data variables.product.prodname_code_scanning %}
 
-You can set up {% data variables.product.prodname_code_scanning %} to use the {% data variables.product.prodname_codeql %} product maintained by {% data variables.product.company_short%} or a third-party {% data variables.product.prodname_code_scanning %} tool. 
+You can set up {% data variables.product.prodname_code_scanning %} to use the {% data variables.product.prodname_codeql %} product maintained by {% data variables.product.company_short%} or a third-party {% data variables.product.prodname_code_scanning %} tool.
 
 ### About {% data variables.product.prodname_codeql %} analysis
 

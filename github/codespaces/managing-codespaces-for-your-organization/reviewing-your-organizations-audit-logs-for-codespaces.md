@@ -1,9 +1,9 @@
 ---
 title: Reviewing your organization's audit logs for Codespaces
 shortTitle: Reviewing your organization's audit logs
-intro: 'You can use the audit log to review all actions related to {% data variables.product.prodname_codespaces %}.'
+intro: "You can use the audit log to review all actions related to {% data variables.product.prodname_codespaces %}."
 versions:
-  fpt: '*'
+  fpt: "*"
 type: how_to
 topics:
   - Codespaces

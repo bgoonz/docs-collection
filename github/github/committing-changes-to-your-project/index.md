@@ -6,13 +6,12 @@ redirect_from:
   - /categories/commits/
   - /categories/committing-changes-to-your-project
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 children:
   - /creating-and-editing-commits
   - /viewing-and-comparing-commits
   - /troubleshooting-commits
 shortTitle: Commit changes to your project
 ---
-

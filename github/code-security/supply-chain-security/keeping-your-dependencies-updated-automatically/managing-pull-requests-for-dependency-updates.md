@@ -1,11 +1,11 @@
 ---
 title: Managing pull requests for dependency updates
-intro: 'You manage pull requests raised by {% data variables.product.prodname_dependabot %} in much the same way as other pull requests, but there are some extra options.'
+intro: "You manage pull requests raised by {% data variables.product.prodname_dependabot %} in much the same way as other pull requests, but there are some extra options."
 redirect_from:
   - /github/administering-a-repository/managing-pull-requests-for-dependency-updates
   - /code-security/supply-chain-security/managing-pull-requests-for-dependency-updates
 versions:
-  fpt: '*'
+  fpt: "*"
 type: how_to
 topics:
   - Repositories
@@ -16,6 +16,7 @@ topics:
   - Vulnerabilities
 shortTitle: Manage Dependabot PRs
 ---
+
 ## About {% data variables.product.prodname_dependabot %} pull requests
 
 {% data reusables.dependabot.pull-request-introduction %}
@@ -28,9 +29,10 @@ If you have many dependencies to manage, you may want to customize the configura
 
 {% data reusables.repositories.navigate-to-repo %}
 {% data reusables.repositories.sidebar-pr %}
+
 1. Any pull requests for security and version updates are easy to identify.
-    - The author is [dependabot](https://github.com/dependabot), the bot account used by {% data variables.product.prodname_dependabot %}.
-    - By default, they have the `dependencies` label.
+   - The author is [dependabot](https://github.com/dependabot), the bot account used by {% data variables.product.prodname_dependabot %}.
+   - By default, they have the `dependencies` label.
 
 ## Changing the rebase strategy for {% data variables.product.prodname_dependabot %} pull requests
 

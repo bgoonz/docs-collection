@@ -1,17 +1,18 @@
 ---
 title: Merging multiple user accounts
-intro: 'If you have separate accounts for work and personal use, you can merge the accounts.'
+intro: "If you have separate accounts for work and personal use, you can merge the accounts."
 redirect_from:
   - /articles/can-i-merge-two-accounts/
   - /articles/keeping-work-and-personal-repositories-separate/
   - /articles/merging-multiple-user-accounts
   - /github/setting-up-and-managing-your-github-user-account/merging-multiple-user-accounts
 versions:
-  fpt: '*'
+  fpt: "*"
 topics:
   - Accounts
 shortTitle: Merge multiple user accounts
 ---
+
 {% tip %}
 
 **Tip:** We recommend using only one user account to manage both personal and professional repositories.

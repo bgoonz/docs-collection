@@ -1,12 +1,12 @@
 ---
 title: GitHub Marketplace
-intro: 'List your tools in {% data variables.product.prodname_dotcom %} Marketplace for developers to use or purchase.'
+intro: "List your tools in {% data variables.product.prodname_dotcom %} Marketplace for developers to use or purchase."
 redirect_from:
   - /apps/adding-integrations/listing-apps-on-github-marketplace/about-github-marketplace/
   - /apps/marketplace/
   - /marketplace
 versions:
-  fpt: '*'
+  fpt: "*"
 topics:
   - Marketplace
 children:
@@ -16,4 +16,3 @@ children:
   - /listing-an-app-on-github-marketplace
   - /selling-your-app-on-github-marketplace
 ---
-

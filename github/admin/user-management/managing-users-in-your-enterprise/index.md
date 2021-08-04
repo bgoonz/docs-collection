@@ -7,8 +7,8 @@ redirect_from:
   - /enterprise/admin/user-management/user-security
   - /enterprise/admin/user-management/managing-users-in-your-enterprise
 versions:
-  ghes: '*'
-  ghae: '*'
+  ghes: "*"
+  ghae: "*"
 topics:
   - Enterprise
 children:
@@ -24,4 +24,3 @@ children:
   - /managing-global-webhooks
 shortTitle: Manage users
 ---
-

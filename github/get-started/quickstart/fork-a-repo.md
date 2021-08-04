@@ -8,15 +8,16 @@ redirect_from:
   - /github/getting-started-with-github/quickstart/fork-a-repo
 intro: A fork is a copy of a repository. Forking a repository allows you to freely experiment with changes without affecting the original project.
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Pull requests
   - Issues
   - Notifications
   - Accounts
 ---
+
 ## About forks
 
 Most commonly, forks are used to either propose changes to someone else's project or to use someone else's project as a starting point for your own idea. You can fork a repository to create a copy of the repository and make changes without affecting the upstream repository. For more information, see "[Working with forks](/github/collaborating-with-issues-and-pull-requests/working-with-forks)."
@@ -56,7 +57,7 @@ You might fork a project to propose changes to the upstream, or original, reposi
 
 1. On {% data variables.product.product_location %}, navigate to the [octocat/Spoon-Knife](https://github.com/octocat/Spoon-Knife) repository.
 2. In the top-right corner of the page, click **Fork**.
-![Fork button](/assets/images/help/repository/fork_button.jpg)
+   ![Fork button](/assets/images/help/repository/fork_button.jpg)
 
 {% endwebui %}
 
@@ -89,23 +90,25 @@ Right now, you have a fork of the Spoon-Knife repository, but you don't have the
 {% webui %}
 
 1. On {% data variables.product.product_name %}, navigate to **your fork** of the Spoon-Knife repository.
-{% data reusables.repositories.copy-clone-url %}
-{% data reusables.command_line.open_the_multi_os_terminal %}
-{% data reusables.command_line.change-current-directory-clone %}
-4. Type `git clone`, and then paste the URL you copied earlier. It will look like this, with your {% data variables.product.product_name %} username instead of `YOUR-USERNAME`:
-  ```shell
-  $ git clone https://{% data variables.command_line.codeblock %}/<em>YOUR-USERNAME</em>/Spoon-Knife
-  ```
+   {% data reusables.repositories.copy-clone-url %}
+   {% data reusables.command_line.open_the_multi_os_terminal %}
+   {% data reusables.command_line.change-current-directory-clone %}
+2. Type `git clone`, and then paste the URL you copied earlier. It will look like this, with your {% data variables.product.product_name %} username instead of `YOUR-USERNAME`:
+
+```shell
+$ git clone https://{% data variables.command_line.codeblock %}/<em>YOUR-USERNAME</em>/Spoon-Knife
+```
 
 5. Press **Enter**. Your local clone will be created.
-  ```shell
-  $ git clone https://{% data variables.command_line.codeblock %}/<em>YOUR-USERNAME</em>/Spoon-Knife
-  > Cloning into `Spoon-Knife`...
-  > remote: Counting objects: 10, done.
-  > remote: Compressing objects: 100% (8/8), done.
-  > remove: Total 10 (delta 1), reused 10 (delta 1)
-  > Unpacking objects: 100% (10/10), done.
-  ```
+
+```shell
+$ git clone https://{% data variables.command_line.codeblock %}/<em>YOUR-USERNAME</em>/Spoon-Knife
+> Cloning into `Spoon-Knife`...
+> remote: Counting objects: 10, done.
+> remote: Compressing objects: 100% (8/8), done.
+> remove: Total 10 (delta 1), reused 10 (delta 1)
+> Unpacking objects: 100% (10/10), done.
+```
 
 {% endwebui %}
 
@@ -139,33 +142,36 @@ When you fork a project in order to propose changes to the original repository, 
 {% webui %}
 
 1. On {% data variables.product.product_name %}, navigate to the [octocat/Spoon-Knife](https://github.com/octocat/Spoon-Knife) repository.
-{% data reusables.repositories.copy-clone-url %}
-{% data reusables.command_line.open_the_multi_os_terminal %}
-4. Change directories to the location of the fork you cloned.
-    - To go to your home directory, type just `cd` with no other text.
-    - To list the files and folders in your current directory, type `ls`.
-    - To go into one of your listed directories, type `cd your_listed_directory`.
-    - To go up one directory, type `cd ..`.
-5. Type `git remote -v` and press **Enter**. You'll see the current configured remote repository for your fork.
-  ```shell
-  $ git remote -v
-  > origin  https://{% data variables.command_line.codeblock %}/<em>YOUR_USERNAME</em>/<em>YOUR_FORK</em>.git (fetch)
-  > origin  https://{% data variables.command_line.codeblock %}/<em>YOUR_USERNAME</em>/<em>YOUR_FORK</em>.git (push)
-  ```
+   {% data reusables.repositories.copy-clone-url %}
+   {% data reusables.command_line.open_the_multi_os_terminal %}
+2. Change directories to the location of the fork you cloned.
+   - To go to your home directory, type just `cd` with no other text.
+   - To list the files and folders in your current directory, type `ls`.
+   - To go into one of your listed directories, type `cd your_listed_directory`.
+   - To go up one directory, type `cd ..`.
+3. Type `git remote -v` and press **Enter**. You'll see the current configured remote repository for your fork.
+
+```shell
+$ git remote -v
+> origin  https://{% data variables.command_line.codeblock %}/<em>YOUR_USERNAME</em>/<em>YOUR_FORK</em>.git (fetch)
+> origin  https://{% data variables.command_line.codeblock %}/<em>YOUR_USERNAME</em>/<em>YOUR_FORK</em>.git (push)
+```
 
 6. Type `git remote add upstream`, and then paste the URL you copied in Step 2 and press **Enter**. It will look like this:
-  ```shell
-  $ git remote add upstream https://{% data variables.command_line.codeblock %}/octocat/Spoon-Knife.git
-  ```
+
+```shell
+$ git remote add upstream https://{% data variables.command_line.codeblock %}/octocat/Spoon-Knife.git
+```
 
 7. To verify the new upstream repository you've specified for your fork, type `git remote -v` again. You should see the URL for your fork as `origin`, and the URL for the original repository as `upstream`.
-  ```shell
-  $ git remote -v
-  > origin    https://{% data variables.command_line.codeblock %}/<em>YOUR_USERNAME</em>/<em>YOUR_FORK</em>.git (fetch)
-  > origin    https://{% data variables.command_line.codeblock %}/<em>YOUR_USERNAME</em>/<em>YOUR_FORK</em>.git (push)
-  > upstream  https://{% data variables.command_line.codeblock %}/<em>ORIGINAL_OWNER</em>/<em>ORIGINAL_REPOSITORY</em>.git (fetch)
-  > upstream  https://{% data variables.command_line.codeblock %}/<em>ORIGINAL_OWNER</em>/<em>ORIGINAL_REPOSITORY</em>.git (push)
-  ```
+
+```shell
+$ git remote -v
+> origin    https://{% data variables.command_line.codeblock %}/<em>YOUR_USERNAME</em>/<em>YOUR_FORK</em>.git (fetch)
+> origin    https://{% data variables.command_line.codeblock %}/<em>YOUR_USERNAME</em>/<em>YOUR_FORK</em>.git (push)
+> upstream  https://{% data variables.command_line.codeblock %}/<em>ORIGINAL_OWNER</em>/<em>ORIGINAL_REPOSITORY</em>.git (fetch)
+> upstream  https://{% data variables.command_line.codeblock %}/<em>ORIGINAL_OWNER</em>/<em>ORIGINAL_REPOSITORY</em>.git (push)
+```
 
 Now, you can keep your fork synced with the upstream repository with a few Git commands. For more information, see "[Syncing a fork](/articles/syncing-a-fork)."
 
@@ -193,10 +199,11 @@ gh repo fork <em>repository</em> --remote-name "main-remote-repo"
 
 You can make any changes to a fork, including:
 
-- **Creating branches:** [*Branches*](/articles/creating-and-deleting-branches-within-your-repository/) allow you to build new features or test out ideas without putting your main project at risk.
+- **Creating branches:** [_Branches_](/articles/creating-and-deleting-branches-within-your-repository/) allow you to build new features or test out ideas without putting your main project at risk.
 - **Opening pull requests:** If you are hoping to contribute back to the original repository, you can send a request to the original author to pull your fork into their repository by submitting a [pull request](/articles/about-pull-requests).
 
 ## Find another repository to fork
+
 Fork a repository to start contributing to a project. {% data reusables.repositories.you-can-fork %}
 
 {% ifversion fpt %}You can browse [Explore](https://github.com/explore) to find projects and start contributing to open source repositories. For more information, see "[Finding ways to contribute to open source on {% data variables.product.prodname_dotcom %}](/github/getting-started-with-github/finding-ways-to-contribute-to-open-source-on-github)."

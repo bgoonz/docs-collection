@@ -1,16 +1,17 @@
 ---
 title: Securing your webhooks
-intro: 'Ensure your server is only receiving the expected {% data variables.product.prodname_dotcom %} requests for security reasons.'
+intro: "Ensure your server is only receiving the expected {% data variables.product.prodname_dotcom %} requests for security reasons."
 redirect_from:
   - /webhooks/securing
   - /developers/webhooks-and-events/securing-your-webhooks
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Webhooks
 ---
+
 Once your server is configured to receive payloads, it'll listen for any payload sent to the endpoint you configured. For security reasons, you probably want to limit requests to those coming from GitHub. There are a few ways to go about this--for example, you could opt to allow requests from GitHub's IP address--but a far easier method is to set up a secret token and validate the information.
 
 {% data reusables.webhooks.webhooks-rest-api-links %}
@@ -23,7 +24,7 @@ To set your token on GitHub:
 
 1. Navigate to the repository where you're setting up your webhook.
 2. Fill out the Secret textbox. Use a random string with high entropy (e.g., by taking the output of `ruby -rsecurerandom -e 'puts SecureRandom.hex(20)'` at the terminal).
-![Webhook secret token field](/assets/images/webhook_secret_token.png)
+   ![Webhook secret token field](/assets/images/webhook_secret_token.png)
 3. Click **Update Webhook**.
 
 Next, set up an environment variable on your server that stores this token. Typically, this is as simple as running:
@@ -48,7 +49,7 @@ When your secret token is set, {% data variables.product.product_name %} uses it
 
 For example, if you have a basic server that listens for webhooks, it might be configured similar to this:
 
-``` ruby
+```ruby
 require 'sinatra'
 require 'json'
 
@@ -61,7 +62,7 @@ end
 
 The intention is to calculate a hash using your `SECRET_TOKEN`, and ensure that the result matches the hash from {% data variables.product.product_name %}. {% data variables.product.product_name %} uses an HMAC hex digest to compute the hash, so you could reconfigure your server to look a little like this:
 
-``` ruby
+```ruby
 post '/payload' do
   request.body.rewind
   payload_body = request.body.read
@@ -89,8 +90,8 @@ end{% endif %}
 
 Your language and server implementations may differ from this example code. However, there are a number of very important things to point out:
 
-* No matter which implementation you use, the hash signature starts with {% ifversion fpt or ghes > 2.22 or ghae %}`sha256=`{% elsif ghes < 3.0 %}`sha1=`{% endif %}, using the key of your secret token and your payload body.
+- No matter which implementation you use, the hash signature starts with {% ifversion fpt or ghes > 2.22 or ghae %}`sha256=`{% elsif ghes < 3.0 %}`sha1=`{% endif %}, using the key of your secret token and your payload body.
 
-* Using a plain `==` operator is **not advised**. A method like [`secure_compare`][secure_compare] performs a "constant time" string comparison, which helps mitigate certain timing attacks against regular equality operators.
+- Using a plain `==` operator is **not advised**. A method like [`secure_compare`][secure_compare] performs a "constant time" string comparison, which helps mitigate certain timing attacks against regular equality operators.
 
 [secure_compare]: https://rubydoc.info/github/rack/rack/master/Rack/Utils:secure_compare

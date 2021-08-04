@@ -1,21 +1,19 @@
 ---
 title: Using SSH agent forwarding
-intro: 'To simplify deploying to a server, you can set up SSH agent forwarding to securely use local SSH keys.'
+intro: "To simplify deploying to a server, you can set up SSH agent forwarding to securely use local SSH keys."
 redirect_from:
   - /guides/using-ssh-agent-forwarding/
   - /v3/guides/using-ssh-agent-forwarding
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - API
 shortTitle: SSH agent forwarding
 ---
 
-
-
-SSH agent forwarding can be used to make deploying to a server simple.  It allows you to use your local SSH keys instead of leaving keys (without passphrases!) sitting on your server.
+SSH agent forwarding can be used to make deploying to a server simple. It allows you to use your local SSH keys instead of leaving keys (without passphrases!) sitting on your server.
 
 If you've already set up an SSH key to interact with {% data variables.product.product_name %}, you're probably familiar with `ssh-agent`. It's a program that runs in the background and keeps your key loaded into memory, so that you don't need to enter your passphrase every time you need to use the key. The nifty thing is, you can choose to let servers access your local `ssh-agent` as if they were already running on the server. This is sort of like asking a friend to enter their password so that you can use their computer.
 
@@ -36,22 +34,22 @@ $ ssh -T git@{% ifversion ghes or ghae %}hostname{% else %}github.com{% endif %}
 
 We're off to a great start. Let's set up SSH to allow agent forwarding to your server.
 
-1. Using your favorite text editor, open up the file at `~/.ssh/config`. If this file doesn't exist, you can create it by entering `touch ~/.ssh/config` in the terminal.
+1.  Using your favorite text editor, open up the file at `~/.ssh/config`. If this file doesn't exist, you can create it by entering `touch ~/.ssh/config` in the terminal.
 
-2. Enter the following text into the file, replacing `example.com` with your server's domain name or IP:
+2.  Enter the following text into the file, replacing `example.com` with your server's domain name or IP:
 
         Host example.com
           ForwardAgent yes
 
 {% warning %}
 
-**Warning:** You may be tempted to use a wildcard like `Host *` to just apply this setting to all SSH connections. That's not really a good idea, as you'd be sharing your local SSH keys with *every* server you SSH into. They won't have direct access to the keys, but they will be able to use them *as you* while the connection is established. **You should only add servers you trust and that you intend to use with agent forwarding.**
+**Warning:** You may be tempted to use a wildcard like `Host *` to just apply this setting to all SSH connections. That's not really a good idea, as you'd be sharing your local SSH keys with _every_ server you SSH into. They won't have direct access to the keys, but they will be able to use them _as you_ while the connection is established. **You should only add servers you trust and that you intend to use with agent forwarding.**
 
 {% endwarning %}
 
 ## Testing SSH agent forwarding
 
-To test that agent forwarding is working with your server, you can SSH into your server and run `ssh -T git@{% ifversion ghes or ghae %}hostname{% else %}github.com{% endif %}` once more.  If all is well, you'll get back the same prompt as you did locally.
+To test that agent forwarding is working with your server, you can SSH into your server and run `ssh -T git@{% ifversion ghes or ghae %}hostname{% else %}github.com{% endif %}` once more. If all is well, you'll get back the same prompt as you did locally.
 
 If you're unsure if your local key is being used, you can also inspect the `SSH_AUTH_SOCK` variable on your server:
 
@@ -78,7 +76,7 @@ Here are some things to look out for when troubleshooting SSH agent forwarding.
 
 ### You must be using an SSH URL to check out code
 
-SSH forwarding only works with SSH URLs, not HTTP(s) URLs. Check the *.git/config* file on your server and ensure the URL is an SSH-style URL like below:
+SSH forwarding only works with SSH URLs, not HTTP(s) URLs. Check the _.git/config_ file on your server and ensure the URL is an SSH-style URL like below:
 
 ```shell
 [remote "origin"]
@@ -106,7 +104,7 @@ $ exit
 # Returns to your local command prompt
 ```
 
-In the example above, the file *~/.ssh/config* is loaded first, then */etc/ssh_config* is read.  We can inspect that file to see if it's overriding our options by running the following commands:
+In the example above, the file _~/.ssh/config_ is loaded first, then _/etc/ssh_config_ is read. We can inspect that file to see if it's overriding our options by running the following commands:
 
 ```shell
 $ cat /etc/ssh_config
@@ -116,7 +114,7 @@ $ cat /etc/ssh_config
 >   ForwardAgent no
 ```
 
-In this example, our */etc/ssh_config* file specifically says `ForwardAgent no`, which is a way to block agent forwarding. Deleting this line from the file should get agent forwarding working once more.
+In this example, our _/etc/ssh_config_ file specifically says `ForwardAgent no`, which is a way to block agent forwarding. Deleting this line from the file should get agent forwarding working once more.
 
 ### Your server must allow SSH agent forwarding on inbound connections
 
@@ -124,7 +122,7 @@ Agent forwarding may also be blocked on your server. You can check that agent fo
 
 ### Your local `ssh-agent` must be running
 
-On most computers, the operating system automatically launches `ssh-agent` for you.  On Windows, however, you need to do this manually. We have [a guide on how to start `ssh-agent` whenever you open Git Bash][autolaunch-ssh-agent].
+On most computers, the operating system automatically launches `ssh-agent` for you. On Windows, however, you need to do this manually. We have [a guide on how to start `ssh-agent` whenever you open Git Bash][autolaunch-ssh-agent].
 
 To verify that `ssh-agent` is running on your computer, type the following command in the terminal:
 

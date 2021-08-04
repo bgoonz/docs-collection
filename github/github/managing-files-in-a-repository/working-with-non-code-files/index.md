@@ -1,13 +1,13 @@
 ---
 title: Working with non-code files
-intro: ''
+intro: ""
 redirect_from:
   - /categories/89/articles/
   - /articles/working-with-non-code-files
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Repositories
 children:
@@ -20,4 +20,3 @@ children:
   - /working-with-jupyter-notebook-files-on-github
 shortTitle: Work with non-code files
 ---
-

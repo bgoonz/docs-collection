@@ -1,18 +1,19 @@
 ---
 title: Viewing the audit logs for organizations in your enterprise account
 intro: Enterprise owners can view aggregated actions from all of the organizations owned by an enterprise account in its audit log.
-product: '{% data reusables.gated-features.enterprise-accounts %}'
+product: "{% data reusables.gated-features.enterprise-accounts %}"
 redirect_from:
   - /articles/viewing-the-audit-logs-for-organizations-in-your-business-account/
   - /articles/viewing-the-audit-logs-for-organizations-in-your-enterprise-account
   - /github/setting-up-and-managing-your-enterprise-account/viewing-the-audit-logs-for-organizations-in-your-enterprise-account
   - /github/setting-up-and-managing-your-enterprise/viewing-the-audit-logs-for-organizations-in-your-enterprise-account
 versions:
-  fpt: '*'
+  fpt: "*"
 topics:
   - Enterprise
 shortTitle: View organization audit logs
 ---
+
 Each audit log entry shows applicable information about an event, such as:
 
 - The organization an action was performed in

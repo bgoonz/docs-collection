@@ -12,7 +12,7 @@ redirect_from:
   - /articles/unlocking-a-locked-account
   - /github/setting-up-and-managing-billing-and-payments-on-github/managing-your-github-billing-settings/unlocking-a-locked-account
 versions:
-  fpt: '*'
+  fpt: "*"
 type: how_to
 topics:
   - Accounts
@@ -21,6 +21,7 @@ topics:
   - User account
 shortTitle: Locked account
 ---
+
 You can unlock and access your account by updating your organization's payment method and resuming paid status. We do not ask you to pay for the time elapsed in locked mode.
 
 You can downgrade your organization to {% data variables.product.prodname_free_team %} to continue with the same advanced features in public repositories. For more information, see "[Downgrading your {% data variables.product.product_name %} subscription](/billing/managing-billing-for-your-github-account/downgrading-your-github-subscription)."

@@ -1,17 +1,18 @@
 ---
 title: About per-user pricing
-intro: 'With per-user pricing, organizations pay based on team size to access advanced collaboration and management tools for teams, and optionally, security, compliance, and deployment controls.'
+intro: "With per-user pricing, organizations pay based on team size to access advanced collaboration and management tools for teams, and optionally, security, compliance, and deployment controls."
 redirect_from:
   - /github/setting-up-and-managing-billing-and-payments-on-github/about-per-user-pricing
   - /articles/about-per-user-pricing
   - /github/setting-up-and-managing-billing-and-payments-on-github/managing-billing-for-your-github-account/about-per-user-pricing
 versions:
-  fpt: '*'
+  fpt: "*"
 type: overview
 topics:
   - Licensing
   - Organizations
 ---
+
 New organizations can build public and open-source projects with {% data variables.product.prodname_free_team %}, or [upgrade]({% data variables.product.pricing_url %}) to a paid product with per-user pricing.
 
 Organizations using a paid subscription before May 11, 2016 can choose to stay on their existing per-repository plan or switch to per-user pricing. We will notify you twelve months before any mandated change to your subscription. For more information on switching your subscription, see "[Upgrading your {% data variables.product.prodname_dotcom %} subscription](/articles/upgrading-your-github-subscription)."

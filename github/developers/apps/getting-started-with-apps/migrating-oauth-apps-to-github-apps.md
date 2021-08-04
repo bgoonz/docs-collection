@@ -1,17 +1,18 @@
 ---
 title: Migrating OAuth Apps to GitHub Apps
-intro: 'Learn about the advantages of migrating your {% data variables.product.prodname_oauth_app %} to a {% data variables.product.prodname_github_app %} and how to migrate an {% data variables.product.prodname_oauth_app %} that isn''t listed on {% data variables.product.prodname_marketplace %}. '
+intro: "Learn about the advantages of migrating your {% data variables.product.prodname_oauth_app %} to a {% data variables.product.prodname_github_app %} and how to migrate an {% data variables.product.prodname_oauth_app %} that isn't listed on {% data variables.product.prodname_marketplace %}. "
 redirect_from:
   - /apps/migrating-oauth-apps-to-github-apps
   - /developers/apps/migrating-oauth-apps-to-github-apps
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - GitHub Apps
 shortTitle: Migrate to OAuth Apps
 ---
+
 This article provides guidelines for existing integrators who are considering migrating from an OAuth App to a GitHub App.
 
 ## Reasons for switching to GitHub Apps
@@ -71,9 +72,9 @@ After you've created a new GitHub App and selected its permissions, you can sele
 
 GitHub Apps primarily use a token-based authentication that expires after a short amount of time, providing more security than an OAuth token that does not expire. It’s important to understand the different methods of authentication available to you and when you need to use them:
 
-* A **JSON Web Token (JWT)** [authenticates as the GitHub App](/apps/building-github-apps/authenticating-with-github-apps/#authenticating-as-a-github-app). For example, you can authenticate with a **JWT** to fetch application installation details or exchange the **JWT** for an **installation access token**.
-* An **installation access token** [authenticates as a specific installation of your GitHub App](/apps/building-github-apps/authenticating-with-github-apps/#authenticating-as-an-installation) (also called server-to-server requests). For example, you can authenticate with an **installation access token** to open an issue or provide feedback on a pull request.
-* An **OAuth access token** can [authenticate as a user of your GitHub App](/apps/building-github-apps/identifying-and-authorizing-users-for-github-apps/#identifying-users-on-your-site) (also called user-to-server requests). For example, you can use an OAuth access token to authenticate as a user when a GitHub App needs to verify a user’s identity or act on a user’s behalf.
+- A **JSON Web Token (JWT)** [authenticates as the GitHub App](/apps/building-github-apps/authenticating-with-github-apps/#authenticating-as-a-github-app). For example, you can authenticate with a **JWT** to fetch application installation details or exchange the **JWT** for an **installation access token**.
+- An **installation access token** [authenticates as a specific installation of your GitHub App](/apps/building-github-apps/authenticating-with-github-apps/#authenticating-as-an-installation) (also called server-to-server requests). For example, you can authenticate with an **installation access token** to open an issue or provide feedback on a pull request.
+- An **OAuth access token** can [authenticate as a user of your GitHub App](/apps/building-github-apps/identifying-and-authorizing-users-for-github-apps/#identifying-users-on-your-site) (also called user-to-server requests). For example, you can use an OAuth access token to authenticate as a user when a GitHub App needs to verify a user’s identity or act on a user’s behalf.
 
 The most common scenario is to authenticate as a specific installation using an **installation access token**.
 
@@ -83,12 +84,13 @@ Once you've made the transition from an OAuth App to a GitHub App, you will need
 
 #### Query parameters
 
-| Name | Description |
-|------|-------------|
-| `suggested_target_id` | **Required**: ID of the user or organization that is installing your GitHub App. |
-| `repository_ids[]` | Array of repository IDs. If omitted, we select all repositories. The maximum number of repositories that can be pre-selected is 100. |
+| Name                  | Description                                                                                                                          |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `suggested_target_id` | **Required**: ID of the user or organization that is installing your GitHub App.                                                     |
+| `repository_ids[]`    | Array of repository IDs. If omitted, we select all repositories. The maximum number of repositories that can be pre-selected is 100. |
 
 #### Example URL
+
 ```
 https://github.com/apps/YOUR_APP_NAME/installations/new/permissions?suggested_target_id=ID_OF_USER_OR_ORG&repository_ids[]=REPO_A_ID&repository_ids[]=REPO_B_ID
 ```

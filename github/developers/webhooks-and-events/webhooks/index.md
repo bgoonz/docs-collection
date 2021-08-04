@@ -1,10 +1,10 @@
 ---
 title: Webhooks
-intro: 'Learn to set up, test, and secure webhooks to integrate with {% data variables.product.prodname_dotcom %}.'
+intro: "Learn to set up, test, and secure webhooks to integrate with {% data variables.product.prodname_dotcom %}."
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Webhooks
 children:
@@ -15,4 +15,3 @@ children:
   - /securing-your-webhooks
   - /webhook-events-and-payloads
 ---
-

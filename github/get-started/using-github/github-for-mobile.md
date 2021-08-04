@@ -1,15 +1,16 @@
 ---
 title: GitHub for mobile
-intro: 'Triage, collaborate, and manage your work on {% data variables.product.product_name %} from your mobile device.'
+intro: "Triage, collaborate, and manage your work on {% data variables.product.product_name %} from your mobile device."
 versions:
-  fpt: '*'
-  ghes: '>=3.0'
+  fpt: "*"
+  ghes: ">=3.0"
 topics:
   - Mobile
 redirect_from:
   - /github/getting-started-with-github/github-for-mobile
   - /github/getting-started-with-github/using-github/github-for-mobile
 ---
+
 {% data reusables.mobile.ghes-release-phase %}
 
 ## About {% data variables.product.prodname_mobile %}
@@ -19,6 +20,7 @@ redirect_from:
 {% data variables.product.prodname_mobile %} gives you a way to do high-impact work on {% data variables.product.product_name %} quickly and from anywhere. {% data variables.product.prodname_mobile %} is a safe and secure way to access your {% data variables.product.product_name %} data through a trusted, first-party client application.
 
 With {% data variables.product.prodname_mobile %} you can:
+
 - Manage, triage, and clear notifications
 - Read, review, and collaborate on issues and pull requests
 - Search for, browse, and interact with users, repositories, and organizations
@@ -44,13 +46,13 @@ You must install {% data variables.product.prodname_mobile %} 1.4 or later on yo
 
 To use {% data variables.product.prodname_mobile %} with {% data variables.product.prodname_ghe_server %}, {% data variables.product.product_location %} must be version 3.0 or greater, and your enterprise owner must enable mobile support for your enterprise. For more information, see {% ifversion ghes %}"[Release notes](/enterprise-server/admin/release-notes)" and {% endif %}"[Managing {% data variables.product.prodname_mobile %} for your enterprise](/admin/configuration/managing-github-for-mobile-for-your-enterprise)."
 
-During the beta for {% data variables.product.prodname_mobile %} with {% data variables.product.prodname_ghe_server %}, you must be signed in with a user account on {% data variables.product.prodname_dotcom_the_website %}. 
+During the beta for {% data variables.product.prodname_mobile %} with {% data variables.product.prodname_ghe_server %}, you must be signed in with a user account on {% data variables.product.prodname_dotcom_the_website %}.
 
 ### Adding, switching, or signing out of accounts
 
 You can sign into mobile with a user account on {% data variables.product.product_location %}. At the bottom of the app, long-press {% octicon "person" aria-label="The person icon" %} **Profile**, then tap {% octicon "plus" aria-label="The plus icon" %} **Add Enterprise Account**. Follow the prompts to sign in.
 
-After you sign into mobile with a user account on {% data variables.product.product_location %}, you can switch between the account and your account on  {% data variables.product.prodname_dotcom_the_website %}.  At the bottom of the app, long-press {% octicon "person" aria-label="The person icon" %} **Profile**, then tap the account you want to switch to.
+After you sign into mobile with a user account on {% data variables.product.product_location %}, you can switch between the account and your account on {% data variables.product.prodname_dotcom_the_website %}. At the bottom of the app, long-press {% octicon "person" aria-label="The person icon" %} **Profile**, then tap the account you want to switch to.
 
 If you no longer need to access data for your user account on {% data variables.product.product_location %} from {% data variables.product.prodname_mobile %}, you can sign out of the account. At the bottom of the app, long-press {% octicon "person" aria-label="The person icon" %} **Profile**, swipe left on the account to sign out of, then tap **Sign out**.
 

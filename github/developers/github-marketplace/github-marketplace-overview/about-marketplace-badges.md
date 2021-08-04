@@ -1,12 +1,13 @@
 ---
 title: About marketplace badges
-intro: 'Learn about the badges that you may see for some apps and actions listings on {% data variables.product.prodname_marketplace %}.'
+intro: "Learn about the badges that you may see for some apps and actions listings on {% data variables.product.prodname_marketplace %}."
 redirect_from:
   - /developers/github-marketplace/about-verified-creator-badges
   - /developers/github-marketplace/about-marketplace-badges
 versions:
-  fpt: '*'
+  fpt: "*"
 ---
+
 ## For GitHub Apps
 
 Certain apps on the {% data variables.product.prodname_marketplace %} have the {% octicon "verified" aria-label="The verified badge" %} badge and a tooltip that says "Publisher domain and email verified". This means that the app is owned by an organization that has:
@@ -31,9 +32,9 @@ For more information about the requirements for listing an app on {% data variab
 
 For information on finding apps to use, see "[Searching {% data variables.product.prodname_marketplace %}](/github/searching-for-information-on-github/searching-github-marketplace)."
 
-## For GitHub actions 
+## For GitHub actions
 
-Actions with the {% octicon "verified" aria-label="The verified badge" %}, or  verified creator  badge,  indicate that {% data variables.product.prodname_dotcom %} has verified the creator of the action as a partner organization.
+Actions with the {% octicon "verified" aria-label="The verified badge" %}, or verified creator badge, indicate that {% data variables.product.prodname_dotcom %} has verified the creator of the action as a partner organization.
 
 ![Verified creator badge for GitHub Actions](/assets/images/marketplace/verified-creator-badge-for-actions.png)
 

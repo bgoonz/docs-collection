@@ -1,13 +1,13 @@
 ---
 title: About Codespaces
-intro: '{% data variables.product.prodname_codespaces %} is a configurable online development environment, hosted by {% data variables.product.prodname_dotcom %} and powered by {% data variables.product.prodname_vscode %}, that allows you to develop entirely in the cloud.'
+intro: "{% data variables.product.prodname_codespaces %} is a configurable online development environment, hosted by {% data variables.product.prodname_dotcom %} and powered by {% data variables.product.prodname_vscode %}, that allows you to develop entirely in the cloud."
 redirect_from:
   - /github/developing-online-with-github-codespaces/about-github-codespaces
   - /github/developing-online-with-codespaces/about-codespaces
   - /codespaces/getting-started-with-codespaces/about-codespaces
   - /codespaces/about-codespaces
 versions:
-  fpt: '*'
+  fpt: "*"
 type: overview
 topics:
   - Codespaces
@@ -17,11 +17,11 @@ topics:
 
 ## About {% data variables.product.prodname_codespaces %}
 
-{% data variables.product.prodname_codespaces %} is a configurable cloud development environment available in your browser on {% data variables.product.prodname_dotcom %} or through {% data variables.product.prodname_vscode %}. 
+{% data variables.product.prodname_codespaces %} is a configurable cloud development environment available in your browser on {% data variables.product.prodname_dotcom %} or through {% data variables.product.prodname_vscode %}.
 
 ![An open codespace](/assets/images/help/codespaces/codespace-overview.png)
 
-A codespace includes everything developers need to develop for a specific repository, including the {% data variables.product.prodname_vscode %} editing experience and common languages, tools, and utilities. {% data variables.product.prodname_codespaces %} is completely configurable, allowing you to create a customized development environment for your project, and allowing developers to personalize their experience with extensions and dotfile settings. 
+A codespace includes everything developers need to develop for a specific repository, including the {% data variables.product.prodname_vscode %} editing experience and common languages, tools, and utilities. {% data variables.product.prodname_codespaces %} is completely configurable, allowing you to create a customized development environment for your project, and allowing developers to personalize their experience with extensions and dotfile settings.
 
 Codespaces offers many benefits to teams by allowing for a consistent environment across your entire team, fast onboarding, and creating a secure space for development.
 

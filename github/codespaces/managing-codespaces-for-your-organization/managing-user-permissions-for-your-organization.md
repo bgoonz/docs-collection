@@ -1,9 +1,9 @@
 ---
 title: Managing user permissions for your organization
-intro: 'You can control which users in your organization can use {% data variables.product.prodname_codespaces %}.'
-permissions: 'To manage user permissions for {% data variables.product.prodname_codespaces %} for an organization, you must be an organization owner.'
+intro: "You can control which users in your organization can use {% data variables.product.prodname_codespaces %}."
+permissions: "To manage user permissions for {% data variables.product.prodname_codespaces %} for an organization, you must be an organization owner."
 versions:
-  fpt: '*'
+  fpt: "*"
 type: how_to
 topics:
   - Codespaces
@@ -27,10 +27,11 @@ By default, a codespace can only access the repository where it was created. If 
 {% data reusables.profile.access_org %}
 {% data reusables.profile.org_settings %}
 {% data reusables.organizations.click-codespaces %}
+
 1. Under "User permissions", select one of the following options:
 
-   * **Disabled** to not allow any organization members to use {% data variables.product.prodname_codespaces %}.
-   * **Allow for all users** to allow all your organization members to use {% data variables.product.prodname_codespaces %}.
-   * **Selected users** to select specific organization members to use {% data variables.product.prodname_codespaces %}.
+   - **Disabled** to not allow any organization members to use {% data variables.product.prodname_codespaces %}.
+   - **Allow for all users** to allow all your organization members to use {% data variables.product.prodname_codespaces %}.
+   - **Selected users** to select specific organization members to use {% data variables.product.prodname_codespaces %}.
 
    ![Radio buttons for "User permissions"](/assets/images/help/codespaces/organization-user-permission-settings.png)

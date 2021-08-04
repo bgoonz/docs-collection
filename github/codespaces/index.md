@@ -2,7 +2,7 @@
 title: GitHub Codespaces Documentation
 beta_product: true
 shortTitle: GitHub Codespaces
-intro: 'Create a codespace to start developing in a secure, configurable, and dedicated development environment that works how and where you want it to.'
+intro: "Create a codespace to start developing in a secure, configurable, and dedicated development environment that works how and where you want it to."
 introLinks:
   overview: /codespaces/overview
   quickstart: /codespaces/getting-started/quickstart
@@ -23,14 +23,14 @@ featuredLinks:
     - /codespaces/managing-codespaces-for-your-organization/managing-access-and-security-for-your-organizations-codespaces
     - /codespaces/managing-codespaces-for-your-organization/reviewing-your-organizations-audit-logs-for-codespaces
   popularHeading: Managing GitHub Codespaces
-product_video: 'https://www.youtube-nocookie.com/embed/_W9B7qc9lVc'
+product_video: "https://www.youtube-nocookie.com/embed/_W9B7qc9lVc"
 redirect_from:
   - /github/developing-online-with-github-codespaces
   - /github/developing-online-with-codespaces
 layout: product-landing
 examples_source: data/product-examples/codespaces/code-examples.yml
 versions:
-  fpt: '*'
+  fpt: "*"
 children:
   - /overview
   - /getting-started
@@ -42,4 +42,3 @@ children:
   - /codespaces-reference
   - /guides
 ---
-

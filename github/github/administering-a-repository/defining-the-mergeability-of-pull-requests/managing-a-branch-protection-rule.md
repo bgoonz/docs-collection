@@ -1,7 +1,7 @@
 ---
 title: Managing a branch protection rule
-intro: 'You can create a branch protection rule to enforce certain workflows for one or more branches, such as requiring an approving review or passing status checks for all pull requests merged into the protected branch.'
-product: '{% data reusables.gated-features.protected-branches %}'
+intro: "You can create a branch protection rule to enforce certain workflows for one or more branches, such as requiring an approving review or passing status checks for all pull requests merged into the protected branch."
+product: "{% data reusables.gated-features.protected-branches %}"
 redirect_from:
   - /articles/configuring-protected-branches
   - /enterprise/admin/developer-workflow/configuring-protected-branches-and-required-status-checks
@@ -18,14 +18,15 @@ redirect_from:
   - /github/administering-a-repository/enabling-deletion-of-a-protected-branch
   - /github/administering-a-repository/managing-a-branch-protection-rule
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 permissions: People with admin permissions to a repository can manage branch protection rules.
 topics:
   - Repositories
 shortTitle: Branch protection rule
 ---
+
 ## About branch protection rules
 
 {% data reusables.repositories.branch-rules-example %}
@@ -36,7 +37,7 @@ If a repository has multiple protected branch rules that affect the same branche
 
 Protected branch rules that mention a special character, such as `*`, `?`, or `]`, are applied in the order they were created, so older rules with these characters have a higher priority.
 
-To create an exception to an existing branch rule, you can create a new branch protection rule that is higher priority, such as a branch rule for a specific branch name. 
+To create an exception to an existing branch rule, you can create a new branch protection rule that is higher priority, such as a branch rule for a specific branch name.
 
 For more information about each of each of the available branch protection settings, see "[About protected branches](/github/administering-a-repository/about-protected-branches)."
 
@@ -48,6 +49,7 @@ When you create a branch rule, the branch you specify doesn't have to exist yet 
 {% data reusables.repositories.sidebar-settings %}
 {% data reusables.repositories.repository-branches %}
 {% data reusables.repositories.add-branch-protection-rules %}
+
 1. Optionally, enable required pull request reviews.
    - Under "Protect matching branches", select **Require pull request reviews before merging**.
      ![Pull request review restriction checkbox](/assets/images/help/repository/PR-reviews-required.png)
@@ -66,25 +68,25 @@ When you create a branch rule, the branch you specify doesn't have to exist yet 
      ![Loose or strict required status checkbox](/assets/images/help/repository/protecting-branch-loose-status.png)
    - From the list of available status checks, select the checks you want to require.
      ![List of available status checks](/assets/images/help/repository/required-statuses-list.png)
-{%- ifversion fpt or ghes > 3.1 or ghae-issue-4382 %}
+     {%- ifversion fpt or ghes > 3.1 or ghae-issue-4382 %}
 1. Optionally, select **Require conversation resolution before merging**.
-  ![Require conversation resolution before merging option](/assets/images/help/repository/require-conversation-resolution.png)
-{%- endif %}
+   ![Require conversation resolution before merging option](/assets/images/help/repository/require-conversation-resolution.png)
+   {%- endif %}
 1. Optionally, select **Require signed commits**.
-  ![Require signed commits option](/assets/images/help/repository/require-signed-commits.png)
+   ![Require signed commits option](/assets/images/help/repository/require-signed-commits.png)
 1. Optionally, select **Require linear history**.
-  ![Required linear history option](/assets/images/help/repository/required-linear-history.png)
+   ![Required linear history option](/assets/images/help/repository/required-linear-history.png)
 1. Optionally, select **Include administrators**.
-![Include administrators checkbox](/assets/images/help/repository/include-admins-protected-branches.png)
+   ![Include administrators checkbox](/assets/images/help/repository/include-admins-protected-branches.png)
 1. Optionally,{% ifversion fpt %} if your repository is owned by an organization using {% data variables.product.prodname_team %} or {% data variables.product.prodname_ghe_cloud %},{% endif %} enable branch restrictions.
    - Select **Restrict who can push to matching branches**.
      ![Branch restriction checkbox](/assets/images/help/repository/restrict-branch.png)
    - Search for and select the people, teams, or apps who will have permission to push to the protected branch.
      ![Branch restriction search](/assets/images/help/repository/restrict-branch-search.png)
 1. Optionally, under "Rules applied to everyone including administrators", select **Allow force pushes**.
-  ![Allow force pushes option](/assets/images/help/repository/allow-force-pushes.png)
+   ![Allow force pushes option](/assets/images/help/repository/allow-force-pushes.png)
 1. Optionally, select **Allow deletions**.
-  ![Allow branch deletions option](/assets/images/help/repository/allow-branch-deletions.png)
+   ![Allow branch deletions option](/assets/images/help/repository/allow-branch-deletions.png)
 1. Click **Create**.
 
 ## Editing a branch protection rule
@@ -92,16 +94,18 @@ When you create a branch rule, the branch you specify doesn't have to exist yet 
 {% data reusables.repositories.navigate-to-repo %}
 {% data reusables.repositories.sidebar-settings %}
 {% data reusables.repositories.repository-branches %}
+
 1. To the right of the branch protection rule you want to edit, click **Edit**.
-  ![Edit button](/assets/images/help/repository/edit-branch-protection-rule.png)
+   ![Edit button](/assets/images/help/repository/edit-branch-protection-rule.png)
 1. Make your desired changes to the branch protection rule.
 1. Click **Save changes**.
-  ![Save changes button](/assets/images/help/repository/save-branch-protection-rule.png)
+   ![Save changes button](/assets/images/help/repository/save-branch-protection-rule.png)
 
 ## Deleting a branch protection rule
 
 {% data reusables.repositories.navigate-to-repo %}
 {% data reusables.repositories.sidebar-settings %}
 {% data reusables.repositories.repository-branches %}
+
 1. To the right of the branch protection rule you want to delete, click **Delete**.
-    ![Delete button](/assets/images/help/repository/delete-branch-protection-rule.png)
+   ![Delete button](/assets/images/help/repository/delete-branch-protection-rule.png)

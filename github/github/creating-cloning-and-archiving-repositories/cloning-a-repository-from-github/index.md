@@ -1,12 +1,12 @@
 ---
 title: Cloning a repository from GitHub
-intro: 'You can clone a remote repository to your local machine. If you run into errors, there are some common troubleshooting solutions.'
+intro: "You can clone a remote repository to your local machine. If you run into errors, there are some common troubleshooting solutions."
 redirect_from:
   - /articles/cloning-a-repository-from-github
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Repositories
 children:
@@ -16,4 +16,3 @@ children:
   - /error-remote-head-refers-to-nonexistent-ref-unable-to-checkout
 shortTitle: Clone a repository
 ---
-

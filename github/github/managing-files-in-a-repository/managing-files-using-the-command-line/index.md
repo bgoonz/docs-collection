@@ -1,12 +1,12 @@
 ---
 title: Managing files using the command line
-intro: 'Using the command line, you can add, rename, and move files in a repository.'
+intro: "Using the command line, you can add, rename, and move files in a repository."
 redirect_from:
   - /articles/managing-files-using-the-command-line
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Repositories
 children:
@@ -15,4 +15,3 @@ children:
   - /moving-a-file-to-a-new-location-using-the-command-line
 shortTitle: Manage files locally
 ---
-

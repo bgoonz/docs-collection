@@ -2,9 +2,9 @@
 title: Getting started with apps
 intro: Learn about building apps and setting up your development environment.
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - GitHub Apps
 children:
@@ -14,4 +14,3 @@ children:
   - /migrating-oauth-apps-to-github-apps
   - /setting-up-your-development-environment-to-create-a-github-app
 ---
-

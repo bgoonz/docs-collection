@@ -1,13 +1,13 @@
 ---
 title: Proposing changes to your work with pull requests
-intro: 'After you add changes to a topic branch or fork, you can open a pull request to ask your collaborators or the repository administrator to review your changes before merging them into the project.'
+intro: "After you add changes to a topic branch or fork, you can open a pull request to ask your collaborators or the repository administrator to review your changes before merging them into the project."
 redirect_from:
   - /github/collaborating-with-issues-and-pull-requests/proposing-changes-to-your-work-with-pull-requests/
   - /articles/proposing-changes-to-your-work-with-pull-requests
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Pull requests
 children:
@@ -24,4 +24,3 @@ children:
   - /committing-changes-to-a-pull-request-branch-created-from-a-fork
 shortTitle: Propose changes
 ---
-

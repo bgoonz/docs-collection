@@ -1,12 +1,12 @@
 ---
 title: Managing branches in your repository
-intro: 'Whenever you propose a change in Git, you [create a new branch](/articles/creating-and-deleting-branches-within-your-repository/). Branch management is an important part of the Git workflow. After some time, your list of branches may grow, so it''s a good idea to delete merged or stale branches.'
+intro: "Whenever you propose a change in Git, you [create a new branch](/articles/creating-and-deleting-branches-within-your-repository/). Branch management is an important part of the Git workflow. After some time, your list of branches may grow, so it's a good idea to delete merged or stale branches."
 redirect_from:
   - /articles/managing-branches-in-your-repository
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Repositories
 children:
@@ -16,4 +16,3 @@ children:
   - /deleting-and-restoring-branches-in-a-pull-request
 shortTitle: Manage branches
 ---
-

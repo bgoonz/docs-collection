@@ -1,18 +1,19 @@
 ---
 title: About your profile
-intro: 'Your profile page tells people the story of your work through the repositories you''re interested in, the contributions you''ve made, and the conversations you''ve had.'
+intro: "Your profile page tells people the story of your work through the repositories you're interested in, the contributions you've made, and the conversations you've had."
 redirect_from:
   - /articles/viewing-your-feeds/
   - /articles/profile-pages/
   - /articles/about-your-profile
   - /github/setting-up-and-managing-your-github-profile/about-your-profile
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Profiles
 ---
+
 You can add personal information about yourself in your bio, like previous places you've worked, projects you've contributed to, or interests you have that other people may like to know about. For more information, see "[Adding a bio to your profile](/articles/personalizing-your-profile/#adding-a-bio-to-your-profile)."
 
 {% ifversion fpt or ghes > 2.21 %}

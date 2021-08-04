@@ -4,14 +4,15 @@ redirect_from:
   - /articles/rendering-differences-in-prose-documents
   - /github/managing-files-in-a-repository/rendering-differences-in-prose-documents
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Repositories
 shortTitle: Differences in prose
 ---
-Commits and pull requests that include prose documents have the ability to represent those documents with *source* and *rendered* views.
+
+Commits and pull requests that include prose documents have the ability to represent those documents with _source_ and _rendered_ views.
 
 The source view shows the raw text that has been typed, while the rendered
 view shows how that text would look once it's rendered on {% data variables.product.product_name %}. For example,
@@ -19,15 +20,15 @@ this might be the difference between showing `**bold**` in Markdown, and **bold*
 
 Prose rendering is supported for rendered documents supported by [github/markup](https://github.com/github/markup):
 
-* Markdown
-* AsciiDoc
-* Textile
-* ReStructuredText
-* Rdoc
-* Org
-* Creole
-* MediaWiki
-* Pod
+- Markdown
+- AsciiDoc
+- Textile
+- ReStructuredText
+- Rdoc
+- Org
+- Creole
+- MediaWiki
+- Pod
 
 ![Paper icon to view rendered prose document](/assets/images/help/repository/rendered_prose_diff.png)
 
@@ -46,7 +47,7 @@ another, we'd show a tooltip like this:
 ## Commenting on changes
 
 [Commit comments](/articles/commenting-on-differences-between-files) can only
-be added to files within the *source* view, on a line-by-line basis.
+be added to files within the _source_ view, on a line-by-line basis.
 
 ## Linking to headers
 

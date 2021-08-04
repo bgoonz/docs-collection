@@ -1,12 +1,12 @@
 ---
 title: Guides
-intro: 'Learn about using the {% data variables.product.prodname_dotcom %} API with your app, continuous integration, and how to build with apps.'
+intro: "Learn about using the {% data variables.product.prodname_dotcom %} API with your app, continuous integration, and how to build with apps."
 redirect_from:
   - /apps/quickstart-guides
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - GitHub Apps
 children:
@@ -14,4 +14,3 @@ children:
   - /using-content-attachments
   - /creating-ci-tests-with-the-checks-api
 ---
-

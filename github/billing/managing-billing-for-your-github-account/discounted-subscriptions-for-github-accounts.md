@@ -1,6 +1,6 @@
 ---
 title: Discounted subscriptions for GitHub accounts
-intro: '{% data variables.product.product_name %} provides discounts to students, educators, educational institutions, nonprofits, and libraries.'
+intro: "{% data variables.product.product_name %} provides discounts to students, educators, educational institutions, nonprofits, and libraries."
 redirect_from:
   - /github/setting-up-and-managing-billing-and-payments-on-github/discounted-subscriptions-for-github-accounts
   - /articles/discounted-personal-accounts/
@@ -9,7 +9,7 @@ redirect_from:
   - /articles/discounted-subscriptions-for-github-accounts
   - /github/setting-up-and-managing-billing-and-payments-on-github/managing-billing-for-your-github-account/discounted-subscriptions-for-github-accounts
 versions:
-  fpt: '*'
+  fpt: "*"
 type: reference
 topics:
   - Accounts
@@ -19,6 +19,7 @@ topics:
   - User account
 shortTitle: Discounted subscriptions
 ---
+
 {% tip %}
 
 **Tip**: Discounts for {% data variables.product.prodname_dotcom %} do not apply to subscriptions for other paid products and features.

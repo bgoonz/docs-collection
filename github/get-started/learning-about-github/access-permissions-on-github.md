@@ -7,23 +7,25 @@ redirect_from:
   - /articles/access-permissions-on-github
   - /github/getting-started-with-github/access-permissions-on-github
   - /github/getting-started-with-github/learning-about-github/access-permissions-on-github
-intro: 'While you can grant read/write access to collaborators on a personal repository, members of an organization can have more granular access permissions for the organization''s repositories.'
+intro: "While you can grant read/write access to collaborators on a personal repository, members of an organization can have more granular access permissions for the organization's repositories."
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Permissions
   - Accounts
 shortTitle: Access permissions
 ---
+
 ## Personal user accounts
 
-A repository owned by a user account has two permission levels: the *repository owner* and *collaborators*. For more information, see "[Permission levels for a user account repository](/articles/permission-levels-for-a-user-account-repository)."
+A repository owned by a user account has two permission levels: the _repository owner_ and _collaborators_. For more information, see "[Permission levels for a user account repository](/articles/permission-levels-for-a-user-account-repository)."
 
 ## Organization accounts
 
-Organization members can have *owner*{% ifversion fpt %}, *billing manager*,{% endif %} or *member* roles. Owners have complete administrative access to your organization{% ifversion fpt %}, while billing managers can manage billing settings{% endif %}. Member is the default role for everyone else. You can manage access permissions for multiple members at a time with teams. For more information, see:
+Organization members can have _owner_{% ifversion fpt %}, _billing manager_,{% endif %} or _member_ roles. Owners have complete administrative access to your organization{% ifversion fpt %}, while billing managers can manage billing settings{% endif %}. Member is the default role for everyone else. You can manage access permissions for multiple members at a time with teams. For more information, see:
+
 - "[Permission levels for an organization](/articles/permission-levels-for-an-organization)"
 - "[Project board permissions for an organization](/articles/project-board-permissions-for-an-organization)"
 - "[Repository permission levels for an organization](/articles/repository-permission-levels-for-an-organization)"
@@ -33,7 +35,7 @@ Organization members can have *owner*{% ifversion fpt %}, *billing manager*,{% e
 
 ## Enterprise accounts
 
-*Enterprise owners* have ultimate power over the enterprise account and can take every action in the enterprise account. *Billing managers* can manage your enterprise account's billing settings. Members and outside collaborators of organizations owned by your enterprise account are automatically members of the enterprise account, although they have no access to the enterprise account itself or its settings. For more information, see "[Roles in an enterprise](/github/setting-up-and-managing-your-enterprise/roles-in-an-enterprise)."
+_Enterprise owners_ have ultimate power over the enterprise account and can take every action in the enterprise account. _Billing managers_ can manage your enterprise account's billing settings. Members and outside collaborators of organizations owned by your enterprise account are automatically members of the enterprise account, although they have no access to the enterprise account itself or its settings. For more information, see "[Roles in an enterprise](/github/setting-up-and-managing-your-enterprise/roles-in-an-enterprise)."
 
 {% data reusables.gated-features.enterprise-accounts %}
 

@@ -8,9 +8,9 @@ redirect_from:
   - /articles/using-issue-and-pull-request-templates
   - /github/building-a-strong-community/using-templates-to-encourage-useful-issues-and-pull-requests
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Community
 children:
@@ -21,4 +21,3 @@ children:
   - /creating-a-pull-request-template-for-your-repository
   - /manually-creating-a-single-issue-template-for-your-repository
 ---
-

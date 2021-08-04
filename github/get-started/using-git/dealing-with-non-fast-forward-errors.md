@@ -1,17 +1,18 @@
 ---
 title: Dealing with non-fast-forward errors
-intro: 'Sometimes, Git can''t make your change to a remote repository without losing commits. When this happens, your push is refused.'
+intro: "Sometimes, Git can't make your change to a remote repository without losing commits. When this happens, your push is refused."
 redirect_from:
   - /articles/dealing-with-non-fast-forward-errors
   - /github/using-git/dealing-with-non-fast-forward-errors
   - /github/getting-started-with-github/dealing-with-non-fast-forward-errors
   - /github/getting-started-with-github/using-git/dealing-with-non-fast-forward-errors
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 shortTitle: Non-fast-forward error
 ---
+
 If another person has pushed to the same branch as you, Git won't be able to push your changes:
 
 ```shell

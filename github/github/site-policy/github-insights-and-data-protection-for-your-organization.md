@@ -1,13 +1,13 @@
 ---
 title: GitHub Insights and data protection for your organization
-intro: '{% data variables.product.prodname_insights %} analyzes your {% data variables.product.prodname_ghe_server %} data. This data could include personal data of individuals in your organization who may have the right to understand how such personal data is being used.'
+intro: "{% data variables.product.prodname_insights %} analyzes your {% data variables.product.prodname_ghe_server %} data. This data could include personal data of individuals in your organization who may have the right to understand how such personal data is being used."
 redirect_from:
   - /github/installing-and-configuring-github-insights/github-insights-and-data-protection-for-your-organization
   - /enterprise-server@2.22/github/site-policy/github-insights-and-data-protection-for-your-organization
   - /enterprise-server@2.21/github/site-policy/github-insights-and-data-protection-for-your-organization
   - /enterprise-server@2.20/github/site-policy/github-insights-and-data-protection-for-your-organization
 versions:
-  fpt: '*'
+  fpt: "*"
 topics:
   - Policy
   - Legal
@@ -45,4 +45,4 @@ Under various data protection regulations, such as the General Data Protection R
 
 - **Correction and deletion**: Users may have the right to rectify or delete their personal data. The data used in {% data variables.product.prodname_insights %} is derived from the existing data you add to or generate from your {% data variables.product.prodname_ghe_server %} installation. Correction and deletion should follow your organization's existing process to correct and delete data from {% data variables.product.prodname_ghe_server %}.
 
-- **Transparency regarding processing**:  Each metric and report has a detailed description of what personal data is being processed. For more information, see "[Metrics available with {% data variables.product.prodname_insights %}](/insights/exploring-your-usage-of-github-enterprise/metrics-available-with-github-insights)."
+- **Transparency regarding processing**: Each metric and report has a detailed description of what personal data is being processed. For more information, see "[Metrics available with {% data variables.product.prodname_insights %}](/insights/exploring-your-usage-of-github-enterprise/metrics-available-with-github-insights)."

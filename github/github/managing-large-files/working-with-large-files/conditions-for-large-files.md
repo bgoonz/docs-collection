@@ -1,15 +1,16 @@
 ---
 title: Conditions for large files
-intro: '{% data variables.product.product_name %} limits the size of files allowed in repositories, and will block a push to a repository if the files are larger than the maximum file limit.'
+intro: "{% data variables.product.product_name %} limits the size of files allowed in repositories, and will block a push to a repository if the files are larger than the maximum file limit."
 redirect_from:
   - /articles/conditions-for-large-files
   - /github/managing-large-files/conditions-for-large-files
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 shortTitle: Large file conditions
 ---
+
 {% data reusables.large_files.use_lfs_tip %}
 
 ## Warning for files larger than {% data variables.large_files.warning_size %}

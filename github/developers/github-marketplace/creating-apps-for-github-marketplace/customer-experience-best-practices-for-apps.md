@@ -3,12 +3,13 @@ title: Customer experience best practices for apps
 intro: Guidelines for creating an app that will be easy to use and understand.
 shortTitle: Customer experience best practice
 versions:
-  fpt: '*'
+  fpt: "*"
 topics:
   - Marketplace
 redirect_from:
   - /developers/github-marketplace/customer-experience-best-practices-for-apps
 ---
+
 If you follow these best practices it will help you to provide a good customer experience.
 
 ## Customer communication

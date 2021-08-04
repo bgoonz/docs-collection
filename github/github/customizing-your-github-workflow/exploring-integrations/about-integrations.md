@@ -1,12 +1,13 @@
 ---
 title: About integrations
-intro: 'Integrations are tools and services that connect with {% data variables.product.product_name %} to complement and extend your workflow.'
+intro: "Integrations are tools and services that connect with {% data variables.product.product_name %} to complement and extend your workflow."
 redirect_from:
   - /articles/about-integrations
   - /github/customizing-your-github-workflow/about-integrations
 versions:
-  fpt: '*'
+  fpt: "*"
 ---
+
 You can install integrations in your personal account or organizations you own. You can also install {% data variables.product.prodname_github_apps %} from a third-party in a specific repository where you have admin permissions or which is owned by your organization.
 
 ## Differences between {% data variables.product.prodname_github_apps %} and {% data variables.product.prodname_oauth_apps %}
@@ -16,6 +17,7 @@ Integrations can be {% data variables.product.prodname_github_apps %}, {% data v
 {% data variables.product.prodname_github_apps %} offer granular permissions and request access to only what the app needs. {% data variables.product.prodname_github_apps %} also offer specific user-level permissions that each user must authorize individually when an app is installed or when the integrator changes the permissions requested by the app.
 
 For more information, see:
+
 - "[Differences between {% data variables.product.prodname_github_apps %} and {% data variables.product.prodname_oauth_apps %}](/apps/differences-between-apps/)"
 - "[About apps](/apps/about-apps/)"
 - "[User-level permissions](/apps/building-github-apps/identifying-and-authorizing-users-for-github-apps/#user-level-permissions)"
@@ -23,7 +25,7 @@ For more information, see:
 - "[Authorizing {% data variables.product.prodname_github_apps %}](/github/authenticating-to-github/keeping-your-account-and-data-secure/authorizing-github-apps)"
 - "[Reviewing your authorized integrations](/articles/reviewing-your-authorized-integrations/)"
 
-You can install a preconfigured {% data variables.product.prodname_github_app %}, if the integrators or app creators have created their app with the {% data variables.product.prodname_github_app %} manifest flow. For information about how to  run your {% data variables.product.prodname_github_app %} with automated configuration, contact the integrator or app creator.
+You can install a preconfigured {% data variables.product.prodname_github_app %}, if the integrators or app creators have created their app with the {% data variables.product.prodname_github_app %} manifest flow. For information about how to run your {% data variables.product.prodname_github_app %} with automated configuration, contact the integrator or app creator.
 
 You can create a {% data variables.product.prodname_github_app %} with simplified configuration if you build your app with Probot. For more information, see the [Probot docs](https://probot.github.io/docs/) site.
 

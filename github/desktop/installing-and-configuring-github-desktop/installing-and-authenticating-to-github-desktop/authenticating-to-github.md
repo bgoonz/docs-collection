@@ -1,14 +1,15 @@
 ---
 title: Authenticating to GitHub
 shortTitle: Authentication
-intro: 'You can securely access your account''s resources on {% data variables.product.prodname_desktop %} by authenticating to {% data variables.product.prodname_dotcom %}.'
+intro: "You can securely access your account's resources on {% data variables.product.prodname_desktop %} by authenticating to {% data variables.product.prodname_dotcom %}."
 redirect_from:
   - /desktop/getting-started-with-github-desktop/authenticating-to-github-using-the-browser
   - /desktop/getting-started-with-github-desktop/authenticating-to-github
   - /desktop/installing-and-configuring-github-desktop/authenticating-to-github
 versions:
-  fpt: '*'
+  fpt: "*"
 ---
+
 ## About authentication
 
 To keep your account secure, you must authenticate before you can use {% data variables.product.prodname_desktop %} to access resources on {% data variables.product.prodname_dotcom %}.
@@ -20,17 +21,14 @@ Before you authenticate, {% data reusables.desktop.get-an-account %}
 ## Authenticating an account on {% data variables.product.prodname_dotcom %}
 
 {% data reusables.desktop.mac-select-desktop-menu %}
-{% data reusables.desktop.mac-select-accounts %}
-3. To the right of "{% data variables.product.prodname_dotcom_the_website %}," click **Sign In**.
-  ![The Sign In button for GitHub](/assets/images/help/desktop/mac-sign-in-github.png)
-4. In the "Sign in" pane, click **Sign in using your browser**. {% data variables.product.prodname_desktop %} will open your default browser.
-  ![The Sign in using your browser link](/assets/images/help/desktop/sign-in-browser.png)
+{% data reusables.desktop.mac-select-accounts %} 3. To the right of "{% data variables.product.prodname_dotcom_the_website %}," click **Sign In**.
+![The Sign In button for GitHub](/assets/images/help/desktop/mac-sign-in-github.png) 4. In the "Sign in" pane, click **Sign in using your browser**. {% data variables.product.prodname_desktop %} will open your default browser.
+![The Sign in using your browser link](/assets/images/help/desktop/sign-in-browser.png)
 
-  {% data reusables.user_settings.password-authentication-deprecation-desktop %}
+{% data reusables.user_settings.password-authentication-deprecation-desktop %}
 
 {% data reusables.desktop.authenticate-in-browser %}
-{% data reusables.desktop.2fa-in-browser %}
-7. After {% data variables.product.prodname_dotcom %} authenticates your account, follow the prompts to return to {% data variables.product.prodname_desktop %}.
+{% data reusables.desktop.2fa-in-browser %} 7. After {% data variables.product.prodname_dotcom %} authenticates your account, follow the prompts to return to {% data variables.product.prodname_desktop %}.
 
 ## Authenticating an account on {% data variables.product.prodname_enterprise %}
 
@@ -38,9 +36,8 @@ Before you authenticate, {% data reusables.desktop.get-an-account %}
 
 {% data reusables.desktop.mac-select-desktop-menu %}
 {% data reusables.desktop.mac-select-accounts %}
-{% data reusables.desktop.choose-product-authenticate %}
-4. To add a {% data variables.product.prodname_enterprise %} account, type your credentials under "Enterprise server address," then click **Continue**.
-  ![The Sign In button for GitHub Enterprise](/assets/images/help/desktop/mac-sign-in-button-enterprise.png)
+{% data reusables.desktop.choose-product-authenticate %} 4. To add a {% data variables.product.prodname_enterprise %} account, type your credentials under "Enterprise server address," then click **Continue**.
+![The Sign In button for GitHub Enterprise](/assets/images/help/desktop/mac-sign-in-button-enterprise.png)
 {% data reusables.desktop.retrieve-2fa %}
 
 {% endmac %}
@@ -50,28 +47,23 @@ Before you authenticate, {% data reusables.desktop.get-an-account %}
 ## Authenticating an account on {% data variables.product.prodname_dotcom %}
 
 {% data reusables.desktop.windows-choose-options %}
-{% data reusables.desktop.windows-select-accounts %}
-3. To the right of "GitHub.com," click **Sign in**.
-  ![The Sign In button for GitHub](/assets/images/help/desktop/windows-sign-in-github.png)
-4. In the Sign in pane, click **Sign in using your browser**.
-  ![The Sign in using your browser link](/assets/images/help/desktop/sign-in-browser.png)
+{% data reusables.desktop.windows-select-accounts %} 3. To the right of "GitHub.com," click **Sign in**.
+![The Sign In button for GitHub](/assets/images/help/desktop/windows-sign-in-github.png) 4. In the Sign in pane, click **Sign in using your browser**.
+![The Sign in using your browser link](/assets/images/help/desktop/sign-in-browser.png)
 
-  {% data reusables.user_settings.password-authentication-deprecation-desktop %}
+{% data reusables.user_settings.password-authentication-deprecation-desktop %}
 
 {% data reusables.desktop.authenticate-in-browser %}
-{% data reusables.desktop.2fa-in-browser %}
-7. After {% data variables.product.prodname_dotcom %} authenticates your account, follow the prompts to return to {% data variables.product.prodname_desktop %}.
+{% data reusables.desktop.2fa-in-browser %} 7. After {% data variables.product.prodname_dotcom %} authenticates your account, follow the prompts to return to {% data variables.product.prodname_desktop %}.
 
 ## Authenticating an account on {% data variables.product.prodname_enterprise %}
-
 
 {% data reusables.user_settings.password-authentication-deprecation-desktop %}
 
 {% data reusables.desktop.windows-choose-options %}
 {% data reusables.desktop.windows-select-accounts %}
-{% data reusables.desktop.choose-product-authenticate %}
-4. To add a {% data variables.product.prodname_enterprise %} account, type your credentials under "Enterprise server address," then click **Continue**.
-  ![The Sign In button for GitHub Enterprise](/assets/images/help/desktop/windows-sign-in-button-enterprise.png)
+{% data reusables.desktop.choose-product-authenticate %} 4. To add a {% data variables.product.prodname_enterprise %} account, type your credentials under "Enterprise server address," then click **Continue**.
+![The Sign In button for GitHub Enterprise](/assets/images/help/desktop/windows-sign-in-button-enterprise.png)
 {% data reusables.desktop.retrieve-2fa %}
 
 {% endwindows %}
@@ -87,7 +79,7 @@ For some errors, {% data variables.product.prodname_desktop %} will prompt you w
 {% mac %}
 
 1. Use the **Help** drop-down menu and click **Show Logs in Finder**.
-  ![The Show Logs in Finder button](/assets/images/help/desktop/mac-show-logs.png)
+   ![The Show Logs in Finder button](/assets/images/help/desktop/mac-show-logs.png)
 2. Select the log file from the date when you encountered the authentication error.
 
 {% endmac %}
@@ -95,7 +87,7 @@ For some errors, {% data variables.product.prodname_desktop %} will prompt you w
 {% windows %}
 
 1. Use the **Help** drop-down menu and click **Show Logs in Explorer**.
-  ![The Show Logs in Explorer button](/assets/images/help/desktop/windows-show-logs.png)
+   ![The Show Logs in Explorer button](/assets/images/help/desktop/windows-show-logs.png)
 2. Select the log file from the date when you encountered the authentication error.
 
 {% endwindows %}
@@ -179,8 +171,8 @@ This error can be caused by multiple events.
 If the `Command Processor` registry entries are modified, {% data variables.product.prodname_desktop %} will respond with an `Authentication failed` error. To check if these registry entries have been modified, follow these steps.
 
 1. Open the Registry Editor (`regedit.exe`) and navigate to the following locations.
-  `HKEY_CURRENT_USER\Software\Microsoft\Command Processor\`
-  `HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Command Processor\`
+   `HKEY_CURRENT_USER\Software\Microsoft\Command Processor\`
+   `HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Command Processor\`
 2. Check to see if there is an `Autorun` value in either location.
 3. If there is an `Autorun` value, delete it.
 
@@ -189,4 +181,5 @@ If your Windows username has extended Unicode characters, it may cause an AskPas
 {% endwindows %}
 
 ## Further reading
+
 - "[About authentication to GitHub](/github/authenticating-to-github/about-authentication-to-github)"

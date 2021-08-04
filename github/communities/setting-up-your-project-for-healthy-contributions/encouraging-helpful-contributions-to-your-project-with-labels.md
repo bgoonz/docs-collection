@@ -6,7 +6,7 @@ redirect_from:
   - /articles/helping-new-contributors-find-your-project-with-labels
   - /github/building-a-strong-community/encouraging-helpful-contributions-to-your-project-with-labels
 versions:
-  fpt: '*'
+  fpt: "*"
 topics:
   - Community
 shortTitle: Encourage contributions
@@ -18,9 +18,8 @@ You can apply the `good first issue` label to issues in your public repository s
 
 {% data reusables.repositories.navigate-to-repo %}
 {% data reusables.repositories.sidebar-issues %}
-{% data reusables.repositories.select-items-in-issue-or-pr-list %}
-4. In the upper-right corner, click **Label**, then start typing `good first issue`. Click the label's name to associate it with the selected items.
-  ![Issues Milestone assignment drop-down](/assets/images/help/issues/issues_applying_labels_dropdown.png)
+{% data reusables.repositories.select-items-in-issue-or-pr-list %} 4. In the upper-right corner, click **Label**, then start typing `good first issue`. Click the label's name to associate it with the selected items.
+![Issues Milestone assignment drop-down](/assets/images/help/issues/issues_applying_labels_dropdown.png)
 
 ## Further reading
 

@@ -5,13 +5,14 @@ redirect_from:
   - /webhooks/configuring
   - /developers/webhooks-and-events/configuring-your-server-to-receive-payloads
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Webhooks
 shortTitle: Configure server for webhooks
 ---
+
 Now that our webhook is ready to deliver messages, we'll set up a basic Sinatra server
 to handle incoming payloads.
 
@@ -32,7 +33,7 @@ can happily test out our code locally.
 Let's set up a little Sinatra app to do something with the information. Our initial
 setup might look something like this:
 
-``` ruby
+```ruby
 require 'sinatra'
 require 'json'
 
@@ -42,7 +43,7 @@ post '/payload' do
 end
 ```
 
-(If you're unfamiliar with how Sinatra works, we recommend [reading the Sinatra guide][Sinatra].)
+(If you're unfamiliar with how Sinatra works, we recommend [reading the Sinatra guide][sinatra].)
 
 Start this server up.
 
@@ -68,4 +69,4 @@ For additional information on working with webhooks for fun and profit, head on
 over to the [Testing Webhooks](/webhooks/testing) guide.
 
 [platform samples]: https://github.com/github/platform-samples/tree/master/hooks/ruby/configuring-your-server
-[Sinatra]: http://www.sinatrarb.com/
+[sinatra]: http://www.sinatrarb.com/

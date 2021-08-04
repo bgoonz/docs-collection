@@ -1,18 +1,19 @@
 ---
-title: 'Error: ssh-add: illegal option -- K'
-intro: 'This error means your version of `ssh-add` does not support macOS keychain integration, which allows you to store your passphrase in the keychain.'
+title: "Error: ssh-add: illegal option -- K"
+intro: "This error means your version of `ssh-add` does not support macOS keychain integration, which allows you to store your passphrase in the keychain."
 redirect_from:
   - /articles/error-ssh-add-illegal-option-k
   - /articles/error-ssh-add-illegal-option----k
   - /github/authenticating-to-github/error-ssh-add-illegal-option----k
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - SSH
-shortTitle: 'ssh-add: illegal option -- K'
+shortTitle: "ssh-add: illegal option -- K"
 ---
+
 The `-K` option is in Apple's standard version of `ssh-add`, which stores the passphrase in your keychain for you when you add an ssh key to the ssh-agent. If you have installed a different version of `ssh-add`, it may lack support for `-K`.
 
 ## Solving the issue

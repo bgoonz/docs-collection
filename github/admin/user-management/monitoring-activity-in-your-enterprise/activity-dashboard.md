@@ -7,12 +7,14 @@ redirect_from:
   - /enterprise/admin/user-management/activity-dashboard
   - /admin/user-management/activity-dashboard
 versions:
-  ghes: '*'
-  ghae: '*'
+  ghes: "*"
+  ghae: "*"
 topics:
   - Enterprise
 ---
+
 The Activity dashboard provides weekly, monthly, and yearly graphs of the number of:
+
 - New pull requests
 - Merged pull requests
 - New issues
@@ -32,6 +34,6 @@ For more analytics based on data from {% data variables.product.product_name %},
 ## Accessing the Activity dashboard
 
 1. At the top of any page, click **Explore**.
-![Explore tab](/assets/images/enterprise/settings/ent-new-explore.png)
+   ![Explore tab](/assets/images/enterprise/settings/ent-new-explore.png)
 2. In the upper-right corner, click **Activity**.
-![Activity button](/assets/images/enterprise/activity/activity-button.png)
+   ![Activity button](/assets/images/enterprise/activity/activity-button.png)

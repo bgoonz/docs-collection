@@ -6,13 +6,14 @@ redirect_from:
   - /articles/upgrading-a-sponsorship
   - /github/setting-up-and-managing-billing-and-payments-on-github/managing-billing-for-github-sponsors/upgrading-a-sponsorship
 versions:
-  fpt: '*'
+  fpt: "*"
 type: how_to
 topics:
   - Sponsors
   - Upgrades
 ---
-{% data reusables.sponsors.org-sponsors-release-phase %} 
+
+{% data reusables.sponsors.org-sponsors-release-phase %}
 
 ## About sponsorship upgrades
 

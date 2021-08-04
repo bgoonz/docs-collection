@@ -1,13 +1,13 @@
 ---
 title: Locking conversations
-intro: 'Repository owners and collaborators, and people with write access to a repository, can lock conversations on issues, pull requests, and commits permanently or temporarily to defuse a heated interaction.'
+intro: "Repository owners and collaborators, and people with write access to a repository, can lock conversations on issues, pull requests, and commits permanently or temporarily to defuse a heated interaction."
 redirect_from:
   - /articles/locking-conversations
   - /github/building-a-strong-community/locking-conversations
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Community
 ---
@@ -24,13 +24,13 @@ To search for locked conversations in a repository that is not archived, you can
 
 1. Optionally, write a comment explaining why you're locking the conversation.
 2. In the right margin of the issue or pull request, or above the comment box on the commit page, click **Lock conversation**.
-![Lock conversation link](/assets/images/help/repository/lock-conversation.png)
+   ![Lock conversation link](/assets/images/help/repository/lock-conversation.png)
 3. Optionally, choose a reason for locking the conversation.
-![Reason for locking a conversation menu](/assets/images/help/repository/locking-conversation-reason-menu.png)
+   ![Reason for locking a conversation menu](/assets/images/help/repository/locking-conversation-reason-menu.png)
 4. Read the information about locking conversations and click **Lock conversation on this issue**, **Lock conversation on this pull request**, or **Lock conversation on this commit**.
-![Confirm lock with a reason dialog box](/assets/images/help/repository/lock-conversation-confirm-with-reason.png)
+   ![Confirm lock with a reason dialog box](/assets/images/help/repository/lock-conversation-confirm-with-reason.png)
 5. When you're ready to unlock the conversation, click **Unlock conversation**.
-![Unlock conversation link](/assets/images/help/repository/unlock-conversation.png)
+   ![Unlock conversation link](/assets/images/help/repository/unlock-conversation.png)
 
 ## Further reading
 
@@ -40,4 +40,4 @@ To search for locked conversations in a repository that is not archived, you can
 - "[Maintaining your safety on {% data variables.product.prodname_dotcom %}](/communities/maintaining-your-safety-on-github)"
 - "[Reporting abuse or spam](/communities/maintaining-your-safety-on-github/reporting-abuse-or-spam)"
 - "[Limiting interactions in your repository](/communities/moderating-comments-and-conversations/limiting-interactions-in-your-repository)"
-{% endif %}
+  {% endif %}

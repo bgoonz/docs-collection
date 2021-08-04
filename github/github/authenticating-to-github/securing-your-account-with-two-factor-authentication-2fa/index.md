@@ -1,13 +1,13 @@
 ---
 title: Securing your account with two-factor authentication (2FA)
-intro: 'You can set up your {% data variables.product.product_name %} account to require an authentication code in addition to your password when you sign in.'
+intro: "You can set up your {% data variables.product.product_name %} account to require an authentication code in addition to your password when you sign in."
 redirect_from:
   - /categories/84/articles/
   - /categories/two-factor-authentication-2fa/
   - /articles/securing-your-account-with-two-factor-authentication-2fa
 versions:
-  fpt: '*'
-  ghes: '*'
+  fpt: "*"
+  ghes: "*"
 topics:
   - 2FA
 children:
@@ -21,4 +21,3 @@ children:
   - /disabling-two-factor-authentication-for-your-personal-account
 shortTitle: Secure your account with 2FA
 ---
-

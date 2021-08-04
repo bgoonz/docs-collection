@@ -5,9 +5,10 @@ redirect_from:
   - /desktop/getting-started-with-github-desktop/configuring-a-default-editor
   - /desktop/installing-and-configuring-github-desktop/configuring-a-default-editor
 versions:
-  fpt: '*'
+  fpt: "*"
 shortTitle: Configure default editor
 ---
+
 ## Supported editors
 
 {% data variables.product.prodname_desktop %} supports the following editors.
@@ -58,22 +59,16 @@ shortTitle: Configure default editor
 
 {% mac %}
 
-{% data reusables.desktop.mac-select-desktop-menu %}
-3. In the Preferences window, select **Integrations**.
-  ![The Integrations pane in the Preferences window](/assets/images/help/desktop/mac-select-integrations-pane.png)
-4. Use the "External Editor" drop-down menu, and choose the editor you want to set as your default.
-  ![The External editor menu in the Preferences menu bar](/assets/images/help/desktop/mac-editor-menu.png)
-5. Click **Save**.  
+{% data reusables.desktop.mac-select-desktop-menu %} 3. In the Preferences window, select **Integrations**.
+![The Integrations pane in the Preferences window](/assets/images/help/desktop/mac-select-integrations-pane.png) 4. Use the "External Editor" drop-down menu, and choose the editor you want to set as your default.
+![The External editor menu in the Preferences menu bar](/assets/images/help/desktop/mac-editor-menu.png) 5. Click **Save**.
 
 {% endmac %}
 
 {% windows %}
 
-{% data reusables.desktop.windows-choose-options %}
-3. In the Options window, select **Integrations**.
-  ![The Integrations pane in the Options window](/assets/images/help/desktop/windows-select-integrations-pane.png)
-4. Use the "External Editor" drop-down menu, and choose the editor you want to set as your default.
-  ![The External editor menu in the Options menu bar](/assets/images/help/desktop/windows-editor-menu.png)
-5. Click **Save**.  
+{% data reusables.desktop.windows-choose-options %} 3. In the Options window, select **Integrations**.
+![The Integrations pane in the Options window](/assets/images/help/desktop/windows-select-integrations-pane.png) 4. Use the "External Editor" drop-down menu, and choose the editor you want to set as your default.
+![The External editor menu in the Options menu bar](/assets/images/help/desktop/windows-editor-menu.png) 5. Click **Save**.
 
 {% endwindows %}

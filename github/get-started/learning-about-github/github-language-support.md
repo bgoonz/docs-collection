@@ -1,16 +1,17 @@
 ---
 title: GitHub language support
-intro: 'An overview of the programming languages supported by {% data variables.product.prodname_dotcom %} features.'
+intro: "An overview of the programming languages supported by {% data variables.product.prodname_dotcom %} features."
 versions:
-  fpt: '*'
-  ghes: '>=2.22'
-  ghae: '*'
+  fpt: "*"
+  ghes: ">=2.22"
+  ghae: "*"
 topics:
   - GitHub
 redirect_from:
   - /github/getting-started-with-github/github-language-support
   - /github/getting-started-with-github/learning-about-github/github-language-support
 ---
+
 <!-- If you make changes to this article, also update any feature-level articles to reflect the same changes in language support. -->
 
 ## About supported languages

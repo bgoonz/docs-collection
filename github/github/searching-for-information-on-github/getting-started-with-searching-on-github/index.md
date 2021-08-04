@@ -3,9 +3,9 @@ title: Getting started with searching on GitHub
 redirect_from:
   - /articles/getting-started-with-searching-on-github
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - GitHub search
 children:
@@ -16,4 +16,3 @@ children:
   - /enabling-githubcom-repository-search-in-github-enterprise-server
 shortTitle: Start with search on GitHub
 ---
-

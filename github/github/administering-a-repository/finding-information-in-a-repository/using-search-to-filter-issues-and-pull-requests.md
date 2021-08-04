@@ -6,13 +6,14 @@ redirect_from:
   - /articles/using-search-to-filter-issues-and-pull-requests
   - /github/managing-your-work-on-github/using-search-to-filter-issues-and-pull-requests
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Pull requests
 shortTitle: Use search to filter
 ---
+
 The issues and pull requests search bar allows you to define your own custom filters and sort by a wide variety of criteria. You can find the search bar on each repository's **Issues** and **Pull requests** tabs and on your [Issues and Pull requests dashboards](/articles/viewing-all-of-your-issues-and-pull-requests).
 
 ![The issues and pull requests search bar](/assets/images/help/issues/issues_search_bar.png)
@@ -35,7 +36,8 @@ With issue and pull request search terms, you can:
 {% tip %}
 
 **Tip:** You can filter issues and pull requests by label using logical OR or using logical AND.
-- To filter issues using logical OR, use the comma syntax: `label:"bug","wip"`. 
+
+- To filter issues using logical OR, use the comma syntax: `label:"bug","wip"`.
 - To filter issues using logical AND, use separate label filters: `label:"bug" label:"wip"`.
 
 {% endtip %}
@@ -45,9 +47,10 @@ With issue and pull request search terms, you can:
 For issues, you can also use search to:
 
 - Filter for issues that are linked to a pull request by a closing reference: `linked:pr`
-{% endif %}
+  {% endif %}
 
 For pull requests, you can also use search to:
+
 - Filter [draft](/articles/about-pull-requests#draft-pull-requests) pull requests: `is:draft`
 - Filter pull requests that haven't been [reviewed](/articles/about-pull-request-reviews) yet: `state:open type:pr review:none`
 - Filter pull requests that [require a review](/github/administering-a-repository/about-protected-branches#require-pull-request-reviews-before-merging) before they can be merged: `state:open type:pr review:required`

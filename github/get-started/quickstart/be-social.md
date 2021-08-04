@@ -5,11 +5,11 @@ redirect_from:
   - /articles/be-social
   - /github/getting-started-with-github/be-social
   - /github/getting-started-with-github/quickstart/be-social
-intro: 'You can interact with people, repositories, and organizations on {% data variables.product.prodname_dotcom %}. See what others are working on and who they''re connecting with from your personal dashboard.'
+intro: "You can interact with people, repositories, and organizations on {% data variables.product.prodname_dotcom %}. See what others are working on and who they're connecting with from your personal dashboard."
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Profile
   - Pull requests
@@ -17,6 +17,7 @@ topics:
   - Notifications
   - Accounts
 ---
+
 To learn about accessing your personal dashboard, see "[About your personal dashboard](/articles/about-your-personal-dashboard)."
 
 ## Following people
@@ -47,9 +48,9 @@ Click **Watch** at the top of a repository to watch it.
 
 ### Creating pull requests
 
- You may want to contribute to another person's project, whether to add features or to fix bugs. After making changes, let the original author know by sending a pull request. For more information, see "[About pull requests](/articles/about-pull-requests)."
+You may want to contribute to another person's project, whether to add features or to fix bugs. After making changes, let the original author know by sending a pull request. For more information, see "[About pull requests](/articles/about-pull-requests)."
 
- ![Pull request button](/assets/images/help/repository/repo-actions-pullrequest.png)
+![Pull request button](/assets/images/help/repository/repo-actions-pullrequest.png)
 
 ### Using issues
 
@@ -65,13 +66,12 @@ Organizations are shared accounts where businesses and open-source projects can 
 
 ### Exploring other projects on {% data variables.product.prodname_dotcom %}
 
-Discover interesting projects using {% data variables.explore.explore_github %}, [Explore repositories](https://github.com/explore), and the {% data variables.explore.trending_page %}. Star interesting projects and come back to them later. Visit your {% data variables.explore.your_stars_page %} to see all your starred projects.  For more information, see "[About your personal dashboard](/articles/about-your-personal-dashboard/)." 
+Discover interesting projects using {% data variables.explore.explore_github %}, [Explore repositories](https://github.com/explore), and the {% data variables.explore.trending_page %}. Star interesting projects and come back to them later. Visit your {% data variables.explore.your_stars_page %} to see all your starred projects. For more information, see "[About your personal dashboard](/articles/about-your-personal-dashboard/)."
 
 ## Celebrate
 
 You're now connected to the {% data variables.product.product_name %} community. What do you want to do next?
 ![Star a project](/assets/images/help/stars/star-a-project.png)
-
 
 - To synchronize your {% data variables.product.product_name %} projects with your computer, you can set up Git. For more information see "[Set up Git](/articles/set-up-git)."
 - You can also create a repository, where you can put all your projects and maintain your workflows. For more information see, "[Create a repository](/articles/create-a-repo)."

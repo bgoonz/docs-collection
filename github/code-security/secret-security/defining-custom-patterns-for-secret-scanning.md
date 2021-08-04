@@ -1,11 +1,11 @@
 ---
 title: Defining custom patterns for secret scanning
 shortTitle: Define custom patterns
-intro: 'You can define custom patterns for {% data variables.product.prodname_secret_scanning %} in organizations and private repositories.'
-product: '{% data reusables.gated-features.secret-scanning %}'
+intro: "You can define custom patterns for {% data variables.product.prodname_secret_scanning %} in organizations and private repositories."
+product: "{% data reusables.gated-features.secret-scanning %}"
 versions:
-  fpt: '*'
-  ghes: '>=3.2'
+  fpt: "*"
+  ghes: ">=3.2"
   ghae: next
 topics:
   - Repositories
@@ -27,15 +27,15 @@ However, there can be situations where you want to scan for other secret pattern
 
 **Note:** During the beta, there are some limitations when using custom patterns for {% data variables.product.prodname_secret_scanning %}:
 
-* There is no dry-run functionality.
-* You cannot edit custom patterns after they're created. To change a pattern, you must delete it and recreate it.
-* There is no API for creating, editing, or deleting custom patterns. However, results for custom patterns are returned in the [secret scanning alerts API](/rest/reference/secret-scanning).
+- There is no dry-run functionality.
+- You cannot edit custom patterns after they're created. To change a pattern, you must delete it and recreate it.
+- There is no API for creating, editing, or deleting custom patterns. However, results for custom patterns are returned in the [secret scanning alerts API](/rest/reference/secret-scanning).
 
 {% endnote %}
 
 ## Regular expression syntax for custom patterns
 
-Custom patterns for {% data variables.product.prodname_secret_scanning %} are specified as regular expressions. {% data variables.product.prodname_secret_scanning_caps %} uses the [Hyperscan library](https://github.com/intel/hyperscan) and only supports Hyperscan regex constructs, which are a subset of PCRE syntax. Hyperscan option modifiers are not supported.  For more information on Hyperscan pattern constructs, see "[Pattern support](http://intel.github.io/hyperscan/dev-reference/compilation.html#pattern-support)" in the Hyperscan documentation.
+Custom patterns for {% data variables.product.prodname_secret_scanning %} are specified as regular expressions. {% data variables.product.prodname_secret_scanning_caps %} uses the [Hyperscan library](https://github.com/intel/hyperscan) and only supports Hyperscan regex constructs, which are a subset of PCRE syntax. Hyperscan option modifiers are not supported. For more information on Hyperscan pattern constructs, see "[Pattern support](http://intel.github.io/hyperscan/dev-reference/compilation.html#pattern-support)" in the Hyperscan documentation.
 
 ## Defining a custom pattern for a repository
 
@@ -72,8 +72,9 @@ After your pattern is created, {% data variables.product.prodname_secret_scannin
 Removing a custom pattern also closes all the {% data variables.product.prodname_secret_scanning %} alerts that the pattern created.
 
 1. Navigate to the **Security & analysis** settings for the repository or organization where the custom pattern was created. For more information, see "[Defining a custom pattern for a repository](#defining-a-custom-pattern-for-a-repository)" or "[Defining a custom pattern for an organization](#defining-a-custom-pattern-for-an-organization)" above.
-{% data reusables.repositories.navigate-to-ghas-settings %}
+   {% data reusables.repositories.navigate-to-ghas-settings %}
 1. Under "{% data variables.product.prodname_secret_scanning_caps %}", find the custom pattern you want to remove and click **Remove**.
 
    ![Remove a custom {% data variables.product.prodname_secret_scanning %}  pattern](/assets/images/help/repository/secret-scanning-remove-custom-pattern.png)
+
 1. Review the confirmation and click **Remove custom pattern**.

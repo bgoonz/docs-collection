@@ -18,13 +18,14 @@ redirect_from:
   - /articles/adding-or-editing-a-payment-method
   - /github/setting-up-and-managing-billing-and-payments-on-github/managing-your-github-billing-settings/adding-or-editing-a-payment-method
 versions:
-  fpt: '*'
+  fpt: "*"
 type: how_to
 topics:
   - Organizations
   - User account
 shortTitle: Manage a payment method
 ---
+
 {% data reusables.dotcom_billing.payment-methods %} {% data reusables.dotcom_billing.same-payment-method %}
 
 We don't provide invoicing or support purchase orders for personal accounts. We email receipts monthly or yearly on your account's billing date. If your company, country, or accountant requires your receipts to provide more detail, you can also [add extra information](/articles/adding-information-to-your-personal-account-s-receipts) to your receipts.
@@ -33,9 +34,10 @@ We don't provide invoicing or support purchase orders for personal accounts. We 
 
 {% data reusables.user_settings.billing_plans %}
 {% data reusables.dotcom_billing.update_payment_method %}
+
 1. If your account has an existing credit card that you want to update, click **New Card**.
-![Billing New Card button](/assets/images/help/billing/billing-new-card-button.png)
-{% data reusables.dotcom_billing.enter-payment-info %}
+   ![Billing New Card button](/assets/images/help/billing/billing-new-card-button.png)
+   {% data reusables.dotcom_billing.enter-payment-info %}
 
 ## Updating your organization's payment method
 
@@ -43,9 +45,9 @@ We don't provide invoicing or support purchase orders for personal accounts. We 
 
 If your organization is outside of the US or if you're using a corporate checking account to pay for {% data variables.product.product_name %}, PayPal could be a helpful method of payment.
 
-
 {% data reusables.organizations.billing-settings %}
 {% data reusables.dotcom_billing.update_payment_method %}
+
 1. If your account has an existing credit card that you want to update, click **New Card**.
-![Billing New Card button](/assets/images/help/billing/billing-new-card-button.png)
-{% data reusables.dotcom_billing.enter-payment-info %}
+   ![Billing New Card button](/assets/images/help/billing/billing-new-card-button.png)
+   {% data reusables.dotcom_billing.enter-payment-info %}

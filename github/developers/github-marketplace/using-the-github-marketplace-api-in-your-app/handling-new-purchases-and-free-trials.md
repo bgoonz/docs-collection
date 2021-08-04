@@ -1,6 +1,6 @@
 ---
 title: Handling new purchases and free trials
-intro: 'When a customer purchases a paid plan, free trial, or the free version of your {% data variables.product.prodname_marketplace %} app, you''ll receive the [`marketplace_purchase` event](/marketplace/integrating-with-the-github-marketplace-api/github-marketplace-webhook-events) webhook with the `purchased` action, which kicks off the purchasing flow.'
+intro: "When a customer purchases a paid plan, free trial, or the free version of your {% data variables.product.prodname_marketplace %} app, you'll receive the [`marketplace_purchase` event](/marketplace/integrating-with-the-github-marketplace-api/github-marketplace-webhook-events) webhook with the `purchased` action, which kicks off the purchasing flow."
 redirect_from:
   - /apps/marketplace/administering-listing-plans-and-user-accounts/supporting-purchase-plans-for-github-apps/
   - /apps/marketplace/administering-listing-plans-and-user-accounts/supporting-purchase-plans-for-oauth-apps/
@@ -8,11 +8,12 @@ redirect_from:
   - /marketplace/integrating-with-the-github-marketplace-api/handling-new-purchases-and-free-trials
   - /developers/github-marketplace/handling-new-purchases-and-free-trials
 versions:
-  fpt: '*'
+  fpt: "*"
 topics:
   - Marketplace
 shortTitle: New purchases & free trials
 ---
+
 {% warning %}
 
 If you offer a {% data variables.product.prodname_github_app %} in {% data variables.product.prodname_marketplace %}, your app must identify users following the OAuth authorization flow. You don't need to set up a separate {% data variables.product.prodname_oauth_app %} to support this flow. See "[Identifying and authorizing users for {% data variables.product.prodname_github_apps %}](/apps/building-github-apps/identifying-and-authorizing-users-for-github-apps/)" for more information.
@@ -35,7 +36,7 @@ See "[{% data variables.product.prodname_marketplace %} webhook events](/marketp
 
 ## Step 2. Installation
 
-If your app is a {% data variables.product.prodname_github_app %}, {% data variables.product.product_name %} prompts the customer to select which repositories the app can access when they purchase it. {% data variables.product.product_name %} then installs the app on the account the customer selected  and grants access to the selected repositories.
+If your app is a {% data variables.product.prodname_github_app %}, {% data variables.product.product_name %} prompts the customer to select which repositories the app can access when they purchase it. {% data variables.product.product_name %} then installs the app on the account the customer selected and grants access to the selected repositories.
 
 At this point, if you specified a **Setup URL** in your {% data variables.product.prodname_github_app %} settings, {% data variables.product.product_name %} will redirect the customer to that URL. If you do not specify a setup URL, you will not be able to handle purchases of your {% data variables.product.prodname_github_app %}.
 
@@ -53,9 +54,9 @@ When a customer purchases an {% data variables.product.prodname_oauth_app %}, {%
 
 When a customer purchases your app, you must send the customer through the OAuth authorization flow:
 
-* If your app is a {% data variables.product.prodname_github_app %}, begin the authorization flow as soon as {% data variables.product.product_name %} redirects the customer to the **Setup URL**. Follow the steps in "[Identifying and authorizing users for {% data variables.product.prodname_github_apps %}](/apps/building-github-apps/identifying-and-authorizing-users-for-github-apps/)."
+- If your app is a {% data variables.product.prodname_github_app %}, begin the authorization flow as soon as {% data variables.product.product_name %} redirects the customer to the **Setup URL**. Follow the steps in "[Identifying and authorizing users for {% data variables.product.prodname_github_apps %}](/apps/building-github-apps/identifying-and-authorizing-users-for-github-apps/)."
 
-* If your app is an {% data variables.product.prodname_oauth_app %}, begin the authorization flow as soon as {% data variables.product.product_name %} redirects the customer to the **Installation URL**. Follow the steps in "[Authorizing {% data variables.product.prodname_oauth_apps %}](/apps/building-oauth-apps/authorizing-oauth-apps/)."
+- If your app is an {% data variables.product.prodname_oauth_app %}, begin the authorization flow as soon as {% data variables.product.product_name %} redirects the customer to the **Installation URL**. Follow the steps in "[Authorizing {% data variables.product.prodname_oauth_apps %}](/apps/building-oauth-apps/authorizing-oauth-apps/)."
 
 For either type of app, the first step is to redirect the customer to https://github.com/login/oauth/authorize.
 
@@ -63,7 +64,7 @@ After the customer completes the authorization, your app receives an OAuth acces
 
 {% note %}
 
-**Note:** When authorizing a customer on a free trial, grant them the same access they would have on the paid plan.  You'll move them to the paid plan after the trial period ends.
+**Note:** When authorizing a customer on a free trial, grant them the same access they would have on the paid plan. You'll move them to the paid plan after the trial period ends.
 
 {% endnote %}
 

@@ -1,6 +1,6 @@
 ---
 title: GitHub flow
-intro: 'Follow {% data variables.product.prodname_dotcom %} flow to collaborate on projects.'
+intro: "Follow {% data variables.product.prodname_dotcom %} flow to collaborate on projects."
 redirect_from:
   - /articles/creating-and-editing-files-in-your-repository/
   - /articles/github-flow-in-the-browser/
@@ -9,14 +9,15 @@ redirect_from:
   - /github/getting-started-with-github/github-flow
   - /github/getting-started-with-github/quickstart/github-flow
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Pull requests
   - Fundamentals
 miniTocMaxHeadingLevel: 3
 ---
+
 ## Introduction
 
 {% data variables.product.prodname_dotcom %} flow is a lightweight, branch-based workflow. The {% data variables.product.prodname_dotcom %} flow is useful for everyone, not just developers. For example, here at {% data variables.product.prodname_dotcom %}, we use {% data variables.product.prodname_dotcom %} flow for our [site policy](https://github.com/github/site-policy), [documentation](https://github.com/github/docs), and [roadmap](https://github.com/github/roadmap).
@@ -39,9 +40,9 @@ To follow {% data variables.product.prodname_dotcom %} flow, you will need {% da
 
 ### Create a branch
 
-  Create a branch in your repository. A short, descriptive branch name enables your collaborators to see ongoing work at a glance. For example, `increase-test-timeout` or `add-code-of-conduct`. For more information, see "[Creating and deleting branches within your repository](/github/collaborating-with-issues-and-pull-requests/creating-and-deleting-branches-within-your-repository)."
+Create a branch in your repository. A short, descriptive branch name enables your collaborators to see ongoing work at a glance. For example, `increase-test-timeout` or `add-code-of-conduct`. For more information, see "[Creating and deleting branches within your repository](/github/collaborating-with-issues-and-pull-requests/creating-and-deleting-branches-within-your-repository)."
 
-  By creating a branch, you create a space to work without affecting the default branch. Additionally, you give collaborators a chance to review your work.
+By creating a branch, you create a space to work without affecting the default branch. Additionally, you give collaborators a chance to review your work.
 
 ### Make changes
 

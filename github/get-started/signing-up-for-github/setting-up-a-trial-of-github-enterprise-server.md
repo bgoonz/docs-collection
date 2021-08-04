@@ -1,18 +1,19 @@
 ---
 title: Setting up a trial of GitHub Enterprise Server
-intro: 'You can try {% data variables.product.prodname_ghe_server %} for free.'
+intro: "You can try {% data variables.product.prodname_ghe_server %} for free."
 redirect_from:
   - /articles/requesting-a-trial-of-github-enterprise/
   - /articles/setting-up-a-trial-of-github-enterprise-server
   - /github/getting-started-with-github/setting-up-a-trial-of-github-enterprise-server
   - /github/getting-started-with-github/signing-up-for-github/setting-up-a-trial-of-github-enterprise-server
 versions:
-  fpt: '*'
-  ghes: '*'
+  fpt: "*"
+  ghes: "*"
 topics:
   - Accounts
 shortTitle: Enterprise Server trial
 ---
+
 ## About trials of {% data variables.product.prodname_ghe_server %}
 
 You can request a 45-day trial to evaluate {% data variables.product.prodname_ghe_server %}. Your trial will be installed as a virtual appliance, with options for on-premises or cloud deployment. For a list of supported visualization platforms, see "[Setting up a GitHub Enterprise Server instance](/enterprise/admin/installation/setting-up-a-github-enterprise-server-instance)."
@@ -43,14 +44,15 @@ To get the most out of your trial, follow these steps:
 3. To configure your instance to meet your organization's needs, see "[Configuring your enterprise](/enterprise/admin/configuration/configuring-your-enterprise)."
 4. To integrate {% data variables.product.prodname_ghe_server %} with your identity provider, see "[Using SAML](/enterprise/admin/user-management/using-saml)" and "[Using LDAP](/enterprise/admin/authentication/using-ldap)."
 5. Invite an unlimited number of people to join your trial.
+
    - Add users to your {% data variables.product.prodname_ghe_server %} instance using built-in authentication or your configured identity provider. For more information, see "[Using built in authentication](/enterprise/admin/user-management/using-built-in-authentication)."
    - To invite people to become account administrators, visit the [{% data variables.product.prodname_enterprise %} Web portal](https://enterprise.github.com/login).
 
-    {% note %}
+   {% note %}
 
-    **Note:** People you invite to become account administrators will receive an email with a link to accept your invitation.
+   **Note:** People you invite to become account administrators will receive an email with a link to accept your invitation.
 
-    {% endnote %}
+   {% endnote %}
 
 {% data reusables.products.product-roadmap %}
 

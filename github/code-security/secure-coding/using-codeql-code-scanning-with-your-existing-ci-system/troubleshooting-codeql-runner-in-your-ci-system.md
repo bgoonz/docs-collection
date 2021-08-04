@@ -1,17 +1,17 @@
 ---
 title: Troubleshooting CodeQL runner in your CI system
 shortTitle: Troubleshoot CodeQL runner
-intro: 'If you''re having problems with the {% data variables.product.prodname_codeql_runner %}, you can troubleshoot by using these tips.'
-product: '{% data reusables.gated-features.code-scanning %}'
+intro: "If you're having problems with the {% data variables.product.prodname_codeql_runner %}, you can troubleshoot by using these tips."
+product: "{% data reusables.gated-features.code-scanning %}"
 redirect_from:
   - /github/finding-security-vulnerabilities-and-errors-in-your-code/troubleshooting-code-scanning-in-your-ci-system
   - /github/finding-security-vulnerabilities-and-errors-in-your-code/troubleshooting-codeql-code-scanning-in-your-ci-system
   - /code-security/secure-coding/troubleshooting-codeql-code-scanning-in-your-ci-system
   - /code-security/secure-coding/troubleshooting-codeql-runner-in-your-ci-system
 versions:
-  fpt: '*'
-  ghes: '>=3.0'
-  ghae: '*'
+  fpt: "*"
+  ghes: ">=3.0"
+  ghae: "*"
 type: how_to
 topics:
   - Advanced Security
@@ -21,6 +21,7 @@ topics:
   - Integration
   - CI
 ---
+
 <!--For this article in earlier GHES versions, see /content/github/finding-security-vulnerabilities-and-errors-in-your-code-->
 
 {% data reusables.code-scanning.beta-codeql-runner %}
@@ -43,6 +44,7 @@ If the `analyze` command for the {% data variables.product.prodname_codeql_runne
 1. Automatic language detection identified a supported language, but there is no analyzable code of that language in the repository. A typical example is when our language detection service finds a file associated with a particular programming language like a `.h`, or `.gyp` file, but no corresponding executable code is present in the repository. To solve the problem, you can manually define the languages you want to analyze by using the `--languages` flag of the `init` command. For more information, see "[Configuring {% data variables.product.prodname_codeql_runner %} in your CI system](/code-security/secure-coding/configuring-codeql-runner-in-your-ci-system)."
 
 1. You're analyzing a compiled language without using the `autobuild` command and you run the build steps yourself after the `init` step. For the build to work, you must set up the environment such that the {% data variables.product.prodname_codeql_runner %} can monitor the build process. The `init` command generates instructions for how to export the required environment variables, so you can copy and run the script after you've run the `init` command.
+
    - On macOS and Linux:
      ```shell
       $ . codeql-runner/codeql-env.sh
@@ -64,7 +66,7 @@ If the `analyze` command for the {% data variables.product.prodname_codeql_runne
 
    {% endnote %}
 
-1. You're analyzing a compiled language on macOS without using the `autobuild` command and you run the build steps yourself after the `init` step. If SIP (System Integrity Protection) is enabled, which is the default on recent versions of OSX, analysis might fail. To fix this, prefix the build command with the `$CODEQL_RUNNER` environment variable. 
+1. You're analyzing a compiled language on macOS without using the `autobuild` command and you run the build steps yourself after the `init` step. If SIP (System Integrity Protection) is enabled, which is the default on recent versions of OSX, analysis might fail. To fix this, prefix the build command with the `$CODEQL_RUNNER` environment variable.
    For example, if your build command is `cmd arg1 arg2`, you should run `$CODEQL_RUNNER cmd arg1 arg2`.
 
 1. The code is built in a container or on a separate machine. If you use a containerized build or if you outsource the build to another machine, make sure to run the {% data variables.product.prodname_codeql_runner %} in the container or on the machine where your build task takes place. For more information, see "[Running CodeQL code scanning in a container](/code-security/secure-coding/running-codeql-code-scanning-in-a-container)."

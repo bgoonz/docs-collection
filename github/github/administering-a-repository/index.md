@@ -3,9 +3,9 @@ title: Administering a repository
 redirect_from:
   - /categories/administering-a-repository
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Repositories
 children:
@@ -17,4 +17,3 @@ children:
   - /finding-information-in-a-repository
 shortTitle: Administer a repo
 ---
-

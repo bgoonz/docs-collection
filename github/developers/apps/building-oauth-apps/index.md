@@ -5,9 +5,9 @@ redirect_from:
   - /apps/building-integrations/setting-up-and-registering-oauth-apps/
   - /apps/building-oauth-apps
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - OAuth Apps
 children:
@@ -16,4 +16,3 @@ children:
   - /scopes-for-oauth-apps
   - /creating-a-custom-badge-for-your-oauth-app
 ---
-

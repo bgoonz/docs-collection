@@ -1,6 +1,6 @@
 ---
 title: Upgrading the billing plan for a GitHub Marketplace app
-intro: 'You can upgrade your {% data variables.product.prodname_marketplace %} app to a different plan at any time.'
+intro: "You can upgrade your {% data variables.product.prodname_marketplace %} app to a different plan at any time."
 redirect_from:
   - /github/setting-up-and-managing-billing-and-payments-on-github/upgrading-the-billing-plan-for-a-github-marketplace-app
   - /articles/upgrading-an-app-for-your-personal-account/
@@ -8,7 +8,7 @@ redirect_from:
   - /articles/upgrading-the-billing-plan-for-a-github-marketplace-app
   - /github/setting-up-and-managing-billing-and-payments-on-github/managing-billing-for-github-marketplace-apps/upgrading-the-billing-plan-for-a-github-marketplace-app
 versions:
-  fpt: '*'
+  fpt: "*"
 type: how_to
 topics:
   - Marketplace
@@ -17,6 +17,7 @@ topics:
   - User account
 shortTitle: Upgrade billing plan
 ---
+
 When you upgrade an app, your payment method is charged a prorated amount based on the time remaining until your next billing date. For more information, see "[About billing for {% data variables.product.prodname_marketplace %}](/articles/about-billing-for-github-marketplace)."
 
 ## Upgrading an app for your personal account

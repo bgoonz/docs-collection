@@ -5,14 +5,15 @@ redirect_from:
   - /articles/about-codeowners/
   - /articles/about-code-owners
   - /github/creating-cloning-and-archiving-repositories/about-code-owners
-product: '{% data reusables.gated-features.code-owners %}'
+product: "{% data reusables.gated-features.code-owners %}"
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Repositories
 ---
+
 People with admin or owner permissions can set up a CODEOWNERS file in a repository.
 
 The people you choose as code owners must have write permissions for the repository. When the code owner is a team, that team must have write permissions, even if all the individual members of the team already have write permissions directly, through organization membership, or through another team membership.
@@ -37,14 +38,16 @@ To use a CODEOWNERS file, create a new file called `CODEOWNERS` in the root, `do
 
 Each CODEOWNERS file assigns the code owners for a single branch in the repository. Thus, you can assign different code owners for different branches, such as `@octo-org/codeowners-team` for a code base on the default branch and `@octocat` for a {% data variables.product.prodname_pages %} site on the `gh-pages` branch.
 
-For code owners to receive review requests, the CODEOWNERS file must be on the base branch of the pull request. For example, if you assign `@octocat` as the code owner for *.js* files on the `gh-pages` branch of your repository, `@octocat` will receive review requests when a pull request with changes to *.js* files is opened between the head branch and `gh-pages`.
+For code owners to receive review requests, the CODEOWNERS file must be on the base branch of the pull request. For example, if you assign `@octocat` as the code owner for _.js_ files on the `gh-pages` branch of your repository, `@octocat` will receive review requests when a pull request with changes to _.js_ files is opened between the head branch and `gh-pages`.
 
 ## CODEOWNERS syntax
 
 A CODEOWNERS file uses a pattern that follows most of the same rules used in [gitignore](https://git-scm.com/docs/gitignore#_pattern_format) files, with [some exceptions](#syntax-exceptions). The pattern is followed by one or more {% data variables.product.prodname_dotcom %} usernames or team names using the standard `@username` or `@org/team-name` format. You can also refer to a user by an email address that has been added to their {% data variables.product.product_name %} account, for example `user@example.com`.
 
 If any line in your CODEOWNERS file contains invalid syntax, the file will not be detected and will not be used to request reviews.
+
 ### Example of a CODEOWNERS file
+
 ```
 # This is a comment.
 # Each line is a file pattern followed by one or more owners.
@@ -85,23 +88,27 @@ apps/ @octocat
 # subdirectories.
 /docs/ @doctocat
 
-# In this example, @octocat owns any file in the `/apps` 
-# directory in the root of your repository except for the `/apps/github` 
+# In this example, @octocat owns any file in the `/apps`
+# directory in the root of your repository except for the `/apps/github`
 # subdirectory, as its owners are left empty.
 /apps/ @octocat
-/apps/github 
+/apps/github
 ```
+
 ### Syntax exceptions
+
 There are some syntax rules for gitignore files that do not work in CODEOWNERS files:
+
 - Escaping a pattern starting with `#` using `\` so it is treated as a pattern and not a comment
 - Using `!` to negate a pattern
 - Using `[ ]` to define a character range
 
 ## CODEOWNERS and branch protection
-Repository owners can add branch protection rules to ensure that changed code is reviewed by the owners of the changed files. For more information, see "[About protected branches](/github/administering-a-repository/defining-the-mergeability-of-pull-requests/about-protected-branches)." 
 
+Repository owners can add branch protection rules to ensure that changed code is reviewed by the owners of the changed files. For more information, see "[About protected branches](/github/administering-a-repository/defining-the-mergeability-of-pull-requests/about-protected-branches)."
 
 ### Example of a CODEOWNERS file
+
 ```
 # In this example, any change inside the `/apps` directory
 # will require approval from @doctocat.
@@ -113,14 +120,12 @@ Repository owners can add branch protection rules to ensure that changed code is
 
 # In this example, any change inside the `/apps` directory
 # will require approval from a member of the @example-org/content team.
-# If a member of @example-org/content opens a pull request 
+# If a member of @example-org/content opens a pull request
 # with a change inside the `/apps` directory, their approval is implicit.
 # The team is still added as a reviewer but not a required reviewer.
 # Anyone can approve the changes.
 /apps/ @example-org/content-team
 ```
-
-
 
 ## Further reading
 

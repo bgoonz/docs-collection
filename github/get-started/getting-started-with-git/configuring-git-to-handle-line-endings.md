@@ -1,6 +1,6 @@
 ---
 title: Configuring Git to handle line endings
-intro: 'To avoid problems in your diffs, you can configure Git to properly handle line endings.'
+intro: "To avoid problems in your diffs, you can configure Git to properly handle line endings."
 redirect_from:
   - /dealing-with-lineendings/
   - /line-endings/
@@ -10,12 +10,14 @@ redirect_from:
   - /github/getting-started-with-github/configuring-git-to-handle-line-endings
   - /github/getting-started-with-github/getting-started-with-git/configuring-git-to-handle-line-endings
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 shortTitle: Handle line endings
 ---
+
 ## About line endings
+
 Every time you press <kbd>return</kbd> on your keyboard you insert an invisible character called a line ending. Different operating systems handle line endings differently.
 
 When you're collaborating on projects with Git and {% data variables.product.product_name %}, Git might produce unexpected results if, for example, you're working on a Windows machine, and your collaborator has made a change in macOS.
@@ -62,18 +64,18 @@ $ git config --global core.autocrlf input
 
 ## Per-repository settings
 
-Optionally, you can configure a *.gitattributes* file to manage how Git reads line endings in a specific repository. When you commit this file to a repository, it overrides the `core.autocrlf` setting for all repository contributors. This ensures consistent behavior for all users, regardless of their Git settings and environment.
+Optionally, you can configure a _.gitattributes_ file to manage how Git reads line endings in a specific repository. When you commit this file to a repository, it overrides the `core.autocrlf` setting for all repository contributors. This ensures consistent behavior for all users, regardless of their Git settings and environment.
 
-The *.gitattributes* file must be created in the root of the repository and committed like any other file.
+The _.gitattributes_ file must be created in the root of the repository and committed like any other file.
 
-A *.gitattributes* file looks like a table with two columns:
+A _.gitattributes_ file looks like a table with two columns:
 
-* On the left is the file name for Git to match.
-* On the right is the line ending configuration that Git should use for those files.
+- On the left is the file name for Git to match.
+- On the right is the line ending configuration that Git should use for those files.
 
 ### Example
 
-Here's an example *.gitattributes* file. You can use it as a template for your repositories:
+Here's an example _.gitattributes_ file. You can use it as a template for your repositories:
 
 ```
 # Set the default behavior, in case people don't have core.autocrlf set.
@@ -104,27 +106,34 @@ You'll notice that files are matched—`*.c`, `*.sln`, `*.png`—, separated by 
 
 ## Refreshing a repository after changing line endings
 
-When you set the `core.autocrlf` option or commit a *.gitattributes* file, you may find that Git reports changes to files that you have not modified. Git has changed line endings to match your new configuration.
+When you set the `core.autocrlf` option or commit a _.gitattributes_ file, you may find that Git reports changes to files that you have not modified. Git has changed line endings to match your new configuration.
 
 To ensure that all the line endings in your repository match your new configuration, backup your files with Git, delete all files in your repository (except the `.git` directory), then restore the files all at once.
 
 1. Save your current files in Git, so that none of your work is lost.
-  ```shell
-  $ git add . -u
-  $ git commit -m "Saving files before refreshing line endings"
-  ```
+
+```shell
+$ git add . -u
+$ git commit -m "Saving files before refreshing line endings"
+```
+
 2. Add all your changed files back and normalize the line endings.
-  ```shell
-  $ git add --renormalize .
-  ```
+
+```shell
+$ git add --renormalize .
+```
+
 3. Show the rewritten, normalized files.
-  ```shell
-  $ git status
-  ```
+
+```shell
+$ git status
+```
+
 4. Commit the changes to your repository.
-  ```shell
-  $ git commit -m "Normalize all the line endings"
-  ```
+
+```shell
+$ git commit -m "Normalize all the line endings"
+```
 
 ## Further reading
 

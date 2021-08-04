@@ -1,6 +1,6 @@
 ---
 title: About alerts for vulnerable dependencies
-intro: '{% data variables.product.product_name %} sends {% ifversion ghes > 2.21 %}{% data variables.product.prodname_dependabot_alerts %}{% else %}security alerts{% endif %} when we detect vulnerabilities affecting your repository.'
+intro: "{% data variables.product.product_name %} sends {% ifversion ghes > 2.21 %}{% data variables.product.prodname_dependabot_alerts %}{% else %}security alerts{% endif %} when we detect vulnerabilities affecting your repository."
 versions:
   ghes: <=2.22
 topics:
@@ -9,6 +9,7 @@ redirect_from:
   - /github/managing-security-vulnerabilities/about-alerts-for-vulnerable-dependencies
 shortTitle: Dependabot alerts
 ---
+
 <!--See /content/code-security/supply-chain-security/about-alerts-for-vulnerable-dependencies for the current version of this article -->
 
 ## About vulnerable dependencies
@@ -19,7 +20,7 @@ When your code depends on a package that has a security vulnerability, this vuln
 
 ## Detection of vulnerable dependencies
 
- {% ifversion ghes > 2.21 %}{% data variables.product.prodname_dependabot %} detects vulnerable dependencies and sends {% data variables.product.prodname_dependabot_alerts %}{% else %}{% data variables.product.product_name %} detects vulnerable dependencies and sends security alerts{% endif %} when:
+{% ifversion ghes > 2.21 %}{% data variables.product.prodname_dependabot %} detects vulnerable dependencies and sends {% data variables.product.prodname_dependabot_alerts %}{% else %}{% data variables.product.product_name %} detects vulnerable dependencies and sends security alerts{% endif %} when:
 
 - New advisory data is synchronized to {% data variables.product.prodname_ghe_server %} each hour from {% data variables.product.prodname_dotcom_the_website %}. {% data reusables.security-advisory.link-browsing-advisory-db %}
 - The dependency graph for a repository changes. For example, when a contributor pushes a commit to change the packages or versions it depends on. For more information, see "[About the dependency graph](/github/visualizing-repository-data-with-graphs/about-the-dependency-graph)."
@@ -35,9 +36,13 @@ For a list of the ecosystems that {% data variables.product.product_name %} can 
 {% endnote %}
 
 {% ifversion ghes > 2.21 %}
+
 ## {% data variables.product.prodname_dependabot %} alerts for vulnerable dependencies
+
 {% else %}
+
 ## Security alerts for vulnerable dependencies
+
 {% endif %}
 
 {% data reusables.repositories.enable-security-alerts %}
@@ -47,7 +52,7 @@ When {% data variables.product.product_name %} identifies a vulnerable dependenc
 {% endif %}
 
 {% ifversion ghes < 2.22 %}
-When {% data variables.product.product_name %} identifies a vulnerable dependency, we send a security alert to the maintainers of affected repositories with details of the vulnerability, a link to the affected file in the project, and information about a fixed version. 
+When {% data variables.product.product_name %} identifies a vulnerable dependency, we send a security alert to the maintainers of affected repositories with details of the vulnerability, a link to the affected file in the project, and information about a fixed version.
 {% endif %}
 
 {% warning %}

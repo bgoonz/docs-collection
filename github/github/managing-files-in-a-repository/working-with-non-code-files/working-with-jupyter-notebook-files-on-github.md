@@ -1,20 +1,21 @@
 ---
 title: Working with Jupyter Notebook files on GitHub
-intro: 'When you add Jupyter Notebook or IPython Notebook files with a *.ipynb* extension on {% data variables.product.product_location %}, they will render as static HTML files in your repository.'
+intro: "When you add Jupyter Notebook or IPython Notebook files with a *.ipynb* extension on {% data variables.product.product_location %}, they will render as static HTML files in your repository."
 redirect_from:
   - /articles/working-with-jupyter-notebook-files-on-github
   - /github/managing-files-in-a-repository/working-with-jupyter-notebook-files-on-github
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Repositories
 shortTitle: Jupyter Notebook files
 ---
-The interactive features of the notebook, such as custom JavaScript plots, will not work in your repository on {% data variables.product.product_location %}. For an example, see [*Linking and Interactions.ipynb*](https://github.com/bokeh/bokeh-notebooks/blob/main/tutorial/06%20-%20Linking%20and%20Interactions.ipynb).
 
-To view your Jupyter notebook with JavaScript content rendered or to share your notebook files with others you can use [nbviewer](https://nbviewer.jupyter.org/). For an example, see [*Linking and Interactions.ipynb*](https://nbviewer.jupyter.org/github/bokeh/bokeh-notebooks/blob/main/tutorial/06%20-%20Linking%20and%20Interactions.ipynb) rendered on nbviewer.
+The interactive features of the notebook, such as custom JavaScript plots, will not work in your repository on {% data variables.product.product_location %}. For an example, see [_Linking and Interactions.ipynb_](https://github.com/bokeh/bokeh-notebooks/blob/main/tutorial/06%20-%20Linking%20and%20Interactions.ipynb).
+
+To view your Jupyter notebook with JavaScript content rendered or to share your notebook files with others you can use [nbviewer](https://nbviewer.jupyter.org/). For an example, see [_Linking and Interactions.ipynb_](https://nbviewer.jupyter.org/github/bokeh/bokeh-notebooks/blob/main/tutorial/06%20-%20Linking%20and%20Interactions.ipynb) rendered on nbviewer.
 
 To view a fully interactive version of your Jupyter Notebook, you can set up a notebook server locally. For more information, see [Jupyter's official documentation](http://jupyter.readthedocs.io/en/latest/index.html).
 

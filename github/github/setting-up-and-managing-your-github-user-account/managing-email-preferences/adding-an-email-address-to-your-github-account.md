@@ -5,13 +5,14 @@ redirect_from:
   - /articles/adding-an-email-address-to-your-github-account
   - /github/setting-up-and-managing-your-github-user-account/adding-an-email-address-to-your-github-account
 versions:
-  fpt: '*'
-  ghes: '*'
+  fpt: "*"
+  ghes: "*"
 topics:
   - Accounts
   - Notifications
 shortTitle: Add an email address
 ---
+
 {% ifversion fpt %}
 
 {% note %}

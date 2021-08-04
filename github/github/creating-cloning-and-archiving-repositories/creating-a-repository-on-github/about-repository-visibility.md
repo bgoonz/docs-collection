@@ -1,16 +1,17 @@
 ---
 title: About repository visibility
-intro: 'You can restrict who has access to a repository by choosing a repository''s visibility: {% ifversion fpt or ghes %}public, internal, or private{% elsif ghae %}private or internal{% else %} public or private{% endif %}.'
+intro: "You can restrict who has access to a repository by choosing a repository's visibility: {% ifversion fpt or ghes %}public, internal, or private{% elsif ghae %}private or internal{% else %} public or private{% endif %}."
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Repositories
 redirect_from:
   - /github/creating-cloning-and-archiving-repositories/about-repository-visibility
 shortTitle: Repository visibility
 ---
+
 ## About repository visibility
 
 {% ifversion ghae %}When you create a repository owned by your user account, the repository is always private. When you create a repository owned by an organization, you can choose to make the repository private or internal.{% else %}When you create a repository, you can choose to make the repository public or private.{% ifversion fpt or ghes %} If you're creating the repository in an organization{% ifversion fpt %} that is owned by an enterprise account{% endif %}, you can also choose to make the repository internal.{% endif %}{% endif %}
@@ -28,6 +29,7 @@ Organization owners always have access to every repository created in an organiz
 People with admin permissions for a repository can change an existing repository's visibility. For more information, see "[Setting repository visibility](/github/administering-a-repository/setting-repository-visibility)."
 
 {% ifversion fpt or ghae or ghes %}
+
 ## About internal repositories
 
 {% note %}

@@ -1,15 +1,16 @@
 ---
 title: Research recitation
-intro: 'A first look at rote learning in {% data variables.product.prodname_dotcom %} Copilot suggestions.'
+intro: "A first look at rote learning in {% data variables.product.prodname_dotcom %} Copilot suggestions."
 redirect_from:
   - /early-access/github/copilot/research-recitation
 versions:
-  fpt: '*'
+  fpt: "*"
 ---
 
 By: Albert Ziegler (@wunderalbert)
 
 ## {% data variables.product.prodname_dotcom %} Copilot: Parrot or Crow?
+
 A first look at rote learning in {% data variables.product.prodname_dotcom %} Copilot suggestions.
 
 ## Introduction
@@ -46,7 +47,7 @@ This would be exactly 100 “words” in the sense above, but it’s a particula
 
 If the overlap extends to what the user has already written, that also counts for the length. After all, the user may have written that context with the help of {% data variables.product.prodname_dotcom %} Copilot as well!
 
-In the following example, the user has started writing a very common snippet. {% data variables.product.prodname_dotcom %} Copilot completes it. Even though the completion itself is rather short, together with the already existing code it clears the threshold and is retained. 
+In the following example, the user has started writing a very common snippet. {% data variables.product.prodname_dotcom %} Copilot completes it. Even though the completion itself is rather short, together with the already existing code it clears the threshold and is retained.
 
 ![Example code](/assets/images/help/copilot/example_last_straw.png)
 

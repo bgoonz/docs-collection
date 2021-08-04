@@ -1,12 +1,12 @@
 ---
 title: Troubleshooting SSH
-intro: 'When using SSH to connect and authenticate to {% data variables.product.product_name %}, you may need to troubleshoot unexpected issues that may arise.'
+intro: "When using SSH to connect and authenticate to {% data variables.product.product_name %}, you may need to troubleshoot unexpected issues that may arise."
 redirect_from:
   - /articles/troubleshooting-ssh
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - SSH
 children:
@@ -24,4 +24,3 @@ children:
   - /error-unknown-key-type
   - /error-were-doing-an-ssh-key-audit
 ---
-

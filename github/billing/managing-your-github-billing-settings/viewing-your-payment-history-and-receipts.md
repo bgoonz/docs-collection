@@ -9,7 +9,7 @@ redirect_from:
   - /articles/viewing-your-payment-history-and-receipts
   - /github/setting-up-and-managing-billing-and-payments-on-github/managing-your-github-billing-settings/viewing-your-payment-history-and-receipts
 versions:
-  fpt: '*'
+  fpt: "*"
 type: how_to
 topics:
   - Accounts
@@ -18,6 +18,7 @@ topics:
   - User account
 shortTitle: View history & receipts
 ---
+
 ## Viewing receipts for your personal account
 
 {% data reusables.user_settings.access_settings %}

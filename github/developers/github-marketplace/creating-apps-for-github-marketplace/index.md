@@ -1,8 +1,8 @@
 ---
 title: Creating apps for GitHub Marketplace
-intro: 'You can list free and paid tools for developers to use in {% data variables.product.prodname_marketplace %}.'
+intro: "You can list free and paid tools for developers to use in {% data variables.product.prodname_marketplace %}."
 versions:
-  fpt: '*'
+  fpt: "*"
 topics:
   - Marketplace
 children:
@@ -13,4 +13,3 @@ children:
   - /viewing-transactions-for-your-listing
 shortTitle: Create Marketplace apps
 ---
-

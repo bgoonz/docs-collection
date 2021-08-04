@@ -1,20 +1,20 @@
 ---
 title: Creating webhooks
-intro: 'Learn to build a webhook, choosing the events your webhook will listen for on {% data variables.product.prodname_dotcom %} and how to set up a server to receive and manage the webhook payload.'
+intro: "Learn to build a webhook, choosing the events your webhook will listen for on {% data variables.product.prodname_dotcom %} and how to set up a server to receive and manage the webhook payload."
 redirect_from:
   - /webhooks/creating
   - /developers/webhooks-and-events/creating-webhooks
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Webhooks
 ---
+
 Now that we understand [the basics of webhooks][webhooks-overview], let's go through the process of building out our own webhook-powered integration. In this tutorial, we'll create a repository webhook that will be responsible for listing out how popular our repository is, based on the number of issues it receives per day.
 
 Creating a webhook is a two-step process. You'll first need to set up how you want your webhook to behave through {% data variables.product.product_name %}: what events should it listen to. After that, you'll set up your server to receive and manage the payload.
-
 
 {% data reusables.webhooks.webhooks-rest-api-links %}
 
@@ -70,7 +70,7 @@ A full list of webhook events, and when they execute, can be found in [the webho
 
 Since our webhook is dealing with issues in a repository, we'll click **Let me select individual events** and then **Issues**. Make sure you select **Active** to receive issue events for triggered webhooks. You can also select all events using the default option.
 
-When you're finished, click **Add webhook**. 
+When you're finished, click **Add webhook**.
 
 Now that you've created the webhook, it's time to set up our local server to test the webhook. Head on over to [Configuring Your Server](/webhooks/configuring/) to learn how to do that.
 

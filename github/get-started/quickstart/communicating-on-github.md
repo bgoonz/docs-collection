@@ -1,6 +1,6 @@
 ---
 title: Communicating on GitHub
-intro: 'You can discuss specific projects and changes, as well as broader ideas or team goals, using different types of discussions on {% data variables.product.product_name %}.'
+intro: "You can discuss specific projects and changes, as well as broader ideas or team goals, using different types of discussions on {% data variables.product.product_name %}."
 miniTocMaxHeadingLevel: 3
 redirect_from:
   - /github/collaborating-with-issues-and-pull-requests/getting-started/quickstart-for-communicating-on-github
@@ -9,15 +9,16 @@ redirect_from:
   - /github/collaborating-with-issues-and-pull-requests/quickstart-for-communicating-on-github
   - /github/getting-started-with-github/quickstart/communicating-on-github
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Pull requests
   - Issues
   - Discussions
   - Fundamentals
 ---
+
 ## Introduction
 
 {% data variables.product.product_name %} provides built-in collaborative communication tools allowing you to interact closely with your community. This quickstart guide will show you how to pick the right tool for your needs.
@@ -30,27 +31,32 @@ You can create and participate in issues, pull requests and team discussions, de
 {% endif %}
 
 ### {% data variables.product.prodname_github_issues %}
-- are useful for discussing specific details of a project such as bug reports, planned improvements and feedback. 
-- are specific to a repository, and usually have a clear owner. 
+
+- are useful for discussing specific details of a project such as bug reports, planned improvements and feedback.
+- are specific to a repository, and usually have a clear owner.
 - are often referred to as {% data variables.product.prodname_dotcom %}'s bug-tracking system.
-  
+
 ### Pull requests
+
 - allow you to propose specific changes.
-- allow you comment directly on proposed changes suggested by others. 
-- are specific to a repository. 
- 
+- allow you comment directly on proposed changes suggested by others.
+- are specific to a repository.
+
 {% ifversion fpt %}
+
 ### {% data variables.product.prodname_discussions %}
--  are like a forum, and are best used for open-form ideas and discussions where collaboration is important. 
--  may span many repositories. 
--  provide a collaborative experience outside the codebase, allowing the brainstorming of ideas, and the creation of a community knowledge base.
--  often don’t have a clear owner.
--  often do not result in an actionable task.
-{% endif %}
+
+- are like a forum, and are best used for open-form ideas and discussions where collaboration is important.
+- may span many repositories.
+- provide a collaborative experience outside the codebase, allowing the brainstorming of ideas, and the creation of a community knowledge base.
+- often don’t have a clear owner.
+- often do not result in an actionable task.
+  {% endif %}
 
 ### Team discussions
+
 - can be started on your team's page for conversations that span across projects and don't belong in a specific issue or pull request. Instead of opening an issue in a repository to discuss an idea, you can include the entire team by having a conversation in a team discussion.
-- allow you to hold discussions with your team about planning, analysis, design, user research and general project decision making in one place.{% ifversion ghes or ghae %} 
+- allow you to hold discussions with your team about planning, analysis, design, user research and general project decision making in one place.{% ifversion ghes or ghae %}
 - provide a collaborative experience outside the codebase, allowing the brainstorming of ideas.
 - often don’t have a clear owner.
 - often do not result in an actionable task.{% endif %}
@@ -66,11 +72,11 @@ You can create and participate in issues, pull requests and team discussions, de
 
 #### Issue example
 
-This example illustrates how a {% data variables.product.prodname_dotcom %} user created an issue in our documentation open source repository to make us aware of a bug, and discuss a fix. 
+This example illustrates how a {% data variables.product.prodname_dotcom %} user created an issue in our documentation open source repository to make us aware of a bug, and discuss a fix.
 
 ![Example of issue](/assets/images/help/issues/issue-example.png)
 
-- A user noticed that the blue color of the banner at the top of the page in the Chinese version of the {% data variables.product.prodname_dotcom %} Docs makes the text in the banner unreadable. 
+- A user noticed that the blue color of the banner at the top of the page in the Chinese version of the {% data variables.product.prodname_dotcom %} Docs makes the text in the banner unreadable.
 - The user created an issue in the repository, stating the problem and suggesting a fix (which is, use a different background color for the banner).
 - A discussion ensues, and eventually, a consensus will be reached about the fix to apply.
 - A contributor can then create a pull request with the fix.
@@ -84,7 +90,7 @@ This example illustrates how a {% data variables.product.prodname_dotcom %} user
 
 #### Pull request example
 
-This example illustrates how a {% data variables.product.prodname_dotcom %} user created a pull request in our documentation open source repository to fix a typo. 
+This example illustrates how a {% data variables.product.prodname_dotcom %} user created a pull request in our documentation open source repository to fix a typo.
 
 In the **Conversation** tab of the pull request, the author explain why they created the pull request.
 
@@ -99,6 +105,7 @@ The **Files changed** tab of the pull request shows the implemented fix.
 - A repository maintainer reviews the pull request, comments on it, and merges it.
 
 {% ifversion fpt %}
+
 ### Scenarios for {% data variables.product.prodname_discussions %}
 
 - I have a question that's not necessarily related to specific files in the repository.
@@ -116,6 +123,7 @@ This community maintainer started a discussion to welcome the community, and to 
 
 {% endif %}
 {% ifversion fpt or ghes or ghae %}
+
 ### Scenarios for team discussions
 
 - I have a question that's not necessarily related to specific files in the repository.
@@ -134,6 +142,7 @@ This example shows a team post for the `octo-team` team.
 ![Example of team discussion](/assets/images/help/projects/team-discussions-example.png)
 
 The `octocat` team member posted a team discussion, informing the team of various things:
+
 - A team member called Mona started remote game events.
 - There is a blog post describing how the teams uses {% data variables.product.prodname_actions %} to produce their docs.
 - Material about the April All Hands is now available for all team members to view.

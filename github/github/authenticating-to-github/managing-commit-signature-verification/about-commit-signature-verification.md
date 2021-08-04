@@ -1,20 +1,21 @@
 ---
 title: About commit signature verification
-intro: 'Using GPG or S/MIME, you can sign tags and commits locally. These tags or commits are marked as verified on {% data variables.product.product_name %} so other people can be confident that the changes come from a trusted source.'
+intro: "Using GPG or S/MIME, you can sign tags and commits locally. These tags or commits are marked as verified on {% data variables.product.product_name %} so other people can be confident that the changes come from a trusted source."
 redirect_from:
   - /articles/about-gpg-commit-and-tag-signatures/
   - /articles/about-gpg/
   - /articles/about-commit-signature-verification
   - /github/authenticating-to-github/about-commit-signature-verification
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Identity
   - Access management
 shortTitle: Commit signature verification
 ---
+
 ## About commit signature verification
 
 You can sign commits and tags locally, to give other people confidence about the origin of a change you have made. If a commit or tag has a GPG or S/MIME signature that is cryptographically verifiable, GitHub marks the commit or tag {% ifversion fpt %}"Verified" or "Partially verified."{% else %}"Verified."{% endif %}
@@ -28,11 +29,11 @@ Commits and tags have the following verification statuses, depending on whether 
 
 ### Default statuses
 
-| Status         | Description |
-| -------------- | ----------- |
-| **Verified**   | The commit is signed and the signature was successfully verified.
-| **Unverified** | The commit is signed but the signature could not be verified.
-| No verification status | The commit is not signed.
+| Status                 | Description                                                       |
+| ---------------------- | ----------------------------------------------------------------- |
+| **Verified**           | The commit is signed and the signature was successfully verified. |
+| **Unverified**         | The commit is signed but the signature could not be verified.     |
+| No verification status | The commit is not signed.                                         |
 
 ### Statuses with vigilant mode enabled
 
@@ -82,6 +83,7 @@ To sign commits using S/MIME and have those commits verified on {% data variable
 You don't need to upload your public key to {% data variables.product.product_name %}.
 
 {% ifversion fpt %}
+
 ## Signature verification for bots
 
 Organizations and {% data variables.product.prodname_github_apps %} that require commit signing can use bots to sign commits. If a commit or tag has a bot signature that is cryptographically verifiable, {% data variables.product.product_name %} marks the commit or tag as verified.

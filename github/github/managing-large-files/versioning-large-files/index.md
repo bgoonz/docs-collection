@@ -1,12 +1,12 @@
 ---
 title: Versioning large files
-intro: '{% data reusables.enterprise_site_admin_settings.configuring-large-file-storage-short-description %}'
+intro: "{% data reusables.enterprise_site_admin_settings.configuring-large-file-storage-short-description %}"
 redirect_from:
   - /articles/versioning-large-files
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 children:
   - /about-git-large-file-storage
   - /installing-git-large-file-storage
@@ -17,4 +17,3 @@ children:
   - /removing-files-from-git-large-file-storage
   - /resolving-git-large-file-storage-upload-failures
 ---
-

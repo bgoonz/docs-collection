@@ -1,16 +1,17 @@
 ---
-title: 'Error: Bad file number'
+title: "Error: Bad file number"
 intro: This error usually means you were unable to connect to the server. Often this is caused by firewalls and proxy servers.
 redirect_from:
   - /articles/error-bad-file-number
   - /github/authenticating-to-github/error-bad-file-number
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - SSH
 ---
+
 When running remote Git commands or SSH, your connection might time out:
 
 ```shell

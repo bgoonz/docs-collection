@@ -1,12 +1,12 @@
 ---
 title: Developing in a codespace
-intro: 'You can open a codespace on {% data variables.product.product_name %}, then develop using {% data variables.product.prodname_vscode %}''s features.'
+intro: "You can open a codespace on {% data variables.product.product_name %}, then develop using {% data variables.product.prodname_vscode %}'s features."
 permissions: Anyone can develop in a codespace owned by their user account.
 redirect_from:
   - /github/developing-online-with-github-codespaces/developing-in-a-codespace
   - /github/developing-online-with-codespaces/developing-in-a-codespace
 versions:
-  fpt: '*'
+  fpt: "*"
 type: how_to
 topics:
   - Codespaces
@@ -41,11 +41,12 @@ For more information on using {% data variables.product.prodname_vscode %}, see 
 {% data reusables.codespaces.apply-devcontainer-changes %} For more information, see "[Configuring {% data variables.product.prodname_codespaces %} for your project](/github/developing-online-with-codespaces/configuring-codespaces-for-your-project#apply-changes-to-your-configuration)."
 
 ### Running your app from a codespace
+
 {% data reusables.codespaces.about-port-forwarding %} For more information, see "[Forwarding ports in your codespace](/github/developing-online-with-codespaces/forwarding-ports-in-your-codespace)."
 
 ### Committing your changes
 
-{% data reusables.codespaces.committing-link-to-procedure %} 
+{% data reusables.codespaces.committing-link-to-procedure %}
 
 ### Using the Command Palette
 
@@ -55,6 +56,6 @@ The Command Palette allows you to access and manage many features for {% data va
 
 1. {% data reusables.codespaces.you-can-see-all-your-codespaces %}
 2. Click the name of the codespace you want to develop in.
-  ![Name of codespace](/assets/images/help/codespaces/click-name-codespace.png)
+   ![Name of codespace](/assets/images/help/codespaces/click-name-codespace.png)
 
 Alternatively, you can see any active codespaces for a repository by navigating to the repository in which it was made and selecting **{% octicon "codespaces" aria-label="The codespaces icon" %} Codespaces**.

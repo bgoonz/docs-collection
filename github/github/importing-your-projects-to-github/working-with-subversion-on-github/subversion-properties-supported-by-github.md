@@ -1,14 +1,15 @@
 ---
 title: Subversion properties supported by GitHub
-intro: 'There are several Subversion workflows and properties that are similar to existing functionality on {% data variables.product.product_name %}.'
+intro: "There are several Subversion workflows and properties that are similar to existing functionality on {% data variables.product.product_name %}."
 redirect_from:
   - /articles/subversion-properties-supported-by-github
   - /github/importing-your-projects-to-github/subversion-properties-supported-by-github
 versions:
-  fpt: '*'
-  ghes: '*'
+  fpt: "*"
+  ghes: "*"
 shortTitle: Properties supported by GitHub
 ---
+
 ## Executable files (svn:executable)
 
 We convert `svn:executable` properties by updating the file mode directly before adding it to the Git repository.
@@ -19,7 +20,7 @@ We convert `svn:executable` properties by updating the file mode directly before
 
 ## Ignoring unversioned items (svn:ignore)
 
-If you've set files and directories to be ignored in Subversion, {% data variables.product.product_name %} will track them internally. Files ignored by subversion clients are completely distinct from entries in a *.gitignore* file.
+If you've set files and directories to be ignored in Subversion, {% data variables.product.product_name %} will track them internally. Files ignored by subversion clients are completely distinct from entries in a _.gitignore_ file.
 
 ## Currently unsupported properties
 

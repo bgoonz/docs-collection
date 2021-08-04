@@ -1,23 +1,24 @@
 ---
 title: Limits for viewing content and diffs in a repository
-intro: 'Certain types of resources can be quite large, requiring excessive processing on {% data variables.product.product_name %}. Because of this, limits are set to ensure requests complete in a reasonable amount of time.'
+intro: "Certain types of resources can be quite large, requiring excessive processing on {% data variables.product.product_name %}. Because of this, limits are set to ensure requests complete in a reasonable amount of time."
 redirect_from:
   - /articles/what-are-the-limits-for-viewing-content-and-diffs-in-my-repository/
   - /articles/limits-for-viewing-content-and-diffs-in-a-repository
   - /github/creating-cloning-and-archiving-repositories/limits-for-viewing-content-and-diffs-in-a-repository
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Repositories
 shortTitle: Content & diffs limits
 ---
+
 Most of the limits below affect both {% data variables.product.product_name %} and the API.
 
 ## Text limits
 
-Text files over **1 MB** are always displayed as plain text. Code is not syntax highlighted, and prose files are not converted to HTML (such as Markdown, AsciiDoc, *etc.*).
+Text files over **1 MB** are always displayed as plain text. Code is not syntax highlighted, and prose files are not converted to HTML (such as Markdown, AsciiDoc, _etc._).
 
 Text files over **5 MB** are only available through their raw URLs, which are served through `{% data variables.product.raw_github_com %}`; for example, `https://{% data variables.product.raw_github_com %}/octocat/Spoon-Knife/master/index.html`. Click the **Raw** button to get the raw URL for a file.
 
@@ -25,9 +26,9 @@ Text files over **5 MB** are only available through their raw URLs, which are se
 
 Because diffs can become very large, we impose these limits on diffs for commits, pull requests, and compare views:
 
-- No single file's diff may exceed *20,000 lines that you can load* or *1 MB* of raw diff data. *Four hundred lines* and *20 KB* are automatically loaded for a single file.
-- The maximum number of files in a single diff is limited to *300*.
-- The maximum number of renderable files (such as images, PDFs, and GeoJSON files) in a single diff is limited to *25*.
+- No single file's diff may exceed _20,000 lines that you can load_ or _1 MB_ of raw diff data. _Four hundred lines_ and _20 KB_ are automatically loaded for a single file.
+- The maximum number of files in a single diff is limited to _300_.
+- The maximum number of renderable files (such as images, PDFs, and GeoJSON files) in a single diff is limited to _25_.
 
 Some portions of a limited diff may be displayed, but anything exceeding the limit is not shown.
 

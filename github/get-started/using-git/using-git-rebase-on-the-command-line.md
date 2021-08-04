@@ -8,11 +8,12 @@ redirect_from:
   - /github/getting-started-with-github/using-git/using-git-rebase-on-the-command-line
 intro: Here's a short tutorial on using `git rebase` on the command line.
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 shortTitle: Git rebase
 ---
+
 ## Using Git rebase
 
 In this example, we will cover all of the `git rebase` commands available, except for `exec`.
@@ -31,11 +32,11 @@ pick 7b36971 something to move before patch B
 
 In this example, we're going to:
 
-* Squash the fifth commit (`fa39187`) into the `"Patch A"` commit (`1fc6c95`), using `squash`.
-* Move the last commit (`7b36971`) up before the `"Patch B"` commit (`6b2481b`), and keep it as `pick`.
-* Merge the `"A fix for Patch B"` commit (`c619268`) into the `"Patch B"` commit (`6b2481b`), and disregard the commit message using `fixup`.
-* Split the third commit (`dd1475d`) into two smaller commits, using `edit`.
-* Fix the commit message of the misspelled commit (`4ca2acc`), using `reword`.
+- Squash the fifth commit (`fa39187`) into the `"Patch A"` commit (`1fc6c95`), using `squash`.
+- Move the last commit (`7b36971`) up before the `"Patch B"` commit (`6b2481b`), and keep it as `pick`.
+- Merge the `"A fix for Patch B"` commit (`c619268`) into the `"Patch B"` commit (`6b2481b`), and disregard the commit message using `fixup`.
+- Split the third commit (`dd1475d`) into two smaller commits, using `edit`.
+- Fix the commit message of the misspelled commit (`4ca2acc`), using `reword`.
 
 Phew! This sounds like a lot of work, but by taking it one step at a time, we can easily make those changes.
 
@@ -91,7 +92,7 @@ edit dd1475d something I want to split
 reword 4ca2acc i cant' typ goods
 ```
 
-Git processes the two `pick` commands (for `pick 7b36971` and `pick 6b2481b`). It *also* processes the `fixup` command (`fixup c619268`), since it doesn't require any interaction. `fixup` merges the changes from `c619268` into the commit before it, `6b2481b`. Both changes will have the same commit message: `"Patch B"`.
+Git processes the two `pick` commands (for `pick 7b36971` and `pick 6b2481b`). It _also_ processes the `fixup` command (`fixup c619268`), since it doesn't require any interaction. `fixup` merges the changes from `c619268` into the commit before it, `6b2481b`. Both changes will have the same commit message: `"Patch B"`.
 
 Git gets to the `edit dd1475d` operation, stops, and prints the following message to the terminal:
 
@@ -107,7 +108,7 @@ Once you are satisfied with your changes, run
 
 At this point, you can edit any of the files in your project to make any additional changes. For each change you make, you'll need to perform a new commit, and you can do that by entering the `git commit --amend` command. When you're finished making all your changes, you can run `git rebase --continue`.
 
-Git then gets to the `reword 4ca2acc` command.  It opens up your text editor one more time, and presents the following information:
+Git then gets to the `reword 4ca2acc` command. It opens up your text editor one more time, and presents the following information:
 
 ```
 i cant' typ goods
@@ -144,4 +145,4 @@ Force pushing has serious implications because it changes the historical sequenc
 
 ## Further reading
 
-* "[Resolving merge conflicts after a Git rebase](/github/getting-started-with-github/resolving-merge-conflicts-after-a-git-rebase)"
+- "[Resolving merge conflicts after a Git rebase](/github/getting-started-with-github/resolving-merge-conflicts-after-a-git-rebase)"

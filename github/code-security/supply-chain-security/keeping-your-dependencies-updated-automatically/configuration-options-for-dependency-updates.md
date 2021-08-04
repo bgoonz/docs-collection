@@ -1,13 +1,13 @@
 ---
 title: Configuration options for dependency updates
-intro: 'Detailed information for all the options you can use to customize how {% data variables.product.prodname_dependabot %} maintains your repositories.'
-permissions: 'People with write permissions to a repository can configure {% data variables.product.prodname_dependabot %} for the repository.'
+intro: "Detailed information for all the options you can use to customize how {% data variables.product.prodname_dependabot %} maintains your repositories."
+permissions: "People with write permissions to a repository can configure {% data variables.product.prodname_dependabot %} for the repository."
 redirect_from:
   - /github/administering-a-repository/configuration-options-for-dependency-updates
   - /code-security/supply-chain-security/configuration-options-for-dependency-updates
 miniTocMaxHeadingLevel: 3
 versions:
-  fpt: '*'
+  fpt: "*"
 type: reference
 topics:
   - Dependabot
@@ -17,41 +17,42 @@ topics:
   - Pull requests
 shortTitle: Configuration options
 ---
-## About the *dependabot.yml* file
 
-The {% data variables.product.prodname_dependabot %} configuration file, *dependabot.yml*, uses YAML syntax. If you're new to YAML and want to learn more, see "[Learn YAML in five minutes](https://www.codeproject.com/Articles/1214409/Learn-YAML-in-five-minutes)."
+## About the _dependabot.yml_ file
 
-You must store this file in the `.github` directory of your repository. When you add or update the *dependabot.yml* file, this triggers an immediate check for version updates. Any options that also affect security updates are used the next time a security alert triggers a pull request for a security update. For more information, see "[Enabling and disabling version updates](/github/administering-a-repository/enabling-and-disabling-version-updates)" and "[Configuring {% data variables.product.prodname_dependabot_security_updates %}](/github/managing-security-vulnerabilities/configuring-dependabot-security-updates)."
+The {% data variables.product.prodname_dependabot %} configuration file, _dependabot.yml_, uses YAML syntax. If you're new to YAML and want to learn more, see "[Learn YAML in five minutes](https://www.codeproject.com/Articles/1214409/Learn-YAML-in-five-minutes)."
 
-The *dependabot.yml* file has two mandatory top-level keys: `version`, and `updates`. You can, optionally, include a top-level `registries` key. The file must start with `version: 2`.
+You must store this file in the `.github` directory of your repository. When you add or update the _dependabot.yml_ file, this triggers an immediate check for version updates. Any options that also affect security updates are used the next time a security alert triggers a pull request for a security update. For more information, see "[Enabling and disabling version updates](/github/administering-a-repository/enabling-and-disabling-version-updates)" and "[Configuring {% data variables.product.prodname_dependabot_security_updates %}](/github/managing-security-vulnerabilities/configuring-dependabot-security-updates)."
+
+The _dependabot.yml_ file has two mandatory top-level keys: `version`, and `updates`. You can, optionally, include a top-level `registries` key. The file must start with `version: 2`.
 
 ## Configuration options for updates
 
 The top-level `updates` key is mandatory. You use it to configure how {% data variables.product.prodname_dependabot %} updates the versions or your project's dependencies. Each entry configures the update settings for a particular package manager. You can use the following options.
 
-| Option | Required | Description |
-|:---|:---:|:---|
-| [`package-ecosystem`](#package-ecosystem)                     | **X** | Package manager to use                |
-| [`directory`](#directory)                                     | **X** | Location of package manifests         |
-| [`schedule.interval`](#scheduleinterval)                      | **X** | How often to check for updates        |
-| [`allow`](#allow)                                             | | Customize which updates are allowed         |
-| [`assignees`](#assignees)                                     | | Assignees to set on pull requests           |
-| [`commit-message`](#commit-message)                           | | Commit message preferences                  |
-| [`ignore`](#ignore)                                           | | Ignore certain dependencies or versions     |
-| [`insecure-external-code-execution`](#insecure-external-code-execution) | | Allow or deny code execution in manifest files |
-| [`labels`](#labels)                                           | | Labels to set on pull requests              |
-| [`milestone`](#milestone)                                     | | Milestone to set on pull requests           |
-| [`open-pull-requests-limit`](#open-pull-requests-limit)       | | Limit number of open pull requests for version updates|
-| [`pull-request-branch-name.separator`](#pull-request-branch-nameseparator) | | Change separator for pull request branch names |
-| [`rebase-strategy`](#rebase-strategy)                         | | Disable automatic rebasing                  |
-| [`registries`](#registries)                                   | | Private registries that {% data variables.product.prodname_dependabot %} can access|
-| [`reviewers`](#reviewers)                                     | | Reviewers to set on pull requests           |
-| [`schedule.day`](#scheduleday)                                | | Day of week to check for updates            |
-| [`schedule.time`](#scheduletime)                              | | Time of day to check for updates (hh:mm)    |
-| [`schedule.timezone`](#scheduletimezone)                      | | Timezone for time of day (zone identifier)  |
-| [`target-branch`](#target-branch)                             | | Branch to create pull requests against      |
-| [`vendor`](#vendor)                                           | | Update vendored or cached dependencies      |
-| [`versioning-strategy`](#versioning-strategy)                 | | How to update manifest version requirements |
+| Option                                                                     | Required | Description                                                                         |
+| :------------------------------------------------------------------------- | :------: | :---------------------------------------------------------------------------------- |
+| [`package-ecosystem`](#package-ecosystem)                                  |  **X**   | Package manager to use                                                              |
+| [`directory`](#directory)                                                  |  **X**   | Location of package manifests                                                       |
+| [`schedule.interval`](#scheduleinterval)                                   |  **X**   | How often to check for updates                                                      |
+| [`allow`](#allow)                                                          |          | Customize which updates are allowed                                                 |
+| [`assignees`](#assignees)                                                  |          | Assignees to set on pull requests                                                   |
+| [`commit-message`](#commit-message)                                        |          | Commit message preferences                                                          |
+| [`ignore`](#ignore)                                                        |          | Ignore certain dependencies or versions                                             |
+| [`insecure-external-code-execution`](#insecure-external-code-execution)    |          | Allow or deny code execution in manifest files                                      |
+| [`labels`](#labels)                                                        |          | Labels to set on pull requests                                                      |
+| [`milestone`](#milestone)                                                  |          | Milestone to set on pull requests                                                   |
+| [`open-pull-requests-limit`](#open-pull-requests-limit)                    |          | Limit number of open pull requests for version updates                              |
+| [`pull-request-branch-name.separator`](#pull-request-branch-nameseparator) |          | Change separator for pull request branch names                                      |
+| [`rebase-strategy`](#rebase-strategy)                                      |          | Disable automatic rebasing                                                          |
+| [`registries`](#registries)                                                |          | Private registries that {% data variables.product.prodname_dependabot %} can access |
+| [`reviewers`](#reviewers)                                                  |          | Reviewers to set on pull requests                                                   |
+| [`schedule.day`](#scheduleday)                                             |          | Day of week to check for updates                                                    |
+| [`schedule.time`](#scheduletime)                                           |          | Time of day to check for updates (hh:mm)                                            |
+| [`schedule.timezone`](#scheduletimezone)                                   |          | Timezone for time of day (zone identifier)                                          |
+| [`target-branch`](#target-branch)                                          |          | Branch to create pull requests against                                              |
+| [`vendor`](#vendor)                                                        |          | Update vendored or cached dependencies                                              |
+| [`versioning-strategy`](#versioning-strategy)                              |          | How to update manifest version requirements                                         |
 
 These options fit broadly into the following categories.
 
@@ -84,7 +85,6 @@ In general, security updates use any configuration options that affect pull requ
 
 version: 2
 updates:
-
   # Maintain dependencies for GitHub Actions
   - package-ecosystem: "github-actions"
     directory: "/"
@@ -106,7 +106,7 @@ updates:
 
 ### `directory`
 
-**Required**. You must define the location of the package manifests for each package manager (for example, the *package.json* or *Gemfile*). You define the directory relative to the root of the repository for all ecosystems except GitHub Actions. For GitHub Actions, set the directory to `/` to check for workflow files in `.github/workflows`.
+**Required**. You must define the location of the package manifests for each package manager (for example, the _package.json_ or _Gemfile_). You define the directory relative to the root of the repository for all ecosystems except GitHub Actions. For GitHub Actions, set the directory to `/` to check for workflow files in `.github/workflows`.
 
 ```yaml
 # Specify location of manifest files for each package manager
@@ -146,7 +146,6 @@ updates:
 
 version: 2
 updates:
-
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
@@ -175,13 +174,13 @@ Use the `allow` option to customize which dependencies are updated. This applies
 - `dependency-name`—use to allow updates for dependencies with matching names, optionally using `*` to match zero or more characters. For Java dependencies, the format of the `dependency-name` attribute is: `groupId:artifactId`, for example: `org.kohsuke:github-api`.
 - `dependency-type`—use to allow updates for dependencies of specific types.
 
-  | Dependency types | Supported by package managers | Allow updates |
-  |------------------|-------------------------------|--------|
-  | `direct` | All | All explicitly defined dependencies. |
-  | `indirect` | `bundler`, `pip`, `composer`, `cargo` | Dependencies of direct dependencies (also known as sub-dependencies, or transient dependencies).|
-  | `all` | All | All explicitly defined dependencies. For `bundler`, `pip`, `composer`, `cargo`, also the dependencies of direct dependencies.|
-  | `production` | `bundler`, `composer`, `mix`, `maven`, `npm`, `pip` | Only dependencies in the "Production dependency group". |
-  | `development`| `bundler`, `composer`, `mix`, `maven`, `npm`, `pip` | Only dependencies in the "Development dependency group". |
+  | Dependency types | Supported by package managers                       | Allow updates                                                                                                                 |
+  | ---------------- | --------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+  | `direct`         | All                                                 | All explicitly defined dependencies.                                                                                          |
+  | `indirect`       | `bundler`, `pip`, `composer`, `cargo`               | Dependencies of direct dependencies (also known as sub-dependencies, or transient dependencies).                              |
+  | `all`            | All                                                 | All explicitly defined dependencies. For `bundler`, `pip`, `composer`, `cargo`, also the dependencies of direct dependencies. |
+  | `production`     | `bundler`, `composer`, `mix`, `maven`, `npm`, `pip` | Only dependencies in the "Production dependency group".                                                                       |
+  | `development`    | `bundler`, `composer`, `mix`, `maven`, `npm`, `pip` | Only dependencies in the "Development dependency group".                                                                      |
 
 ```yaml
 # Use `allow` to specify which dependencies to maintain
@@ -314,7 +313,7 @@ If `versions` and `update-types` are used together, {% data variables.product.pr
 {% data reusables.dependabot.option-affects-security-updates %}
 
 ```yaml
-# Use `ignore` to specify dependencies that should not be updated 
+# Use `ignore` to specify dependencies that should not be updated
 
 version: 2
 updates:
@@ -337,7 +336,6 @@ updates:
 
 **Note**: {% data variables.product.prodname_dependabot %} can only run version updates on manifest or lock files if it can access all of the dependencies in the file, even if you add inaccessible dependencies to the `ignore` option of your configuration file. For more information, see "[Managing security and analysis settings for your organization](/organizations/keeping-your-organization-secure/managing-security-and-analysis-settings-for-your-organization#allowing-dependabot-to-access-private-dependencies)" and "[Troubleshooting {% data variables.product.prodname_dependabot %} errors](/github/managing-security-vulnerabilities/troubleshooting-dependabot-errors#dependabot-cant-resolve-your-dependency-files)."
 
-
 {% endnote %}
 
 ### `insecure-external-code-execution`
@@ -347,6 +345,7 @@ Package managers with the `package-ecosystem` values `bundler`, `mix`, and `pip`
 You can explicitly deny external code execution, irrespective of whether there is a `registries` setting for this update configuration, by setting `insecure-external-code-execution` to `deny`.
 
 {% raw %}
+
 ```yaml
 # Allow external code execution when updating dependencies from private registries
 
@@ -364,6 +363,7 @@ updates:
     schedule:
       interval: "monthly"
 ```
+
 {% endraw %}
 
 ### `labels`
@@ -484,12 +484,12 @@ updates:
 
 ### `registries`
 
-To allow {% data variables.product.prodname_dependabot %} to access a private package registry when performing a version update, you must include a `registries` setting within the relevant `updates` configuration. You can allow all of the defined registries to be used by setting `registries` to `"*"`. Alternatively, you can list the registries that the update can use. To do this, use the name of the registry as defined in the top-level `registries` section of the _dependabot.yml_ file. 
+To allow {% data variables.product.prodname_dependabot %} to access a private package registry when performing a version update, you must include a `registries` setting within the relevant `updates` configuration. You can allow all of the defined registries to be used by setting `registries` to `"*"`. Alternatively, you can list the registries that the update can use. To do this, use the name of the registry as defined in the top-level `registries` section of the _dependabot.yml_ file.
 
 To allow {% data variables.product.prodname_dependabot %} to use `bundler`, `mix`, and `pip` package managers to update dependencies in private registries, you can choose to allow external code execution. For more information, see [`insecure-external-code-execution`](#insecure-external-code-execution).
 
 ```yaml
-# Allow {% data variables.product.prodname_dependabot %} to use one of the two defined private registries 
+# Allow {% data variables.product.prodname_dependabot %} to use one of the two defined private registries
 # when updating dependency versions for this ecosystem
 
 {% raw %}
@@ -647,11 +647,10 @@ updates:
 
 {% data variables.product.prodname_dependabot %} only updates the vendored dependencies located in specific directories in a repository.
 
-| Package manager | Required file path for vendored dependencies | More information |
-  |------------------|-------------------------------|--------|
-  | `bundler` | The dependencies must be in the _vendor/cache_ directory.</br>Other file paths are not supported. | [`bundle cache` documentation](https://bundler.io/man/bundle-cache.1.html) |
-  | `gomod` | No path requirement (dependencies are usually located in the _vendor_ directory) | [`go mod vendor` documentation](https://golang.org/ref/mod#go-mod-vendor) |
-
+| Package manager | Required file path for vendored dependencies                                                      | More information                                                           |
+| --------------- | ------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| `bundler`       | The dependencies must be in the _vendor/cache_ directory.</br>Other file paths are not supported. | [`bundle cache` documentation](https://bundler.io/man/bundle-cache.1.html) |
+| `gomod`         | No path requirement (dependencies are usually located in the _vendor_ directory)                  | [`go mod vendor` documentation](https://golang.org/ref/mod#go-mod-vendor)  |
 
 ### `versioning-strategy`
 
@@ -666,13 +665,13 @@ Use the `versioning-strategy` option to change this behavior for supported packa
 
 Available update strategies
 
-| Option | Supported by | Action |
-|--------|--------------|--------|
-| `lockfile-only` | `bundler`, `cargo`, `composer`, `mix`, `npm`, `pip` | Only create pull requests to update lockfiles. Ignore any new versions that would require package manifest changes. |
-| `auto` | `bundler`, `cargo`, `composer`, `mix`, `npm`, `pip` | Follow the default strategy described above.|
-| `widen`| `composer`, `npm` | Relax the version requirement to include both the new and old version, when possible. |
-| `increase`| `bundler`, `composer`, `npm` | Always increase the version requirement to match the new version. |
-| `increase-if-necessary` | `bundler`, `composer`, `npm` | Increase the version requirement only when required by the new version. |
+| Option                  | Supported by                                        | Action                                                                                                              |
+| ----------------------- | --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `lockfile-only`         | `bundler`, `cargo`, `composer`, `mix`, `npm`, `pip` | Only create pull requests to update lockfiles. Ignore any new versions that would require package manifest changes. |
+| `auto`                  | `bundler`, `cargo`, `composer`, `mix`, `npm`, `pip` | Follow the default strategy described above.                                                                        |
+| `widen`                 | `composer`, `npm`                                   | Relax the version requirement to include both the new and old version, when possible.                               |
+| `increase`              | `bundler`, `composer`, `npm`                        | Always increase the version requirement to match the new version.                                                   |
+| `increase-if-necessary` | `bundler`, `composer`, `npm`                        | Increase the version requirement only when required by the new version.                                             |
 
 ```yaml
 # Customize the manifest version strategy
@@ -706,7 +705,7 @@ updates:
 
 ## Configuration options for private registries
 
-The top-level `registries` key is optional. It allows you to specify authentication details that {% data variables.product.prodname_dependabot %} can use to access private package registries. 
+The top-level `registries` key is optional. It allows you to specify authentication details that {% data variables.product.prodname_dependabot %} can use to access private package registries.
 
 {% note %}
 
@@ -714,15 +713,16 @@ The top-level `registries` key is optional. It allows you to specify authenticat
 
 {% endnote %}
 
-The value of the `registries` key is an associative array, each element of which consists of a key that identifies a particular registry and a value which is an associative array that specifies the settings required to access that registry. The following *dependabot.yml* file, configures a registry identified as `dockerhub` in the `registries` section of the file and then references this in the `updates` section of the file.
+The value of the `registries` key is an associative array, each element of which consists of a key that identifies a particular registry and a value which is an associative array that specifies the settings required to access that registry. The following _dependabot.yml_ file, configures a registry identified as `dockerhub` in the `registries` section of the file and then references this in the `updates` section of the file.
 
 {% raw %}
+
 ```yaml
 # Minimal settings to update dependencies in one private registry
 
 version: 2
 registries:
-  dockerhub: # Define access for a private registry 
+  dockerhub: # Define access for a private registry
     type: docker-registry
     url: registry.hub.docker.com
     username: octocat
@@ -735,28 +735,29 @@ updates:
     schedule:
       interval: "monthly"
 ```
+
 {% endraw %}
 
 You use the following options to specify access settings. Registry settings must contain a `type` and a `url`, and typically either a `username` and `password` combination or a `token`.
 
-| Option&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | Description |
-|:---|:---|
-| `type`                     | Identifies the type of registry. See the full list of types below. |
-| `url`                      | The URL to use to access the dependencies in this registry. The protocol is optional. If not specified, `https://` is assumed. {% data variables.product.prodname_dependabot %} adds or ignores trailing slashes as required. |
-| `username`                 | The username that {% data variables.product.prodname_dependabot %} uses to access the registry. |
-| `password`                 | A reference to a {% data variables.product.prodname_dependabot %} secret containing the password for the specified user. For more information, see "[Managing encrypted secrets for Dependabot](/github/administering-a-repository/managing-encrypted-secrets-for-dependabot)." |
-| `key`                    | A reference to a {% data variables.product.prodname_dependabot %} secret containing an access key for this registry. For more information, see "[Managing encrypted secrets for Dependabot](/github/administering-a-repository/managing-encrypted-secrets-for-dependabot)." |
-| `token`                    | A reference to a {% data variables.product.prodname_dependabot %} secret containing an access token for this registry. For more information, see "[Managing encrypted secrets for Dependabot](/github/administering-a-repository/managing-encrypted-secrets-for-dependabot)." |
-| `replaces-base`            | For registries with `type: python-index`, if the boolean value is `true`, pip resolves dependencies by using the specified URL rather than the base URL of the Python Package Index (by default `https://pypi.org/simple`). |
-
+| Option&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | Description                                                                                                                                                                                                                                                                     |
+| :----------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `type`                                                                                                 | Identifies the type of registry. See the full list of types below.                                                                                                                                                                                                              |
+| `url`                                                                                                  | The URL to use to access the dependencies in this registry. The protocol is optional. If not specified, `https://` is assumed. {% data variables.product.prodname_dependabot %} adds or ignores trailing slashes as required.                                                   |
+| `username`                                                                                             | The username that {% data variables.product.prodname_dependabot %} uses to access the registry.                                                                                                                                                                                 |
+| `password`                                                                                             | A reference to a {% data variables.product.prodname_dependabot %} secret containing the password for the specified user. For more information, see "[Managing encrypted secrets for Dependabot](/github/administering-a-repository/managing-encrypted-secrets-for-dependabot)." |
+| `key`                                                                                                  | A reference to a {% data variables.product.prodname_dependabot %} secret containing an access key for this registry. For more information, see "[Managing encrypted secrets for Dependabot](/github/administering-a-repository/managing-encrypted-secrets-for-dependabot)."     |
+| `token`                                                                                                | A reference to a {% data variables.product.prodname_dependabot %} secret containing an access token for this registry. For more information, see "[Managing encrypted secrets for Dependabot](/github/administering-a-repository/managing-encrypted-secrets-for-dependabot)."   |
+| `replaces-base`                                                                                        | For registries with `type: python-index`, if the boolean value is `true`, pip resolves dependencies by using the specified URL rather than the base URL of the Python Package Index (by default `https://pypi.org/simple`).                                                     |
 
 Each configuration `type` requires you to provide particular settings. Some types allow more than one way to connect. The following sections provide details of the settings you should use for each `type`.
 
-### `composer-repository` 
+### `composer-repository`
 
 The `composer-repository` type supports username and password.
 
 {% raw %}
+
 ```yaml
 registries:
   composer:
@@ -765,13 +766,15 @@ registries:
     username: octocat
     password: ${{secrets.MY_PACKAGIST_PASSWORD}}
 ```
+
 {% endraw %}
 
-### `docker-registry` 
+### `docker-registry`
 
 The `docker-registry` type supports username and password.
 
 {% raw %}
+
 ```yaml
 registries:
   dockerhub:
@@ -780,11 +783,13 @@ registries:
     username: octocat
     password: ${{secrets.MY_DOCKERHUB_PASSWORD}}
 ```
+
 {% endraw %}
 
 The `docker-registry` type can also be used to pull from Amazon ECR using static AWS credentials.
 
 {% raw %}
+
 ```yaml
 registries:
   ecr-docker:
@@ -793,13 +798,15 @@ registries:
     username: ${{secrets.ECR_AWS_ACCESS_KEY_ID}}
     password: ${{secrets.ECR_AWS_SECRET_ACCESS_KEY}}
 ```
+
 {% endraw %}
 
-### `git` 
+### `git`
 
 The `git` type supports username and password.
 
 {% raw %}
+
 ```yaml
 registries:
   github-octocat:
@@ -808,13 +815,15 @@ registries:
     username: x-access-token
     password: ${{secrets.MY_GITHUB_PERSONAL_TOKEN}}
 ```
+
 {% endraw %}
 
-### `hex-organization` 
+### `hex-organization`
 
 The `hex-organization` type supports organization and key.
 
 {% raw %}
+
 ```yaml
 registries:
   github-hex-org:
@@ -822,13 +831,15 @@ registries:
     organization: github
     key: ${{secrets.MY_HEX_ORGANIZATION_KEY}}
 ```
+
 {% endraw %}
 
-### `maven-repository` 
+### `maven-repository`
 
 The `maven-repository` type supports username and password, or token.
 
 {% raw %}
+
 ```yaml
 registries:
   maven-artifactory:
@@ -837,9 +848,11 @@ registries:
     username: octocat
     password: ${{secrets.MY_ARTIFACTORY_PASSWORD}}
 ```
+
 {% endraw %}
 
 {% raw %}
+
 ```yaml
 registries:
   maven-github:
@@ -847,13 +860,15 @@ registries:
     url: https://maven.pkg.github.com/octocat
     token: ${{secrets.MY_GITHUB_PERSONAL_TOKEN}}
 ```
+
 {% endraw %}
 
-### `npm-registry` 
+### `npm-registry`
 
 The `npm-registry` type supports username and password, or token.
 
 {% raw %}
+
 ```yaml
 registries:
   npm-npmjs:
@@ -862,9 +877,11 @@ registries:
     username: octocat
     password: ${{secrets.MY_NPM_PASSWORD}}
 ```
+
 {% endraw %}
 
 {% raw %}
+
 ```yaml
 registries:
   npm-github:
@@ -872,13 +889,15 @@ registries:
     url: https://npm.pkg.github.com
     token: ${{secrets.MY_GITHUB_PERSONAL_TOKEN}}
 ```
+
 {% endraw %}
 
-### `nuget-feed` 
+### `nuget-feed`
 
 The `nuget-feed` type supports username and password, or token.
 
 {% raw %}
+
 ```yaml
 registries:
   nuget-example:
@@ -887,9 +906,11 @@ registries:
     username: octocat@example.com
     password: ${{secrets.MY_NUGET_PASSWORD}}
 ```
+
 {% endraw %}
 
 {% raw %}
+
 ```yaml
 registries:
   nuget-azure-devops:
@@ -897,13 +918,15 @@ registries:
     url: https://pkgs.dev.azure.com/.../_packaging/My_Feed/nuget/v3/index.json
     token: ${{secrets.MY_AZURE_DEVOPS_TOKEN}}
 ```
+
 {% endraw %}
 
-### `python-index` 
+### `python-index`
 
 The `python-index` type supports username and password, or token.
 
 {% raw %}
+
 ```yaml
 registries:
   python-example:
@@ -913,9 +936,11 @@ registries:
     password: ${{secrets.MY_BASIC_AUTH_PASSWORD}}
     replaces-base: true
 ```
+
 {% endraw %}
 
 {% raw %}
+
 ```yaml
 registries:
   python-azure:
@@ -924,6 +949,7 @@ registries:
     token: ${{secrets.MY_AZURE_DEVOPS_TOKEN}}
     replaces-base: true
 ```
+
 {% endraw %}
 
 ### `rubygems-server`
@@ -931,6 +957,7 @@ registries:
 The `rubygems-server` type supports username and password, or token.
 
 {% raw %}
+
 ```yaml
 registries:
   ruby-example:
@@ -939,9 +966,11 @@ registries:
     username: octocat@example.com
     password: ${{secrets.MY_RUBYGEMS_PASSWORD}}
 ```
+
 {% endraw %}
 
 {% raw %}
+
 ```yaml
 registries:
   ruby-github:
@@ -949,6 +978,7 @@ registries:
     url: https://rubygems.pkg.github.com/octocat/github_api
     token: ${{secrets.MY_GITHUB_PERSONAL_TOKEN}}
 ```
+
 {% endraw %}
 
 ### `terraform-registry`
@@ -956,6 +986,7 @@ registries:
 The `terraform-registry` type supports a token.
 
 {% raw %}
+
 ```yaml
 registries:
   terraform-example:
@@ -963,4 +994,5 @@ registries:
     url: https://terraform.example.com
     token: ${{secrets.MY_TERRAFORM_API_TOKEN}}
 ```
+
 {% endraw %}

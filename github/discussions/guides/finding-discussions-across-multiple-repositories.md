@@ -2,7 +2,7 @@
 title: Finding discussions across multiple repositories
 intro: You can easily access every discussion you've created or participated in across multiple repositories.
 versions:
-  fpt: '*'
+  fpt: "*"
 shortTitle: Find discussions
 ---
 
@@ -12,7 +12,7 @@ shortTitle: Find discussions
 
 1. Navigate to {% data variables.product.prodname_dotcom_the_website %}.
 1. In the top-right corner of {% data variables.product.prodname_dotcom_the_website %}, click your profile photo, then click **Your discussions**.
-  !["Your discussions" in drop-down menu for profile photo on {% data variables.product.product_name %}](/assets/images/help/discussions/your-discussions.png)
+   !["Your discussions" in drop-down menu for profile photo on {% data variables.product.product_name %}](/assets/images/help/discussions/your-discussions.png)
 1. Toggle between **Created** and **Commented** to see the discussions you've created or participated in.
 
 ## Further reading

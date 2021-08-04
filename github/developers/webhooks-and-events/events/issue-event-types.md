@@ -1,16 +1,17 @@
 ---
 title: Issue event types
-intro: 'For the Issues Events API and Timeline API, learn about each event type, the triggering action on {% data variables.product.prodname_dotcom %}, and each event''s unique properties.'
+intro: "For the Issues Events API and Timeline API, learn about each event type, the triggering action on {% data variables.product.prodname_dotcom %}, and each event's unique properties."
 redirect_from:
   - /v3/issues/issue-event-types
   - /developers/webhooks-and-events/issue-event-types
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Events
 ---
+
 Issue events are triggered by activity in issues and pull requests and are available in the [Issue Events API](/rest/reference/issues#events) and the [Timeline Events API](/rest/reference/issues#timeline). Each event type specifies whether the event is available in the Issue Events or Timeline Events APIs.
 
 GitHub's REST API considers every pull request to be an issue, but not every issue is a pull request. For this reason, the Issue Events and Timeline Events endpoints may return both issues and pull requests in the response. Pull requests have a `pull_request` property in the `issue` object. Because pull requests are issues, issue and pull request numbers do not overlap in a repository. For example, if you open your first issue in a repository, the number will be 1. If you then open a pull request, the number will be 2. Each event type specifies if the event occurs in pull request, issues, or both.
@@ -27,9 +28,9 @@ The issue or pull request was added to a project board. {% data reusables.projec
 
 ### Availability
 
-|Issue type | Issue events API | Timeline events API|
-|:----------|:----------------:|:-----------------:|
-| <ul><li>Issues</li><li>Pull request</li></ul> | **X** | **X** |
+| Issue type                                    | Issue events API | Timeline events API |
+| :-------------------------------------------- | :--------------: | :-----------------: |
+| <ul><li>Issues</li><li>Pull request</li></ul> |      **X**       |        **X**        |
 
 ### Event object properties
 
@@ -45,9 +46,9 @@ The issue or pull request was assigned to a user.
 
 ### Availability
 
-|Issue type | Issue events API | Timeline events API|
-|:----------|:----------------:|:-----------------:|
-| <ul><li>Issues</li><li>Pull requests</li></ul> | **X** | **X**  |
+| Issue type                                     | Issue events API | Timeline events API |
+| :--------------------------------------------- | :--------------: | :-----------------: |
+| <ul><li>Issues</li><li>Pull requests</li></ul> |      **X**       |        **X**        |
 
 ### Event object properties
 
@@ -60,9 +61,9 @@ GitHub unsuccessfully attempted to automatically change the base branch of the p
 
 ### Availability
 
-|Issue type | Issue events API | Timeline events API|
-|:----------|:----------------:|:-----------------:|
-| <ul><li>Pull requests</li></ul> | **X** |  |
+| Issue type                      | Issue events API | Timeline events API |
+| :------------------------------ | :--------------: | :-----------------: |
+| <ul><li>Pull requests</li></ul> |      **X**       |                     |
 
 ### Event object properties
 
@@ -74,9 +75,9 @@ GitHub successfully attempted to automatically change the base branch of the pul
 
 ### Availability
 
-|Issue type | Issue events API | Timeline events API|
-|:----------|:----------------:|:-----------------:|
-| <ul><li>Pull requests</li></ul> | **X** | |
+| Issue type                      | Issue events API | Timeline events API |
+| :------------------------------ | :--------------: | :-----------------: |
+| <ul><li>Pull requests</li></ul> |      **X**       |                     |
 
 ### Event object properties
 
@@ -88,9 +89,9 @@ The base reference branch of the pull request changed.
 
 ### Availability
 
-|Issue type | Issue events API | Timeline events API|
-|:----------|:----------------:|:-----------------:|
-| <ul><li>Pull requests</li></ul> | **X** | |
+| Issue type                      | Issue events API | Timeline events API |
+| :------------------------------ | :--------------: | :-----------------: |
+| <ul><li>Pull requests</li></ul> |      **X**       |                     |
 
 ### Event object properties
 
@@ -102,9 +103,9 @@ The issue or pull request was closed. When the `commit_id` is present, it identi
 
 ### Availability
 
-|Issue type | Issue events API | Timeline events API|
-|:----------|:----------------:|:-----------------:|
-| <ul><li>Issues</li><li>Pull requests</li></ul> | **X** | **X** |
+| Issue type                                     | Issue events API | Timeline events API |
+| :--------------------------------------------- | :--------------: | :-----------------: |
+| <ul><li>Issues</li><li>Pull requests</li></ul> |      **X**       |        **X**        |
 
 ### Event object properties
 
@@ -116,28 +117,28 @@ A comment was added to the issue or pull request.
 
 ### Availability
 
-|Issue type | Issue events API | Timeline events API|
-|:----------|:----------------:|:-----------------:|
-| <ul><li>Issues</li><li>Pull requests</li></ul> |  | **X** |
+| Issue type                                     | Issue events API | Timeline events API |
+| :--------------------------------------------- | :--------------: | :-----------------: |
+| <ul><li>Issues</li><li>Pull requests</li></ul> |                  |        **X**        |
 
 ### Event object properties
 
 {% data reusables.issue-events.timeline_events_object_properties %}
 
-Name | Type | Description
------|------|--------------
-`url` | `string` | The REST API URL to retrieve the issue comment.
-`html_url` | `string` | The HTML URL of the issue comment.
-`issue_url` | `string` | The HTML URL of the issue.
-`id` | `integer` | The unique identifier of the event.
-`node_id` | `string` | The [Global Node ID](/graphql/guides/using-global-node-ids) of the event.
-`user` | `object` | The person who commented on the issue.
-`created_at` | `string` | The timestamp indicating when the comment was added.
-`updated_at` | `string` | The timestamp indicating when the comment was updated or created, if the comment is never updated.
-`author_association` | `string` | The permissions the user has in the issue's repository. For example, the value would be `"OWNER"` if the owner of repository created a comment.
-`body` | `string` | The comment body text.
-`event` | `string` | The event value is `"commented"`.
-`actor` | `object` | The person who generated the event.
+| Name                 | Type      | Description                                                                                                                                     |
+| -------------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| `url`                | `string`  | The REST API URL to retrieve the issue comment.                                                                                                 |
+| `html_url`           | `string`  | The HTML URL of the issue comment.                                                                                                              |
+| `issue_url`          | `string`  | The HTML URL of the issue.                                                                                                                      |
+| `id`                 | `integer` | The unique identifier of the event.                                                                                                             |
+| `node_id`            | `string`  | The [Global Node ID](/graphql/guides/using-global-node-ids) of the event.                                                                       |
+| `user`               | `object`  | The person who commented on the issue.                                                                                                          |
+| `created_at`         | `string`  | The timestamp indicating when the comment was added.                                                                                            |
+| `updated_at`         | `string`  | The timestamp indicating when the comment was updated or created, if the comment is never updated.                                              |
+| `author_association` | `string`  | The permissions the user has in the issue's repository. For example, the value would be `"OWNER"` if the owner of repository created a comment. |
+| `body`               | `string`  | The comment body text.                                                                                                                          |
+| `event`              | `string`  | The event value is `"commented"`.                                                                                                               |
+| `actor`              | `object`  | The person who generated the event.                                                                                                             |
 
 ## committed
 
@@ -145,27 +146,27 @@ A commit was added to the pull request's `HEAD` branch.
 
 ### Availability
 
-|Issue type | Issue events API | Timeline events API|
-|:----------|:----------------:|:-----------------:|
-| <ul><li>Pull requests</li></ul> |  | **X** |
+| Issue type                      | Issue events API | Timeline events API |
+| :------------------------------ | :--------------: | :-----------------: |
+| <ul><li>Pull requests</li></ul> |                  |        **X**        |
 
 ### Event object properties
 
 {% data reusables.issue-events.timeline_events_object_properties %}
 
-Name | Type | Description
------|------|--------------
-`sha` | `string` | The SHA of the commit in the pull request.
-`node_id` | `string` | The [Global Node ID](/graphql/guides/using-global-node-ids) of the event.
-`url` | `string` | The REST API URL to retrieve the commit.
-`html_url` | `string` | The HTML URL of the commit.
-`author` | `object` | The person who authored the commit.
-`committer` | `object` | The person who committed the commit on behalf of the author.
-`tree` | `object` | The Git tree of the commit.
-`message` | `string` | The commit message.
-`parents` | `array of objects` | A list of parent commits.
-`verification` | `object` | The result of verifying the commit's signature. For more information, see "[Signature verification object](/rest/reference/git#get-a-commit)."
-`event` | `string` | The event value is `"committed"`.
+| Name           | Type               | Description                                                                                                                                    |
+| -------------- | ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `sha`          | `string`           | The SHA of the commit in the pull request.                                                                                                     |
+| `node_id`      | `string`           | The [Global Node ID](/graphql/guides/using-global-node-ids) of the event.                                                                      |
+| `url`          | `string`           | The REST API URL to retrieve the commit.                                                                                                       |
+| `html_url`     | `string`           | The HTML URL of the commit.                                                                                                                    |
+| `author`       | `object`           | The person who authored the commit.                                                                                                            |
+| `committer`    | `object`           | The person who committed the commit on behalf of the author.                                                                                   |
+| `tree`         | `object`           | The Git tree of the commit.                                                                                                                    |
+| `message`      | `string`           | The commit message.                                                                                                                            |
+| `parents`      | `array of objects` | A list of parent commits.                                                                                                                      |
+| `verification` | `object`           | The result of verifying the commit's signature. For more information, see "[Signature verification object](/rest/reference/git#get-a-commit)." |
+| `event`        | `string`           | The event value is `"committed"`.                                                                                                              |
 
 ## connected
 
@@ -173,9 +174,9 @@ The issue or pull request was linked to another issue or pull request. For more 
 
 ### Availability
 
-|Issue type | Issue events API | Timeline events API|
-|:----------|:----------------:|:-----------------:|
-| <ul><li>Issues</li><li>Pull requests</li></ul> | **X** | **X** |
+| Issue type                                     | Issue events API | Timeline events API |
+| :--------------------------------------------- | :--------------: | :-----------------: |
+| <ul><li>Issues</li><li>Pull requests</li></ul> |      **X**       |        **X**        |
 
 ### Event object properties
 
@@ -187,9 +188,9 @@ The pull request was converted to draft mode.
 
 ### Availability
 
-|Issue type | Issue events API | Timeline events API|
-|:----------|:----------------:|:-----------------:|
-| <ul><li>Pull requests</li></ul> | **X** | **X** |
+| Issue type                      | Issue events API | Timeline events API |
+| :------------------------------ | :--------------: | :-----------------: |
+| <ul><li>Pull requests</li></ul> |      **X**       |        **X**        |
 
 ### Event object properties
 
@@ -201,9 +202,9 @@ The issue was created by converting a note in a project board to an issue. {% da
 
 ### Availability
 
-|Issue type | Issue events API | Timeline events API|
-|:----------|:----------------:|:-----------------:|
-| <ul><li>Issues</li></ul> | **X** | **X** |
+| Issue type               | Issue events API | Timeline events API |
+| :----------------------- | :--------------: | :-----------------: |
+| <ul><li>Issues</li></ul> |      **X**       |        **X**        |
 
 ### Event object properties
 
@@ -219,23 +220,23 @@ The issue or pull request was referenced from another issue or pull request.
 
 ### Availability
 
-|Issue type | Issue events API | Timeline events API|
-|:----------|:----------------:|:-----------------:|
-| <ul><li>Issues</li><li>Pull requests</li></ul> |  | **X** |
+| Issue type                                     | Issue events API | Timeline events API |
+| :--------------------------------------------- | :--------------: | :-----------------: |
+| <ul><li>Issues</li><li>Pull requests</li></ul> |                  |        **X**        |
 
 ### Event object properties
 
 {% data reusables.issue-events.timeline_events_object_properties %}
 
-Name | Type | Description
------|------|--------------
-`actor` | `object` | The person who generated the event.
-`created_at` | `string` | The timestamp indicating when the cross-reference was added.
-`updated_at` | `string` | The timestamp indicating when the cross-reference was updated or created, if the cross-reference is never updated.
-`source` | `object` | The issue or pull request that added a cross-reference.
-`source[type]` | `string` | This value will always be `"issue"` because pull requests are of type issue. Only cross-reference events triggered by issues or pull requests are returned in the Timeline Events API. To determine if the issue that triggered the event is a pull request, you can check if the `source[issue][pull_request` object exists.
-`source[issue]` | `object` | The `issue` object that added the cross-reference.
-`event` | `string` | The event value is `"cross-referenced"`.
+| Name            | Type     | Description                                                                                                                                                                                                                                                                                                                   |
+| --------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `actor`         | `object` | The person who generated the event.                                                                                                                                                                                                                                                                                           |
+| `created_at`    | `string` | The timestamp indicating when the cross-reference was added.                                                                                                                                                                                                                                                                  |
+| `updated_at`    | `string` | The timestamp indicating when the cross-reference was updated or created, if the cross-reference is never updated.                                                                                                                                                                                                            |
+| `source`        | `object` | The issue or pull request that added a cross-reference.                                                                                                                                                                                                                                                                       |
+| `source[type]`  | `string` | This value will always be `"issue"` because pull requests are of type issue. Only cross-reference events triggered by issues or pull requests are returned in the Timeline Events API. To determine if the issue that triggered the event is a pull request, you can check if the `source[issue][pull_request` object exists. |
+| `source[issue]` | `object` | The `issue` object that added the cross-reference.                                                                                                                                                                                                                                                                            |
+| `event`         | `string` | The event value is `"cross-referenced"`.                                                                                                                                                                                                                                                                                      |
 
 ## demilestoned
 
@@ -243,9 +244,9 @@ The issue or pull request was removed from a milestone.
 
 ### Availability
 
-|Issue type | Issue events API | Timeline events API|
-|:----------|:----------------:|:-----------------:|
-| <ul><li>Issues</li><li>Pull requests</li></ul> | **X** | **X** |
+| Issue type                                     | Issue events API | Timeline events API |
+| :--------------------------------------------- | :--------------: | :-----------------: |
+| <ul><li>Issues</li><li>Pull requests</li></ul> |      **X**       |        **X**        |
 
 ### Event object properties
 
@@ -259,9 +260,9 @@ The pull request was deployed.
 
 ### Availability
 
-|Issue type | Issue events API | Timeline events API|
-|:----------|:----------------:|:-----------------:|
-| <ul><li>Pull requests</li></ul> | **X** | **X** |
+| Issue type                      | Issue events API | Timeline events API |
+| :------------------------------ | :--------------: | :-----------------: |
+| <ul><li>Pull requests</li></ul> |      **X**       |        **X**        |
 
 ### Event object properties
 
@@ -273,9 +274,9 @@ The pull request deployment environment was changed.
 
 ### Availability
 
-|Issue type | Issue events API | Timeline events API|
-|:----------|:----------------:|:-----------------:|
-| <ul><li>Pull requests</li></ul> | **X** |  |
+| Issue type                      | Issue events API | Timeline events API |
+| :------------------------------ | :--------------: | :-----------------: |
+| <ul><li>Pull requests</li></ul> |      **X**       |                     |
 
 ### Event object properties
 
@@ -287,9 +288,9 @@ The issue or pull request was unlinked from another issue or pull request. For m
 
 ### Availability
 
-|Issue type | Issue events API | Timeline events API|
-|:----------|:----------------:|:-----------------:|
-| <ul><li>Issues</li><li>Pull requests</li></ul> | **X** | **X** |
+| Issue type                                     | Issue events API | Timeline events API |
+| :--------------------------------------------- | :--------------: | :-----------------: |
+| <ul><li>Issues</li><li>Pull requests</li></ul> |      **X**       |        **X**        |
 
 ### Event object properties
 
@@ -301,9 +302,9 @@ The pull request's `HEAD` branch was deleted.
 
 ### Availability
 
-|Issue type | Issue events API | Timeline events API|
-|:----------|:----------------:|:-----------------:|
-| <ul><li>Pull requests</li></ul> | **X** | **X** |
+| Issue type                      | Issue events API | Timeline events API |
+| :------------------------------ | :--------------: | :-----------------: |
+| <ul><li>Pull requests</li></ul> |      **X**       |        **X**        |
 
 ### Event object properties
 
@@ -315,9 +316,9 @@ The pull request's `HEAD` branch was restored to the last known commit.
 
 ### Availability
 
-|Issue type | Issue events API | Timeline events API|
-|:----------|:----------------:|:-----------------:|
-| <ul><li>Pull requests</li></ul> | **X** | **X** |
+| Issue type                      | Issue events API | Timeline events API |
+| :------------------------------ | :--------------: | :-----------------: |
+| <ul><li>Pull requests</li></ul> |      **X**       |        **X**        |
 
 ### Event object properties
 
@@ -329,9 +330,9 @@ A label was added to the issue or pull request.
 
 ### Availability
 
-|Issue type | Issue events API | Timeline events API|
-|:----------|:----------------:|:-----------------:|
-| <ul><li>Issues</li><li>Pull requests</li></ul> | **X** | **X** |
+| Issue type                                     | Issue events API | Timeline events API |
+| :--------------------------------------------- | :--------------: | :-----------------: |
+| <ul><li>Issues</li><li>Pull requests</li></ul> |      **X**       |        **X**        |
 
 ### Event object properties
 
@@ -344,9 +345,9 @@ The issue or pull request was locked.
 
 ### Availability
 
-|Issue type | Issue events API | Timeline events API|
-|:----------|:----------------:|:-----------------:|
-| <ul><li>Issues</li><li>Pull requests</li></ul> | **X** | **X** |
+| Issue type                                     | Issue events API | Timeline events API |
+| :--------------------------------------------- | :--------------: | :-----------------: |
+| <ul><li>Issues</li><li>Pull requests</li></ul> |      **X**       |        **X**        |
 
 ### Event object properties
 
@@ -364,9 +365,9 @@ The `actor` was `@mentioned` in an issue or pull request body.
 
 ### Availability
 
-|Issue type | Issue events API | Timeline events API|
-|:----------|:----------------:|:-----------------:|
-| <ul><li>Issues</li><li>Pull requests</li></ul> | **X** | **X** |
+| Issue type                                     | Issue events API | Timeline events API |
+| :--------------------------------------------- | :--------------: | :-----------------: |
+| <ul><li>Issues</li><li>Pull requests</li></ul> |      **X**       |        **X**        |
 
 ### Event object properties
 
@@ -378,9 +379,9 @@ A user with write permissions marked an issue as a duplicate of another issue, o
 
 ### Availability
 
-|Issue type | Issue events API | Timeline events API|
-|:----------|:----------------:|:-----------------:|
-| <ul><li>Issues</li><li>Pull requests</li></ul> | **X** | **X** |
+| Issue type                                     | Issue events API | Timeline events API |
+| :--------------------------------------------- | :--------------: | :-----------------: |
+| <ul><li>Issues</li><li>Pull requests</li></ul> |      **X**       |        **X**        |
 
 ### Event object properties
 
@@ -392,9 +393,9 @@ The pull request was merged. The `commit_id` attribute is the SHA1 of the `HEAD`
 
 ### Availability
 
-|Issue type | Issue events API | Timeline events API|
-|:----------|:----------------:|:-----------------:|
-| <ul><li>Pull requests</li></ul> | **X** |   |
+| Issue type                      | Issue events API | Timeline events API |
+| :------------------------------ | :--------------: | :-----------------: |
+| <ul><li>Pull requests</li></ul> |      **X**       |                     |
 
 ### Event object properties
 
@@ -406,9 +407,9 @@ The issue or pull request was added to a milestone.
 
 ### Availability
 
-|Issue type | Issue events API | Timeline events API|
-|:----------|:----------------:|:-----------------:|
-| <ul><li>Issues</li><li>Pull requests</li></ul> | **X** | **X** |
+| Issue type                                     | Issue events API | Timeline events API |
+| :--------------------------------------------- | :--------------: | :-----------------: |
+| <ul><li>Issues</li><li>Pull requests</li></ul> |      **X**       |        **X**        |
 
 ### Event object properties
 
@@ -422,9 +423,9 @@ The issue or pull request was moved between columns in a project board. {% data 
 
 ### Availability
 
-|Issue type | Issue events API | Timeline events API|
-|:----------|:----------------:|:-----------------:|
-| <ul><li>Issues</li><li>Pull requests</li></ul> | **X** | **X** |
+| Issue type                                     | Issue events API | Timeline events API |
+| :--------------------------------------------- | :--------------: | :-----------------: |
+| <ul><li>Issues</li><li>Pull requests</li></ul> |      **X**       |        **X**        |
 
 ### Event object properties
 
@@ -441,9 +442,9 @@ The issue was pinned.
 
 ### Availability
 
-|Issue type | Issue events API | Timeline events API|
-|:----------|:----------------:|:-----------------:|
-| <ul><li>Issues</li></ul> | **X** | **X** |
+| Issue type               | Issue events API | Timeline events API |
+| :----------------------- | :--------------: | :-----------------: |
+| <ul><li>Issues</li></ul> |      **X**       |        **X**        |
 
 ### Event object properties
 
@@ -455,9 +456,9 @@ A pull request was created that is not in draft mode.
 
 ### Availability
 
-|Issue type | Issue events API | Timeline events API|
-|:----------|:----------------:|:-----------------:|
-| <ul><li>Pull requests</li></ul> | **X** | **X** |
+| Issue type                      | Issue events API | Timeline events API |
+| :------------------------------ | :--------------: | :-----------------: |
+| <ul><li>Pull requests</li></ul> |      **X**       |        **X**        |
 
 ### Event object properties
 
@@ -469,9 +470,9 @@ The issue was referenced from a commit message. The `commit_id` attribute is the
 
 ### Availability
 
-|Issue type | Issue events API | Timeline events API|
-|:----------|:----------------:|:-----------------:|
-| <ul><li>Issues</li><li>Pull requests</li></ul> | **X** | **X** |
+| Issue type                                     | Issue events API | Timeline events API |
+| :--------------------------------------------- | :--------------: | :-----------------: |
+| <ul><li>Issues</li><li>Pull requests</li></ul> |      **X**       |        **X**        |
 
 ### Event object properties
 
@@ -483,9 +484,9 @@ The issue or pull request was removed from a project board. {% data reusables.pr
 
 ### Availability
 
-|Issue type | Issue events API | Timeline events API|
-|:----------|:----------------:|:-----------------:|
-| <ul><li>Issues</li><li>Pull requests</li></ul> | **X** | **X** |
+| Issue type                                     | Issue events API | Timeline events API |
+| :--------------------------------------------- | :--------------: | :-----------------: |
+| <ul><li>Issues</li><li>Pull requests</li></ul> |      **X**       |        **X**        |
 
 ### Event object properties
 
@@ -501,9 +502,9 @@ The issue or pull request title was changed.
 
 ### Availability
 
-|Issue type | Issue events API | Timeline events API|
-|:----------|:----------------:|:-----------------:|
-| <ul><li>Issues</li><li>Pull requests</li></ul> | **X** | **X** |
+| Issue type                                     | Issue events API | Timeline events API |
+| :--------------------------------------------- | :--------------: | :-----------------: |
+| <ul><li>Issues</li><li>Pull requests</li></ul> |      **X**       |        **X**        |
 
 ### Event object properties
 
@@ -518,9 +519,9 @@ The issue or pull request was reopened.
 
 ### Availability
 
-|Issue type | Issue events API | Timeline events API|
-|:----------|:----------------:|:-----------------:|
-| <ul><li>Issues</li><li>Pull requests</li></ul> | **X** | **X** |
+| Issue type                                     | Issue events API | Timeline events API |
+| :--------------------------------------------- | :--------------: | :-----------------: |
+| <ul><li>Issues</li><li>Pull requests</li></ul> |      **X**       |        **X**        |
 
 ### Event object properties
 
@@ -532,9 +533,9 @@ The pull request review was dismissed.
 
 ### Availability
 
-|Issue type | Issue events API | Timeline events API|
-|:----------|:----------------:|:-----------------:|
-| <ul><li>Pull requests</li></ul> | **X** | **X** |
+| Issue type                      | Issue events API | Timeline events API |
+| :------------------------------ | :--------------: | :-----------------: |
+| <ul><li>Pull requests</li></ul> |      **X**       |        **X**        |
 
 ### Event object properties
 
@@ -547,9 +548,9 @@ A pull request review was requested.
 
 ### Availability
 
-|Issue type | Issue events API | Timeline events API|
-|:----------|:----------------:|:-----------------:|
-| <ul><li>Pull requests</li></ul> | **X** | **X** |
+| Issue type                      | Issue events API | Timeline events API |
+| :------------------------------ | :--------------: | :-----------------: |
+| <ul><li>Pull requests</li></ul> |      **X**       |        **X**        |
 
 ### Event object properties
 
@@ -562,9 +563,9 @@ A pull request review request was removed.
 
 ### Availability
 
-|Issue type | Issue events API | Timeline events API|
-|:----------|:----------------:|:-----------------:|
-| <ul><li>Pull requests</li></ul> | **X** | **X** |
+| Issue type                      | Issue events API | Timeline events API |
+| :------------------------------ | :--------------: | :-----------------: |
+| <ul><li>Pull requests</li></ul> |      **X**       |        **X**        |
 
 ### Event object properties
 
@@ -577,28 +578,28 @@ The pull request was reviewed.
 
 ### Availability
 
-|Issue type | Issue events API | Timeline events API|
-|:----------|:----------------:|:-----------------:|
-| <ul><li>Pull requests</li></ul> |  | **X** |
+| Issue type                      | Issue events API | Timeline events API |
+| :------------------------------ | :--------------: | :-----------------: |
+| <ul><li>Pull requests</li></ul> |                  |        **X**        |
 
 ### Event object properties
 
 {% data reusables.issue-events.timeline_events_object_properties %}
 
-Name | Type | Description
------|------|--------------
-`id` | `integer` | The unique identifier of the event.
-`node_id` | `string` | The [Global Node ID](/graphql/guides/using-global-node-ids) of the event.
-`user` | `object` | The person who commented on the issue.
-`body` | `string` | The review summary text.
-`commit_id` | `string` | The SHA of the latest commit in the pull request at the time of the review.
-`submitted_at` | `string` | The timestamp indicating when the review was submitted.
-`state` | `string` | The state of the submitted review. Can be one of: `commented`, `changes_requested`, or `approved`.
-`html_url` | `string` | The HTML URL of the review.
-`pull_request_url` | `string` | The REST API URL to retrieve the pull request.
-`author_association` | `string` | The permissions the user has in the issue's repository. For example, the value would be `"OWNER"` if the owner of repository created a comment.
-`_links` | `object` | The `html_url` and `pull_request_url`.
-`event` | `string` | The event value is `"reviewed"`.
+| Name                 | Type      | Description                                                                                                                                     |
+| -------------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`                 | `integer` | The unique identifier of the event.                                                                                                             |
+| `node_id`            | `string`  | The [Global Node ID](/graphql/guides/using-global-node-ids) of the event.                                                                       |
+| `user`               | `object`  | The person who commented on the issue.                                                                                                          |
+| `body`               | `string`  | The review summary text.                                                                                                                        |
+| `commit_id`          | `string`  | The SHA of the latest commit in the pull request at the time of the review.                                                                     |
+| `submitted_at`       | `string`  | The timestamp indicating when the review was submitted.                                                                                         |
+| `state`              | `string`  | The state of the submitted review. Can be one of: `commented`, `changes_requested`, or `approved`.                                              |
+| `html_url`           | `string`  | The HTML URL of the review.                                                                                                                     |
+| `pull_request_url`   | `string`  | The REST API URL to retrieve the pull request.                                                                                                  |
+| `author_association` | `string`  | The permissions the user has in the issue's repository. For example, the value would be `"OWNER"` if the owner of repository created a comment. |
+| `_links`             | `object`  | The `html_url` and `pull_request_url`.                                                                                                          |
+| `event`              | `string`  | The event value is `"reviewed"`.                                                                                                                |
 
 ## subscribed
 
@@ -606,9 +607,9 @@ Someone subscribed to receive notifications for an issue or pull request.
 
 ### Availability
 
-|Issue type | Issue events API | Timeline events API|
-|:----------|:----------------:|:-----------------:|
-| <ul><li>Issues</li><li>Pull requests</li></ul> | **X** | **X** |
+| Issue type                                     | Issue events API | Timeline events API |
+| :--------------------------------------------- | :--------------: | :-----------------: |
+| <ul><li>Issues</li><li>Pull requests</li></ul> |      **X**       |        **X**        |
 
 ### Event object properties
 
@@ -620,9 +621,9 @@ The issue was transferred to another repository.
 
 ### Availability
 
-|Issue type | Issue events API | Timeline events API|
-|:----------|:----------------:|:-----------------:|
-| <ul><li>Issues</li></ul> | **X** | **X** |
+| Issue type               | Issue events API | Timeline events API |
+| :----------------------- | :--------------: | :-----------------: |
+| <ul><li>Issues</li></ul> |      **X**       |        **X**        |
 
 ### Event object properties
 
@@ -634,9 +635,9 @@ A user was unassigned from the issue.
 
 ### Availability
 
-|Issue type | Issue events API | Timeline events API|
-|:----------|:----------------:|:-----------------:|
-| <ul><li>Issues</li><li>Pull requests</li></ul> | **X** | **X** |
+| Issue type                                     | Issue events API | Timeline events API |
+| :--------------------------------------------- | :--------------: | :-----------------: |
+| <ul><li>Issues</li><li>Pull requests</li></ul> |      **X**       |        **X**        |
 
 ### Event object properties
 
@@ -649,9 +650,9 @@ A label was removed from the issue.
 
 ### Availability
 
-|Issue type | Issue events API | Timeline events API|
-|:----------|:----------------:|:-----------------:|
-| <ul><li>Issues</li><li>Pull requests</li></ul> | **X** | **X** |
+| Issue type                                     | Issue events API | Timeline events API |
+| :--------------------------------------------- | :--------------: | :-----------------: |
+| <ul><li>Issues</li><li>Pull requests</li></ul> |      **X**       |        **X**        |
 
 ### Event object properties
 
@@ -664,9 +665,9 @@ The issue was unlocked.
 
 ### Availability
 
-|Issue type | Issue events API | Timeline events API|
-|:----------|:----------------:|:-----------------:|
-| <ul><li>Issues</li><li>Pull requests</li></ul> | **X** | **X** |
+| Issue type                                     | Issue events API | Timeline events API |
+| :--------------------------------------------- | :--------------: | :-----------------: |
+| <ul><li>Issues</li><li>Pull requests</li></ul> |      **X**       |        **X**        |
 
 ### Event object properties
 
@@ -684,9 +685,9 @@ An issue that a user had previously marked as a duplicate of another issue is no
 
 ### Availability
 
-|Issue type | Issue events API | Timeline events API|
-|:----------|:----------------:|:-----------------:|
-| <ul><li>Issues</li><li>Pull requests</li></ul> | **X** | **X** |
+| Issue type                                     | Issue events API | Timeline events API |
+| :--------------------------------------------- | :--------------: | :-----------------: |
+| <ul><li>Issues</li><li>Pull requests</li></ul> |      **X**       |        **X**        |
 
 ### Event object properties
 
@@ -698,9 +699,9 @@ The issue was unpinned.
 
 ### Availability
 
-|Issue type | Issue events API | Timeline events API|
-|:----------|:----------------:|:-----------------:|
-| <ul><li>Issues</li></ul> | **X** | **X** |
+| Issue type               | Issue events API | Timeline events API |
+| :----------------------- | :--------------: | :-----------------: |
+| <ul><li>Issues</li></ul> |      **X**       |        **X**        |
 
 ### Event object properties
 
@@ -712,24 +713,25 @@ Someone unsubscribed from receiving notifications for an issue or pull request.
 
 ### Availability
 
-|Issue type | Issue events API | Timeline events API|
-|:----------|:----------------:|:-----------------:|
-| <ul><li>Issues</li><li>Pull requests</li></ul> |  | **X** |
+| Issue type                                     | Issue events API | Timeline events API |
+| :--------------------------------------------- | :--------------: | :-----------------: |
+| <ul><li>Issues</li><li>Pull requests</li></ul> |                  |        **X**        |
 
 ### Event object properties
 
 {% data reusables.issue-events.issue-event-common-properties %}
 
 {% ifversion fpt %}
+
 ## user_blocked
 
 An organization owner blocked a user from the organization. This was done [through one of the blocked user's comments on the issue](/communities/maintaining-your-safety-on-github/blocking-a-user-from-your-organization#blocking-a-user-in-a-comment).
 
 ### Availability
 
-|Issue type | Issue events API | Timeline events API|
-|:----------|:----------------:|:-----------------:|
-| <ul><li>Issues</li><li>Pull requests</li></ul> | **X** | **X** |
+| Issue type                                     | Issue events API | Timeline events API |
+| :--------------------------------------------- | :--------------: | :-----------------: |
+| <ul><li>Issues</li><li>Pull requests</li></ul> |      **X**       |        **X**        |
 
 ### Event object properties
 

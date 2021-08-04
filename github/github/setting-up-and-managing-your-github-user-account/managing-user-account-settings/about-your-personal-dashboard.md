@@ -5,15 +5,16 @@ redirect_from:
   - /articles/opting-into-the-public-beta-for-a-new-dashboard/
   - /articles/about-your-personal-dashboard
   - /github/setting-up-and-managing-your-github-user-account/about-your-personal-dashboard
-intro: 'You can visit your personal dashboard to keep track of issues and pull requests you''re working on or following, navigate to your top repositories and team pages, stay updated on recent activities in organizations and repositories you''re subscribed to, and explore recommended repositories.'
+intro: "You can visit your personal dashboard to keep track of issues and pull requests you're working on or following, navigate to your top repositories and team pages, stay updated on recent activities in organizations and repositories you're subscribed to, and explore recommended repositories."
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Accounts
 shortTitle: Your personal dashboard
 ---
+
 ## Accessing your personal dashboard
 
 Your personal dashboard is the first page you'll see when you sign in on {% data variables.product.product_name %}.
@@ -41,6 +42,7 @@ You can also find a list of your recently visited repositories, teams, and proje
 In the "All activity" section of your news feed, you can view updates from repositories you're subscribed to and people you follow. The "All activity" section shows updates from repositories you watch or have starred, and from users you follow.
 
 You'll see updates in your news feed when a user you follow:
+
 - Stars a repository.
 - Follows another user.{% ifversion fpt or ghes %}
 - Creates a public repository.{% endif %}

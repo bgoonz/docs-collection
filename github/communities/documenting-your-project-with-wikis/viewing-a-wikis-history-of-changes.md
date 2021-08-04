@@ -1,15 +1,15 @@
 ---
 title: Viewing a wiki's history of changes
-intro: 'Because wikis are Git repositories, every change you make is a commit that you can view.'
-product: '{% data reusables.gated-features.wikis %}'
+intro: "Because wikis are Git repositories, every change you make is a commit that you can view."
+product: "{% data reusables.gated-features.wikis %}"
 redirect_from:
   - /articles/viewing-a-wiki-s-history-of-changes
   - /articles/viewing-a-wikis-history-of-changes
   - /github/building-a-strong-community/viewing-a-wikis-history-of-changes
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Community
 shortTitle: View a history of changes
@@ -18,15 +18,14 @@ shortTitle: View a history of changes
 ## Viewing wiki history
 
 Wiki history includes:
+
 - The user who made the change
 - The commit message they provided
 - When the change was made
 
 {% data reusables.repositories.navigate-to-repo %}
-{% data reusables.repositories.sidebar-wiki %}
-3. Using the wiki sidebar, navigate to the page whose history you want to view.
-4. At the top of the wiki, click the revision link.
-   ![Wiki revision link](/assets/images/help/wiki/wiki_revision_link.png)
+{% data reusables.repositories.sidebar-wiki %} 3. Using the wiki sidebar, navigate to the page whose history you want to view. 4. At the top of the wiki, click the revision link.
+![Wiki revision link](/assets/images/help/wiki/wiki_revision_link.png)
 
 ## Viewing previous content
 
@@ -42,7 +41,7 @@ existed at a particular point in time.
 2. At the top of the history table, click **Compare Revisions**.
    ![Wiki compare revisions button](/assets/images/help/wiki/wiki_compare_revisions.png)
 3. You'll see a diff of the changes showing which lines were added, removed, and
-modified.
+   modified.
 
 ## Reverting previous changes
 

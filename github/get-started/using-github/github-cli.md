@@ -1,16 +1,17 @@
 ---
 title: GitHub CLI
-intro: '{% data variables.product.prodname_cli %} is a command-line tool that brings pull requests, issues, {% data variables.product.prodname_actions %}, and other {% data variables.product.product_name %} features to your terminal, so you can do all your work in one place.'
+intro: "{% data variables.product.prodname_cli %} is a command-line tool that brings pull requests, issues, {% data variables.product.prodname_actions %}, and other {% data variables.product.product_name %} features to your terminal, so you can do all your work in one place."
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - CLI
 redirect_from:
   - /github/getting-started-with-github/github-cli
   - /github/getting-started-with-github/using-github/github-cli
 ---
+
 ## About {% data variables.product.prodname_cli %}
 
 {% data variables.product.prodname_cli %} is an open source tool for using {% data variables.product.product_name %} from your computer's command line. When you're working from the command line, you can use the {% data variables.product.prodname_cli %} to save time and avoid switching context.

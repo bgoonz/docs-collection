@@ -4,13 +4,14 @@ redirect_from:
   - /articles/mapping-geojson-files-on-github
   - /github/managing-files-in-a-repository/mapping-geojson-files-on-github
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Repositories
 shortTitle: Mapping geoJSON files
 ---
+
 {% data variables.product.product_name %} supports rendering geoJSON and topoJSON map files within {% data variables.product.product_name %} repositories. Simply commit the file as you would normally using a `.geojson` or `.topojson` extension. Files with a `.json` extension are also supported, but only if `type` is set to `FeatureCollection`, `GeometryCollection`, or `topology`. Then, navigate to the path of the geoJSON file on GitHub.com.
 
 When you click the paper icon on the right, you'll also see the changes made to that file as part of a commit.
@@ -25,14 +26,14 @@ Maps on {% data variables.product.product_name %} use [Leaflet.js](http://leafle
 
 You can customize the way features are displayed, such as specifying a particular color or adding a descriptive icon, by passing additional metadata within the geoJSON object's properties. The options are:
 
-* `marker-size` - `small`, `medium`, or `large`
-* `marker-color` - valid RGB hex color
-* `marker-symbol` - an icon ID from [the Maki project](http://mapbox.com/maki/) or a single alphanumeric character (a-z or 0-9).
-* `stroke` - color of a polygon edge or line (RGB)
-* `stroke-opacity` - opacity of a polygon edge or line (0.0 - 1.0)
-* `stroke-width` - width of a polygon edge or line
-* `fill` - the color of the interior of a polygon (GRB)
-* `fill-opacity` - the opacity of the interior of a polygon (0.0-1.0)
+- `marker-size` - `small`, `medium`, or `large`
+- `marker-color` - valid RGB hex color
+- `marker-symbol` - an icon ID from [the Maki project](http://mapbox.com/maki/) or a single alphanumeric character (a-z or 0-9).
+- `stroke` - color of a polygon edge or line (RGB)
+- `stroke-opacity` - opacity of a polygon edge or line (0.0 - 1.0)
+- `stroke-width` - width of a polygon edge or line
+- `fill` - the color of the interior of a polygon (GRB)
+- `fill-opacity` - the opacity of the interior of a polygon (0.0-1.0)
 
 See [version 1.1.0 of the open simplestyle spec](https://github.com/mapbox/simplestyle-spec/tree/master/1.1.0) for more information.
 
@@ -78,6 +79,6 @@ It may still be possible to render the data by converting the `.geojson` file to
 
 ## Additional Resources
 
-* [Leaflet.js geojson documentation](http://leafletjs.com/examples/geojson.html)
-* [MapBox marker-styling documentation](http://www.mapbox.com/developers/simplestyle/)
-* [TopoJSON Wiki](https://github.com/mbostock/topojson/wiki)
+- [Leaflet.js geojson documentation](http://leafletjs.com/examples/geojson.html)
+- [MapBox marker-styling documentation](http://www.mapbox.com/developers/simplestyle/)
+- [TopoJSON Wiki](https://github.com/mbostock/topojson/wiki)

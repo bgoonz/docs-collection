@@ -1,8 +1,8 @@
 ---
 title: Reference
-intro: 'This section contains references that will allow you to be successful with {% data variables.product.prodname_codespaces %}'
+intro: "This section contains references that will allow you to be successful with {% data variables.product.prodname_codespaces %}"
 versions:
-  fpt: '*'
+  fpt: "*"
 children:
   - /about-codespaces
   - /about-billing-for-codespaces
@@ -11,4 +11,5 @@ children:
   - /using-the-command-palette-in-codespaces
   - /disaster-recovery-for-codespaces
 ---
+
 {% data reusables.codespaces.release-stage %}

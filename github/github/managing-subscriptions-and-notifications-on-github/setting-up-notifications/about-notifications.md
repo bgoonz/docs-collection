@@ -1,18 +1,19 @@
 ---
 title: About notifications
-intro: 'Notifications provide updates about the activity on {% data variables.product.product_name %} that you''ve subscribed to. You can use the notifications inbox to customize, triage, and manage your updates.'
+intro: "Notifications provide updates about the activity on {% data variables.product.product_name %} that you've subscribed to. You can use the notifications inbox to customize, triage, and manage your updates."
 redirect_from:
   - /articles/notifications/
   - /articles/about-notifications
   - /github/managing-subscriptions-and-notifications-on-github/about-notifications-beta
   - /github/managing-subscriptions-and-notifications-on-github/about-notifications
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Notifications
 ---
+
 {% ifversion ghes %}
 {% data reusables.mobile.ghes-release-phase %}
 {% endif %}
@@ -24,6 +25,7 @@ You can choose to receive ongoing updates about specific activity on {% data var
 ### Subscription options
 
 You can choose to subscribe to notifications for:
+
 - A conversation in a specific issue, pull request, or gist.
 - All activity in a repository or team discussion.
 - CI activity, such as the status of workflows in repositories set up with {% data variables.product.prodname_actions %}. {% ifversion fpt or ghes > 3.0 or ghae-next %}
@@ -37,6 +39,7 @@ If you're no longer interested in a conversation, you can unsubscribe, unwatch, 
 ### Default subscriptions
 
 In general, you are automatically subscribed to conversations by default when you have:
+
 - Not disabled automatic watching for repositories or teams you've joined in your notification settings. This setting is enabled by default.
 - Been assigned to an issue or pull request.
 - Opened a pull request, issue, or created a team discussion post.
@@ -81,6 +84,7 @@ If you've configured notifications to be sent by email and believe you're receiv
 ## Triaging notifications from your inbox
 
 To effectively manage your notifications, you can triage your inbox with options to:
+
 - Remove a notification from the inbox with **Done**. You can review **Done** notifications all in one place by clicking **Done** in the sidebar or by using the query `is:done`.
 - Mark a notification as read or unread.
 - **Save** a notification for later review. **Saved** notifications are flagged in your inbox. You can review **Saved** notifications all in one place in the sidebar by clicking **Saved** or by using the query `is:saved`.

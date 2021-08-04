@@ -1,6 +1,6 @@
 ---
 title: Writing a listing description for your app
-intro: 'To [list your app](/marketplace/listing-on-github-marketplace/) in the {% data variables.product.prodname_marketplace %}, you''ll need to write descriptions of your app and provide images that follow GitHub''s guidelines.'
+intro: "To [list your app](/marketplace/listing-on-github-marketplace/) in the {% data variables.product.prodname_marketplace %}, you'll need to write descriptions of your app and provide images that follow GitHub's guidelines."
 redirect_from:
   - /apps/marketplace/getting-started-with-github-marketplace-listings/guidelines-for-writing-github-app-descriptions/
   - /apps/marketplace/creating-and-submitting-your-app-for-approval/writing-github-app-descriptions/
@@ -12,18 +12,19 @@ redirect_from:
   - /marketplace/listing-on-github-marketplace/writing-github-marketplace-listing-descriptions
   - /developers/github-marketplace/writing-a-listing-description-for-your-app
 versions:
-  fpt: '*'
+  fpt: "*"
 topics:
   - Marketplace
 shortTitle: Write listing descriptions
 ---
+
 Here are guidelines about the fields you'll need to fill out in the **Listing description** section of your draft listing.
 
 ## Naming and links
 
 ### Listing name
 
-Your listing's name will appear on the [{% data variables.product.prodname_marketplace %} homepage](https://github.com/marketplace). The name is limited to 255 characters and can be different from your app's name. Your listing cannot have the same name as an existing {% data variables.product.product_name %} account, unless the name is your own user or organization name. 
+Your listing's name will appear on the [{% data variables.product.prodname_marketplace %} homepage](https://github.com/marketplace). The name is limited to 255 characters and can be different from your app's name. Your listing cannot have the same name as an existing {% data variables.product.product_name %} account, unless the name is your own user or organization name.
 
 ### Very short description
 
@@ -88,14 +89,16 @@ If your app only works with specific languages, select up to 10 programming lang
 ### Listing URLs
 
 **Required URLs**
-* **Customer support URL:** The URL of a web page that your customers will go to when they have technical support, product, or account inquiries.
-* **Privacy policy URL:** The web page that displays your app's privacy policy.
-* **Installation URL:** This field is shown for OAuth Apps only. (GitHub Apps don't use this URL because they use the optional Setup URL from the GitHub App's settings page instead.) When a customer purchases your OAuth App, GitHub will redirect customers to the installation URL after they install the app. You will need to redirect customers to `https://github.com/login/oauth/authorize` to begin the OAuth authorization flow. See "[New purchases for OAuth Apps](/marketplace/integrating-with-the-github-marketplace-api/handling-new-purchases-and-free-trials/)" for more details. Skip this field if you're listing a GitHub App.
+
+- **Customer support URL:** The URL of a web page that your customers will go to when they have technical support, product, or account inquiries.
+- **Privacy policy URL:** The web page that displays your app's privacy policy.
+- **Installation URL:** This field is shown for OAuth Apps only. (GitHub Apps don't use this URL because they use the optional Setup URL from the GitHub App's settings page instead.) When a customer purchases your OAuth App, GitHub will redirect customers to the installation URL after they install the app. You will need to redirect customers to `https://github.com/login/oauth/authorize` to begin the OAuth authorization flow. See "[New purchases for OAuth Apps](/marketplace/integrating-with-the-github-marketplace-api/handling-new-purchases-and-free-trials/)" for more details. Skip this field if you're listing a GitHub App.
 
 **Optional URLs**
-* **Company URL:** A link to your company's website.
-* **Status URL:** A link to a web page that displays the status of your app. Status pages can include current and historical incident reports, web application uptime status, and scheduled maintenance.
-* **Documentation URL:** A link to documentation that teaches customers how to use your app.
+
+- **Company URL:** A link to your company's website.
+- **Status URL:** A link to a web page that displays the status of your app. Status pages can include current and historical incident reports, web application uptime status, and scheduled maintenance.
+- **Documentation URL:** A link to documentation that teaches customers how to use your app.
 
 ## Logo and feature card
 

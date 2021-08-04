@@ -1,9 +1,9 @@
 ---
 title: Moderating discussions
-intro: 'You can promote healthy collaboration by marking comments as answers, locking or unlocking discussions, converting issues to discussions, and editing or deleting comments, discussions, and categories that don''t align with your community''s code of conduct.'
+intro: "You can promote healthy collaboration by marking comments as answers, locking or unlocking discussions, converting issues to discussions, and editing or deleting comments, discussions, and categories that don't align with your community's code of conduct."
 permissions: People with triage access to a repository can moderate discussions in the repository.
 versions:
-  fpt: '*'
+  fpt: "*"
 ---
 
 {% data reusables.discussions.beta %}
@@ -22,8 +22,9 @@ It's appropriate to lock a conversation when the entire conversation is not cons
 
 {% data reusables.repositories.navigate-to-repo %}
 {% data reusables.discussions.discussions-tab %}
+
 1. In the list of discussions, click the discussion you want to lock.
-  ![Lock discussion](/assets/images/help/discussions/unanswered-discussion.png)
+   ![Lock discussion](/assets/images/help/discussions/unanswered-discussion.png)
 1. In the right margin of a discussion, click **Lock conversation**.
 1. Read the information about locking conversations and click **Lock conversation on this discussion**.
 1. When you're ready to unlock the conversation, click **Unlock conversation**, then click **Unlock conversation on this discussion**.
@@ -34,6 +35,7 @@ When you convert an issue to a discussion, the discussion is automatically creat
 
 {% data reusables.repositories.navigate-to-repo %}
 {% data reusables.repositories.sidebar-issues %}
+
 1. In the list of issues, click the issue you'd like to convert.
 1. In the right margin of an issue, click **Convert to discussion**.
 1. Select the **Choose a category** drop-down menu, and click a category for your discussion.

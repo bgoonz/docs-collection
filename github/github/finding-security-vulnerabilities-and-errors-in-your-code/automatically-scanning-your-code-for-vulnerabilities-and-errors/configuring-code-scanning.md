@@ -1,16 +1,17 @@
 ---
 title: Configuring code scanning
-intro: 'You can configure how {% data variables.product.prodname_dotcom %} scans the code in your project for vulnerabilities and errors.'
-product: '{% data reusables.gated-features.code-scanning %}'
-permissions: 'People with write permissions to a repository can configure {% data variables.product.prodname_code_scanning %} for the repository.'
+intro: "You can configure how {% data variables.product.prodname_dotcom %} scans the code in your project for vulnerabilities and errors."
+product: "{% data reusables.gated-features.code-scanning %}"
+permissions: "People with write permissions to a repository can configure {% data variables.product.prodname_code_scanning %} for the repository."
 miniTocMaxHeadingLevel: 3
 versions:
-  ghes: '2.22'
+  ghes: "2.22"
 topics:
   - Security
 redirect_from:
   - /github/finding-security-vulnerabilities-and-errors-in-your-code/configuring-code-scanning
 ---
+
 <!--See /content/code-security/secure-coding for the latest version of this article -->
 
 {% data reusables.code-scanning.beta %}
@@ -34,9 +35,9 @@ Before you can configure {% data variables.product.prodname_code_scanning %} for
 
 1. In your repository, browse to the workflow file you want to edit.
 1. In the upper right corner of the file view, to open the workflow editor, click {% octicon "pencil" aria-label="The edit icon" %}.
-![Edit workflow file button](/assets/images/help/repository/code-scanning-edit-workflow-button.png)
+   ![Edit workflow file button](/assets/images/help/repository/code-scanning-edit-workflow-button.png)
 1. After you have edited the file, click **Start commit** and complete the "Commit changes" form. You can choose to commit directly to the current branch, or create a new branch and start a pull request.
-![Commit update to codeql.yml workflow](/assets/images/help/repository/code-scanning-workflow-update.png)
+   ![Commit update to codeql.yml workflow](/assets/images/help/repository/code-scanning-workflow-update.png)
 
 For more information about editing workflow files, see "[Learn {% data variables.product.prodname_actions %}](/actions/learn-github-actions)."
 
@@ -60,23 +61,23 @@ For more information about the `pull_request` event, see "[Workflow syntax for {
 
 You might want to avoid a code scan being triggered on specific pull requests targeted against the default branch, irrespective of which files have been changed. You can configure this by specifying `on:pull_request:paths-ignore` or `on:pull_request:paths` in the {% data variables.product.prodname_code_scanning %} workflow. For example, if the only changes in a pull request are to files with the file extensions `.md` or `.txt` you can use the following `paths-ignore` array.
 
-``` yaml
+```yaml
 on:
   push:
     branches: [main, protected]
   pull_request:
     branches: [main]
     paths-ignore:
-      - '**/*.md'
-      - '**/*.txt'
+      - "**/*.md"
+      - "**/*.txt"
 ```
 
 {% note %}
 
 **Notes**
 
-* `on:pull_request:paths-ignore` and `on:pull_request:paths` set conditions that determine whether the actions in the workflow will run on a pull request. They don't determine what files will be analyzed when the actions _are_ run. When a pull request contains any files that are not matched by `on:pull_request:paths-ignore` or `on:pull_request:paths`, the workflow runs the actions and scans all of the files changed in the pull request, including those matched by `on:pull_request:paths-ignore` or `on:pull_request:paths`, unless the files have been excluded. For information on how to exclude files from analysis, see "[Specifying directories to scan](#specifying-directories-to-scan)."
-* For {% data variables.product.prodname_codeql %} {% data variables.product.prodname_code_scanning %} workflow files, don't use the `paths-ignore` or `paths` keywords with the `on:push` event as this is likely to cause missing analyses. For accurate results, {% data variables.product.prodname_codeql %} {% data variables.product.prodname_code_scanning %} needs to be able to compare new changes with the analysis of the previous commit.
+- `on:pull_request:paths-ignore` and `on:pull_request:paths` set conditions that determine whether the actions in the workflow will run on a pull request. They don't determine what files will be analyzed when the actions _are_ run. When a pull request contains any files that are not matched by `on:pull_request:paths-ignore` or `on:pull_request:paths`, the workflow runs the actions and scans all of the files changed in the pull request, including those matched by `on:pull_request:paths-ignore` or `on:pull_request:paths`, unless the files have been excluded. For information on how to exclude files from analysis, see "[Specifying directories to scan](#specifying-directories-to-scan)."
+- For {% data variables.product.prodname_codeql %} {% data variables.product.prodname_code_scanning %} workflow files, don't use the `paths-ignore` or `paths` keywords with the `on:push` event as this is likely to cause missing analyses. For accurate results, {% data variables.product.prodname_codeql %} {% data variables.product.prodname_code_scanning %} needs to be able to compare new changes with the analysis of the previous commit.
 
 {% endnote %}
 
@@ -96,26 +97,27 @@ If you use the default {% data variables.product.prodname_codeql_workflow %}, th
 
 The following example shows a {% data variables.product.prodname_codeql_workflow %} for a particular repository that has a default branch called `main` and one protected branch called `protected`.
 
-``` yaml
+```yaml
 on:
   push:
     branches: [main, protected]
   pull_request:
     branches: [main]
   schedule:
-    - cron: '40 7 * * 2'
+    - cron: "40 7 * * 2"
 ```
 
 This workflow scans:
-* Every push to the default branch and the protected branch
-* Every pull request to the default branch
-* The default branch every Tuesday at 7:40 UTC
+
+- Every push to the default branch and the protected branch
+- Every pull request to the default branch
+- The default branch every Tuesday at 7:40 UTC
 
 ## Specifying an operating system
 
 If your code requires a specific operating system to compile, you can configure the operating system in your {% data variables.product.prodname_codeql_workflow %}. Edit the value of `jobs.analyze.runs-on` to specify the operating system for the machine that runs your {% data variables.product.prodname_code_scanning %} actions. You specify the operating system by using an appropriate label as the second element in a two-element array, after `self-hosted`.
 
-``` yaml
+```yaml
 jobs:
   analyze:
     name: Analyze
@@ -156,12 +158,14 @@ If your workflow does not contain a matrix called `language`, then {% data varia
   with:
     languages: cpp, csharp, python
 ```
+
 {% ifversion fpt %}
+
 ## Analyzing Python dependencies
 
 For GitHub-hosted runners that use Linux only, the {% data variables.product.prodname_codeql_workflow %} will try to auto-install Python dependencies to give more results for the CodeQL analysis. You can control this behavior by specifying the `setup-python-dependencies` parameter for the action called by the "Initialize CodeQL" step. By default, this parameter is set to `true`:
 
--  If the repository contains code written in Python, the "Initialize CodeQL" step installs the necessary dependencies on the GitHub-hosted runner. If the auto-install succeeds, the action also sets the environment variable `CODEQL_PYTHON` to the Python executable file that includes the dependencies.
+- If the repository contains code written in Python, the "Initialize CodeQL" step installs the necessary dependencies on the GitHub-hosted runner. If the auto-install succeeds, the action also sets the environment variable `CODEQL_PYTHON` to the Python executable file that includes the dependencies.
 
 - If the repository doesn't have any Python dependencies, or the dependencies are specified in an unexpected way, you'll get a warning and the action will continue with the remaining jobs. The action can run successfully even when there are problems interpreting dependencies, but the results may be incomplete.
 
@@ -170,7 +174,6 @@ Alternatively, you can install Python dependencies manually on any operating sys
 ```yaml
 jobs:
   CodeQL-Build:
-
     runs-on: ubuntu-latest{% ifversion fpt or ghes > 3.1 or ghae-next %}
     permissions:
       security-events: write
@@ -182,7 +185,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.x'
+          python-version: "3.x"
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
@@ -200,6 +203,7 @@ jobs:
           # to auto-install Python dependencies
           setup-python-dependencies: false
 ```
+
 {% endif %}
 
 ## Running additional queries
@@ -209,13 +213,15 @@ jobs:
 To add one or more queries, add a `with: queries:` entry within the `uses: github/codeql-action/init@v1` section of the workflow. If the queries are in a private repository, use the `external-repository-token` parameter to specify a token that has access to the private repository.
 
 {% raw %}
-``` yaml
+
+```yaml
 - uses: github/codeql-action/init@v1
   with:
     queries: COMMA-SEPARATED LIST OF PATHS
     # Optional. Provide a token to access private repositories.
     external-repository-token: ${{ secrets.ACCESS_TOKEN }}
 ```
+
 {% endraw %}
 
 You can also specify query suites in the value of `queries`. Query suites are collections of queries, usually grouped by purpose or language.
@@ -227,13 +233,15 @@ If you are also using a configuration file for custom settings, any additional q
 In the following example, the `+` symbol ensures that the specified additional queries are used together with any queries specified in the referenced configuration file.
 
 {% raw %}
-``` yaml
+
+```yaml
 - uses: github/codeql-action/init@v1
   with:
     config-file: ./.github/codeql/codeql-config.yml
     queries: +security-and-quality,octo-org/python-qlpack/show_ifs.ql@main
     external-repository-token: ${{ secrets.ACCESS_TOKEN }}
 ```
+
 {% endraw %}
 
 ## Using a custom configuration file
@@ -242,7 +250,7 @@ As an alternative to specifying which queries to run in the workflow file, you c
 
 In the workflow file, use the `config-file` parameter of the `init` action to specify the path to the configuration file you want to use. This example loads the configuration file _./.github/codeql/codeql-config.yml_.
 
-``` yaml
+```yaml
 - uses: github/codeql-action/init@v1
   with:
     config-file: ./.github/codeql/codeql-config.yml
@@ -253,11 +261,13 @@ In the workflow file, use the `config-file` parameter of the `init` action to sp
 If the configuration file is located in an external private repository, use the `external-repository-token` parameter of the `init` action to specify a token that has access to the private repository.
 
 {% raw %}
+
 ```yaml
 uses: github/codeql-action/init@v1
 with:
   external-repository-token: ${{ secrets.ACCESS_TOKEN }}
 ```
+
 {% endraw %}
 
 The settings in the configuration file are written in YAML format.
@@ -266,7 +276,7 @@ The settings in the configuration file are written in YAML format.
 
 You specify additional queries in a `queries` array. Each element of the array contains a `uses` parameter with a value that identifies a single query file, a directory containing query files, or a query suite definition file.
 
-``` yaml
+```yaml
 queries:
   - uses: ./my-basic-queries/example-query.ql
   - uses: ./my-advanced-queries
@@ -285,21 +295,21 @@ If you only want to run custom queries, you can disable the default security que
 
 For the interpreted languages that {% data variables.product.prodname_codeql %} supports (Python and JavaScript/TypeScript), you can restrict {% data variables.product.prodname_code_scanning %} to files in specific directories by adding a `paths` array to the configuration file. You can exclude the files in specific directories from analysis by adding a `paths-ignore` array.
 
-``` yaml
+```yaml
 paths:
   - src
 paths-ignore:
   - src/node_modules
-  - '**/*.test.js'
+  - "**/*.test.js"
 ```
 
 {% note %}
 
 **Note**:
 
-* The `paths` and `paths-ignore` keywords, used in the context of the {% data variables.product.prodname_code_scanning %} configuration file, should not be confused with the same keywords when used for `on.<push|pull_request>.paths` in a workflow. When they are used to modify `on.<push|pull_request>` in a workflow, they determine whether the actions will be run when someone modifies code in the specified directories. For more information, see "[Workflow syntax for {% data variables.product.prodname_actions %}](/actions/reference/workflow-syntax-for-github-actions#onpushpull_requestpaths)."
-* The filter pattern characters `?`, `+`, `[`, `]`, and `!` are not supported and will be matched literally.
-* `**` characters can only be at the start or end of a line, or surrounded by slashes, and you can't mix `**` and other characters. For example, `foo/**`, `**/foo`, and `foo/**/bar` are all allowed syntax, but `**foo` isn't. However you can use single stars along with other characters, as shown in the example. You'll need to quote anything that contains a `*` character.
+- The `paths` and `paths-ignore` keywords, used in the context of the {% data variables.product.prodname_code_scanning %} configuration file, should not be confused with the same keywords when used for `on.<push|pull_request>.paths` in a workflow. When they are used to modify `on.<push|pull_request>` in a workflow, they determine whether the actions will be run when someone modifies code in the specified directories. For more information, see "[Workflow syntax for {% data variables.product.prodname_actions %}](/actions/reference/workflow-syntax-for-github-actions#onpushpull_requestpaths)."
+- The filter pattern characters `?`, `+`, `[`, `]`, and `!` are not supported and will be matched literally.
+- `**` characters can only be at the start or end of a line, or surrounded by slashes, and you can't mix `**` and other characters. For example, `foo/**`, `**/foo`, and `foo/**/bar` are all allowed syntax, but `**foo` isn't. However you can use single stars along with other characters, as shown in the example. You'll need to quote anything that contains a `*` character.
 
 {% endnote %}
 

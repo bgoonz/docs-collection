@@ -1,13 +1,13 @@
 ---
 title: Personalizing Codespaces for your account
-intro: 'You can personalize {% data variables.product.prodname_codespaces %} by using a `dotfiles` repository on {% data variables.product.product_name %} or by using Settings Sync.'
-permissions: 'Anyone can personalize {% data variables.product.prodname_codespaces %} for their user account.'
+intro: "You can personalize {% data variables.product.prodname_codespaces %} by using a `dotfiles` repository on {% data variables.product.product_name %} or by using Settings Sync."
+permissions: "Anyone can personalize {% data variables.product.prodname_codespaces %} for their user account."
 redirect_from:
   - /github/developing-online-with-github-codespaces/personalizing-github-codespaces-for-your-account
   - /github/developing-online-with-codespaces/personalizing-codespaces-for-your-account
   - /codespaces/setting-up-your-codespace/personalizing-codespaces-for-your-account
 versions:
-  fpt: '*'
+  fpt: "*"
 type: how_to
 topics:
   - Codespaces
@@ -49,14 +49,14 @@ Your `dotfiles` repository might include your shell aliases and preferences, any
 
 When you create a new codespace, {% data variables.product.prodname_dotcom %} clones your `dotfiles` repository to the codespace environment, and looks for one of the following files to set up the environment.
 
-* _install.sh_
-* _install_
-* _bootstrap.sh_
-* _bootstrap_
-* _script/bootstrap_
-* _setup.sh_
-* _setup_
-* _script/setup_
+- _install.sh_
+- _install_
+- _bootstrap.sh_
+- _bootstrap_
+- _script/bootstrap_
+- _setup.sh_
+- _setup_
+- _script/setup_
 
 If none of these files are found, then any files or folders in `dotfiles` starting with `.` are symlinked to the codespace's `~` or `$HOME` directory.
 
@@ -72,4 +72,4 @@ You can also configure settings for your user account to add encrypted secrets, 
 
 ## Further reading
 
-* "[Creating a new repository](/github/creating-cloning-and-archiving-repositories/creating-a-new-repository)"
+- "[Creating a new repository](/github/creating-cloning-and-archiving-repositories/creating-a-new-repository)"

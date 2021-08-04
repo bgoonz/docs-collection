@@ -1,6 +1,6 @@
 ---
 title: Types of GitHub accounts
-intro: 'Your user account is your identity on {% data variables.product.product_location %}. Your user account can be a member of any number of organizations.{% ifversion fpt %} Organizations can belong to enterprise accounts.{% endif %}'
+intro: "Your user account is your identity on {% data variables.product.product_location %}. Your user account can be a member of any number of organizations.{% ifversion fpt %} Organizations can belong to enterprise accounts.{% endif %}"
 redirect_from:
   - /manage-multiple-clients/
   - /managing-clients/
@@ -10,9 +10,9 @@ redirect_from:
   - /github/getting-started-with-github/types-of-github-accounts
   - /github/getting-started-with-github/learning-about-github/types-of-github-accounts
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Accounts
   - CLI
@@ -20,6 +20,7 @@ topics:
   - Desktop
   - Security
 ---
+
 {% ifversion fpt %}
 For a full list of features for each {% data variables.product.product_name %} product, see "[{% data variables.product.prodname_dotcom %}'s products](/github/getting-started-with-github/githubs-products)."
 {% endif %}
@@ -80,5 +81,6 @@ With enterprise accounts, you can centrally manage policy and billing for multip
 ## Further reading
 
 {% ifversion fpt %}- "[Signing up for a new {% data variables.product.prodname_dotcom %} account](/articles/signing-up-for-a-new-github-account)"
+
 - "[{% data variables.product.prodname_dotcom %}'s products](/articles/githubs-products)"{% endif %}
 - "[Creating a new organization account](/articles/creating-a-new-organization-account)"

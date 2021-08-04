@@ -1,6 +1,6 @@
 ---
 title: Receiving payment for app purchases
-intro: 'At the end of each month, you''ll receive payment for your {% data variables.product.prodname_marketplace %} listing.'
+intro: "At the end of each month, you'll receive payment for your {% data variables.product.prodname_marketplace %} listing."
 redirect_from:
   - /apps/adding-integrations/managing-pricing-and-payments-for-a-github-marketplace-listing/receiving-payment-for-a-github-marketplace-listing/
   - /apps/marketplace/managing-pricing-and-payments-for-a-github-marketplace-listing/receiving-payment-for-a-github-marketplace-listing/
@@ -9,11 +9,12 @@ redirect_from:
   - /marketplace/selling-your-app/receiving-payment-for-github-marketplace-listings
   - /developers/github-marketplace/receiving-payment-for-app-purchases
 versions:
-  fpt: '*'
+  fpt: "*"
 topics:
   - Marketplace
 shortTitle: Receive payment
 ---
+
 After your {% data variables.product.prodname_marketplace %} listing for an app with a paid plan is created and approved, you'll provide payment details to {% data variables.product.product_name %} as part of the financial onboarding process.
 
 Once your revenue reaches a minimum of $500 US dollars for the month, you'll receive an electronic payment from {% data variables.product.company_short %}. This will be the income from marketplace transactions minus the amount charged by {% data variables.product.company_short %} to cover their running costs.

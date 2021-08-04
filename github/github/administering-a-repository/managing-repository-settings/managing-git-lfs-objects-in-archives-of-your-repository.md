@@ -1,17 +1,18 @@
 ---
 title: Managing Git LFS objects in archives of your repository
-shortTitle: 'Managing {% data variables.large_files.product_name_short %} objects in archives'
-intro: 'You can choose whether {% data variables.large_files.product_name_long %} ({% data variables.large_files.product_name_short %}) objects are included in source code archives, such as ZIP files and tarballs, {% data variables.product.product_name %} creates for your repository.'
-permissions: 'People with admin permissions for a repository can manage whether {% data variables.large_files.product_name_short %} objects are included in archives of the repository.'
+shortTitle: "Managing {% data variables.large_files.product_name_short %} objects in archives"
+intro: "You can choose whether {% data variables.large_files.product_name_long %} ({% data variables.large_files.product_name_short %}) objects are included in source code archives, such as ZIP files and tarballs, {% data variables.product.product_name %} creates for your repository."
+permissions: "People with admin permissions for a repository can manage whether {% data variables.large_files.product_name_short %} objects are included in archives of the repository."
 versions:
-  fpt: '*'
-  ghes: '>3.0'
-  ghae: '*'
+  fpt: "*"
+  ghes: ">3.0"
+  ghae: "*"
 topics:
   - Repositories
 redirect_from:
   - /github/administering-a-repository/managing-git-lfs-objects-in-archives-of-your-repository
 ---
+
 ## About {% data variables.large_files.product_name_short %} objects in archives
 
 {% data variables.product.product_name %} creates source code archives of your repository in the form of ZIP files and tarballs. People can download these archives on the main page of your repository or as release assets. By default, {% data variables.large_files.product_name_short %} objects are not included in these archives, only the pointer files to these objects. To improve the usability of archives for your repository, you can choose to include the {% data variables.large_files.product_name_short %} objects instead.
@@ -23,6 +24,5 @@ If you choose to include {% data variables.large_files.product_name_short %} obj
 ## Managing {% data variables.large_files.product_name_short %} objects in archives
 
 {% data reusables.repositories.navigate-to-repo %}
-{% data reusables.repositories.sidebar-settings %}
-3. Under "Archives", select or deselect **Include {% data variables.large_files.product_name_short %} objects in archives**.
-  ![Checkbox to include {% data variables.large_files.product_name_short %} objects in archives](/assets/images/help/repository/include-git-lfs-objects-checkbox.png)
+{% data reusables.repositories.sidebar-settings %} 3. Under "Archives", select or deselect **Include {% data variables.large_files.product_name_short %} objects in archives**.
+![Checkbox to include {% data variables.large_files.product_name_short %} objects in archives](/assets/images/help/repository/include-git-lfs-objects-checkbox.png)

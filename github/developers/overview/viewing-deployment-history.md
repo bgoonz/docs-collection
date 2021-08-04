@@ -2,14 +2,13 @@
 title: Viewing deployment history
 intro: View current and previous deployments for your repository.
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - API
 shortTitle: View deployment history
 ---
-
 
 You can deliver deployments through {% ifversion fpt or ghes > 3.0 %}{% data variables.product.prodname_actions %} and environments or with {% endif %}the REST API and third party apps. {% ifversion fpt or ghes > 3.0 %}For more information about {% data variables.product.prodname_actions %}, see "[{% data variables.product.prodname_actions %}](/actions)." {% endif %}For more information about deployments with the REST API, see "[Repositories](/rest/reference/repos#deployments)."
 

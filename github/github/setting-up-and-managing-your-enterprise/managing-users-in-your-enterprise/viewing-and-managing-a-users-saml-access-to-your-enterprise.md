@@ -1,18 +1,19 @@
 ---
 title: Viewing and managing a user's SAML access to your enterprise
-intro: 'You can view and revoke an enterprise member''s linked identity, active sessions, and authorized credentials.'
+intro: "You can view and revoke an enterprise member's linked identity, active sessions, and authorized credentials."
 permissions: Enterprise owners can view and manage a member's SAML access to an organization.
-product: '{% data reusables.gated-features.enterprise-accounts %}'
+product: "{% data reusables.gated-features.enterprise-accounts %}"
 redirect_from:
   - /github/setting-up-and-managing-your-enterprise/viewing-and-managing-a-users-saml-access-to-your-enterprise-account
   - /github/setting-up-and-managing-your-enterprise-account/viewing-and-managing-a-users-saml-access-to-your-enterprise-account
   - /github/setting-up-and-managing-your-enterprise/viewing-and-managing-a-users-saml-access-to-your-enterprise
 versions:
-  fpt: '*'
+  fpt: "*"
 topics:
   - Enterprise
 shortTitle: View & manage SAML access
 ---
+
 ## About SAML access to your enterprise account
 
 When you enable SAML single sign-on for your enterprise account, each enterprise member can link their external identity on your identity provider (IdP) to their existing {% data variables.product.product_name %} account. {% data reusables.saml.about-saml-access-enterprise-account %}
@@ -24,6 +25,7 @@ When you enable SAML single sign-on for your enterprise account, each enterprise
 {% warning %}
 
 **Warning:** For organizations using SCIM:
+
 - Revoking a linked user identity on {% data variables.product.product_name %} will also remove the SAML and SCIM metadata. As a result, the identity provider will not be able to synchronize or deprovision the linked user identity.
 - An admin must revoke a linked identity through the identity provider.
 - To revoke a linked identity and link a different account through the identity provider, an admin can remove and re-assign the user to the {% data variables.product.product_name %} application. For more information, see your identity provider's docs.

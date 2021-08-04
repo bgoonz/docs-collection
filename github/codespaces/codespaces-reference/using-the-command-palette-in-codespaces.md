@@ -1,8 +1,8 @@
 ---
 title: Using the Command Palette in Codespaces
-intro: 'You can use the Command Palette feature of {% data variables.product.prodname_vscode %} to access many commands in Codespaces.'
+intro: "You can use the Command Palette feature of {% data variables.product.prodname_vscode %} to access many commands in Codespaces."
 versions:
-  fpt: '*'
+  fpt: "*"
 type: reference
 topics:
   - Codespaces
@@ -23,6 +23,7 @@ You can access the Command Palette in a number of ways.
 - `Shift + Command + P` (Mac) / `Ctrl + Shift + P` (Windows).
 
   Note that this command is a reserved keyboard shortcut in Firefox.
+
 - `F1`
 - From the Application Menu, click **View > Command Palette…**.
 
@@ -36,7 +37,7 @@ To see all commands related to {% data variables.product.prodname_github_codespa
 
 ### Suspending or stopping a codespace
 
-If you add a new secret, you'll have to stop and restart the codespace for it to apply your changes. 
+If you add a new secret, you'll have to stop and restart the codespace for it to apply your changes.
 
 To suspend or stop your codespace's container, access the Command Palette, then start typing "stop". Select **Codespaces: Stop Current Codespace**.
 
@@ -50,7 +51,7 @@ To add a dev container from a template, access the Command Palette, then start t
 
 ### Rebuilding a codespace
 
-If you add a dev container or edit any of the configuration files (`devcontainer.json` and `Dockerfile`), you'll have to rebuild your codespace for it to apply your changes. 
+If you add a dev container or edit any of the configuration files (`devcontainer.json` and `Dockerfile`), you'll have to rebuild your codespace for it to apply your changes.
 
 To rebuild your container, access the Command Palette, then start typing "rebuild". Select **Codespaces: Rebuild Container**.
 
@@ -58,7 +59,7 @@ To rebuild your container, access the Command Palette, then start typing "rebuil
 
 ### Codespaces logs
 
-You can use the Command Palette to access the codespace creation logs, or you can use it export all logs. 
+You can use the Command Palette to access the codespace creation logs, or you can use it export all logs.
 
 To retrieve the logs for Codespaces, access the Command Palette, then start typing "log". Select **Codespaces: Export Logs** to export all logs related to Codespaces or select **Codespaces: View Creation Logs** to view logs related to the setup.
 

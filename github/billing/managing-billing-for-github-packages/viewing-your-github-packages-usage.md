@@ -1,12 +1,12 @@
 ---
 title: Viewing your GitHub Packages usage
-intro: 'You can view details of your usage of storage and data transfer for {% data variables.product.prodname_registry %}.'
-product: '{% data reusables.gated-features.packages %}'
+intro: "You can view details of your usage of storage and data transfer for {% data variables.product.prodname_registry %}."
+product: "{% data reusables.gated-features.packages %}"
 redirect_from:
   - /github/setting-up-and-managing-billing-and-payments-on-github/viewing-your-github-packages-usage
   - /github/setting-up-and-managing-billing-and-payments-on-github/managing-billing-for-github-packages/viewing-your-github-packages-usage
 versions:
-  fpt: '*'
+  fpt: "*"
 type: how_to
 topics:
   - Enterprise
@@ -15,6 +15,7 @@ topics:
   - User account
 shortTitle: View your usage
 ---
+
 ## Viewing {% data variables.product.prodname_registry %} usage for your user account
 
 Anyone can view {% data variables.product.prodname_registry %} usage for their own user account.
@@ -47,7 +48,8 @@ Enterprise owners and billing managers can view {% data variables.product.prodna
 {% data reusables.enterprise-accounts.access-enterprise %}
 {% data reusables.enterprise-accounts.settings-tab %}
 {% data reusables.enterprise-accounts.billing-tab %}
+
 1. Under "{% data variables.product.prodname_registry %}", view details of usage of data transfer by each organization in your enterprise account.
-  ![Details of usage of data transfer](/assets/images/help/billing/packages-data-enterprise.png)
-{% data reusables.dotcom_billing.actions-packages-storage-enterprise-account %}
-{% data reusables.enterprise-accounts.actions-packages-report-download-enterprise-accounts %}
+   ![Details of usage of data transfer](/assets/images/help/billing/packages-data-enterprise.png)
+   {% data reusables.dotcom_billing.actions-packages-storage-enterprise-account %}
+   {% data reusables.enterprise-accounts.actions-packages-report-download-enterprise-accounts %}

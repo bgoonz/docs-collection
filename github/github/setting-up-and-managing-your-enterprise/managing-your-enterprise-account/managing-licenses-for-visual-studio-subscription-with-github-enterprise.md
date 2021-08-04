@@ -1,6 +1,6 @@
 ---
 title: Managing licenses for Visual Studio subscription with GitHub Enterprise
-intro: 'You can manage {% data variables.product.prodname_enterprise %} licensing for {% data variables.product.prodname_vss_ghe %}.'
+intro: "You can manage {% data variables.product.prodname_enterprise %} licensing for {% data variables.product.prodname_vss_ghe %}."
 redirect_from:
   - /github/setting-up-and-managing-your-enterprise/managing-licenses-for-the-github-enterprise-and-visual-studio-bundle
   - /github/setting-up-and-managing-your-enterprise-account/managing-licenses-for-the-github-enterprise-and-visual-studio-bundle
@@ -9,11 +9,12 @@ redirect_from:
   - /github/setting-up-and-managing-your-enterprise-account/managing-licenses-for-visual-studio-subscription-with-github-enterprise
   - /github/setting-up-and-managing-your-enterprise/managing-licenses-for-visual-studio-subscription-with-github-enterprise
 versions:
-  fpt: '*'
+  fpt: "*"
 topics:
   - Enterprise
 shortTitle: Visual Studio bundle
 ---
+
 ## About {% data variables.product.prodname_vss_ghe %}
 
 {% data variables.product.prodname_vss_ghe %} is a combined offering from Microsoft that allows a subscriber to use both {% data variables.product.prodname_enterprise %} and {% data variables.product.prodname_vs %}. {% data variables.product.prodname_vss_ghe %} is available from Microsoft under the terms of the Microsoft Enterprise Agreement. For more information, see [{% data variables.product.prodname_vss_ghe %}](https://visualstudio.microsoft.com/subscriptions/visual-studio-github/) on the {% data variables.product.prodname_vs %} website.

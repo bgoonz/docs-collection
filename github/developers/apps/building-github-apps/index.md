@@ -5,9 +5,9 @@ redirect_from:
   - /apps/building-integrations/setting-up-and-registering-github-apps/
   - /apps/building-github-apps
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - GitHub Apps
 children:
@@ -22,4 +22,3 @@ children:
   - /creating-a-github-app-using-url-parameters
   - /creating-a-custom-badge-for-your-github-app
 ---
-

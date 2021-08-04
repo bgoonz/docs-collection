@@ -1,10 +1,10 @@
 ---
 title: Collaborating with maintainers using discussions
 shortTitle: Collaborating with maintainers
-intro: 'You can contribute to the goals, plans, health, and community for a project on {% data variables.product.product_name %} by communicating with the maintainers of the project in a discussion.'
+intro: "You can contribute to the goals, plans, health, and community for a project on {% data variables.product.product_name %} by communicating with the maintainers of the project in a discussion."
 permissions: People with read permissions to a repository can start and participate in discussions in the repository.
 versions:
-  fpt: '*'
+  fpt: "*"
 ---
 
 {% data reusables.discussions.beta %}
@@ -13,7 +13,7 @@ versions:
 
 {% data reusables.discussions.about-discussions %} If you use or contribute to a project, you can start a discussion to make suggestions and engage with maintainers and community members about your plans, questions, ideas, and feedback. For more information, see "[‎About discussions](/discussions/collaborating-with-your-community-using-discussions/about-discussions)."
 
-{% data reusables.discussions.about-categories-and-formats %} {% data reusables.discussions.about-announcement-format %} 
+{% data reusables.discussions.about-categories-and-formats %} {% data reusables.discussions.about-announcement-format %}
 
 Repository administrators and project maintainers can delete a discussion. For more information, see "[Managing discussions in your repository](/discussions/managing-discussions-for-your-community/managing-discussions-in-your-repository#deleting-a-discussion)."
 
@@ -37,10 +37,11 @@ You can search for discussions and filter the list of discussions in a repositor
 
 {% data reusables.repositories.navigate-to-repo %}
 {% data reusables.discussions.discussions-tab %}
+
 1. In the **Search all discussions** field, type a search query. Optionally, to the right of the search field, click a button to further filter the results.
-  ![Search bar and buttons for filtering discussions](/assets/images/help/discussions/search-and-filter-controls.png)
+   ![Search bar and buttons for filtering discussions](/assets/images/help/discussions/search-and-filter-controls.png)
 1. In the list of discussions, click the discussion you want to view.
-  ![Discussion search results](/assets/images/help/discussions/search-result.png)
+   ![Discussion search results](/assets/images/help/discussions/search-result.png)
 
 ## Converting an issue to a discussion
 

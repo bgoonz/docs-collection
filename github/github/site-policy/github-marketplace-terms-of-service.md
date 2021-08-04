@@ -3,7 +3,7 @@ title: GitHub Marketplace Terms of Service
 redirect_from:
   - /articles/github-marketplace-terms-of-service
 versions:
-  fpt: '*'
+  fpt: "*"
 topics:
   - Policy
   - Legal
@@ -43,7 +43,7 @@ If you would have a question, concern, or dispute regarding your billing, please
 
 ## E. Your Data and GitHub's Privacy Policy
 
-**Privacy.** When you select or use a Developer Product, GitHub may share certain Personal Information (as defined in the [GitHub Privacy Statement](/articles/github-privacy-statement/)) with the Product Provider (if any such Personal Information is received from you) in order to provide you with the Developer Product, regardless of your privacy settings. Depending on the requirements of the Developer Product you choose, GitHub may share as little as your user account name, ID, and primary email address or as much as access to the content in your repositories, including the ability to read and modify your private data. You will be able to view the scope of the permissions the Developer Product is requesting, and accept or deny them, when you grant it authorization via OAuth. 
+**Privacy.** When you select or use a Developer Product, GitHub may share certain Personal Information (as defined in the [GitHub Privacy Statement](/articles/github-privacy-statement/)) with the Product Provider (if any such Personal Information is received from you) in order to provide you with the Developer Product, regardless of your privacy settings. Depending on the requirements of the Developer Product you choose, GitHub may share as little as your user account name, ID, and primary email address or as much as access to the content in your repositories, including the ability to read and modify your private data. You will be able to view the scope of the permissions the Developer Product is requesting, and accept or deny them, when you grant it authorization via OAuth.
 
 If you cease using the Developer Product and revoke access through your account settings, the Product Provider will no longer be able to access your account. The Product Provider is responsible for deleting your Personal Information from its systems within its defined window. Please contact the Product Provider to ensure that your account has been properly terminated.
 
@@ -77,7 +77,7 @@ You agree to indemnify us, defend us, and hold us harmless from and against any 
 
 1. **Governing Law.** You agree that these Marketplace Terms and your use of the Developer Products are governed under California law and any dispute related to the Developer Products must be brought in a tribunal of competent jurisdiction located in or near San Francisco, California.
 
-2. **Non-Assignability.** GitHub may assign or delegate these Marketplace Terms and/or the  [GitHub's Privacy Statement](/articles/github-privacy-statement/), in whole or in part, to any person or entity at any time with or without your consent. You may not assign or delegate any rights or obligations under the Marketplace Terms or Privacy Statement without our prior written consent, and any unauthorized assignment and delegation by you is void.
+2. **Non-Assignability.** GitHub may assign or delegate these Marketplace Terms and/or the [GitHub's Privacy Statement](/articles/github-privacy-statement/), in whole or in part, to any person or entity at any time with or without your consent. You may not assign or delegate any rights or obligations under the Marketplace Terms or Privacy Statement without our prior written consent, and any unauthorized assignment and delegation by you is void.
 
 3. **Severability, No Waiver, and Survival.** If any part of these Marketplace Terms are held invalid or unenforceable, that portion of the Marketplace Terms will be construed to reflect the parties’ original intent. The remaining portions will remain in full force and effect. The failure of GitHub to exercise or enforce any right or provision of these Marketplace Terms shall not constitute a waiver of such right or provision. Our rights under these Marketplace Terms will survive any termination of these Marketplace Terms.
 

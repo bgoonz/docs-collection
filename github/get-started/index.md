@@ -1,7 +1,7 @@
 ---
 title: Getting started with GitHub
 shortTitle: Get started
-intro: 'Learn how to start building, shipping, and maintaining software with {% data variables.product.prodname_dotcom %}. Explore our products, sign up for an account, and connect with the world''s largest development community.'
+intro: "Learn how to start building, shipping, and maintaining software with {% data variables.product.prodname_dotcom %}. Explore our products, sign up for an account, and connect with the world's largest development community."
 redirect_from:
   - /categories/54/articles/
   - /categories/bootcamp/
@@ -17,9 +17,9 @@ redirect_from:
   - /github/using-git
   - /github/getting-started-with-github/
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 layout: product-landing
 introLinks:
   quickstart: /github/getting-started-with-github/quickstart
@@ -58,4 +58,3 @@ children:
   - /getting-started-with-git
   - /using-git
 ---
-

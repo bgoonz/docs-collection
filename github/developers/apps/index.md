@@ -10,9 +10,9 @@ redirect_from:
   - /apps
   - /v3/integrations
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - GitHub Apps
 children:
@@ -23,4 +23,3 @@ children:
   - /managing-oauth-apps
   - /guides
 ---
-

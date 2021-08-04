@@ -1,20 +1,21 @@
 ---
 title: Webhook events and payloads
-intro: 'For each webhook event, you can review when the event occurs, an example payload, and descriptions about the payload object parameters.'
-product: '{% data reusables.gated-features.enterprise_account_webhooks %}'
+intro: "For each webhook event, you can review when the event occurs, an example payload, and descriptions about the payload object parameters."
+product: "{% data reusables.gated-features.enterprise_account_webhooks %}"
 redirect_from:
   - /early-access/integrations/webhooks/
   - /v3/activity/events/types/
   - /webhooks/event-payloads
   - /developers/webhooks-and-events/webhook-events-and-payloads
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Webhooks
 shortTitle: Webhook events & payloads
 ---
+
 {% ifversion fpt %}
 
 {% endif %}
@@ -27,9 +28,10 @@ You can create webhooks that subscribe to the events listed on this page. Each w
 
 Each webhook event payload also contains properties unique to the event. You can find the unique properties in the individual event type sections.
 
-Key | Type | Description
-----|------|-------------
-`action` | `string` | Most webhook payloads contain an `action` property that contains the specific activity that triggered the event.
+| Key      | Type     | Description                                                                                                      |
+| -------- | -------- | ---------------------------------------------------------------------------------------------------------------- |
+| `action` | `string` | Most webhook payloads contain an `action` property that contains the specific activity that triggered the event. |
+
 {% data reusables.webhooks.sender_desc %} This property is included in every webhook payload.
 {% data reusables.webhooks.repo_desc %} Webhook payloads contain the `repository` property when the event occurs from activity in a repository.
 {% data reusables.webhooks.org_desc %}
@@ -47,14 +49,14 @@ The unique properties for a webhook event are the same properties you'll find in
 
 HTTP POST payloads that are delivered to your webhook's configured URL endpoint will contain several special headers:
 
-Header | Description
--------|-------------|
-`X-GitHub-Event`| Name of the event that triggered the delivery.
-`X-GitHub-Delivery`| A [GUID](http://en.wikipedia.org/wiki/Globally_unique_identifier) to identify the delivery.{% ifversion ghes or ghae %}
-`X-GitHub-Enterprise-Version` | The version of the {% data variables.product.prodname_ghe_server %} instance that sent the HTTP POST payload.
-`X-GitHub-Enterprise-Host` | The hostname of the {% data variables.product.prodname_ghe_server %} instance that sent the HTTP POST payload.{% endif %}{% ifversion not ghae %}
-`X-Hub-Signature`| This header is sent if the webhook is configured with a [`secret`](/rest/reference/repos#create-hook-config-params). This is the HMAC hex digest of the request body, and is generated using the SHA-1 hash function and the `secret` as the HMAC `key`.{% ifversion fpt or ghes > 2.22 %} `X-Hub-Signature` is provided for compatibility with existing integrations, and we recommend that you use the more secure `X-Hub-Signature-256` instead.{% endif %}{% endif %}{% ifversion fpt or ghes > 2.22 or ghae %}
-`X-Hub-Signature-256`| This header is sent if the webhook is configured with a [`secret`](/rest/reference/repos#create-hook-config-params). This is the HMAC hex digest of the request body, and is generated using the SHA-256 hash function and the `secret` as the HMAC `key`.{% endif %}
+| Header                        | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `X-GitHub-Event`              | Name of the event that triggered the delivery.                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `X-GitHub-Delivery`           | A [GUID](http://en.wikipedia.org/wiki/Globally_unique_identifier) to identify the delivery.{% ifversion ghes or ghae %}                                                                                                                                                                                                                                                                                                                                                                                             |
+| `X-GitHub-Enterprise-Version` | The version of the {% data variables.product.prodname_ghe_server %} instance that sent the HTTP POST payload.                                                                                                                                                                                                                                                                                                                                                                                                       |
+| `X-GitHub-Enterprise-Host`    | The hostname of the {% data variables.product.prodname_ghe_server %} instance that sent the HTTP POST payload.{% endif %}{% ifversion not ghae %}                                                                                                                                                                                                                                                                                                                                                                   |
+| `X-Hub-Signature`             | This header is sent if the webhook is configured with a [`secret`](/rest/reference/repos#create-hook-config-params). This is the HMAC hex digest of the request body, and is generated using the SHA-1 hash function and the `secret` as the HMAC `key`.{% ifversion fpt or ghes > 2.22 %} `X-Hub-Signature` is provided for compatibility with existing integrations, and we recommend that you use the more secure `X-Hub-Signature-256` instead.{% endif %}{% endif %}{% ifversion fpt or ghes > 2.22 or ghae %} |
+| `X-Hub-Signature-256`         | This header is sent if the webhook is configured with a [`secret`](/rest/reference/repos#create-hook-config-params). This is the HMAC hex digest of the request body, and is generated using the SHA-256 hash function and the `secret` as the HMAC `key`.{% endif %}                                                                                                                                                                                                                                               |
 
 Also, the `User-Agent` for the requests will have the prefix `GitHub-Hookshot/`.
 
@@ -148,6 +150,7 @@ Also, the `User-Agent` for the requests will have the prefix `GitHub-Hookshot/`.
 {{ webhookPayloadsForCurrentVersion.check_suite.completed }}
 
 {% ifversion fpt or ghes > 2.21 or ghae %}
+
 ## code_scanning_alert
 
 {% data reusables.webhooks.code_scanning_alert_event_short_desc %}
@@ -340,11 +343,13 @@ Key | Type | Description
 {{ webhookPayloadsForCurrentVersion.deployment_status }}
 
 {% ifversion fpt %}
+
 ## discussion
 
 {% data reusables.webhooks.discussions-webhooks-beta %}
 
 Activity related to a discussion. For more information, see the "[Using the GraphQL API for discussions](/graphql/guides/using-the-graphql-api-for-discussions)."
+
 ### Availability
 
 - Repository webhooks
@@ -353,9 +358,10 @@ Activity related to a discussion. For more information, see the "[Using the Grap
 
 ### Webhook payload object
 
-Key | Type | Description
-----|------|-------------
-`action` |`string` | The action performed. Can be `created`, `edited`, `deleted`, `pinned`, `unpinned`, `locked`, `unlocked`, `transferred`, `category_changed`, `answered`, or `unanswered`.
+| Key      | Type     | Description                                                                                                                                                              |
+| -------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `action` | `string` | The action performed. Can be `created`, `edited`, `deleted`, `pinned`, `unpinned`, `locked`, `unlocked`, `transferred`, `category_changed`, `answered`, or `unanswered`. |
+
 {% data reusables.webhooks.discussion_desc %}
 {% data reusables.webhooks.repo_desc_graphql %}
 {% data reusables.webhooks.org_desc_graphql %}
@@ -379,10 +385,11 @@ Activity related to a comment in a discussion. For more information, see "[Using
 
 ### Webhook payload object
 
-Key | Type | Description
-----|------|-------------
-`action` |`string` | The action performed. Can be `created`, `edited`, or `deleted`.
-`comment` | `object` | The [`discussion comment`](/graphql/guides/using-the-graphql-api-for-discussions#discussioncomment) resource.
+| Key       | Type     | Description                                                                                                   |
+| --------- | -------- | ------------------------------------------------------------------------------------------------------------- |
+| `action`  | `string` | The action performed. Can be `created`, `edited`, or `deleted`.                                               |
+| `comment` | `object` | The [`discussion comment`](/graphql/guides/using-the-graphql-api-for-discussions#discussioncomment) resource. |
+
 {% data reusables.webhooks.discussion_desc %}
 {% data reusables.webhooks.repo_desc_graphql %}
 {% data reusables.webhooks.org_desc_graphql %}
@@ -405,9 +412,9 @@ Key | Type | Description
 
 ### Webhook payload object
 
-Key | Type | Description
-----|------|-------------
-`action` |`string` | The action performed. Can be `anonymous_access_enabled` or `anonymous_access_disabled`.
+| Key      | Type     | Description                                                                             |
+| -------- | -------- | --------------------------------------------------------------------------------------- |
+| `action` | `string` | The action performed. Can be `anonymous_access_enabled` or `anonymous_access_disabled`. |
 
 ### Webhook payload example
 
@@ -449,9 +456,10 @@ When someone revokes their authorization of a {% data variables.product.prodname
 
 ### Webhook payload object
 
-Key | Type | Description
-----|------|-------------
-`action` |`string` | The action performed. Can be `revoked`.
+| Key      | Type     | Description                             |
+| -------- | -------- | --------------------------------------- |
+| `action` | `string` | The action performed. Can be `revoked`. |
+
 {% data reusables.webhooks.sender_desc %}
 
 ### Webhook payload example
@@ -486,7 +494,7 @@ Key | Type | Description
 
 {% note %}
 
-**Note:** This event replaces the deprecated `integration_installation` event.  
+**Note:** This event replaces the deprecated `integration_installation` event.
 
 {% endnote %}
 
@@ -586,13 +594,14 @@ Key | Type | Description
 
 ### Webhook payload object
 
-Key | Type | Description
-----|------|-------------
-`action`|`string` | The action that was performed. Can be `created`, `edited`, or `deleted`.
-`label`|`object` | The label that was added.
-`changes`|`object`| The changes to the label if the action was `edited`.
-`changes[name][from]`|`string` | The previous version of the name if the action was `edited`.
-`changes[color][from]`|`string` | The previous version of the color if the action was `edited`.
+| Key                    | Type     | Description                                                              |
+| ---------------------- | -------- | ------------------------------------------------------------------------ |
+| `action`               | `string` | The action that was performed. Can be `created`, `edited`, or `deleted`. |
+| `label`                | `object` | The label that was added.                                                |
+| `changes`              | `object` | The changes to the label if the action was `edited`.                     |
+| `changes[name][from]`  | `string` | The previous version of the name if the action was `edited`.             |
+| `changes[color][from]` | `string` | The previous version of the color if the action was `edited`.            |
+
 {% data reusables.webhooks.repo_desc %}
 {% data reusables.webhooks.org_desc %}
 {% data reusables.webhooks.app_desc %}
@@ -603,6 +612,7 @@ Key | Type | Description
 {{ webhookPayloadsForCurrentVersion.label.deleted }}
 
 {% ifversion fpt %}
+
 ## marketplace_purchase
 
 Activity related to a GitHub Marketplace purchase. {% data reusables.webhooks.action_type_desc %} For more information, see the "[GitHub Marketplace](/marketplace/)."
@@ -613,9 +623,9 @@ Activity related to a GitHub Marketplace purchase. {% data reusables.webhooks.ac
 
 ### Webhook payload object
 
-Key | Type | Description
-----|------|-------------
-`action` | `string` | The action performed for a [GitHub Marketplace](https://github.com/marketplace) plan. Can be one of:<ul><li>`purchased` - Someone purchased a GitHub Marketplace plan. The change should take effect on the account immediately.</li><li>`pending_change` - You will receive the `pending_change` event when someone has downgraded or cancelled a GitHub Marketplace plan to indicate a change will occur on the account. The new plan or cancellation takes effect at the end of the billing cycle.  The `cancelled` or `changed` event type will be sent when the billing cycle has ended and the cancellation or new plan should take effect.</li><li>`pending_change_cancelled` - Someone has cancelled a pending change. Pending changes include plan cancellations and downgrades that will take effect at the end of a billing cycle. </li><li>`changed` - Someone has upgraded or downgraded a GitHub Marketplace plan and the change should take effect on the account immediately.</li><li>`cancelled` - Someone cancelled a GitHub Marketplace plan and the last billing cycle has ended. The change should take effect on the account immediately.</li></ul>
+| Key      | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| -------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `action` | `string` | The action performed for a [GitHub Marketplace](https://github.com/marketplace) plan. Can be one of:<ul><li>`purchased` - Someone purchased a GitHub Marketplace plan. The change should take effect on the account immediately.</li><li>`pending_change` - You will receive the `pending_change` event when someone has downgraded or cancelled a GitHub Marketplace plan to indicate a change will occur on the account. The new plan or cancellation takes effect at the end of the billing cycle. The `cancelled` or `changed` event type will be sent when the billing cycle has ended and the cancellation or new plan should take effect.</li><li>`pending_change_cancelled` - Someone has cancelled a pending change. Pending changes include plan cancellations and downgrades that will take effect at the end of a billing cycle. </li><li>`changed` - Someone has upgraded or downgraded a GitHub Marketplace plan and the change should take effect on the account immediately.</li><li>`cancelled` - Someone cancelled a GitHub Marketplace plan and the last billing cycle has ended. The change should take effect on the account immediately.</li></ul> |
 
 For a detailed description of this payload and the payload for each type of `action`, see [{% data variables.product.prodname_marketplace %} webhook events](/marketplace/integrating-with-the-github-marketplace-api/github-marketplace-webhook-events/).
 
@@ -679,11 +689,12 @@ The webhook this event is configured on was deleted. This event will only listen
 
 ### Webhook payload object
 
-Key | Type | Description
-----|------|-------------
-`action` |`string` | The action performed. Can be `deleted`.
-`hook_id`  |`integer` | The id of the modified webhook.
-`hook` |`object` | The modified webhook. This will contain different keys based on the type of webhook it is: repository, organization, business, app, or GitHub Marketplace.
+| Key       | Type      | Description                                                                                                                                                |
+| --------- | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `action`  | `string`  | The action performed. Can be `deleted`.                                                                                                                    |
+| `hook_id` | `integer` | The id of the modified webhook.                                                                                                                            |
+| `hook`    | `object`  | The modified webhook. This will contain different keys based on the type of webhook it is: repository, organization, business, app, or GitHub Marketplace. |
+
 {% data reusables.webhooks.repo_desc %}
 {% data reusables.webhooks.org_desc %}
 {% data reusables.webhooks.sender_desc %}
@@ -721,17 +732,19 @@ Key | Type | Description
 ### Availability
 
 {% ifversion ghes or ghae %}
+
 - GitHub Enterprise webhooks only receive `created` and `deleted` events. For more information, "[Global webhooks](/rest/reference/enterprise-admin#global-webhooks/).{% endif %}
 - Organization webhooks only receive the `deleted`, `added`, `removed`, `renamed`, and `invited` events
 - {% data variables.product.prodname_github_apps %} with the `members` permission
 
 ### Webhook payload object
 
-Key | Type | Description
-----|------|-------------
-`action` |`string` | The action that was performed. Can be one of:{% ifversion ghes or ghae %} `created`,{% endif %} `deleted`, `renamed`, `member_added`, `member_removed`, or `member_invited`.
-`invitation` |`object` | The invitation for the user or email if the action is `member_invited`.
-`membership`  |`object` | The membership between the user and the organization.  Not present when the action is `member_invited`.
+| Key          | Type     | Description                                                                                                                                                                  |
+| ------------ | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `action`     | `string` | The action that was performed. Can be one of:{% ifversion ghes or ghae %} `created`,{% endif %} `deleted`, `renamed`, `member_added`, `member_removed`, or `member_invited`. |
+| `invitation` | `object` | The invitation for the user or email if the action is `member_invited`.                                                                                                      |
+| `membership` | `object` | The membership between the user and the organization. Not present when the action is `member_invited`.                                                                       |
+
 {% data reusables.webhooks.org_desc %}
 {% data reusables.webhooks.app_desc %}
 {% data reusables.webhooks.sender_desc %}
@@ -753,10 +766,11 @@ Key | Type | Description
 
 ### Webhook payload object
 
-Key | Type | Description
-----|------|------------
-`action` | `string` | The action performed. Can be `blocked` or `unblocked`.
-`blocked_user` | `object` | Information about the user that was blocked or unblocked.
+| Key            | Type     | Description                                               |
+| -------------- | -------- | --------------------------------------------------------- |
+| `action`       | `string` | The action performed. Can be `blocked` or `unblocked`.    |
+| `blocked_user` | `object` | Information about the user that was blocked or unblocked. |
+
 {% data reusables.webhooks.org_desc %}
 {% data reusables.webhooks.app_desc %}
 {% data reusables.webhooks.sender_desc %}
@@ -802,10 +816,11 @@ Activity related to {% data variables.product.prodname_registry %}. {% data reus
 
 ### Webhook payload object
 
-Key | Type | Description
-----|------|------------
-`id` | `integer` | The unique identifier of the page build.
-`build` | `object` | The [List GitHub Pages builds](/rest/reference/repos#list-github-pages-builds) itself.
+| Key     | Type      | Description                                                                            |
+| ------- | --------- | -------------------------------------------------------------------------------------- |
+| `id`    | `integer` | The unique identifier of the page build.                                               |
+| `build` | `object`  | The [List GitHub Pages builds](/rest/reference/repos#list-github-pages-builds) itself. |
+
 {% data reusables.webhooks.repo_desc %}
 {% data reusables.webhooks.org_desc %}
 {% data reusables.webhooks.app_desc %}
@@ -827,12 +842,13 @@ Key | Type | Description
 
 ### Webhook payload object
 
-Key | Type | Description
-----|------|------------
-`zen` | `string` | Random string of GitHub zen.
-`hook_id` | `integer` | The ID of the webhook that triggered the ping.
-`hook` | `object` | The [webhook configuration](/rest/reference/repos#get-a-repository-webhook).
-`hook[app_id]` | `integer` | When you register a new {% data variables.product.prodname_github_app %}, {% data variables.product.product_name %} sends a ping event to the **webhook URL** you specified during registration. The event contains the `app_id`, which is required for [authenticating](/apps/building-integrations/setting-up-and-registering-github-apps/about-authentication-options-for-github-apps/) an app.
+| Key            | Type      | Description                                                                                                                                                                                                                                                                                                                                                                                        |
+| -------------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `zen`          | `string`  | Random string of GitHub zen.                                                                                                                                                                                                                                                                                                                                                                       |
+| `hook_id`      | `integer` | The ID of the webhook that triggered the ping.                                                                                                                                                                                                                                                                                                                                                     |
+| `hook`         | `object`  | The [webhook configuration](/rest/reference/repos#get-a-repository-webhook).                                                                                                                                                                                                                                                                                                                       |
+| `hook[app_id]` | `integer` | When you register a new {% data variables.product.prodname_github_app %}, {% data variables.product.product_name %} sends a ping event to the **webhook URL** you specified during registration. The event contains the `app_id`, which is required for [authenticating](/apps/building-integrations/setting-up-and-registering-github-apps/about-authentication-options-for-github-apps/) an app. |
+
 {% data reusables.webhooks.repo_desc %}
 {% data reusables.webhooks.org_desc %}
 {% data reusables.webhooks.sender_desc %}
@@ -908,9 +924,11 @@ Key | Type | Description
 {{ webhookPayloadsForCurrentVersion.project.created }}
 
 {% ifversion fpt or ghes %}
+
 ## public
 
 {% data reusables.webhooks.public_short_desc %}
+
 ### Availability
 
 - Repository webhooks
@@ -919,8 +937,9 @@ Key | Type | Description
 
 ### Webhook payload object
 
-Key | Type | Description
-----|------|-------------
+| Key | Type | Description |
+| --- | ---- | ----------- |
+
 {% data reusables.webhooks.repo_desc %}
 {% data reusables.webhooks.org_desc %}
 {% data reusables.webhooks.app_desc %}
@@ -930,6 +949,7 @@ Key | Type | Description
 
 {{ webhookPayloadsForCurrentVersion.public }}
 {% endif %}
+
 ## pull_request
 
 {% data reusables.webhooks.pull_request_short_desc %}
@@ -1018,24 +1038,25 @@ Deliveries for `review_requested` and `review_request_removed` events will have 
 
 ### Webhook payload object
 
-Key | Type | Description
-----|------|-------------
-`ref`|`string` | The full [`git ref`](/rest/reference/git#refs) that was pushed. Example: `refs/heads/main`.
-`before`|`string` | The SHA of the most recent commit on `ref` before the push.
-`after`|`string` | The SHA of the most recent commit on `ref` after the push.
-`commits`|`array` | An array of commit objects describing the pushed commits. (The array includes a maximum of 20 commits. If necessary, you can use the [Commits API](/rest/reference/repos#commits) to fetch additional commits. This limit is applied to timeline events only and isn't applied to webhook deliveries.)
-`commits[][id]`|`string` | The SHA of the commit.
-`commits[][timestamp]`|`string` | The ISO 8601 timestamp of the commit.
-`commits[][message]`|`string` | The commit message.
-`commits[][author]`|`object` | The git author of the commit.
-`commits[][author][name]`|`string` | The git author's name.
-`commits[][author][email]`|`string` | The git author's email address.
-`commits[][url]`|`url` | URL that points to the commit API resource.
-`commits[][distinct]`|`boolean` | Whether this commit is distinct from any that have been pushed before.
-`commits[][added]`|`array` | An array of files added in the commit.
-`commits[][modified]`|`array` | An array of files modified by the commit.
-`commits[][removed]`|`array` | An array of files removed in the commit.
-`pusher` | `object` | The user who pushed the commits.
+| Key                        | Type      | Description                                                                                                                                                                                                                                                                                            |
+| -------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `ref`                      | `string`  | The full [`git ref`](/rest/reference/git#refs) that was pushed. Example: `refs/heads/main`.                                                                                                                                                                                                            |
+| `before`                   | `string`  | The SHA of the most recent commit on `ref` before the push.                                                                                                                                                                                                                                            |
+| `after`                    | `string`  | The SHA of the most recent commit on `ref` after the push.                                                                                                                                                                                                                                             |
+| `commits`                  | `array`   | An array of commit objects describing the pushed commits. (The array includes a maximum of 20 commits. If necessary, you can use the [Commits API](/rest/reference/repos#commits) to fetch additional commits. This limit is applied to timeline events only and isn't applied to webhook deliveries.) |
+| `commits[][id]`            | `string`  | The SHA of the commit.                                                                                                                                                                                                                                                                                 |
+| `commits[][timestamp]`     | `string`  | The ISO 8601 timestamp of the commit.                                                                                                                                                                                                                                                                  |
+| `commits[][message]`       | `string`  | The commit message.                                                                                                                                                                                                                                                                                    |
+| `commits[][author]`        | `object`  | The git author of the commit.                                                                                                                                                                                                                                                                          |
+| `commits[][author][name]`  | `string`  | The git author's name.                                                                                                                                                                                                                                                                                 |
+| `commits[][author][email]` | `string`  | The git author's email address.                                                                                                                                                                                                                                                                        |
+| `commits[][url]`           | `url`     | URL that points to the commit API resource.                                                                                                                                                                                                                                                            |
+| `commits[][distinct]`      | `boolean` | Whether this commit is distinct from any that have been pushed before.                                                                                                                                                                                                                                 |
+| `commits[][added]`         | `array`   | An array of files added in the commit.                                                                                                                                                                                                                                                                 |
+| `commits[][modified]`      | `array`   | An array of files modified by the commit.                                                                                                                                                                                                                                                              |
+| `commits[][removed]`       | `array`   | An array of files removed in the commit.                                                                                                                                                                                                                                                               |
+| `pusher`                   | `object`  | The user who pushed the commits.                                                                                                                                                                                                                                                                       |
+
 {% data reusables.webhooks.repo_desc %}
 {% data reusables.webhooks.org_desc %}
 {% data reusables.webhooks.app_desc %}
@@ -1069,6 +1090,7 @@ Key | Type | Description
 {{ webhookPayloadsForCurrentVersion.release.published }}
 
 {% ifversion fpt or ghes or ghae %}
+
 ## repository_dispatch
 
 This event occurs when a {% data variables.product.prodname_github_app %} sends a `POST` request to the "[Create a repository dispatch event](/rest/reference/repos#create-a-repository-dispatch-event)" endpoint.
@@ -1094,9 +1116,10 @@ This event occurs when a {% data variables.product.prodname_github_app %} sends 
 
 ### Webhook payload object
 
-Key | Type | Description
-----|------|-------------
-`action` |`string` | The action that was performed. This can be one of:<ul><li>`created` - A repository is created.</li><li>`deleted` - A repository is deleted.</li><li>`archived` - A repository is archived.</li><li>`unarchived` - A repository is unarchived.</li>{% ifversion ghes or ghae %}<li>`anonymous_access_enabled` - A repository is [enabled for anonymous Git access](/rest/overview/api-previews#anonymous-git-access-to-repositories), `anonymous_access_disabled` - A repository is [disabled for anonymous Git access](/rest/overview/api-previews#anonymous-git-access-to-repositories)</li>{% endif %}<li>`edited` - A repository's information is edited.</li><li>`renamed` - A repository is renamed.</li><li>`transferred` - A repository is transferred.</li><li>`publicized` - A repository is made public.</li><li> `privatized` - A repository is made private.</li></ul>
+| Key      | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| -------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `action` | `string` | The action that was performed. This can be one of:<ul><li>`created` - A repository is created.</li><li>`deleted` - A repository is deleted.</li><li>`archived` - A repository is archived.</li><li>`unarchived` - A repository is unarchived.</li>{% ifversion ghes or ghae %}<li>`anonymous_access_enabled` - A repository is [enabled for anonymous Git access](/rest/overview/api-previews#anonymous-git-access-to-repositories), `anonymous_access_disabled` - A repository is [disabled for anonymous Git access](/rest/overview/api-previews#anonymous-git-access-to-repositories)</li>{% endif %}<li>`edited` - A repository's information is edited.</li><li>`renamed` - A repository is renamed.</li><li>`transferred` - A repository is transferred.</li><li>`publicized` - A repository is made public.</li><li> `privatized` - A repository is made private.</li></ul> |
+
 {% data reusables.webhooks.repo_desc %}
 {% data reusables.webhooks.org_desc %}
 {% data reusables.webhooks.app_desc %}
@@ -1107,6 +1130,7 @@ Key | Type | Description
 {{ webhookPayloadsForCurrentVersion.repository.publicized }}
 
 {% ifversion fpt %}
+
 ## repository_import
 
 {% data reusables.webhooks.repository_import_short_desc %} To receive this event for a personal repository, you must create an empty repository prior to the import. This event can be triggered using either the [GitHub Importer](/articles/importing-a-repository-with-github-importer/) or the [Source imports API](/rest/reference/migrations#source-imports).
@@ -1175,6 +1199,7 @@ Key | Type | Description
 {% endif %}
 
 {% ifversion fpt or ghes %}
+
 ## security_advisory
 
 Activity related to a security advisory. A security advisory provides information about security-related vulnerabilities in software on GitHub. The security advisory dataset also powers the GitHub security alerts, see "[About alerts for vulnerable dependencies](/github/managing-security-vulnerabilities/about-alerts-for-vulnerable-dependencies/)."
@@ -1186,16 +1211,17 @@ Activity related to a security advisory. A security advisory provides informatio
 
 ### Webhook payload object
 
-Key | Type | Description
-----|------|-------------
-`action` |`string` | The action that was performed. The action can be one of `published`, `updated`, `performed`, or `withdrawn` for all new events.
-`security_advisory` |`object` | The details of the security advisory, including summary, description, and severity.
+| Key                 | Type     | Description                                                                                                                     |
+| ------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `action`            | `string` | The action that was performed. The action can be one of `published`, `updated`, `performed`, or `withdrawn` for all new events. |
+| `security_advisory` | `object` | The details of the security advisory, including summary, description, and severity.                                             |
 
 ### Webhook payload example
 
 {{ webhookPayloadsForCurrentVersion.security_advisory.published }}
 
 {% ifversion fpt %}
+
 ## sponsorship
 
 {% data reusables.webhooks.sponsorship_short_desc %}
@@ -1254,14 +1280,15 @@ You can only create a sponsorship webhook on {% data variables.product.prodname_
 
 ### Webhook payload object
 
-Key | Type | Description
-----|------|-------------
-`id` | `integer` | The unique identifier of the status.
-`sha`|`string` | The Commit SHA.
-`state`|`string` | The new state. Can be `pending`, `success`, `failure`, or `error`.
-`description`|`string` | The optional human-readable description added to the status.
-`target_url`|`string` | The optional link added to the status.
-`branches`|`array` | An array of branch objects containing the status' SHA. Each branch contains the given SHA, but the SHA may or may not be the head of the branch. The array includes a maximum of 10 branches.
+| Key           | Type      | Description                                                                                                                                                                                   |
+| ------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`          | `integer` | The unique identifier of the status.                                                                                                                                                          |
+| `sha`         | `string`  | The Commit SHA.                                                                                                                                                                               |
+| `state`       | `string`  | The new state. Can be `pending`, `success`, `failure`, or `error`.                                                                                                                            |
+| `description` | `string`  | The optional human-readable description added to the status.                                                                                                                                  |
+| `target_url`  | `string`  | The optional link added to the status.                                                                                                                                                        |
+| `branches`    | `array`   | An array of branch objects containing the status' SHA. Each branch contains the given SHA, but the SHA may or may not be the head of the branch. The array includes a maximum of 10 branches. |
+
 {% data reusables.webhooks.repo_desc %}
 {% data reusables.webhooks.org_desc %}
 {% data reusables.webhooks.app_desc %}
@@ -1282,18 +1309,19 @@ Key | Type | Description
 
 ### Webhook payload object
 
-Key | Type | Description
-----|------|-------------
-`action` |`string` | The action that was performed. Can be one of `created`, `deleted`, `edited`, `added_to_repository`, or `removed_from_repository`.
-`team`  |`object` | The team itself.
-`changes`|`object` | The changes to the team if the action was `edited`.
-`changes[description][from]` |`string` | The previous version of the description if the action was `edited`.
-`changes[name][from]` |`string` | The previous version of the name if the action was `edited`.
-`changes[privacy][from]` |`string` | The previous version of the team's privacy if the action was `edited`.
-`changes[repository][permissions][from][admin]` | `boolean` | The previous version of the team member's `admin` permission on a repository, if the action was `edited`.
-`changes[repository][permissions][from][pull]` | `boolean` | The previous version of the team member's `pull` permission on a repository, if the action was `edited`.
-`changes[repository][permissions][from][push]` | `boolean` | The previous version of the team member's `push` permission on a repository, if the action was `edited`.
-`repository`|`object` | The repository that was added or removed from to the team's purview if the action was `added_to_repository`, `removed_from_repository`, or `edited`. For `edited` actions, `repository` also contains the team's new permission levels for the repository.
+| Key                                             | Type      | Description                                                                                                                                                                                                                                                |
+| ----------------------------------------------- | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `action`                                        | `string`  | The action that was performed. Can be one of `created`, `deleted`, `edited`, `added_to_repository`, or `removed_from_repository`.                                                                                                                          |
+| `team`                                          | `object`  | The team itself.                                                                                                                                                                                                                                           |
+| `changes`                                       | `object`  | The changes to the team if the action was `edited`.                                                                                                                                                                                                        |
+| `changes[description][from]`                    | `string`  | The previous version of the description if the action was `edited`.                                                                                                                                                                                        |
+| `changes[name][from]`                           | `string`  | The previous version of the name if the action was `edited`.                                                                                                                                                                                               |
+| `changes[privacy][from]`                        | `string`  | The previous version of the team's privacy if the action was `edited`.                                                                                                                                                                                     |
+| `changes[repository][permissions][from][admin]` | `boolean` | The previous version of the team member's `admin` permission on a repository, if the action was `edited`.                                                                                                                                                  |
+| `changes[repository][permissions][from][pull]`  | `boolean` | The previous version of the team member's `pull` permission on a repository, if the action was `edited`.                                                                                                                                                   |
+| `changes[repository][permissions][from][push]`  | `boolean` | The previous version of the team member's `push` permission on a repository, if the action was `edited`.                                                                                                                                                   |
+| `repository`                                    | `object`  | The repository that was added or removed from to the team's purview if the action was `added_to_repository`, `removed_from_repository`, or `edited`. For `edited` actions, `repository` also contains the team's new permission levels for the repository. |
+
 {% data reusables.webhooks.org_desc %}
 {% data reusables.webhooks.sender_desc %}
 
@@ -1313,9 +1341,10 @@ Key | Type | Description
 
 ### Webhook payload object
 
-Key | Type | Description
-----|------|-------------
-`team`|`object` | The [team](/rest/reference/teams) that was modified.  **Note:** Older events may not include this in the payload.
+| Key    | Type     | Description                                                                                                      |
+| ------ | -------- | ---------------------------------------------------------------------------------------------------------------- |
+| `team` | `object` | The [team](/rest/reference/teams) that was modified. **Note:** Older events may not include this in the payload. |
+
 {% data reusables.webhooks.repo_desc %}
 {% data reusables.webhooks.org_desc %}
 {% data reusables.webhooks.app_desc %}
@@ -1332,6 +1361,7 @@ Key | Type | Description
 When a user is `created` or `deleted`.
 
 ### Availability
+
 - GitHub Enterprise webhooks. For more information, "[Global webhooks](/rest/reference/enterprise-admin#global-webhooks/)."
 
 ### Webhook payload example
@@ -1365,6 +1395,7 @@ The event’s actor is the [user](/rest/reference/users) who starred a repositor
 {{ webhookPayloadsForCurrentVersion.watch.started }}
 
 {% ifversion fpt or ghes > 2.21 %}
+
 ## workflow_dispatch
 
 This event occurs when someone triggers a workflow run on GitHub or sends a `POST` request to the "[Create a workflow dispatch event](/rest/reference/actions/#create-a-workflow-dispatch-event)" endpoint. For more information, see "[Events that trigger workflows](/actions/reference/events-that-trigger-workflows#workflow_dispatch)."
@@ -1379,6 +1410,7 @@ This event occurs when someone triggers a workflow run on GitHub or sends a `POS
 {% endif %}
 
 {% ifversion fpt or ghes > 2.22 %}
+
 ## workflow_run
 
 When a {% data variables.product.prodname_actions %} workflow run is requested or completed. For more information, see "[Events that trigger workflows](/actions/reference/events-that-trigger-workflows#workflow_run)."

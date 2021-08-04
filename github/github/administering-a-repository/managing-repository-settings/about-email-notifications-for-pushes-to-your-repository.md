@@ -9,13 +9,14 @@ redirect_from:
   - /github/receiving-notifications-about-activity-on-github/about-email-notifications-for-pushes-to-your-repository
   - /github/administering-a-repository/about-email-notifications-for-pushes-to-your-repository
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Repositories
 shortTitle: Email notifications for pushes
 ---
+
 {% data reusables.notifications.outbound_email_tip %}
 
 Each email notification for a push to a repository lists the new commits and links to a diff containing just those commits. In the email notification you'll see:
@@ -34,18 +35,20 @@ You can filter email notifications you receive for pushes to a repository. For m
 
 {% data reusables.repositories.navigate-to-repo %}
 {% data reusables.repositories.sidebar-settings %}
-{% data reusables.repositories.sidebar-notifications %}
-5. Type up to two email addresses, separated by whitespace, where you'd like notifications to be sent. If you'd like to send emails to more than two accounts, set one of the email addresses to a group email address.
+{% data reusables.repositories.sidebar-notifications %} 5. Type up to two email addresses, separated by whitespace, where you'd like notifications to be sent. If you'd like to send emails to more than two accounts, set one of the email addresses to a group email address.
 ![Email address textbox](/assets/images/help/settings/email_services_addresses.png)
+
 1. If you operate your own server, you can verify the integrity of emails via the **Approved header**. The **Approved header** is a token or secret that you type in this field, and that is sent with the email. If the `Approved` header of an email matches the token, you can trust that the email is from {% data variables.product.product_name %}.
-![Email approved header textbox](/assets/images/help/settings/email_services_approved_header.png)
-7. Click **Setup notifications**.
-![Setup notifications button](/assets/images/help/settings/setup_notifications_settings.png)
+   ![Email approved header textbox](/assets/images/help/settings/email_services_approved_header.png)
+2. Click **Setup notifications**.
+   ![Setup notifications button](/assets/images/help/settings/setup_notifications_settings.png)
 
 ## Further reading
+
 {% ifversion fpt or ghae or ghes %}
+
 - "[About notifications](/github/managing-subscriptions-and-notifications-on-github/about-notifications)"
-{% else %}
+  {% else %}
 - "[About notifications](/enterprise/{{ currentVersion }}/user/github/receiving-notifications-about-activity-on-github/about-notifications)"
 - "[Choosing the delivery method for your notifications](/enterprise/{{ currentVersion }}/user/github/receiving-notifications-about-activity-on-github/choosing-the-delivery-method-for-your-notifications)"
 - "[About email notifications](/enterprise/{{ currentVersion }}/user/github/receiving-notifications-about-activity-on-github/about-email-notifications)"

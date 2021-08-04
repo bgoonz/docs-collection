@@ -1,12 +1,12 @@
 ---
 title: Installing CodeQL CLI in your CI system
 shortTitle: Install CodeQL CLI
-intro: 'You can install the {% data variables.product.prodname_codeql_cli %} and use it to perform {% data variables.product.prodname_codeql %} {% data variables.product.prodname_code_scanning %} in a third-party continuous integration system.'
-product: '{% data reusables.gated-features.code-scanning %}'
+intro: "You can install the {% data variables.product.prodname_codeql_cli %} and use it to perform {% data variables.product.prodname_codeql %} {% data variables.product.prodname_code_scanning %} in a third-party continuous integration system."
+product: "{% data reusables.gated-features.code-scanning %}"
 miniTocMaxHeadingLevel: 3
 versions:
-  fpt: '*'
-  ghes: '>=3.1'
+  fpt: "*"
+  ghes: ">=3.1"
   ghae: next
 type: how_to
 topics:
@@ -22,6 +22,7 @@ redirect_from:
   - /code-security/secure-coding/running-codeql-cli-in-your-ci-system
   - /code-security/secure-coding/using-codeql-code-scanning-with-your-existing-ci-system/running-codeql-cli-in-your-ci-system
 ---
+
 {% data reusables.code-scanning.enterprise-enable-code-scanning %}
 
 ## About using the {% data variables.product.prodname_codeql_cli %} for {% data variables.product.prodname_code_scanning %}
@@ -68,6 +69,7 @@ After you extract the {% data variables.product.prodname_codeql_cli %} bundle, y
 - `/<extraction-root>/codeql/codeql resolve qlpacks` otherwise.
 
 **Extract from successful output:**
+
 ```
 codeql-cpp (/<extraction-root>/codeql/qlpacks/codeql-cpp)
 codeql-cpp-examples (/<extraction-root>/codeql/qlpacks/codeql-cpp-examples)

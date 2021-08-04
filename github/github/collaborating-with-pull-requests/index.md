@@ -1,6 +1,6 @@
 ---
 title: Collaborating with pull requests
-intro: 'Track and discuss changes in issues, then propose and review changes in pull requests.'
+intro: "Track and discuss changes in issues, then propose and review changes in pull requests."
 redirect_from:
   - /github/collaborating-with-issues-and-pull-requests/
   - /categories/63/articles/
@@ -9,9 +9,9 @@ redirect_from:
   - /categories/collaborating-on-projects-using-issues-and-pull-requests/
   - /categories/collaborating-with-issues-and-pull-requests/
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Pull requests
 children:
@@ -24,4 +24,3 @@ children:
   - /incorporating-changes-from-a-pull-request
 shortTitle: Collaborate with PRs
 ---
-

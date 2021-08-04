@@ -1,6 +1,6 @@
 ---
 title: Finding ways to contribute to open source on GitHub
-intro: 'You can find ways to contribute to open source projects on {% data variables.product.product_name %} that are relevant to you.'
+intro: "You can find ways to contribute to open source projects on {% data variables.product.product_name %} that are relevant to you."
 redirect_from:
   - /articles/where-can-i-find-open-source-projects-to-work-on/
   - /articles/finding-interesting-projects-on-github/
@@ -11,11 +11,12 @@ redirect_from:
   - /github/getting-started-with-github/finding-ways-to-contribute-to-open-source-on-github
   - /github/getting-started-with-github/exploring-projects-on-github/finding-ways-to-contribute-to-open-source-on-github
 versions:
-  fpt: '*'
+  fpt: "*"
 topics:
   - Open Source
 shortTitle: Contribute to open source
 ---
+
 ## Discovering relevant projects
 
 If there's a particular topic that interests you, visit `github.com/topics/<topic>`. For example, if you are interested in machine learning, you can find relevant projects and good first issues by visiting https://github.com/topics/machine-learning. You can browse popular topics by visiting [Topics](https://github.com/topics). You can also search for repositories that match a topic you're interested in. For more information, see "[Searching for repositories](/articles/searching-for-repositories#search-by-topic)."
@@ -39,14 +40,16 @@ If you encounter a bug in an open source project, check if the bug has already b
 There are a variety of ways that you can contribute to open source projects.
 
 ### Reproducing a reported bug
-You can contribute to an open source project by validating an issue or adding additional context to an existing issue. 
+
+You can contribute to an open source project by validating an issue or adding additional context to an existing issue.
 
 ### Testing a pull request
+
 You can contribute to an open source project by merging a pull request into your local copy of the project and testing the changes. Add the outcome of your testing in a comment on the pull request.
 
 ### Updating issues
-You can contribute to an open source project by adding additional information to existing issues.
 
+You can contribute to an open source project by adding additional information to existing issues.
 
 ## Further reading
 

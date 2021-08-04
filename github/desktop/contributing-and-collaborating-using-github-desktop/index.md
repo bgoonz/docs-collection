@@ -1,11 +1,11 @@
 ---
 title: Contributing and collaborating using GitHub Desktop
 shortTitle: Contributing and collaborating
-intro: 'Use GitHub Desktop to manage your projects, create meaningful commits, and track the project''s history in an app instead of on the command line.'
+intro: "Use GitHub Desktop to manage your projects, create meaningful commits, and track the project's history in an app instead of on the command line."
 redirect_from:
   - /desktop/contributing-to-projects
 versions:
-  fpt: '*'
+  fpt: "*"
 children:
   - /adding-and-cloning-repositories
   - /making-changes-in-a-branch
@@ -13,4 +13,3 @@ children:
   - /working-with-your-remote-repository-on-github-or-github-enterprise
   - /keeping-your-local-repository-in-sync-with-github
 ---
-

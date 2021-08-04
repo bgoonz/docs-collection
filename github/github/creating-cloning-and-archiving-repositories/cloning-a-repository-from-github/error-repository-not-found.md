@@ -1,20 +1,21 @@
 ---
-title: 'Error: Repository not found'
-intro: '{% ifversion fpt or ghae %}If you see this error when cloning a repository, it means that the repository does not exist or you do not have permission to access it.{% else %}If you see this error when cloning a repository, it means that the repository does not exist, you do not have permission to access it, or {% data variables.product.product_location %} is in private mode.{% endif %} There are a few solutions to this error, depending on the cause.'
+title: "Error: Repository not found"
+intro: "{% ifversion fpt or ghae %}If you see this error when cloning a repository, it means that the repository does not exist or you do not have permission to access it.{% else %}If you see this error when cloning a repository, it means that the repository does not exist, you do not have permission to access it, or {% data variables.product.product_location %} is in private mode.{% endif %} There are a few solutions to this error, depending on the cause."
 redirect_from:
   - /articles/error-repository-not-found
   - /github/creating-cloning-and-archiving-repositories/error-repository-not-found
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Repositories
 shortTitle: Repository not found
 ---
+
 ## Check your spelling
 
-Typos happen, and repository names are case-sensitive.  If you try to clone `git@{% data variables.command_line.codeblock %}:user/repo.git`, but the repository is really named `User/Repo` you will receive this error.
+Typos happen, and repository names are case-sensitive. If you try to clone `git@{% data variables.command_line.codeblock %}:user/repo.git`, but the repository is really named `User/Repo` you will receive this error.
 
 To avoid this error, when cloning, always copy and paste the clone URL from the repository's page. For more information, see "[Cloning a repository](/articles/cloning-a-repository)."
 
@@ -26,9 +27,9 @@ If you are trying to clone a private repository but do not have permission to vi
 
 Make sure that you have access to the repository in one of these ways:
 
-* The owner of the repository
-* A [collaborator](/articles/inviting-collaborators-to-a-personal-repository) on the repository
-* A [member of a team](/articles/adding-organization-members-to-a-team) that has access to the repository (if the repository belongs to an organization)
+- The owner of the repository
+- A [collaborator](/articles/inviting-collaborators-to-a-personal-repository) on the repository
+- A [member of a team](/articles/adding-organization-members-to-a-team) that has access to the repository (if the repository belongs to an organization)
 
 ## Check your SSH access
 
@@ -48,6 +49,7 @@ If the repository belongs to an organization and you're using an SSH key generat
 For more information, see [Adding a new SSH key to your GitHub account](/articles/adding-a-new-ssh-key-to-your-github-account).
 
 {% ifversion ghes %}
+
 ## Check if your instance is in private mode
 
 If your site administrator has enabled private mode on your GitHub Enterprise instance, anonymous clones over `git://` will be disabled. If you are unable to clone a repository, contact your site administrator.

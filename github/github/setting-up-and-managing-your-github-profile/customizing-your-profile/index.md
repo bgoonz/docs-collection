@@ -4,9 +4,9 @@ intro: You can customize your profile so that other people can get a better sens
 redirect_from:
   - /articles/customizing-your-profile
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Profiles
 children:
@@ -16,4 +16,3 @@ children:
   - /managing-your-profile-readme
   - /pinning-items-to-your-profile
 ---
-

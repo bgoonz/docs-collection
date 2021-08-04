@@ -1,15 +1,16 @@
 ---
 title: Importing a Git repository using the command line
-intro: '{% ifversion fpt %}If [GitHub Importer](/articles/importing-a-repository-with-github-importer) is not suitable for your purposes, such as if your existing code is hosted on a private network, then we recommend importing using the command line.{% else %}Importing Git projects using the command line is suitable when your existing code is hosted on a private network.{% endif %}'
+intro: "{% ifversion fpt %}If [GitHub Importer](/articles/importing-a-repository-with-github-importer) is not suitable for your purposes, such as if your existing code is hosted on a private network, then we recommend importing using the command line.{% else %}Importing Git projects using the command line is suitable when your existing code is hosted on a private network.{% endif %}"
 redirect_from:
   - /articles/importing-a-git-repository-using-the-command-line
   - /github/importing-your-projects-to-github/importing-a-git-repository-using-the-command-line
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 shortTitle: Import repo locally
 ---
+
 Before you start, make sure you know:
 
 - Your {% data variables.product.product_name %} username
@@ -28,18 +29,23 @@ For purposes of demonstration, we'll use:
 
 1. [Create a new repository on {% data variables.product.product_name %}](/articles/creating-a-new-repository). You'll import your external Git repository to this new repository.
 2. On the command line, make a "bare" clone of the repository using the external clone URL. This creates a full copy of the data, but without a working directory for editing files, and ensures a clean, fresh export of all the old data.
-  ```shell
-  $ git clone --bare https://external-host.com/<em>extuser</em>/<em>repo.git</em>
-  # Makes a bare clone of the external repository in a local directory
-  ```
+
+```shell
+$ git clone --bare https://external-host.com/<em>extuser</em>/<em>repo.git</em>
+# Makes a bare clone of the external repository in a local directory
+```
+
 3. Push the locally cloned repository to {% data variables.product.product_name %} using the "mirror" option, which ensures that all references, such as branches and tags, are copied to the imported repository.
-  ```shell
-  $ cd <em>repo.git</em>
-  $ git push --mirror https://{% data variables.command_line.codeblock %}/<em>ghuser</em>/<em>repo.git</em>
-  # Pushes the mirror to the new {% data variables.product.product_name %} repository
-  ```
+
+```shell
+$ cd <em>repo.git</em>
+$ git push --mirror https://{% data variables.command_line.codeblock %}/<em>ghuser</em>/<em>repo.git</em>
+# Pushes the mirror to the new {% data variables.product.product_name %} repository
+```
+
 4. Remove the temporary local repository.
-  ```shell
-  $ cd ..
-  $ rm -rf <em>repo.git</em>
-  ```
+
+```shell
+$ cd ..
+$ rm -rf <em>repo.git</em>
+```

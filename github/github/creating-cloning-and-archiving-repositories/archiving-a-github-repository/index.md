@@ -1,14 +1,14 @@
 ---
 title: Archiving a GitHub repository
-intro: 'You can archive, back up, and cite your work using {% data variables.product.product_name %}, the API, or third-party tools and services.'
+intro: "You can archive, back up, and cite your work using {% data variables.product.product_name %}, the API, or third-party tools and services."
 redirect_from:
   - /articles/can-i-archive-a-repository/
   - /articles/archiving-a-github-repository
   - /enterprise/admin/user-management/archiving-and-unarchiving-repositories
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Repositories
 children:
@@ -19,4 +19,3 @@ children:
   - /backing-up-a-repository
 shortTitle: Archive a repository
 ---
-

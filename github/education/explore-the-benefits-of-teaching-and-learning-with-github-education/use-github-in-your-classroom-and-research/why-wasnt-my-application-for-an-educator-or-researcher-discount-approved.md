@@ -9,9 +9,10 @@ redirect_from:
   - /articles/why-wasnt-my-application-for-an-educator-or-researcher-discount-approved
   - /education/explore-the-benefits-of-teaching-and-learning-with-github-education/why-wasnt-my-application-for-an-educator-or-researcher-discount-approved
 versions:
-  fpt: '*'
+  fpt: "*"
 shortTitle: Application not approved
 ---
+
 {% tip %}
 
 **Tip:** {% data reusables.education.about-github-education-link %}

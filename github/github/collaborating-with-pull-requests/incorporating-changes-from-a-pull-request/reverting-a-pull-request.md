@@ -6,12 +6,13 @@ redirect_from:
   - /articles/reverting-a-pull-request
   - /github/collaborating-with-issues-and-pull-requests/reverting-a-pull-request
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Pull requests
 ---
+
 ## About reverting a pull request
 
 Reverting a pull request on {% data variables.product.product_name %} creates a new pull request that contains one revert of the merge commit from the original merged pull request.
@@ -29,8 +30,5 @@ For more information about using Git to manually revert individual commits, see 
 
 {% endnote %}
 
-{% data reusables.repositories.sidebar-pr %}
-2. In the "Pull Requests" list, click the pull request you'd like to revert.
-3. Near the bottom of the pull request, click **Revert**.
-  ![Revert pull request link](/assets/images/help/pull_requests/revert-pull-request-link.png)
-4. Merge the resulting pull request. For more information, see "[Merging a pull request](/github/collaborating-with-issues-and-pull-requests/merging-a-pull-request)."
+{% data reusables.repositories.sidebar-pr %} 2. In the "Pull Requests" list, click the pull request you'd like to revert. 3. Near the bottom of the pull request, click **Revert**.
+![Revert pull request link](/assets/images/help/pull_requests/revert-pull-request-link.png) 4. Merge the resulting pull request. For more information, see "[Merging a pull request](/github/collaborating-with-issues-and-pull-requests/merging-a-pull-request)."

@@ -1,20 +1,22 @@
 ---
 title: Apply for a student developer pack
-intro: 'As a student, you can apply for the {% data variables.product.prodname_student_pack %}, which includes offers and benefits from {% data variables.product.prodname_dotcom %} partners.'
+intro: "As a student, you can apply for the {% data variables.product.prodname_student_pack %}, which includes offers and benefits from {% data variables.product.prodname_dotcom %} partners."
 redirect_from:
   - /education/teach-and-learn-with-github-education/apply-for-a-student-developer-pack
   - /github/teaching-and-learning-with-github-education/applying-for-a-student-developer-pack
   - /articles/applying-for-a-student-developer-pack
   - /education/explore-the-benefits-of-teaching-and-learning-with-github-education/apply-for-a-student-developer-pack
 versions:
-  fpt: '*'
+  fpt: "*"
 shortTitle: Apply for a student pack
 ---
+
 {% data reusables.education.about-github-education-link %}
 
 ## Requirements
 
 To be eligible for the {% data variables.product.prodname_student_pack %}, you must:
+
 - Be currently enrolled in a degree or diploma granting course of study such as a high school, secondary school, college, university, homeschool, or similar educational institution
 - Have a verifiable school-issued email address or upload documents that prove your current student status
 - Have a [{% data variables.product.prodname_dotcom %} user account](/articles/signing-up-for-a-new-github-account)
@@ -34,9 +36,8 @@ For information about renewing your {% data variables.product.prodname_student_p
 
 ## Applying for a {% data variables.product.prodname_student_pack %}
 
-{% data reusables.education.benefits-page %}
-3. Under "Which best describes your academic status?", select **Student**.
-  ![Select academic status](/assets/images/help/education/academic-status-student.png)
+{% data reusables.education.benefits-page %} 3. Under "Which best describes your academic status?", select **Student**.
+![Select academic status](/assets/images/help/education/academic-status-student.png)
 {% data reusables.education.select-email-address %}
 {% data reusables.education.upload-proof-status %}
 {% data reusables.education.school-name %}

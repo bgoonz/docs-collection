@@ -1,6 +1,6 @@
 ---
 title: Upgrading Git Large File Storage
-intro: 'You can purchase additional data packs to increase your monthly bandwidth quota and total storage capacity for {% data variables.large_files.product_name_short %}.'
+intro: "You can purchase additional data packs to increase your monthly bandwidth quota and total storage capacity for {% data variables.large_files.product_name_short %}."
 redirect_from:
   - /github/setting-up-and-managing-billing-and-payments-on-github/upgrading-git-large-file-storage
   - /articles/purchasing-additional-storage-and-bandwidth-for-a-personal-account/
@@ -8,7 +8,7 @@ redirect_from:
   - /articles/upgrading-git-large-file-storage
   - /github/setting-up-and-managing-billing-and-payments-on-github/managing-billing-for-git-large-file-storage/upgrading-git-large-file-storage
 versions:
-  fpt: '*'
+  fpt: "*"
 type: how_to
 topics:
   - LFS
@@ -17,6 +17,7 @@ topics:
   - User account
 shortTitle: Upgrade Git LFS storage
 ---
+
 ## Purchasing additional storage and bandwidth for a personal account
 
 {% data reusables.user_settings.access_settings %}

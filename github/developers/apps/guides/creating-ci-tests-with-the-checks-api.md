@@ -1,17 +1,18 @@
 ---
 title: Creating CI tests with the Checks API
-intro: 'Build a continuous integration server to run tests using a {% data variables.product.prodname_github_app %} and the Checks API.'
+intro: "Build a continuous integration server to run tests using a {% data variables.product.prodname_github_app %} and the Checks API."
 redirect_from:
   - /apps/quickstart-guides/creating-ci-tests-with-the-checks-api
   - /developers/apps/creating-ci-tests-with-the-checks-api
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - GitHub Apps
 shortTitle: CI tests using Checks API
 ---
+
 ## Introduction
 
 This guide will introduce you to [GitHub Apps](/apps/) and the [Checks API](/rest/reference/checks), which you'll use to build a continuous integration (CI) server that runs tests.
@@ -36,14 +37,14 @@ The Checks API sends the [`check_suite` webhook event](/webhooks/event-payloads/
 
 **In this guide, you’ll learn how to:**
 
-* Part 1: Set up the framework for a CI server using the Checks API.
-  * Configure a GitHub App as a server that receives Checks API events.
-  * Create new check runs for CI tests when a repository receives newly pushed commits.
-  * Re-run check runs when a user requests that action on GitHub.
-* Part 2: Build on the CI server framework you created by adding a linter CI test.
-  * Update a check run with a `status`, `conclusion`, and `output` details.
-  * Create annotations on lines of code that GitHub displays in the **Checks** and **Files Changed** tab of a pull request.
-  * Automatically fix linter recommendations by exposing a "Fix this" button in the **Checks** tab of the pull request.
+- Part 1: Set up the framework for a CI server using the Checks API.
+  - Configure a GitHub App as a server that receives Checks API events.
+  - Create new check runs for CI tests when a repository receives newly pushed commits.
+  - Re-run check runs when a user requests that action on GitHub.
+- Part 2: Build on the CI server framework you created by adding a linter CI test.
+  - Update a check run with a `status`, `conclusion`, and `output` details.
+  - Create annotations on lines of code that GitHub displays in the **Checks** and **Files Changed** tab of a pull request.
+  - Automatically fix linter recommendations by exposing a "Fix this" button in the **Checks** tab of the pull request.
 
 To get an idea of what your Checks API CI server will do when you've completed this quickstart, check out the demo below:
 
@@ -58,17 +59,18 @@ You'll use the [Ruby programming language](https://www.ruby-lang.org/en/), the [
 You don't need to be an expert in any of these tools or concepts to complete this project. This guide will walk you through all the required steps. Before you begin creating CI tests with the Checks API, you'll need to do the following:
 
 1. Clone the [Creating CI tests with the Checks API](https://github.com/github-developer/creating-ci-tests-with-the-checks-api) repository.
-  ```shell
-    $ git clone https://github.com/github-developer/creating-ci-tests-with-the-checks-api.git
-  ```
 
-  Inside the directory, you'll find a `template_server.rb` file with the template code you'll use in this quickstart and a `server.rb` file with the completed project code.
+```shell
+  $ git clone https://github.com/github-developer/creating-ci-tests-with-the-checks-api.git
+```
+
+Inside the directory, you'll find a `template_server.rb` file with the template code you'll use in this quickstart and a `server.rb` file with the completed project code.
 
 1. Follow the steps in the "[Setting up your development environment](/apps/quickstart-guides/setting-up-your-development-environment/)" quickstart to configure and run the app server. **Note:** Instead of [cloning the GitHub App template repository](/apps/quickstart-guides/setting-up-your-development-environment/#prerequisites), use the `template_server.rb` file in the repository you cloned in the previous step in this quickstart.
 
-  If you've completed a GitHub App quickstart before, make sure to register a _new_ GitHub App and start a new Smee channel to use with this quickstart.
+If you've completed a GitHub App quickstart before, make sure to register a _new_ GitHub App and start a new Smee channel to use with this quickstart.
 
-  See the [troubleshooting](/apps/quickstart-guides/setting-up-your-development-environment/#troubleshooting) section if you are running into problems setting up your template GitHub App.
+See the [troubleshooting](/apps/quickstart-guides/setting-up-your-development-environment/#troubleshooting) section if you are running into problems setting up your template GitHub App.
 
 ## Part 1. Creating the Checks API interface
 
@@ -94,7 +96,7 @@ To update your app's permissions:
 1. Select your app from the [app settings page](https://github.com/settings/apps) and click **Permissions & Webhooks** in the sidebar.
 1. In the "Permissions" section, find "Checks", and select **Read & write** in the Access dropdown next to it.
 1. In the "Subscribe to events" section, select **Check suite** and **Check run** to subscribe to these events.
-{% data reusables.apps.accept_new_permissions_steps %}
+   {% data reusables.apps.accept_new_permissions_steps %}
 
 Great! Your app has permission to do the tasks you want it to do. Now you can add the code to handle the events.
 
@@ -104,7 +106,7 @@ Now that your app is subscribed to the **Check suite** and **Check run** events,
 
 An empty `post '/event_handler'` route is already included in the `template_server.rb` file, which you downloaded in the [prerequisites](#prerequisites) section. The empty route looks like this:
 
-``` ruby
+```ruby
   post '/event_handler' do
 
     # # # # # # # # # # # #
@@ -117,7 +119,7 @@ An empty `post '/event_handler'` route is already included in the `template_serv
 
 Use this route to handle the `check_suite` event by adding the following code:
 
-``` ruby
+```ruby
 # Get the event type from the HTTP_X_GITHUB_EVENT header
 case request.env['HTTP_X_GITHUB_EVENT']
 when 'check_suite'
@@ -137,7 +139,8 @@ The `requested` action requests a check run each time code is pushed to the repo
 You'll add this new method as a [Sinatra helper](https://github.com/sinatra/sinatra#helpers) in case you want other routes to use it too. Under `helpers do`, add this `create_check_run` method:
 
 {% ifversion fpt or ghes > 2.22 or ghae %}
-``` ruby
+
+```ruby
 # Create a new check run with the status queued
 def create_check_run
   @installation_client.create_check_run(
@@ -145,7 +148,7 @@ def create_check_run
     @payload['repository']['full_name'],
     # [String] The name of your check run.
     'Octo RuboCop',
-    # [String] The SHA of the commit to check 
+    # [String] The SHA of the commit to check
     # The payload structure differs depending on whether a check run or a check suite event occurred.
     @payload['check_run'].nil? ? @payload['check_suite']['head_sha'] : @payload['check_run']['head_sha'],
     # [Hash] 'Accept' header option, to avoid a warning about the API not being ready for production use.
@@ -153,8 +156,10 @@ def create_check_run
   )
 end
 ```
+
 {% else %}
-``` ruby
+
+```ruby
 # Create a new check run with the status queued
 def create_check_run
   @installation_client.create_check_run(
@@ -162,7 +167,7 @@ def create_check_run
     @payload['repository']['full_name'],
     # [String] The name of your check run.
     'Octo RuboCop',
-    # [String] The SHA of the commit to check 
+    # [String] The SHA of the commit to check
     # The payload structure differs depending on whether a check run or a check suite event occurred.
     @payload['check_run'].nil? ? @payload['check_suite']['head_sha'] : @payload['check_run']['head_sha'],
     # [Hash] 'Accept' header option, to avoid a warning about the API not being ready for production use.
@@ -170,6 +175,7 @@ def create_check_run
   )
 end
 ```
+
 {% endif %}
 
 This code calls the "[Create a check run](/rest/reference/checks#create-a-check-run)" endpoint using the [create_check_run method](https://rdoc.info/gems/octokit/Octokit%2FClient%2FChecks:create_check_run).
@@ -206,7 +212,7 @@ You'll want to update your event handler to look for the `created` action. While
 
 To include a condition for the `check_run` event in the `post '/event_handler'` route, add the following code under `case request.env['HTTP_X_GITHUB_EVENT']`:
 
-``` ruby
+```ruby
 when 'check_run'
   # Check that the event is being sent to this app
   if @payload['check_run']['app']['id'].to_s === APP_IDENTIFIER
@@ -228,7 +234,8 @@ In this section, you're not going to kick off the CI test yet, but you'll walk t
 Let's create the `initiate_check_run` method and update the status of the check run. Add the following code to the helpers section:
 
 {% ifversion fpt or ghes > 2.22 or ghae %}
-``` ruby
+
+```ruby
 # Start the CI process
 def initiate_check_run
   # Once the check run is created, you'll update the status of the check run
@@ -254,8 +261,10 @@ def initiate_check_run
   )
 end
 ```
+
 {% else %}
-``` ruby
+
+```ruby
 # Start the CI process
 def initiate_check_run
   # Once the check run is created, you'll update the status of the check run
@@ -281,6 +290,7 @@ def initiate_check_run
   )
 end
 ```
+
 {% endif %}
 
 The code above calls the "[Update a check run](/rest/reference/checks#update-a-check-run)" API endpoint using the [`update_check_run` Octokit method](https://rdoc.info/gems/octokit/Octokit%2FClient%2FChecks:update_check_run) to update the check run that you already created.
@@ -303,9 +313,9 @@ Head over to your open pull request and click the **Checks** tab. Click the "Re-
 
 [RuboCop](https://rubocop.readthedocs.io/en/latest/) is a Ruby code linter and formatter. It checks Ruby code to ensure that it complies with the "[Ruby Style Guide](https://github.com/rubocop-hq/ruby-style-guide)." RuboCop has three primary functions:
 
-* Linting to check code style
-* Code formatting
-* Replaces the native Ruby linting capabilities using `ruby -w`
+- Linting to check code style
+- Code formatting
+- Replaces the native Ruby linting capabilities using `ruby -w`
 
 Now that you've got the interface created to receive Checks API events and create check runs, you can create a check run that implements a CI test.
 
@@ -357,7 +367,7 @@ RuboCop is available as a command-line utility. That means your GitHub App will 
 
 The `Gemfile` in the `building-a-checks-api-ci-server` repository already includes the ruby-git gem, and you installed it when you ran `bundle install` in the [prerequisite steps](#prerequisites). To use the gem, add this code to the top of your `template_server.rb` file:
 
-``` ruby
+```ruby
 require 'git'
 ```
 
@@ -365,7 +375,7 @@ Your app needs read permission for "Repository contents" to clone a repository. 
 
 1. Select your app from the [app settings page](https://github.com/settings/apps) and click **Permissions & Webhooks** in the sidebar.
 1. In the "Permissions" section, find "Repository contents", and select **Read & write** in the "Access" dropdown next to it.
-{% data reusables.apps.accept_new_permissions_steps %}
+   {% data reusables.apps.accept_new_permissions_steps %}
 
 To clone a repository using your GitHub App's permissions, you can use the app's installation token (`x-access-token:<token>`) shown in the example below:
 
@@ -377,7 +387,7 @@ The code above clones a repository over HTTP. It requires the full repository na
 
 After your app clones the repository, it needs to pull the latest code changes and check out a specific Git ref. The code to do all of this will fit nicely into its own method. To perform these operations, the method needs the name and full name of the repository and the ref to checkout. The ref can be a commit SHA, branch, or tag. Add the following new method to the helper method section in `template_server.rb`:
 
-``` ruby
+```ruby
 # Clones the repository to the current working directory, updates the
 # contents using Git pull, and checks out the ref.
 #
@@ -400,7 +410,7 @@ From the repository directory, this code fetches and merges the latest changes (
 
 Now you've got a method that clones a repository and checks out a ref. Next, you need to add code to get the required input parameters and call the new `clone_repository` method. Add the following code under the `***** RUN A CI TEST *****` comment in your `initiate_check_run` helper method:
 
-``` ruby
+```ruby
 # ***** RUN A CI TEST *****
 full_repo_name = @payload['repository']['full_name']
 repository     = @payload['repository']['name']
@@ -417,7 +427,7 @@ Great! You're cloning the repository and creating check runs using your CI serve
 
 The following code runs RuboCop and saves the style code errors in JSON format. Add this code below the call to `clone_repository` you added in the [previous step](#step-22-cloning-the-repository) and above the code that updates the check run to complete.
 
-``` ruby
+```ruby
 # Run RuboCop on all files in the repository
 @report = `rubocop '#{repository}' --format json`
 logger.debug @report
@@ -509,7 +519,7 @@ A check run expects annotations as an array of objects. Each annotation object m
 
 You'll extract the required information from RuboCop needed to create each annotation. Append the following code to the code you added in the [previous section](#step-23-running-rubocop):
 
-``` ruby
+```ruby
 annotations = []
 # You can create a maximum of 50 annotations per request to the Checks
 # API. To add more than 50 annotations, use the "Update a check run" API
@@ -578,7 +588,7 @@ Each check run from GitHub contains an `output` object that includes a `title`, 
 
 For the `summary`, this example uses the summary information from RuboCop and adds some newlines (`\n`) to format the output. You can customize what you add to the `text` parameter, but this example sets the `text` parameter to the RuboCop version. To set the `summary` and `text`, append this code to the code you added in the [previous section](#step-24-collecting-rubocop-errors):
 
-``` ruby
+```ruby
 # Updated check run summary and text parameters
 summary = "Octo RuboCop summary\n-Offense count: #{@output['summary']['offense_count']}\n-File count: #{@output['summary']['target_file_count']}\n-Target file count: #{@output['summary']['inspected_file_count']}"
 text = "Octo RuboCop version: #{@output['metadata']['rubocop_version']}"
@@ -587,7 +597,8 @@ text = "Octo RuboCop version: #{@output['metadata']['rubocop_version']}"
 Now you've got all the information you need to update your check run. In the [first half of this quickstart](#step-14-updating-a-check-run), you added this code to set the status of the check run to `success`:
 
 {% ifversion fpt or ghes > 2.22 or ghae %}
-``` ruby
+
+```ruby
 # Mark the check run as complete!
 @installation_client.update_check_run(
   @payload['repository']['full_name'],
@@ -597,8 +608,10 @@ Now you've got all the information you need to update your check run. In the [fi
   accept: 'application/vnd.github.v3+json'
 )
 ```
+
 {% else %}
-``` ruby
+
+```ruby
 # Mark the check run as complete!
 @installation_client.update_check_run(
   @payload['repository']['full_name'],
@@ -608,12 +621,14 @@ Now you've got all the information you need to update your check run. In the [fi
   accept: 'application/vnd.github.antiope-preview+json' # This header is necessary for beta access to Checks API
 )
 ```
+
 {% endif %}
 
 You'll need to update that code to use the `conclusion` variable you set based on the RuboCop results (to `success` or `neutral`). You can update the code with the following:
 
 {% ifversion fpt or ghes > 2.22 or ghae %}
-``` ruby
+
+```ruby
 # Mark the check run as complete! And if there are warnings, share them.
 @installation_client.update_check_run(
   @payload['repository']['full_name'],
@@ -634,8 +649,10 @@ You'll need to update that code to use the `conclusion` variable you set based o
   accept: 'application/vnd.github.v3+json'
 )
 ```
+
 {% else %}
-``` ruby
+
+```ruby
 # Mark the check run as complete! And if there are warnings, share them.
 @installation_client.update_check_run(
   @payload['repository']['full_name'],
@@ -656,6 +673,7 @@ You'll need to update that code to use the `conclusion` variable you set based o
   accept: 'application/vnd.github.antiope-preview+json'
 )
 ```
+
 {% endif %}
 
 Now that you're setting a conclusion based on the status of the CI test and you've added the output from the RuboCop results, you've created a CI test! Congratulations. 🙌
@@ -701,7 +719,7 @@ When someone clicks the "Fix this" button, your app receives the [check run webh
 
 In [Step 1.4. Updating a check run](#step-14-updating-a-check-run) you updated the your `event_handler` to handle look for actions in the `check_run` event. You already have a case statement to handle the `created` and `rerequested` action types:
 
-``` ruby
+```ruby
 when 'check_run'
   # Check that the event is being sent to this app
   if @payload['check_run']['app']['id'].to_s === APP_IDENTIFIER
@@ -716,14 +734,14 @@ end
 
 Add another `when` statement after the `rerequested` case to handle the `rerequested_action` event:
 
-``` ruby
+```ruby
 when 'requested_action'
   take_requested_action
 ```
 
 This code calls a new method that will handle all `requested_action` events for your app. Add the following method to the helper methods section of your code:
 
-``` ruby
+```ruby
 # Handles the check run `requested_action` event
 # See /webhooks/event-payloads/#check_run
 def take_requested_action
@@ -784,7 +802,7 @@ You can find the completed code for the app you just built in the `server.rb` fi
 
 The template GitHub App code already has a method to verify incoming webhook payloads to ensure they are from a trusted source. If you are not validating webhook payloads, you'll need to ensure that when repository names are included in the webhook payload, the webhook does not contain arbitrary commands that could be used maliciously. The code below validates that the repository name only contains Latin alphabetic characters, hyphens, and underscores. To provide you with a complete example, the complete `server.rb` code available in the [companion repository](https://github.com/github-developer/creating-ci-tests-with-the-checks-api) for this quickstart includes both the method of validating incoming webhook payloads and this check to verify the repository name.
 
-``` ruby
+```ruby
 # This quickstart example uses the repository name in the webhook with
 # command-line utilities. For security reasons, you should validate the
 # repository name to ensure that a bad actor isn't attempting to execute
@@ -800,39 +818,39 @@ end
 
 Here are a few common problems and some suggested solutions. If you run into any other trouble, you can ask for help or advice in the {% data variables.product.prodname_support_forum_with_url %}.
 
-* **Q:** My app isn't pushing code to GitHub. I don't see the fixes that RuboCop automatically makes!
+- **Q:** My app isn't pushing code to GitHub. I don't see the fixes that RuboCop automatically makes!
 
-    **A:** Make sure you have **Read & write** permissions for "Repository contents," and that you are cloning the repository with your installation token. See [Step 2.2. Cloning the repository](#step-22-cloning-the-repository) for details.
+  **A:** Make sure you have **Read & write** permissions for "Repository contents," and that you are cloning the repository with your installation token. See [Step 2.2. Cloning the repository](#step-22-cloning-the-repository) for details.
 
-* **Q:** I see an error in the `template_server.rb` debug output related to cloning my repository.
+- **Q:** I see an error in the `template_server.rb` debug output related to cloning my repository.
 
-    **A:** If you see the following error, you haven't deleted the checkout of the repository in one or both of the `initiate_check_run` or `take_requested_action` methods:
+  **A:** If you see the following error, you haven't deleted the checkout of the repository in one or both of the `initiate_check_run` or `take_requested_action` methods:
 
-    ```shell
-    2018-11-26 16:55:13 - Git::GitExecuteError - git  clone '--' 'https://x-access-token:ghs_9b2080277016f797074c4dEbD350745f4257@github.com/codertocat/octocat-breeds.git' 'Octocat-breeds'  2>&1:fatal: destination path 'Octocat-breeds' already exists and is not an empty directory.:
-    ```
+  ```shell
+  2018-11-26 16:55:13 - Git::GitExecuteError - git  clone '--' 'https://x-access-token:ghs_9b2080277016f797074c4dEbD350745f4257@github.com/codertocat/octocat-breeds.git' 'Octocat-breeds'  2>&1:fatal: destination path 'Octocat-breeds' already exists and is not an empty directory.:
+  ```
 
-    Compare your code to the `server.rb` file to ensure you have the same code in your `initiate_check_run` and `take_requested_action` methods.
+  Compare your code to the `server.rb` file to ensure you have the same code in your `initiate_check_run` and `take_requested_action` methods.
 
-* **Q:** New check runs are not showing up in the "Checks" tab on GitHub.
+- **Q:** New check runs are not showing up in the "Checks" tab on GitHub.
 
-    **A:** Restart Smee and re-run your `template_server.rb` server.
+  **A:** Restart Smee and re-run your `template_server.rb` server.
 
-* **Q:** I do not see the "Re-run all" button in the "Checks" tab on GitHub.
+- **Q:** I do not see the "Re-run all" button in the "Checks" tab on GitHub.
 
-    **A:** Restart Smee and re-run your `template_server.rb` server.
+  **A:** Restart Smee and re-run your `template_server.rb` server.
 
 ## Conclusion
 
 After walking through this guide, you've learned the basics of using the Checks API to create a CI server! To review, you:
 
-* Configured your server to receive Checks API events and create check runs.
-* Used RuboCop to check code in repositories and create annotations for the errors.
-* Implemented a requested action that automatically fixes linter errors.
+- Configured your server to receive Checks API events and create check runs.
+- Used RuboCop to check code in repositories and create annotations for the errors.
+- Implemented a requested action that automatically fixes linter errors.
 
 ## Next steps
 
 Here are some ideas for what you can do next:
 
-* Currently, the "Fix this" button is always displayed. Update the code you wrote to display the "Fix this" button only when RuboCop finds errors.
-* If you'd prefer that RuboCop doesn't commit files directly to the head branch, you can update the code to [create a pull request](/rest/reference/pulls#create-a-pull-request) with a new branch based on the head branch.
+- Currently, the "Fix this" button is always displayed. Update the code you wrote to display the "Fix this" button only when RuboCop finds errors.
+- If you'd prefer that RuboCop doesn't commit files directly to the head branch, you can update the code to [create a pull request](/rest/reference/pulls#create-a-pull-request) with a new branch based on the head branch.

@@ -1,19 +1,20 @@
 ---
 title: Viewing contributions on your profile
-intro: 'Your {% data variables.product.product_name %} profile shows off {% ifversion fpt or ghes %}your pinned repositories as well as{% endif %} a graph of your repository contributions over the past year.'
+intro: "Your {% data variables.product.product_name %} profile shows off {% ifversion fpt or ghes %}your pinned repositories as well as{% endif %} a graph of your repository contributions over the past year."
 redirect_from:
   - /articles/viewing-contributions/
   - /articles/viewing-contributions-on-your-profile-page/
   - /articles/viewing-contributions-on-your-profile
   - /github/setting-up-and-managing-your-github-profile/viewing-contributions-on-your-profile
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Profiles
 shortTitle: View contributions
 ---
+
 {% ifversion fpt or ghes %}Your contribution graph shows activity from public repositories. {% endif %}You can choose to show activity from {% ifversion fpt or ghes %}both public and {% endif %}private repositories, with specific details of your activity in private repositories anonymized. For more information, see "[Publicizing or hiding your private contributions on your profile](/articles/publicizing-or-hiding-your-private-contributions-on-your-profile)."
 
 {% note %}
@@ -59,7 +60,7 @@ Your contributions calendar shows your contribution activity.
 ### Viewing contributions from specific times
 
 - Click on a day's square to show the contributions made during that 24-hour period.
-- Press *Shift* and click on another day's square to show contributions made during that time span.
+- Press _Shift_ and click on another day's square to show contributions made during that time span.
 
 {% note %}
 
@@ -72,6 +73,7 @@ Your contributions calendar shows your contribution activity.
 ### How contribution event times are calculated
 
 Timestamps are calculated differently for commits and pull requests:
+
 - **Commits** use the time zone information in the commit timestamp. For more information, see "[Troubleshooting commits on your timeline](/articles/troubleshooting-commits-on-your-timeline)."
 - **Pull requests** and **issues** opened on {% data variables.product.product_name %} use your browser's time zone. Those opened via the API use the timestamp or time zone [specified in the API call](https://developer.github.com/changes/2014-03-04-timezone-handling-changes).
 
@@ -90,6 +92,7 @@ The contribution activity section includes a detailed timeline of your work, inc
 ![Contribution activity time filter](/assets/images/help/profile/contributions_activity_time_filter.png)
 
 {% ifversion not ghae %}
+
 ## Viewing contributions from {% data variables.product.product_location_enterprise %} on {% data variables.product.prodname_dotcom_the_website %}
 
 If your site administrator has enabled {% data variables.product.prodname_unified_contributions %}, you can send {% data variables.product.prodname_enterprise %} contribution counts to your {% data variables.product.prodname_dotcom_the_website %} profile. For more information, see "[Sending your {% data variables.product.prodname_ghe_server %} contributions to your {% data variables.product.prodname_dotcom_the_website %}](/articles/sending-your-github-enterprise-server-contributions-to-your-github-com-profile)."

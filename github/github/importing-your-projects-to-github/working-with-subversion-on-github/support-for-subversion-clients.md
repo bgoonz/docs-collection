@@ -5,56 +5,62 @@ redirect_from:
   - /articles/support-for-subversion-clients
   - /github/importing-your-projects-to-github/support-for-subversion-clients
 versions:
-  fpt: '*'
-  ghes: '*'
+  fpt: "*"
+  ghes: "*"
 shortTitle: Support for Subversion clients
 ---
+
 GitHub supports Subversion clients via the HTTPS protocol. We use a Subversion bridge to communicate svn commands to GitHub.
 
 ## Supported Subversion features on GitHub
 
 ### Checkout
 
-The first thing you'll want to do is a Subversion checkout.  Since Git clones keep the working directory (where you edit files) separate from the repository data, there is only one branch in the working directory at a time.
+The first thing you'll want to do is a Subversion checkout. Since Git clones keep the working directory (where you edit files) separate from the repository data, there is only one branch in the working directory at a time.
 
-Subversion checkouts are different: they mix the repository data in the working directories, so there is a working directory for each branch and tag you've checked out.  For repositories with many branches and tags, checking out everything can be a bandwidth burden, so you should start with a partial checkout.
+Subversion checkouts are different: they mix the repository data in the working directories, so there is a working directory for each branch and tag you've checked out. For repositories with many branches and tags, checking out everything can be a bandwidth burden, so you should start with a partial checkout.
 
 {% data reusables.repositories.navigate-to-repo %}
 {% data reusables.repositories.copy-clone-url %}
 
 3. Make an empty checkout of the repository:
-  ```shell
-  $ svn co --depth empty https://github.com/<em>user</em>/<em>repo</em>
-  > Checked out revision 1.
-  $ cd <em>repo</em>
-  ```
+
+```shell
+$ svn co --depth empty https://github.com/<em>user</em>/<em>repo</em>
+> Checked out revision 1.
+$ cd <em>repo</em>
+```
 
 4. Get the `trunk` branch. The Subversion bridge maps trunk to the Git HEAD branch.
-  ```shell
-  $ svn up trunk
-  > A    trunk
-  > A    trunk/README.md
-  > A    trunk/gizmo.rb
-  > Updated to revision 1.
-  ```
 
-5. Get an empty checkout of the `branches` directory.  This is where all of the non-`HEAD` branches live, and where you'll be making feature branches.
-  ```shell
-  $ svn up --depth empty branches
-  Updated to revision 1.
-  ```
+```shell
+$ svn up trunk
+> A    trunk
+> A    trunk/README.md
+> A    trunk/gizmo.rb
+> Updated to revision 1.
+```
+
+5. Get an empty checkout of the `branches` directory. This is where all of the non-`HEAD` branches live, and where you'll be making feature branches.
+
+```shell
+$ svn up --depth empty branches
+Updated to revision 1.
+```
 
 ### Creating branches
 
 You can also create branches using the Subversion bridge to GitHub.
 
 From your svn client, make sure the default branch is current by updating `trunk`:
+
 ```shell
 $ svn up trunk
 > At revision 1.
 ```
 
 Next, you can use `svn copy` to create a new branch:
+
 ```shell
 $ svn copy trunk branches/more_awesome
 > A    branches/more_awesome
@@ -129,4 +135,4 @@ With this commit SHA, you can, for example, look up the corresponding Git commit
 
 ## Further reading
 
-* "[Subversion properties supported by GitHub](/articles/subversion-properties-supported-by-github)"
+- "[Subversion properties supported by GitHub](/articles/subversion-properties-supported-by-github)"

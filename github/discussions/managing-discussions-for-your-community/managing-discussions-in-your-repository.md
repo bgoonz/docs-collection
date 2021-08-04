@@ -1,9 +1,9 @@
 ---
 title: Managing discussions in your repository
-intro: 'You can categorize, spotlight, transfer, or delete the discussions in a repository.'
+intro: "You can categorize, spotlight, transfer, or delete the discussions in a repository."
 permissions: Repository administrators and people with write or greater access to a repository can manage discussions in the repository.
 versions:
-  fpt: '*'
+  fpt: "*"
 shortTitle: Manage discussions
 ---
 
@@ -34,10 +34,11 @@ You can also move a discussion to a different category.
 {% data reusables.repositories.navigate-to-repo %}
 {% data reusables.discussions.discussions-tab %}
 {% data reusables.discussions.click-discussion-in-list %}
+
 1. In the right sidebar, to the right of "Category", click {% octicon "gear" aria-label="The gear icon" %}.
-  !["Category" with gear icon](/assets/images/help/discussions/category-in-sidebar.png)
+   !["Category" with gear icon](/assets/images/help/discussions/category-in-sidebar.png)
 1. Click a category.
-  !["Change category" drop-down menu](/assets/images/help/discussions/change-category-drop-down.png)
+   !["Change category" drop-down menu](/assets/images/help/discussions/change-category-drop-down.png)
 
 ## Pinning a discussion
 
@@ -46,12 +47,13 @@ You can pin up to four important discussions above the list of discussions for t
 {% data reusables.repositories.navigate-to-repo %}
 {% data reusables.discussions.discussions-tab %}
 {% data reusables.discussions.click-discussion-in-list %}
+
 1. In the right sidebar, click {% octicon "pin" aria-label="The pin icon" %} **Pin discussion**.
-  !["Pin discussion" in right sidebar for discussion](/assets/images/help/discussions/click-pin-discussion.png)
+   !["Pin discussion" in right sidebar for discussion](/assets/images/help/discussions/click-pin-discussion.png)
 1. Optionally, customize the look of the pinned discussion.
-  ![Customization options for a pinned discussion](/assets/images/help/discussions/customize-pinned-discussion.png)
+   ![Customization options for a pinned discussion](/assets/images/help/discussions/customize-pinned-discussion.png)
 1. Click **Pin discussion**.
-  !["Pin discussion" button under customization options for pinned discussion](/assets/images/help/discussions/click-pin-discussion-button.png)
+   !["Pin discussion" button under customization options for pinned discussion](/assets/images/help/discussions/click-pin-discussion-button.png)
 
 ## Editing a pinned discussion
 
@@ -60,22 +62,24 @@ Editing a pinned discussion will not change the discussion's category. For more 
 {% data reusables.repositories.navigate-to-repo %}
 {% data reusables.discussions.discussions-tab %}
 {% data reusables.discussions.click-discussion-in-list %}
+
 1. In the right sidebar, click {% octicon "pencil" aria-label="The pencil icon" %} **Edit pinned discussion**.
-  !["Pin discussion" in right sidebar for discussion](/assets/images/help/discussions/click-edit-pinned-discussion.png)
+   !["Pin discussion" in right sidebar for discussion](/assets/images/help/discussions/click-edit-pinned-discussion.png)
 1. Customize the look of the pinned discussion.
-  ![Customization options for a pinned discussion](/assets/images/help/discussions/customize-pinned-discussion.png)
+   ![Customization options for a pinned discussion](/assets/images/help/discussions/customize-pinned-discussion.png)
 1. Click **Pin discussion**.
-  !["Pin discussion" button under customization options for pinned discussion](/assets/images/help/discussions/click-pin-discussion-button.png)
+   !["Pin discussion" button under customization options for pinned discussion](/assets/images/help/discussions/click-pin-discussion-button.png)
 
 ## Unpinning a discussion
 
 {% data reusables.repositories.navigate-to-repo %}
 {% data reusables.discussions.discussions-tab %}
 {% data reusables.discussions.click-discussion-in-list %}
+
 1. In the right sidebar, click {% octicon "pin" aria-label="The pin icon" %} **Unpin discussion**.
-  !["Unpin discussion" in right sidebar for discussion](/assets/images/help/discussions/click-unpin-discussion.png)
+   !["Unpin discussion" in right sidebar for discussion](/assets/images/help/discussions/click-unpin-discussion.png)
 1. Read the warning, then click **Unpin discussion**.
-  !["Unpin discussion" button beneath warning in modal](/assets/images/help/discussions/click-unpin-discussion-button.png)
+   !["Unpin discussion" button beneath warning in modal](/assets/images/help/discussions/click-unpin-discussion-button.png)
 
 ## Transferring a discussion
 
@@ -84,22 +88,24 @@ To transfer a discussion, you must have permissions to create discussions in the
 {% data reusables.repositories.navigate-to-repo %}
 {% data reusables.discussions.discussions-tab %}
 {% data reusables.discussions.click-discussion-in-list %}
+
 1. In the right sidebar, click {% octicon "arrow-right" aria-label="The right arrow icon" %} **Transfer discussion**.
-  !["Transfer discussion" in right sidebar for discussion](/assets/images/help/discussions/click-transfer-discussion.png)
+   !["Transfer discussion" in right sidebar for discussion](/assets/images/help/discussions/click-transfer-discussion.png)
 1. Select the **Choose a repository** drop-down, and click the repository you want to transfer the discussion to.
-  !["Choose a repository" drop-down, "Find a repository" search field, and repository in list](/assets/images/help/discussions/use-choose-a-repository-drop-down.png)
+   !["Choose a repository" drop-down, "Find a repository" search field, and repository in list](/assets/images/help/discussions/use-choose-a-repository-drop-down.png)
 1. Click **Transfer discussion**.
-  !["Transfer discussion" button](/assets/images/help/discussions/click-transfer-discussion-button.png)
+   !["Transfer discussion" button](/assets/images/help/discussions/click-transfer-discussion-button.png)
 
 ## Deleting a discussion
 
 {% data reusables.repositories.navigate-to-repo %}
 {% data reusables.discussions.discussions-tab %}
 {% data reusables.discussions.click-discussion-in-list %}
+
 1. In the right sidebar, click {% octicon "trash" aria-label="The trash arrow icon" %} **Delete discussion**.
-  !["Delete discussion" in right sidebar for discussion](/assets/images/help/discussions/click-delete-discussion.png)
+   !["Delete discussion" in right sidebar for discussion](/assets/images/help/discussions/click-delete-discussion.png)
 1. Read the warning, then click **Delete this discussion**.
-  !["Delete this discussion" button beneath warning in modal](/assets/images/help/discussions/click-delete-this-discussion-button.png)
+   !["Delete this discussion" button beneath warning in modal](/assets/images/help/discussions/click-delete-this-discussion-button.png)
 
 ## Converting issues based on labels
 
@@ -108,6 +114,7 @@ You can convert all issues with the same label to discussions in bulk. Future is
 {% data reusables.repositories.navigate-to-repo %}
 {% data reusables.repositories.sidebar-issues %}
 {% data reusables.project-management.labels %}
+
 1. Next to the label you want to convert to issues, click **Convert issues**.
 1. Select the **Choose a category** drop-down menu, and click a category for your discussion.
 1. Click **I understand, convert this issue to a discussion**.

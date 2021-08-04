@@ -1,8 +1,8 @@
 ---
 title: Managing your codespaces
-intro: 'You can use {% data variables.product.prodname_github_codespaces %} settings to manage information that your codespace might need.'
+intro: "You can use {% data variables.product.prodname_github_codespaces %} settings to manage information that your codespace might need."
 versions:
-  fpt: '*'
+  fpt: "*"
 topics:
   - Codespaces
 redirect_from:
@@ -13,4 +13,5 @@ children:
   - /reviewing-your-security-logs-for-codespaces
   - /managing-gpg-verification-for-codespaces
 ---
+
 {% data reusables.codespaces.release-stage %}

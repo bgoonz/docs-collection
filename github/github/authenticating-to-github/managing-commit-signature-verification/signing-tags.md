@@ -6,25 +6,29 @@ redirect_from:
   - /articles/signing-tags
   - /github/authenticating-to-github/signing-tags
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Identity
   - Access management
 ---
+
 {% data reusables.gpg.desktop-support-for-commit-signing %}
 
 1. To sign a tag, add `-s` to your `git tag` command.
-  ```shell
-  $ git tag -s <em>mytag</em>
-  # Creates a signed tag
-  ```
+
+```shell
+$ git tag -s <em>mytag</em>
+# Creates a signed tag
+```
+
 2. Verify your signed tag it by running `git tag -v [tag-name]`.
-  ```shell
-  $ git tag -v <em>mytag</em>
-  # Verifies the signed tag
-  ```
+
+```shell
+$ git tag -v <em>mytag</em>
+# Verifies the signed tag
+```
 
 ## Further reading
 

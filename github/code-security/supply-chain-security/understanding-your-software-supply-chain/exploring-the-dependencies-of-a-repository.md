@@ -1,6 +1,6 @@
 ---
 title: Exploring the dependencies of a repository
-intro: 'You can use the dependency graph to see the packages your project depends on{% ifversion fpt %} and the repositories that depend on it{% endif %}. In addition, you can see any vulnerabilities detected in its dependencies.'
+intro: "You can use the dependency graph to see the packages your project depends on{% ifversion fpt %} and the repositories that depend on it{% endif %}. In addition, you can see any vulnerabilities detected in its dependencies."
 redirect_from:
   - /articles/listing-the-packages-that-a-repository-depends-on
   - /github/visualizing-repository-data-with-graphs/listing-the-packages-that-a-repository-depends-on
@@ -10,8 +10,8 @@ redirect_from:
   - /github/visualizing-repository-data-with-graphs/exploring-the-dependencies-of-a-repository
   - /code-security/supply-chain-security/exploring-the-dependencies-of-a-repository
 versions:
-  fpt: '*'
-  ghes: '>=3.0'
+  fpt: "*"
+  ghes: ">=3.0"
 type: how_to
 topics:
   - Dependency graph
@@ -19,6 +19,7 @@ topics:
   - Repositories
 shortTitle: Explore dependencies
 ---
+
 <!--For this article in earlier GHES versions, see /content/github/visualizing-repository-data-with-graphs-->
 
 ## Viewing the dependency graph
@@ -29,8 +30,7 @@ The dependency graph shows the dependencies{% ifversion fpt %} and dependents{% 
 
 {% data reusables.repositories.navigate-to-repo %}
 {% data reusables.repositories.accessing-repository-graphs %}
-{% data reusables.repositories.click-dependency-graph %}{% ifversion fpt %}
-4. Optionally, under "Dependency graph", click **Dependents**.
+{% data reusables.repositories.click-dependency-graph %}{% ifversion fpt %} 4. Optionally, under "Dependency graph", click **Dependents**.
 ![Dependents tab on the dependency graph page](/assets/images/help/graphs/dependency-graph-dependents-tab.png){% endif %}
 
 ### Dependencies view
@@ -58,6 +58,7 @@ Any direct and indirect dependencies that are specified in the repository's mani
 {% endif %}
 
 {% ifversion fpt %}
+
 ### Dependents view
 
 For public repositories, the dependents view shows how the repository is used by other repositories. To show only the repositories that contain a library in a package manager, click **NUMBER Packages** immediately above the list of dependent repositories. The dependent counts are approximate and may not always match the dependents listed.
@@ -72,17 +73,16 @@ You can also enable or disable the dependency graph for all repositories owned b
 
 {% data reusables.repositories.navigate-to-repo %}
 {% data reusables.repositories.sidebar-settings %}
-{% data reusables.repositories.navigate-to-security-and-analysis %}
-4. Read the message about granting {% data variables.product.product_name %} read-only access to the repository data to enable the dependency graph, then next to "Dependency Graph", click **Enable**.
-   !["Enable" button for the dependency graph](/assets/images/help/repository/dependency-graph-enable-button.png)
+{% data reusables.repositories.navigate-to-security-and-analysis %} 4. Read the message about granting {% data variables.product.product_name %} read-only access to the repository data to enable the dependency graph, then next to "Dependency Graph", click **Enable**.
+!["Enable" button for the dependency graph](/assets/images/help/repository/dependency-graph-enable-button.png)
 
 You can disable the dependency graph at any time by clicking **Disable** next to "Dependency Graph" on the Security & analysis tab.
 
 ## Changing the "Used by" package
 
-If the dependency graph is enabled, and your repository contains a package that's published on a supported package ecosystem, {% data variables.product.prodname_dotcom %} displays a "Used by" section in the sidebar of the **Code** tab of your repository. For more information about the supported package ecosystems, see "[About the dependency graph](/github/visualizing-repository-data-with-graphs/about-the-dependency-graph#supported-package-ecosystems)." 
+If the dependency graph is enabled, and your repository contains a package that's published on a supported package ecosystem, {% data variables.product.prodname_dotcom %} displays a "Used by" section in the sidebar of the **Code** tab of your repository. For more information about the supported package ecosystems, see "[About the dependency graph](/github/visualizing-repository-data-with-graphs/about-the-dependency-graph#supported-package-ecosystems)."
 
-The "Used by" section shows the number of public references to the package that were found, and displays the avatars of some of the owners of the dependent projects. 
+The "Used by" section shows the number of public references to the package that were found, and displays the avatars of some of the owners of the dependent projects.
 
 !["Used by" sidebar section](/assets/images/help/repository/used-by-section.png)
 
@@ -92,9 +92,8 @@ The "Used by" section represents a single package from the repository. If you ha
 
 {% data reusables.repositories.navigate-to-repo %}
 {% data reusables.repositories.sidebar-settings %}
-{% data reusables.repositories.navigate-to-security-and-analysis %}
-4. Under "Configure security and analysis features", click the drop-down menu in the "Used by counter" section and choose a package.
-  ![Choose a "Used by" package](/assets/images/help/repository/choose-used-by-package.png)
+{% data reusables.repositories.navigate-to-security-and-analysis %} 4. Under "Configure security and analysis features", click the drop-down menu in the "Used by counter" section and choose a package.
+![Choose a "Used by" package](/assets/images/help/repository/choose-used-by-package.png)
 
 {% endif %}
 
@@ -113,4 +112,4 @@ If a manifest or lock file is not processed, its dependencies are omitted from t
 - "[Viewing and updating vulnerable dependencies in your repository](/github/managing-security-vulnerabilities/viewing-and-updating-vulnerable-dependencies-in-your-repository)"{% ifversion fpt %}
 - "[Viewing insights for your organization](/organizations/collaborating-with-groups-in-organizations/viewing-insights-for-your-organization)"
 - "[Understanding how {% data variables.product.product_name %} uses and protects your data](/github/understanding-how-github-uses-and-protects-your-data)"
-{% endif %}
+  {% endif %}

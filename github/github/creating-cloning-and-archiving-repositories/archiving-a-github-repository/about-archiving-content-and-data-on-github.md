@@ -1,15 +1,16 @@
 ---
 title: About archiving content and data on GitHub
-intro: 'You can archive content and data on {% data variables.product.product_name %} for other people to view and reference.'
+intro: "You can archive content and data on {% data variables.product.product_name %} for other people to view and reference."
 redirect_from:
   - /articles/about-archiving-content-and-data-on-github
   - /github/creating-cloning-and-archiving-repositories/about-archiving-content-and-data-on-github
 versions:
-  fpt: '*'
+  fpt: "*"
 topics:
   - Repositories
 shortTitle: Archive content & data
 ---
+
 ## Persistence of public repositories
 
 {% data variables.product.product_name %} intends to keep your public repositories available unless you remove them. In some cases, we may make public content unavailable, for example if:

@@ -6,12 +6,13 @@ redirect_from:
   - /articles/supported-browsers
   - /github/getting-started-with-github/supported-browsers
   - /github/getting-started-with-github/using-github/supported-browsers
-intro: 'We design {% data variables.product.product_name %} to support the latest web browsers. We support the current versions of [Chrome](https://www.google.com/chrome/), [Firefox](http://www.mozilla.org/firefox/), [Safari](http://www.apple.com/safari/), and [Microsoft Edge](https://www.microsoft.com/en-us/windows/microsoft-edge).'
+intro: "We design {% data variables.product.product_name %} to support the latest web browsers. We support the current versions of [Chrome](https://www.google.com/chrome/), [Firefox](http://www.mozilla.org/firefox/), [Safari](http://www.apple.com/safari/), and [Microsoft Edge](https://www.microsoft.com/en-us/windows/microsoft-edge)."
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 ---
+
 ## Firefox Extended Support Release
 
 We do our best to support Firefox's latest [Extended Support Release](https://www.mozilla.org/en-US/firefox/organizations/) (ESR). Older versions of Firefox may disable some features on {% data variables.product.product_name %} and require the latest version of Firefox.

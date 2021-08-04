@@ -1,6 +1,6 @@
 ---
 title: Exploring projects on GitHub
-intro: 'Discover interesting projects on {% data variables.product.product_name %} and contribute to open source by collaborating with other people.'
+intro: "Discover interesting projects on {% data variables.product.product_name %} and contribute to open source by collaborating with other people."
 redirect_from:
   - /categories/stars/
   - /categories/87/articles/
@@ -8,9 +8,9 @@ redirect_from:
   - /articles/exploring-projects-on-github
   - /github/getting-started-with-github/exploring-projects-on-github/
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Projects
 children:
@@ -19,4 +19,3 @@ children:
   - /following-people
 shortTitle: Explore projects
 ---
-

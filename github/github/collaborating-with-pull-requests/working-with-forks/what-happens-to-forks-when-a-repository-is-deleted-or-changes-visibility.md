@@ -7,13 +7,14 @@ redirect_from:
   - /articles/what-happens-to-forks-when-a-repository-is-deleted-or-changes-visibility
   - /github/collaborating-with-issues-and-pull-requests/what-happens-to-forks-when-a-repository-is-deleted-or-changes-visibility
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Pull requests
 shortTitle: Deleted or changes visibility
 ---
+
 {% data reusables.repositories.deleted_forks_from_private_repositories_warning %}
 
 ## Deleting a private repository

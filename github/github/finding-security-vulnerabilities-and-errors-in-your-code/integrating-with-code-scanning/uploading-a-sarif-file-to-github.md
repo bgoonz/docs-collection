@@ -1,16 +1,17 @@
 ---
 title: Uploading a SARIF file to GitHub
 shortTitle: Uploading a SARIF file
-intro: '{% data reusables.code-scanning.you-can-upload-third-party-analysis %}'
-permissions: 'People with write permissions to a repository can upload {% data variables.product.prodname_code_scanning %} data generated outside {% data variables.product.prodname_dotcom %}.'
-product: '{% data reusables.gated-features.code-scanning %}'
+intro: "{% data reusables.code-scanning.you-can-upload-third-party-analysis %}"
+permissions: "People with write permissions to a repository can upload {% data variables.product.prodname_code_scanning %} data generated outside {% data variables.product.prodname_dotcom %}."
+product: "{% data reusables.gated-features.code-scanning %}"
 versions:
-  ghes: '2.22'
+  ghes: "2.22"
 topics:
   - Security
 redirect_from:
   - /github/finding-security-vulnerabilities-and-errors-in-your-code/uploading-a-sarif-file-to-github
 ---
+
 <!--See /content/code-security/secure-coding for the latest version of this article -->
 
 {% data reusables.code-scanning.beta %}
@@ -33,11 +34,11 @@ You can upload the results using {% data variables.product.prodname_actions %} (
 
 ## Uploading a {% data variables.product.prodname_code_scanning %} analysis with {% data variables.product.prodname_actions %}
 
-To use {% data variables.product.prodname_actions %} to upload a third-party SARIF file to a repository, you'll need a  workflow. For more information, see "[Learn {% data variables.product.prodname_actions %}](/actions/getting-started-with-github-actions/about-github-actions)" and "[Learn {% data variables.product.prodname_actions %}](/actions/learn-github-actions)."
+To use {% data variables.product.prodname_actions %} to upload a third-party SARIF file to a repository, you'll need a workflow. For more information, see "[Learn {% data variables.product.prodname_actions %}](/actions/getting-started-with-github-actions/about-github-actions)" and "[Learn {% data variables.product.prodname_actions %}](/actions/learn-github-actions)."
 
 Your workflow will need to use the `upload-sarif` action, which is part of the `github/codeql-action` repository. It has input parameters that you can use to configure the upload. The main input parameter you'll use is `sarif-file`, which configures the file or directory of SARIF files to be uploaded. The directory or file path is relative to the root of the repository. For more information see the [`upload-sarif` action](https://github.com/github/codeql-action/tree/HEAD/upload-sarif).
 
-The `upload-sarif` action can be configured to run when the `push` and `scheduled` event occur. For more information about {% data variables.product.prodname_actions %}  events, see "[Events that trigger workflows](/actions/reference/events-that-trigger-workflows)."
+The `upload-sarif` action can be configured to run when the `push` and `scheduled` event occur. For more information about {% data variables.product.prodname_actions %} events, see "[Events that trigger workflows](/actions/reference/events-that-trigger-workflows)."
 
 If your SARIF file doesn't include `partialFingerprints`, the `upload-sarif` action will calculate the `partialFingerprints` field for you and attempt to prevent duplicate alerts. {% data variables.product.prodname_dotcom %} can only create `partialFingerprints` when the repository contains both the SARIF file and the source code used in the static analysis. For more information about preventing duplicate alerts, see "[SARIF support for {% data variables.product.prodname_code_scanning %}](/github/finding-security-vulnerabilities-and-errors-in-your-code/sarif-support-for-code-scanning#preventing-duplicate-alerts-using-fingerprints)."
 
@@ -47,7 +48,7 @@ If your SARIF file doesn't include `partialFingerprints`, the `upload-sarif` act
 
 You can create a new workflow that uploads SARIF files after you commit them to your repository. This is useful when the SARIF file is generated as an artifact outside of your repository.
 
-This example workflow runs anytime commits are pushed to the repository. The action uses the `partialFingerprints` property to determine if changes have occurred. In addition to running when commits are pushed, the workflow is scheduled to run once per week. For more information, see "[Events that trigger workflows](/actions/reference/events-that-trigger-workflows)." 
+This example workflow runs anytime commits are pushed to the repository. The action uses the `partialFingerprints` property to determine if changes have occurred. In addition to running when commits are pushed, the workflow is scheduled to run once per week. For more information, see "[Events that trigger workflows](/actions/reference/events-that-trigger-workflows)."
 
 This workflow uploads the `results.sarif` file located in the root of the repository. For more information about creating a workflow file, see "[Learn {% data variables.product.prodname_actions %}](/actions/learn-github-actions)."
 
@@ -61,7 +62,7 @@ name: "Upload SARIF"
 on:
   push:
   schedule:
-    - cron: '45 15 * * 5'
+    - cron: "45 15 * * 5"
 
 jobs:
   build:
@@ -83,7 +84,7 @@ jobs:
 
 If you generate your third-party SARIF file as part of a continuous integration (CI) workflow, you can add the `upload-sarif` action as a step after running your CI tests. If you don't already have a CI workflow, you can create one using a {% data variables.product.prodname_actions %} template. For more information, see the "[{% data variables.product.prodname_actions %} quickstart](/actions/quickstart)."
 
-This example workflow runs anytime commits are pushed to the repository. The action uses the `partialFingerprints` property to determine if changes have occurred. In addition to running when commits are pushed, the workflow is scheduled to run once per week. For more information, see "[Events that trigger workflows](/actions/reference/events-that-trigger-workflows)." 
+This example workflow runs anytime commits are pushed to the repository. The action uses the `partialFingerprints` property to determine if changes have occurred. In addition to running when commits are pushed, the workflow is scheduled to run once per week. For more information, see "[Events that trigger workflows](/actions/reference/events-that-trigger-workflows)."
 
 The workflow shows an example of running the ESLint static analysis tool as a step in a workflow. The `Run ESLint` step runs the ESLint tool and outputs the `results.sarif` file. The workflow then uploads the `results.sarif` file to {% data variables.product.prodname_dotcom %} using the `upload-sarif` action. For more information about creating a workflow file, see "[Introduction to GitHub Actions](/actions/learn-github-actions/introduction-to-github-actions)."
 
@@ -95,7 +96,7 @@ name: "ESLint analysis"
 on:
   push:
   schedule:
-    - cron: '45 15 * * 1'
+    - cron: "45 15 * * 1"
 
 jobs:
   build:

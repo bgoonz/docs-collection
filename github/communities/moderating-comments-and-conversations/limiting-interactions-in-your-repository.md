@@ -6,7 +6,7 @@ redirect_from:
   - /articles/limiting-interactions-in-your-repository
   - /github/building-a-strong-community/limiting-interactions-in-your-repository
 versions:
-  fpt: '*'
+  fpt: "*"
 permissions: People with admin permissions to a repository can temporarily limit interactions in that repository.
 topics:
   - Community
@@ -27,14 +27,16 @@ You can also enable activity limitations on all repositories owned by your user 
 
 {% data reusables.repositories.navigate-to-repo %}
 {% data reusables.repositories.sidebar-settings %}
+
 1. In the left sidebar, click **Moderation settings**.
-  !["Moderation settings" in repository settings sidebar](/assets/images/help/repository/repo-settings-moderation-settings.png)
+   !["Moderation settings" in repository settings sidebar](/assets/images/help/repository/repo-settings-moderation-settings.png)
 1. Under "Moderation settings", click **Interaction limits**.
-  ![Interaction limits in repository settings ](/assets/images/help/repository/repo-settings-interaction-limits.png)
-{% data reusables.community.set-interaction-limit %}
-  ![Temporary interaction limit options](/assets/images/help/repository/temporary-interaction-limits-options.png)
+   ![Interaction limits in repository settings ](/assets/images/help/repository/repo-settings-interaction-limits.png)
+   {% data reusables.community.set-interaction-limit %}
+   ![Temporary interaction limit options](/assets/images/help/repository/temporary-interaction-limits-options.png)
 
 ## Further reading
+
 - "[Reporting abuse or spam](/communities/maintaining-your-safety-on-github/reporting-abuse-or-spam)"
 - "[Managing an individual's access to an organization repository](/articles/managing-an-individual-s-access-to-an-organization-repository)"
 - "[Permission levels for a user account repository](/articles/permission-levels-for-a-user-account-repository)"

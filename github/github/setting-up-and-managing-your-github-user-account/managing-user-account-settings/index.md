@@ -1,14 +1,14 @@
 ---
 title: Managing user account settings
-intro: 'You can change several settings for your personal account, including changing your username and deleting your account.'
+intro: "You can change several settings for your personal account, including changing your username and deleting your account."
 redirect_from:
   - /categories/29/articles/
   - /categories/user-accounts/
   - /articles/managing-user-account-settings
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Accounts
 children:
@@ -28,4 +28,3 @@ children:
   - /what-does-the-available-for-hire-checkbox-do
 shortTitle: User account settings
 ---
-

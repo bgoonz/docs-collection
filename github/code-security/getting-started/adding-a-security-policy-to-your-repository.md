@@ -6,8 +6,8 @@ redirect_from:
   - /github/managing-security-vulnerabilities/adding-a-security-policy-to-your-repository
   - /github/code-security/security-advisories/adding-a-security-policy-to-your-repository
 versions:
-  fpt: '*'
-  ghes: '>=3.1'
+  fpt: "*"
+  ghes: ">=3.1"
   ghae: next
 type: how_to
 topics:
@@ -23,7 +23,9 @@ shortTitle: Add a security policy
 To give people instructions for reporting security vulnerabilities in your project,{% ifversion fpt or ghes > 3.0 %} you can add a _SECURITY.md_ file to your repository's root, `docs`, or `.github` folder.{% else %} you can add a _SECURITY.md_ file to your repository's root, or `docs` folder.{% endif %} When someone creates an issue in your repository, they will see a link to your project's security policy.
 
 {% ifversion not ghae %}
+
 <!-- no public repos in GHAE -->
+
 You can create a default security policy for your organization or user account. For more information, see "[Creating a default community health file](/communities/setting-up-your-project-for-healthy-contributions/creating-a-default-community-health-file)."
 {% endif %}
 
@@ -39,19 +41,18 @@ After someone reports a security vulnerability in your project, you can use {% d
 {% data reusables.repositories.github-security-lab %}
 {% endif %}
 {% ifversion ghes > 3.0 or ghae-next %}
+
 <!-- alternative to the content about GitHub Security Advisories in the dotcom article -->
+
 By making security reporting instructions clearly available, you make it easy for your users to report any security vulnerabilities they find in your repository using your preferred communication channel.
 {% endif %}
 
 ## Adding a security policy to your repository
 
 {% data reusables.repositories.navigate-to-repo %}
-{% data reusables.repositories.sidebar-security %}
-3. In the left sidebar, click **Security policy**.
-  ![Security policy tab](/assets/images/help/security/security-policy-tab.png)
-4. Click **Start setup**.
-  ![Start setup button](/assets/images/help/security/start-setup-security-policy-button.png)
-5. In the new _SECURITY.md_ file, add information about supported versions of your project and how to report a vulnerability.
+{% data reusables.repositories.sidebar-security %} 3. In the left sidebar, click **Security policy**.
+![Security policy tab](/assets/images/help/security/security-policy-tab.png) 4. Click **Start setup**.
+![Start setup button](/assets/images/help/security/start-setup-security-policy-button.png) 5. In the new _SECURITY.md_ file, add information about supported versions of your project and how to report a vulnerability.
 {% data reusables.files.write_commit_message %}
 {% data reusables.files.choose-commit-email %}
 {% data reusables.files.choose_commit_branch %}

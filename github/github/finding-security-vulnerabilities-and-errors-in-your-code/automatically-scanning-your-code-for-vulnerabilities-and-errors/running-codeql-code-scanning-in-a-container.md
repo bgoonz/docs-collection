@@ -1,15 +1,16 @@
 ---
 title: Running CodeQL code scanning in a container
-shortTitle: '{% data variables.product.prodname_code_scanning_capc %} in a container'
-intro: 'You can run {% data variables.product.prodname_code_scanning %} in a container by ensuring that all processes run in the same container.'
-product: '{% data reusables.gated-features.code-scanning %}'
+shortTitle: "{% data variables.product.prodname_code_scanning_capc %} in a container"
+intro: "You can run {% data variables.product.prodname_code_scanning %} in a container by ensuring that all processes run in the same container."
+product: "{% data reusables.gated-features.code-scanning %}"
 versions:
-  ghes: '2.22'
+  ghes: "2.22"
 topics:
   - Security
 redirect_from:
   - /github/finding-security-vulnerabilities-and-errors-in-your-code/running-codeql-code-scanning-in-a-container
 ---
+
 <!--See /content/code-security/secure-coding for the latest version of this article -->
 
 {% data reusables.code-scanning.beta %}
@@ -24,18 +25,18 @@ You must run {% data variables.product.prodname_codeql %} in the same container 
 
 You may have difficulty running {% data variables.product.prodname_code_scanning %} if the container you're using is missing certain dependencies (for example, Git must be installed and added to the PATH variable). If you encounter dependency issues, review the list of software typically included on {% data variables.product.prodname_dotcom %}'s virtual environments. For more information, see the version-specific `readme` files in these locations:
 
-* Linux: https://github.com/actions/virtual-environments/tree/main/images/linux
-* macOS: https://github.com/actions/virtual-environments/tree/main/images/macos
-* Windows: https://github.com/actions/virtual-environments/tree/main/images/win
+- Linux: https://github.com/actions/virtual-environments/tree/main/images/linux
+- macOS: https://github.com/actions/virtual-environments/tree/main/images/macos
+- Windows: https://github.com/actions/virtual-environments/tree/main/images/win
 
 ## Example workflow
 
 This sample workflow uses {% data variables.product.prodname_actions %} to run {% data variables.product.prodname_codeql %} analysis in a containerized environment. The value of `container.image` identifies the container to use. In this example the image is named `codeql-container`, with a tag of `f0f91db`. For more information, see "[Workflow syntax for {% data variables.product.prodname_actions %}](/actions/reference/workflow-syntax-for-github-actions#jobsjob_idcontainer)."
 
-``` yaml
+```yaml
 name: "{% data variables.product.prodname_codeql %}"
 
-on: 
+on:
   push:
     branches: [main]
   pull_request:

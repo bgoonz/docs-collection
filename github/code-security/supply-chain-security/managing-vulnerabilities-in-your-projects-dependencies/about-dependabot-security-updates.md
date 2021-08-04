@@ -1,13 +1,13 @@
 ---
 title: About Dependabot security updates
-intro: '{% data variables.product.prodname_dependabot %} can fix vulnerable dependencies for you by raising pull requests with security updates.'
+intro: "{% data variables.product.prodname_dependabot %} can fix vulnerable dependencies for you by raising pull requests with security updates."
 shortTitle: Dependabot security updates
 redirect_from:
   - /github/managing-security-vulnerabilities/about-github-dependabot-security-updates
   - /github/managing-security-vulnerabilities/about-dependabot-security-updates
   - /code-security/supply-chain-security/about-dependabot-security-updates
 versions:
-  fpt: '*'
+  fpt: "*"
 type: overview
 topics:
   - Dependabot
@@ -17,6 +17,7 @@ topics:
   - Dependencies
   - Pull requests
 ---
+
 <!--Marketing-LINK: From /features/security/software-supply-chain page "About Dependabot security updates".-->
 
 ## About {% data variables.product.prodname_dependabot_security_updates %}
@@ -24,7 +25,6 @@ topics:
 {% data variables.product.prodname_dependabot_security_updates %} make it easier for you to fix vulnerable dependencies in your repository. If you enable this feature, when a {% data variables.product.prodname_dependabot %} alert is raised for a vulnerable dependency in the dependency graph of your repository, {% data variables.product.prodname_dependabot %} automatically tries to fix it. For more information, see "[About alerts for vulnerable dependencies](/code-security/supply-chain-security/about-alerts-for-vulnerable-dependencies)" and "[Configuring {% data variables.product.prodname_dependabot_security_updates %}](/github/managing-security-vulnerabilities/configuring-dependabot-security-updates)."
 
 {% data variables.product.prodname_dotcom %} may send {% data variables.product.prodname_dependabot %} alerts to repositories affected by a vulnerability disclosed by a recently published {% data variables.product.prodname_dotcom %} security advisory. For more information, see "[About {% data variables.product.prodname_security_advisories %}](/github/managing-security-vulnerabilities/about-github-security-advisories#dependabot-alerts-for-published-security-advisories)."
-
 
 {% data variables.product.prodname_dependabot %} checks whether it's possible to upgrade the vulnerable dependency to a fixed version without disrupting the dependency graph for the repository. Then {% data variables.product.prodname_dependabot %} raises a pull request to update the dependency to the minimum version that includes the patch and links the pull request to the {% data variables.product.prodname_dependabot %} alert, or reports an error on the alert. For more information, see "[Troubleshooting {% data variables.product.prodname_dependabot %} errors](/github/managing-security-vulnerabilities/troubleshooting-dependabot-errors)."
 

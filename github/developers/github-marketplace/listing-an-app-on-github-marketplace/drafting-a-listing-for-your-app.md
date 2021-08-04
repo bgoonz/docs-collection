@@ -1,6 +1,6 @@
 ---
 title: Drafting a listing for your app
-intro: 'When you create a {% data variables.product.prodname_marketplace %} listing, GitHub saves it in draft mode until you submit the app for approval. Your listing shows customers how they can use your app.'
+intro: "When you create a {% data variables.product.prodname_marketplace %} listing, GitHub saves it in draft mode until you submit the app for approval. Your listing shows customers how they can use your app."
 redirect_from:
   - /apps/adding-integrations/listing-apps-on-github-marketplace/listing-an-app-on-github-marketplace/
   - /apps/marketplace/listing-apps-on-github-marketplace/listing-an-app-on-github-marketplace/
@@ -14,39 +14,38 @@ redirect_from:
   - /marketplace/listing-on-github-marketplace/creating-a-draft-github-marketplace-listing
   - /developers/github-marketplace/drafting-a-listing-for-your-app
 versions:
-  fpt: '*'
+  fpt: "*"
 topics:
   - Marketplace
 shortTitle: Draft an app listing
 ---
+
 ## Create a new draft {% data variables.product.prodname_marketplace %} listing
 
 You can only create draft listings for apps that are public. Before creating your draft listing, you can read the following guidelines for writing and configuring settings in your {% data variables.product.prodname_marketplace %} listing:
 
-* [Writing {% data variables.product.prodname_marketplace %} listing descriptions](/marketplace/listing-on-github-marketplace/writing-github-marketplace-listing-descriptions/)
-* [Setting a {% data variables.product.prodname_marketplace %} listing's pricing plan](/marketplace/listing-on-github-marketplace/setting-a-github-marketplace-listing-s-pricing-plan/)
-* [Configuring the {% data variables.product.prodname_marketplace %} Webhook](/marketplace/listing-on-github-marketplace/configuring-the-github-marketplace-webhook/)
+- [Writing {% data variables.product.prodname_marketplace %} listing descriptions](/marketplace/listing-on-github-marketplace/writing-github-marketplace-listing-descriptions/)
+- [Setting a {% data variables.product.prodname_marketplace %} listing's pricing plan](/marketplace/listing-on-github-marketplace/setting-a-github-marketplace-listing-s-pricing-plan/)
+- [Configuring the {% data variables.product.prodname_marketplace %} Webhook](/marketplace/listing-on-github-marketplace/configuring-the-github-marketplace-webhook/)
 
 To create a {% data variables.product.prodname_marketplace %} listing:
 
 {% data reusables.user-settings.access_settings %}
-{% data reusables.user-settings.developer_settings %}
-3. In the left sidebar, click either **OAuth Apps** or **GitHub Apps** depending on the app you're adding to {% data variables.product.prodname_marketplace %}.
+{% data reusables.user-settings.developer_settings %} 3. In the left sidebar, click either **OAuth Apps** or **GitHub Apps** depending on the app you're adding to {% data variables.product.prodname_marketplace %}.
 
-  {% note %}
+{% note %}
 
-  **Note**: You can also add a listing by navigating to https://github.com/marketplace/new, viewing your available apps, and clicking **Create draft listing**.
+**Note**: You can also add a listing by navigating to https://github.com/marketplace/new, viewing your available apps, and clicking **Create draft listing**.
 
-  {% endnote %}
+{% endnote %}
 
-  ![App type selection](/assets/images/settings/apps_choose_app.png)
+![App type selection](/assets/images/settings/apps_choose_app.png)
 
 4. Select the app you'd like to add to {% data variables.product.prodname_marketplace %}.
-![App selection for {% data variables.product.prodname_marketplace %} listing](/assets/images/github-apps/github_apps_select-app.png)
-{% data reusables.user-settings.edit_marketplace_listing %}
+   ![App selection for {% data variables.product.prodname_marketplace %} listing](/assets/images/github-apps/github_apps_select-app.png)
+   {% data reusables.user-settings.edit_marketplace_listing %}
 5. Once you've created a new draft listing, you'll see an overview of the sections that you'll need to visit before your {% data variables.product.prodname_marketplace %} listing will be complete.
-![GitHub Marketplace listing](/assets/images/marketplace/marketplace_listing_overview.png)
-
+   ![GitHub Marketplace listing](/assets/images/marketplace/marketplace_listing_overview.png)
 
 {% note %}
 

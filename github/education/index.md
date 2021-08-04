@@ -1,7 +1,7 @@
 ---
 title: GitHub Education Documentation
 shortTitle: Education
-intro: '{% data variables.product.prodname_education %} helps you teach or learn software development with the tools and support of {% data variables.product.company_short %}''s platform and community.'
+intro: "{% data variables.product.prodname_education %} helps you teach or learn software development with the tools and support of {% data variables.product.company_short %}'s platform and community."
 introLinks:
   quickstart: /education/quickstart
 featuredLinks:
@@ -23,11 +23,10 @@ changelog:
   label: education
 layout: product-landing
 versions:
-  fpt: '*'
+  fpt: "*"
 children:
   - /quickstart
   - /explore-the-benefits-of-teaching-and-learning-with-github-education
   - /manage-coursework-with-github-classroom
   - /guides
 ---
-

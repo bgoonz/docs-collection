@@ -1,6 +1,6 @@
 ---
 title: Setting pricing plans for your listing
-intro: 'When you list your app on {% data variables.product.prodname_marketplace %}, you can choose to provide your app as a free service or sell your app. If you plan to sell your app, you can create different pricing plans for different feature tiers.'
+intro: "When you list your app on {% data variables.product.prodname_marketplace %}, you can choose to provide your app as a free service or sell your app. If you plan to sell your app, you can create different pricing plans for different feature tiers."
 redirect_from:
   - /apps/adding-integrations/managing-pricing-and-payments-for-a-github-marketplace-listing/setting-a-github-marketplace-listing-s-pricing-plan/
   - /apps/marketplace/managing-pricing-and-payments-for-a-github-marketplace-listing/setting-a-github-marketplace-listing-s-pricing-plan/
@@ -15,18 +15,19 @@ redirect_from:
   - /marketplace/listing-on-github-marketplace/setting-a-github-marketplace-listing-s-pricing-plan
   - /developers/github-marketplace/setting-pricing-plans-for-your-listing
 versions:
-  fpt: '*'
+  fpt: "*"
 topics:
   - Marketplace
 shortTitle: Set listing pricing plans
 ---
+
 ## About setting pricing plans
 
 {% data variables.product.prodname_marketplace %} offers several different types of pricing plans. For detailed information, see "[Pricing plans for {% data variables.product.prodname_marketplace %}](/developers/github-marketplace/pricing-plans-for-github-marketplace-apps)."
 
 To offer a paid plan for your app, your app must be owned by an organization that has completed the publisher verification process and met certain criteria. For more information, see "[Applying for publisher verification for your organization](/developers/github-marketplace/applying-for-publisher-verification-for-your-organization)" and "[Requirements for listing an app on {% data variables.product.prodname_marketplace %}](/marketplace/getting-started/requirements-for-listing-an-app-on-github-marketplace/)."
 
-If your app is already published with a paid plan and you're a verified publisher, then you can publish a new paid plan from the "Edit a pricing plan" page in your Marketplace app listing settings. 
+If your app is already published with a paid plan and you're a verified publisher, then you can publish a new paid plan from the "Edit a pricing plan" page in your Marketplace app listing settings.
 
 ![Publish this plan button](/assets/images/marketplace/publish-this-plan-button.png)
 

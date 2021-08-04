@@ -1,12 +1,13 @@
 ---
 title: About GitHub Marketplace
-intro: '{% data variables.product.prodname_marketplace %} contains tools that add functionality and improve your workflow.'
+intro: "{% data variables.product.prodname_marketplace %} contains tools that add functionality and improve your workflow."
 redirect_from:
   - /articles/about-github-marketplace
   - /github/customizing-your-github-workflow/about-github-marketplace
 versions:
-  fpt: '*'
+  fpt: "*"
 ---
+
 You can discover, browse, and install free and paid tools, including {% data variables.product.prodname_github_apps %}, {% data variables.product.prodname_oauth_apps %}, and {% data variables.product.prodname_actions %}, in [{% data variables.product.prodname_marketplace %}](https://github.com/marketplace).
 
 If you purchase a paid tool, you'll pay for your tool subscription with the same billing information you use to pay for your {% data variables.product.product_name %} subscription, and receive one bill on your regular billing date. For more information, see "[About billing for {% data variables.product.prodname_marketplace %}](/articles/about-billing-for-github-marketplace)."

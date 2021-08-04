@@ -5,20 +5,21 @@ redirect_from:
   - /articles/3d-file-viewer
   - /github/managing-files-in-a-repository/3d-file-viewer
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Repositories
 ---
-{% data variables.product.product_name %} can host and render 3D files with the *.stl* extension.
+
+{% data variables.product.product_name %} can host and render 3D files with the _.stl_ extension.
 
 When looking directly at an STL file on {% data variables.product.product_name %} you can:
 
-* Click and drag to spin the model.
-* Right click and drag to translate the view.
-* Scroll to zoom in and out.
-* Click the different view modes to change the view.
+- Click and drag to spin the model.
+- Right click and drag to translate the view.
+- Scroll to zoom in and out.
+- Click the different view modes to change the view.
 
 ## Diffs
 

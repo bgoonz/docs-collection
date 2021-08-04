@@ -1,6 +1,6 @@
 ---
 title: About releases
-intro: 'You can create a release to package software, along with release notes and links to binary files, for other people to use.'
+intro: "You can create a release to package software, along with release notes and links to binary files, for other people to use."
 redirect_from:
   - /articles/downloading-files-from-the-command-line/
   - /articles/downloading-files-with-curl/
@@ -9,12 +9,13 @@ redirect_from:
   - /github/administering-a-repository/getting-the-download-count-for-your-releases
   - /github/administering-a-repository/about-releases
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Repositories
 ---
+
 ## About releases
 
 ![An overview of releases](/assets/images/help/releases/releases-overview.png)
@@ -40,8 +41,9 @@ You can view the **Dependents** tab of the dependency graph to see which reposit
 You can also use the Releases API to gather information, such as the number of times people download a release asset. For more information, see "[Releases](/rest/reference/repos#releases)."
 
 {% ifversion fpt %}
+
 ## Storage and bandwidth quotas
 
- Each file included in a release must be under {% data variables.large_files.max_file_size %}. There is no limit on the total size of a release, nor bandwidth usage.
+Each file included in a release must be under {% data variables.large_files.max_file_size %}. There is no limit on the total size of a release, nor bandwidth usage.
 
 {% endif %}

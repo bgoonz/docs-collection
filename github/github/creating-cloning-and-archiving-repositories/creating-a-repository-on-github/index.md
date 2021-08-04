@@ -1,12 +1,12 @@
 ---
 title: Creating a repository on GitHub
-intro: 'After you create your repository on {% data variables.product.product_name %}, you can customize its settings and content.'
+intro: "After you create your repository on {% data variables.product.product_name %}, you can customize its settings and content."
 redirect_from:
   - /articles/creating-a-repository-on-github
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Repositories
 children:
@@ -25,4 +25,3 @@ children:
   - /duplicating-a-repository
 shortTitle: Create a repository
 ---
-

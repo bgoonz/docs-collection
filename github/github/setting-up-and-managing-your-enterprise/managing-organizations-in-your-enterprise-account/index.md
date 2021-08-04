@@ -1,11 +1,11 @@
 ---
 title: Managing organizations in your enterprise account
-product: '{% data reusables.gated-features.enterprise-accounts %}'
+product: "{% data reusables.gated-features.enterprise-accounts %}"
 redirect_from:
   - /articles/managing-organizations-in-your-enterprise-account
   - /github/setting-up-and-managing-your-enterprise-account/managing-organizations-in-your-enterprise-account
 versions:
-  fpt: '*'
+  fpt: "*"
 topics:
   - Enterprise
 children:
@@ -15,4 +15,3 @@ children:
   - /configuring-webhooks-for-organization-events-in-your-enterprise-account
 shortTitle: Manage organizations
 ---
-

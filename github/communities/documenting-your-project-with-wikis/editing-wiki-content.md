@@ -1,6 +1,6 @@
 ---
 title: Editing wiki content
-intro: 'You can add images and links to content in your wiki, and use some supported MediaWiki formats.'
+intro: "You can add images and links to content in your wiki, and use some supported MediaWiki formats."
 redirect_from:
   - /articles/adding-links-to-wikis/
   - /articles/how-do-i-add-links-to-my-wiki/
@@ -11,11 +11,11 @@ redirect_from:
   - /articles/supported-mediawiki-formats/
   - /articles/editing-wiki-content
   - /github/building-a-strong-community/editing-wiki-content
-product: '{% data reusables.gated-features.wikis %}'
+product: "{% data reusables.gated-features.wikis %}"
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Community
 ---
@@ -32,12 +32,8 @@ You can create links in wikis using the standard markup supported by your page, 
 Wikis can display PNG, JPEG, and GIF images.
 
 {% data reusables.repositories.navigate-to-repo %}
-{% data reusables.repositories.sidebar-wiki %}
-3. Using the wiki sidebar, navigate to the page you want to change, and then click **Edit**.
-4. On the wiki toolbar, click **Image**.
-   ![Wiki Add image button](/assets/images/help/wiki/wiki_add_image.png)
-5. In the "Insert Image" dialog box, type the image URL and the alt text (which is used by search engines and screen readers).
-6. Click **OK**.
+{% data reusables.repositories.sidebar-wiki %} 3. Using the wiki sidebar, navigate to the page you want to change, and then click **Edit**. 4. On the wiki toolbar, click **Image**.
+![Wiki Add image button](/assets/images/help/wiki/wiki_add_image.png) 5. In the "Insert Image" dialog box, type the image URL and the alt text (which is used by search engines and screen readers). 6. Click **OK**.
 
 ### Linking to images in a repository
 
@@ -48,11 +44,13 @@ You can link to an image in a repository on {% data variables.product.product_na
 ## Supported MediaWiki formats
 
 No matter which markup language your wiki page is written in, certain MediaWiki syntax will always be available to you.
+
 - Links ([except Asciidoc](https://github.com/gollum/gollum/commit/d1cf698b456cd6a35a54c6a8e7b41d3068acec3b))
 - Horizontal rules via `---`
 - Shorthand symbol entities (such as `&delta;` or `&euro;`)
 
 For security and performance reasons, some syntaxes are unsupported.
+
 - [Transclusion](https://www.mediawiki.org/wiki/Transclusion)
 - Definition lists
 - Indentation

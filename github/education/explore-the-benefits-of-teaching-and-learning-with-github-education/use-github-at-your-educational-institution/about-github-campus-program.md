@@ -1,6 +1,6 @@
 ---
 title: About GitHub Campus Program
-intro: '{% data variables.product.prodname_campus_program %} offers {% data variables.product.prodname_ghe_cloud %} and {% data variables.product.prodname_ghe_server %} free-of-charge for schools that want to make the most of {% data variables.product.prodname_dotcom %} for their community.'
+intro: "{% data variables.product.prodname_campus_program %} offers {% data variables.product.prodname_ghe_cloud %} and {% data variables.product.prodname_ghe_server %} free-of-charge for schools that want to make the most of {% data variables.product.prodname_dotcom %} for their community."
 redirect_from:
   - /education/teach-and-learn-with-github-education/about-github-education
   - /github/teaching-and-learning-with-github-education/about-github-education
@@ -8,9 +8,10 @@ redirect_from:
   - /education/explore-the-benefits-of-teaching-and-learning-with-github-education/about-github-education
   - /education/explore-the-benefits-of-teaching-and-learning-with-github-education/about-github-campus-program
 versions:
-  fpt: '*'
+  fpt: "*"
 shortTitle: GitHub Campus Program
 ---
+
 {% data variables.product.prodname_campus_program %} is a package of premium {% data variables.product.prodname_dotcom %} access for teaching-focused institutions that grant degrees, diplomas, or certificates. {% data variables.product.prodname_campus_program %} includes:
 
 - No-cost access to {% data variables.product.prodname_ghe_cloud %} and {% data variables.product.prodname_ghe_server %} for all of your technical and academic departments
@@ -29,8 +30,7 @@ To read about how GitHub is used by educators, see [GitHub Education stories.](h
 
 - You must offer {% data variables.product.prodname_dotcom %} to all of your technical and academic departments and your school’s logo will be shared on the GitHub Education website as a {% data variables.product.prodname_campus_program %} Partner.
 
-- New organizations in your enterprise are automatically added to your enterprise account. To add organizations that existed before your school joined the {% data variables.product.prodname_campus_program %}, please contact [GitHub Education Support](https://support.github.com/contact/education). For more information about administrating your enterprise, see "[Setting up and managing your enterprise](/github/setting-up-and-managing-your-enterprise)." New organizations in your enterprise are automatically added to your enterprise account. To add organizations that existed before your school joined the {% data variables.product.prodname_campus_program %}, please contact GitHub Education Support. 
-
+- New organizations in your enterprise are automatically added to your enterprise account. To add organizations that existed before your school joined the {% data variables.product.prodname_campus_program %}, please contact [GitHub Education Support](https://support.github.com/contact/education). For more information about administrating your enterprise, see "[Setting up and managing your enterprise](/github/setting-up-and-managing-your-enterprise)." New organizations in your enterprise are automatically added to your enterprise account. To add organizations that existed before your school joined the {% data variables.product.prodname_campus_program %}, please contact GitHub Education Support.
 
 To read more about {% data variables.product.prodname_dotcom %}'s privacy practices, see ["Global Privacy Practices"](/github/site-policy/global-privacy-practices)
 
@@ -43,4 +43,3 @@ To read more about {% data variables.product.prodname_dotcom %}'s privacy practi
 For more information, see the [official {% data variables.product.prodname_campus_program %}](https://education.github.com/schools) page.
 
 If you're a student or academic faculty and your school isn't partnered with {% data variables.product.prodname_dotcom %} as a {% data variables.product.prodname_campus_program %} school, then you can still individually apply for discounts to use {% data variables.product.prodname_dotcom %}. To apply for the Student Developer Pack, [see the application form](https://education.github.com/pack/join).
-

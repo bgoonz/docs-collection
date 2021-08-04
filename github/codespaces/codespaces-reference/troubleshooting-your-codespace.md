@@ -6,7 +6,7 @@ redirect_from:
   - /github/developing-online-with-codespaces/troubleshooting-your-codespace
   - /codespaces/working-with-your-codespace/troubleshooting-your-codespace
 versions:
-  fpt: '*'
+  fpt: "*"
 type: reference
 topics:
   - Codespaces
@@ -24,7 +24,6 @@ shortTitle: Troubleshoot a codespace
 ## {% data variables.product.prodname_vscode %} troubleshooting
 
 Use **Issues** in the [`microsoft/vscode`](https://github.com/microsoft/vscode/issues) repository to check for known issues or to log issues about the {% data variables.product.prodname_vscode %} experience.
-
 
 ## Configuration troubleshooting
 
@@ -44,7 +43,6 @@ Review the creation logs, update the configuration as needed, and run **Codespac
   - If your dotfiles weren't cloned, check `/workspaces/.codespaces/.persistedshare/EnvironmentLog.txt` to see if there was a problem cloning them.
 - Check `/workspaces/.codespaces/.persistedshare/creation.log` for possible issues. Alternatively, you can view the `creation.log` by navigating to the command palette and entering **Codespaces: View Creation Log**.
 
-
 ## Browser troubleshooting
 
 If you encounter issues while using a browser that is not Chromium-based, try switching to a Chromium-based browser, or check for known issues with your browser in the `microsoft/vscode` repository by searching for issues labeled with the name of your browser, such as[`firefox`](https://github.com/microsoft/vscode/issues?q=is%3Aissue+is%3Aopen+label%3Afirefox) or [`safari`](https://github.com/Microsoft/vscode/issues?q=is%3Aopen+is%3Aissue+label%3Asafari).
@@ -61,6 +59,7 @@ When you create a codespace, it has a finite amount of storage and over time it 
 - See the top 10 largest files in the codespace: `sudo find / -printf '%s %p\n'| sort -nr | head -10`
 
 More destructive options:
+
 - Remove unused Docker images, networks, and containers by using `docker system prune` (append `-a` if you want to remove all images, and `--volumes` if you want to remove all volumes)
 - Remove untracked files from working tree: `git clean -i`
 

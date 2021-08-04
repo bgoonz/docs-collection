@@ -1,14 +1,14 @@
 ---
 title: Moderating comments and conversations
 shortTitle: Moderation
-intro: 'Moderating conversations creates a welcoming community for all contributors to your project by promoting healthy collaboration and de-escalating conflict. You can apply your community''s code of conduct to discussions by viewing reported content, editing and deleting comments, and locking conversations.'
+intro: "Moderating conversations creates a welcoming community for all contributors to your project by promoting healthy collaboration and de-escalating conflict. You can apply your community's code of conduct to discussions by viewing reported content, editing and deleting comments, and locking conversations."
 redirect_from:
   - /articles/moderating-comments-and-conversations
   - /github/building-a-strong-community/moderating-comments-and-conversations
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Community
 children:
@@ -21,4 +21,3 @@ children:
   - /managing-how-contributors-report-abuse-in-your-organizations-repository
   - /managing-reported-content-in-your-organizations-repository
 ---
-

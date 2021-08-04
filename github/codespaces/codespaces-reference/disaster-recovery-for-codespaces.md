@@ -1,8 +1,8 @@
 ---
 title: Disaster recovery for Codespaces
-intro: 'This article describes guidance for a disaster recovery scenario, when a whole region experiences an outage due to major natural disaster or widespread service interruption.'
+intro: "This article describes guidance for a disaster recovery scenario, when a whole region experiences an outage due to major natural disaster or widespread service interruption."
 versions:
-  free-pro-team: '*'
+  free-pro-team: "*"
 topics:
   - Codespaces
 ---
@@ -21,9 +21,9 @@ The following guidance provides options on how to handle service disruption to t
 
 ## Option 1: Wait for recovery
 
-In this case, no action on your part is required. Know that we are working diligently to restore service availability. 
+In this case, no action on your part is required. Know that we are working diligently to restore service availability.
 
-Check our [{% data variables.product.prodname_discussions %} page](https://github.com/github/feedback/discussions/categories/codespaces-feedback) for any updates on service interruptions. Soon, you'll be able to see the current service status on the [Status Dashboard](https://www.githubstatus.com/). 
+Check our [{% data variables.product.prodname_discussions %} page](https://github.com/github/feedback/discussions/categories/codespaces-feedback) for any updates on service interruptions. Soon, you'll be able to see the current service status on the [Status Dashboard](https://www.githubstatus.com/).
 
 ## Option 2: Clone the repository locally or edit in the browser
 

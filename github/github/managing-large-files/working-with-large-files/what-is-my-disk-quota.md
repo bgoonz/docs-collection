@@ -4,10 +4,11 @@ redirect_from:
   - /articles/what-is-the-size-limit-for-a-repository/
   - /articles/what-is-my-disk-quota
   - /github/managing-large-files/what-is-my-disk-quota
-intro: '{% data variables.product.product_name %} tries to provide abundant storage for all Git repositories, although there are hard limits for file and repository sizes.'
+intro: "{% data variables.product.product_name %} tries to provide abundant storage for all Git repositories, although there are hard limits for file and repository sizes."
 versions:
-  fpt: '*'
+  fpt: "*"
 ---
+
 {% data reusables.large_files.use_lfs_tip %}
 
 ## File and repository size limitations

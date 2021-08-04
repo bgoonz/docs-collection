@@ -1,18 +1,19 @@
 ---
 title: Troubleshooting OAuth App access token request errors
-intro: '{% data reusables.shortdesc.troubleshooting_access_token_reques_errors_oauth_apps %}'
+intro: "{% data reusables.shortdesc.troubleshooting_access_token_reques_errors_oauth_apps %}"
 redirect_from:
   - /apps/building-integrations/managing-oauth-apps/troubleshooting-oauth-app-access-token-request-errors/
   - /apps/managing-oauth-apps/troubleshooting-oauth-app-access-token-request-errors
   - /developers/apps/troubleshooting-oauth-app-access-token-request-errors
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - OAuth Apps
 shortTitle: Troubleshoot token request
 ---
+
 {% note %}
 
 **Note:** These examples only show JSON responses.
@@ -21,7 +22,7 @@ shortTitle: Troubleshoot token request
 
 ## Incorrect client credentials
 
-If the client\_id and or client\_secret you pass are incorrect you will
+If the client_id and or client_secret you pass are incorrect you will
 receive this error response.
 
 ```json
@@ -55,9 +56,7 @@ registered with your application.
 
 ```json
 {
-  "add_scopes": [
-    "repo"
-  ],
+  "add_scopes": ["repo"],
   "note": "admin script"
 }
 ```

@@ -1,16 +1,17 @@
 ---
 title: Integrate GitHub Classroom with an online IDE
 shortTitle: Integrate with an online IDE
-intro: 'You can preconfigure a supported online integrated development environment (IDE) for assignments you create in {% data variables.product.prodname_classroom %}.'
+intro: "You can preconfigure a supported online integrated development environment (IDE) for assignments you create in {% data variables.product.prodname_classroom %}."
 versions:
-  fpt: '*'
+  fpt: "*"
 redirect_from:
   - /education/manage-coursework-with-github-classroom/online-ide-integrations
   - /education/manage-coursework-with-github-classroom/integrate-github-classroom-with-an-online-ide
 ---
+
 ## About integration with an online IDE
 
-{% data reusables.classroom.about-online-ides %} 
+{% data reusables.classroom.about-online-ides %}
 
 After a student accepts an assignment with an online IDE, the README file in the student's assignment repository will contain a button to open the assignment in the IDE. The student can begin working immediately, and no additional configuration is necessary.
 
@@ -18,11 +19,11 @@ After a student accepts an assignment with an online IDE, the README file in the
 
 {% data variables.product.prodname_classroom %} supports the following online IDE. You can learn more about the student experience for each IDE.
 
-| IDE | More information |
-| :- | :- |
+| IDE                       | More information                                                                                                                                                                           |
+| :------------------------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Microsoft MakeCode Arcade | "[About using MakeCode Arcade with {% data variables.product.prodname_classroom %}](/education/manage-coursework-with-github-classroom/about-using-makecode-arcade-with-github-classroom)" |
 
-We know cloud IDE integrations are important to your classroom and are working to bring more options. 
+We know cloud IDE integrations are important to your classroom and are working to bring more options.
 
 ## Configuring an online IDE for an assignment
 

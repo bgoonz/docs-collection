@@ -1,14 +1,15 @@
 ---
 title: Managing code scanning alerts for your repository
 shortTitle: Managing alerts
-intro: 'From the security view, you can view, fix, or close alerts for potential vulnerabilities or errors in your project''s code.'
-product: '{% data reusables.gated-features.code-scanning %}'
-permissions: 'If you have write permission to a repository you can manage {% data variables.product.prodname_code_scanning %} alerts for that repository.'
+intro: "From the security view, you can view, fix, or close alerts for potential vulnerabilities or errors in your project's code."
+product: "{% data reusables.gated-features.code-scanning %}"
+permissions: "If you have write permission to a repository you can manage {% data variables.product.prodname_code_scanning %} alerts for that repository."
 versions:
-  ghes: '2.22'
+  ghes: "2.22"
 redirect_from:
   - /github/finding-security-vulnerabilities-and-errors-in-your-code/managing-code-scanning-alerts-for-your-repository
 ---
+
 <!--See /content/code-security/secure-coding for the latest version of this article -->
 
 {% data reusables.code-scanning.beta %}
@@ -40,12 +41,13 @@ You need write permission to view a summary of all the alerts for a repository o
 {% data reusables.repositories.navigate-to-repo %}
 {% data reusables.repositories.sidebar-security %}
 {% data reusables.repositories.sidebar-code-scanning-alerts %}
+
 1. Under "{% data variables.product.prodname_code_scanning_capc %}," click the alert you'd like to explore.
-  ![Summary of alerts](/assets/images/enterprise/3.1/help/repository/code-scanning-click-alert.png)
+   ![Summary of alerts](/assets/images/enterprise/3.1/help/repository/code-scanning-click-alert.png)
 1. Optionally, if the alert highlights a problem with data flow, click **Show paths** to display the path from the data source to the sink where it's used.
-  ![The "Show paths" link on an alert](/assets/images/help/repository/code-scanning-show-paths.png)
+   ![The "Show paths" link on an alert](/assets/images/help/repository/code-scanning-show-paths.png)
 1. Alerts from {% data variables.product.prodname_codeql %} analysis include a description of the problem. Click **Show more** for guidance on how to fix your code.
-  ![Details for an alert](/assets/images/help/repository/code-scanning-alert-details.png)
+   ![Details for an alert](/assets/images/help/repository/code-scanning-alert-details.png)
 
 ## Fixing an alert
 
@@ -64,9 +66,10 @@ Closing an alert is a way to resolve an alert that you don't think needs to be f
 {% data reusables.repositories.navigate-to-repo %}
 {% data reusables.repositories.sidebar-security %}
 {% data reusables.repositories.sidebar-code-scanning-alerts %}
-{% data reusables.code-scanning.click-alert-in-list %}	
-1. Select the **Close** drop-down menu and click a reason for closing the alert.	
-   ![Choosing reason for closing the alert via the Close drop-down](/assets/images/help/repository/code-scanning-alert-close-drop-down.png)	
+{% data reusables.code-scanning.click-alert-in-list %}
+
+1. Select the **Close** drop-down menu and click a reason for closing the alert.
+   ![Choosing reason for closing the alert via the Close drop-down](/assets/images/help/repository/code-scanning-alert-close-drop-down.png)
 
 {% data reusables.code-scanning.false-positive-fix-codeql %}
 

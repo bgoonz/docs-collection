@@ -1,15 +1,16 @@
 ---
 title: Countries where SMS authentication is supported
-intro: 'Because of delivery success rates, {% data variables.product.product_name %} only supports two-factor authentication via SMS for certain countries.'
+intro: "Because of delivery success rates, {% data variables.product.product_name %} only supports two-factor authentication via SMS for certain countries."
 redirect_from:
   - /articles/countries-where-sms-authentication-is-supported
   - /github/authenticating-to-github/countries-where-sms-authentication-is-supported
 versions:
-  fpt: '*'
+  fpt: "*"
 topics:
   - 2FA
 shortTitle: Countries supporting SMS
 ---
+
 If we don't support two-factor authentication via text message for your country of residence, you can set up authentication via a TOTP mobile application. For more information, see "[Configuring two-factor authentication](/articles/configuring-two-factor-authentication)."
 
 ## Supported countries for SMS authentication

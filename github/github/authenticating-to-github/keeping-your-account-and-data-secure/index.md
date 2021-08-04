@@ -1,12 +1,12 @@
 ---
 title: Keeping your account and data secure
-intro: 'To protect your personal information, you should keep both your {% data variables.product.product_name %} account and any associated data secure.'
+intro: "To protect your personal information, you should keep both your {% data variables.product.product_name %} account and any associated data secure."
 redirect_from:
   - /articles/keeping-your-account-and-data-secure
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Identity
   - Access management
@@ -31,4 +31,3 @@ children:
   - /preventing-unauthorized-access
 shortTitle: Account security
 ---
-

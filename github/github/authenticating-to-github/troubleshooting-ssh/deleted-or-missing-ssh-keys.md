@@ -1,15 +1,16 @@
 ---
 title: Deleted or missing SSH keys
-intro: 'As a security precaution, {% data variables.product.prodname_dotcom %} automatically deletes SSH keys that haven''t been used in a year.'
+intro: "As a security precaution, {% data variables.product.prodname_dotcom %} automatically deletes SSH keys that haven't been used in a year."
 redirect_from:
   - /articles/deleted-or-missing-ssh-keys
   - /github/authenticating-to-github/deleted-or-missing-ssh-keys
 versions:
-  fpt: '*'
+  fpt: "*"
 topics:
   - SSH
 shortTitle: Deleted or missing SSH keys
 ---
+
 {% data variables.product.prodname_dotcom %} automatically deletes inactive SSH keys to help keep accounts safe, such as after someone leaves a job or loses a computer.
 
 You can check if you haven't used an SSH key in a year by reviewing your account's security log. For more information, see "[Reviewing your security log](/articles/reviewing-your-security-log/)."

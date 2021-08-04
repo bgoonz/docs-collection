@@ -7,9 +7,9 @@ redirect_from:
   - /articles/about-webhooks
 intro: Webhooks provide a way for notifications to be delivered to an external web server whenever certain actions occur on a repository or organization.
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 ---
 
 {% tip %}
@@ -20,10 +20,10 @@ versions:
 
 Webhooks can be triggered whenever a variety of actions are performed on a repository or an organization. For example, you can configure a webhook to execute whenever:
 
-* A repository is pushed to
-* A pull request is opened
-* A {% data variables.product.prodname_pages %} site is built
-* A new member is added to a team
+- A repository is pushed to
+- A pull request is opened
+- A {% data variables.product.prodname_pages %} site is built
+- A new member is added to a team
 
 Using the {% data variables.product.product_name %} API, you can make these webhooks update an external issue tracker, trigger CI builds, update a backup mirror, or even deploy to your production server.
 

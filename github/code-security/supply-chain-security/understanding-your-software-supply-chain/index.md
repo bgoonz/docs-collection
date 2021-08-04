@@ -1,8 +1,8 @@
 ---
 title: Understanding your software supply chain
 versions:
-  fpt: '*'
-  ghes: '>=3.0'
+  fpt: "*"
+  ghes: ">=3.0"
 topics:
   - Dependency graph
   - Dependencies
@@ -13,4 +13,3 @@ children:
   - /about-dependency-review
 shortTitle: Understand supply chain
 ---
-

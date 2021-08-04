@@ -4,7 +4,7 @@ intro: You can edit the metadata and description for a security advisory if you 
 redirect_from:
   - /github/managing-security-vulnerabilities/editing-a-security-advisory
 versions:
-  fpt: '*'
+  fpt: "*"
 type: how_to
 topics:
   - Security advisories
@@ -26,19 +26,14 @@ If you believe you should be credited for a security advisory, please contact th
 
 {% data reusables.repositories.navigate-to-repo %}
 {% data reusables.repositories.sidebar-security %}
-{% data reusables.repositories.sidebar-advisories %}
-4. In the "Security Advisories" list, click the security advisory you'd like to edit.
-5. In the upper-right corner of the details for the security advisory, click {% octicon "pencil" aria-label="The edit icon" %}.
-  ![Edit button for a security advisory](/assets/images/help/security/security-advisory-edit-button.png)
+{% data reusables.repositories.sidebar-advisories %} 4. In the "Security Advisories" list, click the security advisory you'd like to edit. 5. In the upper-right corner of the details for the security advisory, click {% octicon "pencil" aria-label="The edit icon" %}.
+![Edit button for a security advisory](/assets/images/help/security/security-advisory-edit-button.png)
 {% data reusables.repositories.security-advisory-edit-details %}
 {% data reusables.repositories.security-advisory-edit-severity %}
 {% data reusables.repositories.security-advisory-edit-cwe-cve %}
-{% data reusables.repositories.security-advisory-edit-description %}
-11. Optionally, edit the "Credits" for the security advisory.
-  ![Credits for a security advisory](/assets/images/help/security/security-advisory-credits.png)
-12. Click **Update security advisory**.
-  ![Add button](/assets/images/help/security/update-advisory-button.png)
-13. The people listed in the "Credits" section will receive an email or web notification inviting them to accept credit. If a person accepts, their username will be publicly visible once the security advisory is published.
+{% data reusables.repositories.security-advisory-edit-description %} 11. Optionally, edit the "Credits" for the security advisory.
+![Credits for a security advisory](/assets/images/help/security/security-advisory-credits.png) 12. Click **Update security advisory**.
+![Add button](/assets/images/help/security/update-advisory-button.png) 13. The people listed in the "Credits" section will receive an email or web notification inviting them to accept credit. If a person accepts, their username will be publicly visible once the security advisory is published.
 
 ## Further reading
 

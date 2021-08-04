@@ -8,16 +8,18 @@ redirect_from:
   - /github/getting-started-with-github/pushing-commits-to-a-remote-repository
   - /github/getting-started-with-github/using-git/pushing-commits-to-a-remote-repository
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 shortTitle: Push commits to a remote
 ---
+
 ## About `git push`
+
 The `git push` command takes two arguments:
 
-* A remote name, for example, `origin`
-* A branch name, for example, `main`
+- A remote name, for example, `origin`
+- A branch name, for example, `main`
 
 For example:
 
@@ -91,7 +93,7 @@ your local Git clone:
 git remote add upstream <em> &lt;THEIR_REMOTE_URL> </em>
 ```
 
-Now, you can fetch updates and branches from *their* fork:
+Now, you can fetch updates and branches from _their_ fork:
 
 ```shell
 git fetch upstream

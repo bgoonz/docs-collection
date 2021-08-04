@@ -1,21 +1,22 @@
 ---
 title: Updating commit author attribution with GitHub Importer
-intro: 'During an import, you can match commits in your repository with the GitHub account of the commit author.'
+intro: "During an import, you can match commits in your repository with the GitHub account of the commit author."
 redirect_from:
   - /articles/updating-commit-author-attribution-with-github-importer
   - /github/importing-your-projects-to-github/updating-commit-author-attribution-with-github-importer
 versions:
-  fpt: '*'
+  fpt: "*"
 shortTitle: Update author GitHub Importer
 ---
+
 GitHub Importer looks for GitHub users whose email addresses match the authors of the commits in the repository you're importing. You can then connect a commit to its author using their email address or the author's GitHub username.
 
 ## Updating commit authors
 
 1. After you've imported your repository, on the import status page, click **Match authors**.
-![Match authors button](/assets/images/help/importer/match-authors-button.png)
+   ![Match authors button](/assets/images/help/importer/match-authors-button.png)
 2. Next to the author whose information you'd like to update, click **Connect**.
-![List of commit authors](/assets/images/help/importer/connect-commit-author.png)
+   ![List of commit authors](/assets/images/help/importer/connect-commit-author.png)
 3. Type the email address or GitHub username of the author, then press **Enter**.
 
 ## Attributing commits to a GitHub user with a public email address

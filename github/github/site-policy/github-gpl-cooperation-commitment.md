@@ -3,7 +3,7 @@ title: GitHub GPL Cooperation Commitment
 redirect_from:
   - /articles/github-gpl-cooperation-commitment
 versions:
-  fpt: '*'
+  fpt: "*"
 topics:
   - Policy
   - Legal

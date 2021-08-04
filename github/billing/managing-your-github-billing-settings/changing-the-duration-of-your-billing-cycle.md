@@ -9,7 +9,7 @@ redirect_from:
   - /articles/changing-the-duration-of-your-billing-cycle
   - /github/setting-up-and-managing-billing-and-payments-on-github/managing-your-github-billing-settings/changing-the-duration-of-your-billing-cycle
 versions:
-  fpt: '*'
+  fpt: "*"
 type: how_to
 topics:
   - Organizations
@@ -17,6 +17,7 @@ topics:
   - User account
 shortTitle: Billing cycle
 ---
+
 When you change your billing cycle's duration, your {% data variables.product.prodname_dotcom %} subscription, along with any other paid features and products, will be moved to your new billing cycle on your next billing date.
 
 ## Changing the duration of your personal account's billing cycle
@@ -38,8 +39,6 @@ When you change your billing cycle's duration, your {% data variables.product.pr
 
 ### Changing the duration of a legacy per-repository plan
 
-{% data reusables.organizations.billing-settings %}
-4. Under "Billing overview", click **Change plan**.
-  ![Billing overview change plan button](/assets/images/help/billing/billing_overview_change_plan.png)
-5. At the top right corner, click **Switch to monthly billing** or **Switch to yearly billing**.
-  ![Billing information section](/assets/images/help/billing/settings_billing_organization_plans_switch_to_yearly.png)
+{% data reusables.organizations.billing-settings %} 4. Under "Billing overview", click **Change plan**.
+![Billing overview change plan button](/assets/images/help/billing/billing_overview_change_plan.png) 5. At the top right corner, click **Switch to monthly billing** or **Switch to yearly billing**.
+![Billing information section](/assets/images/help/billing/settings_billing_organization_plans_switch_to_yearly.png)

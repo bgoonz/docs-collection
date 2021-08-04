@@ -6,15 +6,16 @@ redirect_from:
   - /articles/git-and-github-learning-resources
   - /github/getting-started-with-github/git-and-github-learning-resources
   - /github/getting-started-with-github/quickstart/git-and-github-learning-resources
-intro: 'There are a lot of helpful Git and {% data variables.product.product_name %} resources on the web. This is a short list of our favorites!'
+intro: "There are a lot of helpful Git and {% data variables.product.product_name %} resources on the web. This is a short list of our favorites!"
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 authors:
   - GitHub
 shortTitle: Learning resources
 ---
+
 ## Using Git
 
 Familiarize yourself with Git by visiting the [official Git project site](https://git-scm.com) and reading the [ProGit book](http://git-scm.com/book). You can review the [Git command list](https://git-scm.com/docs) or [Git command lookup reference](http://gitref.org) while using the [Try Git](https://try.github.com) simulator.

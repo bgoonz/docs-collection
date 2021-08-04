@@ -5,17 +5,17 @@ redirect_from:
   - /articles/showing-an-overview-of-your-activity-on-your-profile
   - /github/setting-up-and-managing-your-github-profile/showing-an-overview-of-your-activity-on-your-profile
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Profiles
 shortTitle: Show an overview
 ---
+
 {% data reusables.profile.activity-overview-summary %} For more information, see "[Viewing contributions on your profile](/articles/viewing-contributions-on-your-profile)."
 
 ![Activity overview section on profile](/assets/images/help/profile/activity-overview-section.png)
 
-{% data reusables.profile.access_profile %}
-2. Above your contributions graph, use the **Contribution settings** drop-down menu, and select or unselect **Activity overview**.
- ![Enable activity overview from contribution settings drop-down menu](/assets/images/help/profile/activity-overview.png)
+{% data reusables.profile.access_profile %} 2. Above your contributions graph, use the **Contribution settings** drop-down menu, and select or unselect **Activity overview**.
+![Enable activity overview from contribution settings drop-down menu](/assets/images/help/profile/activity-overview.png)

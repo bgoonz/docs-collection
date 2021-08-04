@@ -1,16 +1,17 @@
 ---
 title: Configuring the retention period for GitHub Actions artifacts and logs in your repository
-intro: 'You can configure the retention period for {% data variables.product.prodname_actions %} artifacts and logs in your repository.'
+intro: "You can configure the retention period for {% data variables.product.prodname_actions %} artifacts and logs in your repository."
 versions:
-  fpt: '*'
-  ghes: '>=3.0'
-  ghae: '*'
+  fpt: "*"
+  ghes: ">=3.0"
+  ghae: "*"
 topics:
   - Repositories
 redirect_from:
   - /github/administering-a-repository/configuring-the-retention-period-for-github-actions-artifacts-and-logs-in-your-repository
 shortTitle: Set log retention for Actions
 ---
+
 {% data reusables.actions.about-artifact-log-retention %}
 
 You can also define a custom retention period for a specific artifact created by a workflow. For more information, see "[Setting the retention period for an artifact](/actions/managing-workflow-runs/removing-workflow-artifacts#setting-the-retention-period-for-an-artifact)."

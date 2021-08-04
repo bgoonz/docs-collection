@@ -1,11 +1,11 @@
 ---
 title: Changing the default branch
-intro: 'If you have more than one branch in your repository, you can configure any branch as the default branch.'
+intro: "If you have more than one branch in your repository, you can configure any branch as the default branch."
 permissions: People with admin permissions to a repository can change the default branch for the repository.
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 redirect_from:
   - /github/administering-a-repository/setting-the-default-branch
   - /articles/setting-the-default-branch
@@ -14,6 +14,7 @@ topics:
   - Repositories
 shortTitle: Change the default branch
 ---
+
 ## About changing the default branch
 
 You can choose the default branch for a repository. The default branch is the base branch for pull requests and code commits. For more information about the default branch, see "[About branches](/github/collaborating-with-issues-and-pull-requests/about-branches#about-the-default-branch)."
@@ -49,6 +50,7 @@ To change the default branch, your repository must have more than one branch. Fo
 {% data reusables.repositories.navigate-to-repo %}
 {% data reusables.repositories.sidebar-settings %}
 {% data reusables.repositories.repository-branches %}
+
 1. Under "Default branch", to the right of the default branch name, click {% octicon "arrow-switch" aria-label="The switch icon with two arrows" %}.
    ![Switch icon with two arrows to the right of current default branch name](/assets/images/help/repository/repository-options-defaultbranch-change.png)
 1. Use the drop-down, then click a branch name.
@@ -56,13 +58,14 @@ To change the default branch, your repository must have more than one branch. Fo
 1. Click **Update**.
    !["Update" button after choosing a new default branch](/assets/images/help/repository/repository-options-defaultbranch-update.png)
 1. Read the warning, then click **I understand, update the default branch.**
-   !["Update" button after choosing a new default branch](/assets/images/help/repository/repository-options-defaultbranch-i-understand.png)  
+   !["Update" button after choosing a new default branch](/assets/images/help/repository/repository-options-defaultbranch-i-understand.png)
 
 {% else %}
 
 {% data reusables.repositories.navigate-to-repo %}
 {% data reusables.repositories.sidebar-settings %}
 {% data reusables.repositories.repository-branches %}
+
 1. In the default branch drop-down, choose the new default branch.
    ![Default branch dropdown selector](/assets/images/help/repository/repository-options-defaultbranch.png)
 1. Click **Update**.

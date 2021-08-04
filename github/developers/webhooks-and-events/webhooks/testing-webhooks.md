@@ -1,16 +1,17 @@
 ---
 title: Testing webhooks
-intro: 'Review your webhook deliveries on {% data variables.product.prodname_dotcom %}, including the HTTP Request and payload as well as the response.'
+intro: "Review your webhook deliveries on {% data variables.product.prodname_dotcom %}, including the HTTP Request and payload as well as the response."
 redirect_from:
   - /webhooks/testing
   - /developers/webhooks-and-events/testing-webhooks
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Webhooks
 ---
+
 Now that you've [configured your local server](/webhooks/configuring/), you might
 be interested in pushing your code to the limits. To that end, GitHub's webhooks
 view provides some tooling for testing your deployed payloads.
@@ -25,7 +26,7 @@ Every webhook has its own "Recent Deliveries" section, which lists, at a glance 
 
 ## Digging into results
 
-By expanding an individual delivery, you'll be able to witness *precisely*
+By expanding an individual delivery, you'll be able to witness _precisely_
 what information GitHub is attempting to send to your server. This includes
 both the HTTP Request and Response.
 

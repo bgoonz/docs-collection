@@ -1,16 +1,17 @@
 ---
 title: GitHub Desktop
-intro: '{% data variables.product.prodname_desktop %} extends and simplifies your Git and {% data variables.product.prodname_dotcom %} workflow using a visual interface.'
+intro: "{% data variables.product.prodname_desktop %} extends and simplifies your Git and {% data variables.product.prodname_dotcom %} workflow using a visual interface."
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Desktop
 redirect_from:
   - /github/getting-started-with-github/github-desktop
   - /github/getting-started-with-github/using-github/github-desktop
 ---
+
 ## About {% data variables.product.prodname_desktop %}
 
 {% data reusables.desktop.about-github-desktop %}

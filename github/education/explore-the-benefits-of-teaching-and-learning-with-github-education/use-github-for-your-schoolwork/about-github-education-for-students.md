@@ -1,15 +1,16 @@
 ---
 title: About GitHub Education for students
-intro: '{% data variables.product.prodname_education %} offers students real-world experience with free access to various developer tools from {% data variables.product.prodname_dotcom %}''s partners.'
+intro: "{% data variables.product.prodname_education %} offers students real-world experience with free access to various developer tools from {% data variables.product.prodname_dotcom %}'s partners."
 redirect_from:
   - /education/teach-and-learn-with-github-education/about-github-education-for-students
   - /github/teaching-and-learning-with-github-education/about-github-education-for-students
   - /articles/about-github-education-for-students
   - /education/explore-the-benefits-of-teaching-and-learning-with-github-education/about-github-education-for-students
 versions:
-  fpt: '*'
+  fpt: "*"
 shortTitle: For students
 ---
+
 Using {% data variables.product.prodname_dotcom %} for your school projects is a practical way to collaborate with others and build a portfolio that showcases real-world experience.
 
 {% data reusables.education.about-github-education-link %}

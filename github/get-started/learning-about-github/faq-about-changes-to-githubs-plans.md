@@ -1,8 +1,8 @@
 ---
 title: FAQ about changes to GitHub’s plans
-intro: 'As of April 14, 2020, GitHub announced that all of the core GitHub features are now free for everyone.'
+intro: "As of April 14, 2020, GitHub announced that all of the core GitHub features are now free for everyone."
 versions:
-  fpt: '*'
+  fpt: "*"
 topics:
   - GitHub
 redirect_from:
@@ -10,6 +10,7 @@ redirect_from:
   - /github/getting-started-with-github/learning-about-github/faq-about-changes-to-githubs-plans
 shortTitle: Changes to GitHub plans
 ---
+
 ## What plans and pricing changes did GitHub announce on April 14?
 
 GitHub announced the following plans and pricing changes:
@@ -33,6 +34,7 @@ To upgrade your user account's plan, see "[Upgrading your personal account's sub
 To downgrade your user account's plan, see "[Downgrading your user account's subscription](/billing/managing-billing-for-your-github-account/downgrading-your-github-subscription#downgrading-your-user-accounts-subscription)." To downgrade your organization's plan, see "[Downgrading your organization's subscription](/billing/managing-billing-for-your-github-account/downgrading-your-github-subscription#downgrading-your-organizations-subscription)."
 
 ## If I downgrade from GitHub Team or a Legacy plan to GitHub Free, what features will I lose?
+
 - Required reviewers in private repositories
 - Protected branches in private repositories
 - Code owners in private repositories

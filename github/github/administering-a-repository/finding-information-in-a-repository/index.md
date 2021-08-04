@@ -1,13 +1,13 @@
 ---
 title: Finding information in a repository
-intro: 'To find detailed information about a repository on GitHub, you can filter, sort, and search issues and pull requests that are relevant to the repository.'
+intro: "To find detailed information about a repository on GitHub, you can filter, sort, and search issues and pull requests that are relevant to the repository."
 redirect_from:
   - /github/managing-your-work-on-github/finding-information-in-a-repository/
   - /articles/finding-information-in-a-repository
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Pull requests
 children:
@@ -20,4 +20,3 @@ children:
   - /sharing-filters
 shortTitle: Find information in a repo
 ---
-

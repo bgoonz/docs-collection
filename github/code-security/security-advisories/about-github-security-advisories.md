@@ -1,12 +1,12 @@
 ---
 title: About GitHub Security Advisories
-intro: 'You can use {% data variables.product.prodname_security_advisories %} to privately discuss, fix, and publish information about security vulnerabilities in your repository.'
+intro: "You can use {% data variables.product.prodname_security_advisories %} to privately discuss, fix, and publish information about security vulnerabilities in your repository."
 redirect_from:
   - /articles/about-maintainer-security-advisories
   - /github/managing-security-vulnerabilities/about-maintainer-security-advisories
   - /github/managing-security-vulnerabilities/about-github-security-advisories
 versions:
-  fpt: '*'
+  fpt: "*"
 type: overview
 topics:
   - Security advisories
@@ -43,7 +43,7 @@ If you created a security advisory in your repository, the security advisory wil
 
 ## CVE identification numbers
 
-{% data variables.product.prodname_security_advisories %} builds upon the foundation of the Common Vulnerabilities and Exposures (CVE) list. The security advisory form on {% data variables.product.prodname_dotcom %} is a standardized form that matches the CVE description format. 
+{% data variables.product.prodname_security_advisories %} builds upon the foundation of the Common Vulnerabilities and Exposures (CVE) list. The security advisory form on {% data variables.product.prodname_dotcom %} is a standardized form that matches the CVE description format.
 
 {% data variables.product.prodname_dotcom %} is a CVE Numbering Authority (CNA) and is authorized to assign CVE identification numbers. For more information, see "[About CVE](https://cve.mitre.org/about/index.html)" and "[CVE Numbering Authorities](https://cve.mitre.org/cve/cna.html)" on the CVE website.
 

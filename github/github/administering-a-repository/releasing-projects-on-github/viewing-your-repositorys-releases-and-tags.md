@@ -7,13 +7,14 @@ redirect_from:
   - /github/administering-a-repository/viewing-your-repositorys-tags
   - /github/administering-a-repository/viewing-your-repositorys-releases-and-tags
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Repositories
 shortTitle: View releases & tags
 ---
+
 {% ifversion fpt or ghae or ghes %}
 {% tip %}
 
@@ -25,14 +26,12 @@ shortTitle: View releases & tags
 ## Viewing releases
 
 {% data reusables.repositories.navigate-to-repo %}
-{% data reusables.repositories.releases %}
-2. At the top of the Releases page, click **Releases**.
+{% data reusables.repositories.releases %} 2. At the top of the Releases page, click **Releases**.
 
 ## Viewing tags
 
 {% data reusables.repositories.navigate-to-repo %}
-{% data reusables.repositories.releases %}
-2. At the top of the Releases page, click **Tags**.
+{% data reusables.repositories.releases %} 2. At the top of the Releases page, click **Tags**.
 ![Tags page](/assets/images/help/releases/tags-list.png)
 
 ## Further reading

@@ -1,13 +1,13 @@
 ---
 title: Releasing projects on GitHub
-intro: 'You can create a release to package software, release notes, and binary files for other people to download.'
+intro: "You can create a release to package software, release notes, and binary files for other people to download."
 redirect_from:
   - /categories/85/articles/
   - /categories/releases/
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Repositories
 children:
@@ -19,4 +19,3 @@ children:
   - /automation-for-release-forms-with-query-parameters
 shortTitle: Release projects
 ---
-

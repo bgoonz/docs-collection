@@ -1,11 +1,11 @@
 ---
 title: About GitHub Advanced Security
-intro: '{% data variables.product.prodname_dotcom %} makes extra security features available to customers under an {% data variables.product.prodname_advanced_security %} license.{% ifversion fpt %} These features are also enabled for public repositories on {% data variables.product.prodname_dotcom_the_website %}.{% endif %}'
-product: '{% data reusables.gated-features.ghas %}'
+intro: "{% data variables.product.prodname_dotcom %} makes extra security features available to customers under an {% data variables.product.prodname_advanced_security %} license.{% ifversion fpt %} These features are also enabled for public repositories on {% data variables.product.prodname_dotcom_the_website %}.{% endif %}"
+product: "{% data reusables.gated-features.ghas %}"
 versions:
-  fpt: '*'
-  ghes: '>=3.0'
-  ghae: '*'
+  fpt: "*"
+  ghes: ">=3.0"
+  ghae: "*"
 topics:
   - Security
 redirect_from:
@@ -13,6 +13,7 @@ redirect_from:
   - /github/getting-started-with-github/learning-about-github/about-github-advanced-security
 shortTitle: GitHub Advanced Security
 ---
+
 ## About {% data variables.product.prodname_GH_advanced_security %}
 
 {% data variables.product.prodname_dotcom %} has many features that help you improve and maintain the quality of your code. Some of these are included in all plans{% ifversion not ghae %}, such as dependency graph and {% data variables.product.prodname_dependabot_alerts %}{% endif %}. Other security features require a license for {% data variables.product.prodname_GH_advanced_security %} to run on repositories apart from public repositories on {% data variables.product.prodname_dotcom_the_website %}.
@@ -28,12 +29,14 @@ A {% data variables.product.prodname_GH_advanced_security %} license provides th
 - **{% data variables.product.prodname_secret_scanning_caps %}** - Detect secrets, for example keys and tokens, that have been checked into the repository. For more information, see "[About {% data variables.product.prodname_secret_scanning %}](/github/administering-a-repository/about-secret-scanning)."
 
 {% ifversion fpt %}
+
 - **Dependency review** - Show the full impact of changes to dependencies and see details of any vulnerable versions before you merge a pull request. For more information, see "[About dependency review](/code-security/supply-chain-security/about-dependency-review)."
-{% endif %}
+  {% endif %}
 
 For information about {% data variables.product.prodname_advanced_security %} features that are in development, see "[{% data variables.product.prodname_dotcom %} public roadmap](https://github.com/github/roadmap)." For an overview of all security features, see "[{% data variables.product.prodname_dotcom %} security features](/code-security/getting-started/github-security-features)."
 
 {% ifversion ghes > 2.22 or ghae %}
+
 ## Enabling {% data variables.product.prodname_advanced_security %} features on {% data variables.product.product_name %}
 
 {% ifversion ghes > 2.22 %}
@@ -45,6 +48,7 @@ Once your system is set up, you can enable and disable these features at the org
 {% endif %}
 
 {% ifversion not ghae %}
+
 ## Enabling {% data variables.product.prodname_advanced_security %} features on {% data variables.product.prodname_dotcom_the_website %}
 
 For public repositories on {% data variables.product.prodname_dotcom_the_website %}, these features are permanently on and can only be disabled if you change the visibility of the project so that the code is no longer public.

@@ -4,7 +4,7 @@ intro: Install GitHub Desktop and connect your GitHub or GitHub Enterprise accou
 redirect_from:
   - /desktop/getting-started-with-github-desktop/installing-and-authenticating-to-github-desktop
 versions:
-  fpt: '*'
+  fpt: "*"
 children:
   - /setting-up-github-desktop
   - /installing-github-desktop
@@ -14,4 +14,3 @@ children:
   - /uninstalling-github-desktop
 shortTitle: Install & authenticate
 ---
-

@@ -1,14 +1,15 @@
 ---
 title: GitHub extensions and integrations
-intro: 'Use {% data variables.product.product_name %} extensions to work seamlessly in {% data variables.product.product_name %} repositories within third-party applications.'
+intro: "Use {% data variables.product.product_name %} extensions to work seamlessly in {% data variables.product.product_name %} repositories within third-party applications."
 redirect_from:
   - /articles/about-github-extensions-for-third-party-applications/
   - /articles/github-extensions-and-integrations
   - /github/customizing-your-github-workflow/github-extensions-and-integrations
 versions:
-  fpt: '*'
+  fpt: "*"
 shortTitle: Extensions & integrations
 ---
+
 ## Editor tools
 
 You can connect to {% data variables.product.product_name %} repositories within third-party editor tools, such as Atom, Unity, and Visual Studio.

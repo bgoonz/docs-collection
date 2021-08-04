@@ -1,6 +1,6 @@
 ---
 title: Downgrading Git Large File Storage
-intro: 'You can downgrade storage and bandwidth for {% data variables.large_files.product_name_short %} by increments of 50 GB per month.'
+intro: "You can downgrade storage and bandwidth for {% data variables.large_files.product_name_short %} by increments of 50 GB per month."
 redirect_from:
   - /github/setting-up-and-managing-billing-and-payments-on-github/downgrading-git-large-file-storage
   - /articles/downgrading-storage-and-bandwidth-for-a-personal-account/
@@ -8,7 +8,7 @@ redirect_from:
   - /articles/downgrading-git-large-file-storage
   - /github/setting-up-and-managing-billing-and-payments-on-github/managing-billing-for-git-large-file-storage/downgrading-git-large-file-storage
 versions:
-  fpt: '*'
+  fpt: "*"
 type: how_to
 topics:
   - Downgrades
@@ -17,6 +17,7 @@ topics:
   - User account
 shortTitle: Downgrade Git LFS storage
 ---
+
 When you downgrade your number of data packs, your change takes effect on your next billing date. For more information, see "[About billing for {% data variables.large_files.product_name_long %}](/articles/about-billing-for-git-large-file-storage)."
 
 ## Downgrading storage and bandwidth for a personal account

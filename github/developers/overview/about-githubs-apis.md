@@ -1,12 +1,12 @@
 ---
 title: About GitHub's APIs
-intro: 'Learn about {% data variables.product.prodname_dotcom %}''s APIs to extend and customize your {% data variables.product.prodname_dotcom %} experience.'
+intro: "Learn about {% data variables.product.prodname_dotcom %}'s APIs to extend and customize your {% data variables.product.prodname_dotcom %} experience."
 redirect_from:
   - /v3/versions
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - API
 ---

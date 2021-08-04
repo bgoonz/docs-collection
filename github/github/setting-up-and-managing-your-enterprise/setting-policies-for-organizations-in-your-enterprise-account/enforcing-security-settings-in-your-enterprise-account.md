@@ -1,7 +1,7 @@
 ---
 title: Enforcing security settings in your enterprise account
 intro: Enterprise owners can enforce certain security policies for all organizations owned by an enterprise account.
-product: '{% data reusables.gated-features.enterprise-accounts %}'
+product: "{% data reusables.gated-features.enterprise-accounts %}"
 miniTocMaxHeadingLevel: 3
 redirect_from:
   - /articles/enforcing-security-settings-for-organizations-in-your-business-account/
@@ -11,11 +11,12 @@ redirect_from:
   - /github/setting-up-and-managing-your-enterprise-account/enforcing-security-settings-in-your-enterprise-account
   - /github/setting-up-and-managing-your-enterprise/enforcing-security-settings-in-your-enterprise-account
 versions:
-  fpt: '*'
+  fpt: "*"
 topics:
   - Enterprise
 shortTitle: Enforce security settings
 ---
+
 ## Requiring two-factor authentication for organizations in your enterprise account
 
 Enterprise owners can require that organization members, billing managers, and outside collaborators in all organizations owned by an enterprise account use two-factor authentication to secure their personal accounts.
@@ -36,13 +37,9 @@ Before you require use of two-factor authentication, we recommend notifying orga
 
 {% data reusables.enterprise-accounts.access-enterprise %}
 {% data reusables.enterprise-accounts.settings-tab %}
-{% data reusables.enterprise-accounts.security-tab %}
-4. Under "Two-factor authentication", review the information about changing the setting. {% data reusables.enterprise-accounts.view-current-policy-config-orgs %}
-5. Under "Two-factor authentication", select **Require two-factor authentication for all organizations in your business**, then click **Save**.
-  ![Checkbox to require two-factor authentication](/assets/images/help/business-accounts/require-2fa-checkbox.png)
-6. If prompted, read the information about members and outside collaborators who will be removed from the organizations owned by your enterprise account. To confirm the change, type your enterprise account's name, then click **Remove members & require two-factor authentication**.
-  ![Confirm two-factor enforcement box](/assets/images/help/business-accounts/confirm-require-2fa.png)
-7. Optionally, if any members or outside collaborators are removed from the organizations owned by your enterprise account, we recommend sending them an invitation to reinstate their former privileges and access to your organization. Each person must enable two-factor authentication before they can accept your invitation.
+{% data reusables.enterprise-accounts.security-tab %} 4. Under "Two-factor authentication", review the information about changing the setting. {% data reusables.enterprise-accounts.view-current-policy-config-orgs %} 5. Under "Two-factor authentication", select **Require two-factor authentication for all organizations in your business**, then click **Save**.
+![Checkbox to require two-factor authentication](/assets/images/help/business-accounts/require-2fa-checkbox.png) 6. If prompted, read the information about members and outside collaborators who will be removed from the organizations owned by your enterprise account. To confirm the change, type your enterprise account's name, then click **Remove members & require two-factor authentication**.
+![Confirm two-factor enforcement box](/assets/images/help/business-accounts/confirm-require-2fa.png) 7. Optionally, if any members or outside collaborators are removed from the organizations owned by your enterprise account, we recommend sending them an invitation to reinstate their former privileges and access to your organization. Each person must enable two-factor authentication before they can accept your invitation.
 
 ## Managing allowed IP addresses for organizations in your enterprise account
 
@@ -50,7 +47,7 @@ Enterprise owners can restrict access to assets owned by organizations in an ent
 
 {% data reusables.identity-and-permissions.ip-allow-lists-cidr-notation %}
 
-{% data reusables.identity-and-permissions.ip-allow-lists-enable %} {% data reusables.identity-and-permissions.ip-allow-lists-enterprise %} 
+{% data reusables.identity-and-permissions.ip-allow-lists-enable %} {% data reusables.identity-and-permissions.ip-allow-lists-enterprise %}
 
 You can also configure allowed IP addresses for an individual organization. For more information, see "[Managing allowed IP addresses for your organization](/organizations/keeping-your-organization-secure/managing-allowed-ip-addresses-for-your-organization)."
 
@@ -71,10 +68,8 @@ You can also configure allowed IP addresses for an individual organization. For 
 
 {% data reusables.enterprise-accounts.access-enterprise %}
 {% data reusables.enterprise-accounts.settings-tab %}
-{% data reusables.enterprise-accounts.security-tab %}
-3. Under "IP allow list", select **Enable IP allow list**.
-  ![Checkbox to allow IP addresses](/assets/images/help/security/enable-ip-allowlist-enterprise-checkbox.png)
-4. Click **Save**.
+{% data reusables.enterprise-accounts.security-tab %} 3. Under "IP allow list", select **Enable IP allow list**.
+![Checkbox to allow IP addresses](/assets/images/help/security/enable-ip-allowlist-enterprise-checkbox.png) 4. Click **Save**.
 
 ### Editing an allowed IP address
 
@@ -83,8 +78,7 @@ You can also configure allowed IP addresses for an individual organization. For 
 {% data reusables.enterprise-accounts.security-tab %}
 {% data reusables.identity-and-permissions.ip-allow-lists-edit-entry %}
 {% data reusables.identity-and-permissions.ip-allow-lists-edit-ip %}
-{% data reusables.identity-and-permissions.ip-allow-lists-edit-description %}
-8. Click **Update**.
+{% data reusables.identity-and-permissions.ip-allow-lists-edit-description %} 8. Click **Update**.
 
 ### Deleting an allowed IP address
 

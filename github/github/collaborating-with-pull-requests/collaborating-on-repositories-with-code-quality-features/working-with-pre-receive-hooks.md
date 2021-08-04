@@ -1,14 +1,15 @@
 ---
 title: Working with pre-receive hooks
-intro: '*Pre-receive hooks* enforce rules for contributions before commits may be pushed to a repository.'
+intro: "*Pre-receive hooks* enforce rules for contributions before commits may be pushed to a repository."
 redirect_from:
   - /github/collaborating-with-issues-and-pull-requests/collaborating-on-repositories-with-code-quality-features/working-with-pre-receive-hooks
   - /articles/working-with-pre-receive-hooks
   - /github/collaborating-with-issues-and-pull-requests/working-with-pre-receive-hooks
 versions:
-  ghes: '*'
+  ghes: "*"
 shortTitle: Pre-receive hooks
 ---
+
 Pre-receive hooks run tests on code pushed to a repository to ensure contributions meet repository or organization policy. If the commit contents pass the tests, the push will be accepted into the repository. If the commit contents do not pass the tests, the push will not be accepted.
 
 If your push isn't accepted, you'll see an error message corresponding to the failed pre-receive hook.

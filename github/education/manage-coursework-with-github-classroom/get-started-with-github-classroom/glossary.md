@@ -1,11 +1,12 @@
 ---
 title: Glossary
-intro: 'You can review explanations of terminology for {% data variables.product.prodname_classroom %}.'
+intro: "You can review explanations of terminology for {% data variables.product.prodname_classroom %}."
 versions:
-  fpt: '*'
+  fpt: "*"
 redirect_from:
   - /education/manage-coursework-with-github-classroom/glossary
 ---
+
 ## assignment
 
 An assignment is coursework in {% data variables.product.prodname_classroom %}. A teacher can assign an assignment to an individual student or a group of students. Teachers can import starter code for the assignment, assign students, and create a deadline for each assignment. For more information, see the definitions for "[individual assignment](#individual-assignment)" and "[group assignment](#group-assignment)."
@@ -24,7 +25,7 @@ A classroom is the basic unit of {% data variables.product.prodname_classroom %}
 
 ---
 
-## group assignment  
+## group assignment
 
 {% data reusables.classroom.assignments-group-definition %} For more information, see "[Create a group assignment](/education/manage-coursework-with-github-classroom/create-a-group-assignment)."
 

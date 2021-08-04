@@ -4,11 +4,11 @@ redirect_from:
   - /articles/git-over-https-using-oauth-token/
   - /articles/git-over-http-using-oauth-token/
   - /articles/git-automation-with-oauth-tokens
-intro: 'You can use OAuth tokens to interact with {% data variables.product.product_name %} via automated scripts.'
+intro: "You can use OAuth tokens to interact with {% data variables.product.product_name %} via automated scripts."
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 shortTitle: Automate with OAuth tokens
 ---
 
@@ -20,11 +20,12 @@ Create a personal access token on your application settings page. For more infor
 
 {% ifversion fpt %}
 **Tips:**
+
 - You must verify your email address before you can create a personal access token. For more information, see "[Verifying your email address](/articles/verifying-your-email-address)."
 - {% data reusables.user_settings.review_oauth_tokens_tip %}
-{% else %}
-**Tip:** {% data reusables.user_settings.review_oauth_tokens_tip %}
-{% endif %}
+  {% else %}
+  **Tip:** {% data reusables.user_settings.review_oauth_tokens_tip %}
+  {% endif %}
 
 {% endtip %}
 

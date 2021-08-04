@@ -1,18 +1,19 @@
 ---
 title: Scopes for OAuth Apps
-intro: '{% data reusables.shortdesc.understanding_scopes_for_oauth_apps %}'
+intro: "{% data reusables.shortdesc.understanding_scopes_for_oauth_apps %}"
 redirect_from:
   - /apps/building-integrations/setting-up-and-registering-oauth-apps/about-scopes-for-oauth-apps/
   - /apps/building-oauth-apps/scopes-for-oauth-apps/
   - /apps/building-oauth-apps/understanding-scopes-for-oauth-apps
   - /developers/apps/scopes-for-oauth-apps
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - OAuth Apps
 ---
+
 When setting up an OAuth App on GitHub, requested scopes are displayed to the user on the authorization form.
 
 {% note %}
@@ -34,8 +35,8 @@ X-OAuth-Scopes: repo, user
 X-Accepted-OAuth-Scopes: user
 ```
 
-* `X-OAuth-Scopes` lists the scopes your token has authorized.
-* `X-Accepted-OAuth-Scopes` lists the scopes that the action checks for.
+- `X-OAuth-Scopes` lists the scopes your token has authorized.
+- `X-Accepted-OAuth-Scopes` lists the scopes that the action checks for.
 
 ## Available scopes
 
@@ -44,12 +45,12 @@ Name | Description
 **`(no scope)`** | Grants read-only access to public information (including user profile info, repository info, and gists){% endif %}{% ifversion ghes or ghae %}
 **`site_admin`** | Grants site administrators access to [{% data variables.product.prodname_ghe_server %} Administration API endpoints](/rest/reference/enterprise-admin).{% endif %}
 **`repo`** | Grants full access to repositories, including private repositories. That includes read/write access to code, commit statuses, repository and organization projects, invitations, collaborators, adding team memberships, deployment statuses, and repository webhooks for repositories and organizations. Also grants ability to manage user projects.
-&emsp;`repo:status`| Grants read/write access to {% ifversion not ghae %}public{% else %}internal{% endif %} and private repository commit statuses. This scope is only necessary to grant other users or services access to private repository commit statuses *without* granting access to the code.
-&emsp;`repo_deployment`| Grants access to [deployment statuses](/rest/reference/repos#deployments) for {% ifversion not ghae %}public{% else %}internal{% endif %} and private repositories. This scope is only necessary to grant other users or services access to deployment statuses, *without* granting access to the code.{% ifversion not ghae %}
+&emsp;`repo:status`| Grants read/write access to {% ifversion not ghae %}public{% else %}internal{% endif %} and private repository commit statuses. This scope is only necessary to grant other users or services access to private repository commit statuses _without_ granting access to the code.
+&emsp;`repo_deployment`| Grants access to [deployment statuses](/rest/reference/repos#deployments) for {% ifversion not ghae %}public{% else %}internal{% endif %} and private repositories. This scope is only necessary to grant other users or services access to deployment statuses, _without_ granting access to the code.{% ifversion not ghae %}
 &emsp;`public_repo`| Limits access to public repositories. That includes read/write access to code, commit statuses, repository projects, collaborators, and deployment statuses for public repositories and organizations. Also required for starring public repositories.{% endif %}
-&emsp;`repo:invite` | Grants accept/decline abilities for invitations to collaborate on a repository. This scope is only necessary to grant other users or services access to invites *without* granting access to the code.{% ifversion fpt or ghes > 3.0 %}
-&emsp;`security_events` | Grants: <br/> read and write access to security events in the [{% data variables.product.prodname_code_scanning %} API](/rest/reference/code-scanning) <br/> read and write access to security events in the [{% data variables.product.prodname_secret_scanning %} API](/rest/reference/secret-scanning) <br/> This scope is only necessary to grant other users or services access to security events *without* granting access to the code.{% endif %}{% ifversion ghes > 2.21 and ghes < 3.1 %}
-&emsp;`security_events` | Grants read and write access to security events in the [{% data variables.product.prodname_code_scanning %} API](/rest/reference/code-scanning). This scope is only necessary to grant other users or services access to security events *without* granting access to the code.{% endif %}
+&emsp;`repo:invite` | Grants accept/decline abilities for invitations to collaborate on a repository. This scope is only necessary to grant other users or services access to invites _without_ granting access to the code.{% ifversion fpt or ghes > 3.0 %}
+&emsp;`security_events` | Grants: <br/> read and write access to security events in the [{% data variables.product.prodname_code_scanning %} API](/rest/reference/code-scanning) <br/> read and write access to security events in the [{% data variables.product.prodname_secret_scanning %} API](/rest/reference/secret-scanning) <br/> This scope is only necessary to grant other users or services access to security events _without_ granting access to the code.{% endif %}{% ifversion ghes > 2.21 and ghes < 3.1 %}
+&emsp;`security_events` | Grants read and write access to security events in the [{% data variables.product.prodname_code_scanning %} API](/rest/reference/code-scanning). This scope is only necessary to grant other users or services access to security events _without_ granting access to the code.{% endif %}
 **`admin:repo_hook`** | Grants read, write, ping, and delete access to repository hooks in {% ifversion not ghae %}public{% else %}internal{% endif %} and private repositories. The `repo` {% ifversion not ghae %}and `public_repo` scopes grant{% else %}scope grants{% endif %} full access to repositories, including repository hooks. Use the `admin:repo_hook` scope to limit access to only repository hooks.
 &emsp;`write:repo_hook` | Grants read, write, and ping access to hooks in {% ifversion not ghae %}public{% else %}internal{% endif %} or private repositories.
 &emsp;`read:repo_hook`| Grants read and ping access to hooks in {% ifversion not ghae %}public{% else %}internal{% endif %} or private repositories.
@@ -61,8 +62,8 @@ Name | Description
 &emsp;`read:public_key`| List and view details for public keys.
 **`admin:org_hook`** | Grants read, write, ping, and delete access to organization hooks. **Note:** OAuth tokens will only be able to perform these actions on organization hooks which were created by the OAuth App. Personal access tokens will only be able to perform these actions on organization hooks created by a user.
 **`gist`** | Grants write access to gists.
-**`notifications`** | Grants: <br/>* read access to a user's notifications <br/>* mark as read access to threads <br/>* watch and unwatch access to a repository, and <br/>* read, write, and delete access to thread subscriptions.
-**`user`** | Grants read/write access to profile info only.  Note that this scope includes `user:email` and `user:follow`.
+**`notifications`** | Grants: <br/>_ read access to a user's notifications <br/>_ mark as read access to threads <br/>_ watch and unwatch access to a repository, and <br/>_ read, write, and delete access to thread subscriptions.
+**`user`** | Grants read/write access to profile info only. Note that this scope includes `user:email` and `user:follow`.
 &emsp;`read:user`| Grants access to read a user's profile data.
 &emsp;`user:email`| Grants read access to a user's email addresses.
 &emsp;`user:follow`| Grants access to follow or unfollow other users.

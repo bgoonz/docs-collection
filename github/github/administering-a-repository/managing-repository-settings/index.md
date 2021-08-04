@@ -1,12 +1,12 @@
 ---
 title: Managing repository settings
-intro: 'Repository administrators and organization owners can change settings for a repository, like the name, ownership, and visibility, or delete the repository.'
+intro: "Repository administrators and organization owners can change settings for a repository, like the name, ownership, and visibility, or delete the repository."
 redirect_from:
   - /articles/managing-repository-settings
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Repositories
 children:
@@ -34,4 +34,3 @@ children:
   - /restoring-a-deleted-repository
 shortTitle: Manage repository settings
 ---
-

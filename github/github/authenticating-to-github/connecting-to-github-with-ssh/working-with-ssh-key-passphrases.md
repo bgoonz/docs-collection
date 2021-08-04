@@ -7,13 +7,14 @@ redirect_from:
   - /articles/working-with-ssh-key-passphrases
   - /github/authenticating-to-github/working-with-ssh-key-passphrases
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - SSH
 shortTitle: SSH key passphrases
 ---
+
 With SSH keys, if someone gains access to your computer, they also gain access to every system that uses that key. To add an extra layer of security, you can add a passphrase to your SSH key. You can use `ssh-agent` to securely save your passphrase so you don't have to reenter it.
 
 ## Adding or changing a passphrase
@@ -37,7 +38,7 @@ If your key already has a passphrase, you will be prompted to enter it before yo
 
 You can run `ssh-agent` automatically when you open bash or Git shell. Copy the following lines and paste them into your `~/.profile` or `~/.bashrc` file in Git shell:
 
-``` bash
+```bash
 env=~/.ssh/agent.env
 
 agent_load_env () { test -f "$env" && . "$env" >| /dev/null ; }
@@ -92,8 +93,8 @@ The `ssh-agent` process will continue to run until you log out, shut down your c
 
 On Mac OS X Leopard through OS X El Capitan, these default private key files are handled automatically:
 
-- *.ssh/id_rsa*
-- *.ssh/identity*
+- _.ssh/id_rsa_
+- _.ssh/identity_
 
 The first time you use your key, you will be prompted to enter your passphrase. If you choose to save the passphrase with your keychain, you won't have to enter it again.
 

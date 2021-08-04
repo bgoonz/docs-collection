@@ -1,17 +1,18 @@
 ---
 title: Permission levels for user-owned project boards
-intro: 'A project board owned by a user account has two permission levels: the project board owner and collaborators.'
+intro: "A project board owned by a user account has two permission levels: the project board owner and collaborators."
 redirect_from:
   - /articles/permission-levels-for-user-owned-project-boards
   - /github/setting-up-and-managing-your-github-user-account/permission-levels-for-user-owned-project-boards
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Accounts
 shortTitle: Permission user project boards
 ---
+
 ## Permissions overview
 
 There is only one owner of a user-owned project board; this permission cannot be shared with another user account. In addition to the owner, other people can collaborate on project boards.
@@ -58,4 +59,4 @@ You can change the project board's visibility from private to {% ifversion ghae 
 
 ## Further reading
 
-  - "[Managing access to your user account's project boards](/articles/managing-access-to-your-user-account-s-project-boards)"
+- "[Managing access to your user account's project boards](/articles/managing-access-to-your-user-account-s-project-boards)"

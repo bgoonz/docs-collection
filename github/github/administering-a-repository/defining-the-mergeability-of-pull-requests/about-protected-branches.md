@@ -1,7 +1,7 @@
 ---
 title: About protected branches
-intro: 'You can protect important branches by setting branch protection rules, which define whether collaborators can delete or force push to the branch and set requirements for any pushes to the branch, such as passing status checks or a linear commit history.'
-product: '{% data reusables.gated-features.protected-branches %}'
+intro: "You can protect important branches by setting branch protection rules, which define whether collaborators can delete or force push to the branch and set requirements for any pushes to the branch, such as passing status checks or a linear commit history."
+product: "{% data reusables.gated-features.protected-branches %}"
 redirect_from:
   - /articles/about-protected-branches
   - /enterprise/admin/developer-workflow/about-protected-branches-and-required-status-checks
@@ -17,15 +17,16 @@ redirect_from:
   - /github/administering-a-repository/about-required-reviews-for-pull-requests
   - /github/administering-a-repository/about-protected-branches
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Repositories
 ---
+
 ## About branch protection rules
 
-You can enforce certain workflows or requirements before a collaborator can push changes to a branch in your repository, including merging a pull request into the branch, by creating a branch protection rule. 
+You can enforce certain workflows or requirements before a collaborator can push changes to a branch in your repository, including merging a pull request into the branch, by creating a branch protection rule.
 
 By default, each branch protection rule disables force pushes to the matching branches and prevents the matching branches from being deleted. You can optionally disable these restrictions and enable additional branch protection settings.
 
@@ -38,9 +39,10 @@ By default, the restrictions of a branch protection rule don't apply to people w
 ## About branch protection settings
 
 For each branch protection rule, you can choose to enable or disable the following settings.
+
 - [Require pull request reviews before merging](#require-pull-request-reviews-before-merging)
 - [Require status checks before merging](#require-status-checks-before-merging)
-{% ifversion fpt or ghes > 3.1 or ghae-issue-4382 %}
+  {% ifversion fpt or ghes > 3.1 or ghae-issue-4382 %}
 - [Require conversation resolution before merging](#require-conversation-resolution-before-merging){% endif %}
 - [Require signed commits](#require-signed-commits)
 - [Require linear history](#require-linear-history)
@@ -57,7 +59,7 @@ For more information on how to set up branch protection, see "[Managing a branch
 
 If you enable required reviews, collaborators can only push changes to a protected branch via a pull request that is approved by the required number of reviewers with write permissions.
 
-If a person with admin permissions chooses the **Request changes** option in a review, then that person must approve the pull request before the pull request can be merged. If a reviewer who requests changes on a pull request isn't available, anyone with write permissions for the repository can dismiss the blocking review. 
+If a person with admin permissions chooses the **Request changes** option in a review, then that person must approve the pull request before the pull request can be merged. If a reviewer who requests changes on a pull request isn't available, anyone with write permissions for the repository can dismiss the blocking review.
 
 {% data reusables.repositories.review-policy-overlapping-commits %}
 
@@ -90,15 +92,16 @@ After enabling required status checks, all required status checks must pass befo
 
 You can set up required status checks to either be "loose" or "strict." The type of required status check you choose determines whether your branch is required to be up to date with the base branch before merging.
 
-| Type of required status check | Setting | Merge requirements | Considerations |
-| --- | --- | --- | --- |
-| **Strict** | The **Require branches to be up to date before merging** checkbox is checked. | The branch **must** be up to date with the base branch before merging. | This is the default behavior for required status checks. More builds may be required, as you'll need to bring the head branch up to date after other collaborators merge pull requests to the protected base branch.|
-| **Loose** | The **Require branches to be up to date before merging** checkbox is **not** checked. | The branch **does not** have to be up to date with the base branch before merging. | You'll have fewer required builds, as you won't need to bring the head branch up to date after other collaborators merge pull requests. Status checks may fail after you merge your branch if there are incompatible changes with the base branch. |
-| **Disabled** | The **Require status checks to pass before merging** checkbox is **not** checked. | The branch has no merge restrictions. | If required status checks aren't enabled, collaborators can merge the branch at any time, regardless of whether it is up to date with the base branch. This increases the possibility of incompatible changes.
+| Type of required status check | Setting                                                                               | Merge requirements                                                                 | Considerations                                                                                                                                                                                                                                     |
+| ----------------------------- | ------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Strict**                    | The **Require branches to be up to date before merging** checkbox is checked.         | The branch **must** be up to date with the base branch before merging.             | This is the default behavior for required status checks. More builds may be required, as you'll need to bring the head branch up to date after other collaborators merge pull requests to the protected base branch.                               |
+| **Loose**                     | The **Require branches to be up to date before merging** checkbox is **not** checked. | The branch **does not** have to be up to date with the base branch before merging. | You'll have fewer required builds, as you won't need to bring the head branch up to date after other collaborators merge pull requests. Status checks may fail after you merge your branch if there are incompatible changes with the base branch. |
+| **Disabled**                  | The **Require status checks to pass before merging** checkbox is **not** checked.     | The branch has no merge restrictions.                                              | If required status checks aren't enabled, collaborators can merge the branch at any time, regardless of whether it is up to date with the base branch. This increases the possibility of incompatible changes.                                     |
 
 For troubleshooting information, see "[Troubleshooting required status checks](/github/administering-a-repository/troubleshooting-required-status-checks)."
 
 {% ifversion fpt or ghes > 3.1 or ghae-issue-4382 %}
+
 ### Require conversation resolution before merging
 
 Requires all comments on the pull request to be resolved before it can be merged to a protected branch. This ensures that all comments are addressed or acknowledged before merge.
@@ -111,10 +114,10 @@ When you enable required commit signing on a branch, contributors {% ifversion f
 {% note %}
 
 {% ifversion fpt %}
-**Notes:** 
+**Notes:**
 
-* If you have enabled vigilant mode, which indicates that your commits will always be signed, any commits that {% data variables.product.prodname_dotcom %} identifies as "Partially verified" are permitted on branches that require signed commits. For more information about vigilant mode, see "[Displaying verification statuses for all of your commits](/github/authenticating-to-github/displaying-verification-statuses-for-all-of-your-commits)."
-* If a collaborator pushes an unsigned commit to a branch that requires commit signatures, the collaborator will need to rebase the commit to include a verified signature, then force push the rewritten commit to the branch.
+- If you have enabled vigilant mode, which indicates that your commits will always be signed, any commits that {% data variables.product.prodname_dotcom %} identifies as "Partially verified" are permitted on branches that require signed commits. For more information about vigilant mode, see "[Displaying verification statuses for all of your commits](/github/authenticating-to-github/displaying-verification-statuses-for-all-of-your-commits)."
+- If a collaborator pushes an unsigned commit to a branch that requires commit signatures, the collaborator will need to rebase the commit to include a verified signature, then force push the rewritten commit to the branch.
 
 {% else %}
 **Note:** If a collaborator pushes an unsigned commit to a branch that requires commit signatures, the collaborator will need to rebase the commit to include a verified signature, then force push the rewritten commit to the branch.

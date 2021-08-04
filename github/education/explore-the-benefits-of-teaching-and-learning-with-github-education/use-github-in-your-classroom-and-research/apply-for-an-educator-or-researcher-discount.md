@@ -1,6 +1,6 @@
 ---
 title: Apply for an educator or researcher discount
-intro: 'If you''re an educator or a researcher, you can apply to receive {% data variables.product.prodname_team %} for your organization account for free.'
+intro: "If you're an educator or a researcher, you can apply to receive {% data variables.product.prodname_team %} for your organization account for free."
 redirect_from:
   - /education/teach-and-learn-with-github-education/apply-for-an-educator-or-researcher-discount
   - /github/teaching-and-learning-with-github-education/applying-for-an-educator-or-researcher-discount
@@ -11,9 +11,10 @@ redirect_from:
   - /articles/applying-for-an-educator-or-researcher-discount
   - /education/explore-the-benefits-of-teaching-and-learning-with-github-education/apply-for-an-educator-or-researcher-discount
 versions:
-  fpt: '*'
+  fpt: "*"
 shortTitle: Apply for a discount
 ---
+
 ## About educator and researcher discounts
 
 {% data reusables.education.about-github-education-link %}
@@ -44,14 +45,15 @@ After your request for an educator or researcher discount has been approved, you
 ### Upgrading a new organization
 
 {% data reusables.education.upgrade-page %}
+
 1. Click {% octicon "plus" aria-label="The plus symbol" %} **Create an organization**.
-  ![Create an organization button](/assets/images/help/education/create-org-button.png)
-3. Read the information, then click **Create organization**.
-  ![Create organization button](/assets/images/help/education/create-organization-button.png)
-4. Under "Choose your plan", click **Choose {% data variables.product.prodname_free_team %}**.
-5. Follow the prompts to create your organization.
-{% data reusables.education.upgrade-page %}
-{% data reusables.education.upgrade-organization %}
+   ![Create an organization button](/assets/images/help/education/create-org-button.png)
+2. Read the information, then click **Create organization**.
+   ![Create organization button](/assets/images/help/education/create-organization-button.png)
+3. Under "Choose your plan", click **Choose {% data variables.product.prodname_free_team %}**.
+4. Follow the prompts to create your organization.
+   {% data reusables.education.upgrade-page %}
+   {% data reusables.education.upgrade-organization %}
 
 ## Further reading
 

@@ -1,16 +1,17 @@
 ---
 title: Collaboration with Git Large File Storage
-intro: 'With {% data variables.large_files.product_name_short %} enabled, you''ll be able to fetch, modify, and push large files just as you would expect with any file that Git manages. However, a user that doesn''t have {% data variables.large_files.product_name_short %} will experience a different workflow.'
+intro: "With {% data variables.large_files.product_name_short %} enabled, you'll be able to fetch, modify, and push large files just as you would expect with any file that Git manages. However, a user that doesn't have {% data variables.large_files.product_name_short %} will experience a different workflow."
 redirect_from:
   - /articles/collaboration-with-large-file-storage/
   - /articles/collaboration-with-git-large-file-storage
   - /github/managing-large-files/collaboration-with-git-large-file-storage
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 shortTitle: Collaboration
 ---
+
 If collaborators on your repository don't have {% data variables.large_files.product_name_short %} installed, they won't have access to the original large file. If they attempt to clone your repository, they will only fetch the pointer files, and won't have access to any of the actual data.
 
 {% tip %}

@@ -5,9 +5,9 @@ redirect_from:
   - /categories/manipulating-files/
   - /categories/managing-files-in-a-repository
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Repositories
 children:
@@ -16,4 +16,3 @@ children:
   - /working-with-non-code-files
 shortTitle: Manage files in a repository
 ---
-

@@ -1,13 +1,13 @@
 ---
 title: Signing up for GitHub
-intro: 'Start using {% data variables.product.prodname_dotcom %} for yourself or your team.'
+intro: "Start using {% data variables.product.prodname_dotcom %} for yourself or your team."
 redirect_from:
   - /articles/signing-up-for-github
   - /github/getting-started-with-github/signing-up-for-github/
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Accounts
 children:
@@ -16,4 +16,3 @@ children:
   - /setting-up-a-trial-of-github-enterprise-cloud
   - /setting-up-a-trial-of-github-enterprise-server
 ---
-

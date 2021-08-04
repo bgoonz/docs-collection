@@ -1,19 +1,20 @@
 ---
 title: Roles in an enterprise
-intro: 'Everyone in an enterprise is a member of the enterprise. To control access to your enterprise''s settings and data, you can assign different roles to members of your enterprise.'
-product: '{% data reusables.gated-features.enterprise-accounts %}'
+intro: "Everyone in an enterprise is a member of the enterprise. To control access to your enterprise's settings and data, you can assign different roles to members of your enterprise."
+product: "{% data reusables.gated-features.enterprise-accounts %}"
 redirect_from:
   - /github/setting-up-and-managing-your-enterprise-account/roles-for-an-enterprise-account
   - /articles/permission-levels-for-a-business-account/
   - /articles/roles-for-an-enterprise-account
   - /github/setting-up-and-managing-your-enterprise/roles-in-an-enterprise
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Enterprise
 ---
+
 ## About roles in an enterprise
 
 Everyone in an enterprise is a member of the enterprise. You can also assign administrative roles to members of your enterprise. Each administrator role maps to business functions and provides permissions to do specific tasks within the enterprise.
@@ -25,11 +26,12 @@ For more information about adding people to your enterprise, see "{% ifversion f
 ## Enterprise owner
 
 Enterprise owners have complete control over the enterprise and can take every action, including:
+
 - Managing administrators
 - {% ifversion fpt %}Adding and removing {% elsif ghae or ghes %}Managing{% endif %} organizations {% ifversion fpt %}to and from {% elsif ghae or ghes %} in{% endif %} the enterprise
 - Managing enterprise settings
 - Enforcing policy across organizations
-{% ifversion fpt %}- Managing billing settings{% endif %}
+  {% ifversion fpt %}- Managing billing settings{% endif %}
 
 Enterprise owners cannot access organization settings or content unless they are made an organization owner or given direct access to an organization-owned repository. Similarly, owners of organizations in your enterprise do not have access to the enterprise itself unless you make them enterprise owners.
 
@@ -50,6 +52,7 @@ People with outside collaborator access to repositories owned by your organizati
 ## Billing manager
 
 Billing managers only have access to your enterprise's billing settings. Billing managers for your enterprise can:
+
 - View and manage user licenses, {% data variables.large_files.product_name_short %} packs and other billing settings
 - View a list of billing managers
 - Add or remove other billing managers

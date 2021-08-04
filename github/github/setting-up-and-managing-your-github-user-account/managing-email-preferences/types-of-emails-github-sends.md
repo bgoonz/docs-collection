@@ -1,16 +1,17 @@
 ---
 title: Types of emails GitHub sends
-intro: 'There are several types of emails you can receive from {% data variables.product.product_name %}, including notifications, account information, customer research invitations, and marketing communications.'
+intro: "There are several types of emails you can receive from {% data variables.product.product_name %}, including notifications, account information, customer research invitations, and marketing communications."
 redirect_from:
   - /articles/types-of-emails-github-sends
   - /github/setting-up-and-managing-your-github-user-account/types-of-emails-github-sends
 versions:
-  fpt: '*'
+  fpt: "*"
 topics:
   - Accounts
   - Notifications
 shortTitle: Emails from GitHub
 ---
+
 ## Notification emails
 
 You can choose to receive some or all of your activity notifications via email. For more information, see "[About notifications](/github/managing-subscriptions-and-notifications-on-github/about-notifications)." Notification emails can include:

@@ -6,13 +6,14 @@ redirect_from:
   - /articles/about-your-organizations-profile
   - /github/setting-up-and-managing-your-github-profile/about-your-organizations-profile
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Profiles
 shortTitle: Organization's profile
 ---
+
 You can optionally choose to add a description, location, website, and email address for your organization, and pin important repositories to the top of the page.
 
 {% ifversion fpt %}To confirm your organization's identity and display a "Verified" badge on your organization profile page, you must verify your organization's domains with {% data variables.product.product_name %}. For more information, see "[Verifying or approving a domain for your organization](/organizations/managing-organization-settings/verifying-or-approving-a-domain-for-your-organization)."

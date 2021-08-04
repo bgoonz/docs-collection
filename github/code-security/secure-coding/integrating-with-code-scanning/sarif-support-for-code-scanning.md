@@ -1,17 +1,17 @@
 ---
 title: SARIF support for code scanning
 shortTitle: SARIF support
-intro: 'To display results from a third-party static analysis tool in your repository on {% data variables.product.prodname_dotcom %}, you''ll need your results stored in a SARIF file that supports a specific subset of the SARIF 2.1.0 JSON schema for {% data variables.product.prodname_code_scanning %}. If you use the default {% data variables.product.prodname_codeql %} static analysis engine, then your results will display in your repository on {% data variables.product.prodname_dotcom %} automatically.'
-product: '{% data reusables.gated-features.code-scanning %}'
+intro: "To display results from a third-party static analysis tool in your repository on {% data variables.product.prodname_dotcom %}, you'll need your results stored in a SARIF file that supports a specific subset of the SARIF 2.1.0 JSON schema for {% data variables.product.prodname_code_scanning %}. If you use the default {% data variables.product.prodname_codeql %} static analysis engine, then your results will display in your repository on {% data variables.product.prodname_dotcom %} automatically."
+product: "{% data reusables.gated-features.code-scanning %}"
 miniTocMaxHeadingLevel: 3
 redirect_from:
   - /github/finding-security-vulnerabilities-and-errors-in-your-code/about-sarif-support-for-code-scanning
   - /github/finding-security-vulnerabilities-and-errors-in-your-code/sarif-support-for-code-scanning
   - /code-security/secure-coding/sarif-support-for-code-scanning
 versions:
-  fpt: '*'
-  ghes: '>=3.0'
-  ghae: '*'
+  fpt: "*"
+  ghes: ">=3.0"
+  ghae: "*"
 type: reference
 topics:
   - Advanced Security
@@ -19,6 +19,7 @@ topics:
   - Integration
   - SARIF
 ---
+
 <!--For this article in earlier GHES versions, see /content/github/finding-security-vulnerabilities-and-errors-in-your-code-->
 
 {% data reusables.code-scanning.beta %}
@@ -69,75 +70,76 @@ Any valid SARIF 2.1.0 output file can be uploaded, however, {% data variables.pr
 
 ### `sarifLog` object
 
-| Name | Description |
-|----|----|
-|  `$schema` | **Required.** The URI of the SARIF JSON schema for version 2.1.0. For example, `https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json`. |
-| `version` | **Required.** {% data variables.product.prodname_code_scanning_capc %} only supports SARIF version `2.1.0`.
-| `runs[]` | **Required.** A SARIF file contains an array of one or more runs. Each run represents a single run of an analysis tool. For more information about a `run`, see the [`run` object](#run-object).
+| Name      | Description                                                                                                                                                                                      |
+| --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `$schema` | **Required.** The URI of the SARIF JSON schema for version 2.1.0. For example, `https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json`.                 |
+| `version` | **Required.** {% data variables.product.prodname_code_scanning_capc %} only supports SARIF version `2.1.0`.                                                                                      |
+| `runs[]`  | **Required.** A SARIF file contains an array of one or more runs. Each run represents a single run of an analysis tool. For more information about a `run`, see the [`run` object](#run-object). |
 
 ### `run` object
 
 {% data variables.product.prodname_code_scanning_capc %} uses the `run` object to filter results by tool and provide information about the source of a result. The `run` object contains the `tool.driver` tool component object, which contains information about the tool that generated the results. Each `run` can only have results for one analysis tool.
 
-| Name | Description |
-|----|----|
-| `tool.driver.name` | **Required.** The name of the analysis tool. {% data variables.product.prodname_code_scanning_capc %} displays the name on {% data variables.product.prodname_dotcom %} to allow you to filter results by tool. |
-| `tool.driver.version` | **Optional.** The version of the analysis tool. {% data variables.product.prodname_code_scanning_capc %} uses the version number to track when results may have changed due to a tool version change rather than a change in the code being analyzed. If the SARIF file includes the `semanticVersion` field, `version` is not used by {% data variables.product.prodname_code_scanning %}. |
+| Name                          | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `tool.driver.name`            | **Required.** The name of the analysis tool. {% data variables.product.prodname_code_scanning_capc %} displays the name on {% data variables.product.prodname_dotcom %} to allow you to filter results by tool.                                                                                                                                                                                                                                                                                                                                                     |
+| `tool.driver.version`         | **Optional.** The version of the analysis tool. {% data variables.product.prodname_code_scanning_capc %} uses the version number to track when results may have changed due to a tool version change rather than a change in the code being analyzed. If the SARIF file includes the `semanticVersion` field, `version` is not used by {% data variables.product.prodname_code_scanning %}.                                                                                                                                                                         |
 | `tool.driver.semanticVersion` | **Optional.** The version of the analysis tool, specified by the Semantic Versioning 2.0 format. {% data variables.product.prodname_code_scanning_capc %} uses the version number to track when results may have changed due to a tool version change rather than a change in the code being analyzed. If the SARIF file includes the `semanticVersion` field, `version` is not used by {% data variables.product.prodname_code_scanning %}. For more information, see "[Semantic Versioning 2.0.0](https://semver.org/)" in the Semantic Versioning documentation. |
-| `tool.driver.rules[]` | **Required.** An array of `reportingDescriptor` objects that represent rules. The analysis tool uses rules to find problems in the code being analyzed. For more information, see the [`reportingDescriptor` object](#reportingdescriptor-object). |
-| `results[]` | **Required.** The results of the analysis tool. {% data variables.product.prodname_code_scanning_capc %} displays the results on {% data variables.product.prodname_dotcom %}. For more information, see the [`result` object](#result-object).
+| `tool.driver.rules[]`         | **Required.** An array of `reportingDescriptor` objects that represent rules. The analysis tool uses rules to find problems in the code being analyzed. For more information, see the [`reportingDescriptor` object](#reportingdescriptor-object).                                                                                                                                                                                                                                                                                                                  |
+| `results[]`                   | **Required.** The results of the analysis tool. {% data variables.product.prodname_code_scanning_capc %} displays the results on {% data variables.product.prodname_dotcom %}. For more information, see the [`result` object](#result-object).                                                                                                                                                                                                                                                                                                                     |
 
 ### `reportingDescriptor` object
 
-| Name | Description |
-|----|----|
-| `id` |  **Required.** A unique identifier for the rule. The `id` is referenced from other parts of the SARIF file and may be used by {% data variables.product.prodname_code_scanning %} to display URLs on {% data variables.product.prodname_dotcom %}. |
-| `name` | **Optional.** The name of the rule. {% data variables.product.prodname_code_scanning_capc %} displays the name to allow results to be filtered by rule on {% data variables.product.prodname_dotcom %}. |
-| `shortDescription.text` | **Required.** A concise description of the rule. {% data variables.product.prodname_code_scanning_capc %} displays the short description on {% data variables.product.prodname_dotcom %} next to the associated results.
-| `fullDescription.text` | **Required.** A description of the rule. {% data variables.product.prodname_code_scanning_capc %} displays the full description on {% data variables.product.prodname_dotcom %} next to the associated results. The max number of characters is limited to 1000.
-| `defaultConfiguration.level` | **Optional.** Default severity level of the rule. {% data variables.product.prodname_code_scanning_capc %} uses severity levels to help you understand how critical the result is for a given rule. This value can be overridden by the `level` attribute in the `result` object. For more information, see the [`result` object](#result-object). Default: `warning`.
-| `help.text` | **Required.** Documentation for the rule using text format. {% data variables.product.prodname_code_scanning_capc %} displays this help documentation next to the associated results.
-| `help.markdown` | **Recommended.** Documentation for the rule using Markdown format. {% data variables.product.prodname_code_scanning_capc %} displays this help documentation next to the associated results. When `help.markdown` is available, it is displayed instead of `help.text`.
-| `properties.tags[]` | **Optional.** An array of strings. {% data variables.product.prodname_code_scanning_capc %} uses `tags` to allow you to filter results on {% data variables.product.prodname_dotcom %}. For example, it is possible to filter to all results that have the tag `security`.
-| `properties.precision` | **Recommended.** A string that indicates how often the results indicated by this rule are true. For example, if a rule has a known high false-positive rate, the precision should be `low`. {% data variables.product.prodname_code_scanning_capc %} orders results by precision on {% data variables.product.prodname_dotcom %} so that the results with the highest `level`, and highest `precision` are shown first. Can be one of: `very-high`, `high`, `medium`, or `low`.
+| Name                         | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`                         | **Required.** A unique identifier for the rule. The `id` is referenced from other parts of the SARIF file and may be used by {% data variables.product.prodname_code_scanning %} to display URLs on {% data variables.product.prodname_dotcom %}.                                                                                                                                                                                                                               |
+| `name`                       | **Optional.** The name of the rule. {% data variables.product.prodname_code_scanning_capc %} displays the name to allow results to be filtered by rule on {% data variables.product.prodname_dotcom %}.                                                                                                                                                                                                                                                                         |
+| `shortDescription.text`      | **Required.** A concise description of the rule. {% data variables.product.prodname_code_scanning_capc %} displays the short description on {% data variables.product.prodname_dotcom %} next to the associated results.                                                                                                                                                                                                                                                        |
+| `fullDescription.text`       | **Required.** A description of the rule. {% data variables.product.prodname_code_scanning_capc %} displays the full description on {% data variables.product.prodname_dotcom %} next to the associated results. The max number of characters is limited to 1000.                                                                                                                                                                                                                |
+| `defaultConfiguration.level` | **Optional.** Default severity level of the rule. {% data variables.product.prodname_code_scanning_capc %} uses severity levels to help you understand how critical the result is for a given rule. This value can be overridden by the `level` attribute in the `result` object. For more information, see the [`result` object](#result-object). Default: `warning`.                                                                                                          |
+| `help.text`                  | **Required.** Documentation for the rule using text format. {% data variables.product.prodname_code_scanning_capc %} displays this help documentation next to the associated results.                                                                                                                                                                                                                                                                                           |
+| `help.markdown`              | **Recommended.** Documentation for the rule using Markdown format. {% data variables.product.prodname_code_scanning_capc %} displays this help documentation next to the associated results. When `help.markdown` is available, it is displayed instead of `help.text`.                                                                                                                                                                                                         |
+| `properties.tags[]`          | **Optional.** An array of strings. {% data variables.product.prodname_code_scanning_capc %} uses `tags` to allow you to filter results on {% data variables.product.prodname_dotcom %}. For example, it is possible to filter to all results that have the tag `security`.                                                                                                                                                                                                      |
+| `properties.precision`       | **Recommended.** A string that indicates how often the results indicated by this rule are true. For example, if a rule has a known high false-positive rate, the precision should be `low`. {% data variables.product.prodname_code_scanning_capc %} orders results by precision on {% data variables.product.prodname_dotcom %} so that the results with the highest `level`, and highest `precision` are shown first. Can be one of: `very-high`, `high`, `medium`, or `low`. |
 
 ### `result` object
 
 {% data reusables.code-scanning.upload-sarif-alert-limit %}
 
-| Name | Description |
-|----|----|
-| `ruleId`| **Optional.** The unique identifier of the rule (`reportingDescriptor.id`). For more information, see the [`reportingDescriptor` object](#reportingdescriptor-object). {% data variables.product.prodname_code_scanning_capc %} uses the rule identifier to filter results by rule on {% data variables.product.prodname_dotcom %}.
-| `ruleIndex`| **Optional.** The index of the associated rule (`reportingDescriptor` object) in the tool component `rules` array. For more information, see the [`run` object](#run-object).
-| `rule`| **Optional.** A reference used to locate the rule (reporting descriptor) for this result. For more information, see the [`reportingDescriptor` object](#reportingdescriptor-object).
-| `level`| **Optional.** The severity of the result. This level overrides the default severity defined by the rule. {% data variables.product.prodname_code_scanning_capc %} uses the level to filter results by severity on {% data variables.product.prodname_dotcom %}.
-| `message.text`| **Required.** A message that describes the result. {% data variables.product.prodname_code_scanning_capc %} displays the message text as the title of the result. Only the first sentence of the message will be displayed when visible space is limited.
-| `locations[]`| **Required.** The set of locations where the result was detected up to a maximum of 10. Only one location should be included unless the problem can only be corrected by making a change at every specified location. **Note:** At least one location is required for {% data variables.product.prodname_code_scanning %} to display a result. {% data variables.product.prodname_code_scanning_capc %} will use this property to decide which file to annotate with the result. Only the first value of this array is used. All other values are ignored.
-| `partialFingerprints`| **Required.** A set of strings used to track the unique identity of the result. {% data variables.product.prodname_code_scanning_capc %} uses `partialFingerprints` to accurately identify which results are the same across commits and branches. {% data variables.product.prodname_code_scanning_capc %} will attempt to use `partialFingerprints` if they exist. If you are uploading third-party SARIF files with the `upload-action`, the action will create `partialFingerprints` for you when they are not included in the SARIF file. For more information, see "[Preventing duplicate alerts using fingerprints](#preventing-duplicate-alerts-using-fingerprints)."  **Note:** {% data variables.product.prodname_code_scanning_capc %} only uses the `primaryLocationLineHash`.
-| `codeFlows[].threadFlows[].locations[]`| **Optional.** An array of `location` objects for a `threadFlow` object, which describes the progress of a program through a thread of execution. A `codeFlow` object describes a pattern of code execution used to detect a result. If code flows are provided, {% data variables.product.prodname_code_scanning %} will expand code flows on {% data variables.product.prodname_dotcom %} for the relevant result. For more information, see the [`location` object](#location-object).
-| `relatedLocations[]`| A set of locations relevant to this result. {% data variables.product.prodname_code_scanning_capc %} will link to related locations when they are embedded in the result message. For more information, see the [`location` object](#location-object).
+| Name                                    | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| --------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ruleId`                                | **Optional.** The unique identifier of the rule (`reportingDescriptor.id`). For more information, see the [`reportingDescriptor` object](#reportingdescriptor-object). {% data variables.product.prodname_code_scanning_capc %} uses the rule identifier to filter results by rule on {% data variables.product.prodname_dotcom %}.                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| `ruleIndex`                             | **Optional.** The index of the associated rule (`reportingDescriptor` object) in the tool component `rules` array. For more information, see the [`run` object](#run-object).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| `rule`                                  | **Optional.** A reference used to locate the rule (reporting descriptor) for this result. For more information, see the [`reportingDescriptor` object](#reportingdescriptor-object).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `level`                                 | **Optional.** The severity of the result. This level overrides the default severity defined by the rule. {% data variables.product.prodname_code_scanning_capc %} uses the level to filter results by severity on {% data variables.product.prodname_dotcom %}.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| `message.text`                          | **Required.** A message that describes the result. {% data variables.product.prodname_code_scanning_capc %} displays the message text as the title of the result. Only the first sentence of the message will be displayed when visible space is limited.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `locations[]`                           | **Required.** The set of locations where the result was detected up to a maximum of 10. Only one location should be included unless the problem can only be corrected by making a change at every specified location. **Note:** At least one location is required for {% data variables.product.prodname_code_scanning %} to display a result. {% data variables.product.prodname_code_scanning_capc %} will use this property to decide which file to annotate with the result. Only the first value of this array is used. All other values are ignored.                                                                                                                                                                                                                                |
+| `partialFingerprints`                   | **Required.** A set of strings used to track the unique identity of the result. {% data variables.product.prodname_code_scanning_capc %} uses `partialFingerprints` to accurately identify which results are the same across commits and branches. {% data variables.product.prodname_code_scanning_capc %} will attempt to use `partialFingerprints` if they exist. If you are uploading third-party SARIF files with the `upload-action`, the action will create `partialFingerprints` for you when they are not included in the SARIF file. For more information, see "[Preventing duplicate alerts using fingerprints](#preventing-duplicate-alerts-using-fingerprints)." **Note:** {% data variables.product.prodname_code_scanning_capc %} only uses the `primaryLocationLineHash`. |
+| `codeFlows[].threadFlows[].locations[]` | **Optional.** An array of `location` objects for a `threadFlow` object, which describes the progress of a program through a thread of execution. A `codeFlow` object describes a pattern of code execution used to detect a result. If code flows are provided, {% data variables.product.prodname_code_scanning %} will expand code flows on {% data variables.product.prodname_dotcom %} for the relevant result. For more information, see the [`location` object](#location-object).                                                                                                                                                                                                                                                                                                  |
+| `relatedLocations[]`                    | A set of locations relevant to this result. {% data variables.product.prodname_code_scanning_capc %} will link to related locations when they are embedded in the result message. For more information, see the [`location` object](#location-object).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 
 ### `location` object
 
 A location within a programming artifact, such as a file in the repository or a file that was generated during a build.
 
-| Name | Description |
-|----|----|
-| `location.id` | **Optional.** A unique identifier that distinguishes this location from all other locations within a single result object.
-| `location.physicalLocation` | **Required.** Identifies the artifact and region. For more information, see the [`physicalLocation`](#physicallocation-object).
-| `location.message.text` | **Optional.** A message relevant to the location.
+| Name                        | Description                                                                                                                     |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `location.id`               | **Optional.** A unique identifier that distinguishes this location from all other locations within a single result object.      |
+| `location.physicalLocation` | **Required.** Identifies the artifact and region. For more information, see the [`physicalLocation`](#physicallocation-object). |
+| `location.message.text`     | **Optional.** A message relevant to the location.                                                                               |
 
 ### `physicalLocation` object
 
-| Name | Description |
-|----|----|
-| `artifactLocation.uri`| **Required.** A URI indicating the location of an artifact, usually a file either in the repository or generated during a build. If the URI is relative, it should be relative to the root of the {% data variables.product.prodname_dotcom %} repository being analyzed. For example, main.js or src/script.js are relative to the root of the repository. If the URI is absolute, {% data variables.product.prodname_code_scanning %} can use the URI to checkout the artifact and match up files in the repository. For example, `https://github.com/ghost/example/blob/00/src/promiseUtils.js`.
-| `region.startLine` | **Required.** The line number of the first character in the region.
-| `region.startColumn` | **Required.** The column number of the first character in the region.
-| `region.endLine` | **Required.** The line number of the last character in the region.
-| `region.endColumn` | **Required.** The column number of the character following the end of the region.
+| Name                   | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `artifactLocation.uri` | **Required.** A URI indicating the location of an artifact, usually a file either in the repository or generated during a build. If the URI is relative, it should be relative to the root of the {% data variables.product.prodname_dotcom %} repository being analyzed. For example, main.js or src/script.js are relative to the root of the repository. If the URI is absolute, {% data variables.product.prodname_code_scanning %} can use the URI to checkout the artifact and match up files in the repository. For example, `https://github.com/ghost/example/blob/00/src/promiseUtils.js`. |
+| `region.startLine`     | **Required.** The line number of the first character in the region.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `region.startColumn`   | **Required.** The column number of the first character in the region.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| `region.endLine`       | **Required.** The line number of the last character in the region.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| `region.endColumn`     | **Required.** The column number of the character following the end of the region.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 
 {% ifversion fpt %}
+
 ### `runAutomationDetails` object
 
 The `runAutomationDetails` object contains information that specifies the identity of a run.
@@ -148,9 +150,9 @@ The `runAutomationDetails` object contains information that specifies the identi
 
 {% endnote %}
 
-| Name | Description |
-|----|----|
-| `id`| **Optional.** A string that identifies the category of the analysis and the run ID. Use if you want to upload multiple SARIF files for the same tool and commit, but performed on different languages or different parts of the code. |
+| Name | Description                                                                                                                                                                                                                           |
+| ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id` | **Optional.** A string that identifies the category of the analysis and the run ID. Use if you want to upload multiple SARIF files for the same tool and commit, but performed on different languages or different parts of the code. |
 
 The use of the `runAutomationDetails` object is optional.
 
@@ -160,17 +162,17 @@ Use the category to distinguish between multiple analyses for the same tool or c
 
 `id` is interpreted as `category/run-id`. If the `id` contains no forward slash (`/`), then the entire string is the `run_id` and the `category` is empty. Otherwise, `category` is everything in the string until the last forward slash, and `run_id` is everything after.
 
-| `id` | category | `run_id` |
-|----|----|----|
-| my-analysis/tool1/2021-02-01 | my-analysis/tool1 | 2021-02-01
-| my-analysis/tool1/ | my-analysis/tool1 | _no `run-id`_
-| my-analysis for tool1 | _no category_ | my-analysis for tool1
+| `id`                         | category          | `run_id`              |
+| ---------------------------- | ----------------- | --------------------- |
+| my-analysis/tool1/2021-02-01 | my-analysis/tool1 | 2021-02-01            |
+| my-analysis/tool1/           | my-analysis/tool1 | _no `run-id`_         |
+| my-analysis for tool1        | _no category_     | my-analysis for tool1 |
 
 - The run with an `id` of "my-analysis/tool1/2021-02-01" belongs to the category "my-analysis/tool1". Presumably, this is the run from February 2, 2021.
 - The run with an `id` of "my-analysis/tool1/" belongs to the category "my-analysis/tool1" but is not distinguished from other runs in that category.
 - The run whose `id` is "my-analysis for tool1 " has a unique identifier but cannot be inferred to belong to any category.
 
-For more information about the `runAutomationDetails` object and the `id` field, see [runAutomationDetails object](https://docs.oasis-open.org/sarif/sarif/v2.1.0/cs01/sarif-v2.1.0-cs01.html#_Toc16012479) in the OASIS documentation. 
+For more information about the `runAutomationDetails` object and the `id` field, see [runAutomationDetails object](https://docs.oasis-open.org/sarif/sarif/v2.1.0/cs01/sarif-v2.1.0-cs01.html#_Toc16012479) in the OASIS documentation.
 
 Note that the rest of the supported fields are ignored.
 
@@ -235,6 +237,7 @@ This SARIF output file has example values to show the minimum required propertie
 This SARIF output file has example values to show all supported SARIF properties for {% data variables.product.prodname_code_scanning %}.
 
 {% ifversion fpt %}
+
 ```json
 {
   "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
@@ -259,9 +262,7 @@ This SARIF output file has example values to show all supported SARIF properties
                 "level": "note"
               },
               "properties": {
-                "tags": [
-                  "maintainability"
-                ],
+                "tags": ["maintainability"],
                 "precision": "very-high"
               }
             },
@@ -275,11 +276,7 @@ This SARIF output file has example values to show all supported SARIF properties
                 "text": "If a function is intended to be a constructor, it should always be invoked with 'new'. Otherwise, it should always be invoked as a normal function, that is, without 'new'."
               },
               "properties": {
-                "tags": [
-                  "reliability",
-                  "correctness",
-                  "language-features"
-                ],
+                "tags": ["reliability", "correctness", "language-features"],
                 "precision": "very-high"
               }
             },
@@ -289,7 +286,7 @@ This SARIF output file has example values to show all supported SARIF properties
           ]
         }
       },
-      "automationDetails": { 
+      "automationDetails": {
         "id": "my-category/"
       },
       "results": [
@@ -487,7 +484,9 @@ This SARIF output file has example values to show all supported SARIF properties
   ]
 }
 ```
+
 {% else %}
+
 ```json
 {
   "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
@@ -512,9 +511,7 @@ This SARIF output file has example values to show all supported SARIF properties
                 "level": "note"
               },
               "properties": {
-                "tags": [
-                  "maintainability"
-                ],
+                "tags": ["maintainability"],
                 "precision": "very-high"
               }
             },
@@ -528,11 +525,7 @@ This SARIF output file has example values to show all supported SARIF properties
                 "text": "If a function is intended to be a constructor, it should always be invoked with 'new'. Otherwise, it should always be invoked as a normal function, that is, without 'new'."
               },
               "properties": {
-                "tags": [
-                  "reliability",
-                  "correctness",
-                  "language-features"
-                ],
+                "tags": ["reliability", "correctness", "language-features"],
                 "precision": "very-high"
               }
             },
@@ -737,4 +730,5 @@ This SARIF output file has example values to show all supported SARIF properties
   ]
 }
 ```
+
 {% endif %}

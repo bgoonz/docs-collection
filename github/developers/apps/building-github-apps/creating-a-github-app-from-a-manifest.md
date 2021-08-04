@@ -1,17 +1,18 @@
 ---
 title: Creating a GitHub App from a manifest
-intro: 'A GitHub App Manifest is a preconfigured GitHub App you can share with anyone who wants to use your app in their personal repositories. The manifest flow allows someone to quickly create, install, and start extending a GitHub App without needing to register the app or connect the registration to the hosted app code.'
+intro: "A GitHub App Manifest is a preconfigured GitHub App you can share with anyone who wants to use your app in their personal repositories. The manifest flow allows someone to quickly create, install, and start extending a GitHub App without needing to register the app or connect the registration to the hosted app code."
 redirect_from:
   - /apps/building-github-apps/creating-github-apps-from-a-manifest
   - /developers/apps/creating-a-github-app-from-a-manifest
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - GitHub Apps
 shortTitle: App creation manifest flow
 ---
+
 ## About GitHub App Manifests
 
 When someone creates a GitHub App from a manifest, they only need to follow a URL and name the app. The manifest includes the permissions, events, and webhook URL needed to automatically register the app. The manifest flow creates the GitHub App registration and retrieves the app's webhook secret, private key (PEM file), and GitHub App ID. The person who creates the app from the manifest will own the app and can choose to [edit the app's configuration settings](/apps/managing-github-apps/modifying-a-github-app/), delete it, or transfer it to another person on GitHub.
@@ -20,11 +21,11 @@ You can use [Probot](https://probot.github.io/) to get started with GitHub App M
 
 Here are some scenarios where you might use GitHub App Manifests to create preconfigured apps:
 
-* Help new team members come up-to-speed quickly when developing GitHub Apps.
-* Allow others to extend a GitHub App using the GitHub APIs without requiring them to configure an app.
-* Create GitHub App reference designs to share with the GitHub community.
-* Ensure you deploy GitHub Apps to development and production environments using the same configuration.
-* Track revisions to a GitHub App configuration.
+- Help new team members come up-to-speed quickly when developing GitHub Apps.
+- Allow others to extend a GitHub App using the GitHub APIs without requiring them to configure an app.
+- Create GitHub App reference designs to share with the GitHub community.
+- Ensure you deploy GitHub Apps to development and production environments using the same configuration.
+- Track revisions to a GitHub App configuration.
 
 ## Implementing the GitHub App Manifest flow
 
@@ -54,31 +55,31 @@ The person creating the app will be redirected to a GitHub page with an input fi
 
 #### GitHub App Manifest parameters
 
- Name | Type | Description
------|------|-------------
-`name` | `string` | The name of the GitHub App.
-`url` | `string` | **Required.** The homepage of your GitHub App.
-`hook_attributes` | `object` | The configuration of the GitHub App's webhook.
-`redirect_url` | `string` | The full URL to redirect to after a user initiates the creation of a GitHub App from a manifest.{% ifversion fpt or ghae-next or ghes > 3.0 %}
-`callback_urls` | `array of strings` | A full URL to redirect to after someone authorizes an installation. You can provide up to 10 callback URLs.{% else %}
-`callback_url` | `string` |  A full URL to redirect to after someone authorizes an installation.{% endif %}
-`description` | `string` | A description of the GitHub App.
-`public` | `boolean` | Set to `true` when your GitHub App is available to the public or `false` when it is only accessible to the owner of the app.
-`default_events` | `array` | The list of [events](/webhooks/event-payloads) the GitHub App subscribes to.
-`default_permissions` | `object` | The set of [permissions](/rest/reference/permissions-required-for-github-apps) needed by the GitHub App. The format of the object uses the permission name for the key (for example, `issues`) and the access type for the value (for example, `write`).
+| Name                  | Type               | Description                                                                                                                                                                                                                                              |
+| --------------------- | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `name`                | `string`           | The name of the GitHub App.                                                                                                                                                                                                                              |
+| `url`                 | `string`           | **Required.** The homepage of your GitHub App.                                                                                                                                                                                                           |
+| `hook_attributes`     | `object`           | The configuration of the GitHub App's webhook.                                                                                                                                                                                                           |
+| `redirect_url`        | `string`           | The full URL to redirect to after a user initiates the creation of a GitHub App from a manifest.{% ifversion fpt or ghae-next or ghes > 3.0 %}                                                                                                           |
+| `callback_urls`       | `array of strings` | A full URL to redirect to after someone authorizes an installation. You can provide up to 10 callback URLs.{% else %}                                                                                                                                    |
+| `callback_url`        | `string`           | A full URL to redirect to after someone authorizes an installation.{% endif %}                                                                                                                                                                           |
+| `description`         | `string`           | A description of the GitHub App.                                                                                                                                                                                                                         |
+| `public`              | `boolean`          | Set to `true` when your GitHub App is available to the public or `false` when it is only accessible to the owner of the app.                                                                                                                             |
+| `default_events`      | `array`            | The list of [events](/webhooks/event-payloads) the GitHub App subscribes to.                                                                                                                                                                             |
+| `default_permissions` | `object`           | The set of [permissions](/rest/reference/permissions-required-for-github-apps) needed by the GitHub App. The format of the object uses the permission name for the key (for example, `issues`) and the access type for the value (for example, `write`). |
 
 The `hook_attributes` object has the following key:
 
-Name | Type | Description
------|------|-------------
-`url` | `string` | **Required.** The URL of the server that will receive the webhook `POST` requests.
-`active` | `boolean` | Deliver event details when this hook is triggered, defaults to true.
+| Name     | Type      | Description                                                                        |
+| -------- | --------- | ---------------------------------------------------------------------------------- |
+| `url`    | `string`  | **Required.** The URL of the server that will receive the webhook `POST` requests. |
+| `active` | `boolean` | Deliver event details when this hook is triggered, defaults to true.               |
 
 #### Parameters
 
- Name | Type | Description
------|------|-------------
-`state`| `string` | {% data reusables.apps.state_description %}
+| Name    | Type     | Description                                 |
+| ------- | -------- | ------------------------------------------- |
+| `state` | `string` | {% data reusables.apps.state_description %} |
 
 #### Examples
 
@@ -86,69 +87,74 @@ This example uses a form on a web page with a button that triggers the `POST` re
 
 ```html
 <form action="https://github.com/settings/apps/new?state=abc123" method="post">
- Create a GitHub App Manifest: <input type="text" name="manifest" id="manifest"><br>
- <input type="submit" value="Submit">
+  Create a GitHub App Manifest:
+  <input type="text" name="manifest" id="manifest" /><br />
+  <input type="submit" value="Submit" />
 </form>
 
 <script>
- input = document.getElementById("manifest")
- input.value = JSON.stringify({
-   "name": "Octoapp",
-   "url": "https://www.example.com",
-   "hook_attributes": {
-     "url": "https://example.com/github/events",
-   },
-   "redirect_url": "https://example.com/redirect",
-   {% ifversion fpt or ghae-next or ghes > 3.0 %}"callback_urls": [
-     "https://example.com/callback"
-   ],{% else %}"callback_url": "https://example.com/callback",{% endif %}
-   "public": true,
-   "default_permissions": {
-     "issues": "write",
-     "checks": "write"
-   },
-   "default_events": [
-     "issues",
-     "issue_comment",
-     "check_suite",
-     "check_run"
-   ]
- })
+  input = document.getElementById("manifest")
+  input.value = JSON.stringify({
+    "name": "Octoapp",
+    "url": "https://www.example.com",
+    "hook_attributes": {
+      "url": "https://example.com/github/events",
+    },
+    "redirect_url": "https://example.com/redirect",
+    {% ifversion fpt or ghae-next or ghes > 3.0 %}"callback_urls": [
+      "https://example.com/callback"
+    ],{% else %}"callback_url": "https://example.com/callback",{% endif %}
+    "public": true,
+    "default_permissions": {
+      "issues": "write",
+      "checks": "write"
+    },
+    "default_events": [
+      "issues",
+      "issue_comment",
+      "check_suite",
+      "check_run"
+    ]
+  })
 </script>
 ```
 
 This example uses a form on a web page with a button that triggers the `POST` request for an organization account. Replace `ORGANIZATION` with the name of the organization account where you want to create the app.
 
 ```html
-<form action="https://github.com/organizations/ORGANIZATION/settings/apps/new?state=abc123" method="post">
- Create a GitHub App Manifest: <input type="text" name="manifest" id="manifest"><br>
- <input type="submit" value="Submit">
+<form
+  action="https://github.com/organizations/ORGANIZATION/settings/apps/new?state=abc123"
+  method="post"
+>
+  Create a GitHub App Manifest:
+  <input type="text" name="manifest" id="manifest" /><br />
+  <input type="submit" value="Submit" />
 </form>
 
 <script>
- input = document.getElementById("manifest")
- input.value = JSON.stringify({
-   "name": "Octoapp",
-   "url": "https://www.example.com",
-   "hook_attributes": {
-     "url": "https://example.com/github/events",
-   },
-   "redirect_url": "https://example.com/redirect",
-   {% ifversion fpt or ghae-next or ghes > 3.0 %}"callback_urls": [
-     "https://example.com/callback"
-   ],{% else %}"callback_url": "https://example.com/callback",{% endif %}
-   "public": true,
-   "default_permissions": {
-     "issues": "write",
-     "checks": "write"
-   },
-   "default_events": [
-     "issues",
-     "issue_comment",
-     "check_suite",
-     "check_run"
-   ]
- })
+  input = document.getElementById("manifest")
+  input.value = JSON.stringify({
+    "name": "Octoapp",
+    "url": "https://www.example.com",
+    "hook_attributes": {
+      "url": "https://example.com/github/events",
+    },
+    "redirect_url": "https://example.com/redirect",
+    {% ifversion fpt or ghae-next or ghes > 3.0 %}"callback_urls": [
+      "https://example.com/callback"
+    ],{% else %}"callback_url": "https://example.com/callback",{% endif %}
+    "public": true,
+    "default_permissions": {
+      "issues": "write",
+      "checks": "write"
+    },
+    "default_events": [
+      "issues",
+      "issue_comment",
+      "check_suite",
+      "check_run"
+    ]
+  })
 </script>
 ```
 

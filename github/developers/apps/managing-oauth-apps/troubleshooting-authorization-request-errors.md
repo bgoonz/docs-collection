@@ -1,18 +1,19 @@
 ---
 title: Troubleshooting authorization request errors
-intro: '{% data reusables.shortdesc.troubleshooting_authorization_request_errors_oauth_apps %}'
+intro: "{% data reusables.shortdesc.troubleshooting_authorization_request_errors_oauth_apps %}"
 redirect_from:
   - /apps/building-integrations/managing-oauth-apps/troubleshooting-authorization-request-errors/
   - /apps/managing-oauth-apps/troubleshooting-authorization-request-errors
   - /developers/apps/troubleshooting-authorization-request-errors
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - GitHub Apps
 shortTitle: Troubleshoot authorization
 ---
+
 ## Application suspended
 
 If the OAuth App you set up has been suspended (due to reported abuse, spam, or a mis-use of the API), GitHub will redirect to the registered callback URL using the following parameters to summarize the error:

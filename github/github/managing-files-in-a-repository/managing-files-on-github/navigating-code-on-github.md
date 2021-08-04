@@ -1,19 +1,21 @@
 ---
 title: Navigating code on GitHub
-intro: 'You can understand the relationships within and across repositories by navigating code directly in {% data variables.product.product_name %}.'
+intro: "You can understand the relationships within and across repositories by navigating code directly in {% data variables.product.product_name %}."
 redirect_from:
   - /articles/navigating-code-on-github
   - /github/managing-files-in-a-repository/navigating-code-on-github
 versions:
-  fpt: '*'
+  fpt: "*"
 topics:
   - Repositories
 ---
+
 <!-- If you make changes to this feature, update /getting-started-with-github/github-language-support to reflect any changes to supported languages. -->
 
 ## About navigating code on {% data variables.product.prodname_dotcom %}
 
 Code navigation uses the open source library [`tree-sitter`](https://github.com/tree-sitter/tree-sitter). The following languages are supported:
+
 - C#
 - CodeQL
 - Go
@@ -43,4 +45,5 @@ You can find all references for a function or method within the same repository 
 ![Find all references tab](/assets/images/help/repository/find-all-references-tab.png)
 
 ## Further reading
+
 - "[Searching code](/github/searching-for-information-on-github/searching-code)"

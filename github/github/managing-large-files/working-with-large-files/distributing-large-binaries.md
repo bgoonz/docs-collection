@@ -1,15 +1,16 @@
 ---
 title: Distributing large binaries
-intro: 'Some projects require distributing large files, such as binaries or installers, in addition to distributing source code.'
+intro: "Some projects require distributing large files, such as binaries or installers, in addition to distributing source code."
 redirect_from:
   - /articles/distributing-large-binaries
   - /github/managing-large-files/distributing-large-binaries
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 shortTitle: Distribute large binaries
 ---
+
 If you need to distribute large files within your repository, you can create releases on {% data variables.product.product_location %}. Releases allow you to package software, release notes, and links to binary files, for other people to use. For more information, visit "[About releases](/github/administering-a-repository/about-releases)."
 
 {% ifversion fpt %}

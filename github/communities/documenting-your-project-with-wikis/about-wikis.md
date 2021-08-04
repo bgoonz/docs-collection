@@ -1,20 +1,20 @@
 ---
 title: About wikis
-intro: 'You can host documentation for your repository in a wiki, so that others can use and contribute to your project.'
+intro: "You can host documentation for your repository in a wiki, so that others can use and contribute to your project."
 redirect_from:
   - /articles/about-github-wikis/
   - /articles/about-wikis
   - /github/building-a-strong-community/about-wikis
-product: '{% data reusables.gated-features.wikis %}'
+product: "{% data reusables.gated-features.wikis %}"
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Community
 ---
 
-Every {% data variables.product.product_name %} repository comes equipped with a section for hosting documentation, called a wiki. You can use your repository's wiki to  share long-form content about your project, such as how to use it, how you designed it, or its core principles. A README file quickly tells what your project can do, while you can use a wiki to provide additional documentation. For more information, see "[About READMEs](/articles/about-readmes)."
+Every {% data variables.product.product_name %} repository comes equipped with a section for hosting documentation, called a wiki. You can use your repository's wiki to share long-form content about your project, such as how to use it, how you designed it, or its core principles. A README file quickly tells what your project can do, while you can use a wiki to provide additional documentation. For more information, see "[About READMEs](/articles/about-readmes)."
 
 With wikis, you can write content just like everywhere else on {% data variables.product.product_name %}. For more information, see "[Getting started with writing and formatting on {% data variables.product.prodname_dotcom %}](/articles/getting-started-with-writing-and-formatting-on-github)." We use [our open-source Markup library](https://github.com/github/markup) to convert different formats into HTML, so you can choose to write in Markdown or any other supported format.
 

@@ -1,6 +1,6 @@
 ---
 title: Security best practices for apps
-intro: 'Guidelines for preparing a secure app to share on {% data variables.product.prodname_marketplace %}.'
+intro: "Guidelines for preparing a secure app to share on {% data variables.product.prodname_marketplace %}."
 redirect_from:
   - /apps/marketplace/getting-started/security-review-process/
   - /marketplace/getting-started/security-review-process
@@ -8,15 +8,17 @@ redirect_from:
   - /developers/github-marketplace/security-best-practices-for-apps
 shortTitle: Security best practice
 versions:
-  fpt: '*'
+  fpt: "*"
 topics:
   - Marketplace
 ---
+
 If you follow these best practices it will help you to provide a secure user experience.
 
 ## Authorization, authentication, and access control
 
 We recommend creating a GitHub App rather than an OAuth App. {% data reusables.marketplace.github_apps_preferred %}. See "[Differences between GitHub Apps and OAuth Apps](/apps/differences-between-apps/)" for more details.
+
 - Apps should use the principle of least privilege and should only request the OAuth scopes and GitHub App permissions that the app needs to perform its intended functionality. For more information, see [Principle of least privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege) in Wikipedia.
 - Apps should provide customers with a way to delete their account, without having to email or call a support person.
 - Apps should not share tokens between different implementations of the app. For example, a desktop app should have a separate token from a web-based app. Individual tokens allow each app to request the access needed for GitHub resources separately.

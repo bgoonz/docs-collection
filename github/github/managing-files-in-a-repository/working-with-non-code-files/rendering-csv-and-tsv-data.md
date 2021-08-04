@@ -4,14 +4,15 @@ redirect_from:
   - /articles/rendering-csv-and-tsv-data
   - /github/managing-files-in-a-repository/rendering-csv-and-tsv-data
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Repositories
 shortTitle: Render CSV & TSV data
 ---
-GitHub supports rendering tabular data in the form of *.csv* (comma-separated) and .*tsv* (tab-separated) files.
+
+GitHub supports rendering tabular data in the form of _.csv_ (comma-separated) and ._tsv_ (tab-separated) files.
 
 ![Rendered CSV sample](/assets/images/help/repository/rendered_csv.png)
 
@@ -33,5 +34,5 @@ Occasionally, you may discover that your CSV or TSV file isn't rendering. In tho
 
 Common errors include:
 
-* Mismatched column counts. You must have the same number of separators in each row, even if the cell is blank
-* Exceeding the file size. Our rendering only works for files up to 512KB. Anything bigger than that slows down the browser.
+- Mismatched column counts. You must have the same number of separators in each row, even if the cell is blank
+- Exceeding the file size. Our rendering only works for files up to 512KB. Anything bigger than that slows down the browser.

@@ -1,12 +1,12 @@
 ---
 title: Managing security advisories for vulnerabilities in your project
 shortTitle: Security advisories
-intro: 'Discuss, fix, and disclose security vulnerabilities in your repositories using security advisories.'
+intro: "Discuss, fix, and disclose security vulnerabilities in your repositories using security advisories."
 redirect_from:
   - /articles/managing-security-vulnerabilities-in-your-project
   - /github/managing-security-vulnerabilities/managing-security-vulnerabilities-in-your-project
 versions:
-  fpt: '*'
+  fpt: "*"
 topics:
   - Security advisories
   - Vulnerabilities
@@ -24,4 +24,3 @@ children:
   - /editing-a-security-advisory
   - /withdrawing-a-security-advisory
 ---
-

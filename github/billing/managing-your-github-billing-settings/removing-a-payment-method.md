@@ -1,6 +1,6 @@
 ---
 title: Removing a payment method
-intro: 'If you aren''t using your payment method for any paid subscriptions on {% data variables.product.prodname_dotcom %}, you can remove the payment method so it''s no longer stored in your account.'
+intro: "If you aren't using your payment method for any paid subscriptions on {% data variables.product.prodname_dotcom %}, you can remove the payment method so it's no longer stored in your account."
 redirect_from:
   - /github/setting-up-and-managing-billing-and-payments-on-github/removing-a-payment-method
   - /articles/removing-a-credit-card-associated-with-your-user-account/
@@ -10,12 +10,13 @@ redirect_from:
   - /articles/removing-a-payment-method
   - /github/setting-up-and-managing-billing-and-payments-on-github/managing-your-github-billing-settings/removing-a-payment-method
 versions:
-  fpt: '*'
+  fpt: "*"
 type: how_to
 topics:
   - Organizations
   - User account
 ---
+
 If you're paying for your {% data variables.product.product_name %} subscription with a coupon, and you aren't using your payment method for any [other paid features or products](/articles/about-billing-on-github) on {% data variables.product.product_name %}, you can remove your credit card or PayPal information.
 
 {% data reusables.dotcom_billing.coupon-expires %}

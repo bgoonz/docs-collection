@@ -6,9 +6,9 @@ redirect_from:
   - /categories/search/
   - /categories/searching-for-information-on-github
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - GitHub search
 children:
@@ -16,4 +16,3 @@ children:
   - /searching-on-github
 shortTitle: Search on GitHub
 ---
-

@@ -1,8 +1,8 @@
 ---
 title: Use the Git and GitHub starter assignment
-intro: 'You can use the Git & {% data variables.product.company_short %} starter assignment to give students an overview of Git and {% data variables.product.company_short %} fundamentals.'
+intro: "You can use the Git & {% data variables.product.company_short %} starter assignment to give students an overview of Git and {% data variables.product.company_short %} fundamentals."
 versions:
-  fpt: '*'
+  fpt: "*"
 redirect_from:
   - /education/manage-coursework-with-github-classroom/use-the-git-and-github-starter-assignment
 shortTitle: Starter assignment
@@ -26,7 +26,7 @@ The Git & {% data variables.product.company_short %} starter assignment is a pre
 
 1. Sign into {% data variables.product.prodname_classroom_with_url %}.
 2. Navigate to a classroom.
-3. In the {% octicon "repo" aria-label="The repo icon" %} **Assignments** tab, click  **Use starter assignment**.
+3. In the {% octicon "repo" aria-label="The repo icon" %} **Assignments** tab, click **Use starter assignment**.
 
 <div class="procedural-image-wrapper">
   <img alt="Creating your first assignment" class="procedural-image-wrapper" src="/assets/images/help/classroom/assignments-create-first-assignment.png">

@@ -1,17 +1,18 @@
 ---
 title: About authentication with SAML single sign-on
-intro: 'You can access {% ifversion ghae %}{% data variables.product.product_location %}{% elsif fpt %}an organization that uses SAML single sign-on (SSO){% endif %} by authenticating {% ifversion ghae %}with SAML single sign-on (SSO) {% endif %}through an identity provider (IdP).{% ifversion fpt %} After you authenticate with the IdP successfully from {% data variables.product.product_name %}, you must authorize any personal access token, SSH key, or {% data variables.product.prodname_oauth_app %} you would like to access the organization''s resources.{% endif %}'
-product: '{% data reusables.gated-features.saml-sso %}'
+intro: "You can access {% ifversion ghae %}{% data variables.product.product_location %}{% elsif fpt %}an organization that uses SAML single sign-on (SSO){% endif %} by authenticating {% ifversion ghae %}with SAML single sign-on (SSO) {% endif %}through an identity provider (IdP).{% ifversion fpt %} After you authenticate with the IdP successfully from {% data variables.product.product_name %}, you must authorize any personal access token, SSH key, or {% data variables.product.prodname_oauth_app %} you would like to access the organization's resources.{% endif %}"
+product: "{% data reusables.gated-features.saml-sso %}"
 redirect_from:
   - /articles/about-authentication-with-saml-single-sign-on
   - /github/authenticating-to-github/about-authentication-with-saml-single-sign-on
 versions:
-  fpt: '*'
-  ghae: '*'
+  fpt: "*"
+  ghae: "*"
 topics:
   - SSO
 shortTitle: SAML single sign-on
 ---
+
 ## About authentication with SAML SSO
 
 {% ifversion ghae %}
@@ -20,7 +21,7 @@ SAML SSO allows an enterprise owner to centrally control and secure access to {%
 
 {% data reusables.saml.you-must-periodically-authenticate %}
 
-If you can't access {% data variables.product.product_name %}, contact your local enterprise owner or administrator for {% data variables.product.product_name %}. You may be able to locate contact information for your enterprise by clicking **Support** at the bottom of any page on {% data variables.product.product_name %}. {% data variables.product.company_short %} and {% data variables.contact.github_support %} do not have access to your IdP, and cannot troubleshoot authentication problems. 
+If you can't access {% data variables.product.product_name %}, contact your local enterprise owner or administrator for {% data variables.product.product_name %}. You may be able to locate contact information for your enterprise by clicking **Support** at the bottom of any page on {% data variables.product.product_name %}. {% data variables.product.company_short %} and {% data variables.contact.github_support %} do not have access to your IdP, and cannot troubleshoot authentication problems.
 
 {% endif %}
 

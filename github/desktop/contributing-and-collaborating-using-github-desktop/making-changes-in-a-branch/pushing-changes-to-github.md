@@ -1,14 +1,15 @@
 ---
 title: Pushing changes to GitHub
 shortTitle: Pushing changes
-intro: 'As you commit changes to your project locally, you can push those changes to {% data variables.product.prodname_dotcom %} so that others may access them from the remote repository.'
+intro: "As you commit changes to your project locally, you can push those changes to {% data variables.product.prodname_dotcom %} so that others may access them from the remote repository."
 permissions: People with write permissions can push changes to a repository.
 redirect_from:
   - /desktop/contributing-to-projects/pushing-changes-to-github
   - /desktop/contributing-and-collaborating-using-github-desktop/pushing-changes-to-github
 versions:
-  fpt: '*'
+  fpt: "*"
 ---
+
 ## About pushing changes to {% data variables.product.prodname_dotcom %}
 
 When you push changes, you send the committed changes in your local repository to the remote repository on {% data variables.product.prodname_dotcom %}. If you change your project locally and want other people to have access to the changes, you must push the changes to {% data variables.product.prodname_dotcom %}.
@@ -30,12 +31,11 @@ If you configure {% data variables.large_files.product_name_long %} to track you
 
 {% endnote %}
 
-{% data reusables.desktop.push-origin %}
-2. If {% data variables.product.prodname_desktop %} prompts you to fetch new commits from the remote, click **Fetch**.
-  ![The Fetch button](/assets/images/help/desktop/fetch-newer-commits.png)
-3. Optionally, click **Create Pull Request** to open a pull request and collaborate on your changes. For more information, see "[Creating an issue or pull request](/desktop/contributing-to-projects/creating-an-issue-or-pull-request)"
-  ![The Create Pull Request button](/assets/images/help/desktop/create-pull-request.png)
+{% data reusables.desktop.push-origin %} 2. If {% data variables.product.prodname_desktop %} prompts you to fetch new commits from the remote, click **Fetch**.
+![The Fetch button](/assets/images/help/desktop/fetch-newer-commits.png) 3. Optionally, click **Create Pull Request** to open a pull request and collaborate on your changes. For more information, see "[Creating an issue or pull request](/desktop/contributing-to-projects/creating-an-issue-or-pull-request)"
+![The Create Pull Request button](/assets/images/help/desktop/create-pull-request.png)
 
 ## Further reading
+
 - "[Push](/github/getting-started-with-github/github-glossary/#push)" in the {% data variables.product.prodname_dotcom %} glossary
 - "[Committing and reviewing changes to your project](/desktop/contributing-to-projects/committing-and-reviewing-changes-to-your-project)"

@@ -12,22 +12,23 @@ redirect_from:
   - /articles/set-up-git
   - /github/getting-started-with-github/set-up-git
   - /github/getting-started-with-github/quickstart/set-up-git
-intro: 'At the heart of {% data variables.product.product_name %} is an open source version control system (VCS) called Git. Git is responsible for everything {% data variables.product.product_name %}-related that happens locally on your computer.'
+intro: "At the heart of {% data variables.product.product_name %} is an open source version control system (VCS) called Git. Git is responsible for everything {% data variables.product.product_name %}-related that happens locally on your computer."
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Pull requests
   - Issues
   - Notifications
   - Accounts
 ---
+
 ## Using Git
 
 To use Git on the command line, you'll need to download, install, and configure Git on your computer. {% ifversion fpt or ghes or ghae %} You can also install {% data variables.product.prodname_cli %} to use {% data variables.product.product_name %} from the command line. For more information on {% data variables.product.prodname_cli %}, see the [{% data variables.product.prodname_cli %}](https://cli.github.com/manual/) documentation.{% endif %}
 
-If you want to work with Git locally, but don't want to use the command line, you can instead download and install the [{% data variables.product.prodname_desktop %}]({% data variables.product.desktop_link %}) client.  For more information, see "[Installing and configuring {% data variables.product.prodname_desktop %}](/desktop/installing-and-configuring-github-desktop/)."
+If you want to work with Git locally, but don't want to use the command line, you can instead download and install the [{% data variables.product.prodname_desktop %}]({% data variables.product.desktop_link %}) client. For more information, see "[Installing and configuring {% data variables.product.prodname_desktop %}](/desktop/installing-and-configuring-github-desktop/)."
 
 If you don't need to work with files locally, {% data variables.product.product_name %} lets you complete many Git-related actions directly in the browser, including:
 

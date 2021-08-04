@@ -1,17 +1,18 @@
 ---
-title: 'Error: Remote HEAD refers to nonexistent ref, unable to checkout'
-intro: 'This error occurs if the default branch of a repository has been deleted on {% data variables.product.product_location %}.'
+title: "Error: Remote HEAD refers to nonexistent ref, unable to checkout"
+intro: "This error occurs if the default branch of a repository has been deleted on {% data variables.product.product_location %}."
 redirect_from:
   - /articles/error-remote-head-refers-to-nonexistent-ref-unable-to-checkout
   - /github/creating-cloning-and-archiving-repositories/error-remote-head-refers-to-nonexistent-ref-unable-to-checkout
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Repositories
 shortTitle: Unable to checkout
 ---
+
 Detecting this error is simple; Git will warn you when you try to clone the repository:
 
 ```shell

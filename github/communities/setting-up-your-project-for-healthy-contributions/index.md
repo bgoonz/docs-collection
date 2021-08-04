@@ -1,15 +1,15 @@
 ---
 title: Setting up your project for healthy contributions
 shortTitle: Healthy contributions
-intro: 'Repository maintainers can set contributing guidelines to help collaborators make meaningful, useful contributions to a project.'
+intro: "Repository maintainers can set contributing guidelines to help collaborators make meaningful, useful contributions to a project."
 redirect_from:
   - /articles/helping-people-contribute-to-your-project/
   - /articles/setting-up-your-project-for-healthy-contributions
   - /github/building-a-strong-community/setting-up-your-project-for-healthy-contributions
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Community
 children:
@@ -23,4 +23,3 @@ children:
   - /creating-a-default-community-health-file
   - /encouraging-helpful-contributions-to-your-project-with-labels
 ---
-

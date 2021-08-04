@@ -1,14 +1,14 @@
 ---
 title: About alerts for vulnerable dependencies
-intro: '{% data variables.product.product_name %} sends {% data variables.product.prodname_dependabot_alerts %} when we detect vulnerabilities affecting your repository.'
+intro: "{% data variables.product.product_name %} sends {% data variables.product.prodname_dependabot_alerts %} when we detect vulnerabilities affecting your repository."
 redirect_from:
   - /articles/about-security-alerts-for-vulnerable-dependencies
   - /github/managing-security-vulnerabilities/about-security-alerts-for-vulnerable-dependencies
   - /github/managing-security-vulnerabilities/about-alerts-for-vulnerable-dependencies
   - /code-security/supply-chain-security/about-alerts-for-vulnerable-dependencies
 versions:
-  fpt: '*'
-  ghes: '>=3.0'
+  fpt: "*"
+  ghes: ">=3.0"
 type: overview
 topics:
   - Dependabot
@@ -18,6 +18,7 @@ topics:
   - Dependencies
 shortTitle: Dependabot alerts
 ---
+
 <!--For this article in earlier GHES versions, see /content/github/managing-security-vulnerabilities-->
 <!--Marketing-LINK: From /features/security/software-supply-chain page "About alerts for vulnerable dependencies ".-->
 
@@ -32,6 +33,7 @@ When your code depends on a package that has a security vulnerability, this vuln
 {% data variables.product.prodname_dependabot %} detects vulnerable dependencies and sends {% data variables.product.prodname_dependabot_alerts %} when:
 
 {% ifversion fpt %}
+
 - A new vulnerability is added to the {% data variables.product.prodname_advisory_database %}. For more information, see "[Browsing security vulnerabilities in the {% data variables.product.prodname_advisory_database %}](/github/managing-security-vulnerabilities/browsing-security-vulnerabilities-in-the-github-advisory-database)" and "[About {% data variables.product.prodname_security_advisories %}](/code-security/security-advisories/about-github-security-advisories)."{% else %}
 - New advisory data is synchronized to {% data variables.product.prodname_ghe_server %} each hour from {% data variables.product.prodname_dotcom_the_website %}. {% data reusables.security-advisory.link-browsing-advisory-db %}{% endif %}
 - The dependency graph for a repository changes. For example, when a contributor pushes a commit to change the packages or versions it depends on{% ifversion fpt %}, or when the code of one of the dependencies changes{% endif %}. For more information, see "[About the dependency graph](/code-security/supply-chain-security/about-the-dependency-graph)."
@@ -83,6 +85,7 @@ By default, we notify people with admin permissions in the affected repositories
 You can also see all the {% data variables.product.prodname_dependabot_alerts %} that correspond to a particular vulnerability in the {% data variables.product.prodname_advisory_database %}. {% data reusables.security-advisory.link-browsing-advisory-db %}
 
 {% ifversion fpt %}
+
 ## Further reading
 
 - "[About {% data variables.product.prodname_dependabot_security_updates %}](/github/managing-security-vulnerabilities/about-dependabot-security-updates)"

@@ -1,14 +1,15 @@
 ---
 title: Troubleshooting connectivity problems
-intro: 'If you''re having trouble connecting to {% data variables.product.prodname_dotcom %}, you can troubleshoot your connection, then use the {% data variables.product.prodname_debug %} tool to diagnose problems.'
+intro: "If you're having trouble connecting to {% data variables.product.prodname_dotcom %}, you can troubleshoot your connection, then use the {% data variables.product.prodname_debug %} tool to diagnose problems."
 redirect_from:
   - /articles/troubleshooting-connectivity-problems
   - /github/getting-started-with-github/troubleshooting-connectivity-problems
   - /github/getting-started-with-github/using-github/troubleshooting-connectivity-problems
 versions:
-  fpt: '*'
+  fpt: "*"
 shortTitle: Connectivity problems
 ---
+
 Most often, connection problems occur because a firewall, proxy server, corporate network, or other network is configured in a way that blocks {% data variables.product.prodname_dotcom %}.
 
 ## Allowing {% data variables.product.prodname_dotcom %}'s IP addresses
@@ -22,6 +23,7 @@ If you're having connectivity problems on your company or organization's network
 ## Troubleshooting the captcha
 
 If you're unable to verify with the captcha:
+
 - Ensure JavaScript is enabled on your browser.
 - Ensure your browser is supported. If your browser isn't supported, upgrade your browser or install a supported browser. For a list of supported browsers, see "[Supported browsers](/articles/supported-browsers)."
 - Ensure your network configuration is not blocking https://octocaptcha.com/ or https://arkoselabs.com/. If you're behind a corporate firewall, contact your IT administrator to allow those domains. To verify access to these domains, visit https://octocaptcha.com/test and ensure the text "Connection successfully made!" is displayed, then visit https://client-demo.arkoselabs.com/github and ensure you are able to load the captcha.

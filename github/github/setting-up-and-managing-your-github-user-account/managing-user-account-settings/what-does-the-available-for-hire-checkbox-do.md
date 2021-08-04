@@ -5,7 +5,7 @@ redirect_from:
   - /articles/what-does-the-available-for-hire-checkbox-do
   - /github/setting-up-and-managing-your-github-user-account/what-does-the-available-for-hire-checkbox-do
 versions:
-  fpt: '*'
+  fpt: "*"
 topics:
   - Accounts
 shortTitle: Available for hire checkbox
@@ -21,6 +21,5 @@ The [GitHub Jobs](https://jobs.github.com/) board is a great way to find employm
 
 ![GitHub Jobs ads on the dashboard](/assets/images/help/settings/jobs-ads-on-dashboard.png)
 
-{% data reusables.user_settings.access_settings %}
-2. Under Jobs Profile, select **Available for hire**, then click **Save jobs profile**.
-	![Jobs profile settings](/assets/images/help/settings/jobs-profile-settings.png)
+{% data reusables.user_settings.access_settings %} 2. Under Jobs Profile, select **Available for hire**, then click **Save jobs profile**.
+![Jobs profile settings](/assets/images/help/settings/jobs-profile-settings.png)

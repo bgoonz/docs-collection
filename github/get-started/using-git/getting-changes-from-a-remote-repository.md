@@ -8,11 +8,12 @@ redirect_from:
   - /github/getting-started-with-github/getting-changes-from-a-remote-repository
   - /github/getting-started-with-github/using-git/getting-changes-from-a-remote-repository
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 shortTitle: Get changes from a remote
 ---
+
 ## Options for getting changes
 
 These commands are very useful when interacting with [a remote repository](/github/getting-started-with-github/about-remote-repositories). `clone` and `fetch` download remote code from a repository's remote URL to your local computer, `merge` is used to merge different people's work together with yours, and `pull` is a combination of `fetch` and `merge`.
@@ -31,6 +32,7 @@ You can choose from [several different URLs](/github/getting-started-with-github
 ![Remote URL list](/assets/images/help/repository/remotes-url.png)
 
 When you run `git clone`, the following actions occur:
+
 - A new folder called `repo` is made
 - It is initialized as a Git repository
 - A remote named `origin` is created, pointing to the URL you cloned from
@@ -43,7 +45,7 @@ such remote-tracking branch names to `origin/foo`.
 
 ## Fetching changes from a remote repository
 
-Use `git fetch` to retrieve new work done by other people. Fetching from a repository grabs all the new remote-tracking branches and tags *without* merging those changes into your own branches.
+Use `git fetch` to retrieve new work done by other people. Fetching from a repository grabs all the new remote-tracking branches and tags _without_ merging those changes into your own branches.
 
 If you already have a local repository with a remote URL set up for the desired project, you can grab all the new information by using `git fetch *remotename*` in the terminal:
 

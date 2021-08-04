@@ -3,9 +3,9 @@ title: Searching on GitHub
 redirect_from:
   - /articles/searching-on-github
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - GitHub search
 children:
@@ -22,4 +22,3 @@ children:
   - /searching-wikis
   - /searching-in-forks
 ---
-

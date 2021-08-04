@@ -1,12 +1,12 @@
 ---
 title: Creating and editing commits
-intro: ''
+intro: ""
 redirect_from:
   - /articles/creating-and-editing-commits
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 children:
   - /about-commits
   - /creating-a-commit-with-multiple-authors
@@ -14,4 +14,3 @@ children:
   - /changing-a-commit-message
 shortTitle: Create & edit commits
 ---
-

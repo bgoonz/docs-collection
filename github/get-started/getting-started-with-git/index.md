@@ -1,6 +1,6 @@
 ---
 title: Getting started with Git
-intro: 'Set up Git, a distributed version control system, to manage your {% data variables.product.product_name %} repositories from your computer.'
+intro: "Set up Git, a distributed version control system, to manage your {% data variables.product.product_name %} repositories from your computer."
 redirect_from:
   - /articles/getting-started-with-git-and-github
   - /github/using-git/getting-started-with-git-and-github
@@ -8,9 +8,9 @@ redirect_from:
   - /articles/learning-about-git
   - /github/getting-started-with-github/getting-started-with-git/
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 children:
   - /setting-your-username-in-git
   - /caching-your-github-credentials-in-git
@@ -23,4 +23,3 @@ children:
   - /configuring-git-to-handle-line-endings
   - /ignoring-files
 ---
-

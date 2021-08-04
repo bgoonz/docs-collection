@@ -1,15 +1,16 @@
 ---
 title: About storage and bandwidth usage
-intro: '{% data reusables.large_files.free-storage-bandwidth-amount %}'
+intro: "{% data reusables.large_files.free-storage-bandwidth-amount %}"
 redirect_from:
   - /articles/billing-plans-for-large-file-storage/
   - /articles/billing-plans-for-git-large-file-storage/
   - /articles/about-storage-and-bandwidth-usage
   - /github/managing-large-files/about-storage-and-bandwidth-usage
 versions:
-  fpt: '*'
+  fpt: "*"
 shortTitle: Storage & bandwidth
 ---
+
 {% data variables.large_files.product_name_short %} is available for every repository on {% data variables.product.product_name %}, whether or not your account or organization has a paid subscription.
 
 ## Tracking storage and bandwidth use
@@ -17,6 +18,7 @@ shortTitle: Storage & bandwidth
 When you commit and push a change to a file tracked with {% data variables.large_files.product_name_short %}, a new version of the entire file is pushed and the total file size is counted against the repository owner's storage limit. When you download a file tracked with {% data variables.large_files.product_name_short %}, the total file size is counted against the repository owner's bandwidth limit. {% data variables.large_files.product_name_short %} uploads do not count against the bandwidth limit.
 
 For example:
+
 - If you push a 500 MB file to {% data variables.large_files.product_name_short %}, you'll use 500 MB of your allotted storage and none of your bandwidth. If you make a 1 byte change and push the file again, you'll use another 500 MB of storage and no bandwidth, bringing your total usage for these two pushes to 1 GB of storage and zero bandwidth.
 - If you download a 500 MB file that's tracked with LFS, you'll use 500 MB of the repository owner's allotted bandwidth. If a collaborator pushes a change to the file and you pull the new version to your local repository, you'll use another 500 MB of bandwidth, bringing the total usage for these two downloads to 1 GB of bandwidth.
 
@@ -27,6 +29,7 @@ If {% data variables.large_files.product_name_long %} ({% data variables.large_f
 {% tip %}
 
 **Tips**:
+
 - {% data reusables.large_files.owner_quota_only %}
 - {% data reusables.large_files.does_not_carry %}
 

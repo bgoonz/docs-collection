@@ -1,8 +1,8 @@
 ---
 title: Managing reported content in your organization's repository
-intro: 'After a contributor reports disruptive content in a repository, repository maintainers can view and manage the report.'
+intro: "After a contributor reports disruptive content in a repository, repository maintainers can view and manage the report."
 versions:
-  fpt: '*'
+  fpt: "*"
 redirect_from:
   - /github/building-a-strong-community/managing-reported-content-in-your-organizations-repository
 topics:
@@ -26,26 +26,23 @@ After you finish moderating disruptive content, you can mark the report as resol
 
 {% data reusables.repositories.navigate-to-repo %}
 {% data reusables.repositories.sidebar-settings %}
-{% data reusables.repositories.sidebar-moderation-reported-content %}
-4. To the right of the reported content you'd like to view, click {% octicon "kebab-horizontal" aria-label="The edit icon" %}, then click **View content**.
-  !["View content" in Edit drop-down for reported content](/assets/images/help/repository/reported-content-report-view-content.png)
+{% data reusables.repositories.sidebar-moderation-reported-content %} 4. To the right of the reported content you'd like to view, click {% octicon "kebab-horizontal" aria-label="The edit icon" %}, then click **View content**.
+!["View content" in Edit drop-down for reported content](/assets/images/help/repository/reported-content-report-view-content.png)
 
 ## Resolving a report
 
 {% data reusables.repositories.navigate-to-repo %}
 {% data reusables.repositories.sidebar-settings %}
-{% data reusables.repositories.sidebar-moderation-reported-content %}
-4. To the right of the report you'd like to resolve, click {% octicon "kebab-horizontal" aria-label="The edit icon" %}, then click **Mark as resolved**.
-  !["Mark as resolved" in Edit drop-down for reported content](/assets/images/help/repository/reported-content-mark-report-as-resolved.png)
+{% data reusables.repositories.sidebar-moderation-reported-content %} 4. To the right of the report you'd like to resolve, click {% octicon "kebab-horizontal" aria-label="The edit icon" %}, then click **Mark as resolved**.
+!["Mark as resolved" in Edit drop-down for reported content](/assets/images/help/repository/reported-content-mark-report-as-resolved.png)
 
 ## Unresolving a report
 
 {% data reusables.repositories.navigate-to-repo %}
 {% data reusables.repositories.sidebar-settings %}
 {% data reusables.repositories.sidebar-moderation-reported-content %}
-{% data reusables.repositories.reported-content-resolved-tab %}
-5. To the right of the report you'd like to unresolve, click {% octicon "kebab-horizontal" aria-label="The edit icon" %}, then click **Mark as unresolved**.
-  !["Mark as unresolved" in Edit drop-down for reported content](/assets/images/help/repository/reported-content-mark-report-as-unresolved.png)
+{% data reusables.repositories.reported-content-resolved-tab %} 5. To the right of the report you'd like to unresolve, click {% octicon "kebab-horizontal" aria-label="The edit icon" %}, then click **Mark as unresolved**.
+!["Mark as unresolved" in Edit drop-down for reported content](/assets/images/help/repository/reported-content-mark-report-as-unresolved.png)
 
 ## Further reading
 

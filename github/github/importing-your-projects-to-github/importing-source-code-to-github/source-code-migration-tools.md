@@ -6,11 +6,12 @@ redirect_from:
   - /articles/source-code-migration-tools
   - /github/importing-your-projects-to-github/source-code-migration-tools
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 shortTitle: Code migration tools
 ---
+
 {% ifversion fpt %}
 
 We recommend using [GitHub Importer](/articles/about-github-importer) to import projects from Subversion, Mercurial, Team Foundation Version Control (TFVC), or another Git repository. You can also use these external tools to convert your project to Git.
@@ -21,8 +22,8 @@ We recommend using [GitHub Importer](/articles/about-github-importer) to import 
 
 In a typical Subversion environment, multiple projects are stored in a single root repository. On GitHub, each of these projects will usually map to a separate Git repository for a user account or organization. We suggest importing each part of your Subversion repository to a separate GitHub repository if:
 
-* Collaborators need to check out or commit to that part of the project separately from the other parts
-* You want different parts to have their own access permissions
+- Collaborators need to check out or commit to that part of the project separately from the other parts
+- You want different parts to have their own access permissions
 
 We recommend these tools for converting Subversion repositories to Git:
 

@@ -6,16 +6,18 @@ redirect_from:
   - /articles/filtering-issues-and-pull-requests
   - /github/managing-your-work-on-github/filtering-issues-and-pull-requests
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Pull requests
 shortTitle: Filter issues & PRs
 ---
+
 {% data reusables.search.requested_reviews_search %}
 
 You can filter issues and pull requests to find:
+
 - All open issues and pull requests
 - Issues and pull requests that you've created
 - Issues and pull requests that are assigned to you
@@ -24,9 +26,8 @@ You can filter issues and pull requests to find:
 {% data reusables.cli.filter-issues-and-pull-requests-tip %}
 
 {% data reusables.repositories.navigate-to-repo %}
-{% data reusables.repositories.sidebar-issue-pr %}
-3. Click **Filters** to choose the type of filter you're interested in.
-  ![Using the Filters drop-down](/assets/images/help/issues/issues_filter_dropdown.png)
+{% data reusables.repositories.sidebar-issue-pr %} 3. Click **Filters** to choose the type of filter you're interested in.
+![Using the Filters drop-down](/assets/images/help/issues/issues_filter_dropdown.png)
 
 ## Further reading
 

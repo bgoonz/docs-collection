@@ -2,7 +2,7 @@
 title: Upgrading from Dependabot.com to GitHub-native Dependabot
 intro: You can upgrade to GitHub-native Dependabot by merging a pull request that will allow your dependencies to continue being updated.
 versions:
-  fpt: '*'
+  fpt: "*"
 type: how_to
 topics:
   - Repositories
@@ -13,6 +13,7 @@ redirect_from:
   - /code-security/supply-chain-security/upgrading-from-dependabotcom-to-github-native-dependabot
 shortTitle: Dependabot.com upgrades
 ---
+
 {% warning %}
 
 Dependabot Preview will be shut down on August 3rd, 2021. In order to keep getting Dependabot updates, please migrate to GitHub-native Dependabot before then.
@@ -27,7 +28,8 @@ Dependabot Preview has been built directly into {% data variables.product.prodna
 
 ## Differences between Dependabot Preview and {% data variables.product.prodname_dotcom %}-native {% data variables.product.prodname_dependabot %}
 
-While most of the Dependabot Preview features exist in {% data variables.product.prodname_dotcom %}-native {% data variables.product.prodname_dependabot %}, a few remain unavailable: 
+While most of the Dependabot Preview features exist in {% data variables.product.prodname_dotcom %}-native {% data variables.product.prodname_dependabot %}, a few remain unavailable:
+
 - **Live updates:** We hope to bring these back in the future. For now, you can run {% data variables.product.prodname_dotcom %} {% data variables.product.prodname_dependabot %} daily to catch new packages within one day of release.
 - **PHP environment variable registries:** For projects that rely on the `ACF_PRO_KEY` environment variable, you may be able to vendor your licensed copy of the Advanced Custom Fields plugin. For an example, see [dependabot/acf-php-example](https://github.com/dependabot/acf-php-example#readme). For other environment variables, you can use {% data variables.product.prodname_actions %} to fetch dependencies from these registries.
 - **Auto-merge:** We always recommend verifying your dependencies before merging them; therefore, auto-merge will not be supported for the foreseeable future. For those of you who have vetted your dependencies, or are only using internal dependencies, we recommend adding third-party auto-merge apps, or setting up GitHub Actions to merge.
@@ -36,15 +38,15 @@ In {% data variables.product.prodname_dotcom %}-native {% data variables.product
 
 To see update logs for {% data variables.product.prodname_dotcom %}-native {% data variables.product.prodname_dependabot %} that were previously on the Dependabot.com dashboard:
 
-  1. Navigate to your repository’s **Insights** page.
-  2. Click **Dependency graph** to the left.
-  3. Click **{% data variables.product.prodname_dependabot %}**.
+1. Navigate to your repository’s **Insights** page.
+2. Click **Dependency graph** to the left.
+3. Click **{% data variables.product.prodname_dependabot %}**.
 
 For more information about version updates with {% data variables.product.prodname_dotcom %}-native {% data variables.product.prodname_dependabot %}, see "[About Dependabot version updates](/code-security/supply-chain-security/about-dependabot-version-updates)."
 
 ## Upgrading to {% data variables.product.prodname_dotcom %}-native {% data variables.product.prodname_dependabot %}
 
-Upgrading from Dependabot Preview to {% data variables.product.prodname_dotcom %}-native {% data variables.product.prodname_dependabot %} requires you to merge the *Upgrade to GitHub-native Dependabot* pull request in your repository. This pull request includes the updated configuration file needed for {% data variables.product.prodname_dotcom %}-native {% data variables.product.prodname_dependabot %}.
+Upgrading from Dependabot Preview to {% data variables.product.prodname_dotcom %}-native {% data variables.product.prodname_dependabot %} requires you to merge the _Upgrade to GitHub-native Dependabot_ pull request in your repository. This pull request includes the updated configuration file needed for {% data variables.product.prodname_dotcom %}-native {% data variables.product.prodname_dependabot %}.
 
 If you are using private repositories, you will have to grant Dependabot access to these repositories in your organization's security and analysis settings. For more information, see "[Allowing Dependabot to access private dependencies](/organizations/keeping-your-organization-secure/managing-security-and-analysis-settings-for-your-organization#allowing-dependabot-to-access-private-dependencies)". Previously, Dependabot had access to all repositories within an organization, but we implemented this change because it is much safer to use the principle of least privilege for Dependabot.
 

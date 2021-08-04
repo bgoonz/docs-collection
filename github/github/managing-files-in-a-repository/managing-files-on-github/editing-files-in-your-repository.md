@@ -1,18 +1,19 @@
 ---
 title: Editing files in your repository
-intro: 'You can edit files directly on {% data variables.product.product_name %} in any of your repositories using the file editor.'
+intro: "You can edit files directly on {% data variables.product.product_name %} in any of your repositories using the file editor."
 redirect_from:
   - /articles/editing-files/
   - /articles/editing-files-in-your-repository
   - /github/managing-files-in-a-repository/editing-files-in-your-repository
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Repositories
 shortTitle: Edit your files
 ---
+
 {% tip %}
 
 **Tip**: {% data reusables.repositories.protected-branches-block-web-edits-uploads %}
@@ -26,15 +27,15 @@ shortTitle: Edit your files
 {% endnote %}
 
 1. In your repository, browse to the file you want to edit.
-{% data reusables.repositories.edit-file %}
-3. On the **Edit file** tab, make any changes you need to the file.
-![New content in file](/assets/images/help/repository/edit-readme-light.png)
-{% data reusables.files.preview_change %}
-{% data reusables.files.write_commit_message %}
-{% data reusables.files.choose-commit-email %}
-{% data reusables.files.choose_commit_branch %}
-{% data reusables.files.propose_file_change %}
+   {% data reusables.repositories.edit-file %}
+2. On the **Edit file** tab, make any changes you need to the file.
+   ![New content in file](/assets/images/help/repository/edit-readme-light.png)
+   {% data reusables.files.preview_change %}
+   {% data reusables.files.write_commit_message %}
+   {% data reusables.files.choose-commit-email %}
+   {% data reusables.files.choose_commit_branch %}
+   {% data reusables.files.propose_file_change %}
 
 ## Further reading
 
-* "[Editing files in another user's repository](/articles/editing-files-in-another-user-s-repository)"
+- "[Editing files in another user's repository](/articles/editing-files-in-another-user-s-repository)"

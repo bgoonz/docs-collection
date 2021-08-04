@@ -1,338 +1,827 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
-<head>
-  <meta charset="utf-8" />
-  <meta name="generator" content="pandoc" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>SARIF support for code scanning</title>
-  <style type="text/css">
-      code{white-space: pre-wrap;}
-      span.smallcaps{font-variant: small-caps;}
-      span.underline{text-decoration: underline;}
-      div.column{display: inline-block; vertical-align: top; width: 50%;}
-  </style>
-  <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
-}
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {  }
-@media screen {
-a.sourceLine::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-  </style>
-</head>
-<body>
-<header id="title-block-header">
-<h1 class="title">SARIF support for code scanning</h1>
-</header>
-<!--See /content/code-security/secure-coding for the latest version of this article -->
-<p>{% data reusables.code-scanning.beta %}</p>
-<h2 id="about-sarif-support">About SARIF support</h2>
-<p>SARIF (Static Analysis Results Interchange Format) is an <a href="https://docs.oasis-open.org/sarif/sarif/v2.1.0/sarif-v2.1.0.html">OASIS Standard</a> that defines an output file format. The SARIF standard is used to streamline how static analysis tools share their results. {% data variables.product.prodname_code_scanning_capc %} supports a subset of the SARIF 2.1.0 JSON schema.</p>
-<p>To upload a SARIF file from a third-party static code analysis engine, you’ll need to ensure that uploaded files use the SARIF 2.1.0 version. {% data variables.product.prodname_dotcom %} will parse the SARIF file and show alerts using the results in your repository as a part of the {% data variables.product.prodname_code_scanning %} experience. For more information, see “<a href="/github/finding-security-vulnerabilities-and-errors-in-your-code/uploading-a-sarif-file-to-github">Uploading a SARIF file to {% data variables.product.prodname_dotcom %}</a>.” For more information about the SARIF 2.1.0 JSON schema, see <a href="https://github.com/oasis-tcs/sarif-spec/blob/master/Schemata/sarif-schema-2.1.0.json"><code>sarif-schema-2.1.0.json</code></a>.</p>
-<p>If you’re using {% data variables.product.prodname_actions %} with the {% data variables.product.prodname_codeql_workflow %} or using the {% data variables.product.prodname_codeql_runner %}, then the {% data variables.product.prodname_code_scanning %} results will automatically use the supported subset of SARIF 2.1.0. For more information, see “<a href="/github/finding-security-vulnerabilities-and-errors-in-your-code/setting-up-code-scanning-for-a-repository">Setting up {% data variables.product.prodname_code_scanning %} for a repository</a>” or “<a href="/github/finding-security-vulnerabilities-and-errors-in-your-code/running-codeql-code-scanning-in-your-ci-system">Running {% data variables.product.prodname_codeql %} {% data variables.product.prodname_code_scanning %} in your CI system</a>.”</p>
-<p>{% data variables.product.prodname_dotcom %} uses properties in the SARIF file to display alerts. For example, the <code>shortDescription</code> and <code>fullDescription</code> appear at the top of a {% data variables.product.prodname_code_scanning %} alert. The <code>location</code> allows {% data variables.product.prodname_dotcom %} to show annotations in your code file. For more information, see “<a href="/github/finding-security-vulnerabilities-and-errors-in-your-code/managing-code-scanning-alerts-for-your-repository">Managing {% data variables.product.prodname_code_scanning %} alerts for your repository</a>.”</p>
-<p>If you’re new to SARIF and want to learn more, see Microsoft’s <a href="https://github.com/microsoft/sarif-tutorials"><code>SARIF tutorials</code></a> repository.</p>
-<h2 id="preventing-duplicate-alerts-using-fingerprints">Preventing duplicate alerts using fingerprints</h2>
-<p>Each time the results of a new code scan are uploaded, the results are processed and alerts are added to the repository. To prevent duplicate alerts for the same problem, {% data variables.product.prodname_code_scanning %} uses fingerprints to match results across various runs so they only appear once in the latest run for the selected branch. This makes it possible to match alerts to the right line of code when files are edited.</p>
-<p>{% data variables.product.prodname_dotcom %} uses the <code>partialFingerprints</code> property in the OASIS standard to detect when two results are logically identical. For more information, see the “<a href="https://docs.oasis-open.org/sarif/sarif/v2.1.0/cs01/sarif-v2.1.0-cs01.html#_Toc16012611">partialFingerprints property</a>” entry in the OASIS documentation.</p>
-<p>SARIF files created by the {% data variables.product.prodname_codeql_workflow %} or using the {% data variables.product.prodname_codeql_runner %} include fingerprint data. If you upload a SARIF file using the <code>upload-sarif</code> action and this data is missing, {% data variables.product.prodname_dotcom %} attempts to populate the <code>partialFingerprints</code> field from the source files. For more information about uploading results, see “<a href="/github/finding-security-vulnerabilities-and-errors-in-your-code/uploading-a-sarif-file-to-github#uploading-a-code-scanning-analysis-with-github-actions">Uploading a SARIF file to {% data variables.product.prodname_dotcom %}</a>.”</p>
-<p>If you upload a SARIF file without fingerprint data using the <code>/code-scanning/sarifs</code> API endpoint, the {% data variables.product.prodname_code_scanning %} alerts will be processed and displayed, but users may see duplicate alerts. To avoid seeing duplicate alerts, you should calculate fingerprint data and populate the <code>partialFingerprints</code> property before you upload the SARIF file. You may find the script that the <code>upload-sarif</code> action uses a helpful starting point: https://github.com/github/codeql-action/blob/main/src/fingerprints.ts. For more information about the API, see “<a href="/rest/reference/code-scanning#upload-an-analysis-as-sarif-data">Upload an analysis as SARIF data</a>.”</p>
-<h2 id="validating-your-sarif-file">Validating your SARIF file</h2>
-<!--UI-LINK: When code scanning fails, the error banner shown in the Security > Code scanning alerts view links to this anchor.-->
-<p>You can check a SARIF file is compatible with {% data variables.product.prodname_code_scanning %} by testing it against the {% data variables.product.prodname_dotcom %} ingestion rules. For more information, visit the <a href="https://sarifweb.azurewebsites.net/">Microsoft SARIF validator</a>.</p>
-<p>{% data reusables.code-scanning.upload-sarif-alert-limit %}</p>
-<h2 id="supported-sarif-output-file-properties">Supported SARIF output file properties</h2>
-<p>If you use a code analysis engine other than {% data variables.product.prodname_codeql %}, you can review the supported SARIF properties to optimize how your analysis results will appear on {% data variables.product.prodname_dotcom %}.</p>
-<p>Any valid SARIF 2.1.0 output file can be uploaded, however, {% data variables.product.prodname_code_scanning %} will only use the following supported properties.</p>
-<h3 id="sariflog-object"><code>sarifLog</code> object</h3>
-<table>
-<colgroup>
-<col style="width: 50%" />
-<col style="width: 50%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>Name</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>$schema</code></td>
-<td><strong>Required.</strong> The URI of the SARIF JSON schema for version 2.1.0. For example, <code>https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json</code>.</td>
-</tr>
-<tr class="even">
-<td><code>version</code></td>
-<td><strong>Required.</strong> {% data variables.product.prodname_code_scanning_capc %} only supports SARIF version <code>2.1.0</code>.</td>
-</tr>
-<tr class="odd">
-<td><code>runs[]</code></td>
-<td><strong>Required.</strong> A SARIF file contains an array of one or more runs. Each run represents a single run of an analysis tool. For more information about a <code>run</code>, see the <a href="#run-object"><code>run</code> object</a>.</td>
-</tr>
-</tbody>
-</table>
-<h3 id="run-object"><code>run</code> object</h3>
-<p>{% data variables.product.prodname_code_scanning_capc %} uses the <code>run</code> object to filter results by tool and provide information about the source of a result. The <code>run</code> object contains the <code>tool.driver</code> tool component object, which contains information about the tool that generated the results. Each <code>run</code> can only have results for one analysis tool.</p>
-<table>
-<colgroup>
-<col style="width: 50%" />
-<col style="width: 50%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>Name</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>tool.driver.name</code></td>
-<td><strong>Required.</strong> The name of the analysis tool. {% data variables.product.prodname_code_scanning_capc %} displays the name on {% data variables.product.prodname_dotcom %} to allow you to filter results by tool.</td>
-</tr>
-<tr class="even">
-<td><code>tool.driver.version</code></td>
-<td><strong>Optional.</strong> The version of the analysis tool. {% data variables.product.prodname_code_scanning_capc %} uses the version number to track when results may have changed due to a tool version change rather than a change in the code being analyzed. If the SARIF file includes the <code>semanticVersion</code> field, <code>version</code> is not used by {% data variables.product.prodname_code_scanning %}.</td>
-</tr>
-<tr class="odd">
-<td><code>tool.driver.semanticVersion</code></td>
-<td><strong>Optional.</strong> The version of the analysis tool, specified by the Semantic Versioning 2.0 format. {% data variables.product.prodname_code_scanning_capc %} uses the version number to track when results may have changed due to a tool version change rather than a change in the code being analyzed. If the SARIF file includes the <code>semanticVersion</code> field, <code>version</code> is not used by {% data variables.product.prodname_code_scanning %}. For more information, see “<a href="https://semver.org/">Semantic Versioning 2.0.0</a>” in the Semantic Versioning documentation.</td>
-</tr>
-<tr class="even">
-<td><code>tool.driver.rules[]</code></td>
-<td><strong>Required.</strong> An array of <code>reportingDescriptor</code> objects that represent rules. The analysis tool uses rules to find problems in the code being analyzed. For more information, see the <a href="#reportingdescriptor-object"><code>reportingDescriptor</code> object</a>.</td>
-</tr>
-<tr class="odd">
-<td><code>results[]</code></td>
-<td><strong>Required.</strong> The results of the analysis tool. {% data variables.product.prodname_code_scanning_capc %} displays the results on {% data variables.product.prodname_dotcom %}. For more information, see the <a href="#result-object"><code>result</code> object</a>.</td>
-</tr>
-</tbody>
-</table>
-<h3 id="reportingdescriptor-object"><code>reportingDescriptor</code> object</h3>
-<table>
-<colgroup>
-<col style="width: 50%" />
-<col style="width: 50%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>Name</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>id</code></td>
-<td><strong>Required.</strong> A unique identifier for the rule. The <code>id</code> is referenced from other parts of the SARIF file and may be used by {% data variables.product.prodname_code_scanning %} to display URLs on {% data variables.product.prodname_dotcom %}.</td>
-</tr>
-<tr class="even">
-<td><code>name</code></td>
-<td><strong>Optional.</strong> The name of the rule. {% data variables.product.prodname_code_scanning_capc %} displays the name to allow results to be filtered by rule on {% data variables.product.prodname_dotcom %}.</td>
-</tr>
-<tr class="odd">
-<td><code>shortDescription.text</code></td>
-<td><strong>Required.</strong> A concise description of the rule. {% data variables.product.prodname_code_scanning_capc %} displays the short description on {% data variables.product.prodname_dotcom %} next to the associated results.</td>
-</tr>
-<tr class="even">
-<td><code>fullDescription.text</code></td>
-<td><strong>Required.</strong> A description of the rule. {% data variables.product.prodname_code_scanning_capc %} displays the full description on {% data variables.product.prodname_dotcom %} next to the associated results. The max number of characters is limited to 1000.</td>
-</tr>
-<tr class="odd">
-<td><code>defaultConfiguration.level</code></td>
-<td><strong>Optional.</strong> Default severity level of the rule. {% data variables.product.prodname_code_scanning_capc %} uses severity levels to help you understand how critical the result is for a given rule. This value can be overridden by the <code>level</code> attribute in the <code>result</code> object. For more information, see the <a href="#result-object"><code>result</code> object</a>. Default: <code>warning</code>.</td>
-</tr>
-<tr class="even">
-<td><code>help.text</code></td>
-<td><strong>Required.</strong> Documentation for the rule using text format. {% data variables.product.prodname_code_scanning_capc %} displays this help documentation next to the associated results.</td>
-</tr>
-<tr class="odd">
-<td><code>help.markdown</code></td>
-<td><strong>Recommended.</strong> Documentation for the rule using Markdown format. {% data variables.product.prodname_code_scanning_capc %} displays this help documentation next to the associated results. When <code>help.markdown</code> is available, it is displayed instead of <code>help.text</code>.</td>
-</tr>
-<tr class="even">
-<td><code>properties.tags[]</code></td>
-<td><strong>Optional.</strong> An array of strings. {% data variables.product.prodname_code_scanning_capc %} uses <code>tags</code> to allow you to filter results on {% data variables.product.prodname_dotcom %}. For example, it is possible to filter to all results that have the tag <code>security</code>.</td>
-</tr>
-<tr class="odd">
-<td><code>properties.precision</code></td>
-<td><strong>Recommended.</strong> A string that indicates how often the results indicated by this rule are true. For example, if a rule has a known high false-positive rate, the precision should be <code>low</code>. {% data variables.product.prodname_code_scanning_capc %} orders results by precision on {% data variables.product.prodname_dotcom %} so that the results with the highest <code>level</code>, and highest <code>precision</code> are shown first. Can be one of: <code>very-high</code>, <code>high</code>, <code>medium</code>, or <code>low</code>.</td>
-</tr>
-</tbody>
-</table>
-<h3 id="result-object"><code>result</code> object</h3>
-<p>{% data reusables.code-scanning.upload-sarif-alert-limit %}</p>
-<table>
-<colgroup>
-<col style="width: 50%" />
-<col style="width: 50%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>Name</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>ruleId</code></td>
-<td><strong>Optional.</strong> The unique identifier of the rule (<code>reportingDescriptor.id</code>). For more information, see the <a href="#reportingdescriptor-object"><code>reportingDescriptor</code> object</a>. {% data variables.product.prodname_code_scanning_capc %} uses the rule identifier to filter results by rule on {% data variables.product.prodname_dotcom %}.</td>
-</tr>
-<tr class="even">
-<td><code>ruleIndex</code></td>
-<td><strong>Optional.</strong> The index of the associated rule (<code>reportingDescriptor</code> object) in the tool component <code>rules</code> array. For more information, see the <a href="#run-object"><code>run</code> object</a>.</td>
-</tr>
-<tr class="odd">
-<td><code>rule</code></td>
-<td><strong>Optional.</strong> A reference used to locate the rule (reporting descriptor) for this result. For more information, see the <a href="#reportingdescriptor-object"><code>reportingDescriptor</code> object</a>.</td>
-</tr>
-<tr class="even">
-<td><code>level</code></td>
-<td><strong>Optional.</strong> The severity of the result. This level overrides the default severity defined by the rule. {% data variables.product.prodname_code_scanning_capc %} uses the level to filter results by severity on {% data variables.product.prodname_dotcom %}.</td>
-</tr>
-<tr class="odd">
-<td><code>message.text</code></td>
-<td><strong>Required.</strong> A message that describes the result. {% data variables.product.prodname_code_scanning_capc %} displays the message text as the title of the result. Only the first sentence of the message will be displayed when visible space is limited.</td>
-</tr>
-<tr class="even">
-<td><code>locations[]</code></td>
-<td><strong>Required.</strong> The set of locations where the result was detected up to a maximum of 10. Only one location should be included unless the problem can only be corrected by making a change at every specified location. <strong>Note:</strong> At least one location is required for {% data variables.product.prodname_code_scanning %} to display a result. {% data variables.product.prodname_code_scanning_capc %} will use this property to decide which file to annotate with the result. Only the first value of this array is used. All other values are ignored.</td>
-</tr>
-<tr class="odd">
-<td><code>partialFingerprints</code></td>
-<td><strong>Required.</strong> A set of strings used to track the unique identity of the result. {% data variables.product.prodname_code_scanning_capc %} uses <code>partialFingerprints</code> to accurately identify which results are the same across commits and branches. {% data variables.product.prodname_code_scanning_capc %} will attempt to use <code>partialFingerprints</code> if they exist. If you are uploading third-party SARIF files with the <code>upload-action</code>, the action will create <code>partialFingerprints</code> for you when they are not included in the SARIF file. For more information, see “<a href="#preventing-duplicate-alerts-using-fingerprints">Preventing duplicate alerts using fingerprints</a>.” <strong>Note:</strong> {% data variables.product.prodname_code_scanning_capc %} only uses the <code>primaryLocationLineHash</code>.</td>
-</tr>
-<tr class="even">
-<td><code>codeFlows[].threadFlows[].locations[]</code></td>
-<td><strong>Optional.</strong> An array of <code>location</code> objects for a <code>threadFlow</code> object, which describes the progress of a program through a thread of execution. A <code>codeFlow</code> object describes a pattern of code execution used to detect a result. If code flows are provided, {% data variables.product.prodname_code_scanning %} will expand code flows on {% data variables.product.prodname_dotcom %} for the relevant result. For more information, see the <a href="#location-object"><code>location</code> object</a>.</td>
-</tr>
-<tr class="odd">
-<td><code>relatedLocations[]</code></td>
-<td>A set of locations relevant to this result. {% data variables.product.prodname_code_scanning_capc %} will link to related locations when they are embedded in the result message. For more information, see the <a href="#location-object"><code>location</code> object</a>.</td>
-</tr>
-</tbody>
-</table>
-<h3 id="location-object"><code>location</code> object</h3>
-<p>A location within a programming artifact, such as a file in the repository or a file that was generated during a build.</p>
-<table>
-<colgroup>
-<col style="width: 50%" />
-<col style="width: 50%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>Name</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>location.id</code></td>
-<td><strong>Optional.</strong> A unique identifier that distinguishes this location from all other locations within a single result object.</td>
-</tr>
-<tr class="even">
-<td><code>location.physicalLocation</code></td>
-<td><strong>Required.</strong> Identifies the artifact and region. For more information, see the <a href="#physicallocation-object"><code>physicalLocation</code></a>.</td>
-</tr>
-<tr class="odd">
-<td><code>location.message.text</code></td>
-<td><strong>Optional.</strong> A message relevant to the location.</td>
-</tr>
-</tbody>
-</table>
-<h3 id="physicallocation-object"><code>physicalLocation</code> object</h3>
-<table>
-<colgroup>
-<col style="width: 50%" />
-<col style="width: 50%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>Name</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>artifactLocation.uri</code></td>
-<td><strong>Required.</strong> A URI indicating the location of an artifact, usually a file either in the repository or generated during a build. If the URI is relative, it should be relative to the root of the {% data variables.product.prodname_dotcom %} repository being analyzed. For example, main.js or src/script.js are relative to the root of the repository. If the URI is absolute, {% data variables.product.prodname_code_scanning %} can use the URI to checkout the artifact and match up files in the repository. For example, <code>https://github.com/ghost/example/blob/00/src/promiseUtils.js</code>.</td>
-</tr>
-<tr class="even">
-<td><code>region.startLine</code></td>
-<td><strong>Required.</strong> The line number of the first character in the region.</td>
-</tr>
-<tr class="odd">
-<td><code>region.startColumn</code></td>
-<td><strong>Required.</strong> The column number of the first character in the region.</td>
-</tr>
-<tr class="even">
-<td><code>region.endLine</code></td>
-<td><strong>Required.</strong> The line number of the last character in the region.</td>
-</tr>
-<tr class="odd">
-<td><code>region.endColumn</code></td>
-<td><strong>Required.</strong> The column number of the character following the end of the region.</td>
-</tr>
-</tbody>
-</table>
-<h2 id="sarif-output-file-examples">SARIF output file examples</h2>
-<p>These example SARIF output files show supported properties and example values.</p>
-<h3 id="example-with-minimum-required-properties">Example with minimum required properties</h3>
-<p>This SARIF output file has example values to show the minimum required properties for {% data variables.product.prodname_code_scanning %} results to work as expected. If you remove any properties or don’t include values, this data will not be displayed correctly or sync on {% data variables.product.prodname_dotcom %}.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb1-1" title="1"><span class="fu">{</span></a>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>SARIF support for code scanning</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">SARIF support for code scanning</h1>
+    </header>
+    <!--See /content/code-security/secure-coding for the latest version of this article -->
+    <p>{% data reusables.code-scanning.beta %}</p>
+    <h2 id="about-sarif-support">About SARIF support</h2>
+    <p>
+      SARIF (Static Analysis Results Interchange Format) is an
+      <a href="https://docs.oasis-open.org/sarif/sarif/v2.1.0/sarif-v2.1.0.html"
+        >OASIS Standard</a
+      >
+      that defines an output file format. The SARIF standard is used to
+      streamline how static analysis tools share their results. {% data
+      variables.product.prodname_code_scanning_capc %} supports a subset of the
+      SARIF 2.1.0 JSON schema.
+    </p>
+    <p>
+      To upload a SARIF file from a third-party static code analysis engine,
+      you’ll need to ensure that uploaded files use the SARIF 2.1.0 version. {%
+      data variables.product.prodname_dotcom %} will parse the SARIF file and
+      show alerts using the results in your repository as a part of the {% data
+      variables.product.prodname_code_scanning %} experience. For more
+      information, see “<a
+        href="/github/finding-security-vulnerabilities-and-errors-in-your-code/uploading-a-sarif-file-to-github"
+        >Uploading a SARIF file to {% data variables.product.prodname_dotcom
+        %}</a
+      >.” For more information about the SARIF 2.1.0 JSON schema, see
+      <a
+        href="https://github.com/oasis-tcs/sarif-spec/blob/master/Schemata/sarif-schema-2.1.0.json"
+        ><code>sarif-schema-2.1.0.json</code></a
+      >.
+    </p>
+    <p>
+      If you’re using {% data variables.product.prodname_actions %} with the {%
+      data variables.product.prodname_codeql_workflow %} or using the {% data
+      variables.product.prodname_codeql_runner %}, then the {% data
+      variables.product.prodname_code_scanning %} results will automatically use
+      the supported subset of SARIF 2.1.0. For more information, see “<a
+        href="/github/finding-security-vulnerabilities-and-errors-in-your-code/setting-up-code-scanning-for-a-repository"
+        >Setting up {% data variables.product.prodname_code_scanning %} for a
+        repository</a
+      >” or “<a
+        href="/github/finding-security-vulnerabilities-and-errors-in-your-code/running-codeql-code-scanning-in-your-ci-system"
+        >Running {% data variables.product.prodname_codeql %} {% data
+        variables.product.prodname_code_scanning %} in your CI system</a
+      >.”
+    </p>
+    <p>
+      {% data variables.product.prodname_dotcom %} uses properties in the SARIF
+      file to display alerts. For example, the <code>shortDescription</code> and
+      <code>fullDescription</code> appear at the top of a {% data
+      variables.product.prodname_code_scanning %} alert. The
+      <code>location</code> allows {% data variables.product.prodname_dotcom %}
+      to show annotations in your code file. For more information, see “<a
+        href="/github/finding-security-vulnerabilities-and-errors-in-your-code/managing-code-scanning-alerts-for-your-repository"
+        >Managing {% data variables.product.prodname_code_scanning %} alerts for
+        your repository</a
+      >.”
+    </p>
+    <p>
+      If you’re new to SARIF and want to learn more, see Microsoft’s
+      <a href="https://github.com/microsoft/sarif-tutorials"
+        ><code>SARIF tutorials</code></a
+      >
+      repository.
+    </p>
+    <h2 id="preventing-duplicate-alerts-using-fingerprints">
+      Preventing duplicate alerts using fingerprints
+    </h2>
+    <p>
+      Each time the results of a new code scan are uploaded, the results are
+      processed and alerts are added to the repository. To prevent duplicate
+      alerts for the same problem, {% data
+      variables.product.prodname_code_scanning %} uses fingerprints to match
+      results across various runs so they only appear once in the latest run for
+      the selected branch. This makes it possible to match alerts to the right
+      line of code when files are edited.
+    </p>
+    <p>
+      {% data variables.product.prodname_dotcom %} uses the
+      <code>partialFingerprints</code> property in the OASIS standard to detect
+      when two results are logically identical. For more information, see the
+      “<a
+        href="https://docs.oasis-open.org/sarif/sarif/v2.1.0/cs01/sarif-v2.1.0-cs01.html#_Toc16012611"
+        >partialFingerprints property</a
+      >” entry in the OASIS documentation.
+    </p>
+    <p>
+      SARIF files created by the {% data
+      variables.product.prodname_codeql_workflow %} or using the {% data
+      variables.product.prodname_codeql_runner %} include fingerprint data. If
+      you upload a SARIF file using the <code>upload-sarif</code> action and
+      this data is missing, {% data variables.product.prodname_dotcom %}
+      attempts to populate the <code>partialFingerprints</code> field from the
+      source files. For more information about uploading results, see “<a
+        href="/github/finding-security-vulnerabilities-and-errors-in-your-code/uploading-a-sarif-file-to-github#uploading-a-code-scanning-analysis-with-github-actions"
+        >Uploading a SARIF file to {% data variables.product.prodname_dotcom
+        %}</a
+      >.”
+    </p>
+    <p>
+      If you upload a SARIF file without fingerprint data using the
+      <code>/code-scanning/sarifs</code> API endpoint, the {% data
+      variables.product.prodname_code_scanning %} alerts will be processed and
+      displayed, but users may see duplicate alerts. To avoid seeing duplicate
+      alerts, you should calculate fingerprint data and populate the
+      <code>partialFingerprints</code> property before you upload the SARIF
+      file. You may find the script that the <code>upload-sarif</code> action
+      uses a helpful starting point:
+      https://github.com/github/codeql-action/blob/main/src/fingerprints.ts. For
+      more information about the API, see “<a
+        href="/rest/reference/code-scanning#upload-an-analysis-as-sarif-data"
+        >Upload an analysis as SARIF data</a
+      >.”
+    </p>
+    <h2 id="validating-your-sarif-file">Validating your SARIF file</h2>
+    <!--UI-LINK: When code scanning fails, the error banner shown in the Security > Code scanning alerts view links to this anchor.-->
+    <p>
+      You can check a SARIF file is compatible with {% data
+      variables.product.prodname_code_scanning %} by testing it against the {%
+      data variables.product.prodname_dotcom %} ingestion rules. For more
+      information, visit the
+      <a href="https://sarifweb.azurewebsites.net/">Microsoft SARIF validator</a
+      >.
+    </p>
+    <p>{% data reusables.code-scanning.upload-sarif-alert-limit %}</p>
+    <h2 id="supported-sarif-output-file-properties">
+      Supported SARIF output file properties
+    </h2>
+    <p>
+      If you use a code analysis engine other than {% data
+      variables.product.prodname_codeql %}, you can review the supported SARIF
+      properties to optimize how your analysis results will appear on {% data
+      variables.product.prodname_dotcom %}.
+    </p>
+    <p>
+      Any valid SARIF 2.1.0 output file can be uploaded, however, {% data
+      variables.product.prodname_code_scanning %} will only use the following
+      supported properties.
+    </p>
+    <h3 id="sariflog-object"><code>sarifLog</code> object</h3>
+    <table>
+      <colgroup>
+        <col style="width: 50%" />
+        <col style="width: 50%" />
+      </colgroup>
+      <thead>
+        <tr class="header">
+          <th>Name</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td><code>$schema</code></td>
+          <td>
+            <strong>Required.</strong> The URI of the SARIF JSON schema for
+            version 2.1.0. For example,
+            <code
+              >https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json</code
+            >.
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>version</code></td>
+          <td>
+            <strong>Required.</strong> {% data
+            variables.product.prodname_code_scanning_capc %} only supports SARIF
+            version <code>2.1.0</code>.
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>runs[]</code></td>
+          <td>
+            <strong>Required.</strong> A SARIF file contains an array of one or
+            more runs. Each run represents a single run of an analysis tool. For
+            more information about a <code>run</code>, see the
+            <a href="#run-object"><code>run</code> object</a>.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="run-object"><code>run</code> object</h3>
+    <p>
+      {% data variables.product.prodname_code_scanning_capc %} uses the
+      <code>run</code> object to filter results by tool and provide information
+      about the source of a result. The <code>run</code> object contains the
+      <code>tool.driver</code> tool component object, which contains information
+      about the tool that generated the results. Each <code>run</code> can only
+      have results for one analysis tool.
+    </p>
+    <table>
+      <colgroup>
+        <col style="width: 50%" />
+        <col style="width: 50%" />
+      </colgroup>
+      <thead>
+        <tr class="header">
+          <th>Name</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td><code>tool.driver.name</code></td>
+          <td>
+            <strong>Required.</strong> The name of the analysis tool. {% data
+            variables.product.prodname_code_scanning_capc %} displays the name
+            on {% data variables.product.prodname_dotcom %} to allow you to
+            filter results by tool.
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>tool.driver.version</code></td>
+          <td>
+            <strong>Optional.</strong> The version of the analysis tool. {% data
+            variables.product.prodname_code_scanning_capc %} uses the version
+            number to track when results may have changed due to a tool version
+            change rather than a change in the code being analyzed. If the SARIF
+            file includes the <code>semanticVersion</code> field,
+            <code>version</code> is not used by {% data
+            variables.product.prodname_code_scanning %}.
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>tool.driver.semanticVersion</code></td>
+          <td>
+            <strong>Optional.</strong> The version of the analysis tool,
+            specified by the Semantic Versioning 2.0 format. {% data
+            variables.product.prodname_code_scanning_capc %} uses the version
+            number to track when results may have changed due to a tool version
+            change rather than a change in the code being analyzed. If the SARIF
+            file includes the <code>semanticVersion</code> field,
+            <code>version</code> is not used by {% data
+            variables.product.prodname_code_scanning %}. For more information,
+            see “<a href="https://semver.org/">Semantic Versioning 2.0.0</a>” in
+            the Semantic Versioning documentation.
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>tool.driver.rules[]</code></td>
+          <td>
+            <strong>Required.</strong> An array of
+            <code>reportingDescriptor</code> objects that represent rules. The
+            analysis tool uses rules to find problems in the code being
+            analyzed. For more information, see the
+            <a href="#reportingdescriptor-object"
+              ><code>reportingDescriptor</code> object</a
+            >.
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>results[]</code></td>
+          <td>
+            <strong>Required.</strong> The results of the analysis tool. {% data
+            variables.product.prodname_code_scanning_capc %} displays the
+            results on {% data variables.product.prodname_dotcom %}. For more
+            information, see the
+            <a href="#result-object"><code>result</code> object</a>.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="reportingdescriptor-object">
+      <code>reportingDescriptor</code> object
+    </h3>
+    <table>
+      <colgroup>
+        <col style="width: 50%" />
+        <col style="width: 50%" />
+      </colgroup>
+      <thead>
+        <tr class="header">
+          <th>Name</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td><code>id</code></td>
+          <td>
+            <strong>Required.</strong> A unique identifier for the rule. The
+            <code>id</code> is referenced from other parts of the SARIF file and
+            may be used by {% data variables.product.prodname_code_scanning %}
+            to display URLs on {% data variables.product.prodname_dotcom %}.
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>name</code></td>
+          <td>
+            <strong>Optional.</strong> The name of the rule. {% data
+            variables.product.prodname_code_scanning_capc %} displays the name
+            to allow results to be filtered by rule on {% data
+            variables.product.prodname_dotcom %}.
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>shortDescription.text</code></td>
+          <td>
+            <strong>Required.</strong> A concise description of the rule. {%
+            data variables.product.prodname_code_scanning_capc %} displays the
+            short description on {% data variables.product.prodname_dotcom %}
+            next to the associated results.
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>fullDescription.text</code></td>
+          <td>
+            <strong>Required.</strong> A description of the rule. {% data
+            variables.product.prodname_code_scanning_capc %} displays the full
+            description on {% data variables.product.prodname_dotcom %} next to
+            the associated results. The max number of characters is limited to
+            1000.
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>defaultConfiguration.level</code></td>
+          <td>
+            <strong>Optional.</strong> Default severity level of the rule. {%
+            data variables.product.prodname_code_scanning_capc %} uses severity
+            levels to help you understand how critical the result is for a given
+            rule. This value can be overridden by the
+            <code>level</code> attribute in the <code>result</code> object. For
+            more information, see the
+            <a href="#result-object"><code>result</code> object</a>. Default:
+            <code>warning</code>.
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>help.text</code></td>
+          <td>
+            <strong>Required.</strong> Documentation for the rule using text
+            format. {% data variables.product.prodname_code_scanning_capc %}
+            displays this help documentation next to the associated results.
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>help.markdown</code></td>
+          <td>
+            <strong>Recommended.</strong> Documentation for the rule using
+            Markdown format. {% data
+            variables.product.prodname_code_scanning_capc %} displays this help
+            documentation next to the associated results. When
+            <code>help.markdown</code> is available, it is displayed instead of
+            <code>help.text</code>.
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>properties.tags[]</code></td>
+          <td>
+            <strong>Optional.</strong> An array of strings. {% data
+            variables.product.prodname_code_scanning_capc %} uses
+            <code>tags</code> to allow you to filter results on {% data
+            variables.product.prodname_dotcom %}. For example, it is possible to
+            filter to all results that have the tag <code>security</code>.
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>properties.precision</code></td>
+          <td>
+            <strong>Recommended.</strong> A string that indicates how often the
+            results indicated by this rule are true. For example, if a rule has
+            a known high false-positive rate, the precision should be
+            <code>low</code>. {% data
+            variables.product.prodname_code_scanning_capc %} orders results by
+            precision on {% data variables.product.prodname_dotcom %} so that
+            the results with the highest <code>level</code>, and highest
+            <code>precision</code> are shown first. Can be one of:
+            <code>very-high</code>, <code>high</code>, <code>medium</code>, or
+            <code>low</code>.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="result-object"><code>result</code> object</h3>
+    <p>{% data reusables.code-scanning.upload-sarif-alert-limit %}</p>
+    <table>
+      <colgroup>
+        <col style="width: 50%" />
+        <col style="width: 50%" />
+      </colgroup>
+      <thead>
+        <tr class="header">
+          <th>Name</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td><code>ruleId</code></td>
+          <td>
+            <strong>Optional.</strong> The unique identifier of the rule
+            (<code>reportingDescriptor.id</code>). For more information, see the
+            <a href="#reportingdescriptor-object"
+              ><code>reportingDescriptor</code> object</a
+            >. {% data variables.product.prodname_code_scanning_capc %} uses the
+            rule identifier to filter results by rule on {% data
+            variables.product.prodname_dotcom %}.
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>ruleIndex</code></td>
+          <td>
+            <strong>Optional.</strong> The index of the associated rule (<code
+              >reportingDescriptor</code
+            >
+            object) in the tool component <code>rules</code> array. For more
+            information, see the
+            <a href="#run-object"><code>run</code> object</a>.
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>rule</code></td>
+          <td>
+            <strong>Optional.</strong> A reference used to locate the rule
+            (reporting descriptor) for this result. For more information, see
+            the
+            <a href="#reportingdescriptor-object"
+              ><code>reportingDescriptor</code> object</a
+            >.
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>level</code></td>
+          <td>
+            <strong>Optional.</strong> The severity of the result. This level
+            overrides the default severity defined by the rule. {% data
+            variables.product.prodname_code_scanning_capc %} uses the level to
+            filter results by severity on {% data
+            variables.product.prodname_dotcom %}.
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>message.text</code></td>
+          <td>
+            <strong>Required.</strong> A message that describes the result. {%
+            data variables.product.prodname_code_scanning_capc %} displays the
+            message text as the title of the result. Only the first sentence of
+            the message will be displayed when visible space is limited.
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>locations[]</code></td>
+          <td>
+            <strong>Required.</strong> The set of locations where the result was
+            detected up to a maximum of 10. Only one location should be included
+            unless the problem can only be corrected by making a change at every
+            specified location. <strong>Note:</strong> At least one location is
+            required for {% data variables.product.prodname_code_scanning %} to
+            display a result. {% data
+            variables.product.prodname_code_scanning_capc %} will use this
+            property to decide which file to annotate with the result. Only the
+            first value of this array is used. All other values are ignored.
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>partialFingerprints</code></td>
+          <td>
+            <strong>Required.</strong> A set of strings used to track the unique
+            identity of the result. {% data
+            variables.product.prodname_code_scanning_capc %} uses
+            <code>partialFingerprints</code> to accurately identify which
+            results are the same across commits and branches. {% data
+            variables.product.prodname_code_scanning_capc %} will attempt to use
+            <code>partialFingerprints</code> if they exist. If you are uploading
+            third-party SARIF files with the <code>upload-action</code>, the
+            action will create <code>partialFingerprints</code> for you when
+            they are not included in the SARIF file. For more information, see
+            “<a href="#preventing-duplicate-alerts-using-fingerprints"
+              >Preventing duplicate alerts using fingerprints</a
+            >.” <strong>Note:</strong> {% data
+            variables.product.prodname_code_scanning_capc %} only uses the
+            <code>primaryLocationLineHash</code>.
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>codeFlows[].threadFlows[].locations[]</code></td>
+          <td>
+            <strong>Optional.</strong> An array of <code>location</code> objects
+            for a <code>threadFlow</code> object, which describes the progress
+            of a program through a thread of execution. A
+            <code>codeFlow</code> object describes a pattern of code execution
+            used to detect a result. If code flows are provided, {% data
+            variables.product.prodname_code_scanning %} will expand code flows
+            on {% data variables.product.prodname_dotcom %} for the relevant
+            result. For more information, see the
+            <a href="#location-object"><code>location</code> object</a>.
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>relatedLocations[]</code></td>
+          <td>
+            A set of locations relevant to this result. {% data
+            variables.product.prodname_code_scanning_capc %} will link to
+            related locations when they are embedded in the result message. For
+            more information, see the
+            <a href="#location-object"><code>location</code> object</a>.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="location-object"><code>location</code> object</h3>
+    <p>
+      A location within a programming artifact, such as a file in the repository
+      or a file that was generated during a build.
+    </p>
+    <table>
+      <colgroup>
+        <col style="width: 50%" />
+        <col style="width: 50%" />
+      </colgroup>
+      <thead>
+        <tr class="header">
+          <th>Name</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td><code>location.id</code></td>
+          <td>
+            <strong>Optional.</strong> A unique identifier that distinguishes
+            this location from all other locations within a single result
+            object.
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>location.physicalLocation</code></td>
+          <td>
+            <strong>Required.</strong> Identifies the artifact and region. For
+            more information, see the
+            <a href="#physicallocation-object"><code>physicalLocation</code></a
+            >.
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>location.message.text</code></td>
+          <td>
+            <strong>Optional.</strong> A message relevant to the location.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="physicallocation-object"><code>physicalLocation</code> object</h3>
+    <table>
+      <colgroup>
+        <col style="width: 50%" />
+        <col style="width: 50%" />
+      </colgroup>
+      <thead>
+        <tr class="header">
+          <th>Name</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td><code>artifactLocation.uri</code></td>
+          <td>
+            <strong>Required.</strong> A URI indicating the location of an
+            artifact, usually a file either in the repository or generated
+            during a build. If the URI is relative, it should be relative to the
+            root of the {% data variables.product.prodname_dotcom %} repository
+            being analyzed. For example, main.js or src/script.js are relative
+            to the root of the repository. If the URI is absolute, {% data
+            variables.product.prodname_code_scanning %} can use the URI to
+            checkout the artifact and match up files in the repository. For
+            example,
+            <code
+              >https://github.com/ghost/example/blob/00/src/promiseUtils.js</code
+            >.
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>region.startLine</code></td>
+          <td>
+            <strong>Required.</strong> The line number of the first character in
+            the region.
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>region.startColumn</code></td>
+          <td>
+            <strong>Required.</strong> The column number of the first character
+            in the region.
+          </td>
+        </tr>
+        <tr class="even">
+          <td><code>region.endLine</code></td>
+          <td>
+            <strong>Required.</strong> The line number of the last character in
+            the region.
+          </td>
+        </tr>
+        <tr class="odd">
+          <td><code>region.endColumn</code></td>
+          <td>
+            <strong>Required.</strong> The column number of the character
+            following the end of the region.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h2 id="sarif-output-file-examples">SARIF output file examples</h2>
+    <p>
+      These example SARIF output files show supported properties and example
+      values.
+    </p>
+    <h3 id="example-with-minimum-required-properties">
+      Example with minimum required properties
+    </h3>
+    <p>
+      This SARIF output file has example values to show the minimum required
+      properties for {% data variables.product.prodname_code_scanning %} results
+      to work as expected. If you remove any properties or don’t include values,
+      this data will not be displayed correctly or sync on {% data
+      variables.product.prodname_dotcom %}.
+    </p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb1-1" title="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb1-2" title="2">  <span class="dt">&quot;$schema&quot;</span><span class="fu">:</span> <span class="st">&quot;https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb1-3" title="3">  <span class="dt">&quot;version&quot;</span><span class="fu">:</span> <span class="st">&quot;2.1.0&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb1-4" title="4">  <span class="dt">&quot;runs&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
@@ -374,10 +863,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb1-40" title="40">      <span class="ot">]</span></a>
 <a class="sourceLine" id="cb1-41" title="41">    <span class="fu">}</span></a>
 <a class="sourceLine" id="cb1-42" title="42">  <span class="ot">]</span></a>
-<a class="sourceLine" id="cb1-43" title="43"><span class="fu">}</span></a></code></pre></div>
-<h3 id="example-showing-all-supported-sarif-properties">Example showing all supported SARIF properties</h3>
-<p>This SARIF output file has example values to show all supported SARIF properties for {% data variables.product.prodname_code_scanning %}.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb2-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-43" title="43"><span class="fu">}</span></a></code></pre>
+    </div>
+    <h3 id="example-showing-all-supported-sarif-properties">
+      Example showing all supported SARIF properties
+    </h3>
+    <p>
+      This SARIF output file has example values to show all supported SARIF
+      properties for {% data variables.product.prodname_code_scanning %}.
+    </p>
+    <div class="sourceCode" id="cb2">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb2-1" title="1"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb2-2" title="2">  <span class="dt">&quot;$schema&quot;</span><span class="fu">:</span> <span class="st">&quot;https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb2-3" title="3">  <span class="dt">&quot;version&quot;</span><span class="fu">:</span> <span class="st">&quot;2.1.0&quot;</span><span class="fu">,</span></a>
 <a class="sourceLine" id="cb2-4" title="4">  <span class="dt">&quot;runs&quot;</span><span class="fu">:</span> <span class="ot">[</span></a>
@@ -623,6 +1121,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb2-244" title="244">      <span class="dt">&quot;columnKind&quot;</span><span class="fu">:</span> <span class="st">&quot;utf16CodeUnits&quot;</span></a>
 <a class="sourceLine" id="cb2-245" title="245">    <span class="fu">}</span></a>
 <a class="sourceLine" id="cb2-246" title="246">  <span class="ot">]</span></a>
-<a class="sourceLine" id="cb2-247" title="247"><span class="fu">}</span></a></code></pre></div>
-</body>
+<a class="sourceLine" id="cb2-247" title="247"><span class="fu">}</span></a></code></pre>
+    </div>
+  </body>
 </html>

@@ -4,11 +4,11 @@ redirect_from:
   - /github/collaborating-with-issues-and-pull-requests/reviewing-changes-in-pull-requests/
   - /articles/reviewing-and-discussing-changes-in-pull-requests/
   - /articles/reviewing-changes-in-pull-requests
-intro: 'After a pull request has been opened, you can review and discuss the set of proposed changes.'
+intro: "After a pull request has been opened, you can review and discuss the set of proposed changes."
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Pull requests
 children:
@@ -25,4 +25,3 @@ children:
   - /checking-out-pull-requests-locally
 shortTitle: Review changes
 ---
-

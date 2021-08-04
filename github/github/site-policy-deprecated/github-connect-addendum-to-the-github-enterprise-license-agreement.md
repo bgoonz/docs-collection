@@ -6,7 +6,7 @@ redirect_from:
   - /articles/github-connect-addendum-to-the-github-enterprise-license-agreement
   - /github/site-policy/github-connect-addendum-to-the-github-enterprise-license-agreement
 versions:
-  fpt: '*'
+  fpt: "*"
 ---
 
 _These terms apply to Customers who licensed the Products prior to January 4, 2021. Customers who purchase GitHub Products after that date are directed to https://www.github.com/enterprise-legal for current terms._
@@ -75,4 +75,4 @@ This Addendum and the Generally Applicable Terms contain the entire agreement of
 
 ## 12. No Other Modifications; Order of Precedence
 
-Except as expressly provided herein, nothing in this Addendum shall be deemed to waive or modify any of the provisions of the Agreement, which otherwise remains in full force and effect.  In the event of any conflict between the Agreement and this Addendum regarding the subject matter set forth herein, this Addendum shall prevail.
+Except as expressly provided herein, nothing in this Addendum shall be deemed to waive or modify any of the provisions of the Agreement, which otherwise remains in full force and effect. In the event of any conflict between the Agreement and this Addendum regarding the subject matter set forth herein, this Addendum shall prevail.

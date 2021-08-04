@@ -6,13 +6,14 @@ redirect_from:
   - /articles/about-comparing-branches-in-pull-requests
   - /github/collaborating-with-issues-and-pull-requests/about-comparing-branches-in-pull-requests
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Pull requests
 shortTitle: Compare branches
 ---
+
 {% note %}
 
 **Note:** When creating your pull request, you can change the base branch that you're comparing your changes against. For more information, see "[Creating a pull request](/articles/creating-a-pull-request#changing-the-branch-range-and-destination-repository)."
@@ -35,6 +36,7 @@ Rather than viewing the commits themselves, you can view the proposed changes as
 {% endtip %}
 
 You have several options for viewing a diff:
+
 - The unified view shows updated and existing content together in a linear view.
 - The split view shows old content on one side and new content on the other side.
 - The rich diff view shows a preview of how the changes will look once the pull request is merged.
@@ -46,13 +48,13 @@ You can also choose to ignore whitespace changes to get a more accurate view of 
 
 To simplify reviewing changes in a large pull request, you can filter the diff to only show selected file types, show files you are a CODEOWNER of, hide files you have already viewed, or hide deleted files. For more information, see "[Filtering files in a pull request by file type](/articles/filtering-files-in-a-pull-request)."
 
-  ![File filter drop-down menu](/assets/images/help/pull_requests/file-filter-menu.png)
+![File filter drop-down menu](/assets/images/help/pull_requests/file-filter-menu.png)
 
 ## Three-dot and two-dot Git diff comparisons
 
 By default, pull requests on {% data variables.product.prodname_dotcom %} show a three-dot diff, or a comparison between the most recent version of the topic branch and the commit where the topic branch was last synced with the base branch.
 
-To see two committish references in a two-dot diff comparison on {% data variables.product.prodname_dotcom %}, you can edit the URL of your repository's "Comparing changes" page. For more information, see the  [Git Glossary for "committish"](https://git-scm.com/docs/gitglossary#gitglossary-aiddefcommit-ishacommit-ishalsocommittish) from the _Pro Git_ book site.
+To see two committish references in a two-dot diff comparison on {% data variables.product.prodname_dotcom %}, you can edit the URL of your repository's "Comparing changes" page. For more information, see the [Git Glossary for "committish"](https://git-scm.com/docs/gitglossary#gitglossary-aiddefcommit-ishacommit-ishalsocommittish) from the _Pro Git_ book site.
 
 {% data reusables.repositories.two-dot-diff-comparison-example-urls %}
 
@@ -63,8 +65,9 @@ If you want to simulate a two-dot diff in a pull request and see a comparison be
 For more information about Git commands to compare changes, see "[Git diff options](https://git-scm.com/docs/git-diff#git-diff-emgitdiffemltoptionsgtltcommitgtltcommitgt--ltpathgt82308203)" from the _Pro Git_ book site.
 
 ## Reasons diffs will not display
+
 - You've exceeded the total limit of files or certain file types. For more information, see "[Limits for viewing content and diffs in a repository](/articles/limits-for-viewing-content-and-diffs-in-a-repository/#diff-limits)."
-- Your file matches a rule in the repository's *.gitattributes* file to block that file from displaying by default. For more information, see "[Customizing how changed files appear on GitHub](/articles/customizing-how-changed-files-appear-on-github)."
+- Your file matches a rule in the repository's _.gitattributes_ file to block that file from displaying by default. For more information, see "[Customizing how changed files appear on GitHub](/articles/customizing-how-changed-files-appear-on-github)."
 
 ## Further reading
 

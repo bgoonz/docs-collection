@@ -1,16 +1,17 @@
 ---
-title: 'Error: Key already in use'
-intro: 'This error occurs when you try to [add a key](/articles/adding-a-new-ssh-key-to-your-github-account) that''s already been added to another account or repository.'
+title: "Error: Key already in use"
+intro: "This error occurs when you try to [add a key](/articles/adding-a-new-ssh-key-to-your-github-account) that's already been added to another account or repository."
 redirect_from:
   - /articles/error-key-already-in-use
   - /github/authenticating-to-github/error-key-already-in-use
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - SSH
 ---
+
 ## Finding where the key has been used
 
 To determine where the key has already been used, open a terminal and type the `ssh` command. Use the `-i` flag to provide the path to the key you want to check:
@@ -22,7 +23,7 @@ $ ssh -T -ai <em>~/.ssh/id_rsa</em> git@{% data variables.command_line.codeblock
 > provide shell access.
 ```
 
-The *username* in the response is the {% data variables.product.product_name %} account that the key is currently attached to. If the response looks something like "username/repo", the key has been attached to a repository as a [*deploy key*](/guides/managing-deploy-keys#deploy-keys).
+The _username_ in the response is the {% data variables.product.product_name %} account that the key is currently attached to. If the response looks something like "username/repo", the key has been attached to a repository as a [_deploy key_](/guides/managing-deploy-keys#deploy-keys).
 
 ## Fixing the issue
 
@@ -32,4 +33,4 @@ If you don't have permissions to transfer the key, and can't contact a user who 
 
 ## Deploy keys
 
-Once a key has been attached to one repository as a deploy key, it cannot be used on another repository.  If you're running into this error while setting up deploy keys, see "[Managing deploy keys](/guides/managing-deploy-keys)."
+Once a key has been attached to one repository as a deploy key, it cannot be used on another repository. If you're running into this error while setting up deploy keys, see "[Managing deploy keys](/guides/managing-deploy-keys)."

@@ -1,24 +1,23 @@
 ---
 title: Filtering issues and pull requests by assignees
-intro: 'Once you''ve [assigned an issue or pull request to someone](/articles/assigning-issues-and-pull-requests-to-other-github-users), you can find items based on who''s working on them.'
+intro: "Once you've [assigned an issue or pull request to someone](/articles/assigning-issues-and-pull-requests-to-other-github-users), you can find items based on who's working on them."
 redirect_from:
   - /github/managing-your-work-on-github/finding-information-in-a-repository/filtering-issues-and-pull-requests-by-assignees
   - /articles/filtering-issues-and-pull-requests-by-assignees
   - /github/managing-your-work-on-github/filtering-issues-and-pull-requests-by-assignees
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Pull requests
 shortTitle: Filter by assignee
 ---
+
 {% data reusables.cli.filter-issues-and-pull-requests-tip %}
 
 {% data reusables.repositories.navigate-to-repo %}
-{% data reusables.repositories.sidebar-issue-pr %}
-3. In the upper-right corner, select the Assignee drop-down menu.
-4. The Assignee drop-down menu lists everyone who has write access to your repository. Click the name of the person whose assigned items you want to see, or click **Assigned to nobody** to see which issues are unassigned.
+{% data reusables.repositories.sidebar-issue-pr %} 3. In the upper-right corner, select the Assignee drop-down menu. 4. The Assignee drop-down menu lists everyone who has write access to your repository. Click the name of the person whose assigned items you want to see, or click **Assigned to nobody** to see which issues are unassigned.
 ![Using the Assignees drop-down tab](/assets/images/help/issues/issues_assignee_dropdown.png)
 
 {% tip %}

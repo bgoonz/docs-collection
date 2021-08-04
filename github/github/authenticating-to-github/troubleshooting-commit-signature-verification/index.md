@@ -1,13 +1,13 @@
 ---
 title: Troubleshooting commit signature verification
-intro: 'You may need to troubleshoot unexpected issues that arise when signing commits locally for verification on {% data variables.product.product_name %}.'
+intro: "You may need to troubleshoot unexpected issues that arise when signing commits locally for verification on {% data variables.product.product_name %}."
 redirect_from:
   - /articles/troubleshooting-gpg/
   - /articles/troubleshooting-commit-signature-verification
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Identity
   - Access management
@@ -17,4 +17,3 @@ children:
   - /using-a-verified-email-address-in-your-gpg-key
 shortTitle: Troubleshoot verification
 ---
-

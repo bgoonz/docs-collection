@@ -7,17 +7,18 @@ redirect_from:
   - /github/using-git/about-git-rebase
   - /github/getting-started-with-github/about-git-rebase
   - /github/getting-started-with-github/using-git/about-git-rebase
-intro: 'The `git rebase` command allows you to easily change a series of commits, modifying the history of your repository. You can reorder, edit, or squash commits together.'
+intro: "The `git rebase` command allows you to easily change a series of commits, modifying the history of your repository. You can reorder, edit, or squash commits together."
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 ---
+
 Typically, you would use `git rebase` to:
 
-* Edit previous commit messages
-* Combine multiple commits into one
-* Delete or revert commits that are no longer necessary
+- Edit previous commit messages
+- Combine multiple commits into one
+- Delete or revert commits that are no longer necessary
 
 {% warning %}
 
@@ -97,7 +98,7 @@ Breaking this information, from top to bottom, we see that:
 
 - Seven commits are listed, which indicates that there were seven changes between our starting point and our current branch state.
 - The commits you chose to rebase are sorted in the order of the oldest changes (at the top) to the newest changes (at the bottom).
-- Each line lists a command (by default, `pick`), the commit SHA, and the commit message. The entire `git rebase` procedure centers around your manipulation of these three columns. The changes you make are *rebased* onto your repository.
+- Each line lists a command (by default, `pick`), the commit SHA, and the commit message. The entire `git rebase` procedure centers around your manipulation of these three columns. The changes you make are _rebased_ onto your repository.
 - After the commits, Git tells you the range of commits we're working with (`41a72e6..7b36971`).
 - Finally, Git gives some help by telling you the commands that are available to you when rebasing commits.
 

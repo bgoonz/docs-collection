@@ -5,13 +5,14 @@ redirect_from:
   - /articles/customizing-your-repositorys-social-media-preview
   - /github/administering-a-repository/customizing-your-repositorys-social-media-preview
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Repositories
 shortTitle: Social media preview
 ---
+
 Until you add an image, repository links expand to show basic information about the repository and the owner's avatar. Adding an image to your repository can help identify your project across various social platforms.
 
 {% ifversion not ghae %}You can upload an image to a private repository, but your image can only be shared from a public repository.{% endif %}
@@ -21,9 +22,6 @@ Tip: Your image should be a PNG, JPG, or GIF file under 1 MB in size. For the be
 {% endtip %}
 
 {% data reusables.repositories.navigate-to-repo %}
-{% data reusables.repositories.sidebar-settings %}
-3. Under "Social preview," click **Edit**
-    - To add a new image, click **Upload an image...**.
-    - To remove an image, click **Remove image**
+{% data reusables.repositories.sidebar-settings %} 3. Under "Social preview," click **Edit** - To add a new image, click **Upload an image...**. - To remove an image, click **Remove image**
 
     ![Social preview dropdown](/assets/images/help/repository/social-preview.png)

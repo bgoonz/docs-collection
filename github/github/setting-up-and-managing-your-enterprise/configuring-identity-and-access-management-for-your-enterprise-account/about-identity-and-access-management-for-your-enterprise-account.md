@@ -1,15 +1,16 @@
 ---
 title: About identity and access management for your enterprise account
-intro: 'You can centrally manage access to your enterprise''s resources, organization membership, and team membership using your identity provider (IdP).'
-product: '{% data reusables.gated-features.enterprise-accounts %}'
+intro: "You can centrally manage access to your enterprise's resources, organization membership, and team membership using your identity provider (IdP)."
+product: "{% data reusables.gated-features.enterprise-accounts %}"
 versions:
-  fpt: '*'
+  fpt: "*"
 topics:
   - Enterprise
 redirect_from:
   - /github/setting-up-and-managing-your-enterprise/about-identity-and-access-management-for-your-enterprise-account
 shortTitle: IAM for your enterprise
 ---
+
 ## About identity and access management for your enterprise account
 
 {% data reusables.saml.dotcom-saml-explanation %} {% data reusables.saml.about-saml-enterprise-accounts %} For more information, see "[Enforcing SAML single sign-on for organizations in your enterprise account](/github/setting-up-and-managing-your-enterprise/configuring-identity-and-access-management-for-your-enterprise-account/enforcing-saml-single-sign-on-for-organizations-in-your-enterprise-account)."
@@ -22,10 +23,10 @@ If you use Azure AD as your IDP, you can use team synchronization to manage team
 
 We test and officially support the following IdPs. For SAML SSO, we offer limited support for all identity providers that implement the SAML 2.0 standard. For more information, see the [SAML Wiki](https://wiki.oasis-open.org/security) on the OASIS website.
 
-IdP | SAML | User provisioning | Team synchronization | 
---- | :--: | :---------------: | :-------: |
-Active Directory Federation Services (AD FS) | {% octicon "check-circle-fill" aria-label= "The check icon" %} | | |
-Azure Active Directory (Azure AD) | {% octicon "check-circle-fill" aria-label="The check icon" %} | | {% octicon "check-circle-fill" aria-label="The check icon" %} |
-OneLogin | {% octicon "check-circle-fill" aria-label="The check icon" %} | | |
-PingOne | {% octicon "check-circle-fill" aria-label="The check icon" %} | | |
-Shibboleth | {% octicon "check-circle-fill" aria-label="The check icon" %} | | |
+| IdP                                          |                              SAML                              | User provisioning |                     Team synchronization                      |
+| -------------------------------------------- | :------------------------------------------------------------: | :---------------: | :-----------------------------------------------------------: |
+| Active Directory Federation Services (AD FS) | {% octicon "check-circle-fill" aria-label= "The check icon" %} |                   |                                                               |
+| Azure Active Directory (Azure AD)            | {% octicon "check-circle-fill" aria-label="The check icon" %}  |                   | {% octicon "check-circle-fill" aria-label="The check icon" %} |
+| OneLogin                                     | {% octicon "check-circle-fill" aria-label="The check icon" %}  |                   |                                                               |
+| PingOne                                      | {% octicon "check-circle-fill" aria-label="The check icon" %}  |                   |                                                               |
+| Shibboleth                                   | {% octicon "check-circle-fill" aria-label="The check icon" %}  |                   |                                                               |

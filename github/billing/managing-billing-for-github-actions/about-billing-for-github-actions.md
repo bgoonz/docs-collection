@@ -1,18 +1,19 @@
 ---
 title: About billing for GitHub Actions
-intro: 'If you want to use {% data variables.product.prodname_actions %} beyond the storage or minutes included in your account, you will be billed for additional usage.'
-product: '{% data reusables.gated-features.actions %}'
+intro: "If you want to use {% data variables.product.prodname_actions %} beyond the storage or minutes included in your account, you will be billed for additional usage."
+product: "{% data reusables.gated-features.actions %}"
 redirect_from:
   - /github/setting-up-and-managing-billing-and-payments-on-github/about-billing-for-github-actions
   - /github/setting-up-and-managing-billing-and-payments-on-github/managing-billing-for-github-actions/about-billing-for-github-actions
 versions:
-  fpt: '*'
+  fpt: "*"
 type: overview
 topics:
   - Actions
   - Spending limits
 shortTitle: Billing for GitHub Actions
 ---
+
 ## About billing for {% data variables.product.prodname_actions %}
 
 {% data reusables.github-actions.actions-billing %}
@@ -25,27 +26,27 @@ Minutes reset every month, while storage usage does not.
 
 ### Included storage and minutes
 
-|Product | Storage | Minutes (per month)|
-|------- | ------- | ---------|
-| {% data variables.product.prodname_free_user %} | 500 MB | 2,000 |
-| {% data variables.product.prodname_pro %} | 1 GB | 3,000 |
-| {% data variables.product.prodname_free_team %} for organizations | 500 MB | 2,000 |
-| {% data variables.product.prodname_team %} | 2 GB | 3,000 |
-| {% data variables.product.prodname_ghe_cloud %} | 50 GB | 50,000 |
+| Product                                                           | Storage | Minutes (per month) |
+| ----------------------------------------------------------------- | ------- | ------------------- |
+| {% data variables.product.prodname_free_user %}                   | 500 MB  | 2,000               |
+| {% data variables.product.prodname_pro %}                         | 1 GB    | 3,000               |
+| {% data variables.product.prodname_free_team %} for organizations | 500 MB  | 2,000               |
+| {% data variables.product.prodname_team %}                        | 2 GB    | 3,000               |
+| {% data variables.product.prodname_ghe_cloud %}                   | 50 GB   | 50,000              |
 
 Jobs that run on Windows and macOS runners that {% data variables.product.prodname_dotcom %} hosts consume minutes at 2 and 10 times the rate that jobs on Linux runners consume. For example, using 1,000 Windows minutes would consume 2,000 of the minutes included in your account. Using 1,000 macOS minutes, would consume 10,000 minutes included in your account.
 
 ### Minute multipliers
 
 | Operating system | Minute multiplier |
-|------- | ---------|
-| Linux | 1 |
-| macOS| 10 |
-| Windows | 2 |
+| ---------------- | ----------------- |
+| Linux            | 1                 |
+| macOS            | 10                |
+| Windows          | 2                 |
 
-The storage used by a repository is the total storage used by {% data variables.product.prodname_actions %} artifacts and {% data variables.product.prodname_registry %}. Your storage cost is the total usage for all repositories owned by your account. For more information about pricing for  {% data variables.product.prodname_registry %}, see "[About billing for {% data variables.product.prodname_registry %}](/billing/managing-billing-for-github-packages/about-billing-for-github-packages)."
+The storage used by a repository is the total storage used by {% data variables.product.prodname_actions %} artifacts and {% data variables.product.prodname_registry %}. Your storage cost is the total usage for all repositories owned by your account. For more information about pricing for {% data variables.product.prodname_registry %}, see "[About billing for {% data variables.product.prodname_registry %}](/billing/managing-billing-for-github-packages/about-billing-for-github-packages)."
 
- If your account's usage surpasses these limits and you have set a spending limit above $0, you will pay $0.25 USD per GB of storage per month and per-minute usage depending on the operating system used by the {% data variables.product.prodname_dotcom %}-hosted runner. {% data variables.product.prodname_dotcom %} rounds the minutes each job uses up to the nearest minute.
+If your account's usage surpasses these limits and you have set a spending limit above $0, you will pay $0.25 USD per GB of storage per month and per-minute usage depending on the operating system used by the {% data variables.product.prodname_dotcom %}-hosted runner. {% data variables.product.prodname_dotcom %} rounds the minutes each job uses up to the nearest minute.
 
 {% note %}
 
@@ -56,10 +57,10 @@ The storage used by a repository is the total storage used by {% data variables.
 ### Per-minute rates
 
 | Operating system | Per-minute rate |
-|------- | ---------|
-| Linux | $0.008 |
-| macOS | $0.08 |
-| Windows | $0.016 |
+| ---------------- | --------------- |
+| Linux            | $0.008          |
+| macOS            | $0.08           |
+| Windows          | $0.016          |
 
 The number of jobs you can run concurrently across all repositories in your user or organization account depends on your GitHub plan. For more information, see "[Usage limits and billing](/actions/reference/usage-limits-billing-and-administration)" for {% data variables.product.prodname_dotcom %}-hosted runners and "[About self-hosted runners](/actions/hosting-your-own-runners/about-self-hosted-runners/#usage-limits)" for self-hosted runner usage limits.
 

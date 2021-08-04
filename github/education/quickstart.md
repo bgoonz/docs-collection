@@ -1,9 +1,9 @@
 ---
 title: Quickstart for GitHub Educators
-intro: 'In about 15 minutes, teachers can get started with discounts, training, and tools for {% data variables.product.company_short %}, then create a classroom for the students in a software development course using {% data variables.product.prodname_classroom %}.'
+intro: "In about 15 minutes, teachers can get started with discounts, training, and tools for {% data variables.product.company_short %}, then create a classroom for the students in a software development course using {% data variables.product.prodname_classroom %}."
 allowTitleToDifferFromFilename: true
 versions:
-  fpt: '*'
+  fpt: "*"
 shortTitle: Quickstart
 ---
 
@@ -24,14 +24,14 @@ In this guide, you'll get started with {% data variables.product.product_name %}
 First, you'll need to create a free user account on {% data variables.product.product_name %}.
 
 {% data reusables.accounts.create-account %}
+
 1. Follow the prompts to create your free user account.
 
 After you create your user account, create a free organization account. You'll use this organization account to create and manage classrooms {% data variables.product.prodname_classroom %}.
 
 {% data reusables.user_settings.access_settings %}
 {% data reusables.user_settings.organizations %}
-{% data reusables.organizations.new-organization %}
-4. Follow the prompts to create a free organization.
+{% data reusables.organizations.new-organization %} 4. Follow the prompts to create a free organization.
 
 For more information, see "[Types of {% data variables.product.prodname_dotcom %} accounts](/github/getting-started-with-github/types-of-github-accounts)."
 
@@ -58,31 +58,33 @@ Next, you'll sign up for discounts on services from {% data variables.product.co
 With your user account and organization account, you're ready to get started with {% data variables.product.prodname_classroom %}. {% data variables.product.prodname_classroom %} is free to use. You can track and manage assignments, grade work automatically, and provide feedback to your students.
 
 {% data reusables.classroom.sign-into-github-classroom %}
+
 1. To authorize {% data variables.product.prodname_classroom %} to access your user account on {% data variables.product.prodname_dotcom %}, review the information, then click **Authorize {% data variables.product.prodname_classroom %}**.
-  !["Authorize {% data variables.product.prodname_classroom %}" button for user account](/assets/images/help/classroom/setup-click-authorize-github-classroom.png)
+   !["Authorize {% data variables.product.prodname_classroom %}" button for user account](/assets/images/help/classroom/setup-click-authorize-github-classroom.png)
 1. Review the information. To authorize {% data variables.product.prodname_classroom %} to access your organization account on {% data variables.product.prodname_dotcom %}, click **Grant**.
-  !["Grant" button for organization](/assets/images/help/classroom/setup-click-grant.png)
-  
-  {% tip %}
-  
-  **Tip**: If you see a **Request** button instead of a **Grant** button, you are a member of the organization, not an owner. An owner must approve your request for {% data variables.product.prodname_classroom %}. You must be an organization owner to create and manage classrooms and assignments in {% data variables.product.prodname_classroom %}. For more information, see "[Authorizing OAuth Apps](/github/authenticating-to-github/authorizing-oauth-apps#oauth-apps-and-organizations)."
-  
-  {% endtip %}
-  
+   !["Grant" button for organization](/assets/images/help/classroom/setup-click-grant.png)
+
+{% tip %}
+
+**Tip**: If you see a **Request** button instead of a **Grant** button, you are a member of the organization, not an owner. An owner must approve your request for {% data variables.product.prodname_classroom %}. You must be an organization owner to create and manage classrooms and assignments in {% data variables.product.prodname_classroom %}. For more information, see "[Authorizing OAuth Apps](/github/authenticating-to-github/authorizing-oauth-apps#oauth-apps-and-organizations)."
+
+{% endtip %}
+
 1. Click **Authorize github**.
-  ![Click "Authorize" button for organization](/assets/images/help/classroom/setup-click-authorize-github.png)
+   ![Click "Authorize" button for organization](/assets/images/help/classroom/setup-click-authorize-github.png)
 
 ## Create your classroom
 
 {% data reusables.classroom.about-classrooms %}
 
 {% data reusables.classroom.sign-into-github-classroom %}
+
 1. Click **Create your first classroom** or **New classroom**.
-{% data reusables.classroom.guide-create-new-classroom %}
+   {% data reusables.classroom.guide-create-new-classroom %}
 
 ## Next steps
 
-You've created a classroom, and you're ready to enrich your course with {% data variables.product.product_name %} and {% data variables.product.prodname_classroom %}!  🎉
+You've created a classroom, and you're ready to enrich your course with {% data variables.product.product_name %} and {% data variables.product.prodname_classroom %}! 🎉
 
 - Watch some videos about {% data variables.product.prodname_classroom %}. For more information, see "[Basics of setting up {% data variables.product.prodname_classroom %}](/education/manage-coursework-with-github-classroom/basics-of-setting-up-github-classroom)."
 - Manage your classrooms and classroom admins, and create a roster of students for your classroom. For more information, see "[Manage classrooms](/education/manage-coursework-with-github-classroom/manage-classrooms)."

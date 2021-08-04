@@ -1,6 +1,6 @@
 ---
 title: Adding information to your receipts
-intro: 'You can add extra information to your {% data variables.product.product_name %} receipts, such as tax or accounting information required by your company or country.'
+intro: "You can add extra information to your {% data variables.product.product_name %} receipts, such as tax or accounting information required by your company or country."
 redirect_from:
   - /github/setting-up-and-managing-billing-and-payments-on-github/adding-information-to-your-receipts
   - /articles/can-i-add-my-credit-card-number-to-my-receipts/
@@ -14,7 +14,7 @@ redirect_from:
   - /articles/adding-information-to-your-receipts
   - /github/setting-up-and-managing-billing-and-payments-on-github/managing-your-github-billing-settings/adding-information-to-your-receipts
 versions:
-  fpt: '*'
+  fpt: "*"
 type: how_to
 topics:
   - Organizations
@@ -22,6 +22,7 @@ topics:
   - User account
 shortTitle: Add to your receipts
 ---
+
 Your receipts include your {% data variables.product.prodname_dotcom %} subscription as well as any subscriptions for [other paid features and products](/articles/about-billing-on-github).
 
 {% warning %}
@@ -44,7 +45,6 @@ Your receipts include your {% data variables.product.prodname_dotcom %} subscrip
 **Note**: {% data reusables.dotcom_billing.org-billing-perms %}
 
 {% endnote %}
-
 
 {% data reusables.organizations.billing-settings %}
 {% data reusables.user_settings.payment-info-link %}

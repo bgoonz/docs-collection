@@ -1,16 +1,17 @@
 ---
 title: Disabling or limiting GitHub Actions for a repository
-intro: 'Repository owners can disable, enable, and limit {% data variables.product.prodname_actions %} for a specific repository.'
+intro: "Repository owners can disable, enable, and limit {% data variables.product.prodname_actions %} for a specific repository."
 versions:
-  fpt: '*'
-  ghes: '>=2.22'
-  ghae: '*'
+  fpt: "*"
+  ghes: ">=2.22"
+  ghae: "*"
 topics:
   - Repositories
 redirect_from:
   - /github/administering-a-repository/disabling-or-limiting-github-actions-for-a-repository
 shortTitle: GitHub Actions
 ---
+
 {% data reusables.actions.enterprise-beta %}
 {% data reusables.actions.enterprise-github-hosted-runners %}
 
@@ -34,9 +35,8 @@ Alternatively, you can enable {% data variables.product.prodname_actions %} in y
 
 {% data reusables.repositories.navigate-to-repo %}
 {% data reusables.repositories.sidebar-settings %}
-{% data reusables.repositories.settings-sidebar-actions %}
-4. Under "Actions permissions", select an option.
-  ![Enable, disable, or limits actions for this repository](/assets/images/help/repository/enable-repo-actions.png)
+{% data reusables.repositories.settings-sidebar-actions %} 4. Under "Actions permissions", select an option.
+![Enable, disable, or limits actions for this repository](/assets/images/help/repository/enable-repo-actions.png)
 
 {% endif %}
 
@@ -59,8 +59,9 @@ You can disable all workflows for a repository or set a policy that configures w
 {% data reusables.repositories.navigate-to-repo %}
 {% data reusables.repositories.sidebar-settings %}
 {% data reusables.repositories.settings-sidebar-actions %}
+
 1. Under **Actions permissions**, select an option.
-  ![Set actions policy for this organization](/assets/images/help/repository/actions-policy.png)
+   ![Set actions policy for this organization](/assets/images/help/repository/actions-policy.png)
 1. Click **Save**.
 
 ## Allowing specific actions to run
@@ -70,12 +71,14 @@ You can disable all workflows for a repository or set a policy that configures w
 {% data reusables.repositories.navigate-to-repo %}
 {% data reusables.repositories.sidebar-settings %}
 {% data reusables.repositories.settings-sidebar-actions %}
+
 1. Under **Actions permissions**, select **Allow select actions** and add your required actions to the list.
-  ![Add actions to allow list](/assets/images/help/repository/actions-policy-allow-list.png)
+   ![Add actions to allow list](/assets/images/help/repository/actions-policy-allow-list.png)
 2. Click **Save**.
-{% endif %}
+   {% endif %}
 
 {% ifversion fpt %}
+
 ## Configuring required approval for workflows from public forks
 
 {% data reusables.actions.workflow-run-approve-public-fork %} You can configure this behavior for a repository using the procedure below. Modifying this setting overrides the configuration set at the organization or enterprise level.
@@ -89,6 +92,7 @@ You can disable all workflows for a repository or set a policy that configures w
 {% endif %}
 
 {% ifversion fpt or ghes > 2.22 %}
+
 ## Enabling workflows for private repository forks
 
 {% data reusables.github-actions.private-repository-forks-overview %}
@@ -102,6 +106,7 @@ You can disable all workflows for a repository or set a policy that configures w
 {% endif %}
 
 {% ifversion fpt or ghes > 3.1 or ghae-next %}
+
 ## Setting the permissions of the `GITHUB_TOKEN` for your repository
 
 {% data reusables.github-actions.workflow-permissions-intro %}
@@ -115,7 +120,8 @@ The default permissions can also be configured in the organization settings. If 
 {% data reusables.repositories.navigate-to-repo %}
 {% data reusables.repositories.sidebar-settings %}
 {% data reusables.repositories.settings-sidebar-actions %}
+
 1. Under **Workflow permissions**, choose whether you want the `GITHUB_TOKEN` to have read and write access for all scopes, or just read access for the `contents` scope.
-  ![Set GITHUB_TOKEN permissions for this repository](/assets/images/help/settings/actions-workflow-permissions-repository.png)
+   ![Set GITHUB_TOKEN permissions for this repository](/assets/images/help/settings/actions-workflow-permissions-repository.png)
 1. Click **Save** to apply the settings.
-{% endif %}
+   {% endif %}

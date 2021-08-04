@@ -5,12 +5,13 @@ redirect_from:
   - /articles/about-repositories
   - /github/creating-cloning-and-archiving-repositories/about-repositories
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Repositories
 ---
+
 You can own repositories individually, or you can share ownership of repositories with other people in an organization.
 
 You can restrict who has access to a repository by choosing the repository's visibility. For more information, see "[About repository visibility](/github/creating-cloning-and-archiving-repositories/about-repository-visibility)."
@@ -24,6 +25,7 @@ Each person and organization can own unlimited repositories and invite an unlimi
 {% endif %}
 
 You can use repositories to manage your work and collaborate with others.
+
 - You can use issues to collect user feedback, report software bugs, and organize tasks you'd like to accomplish. For more information, see "[About issues](/github/managing-your-work-on-github/about-issues)."{% ifversion fpt %}
 - {% data reusables.discussions.you-can-use-discussions %}{% endif %}
 - You can use pull requests to propose changes to a repository. For more information, see "[About pull requests](/github/collaborating-with-issues-and-pull-requests/about-pull-requests)."

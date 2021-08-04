@@ -1,8 +1,8 @@
 ---
 title: About community management and moderation
-intro: '{% data variables.product.prodname_dotcom %} offers tools that help repository maintainers establish and enforce standards of behavior in their communities on {% data variables.product.prodname_dotcom_the_website %}.'
+intro: "{% data variables.product.prodname_dotcom %} offers tools that help repository maintainers establish and enforce standards of behavior in their communities on {% data variables.product.prodname_dotcom_the_website %}."
 versions:
-  fpt: '*'
+  fpt: "*"
 redirect_from:
   - /github/building-a-strong-community/about-community-management-and-moderation
 topics:

@@ -1,14 +1,15 @@
 ---
 title: Connecting an Azure subscription to your enterprise
-intro: 'You can use your Microsoft Enterprise Agreement to enable and pay for {% data variables.product.prodname_actions %} and {% data variables.product.prodname_registry %} usage beyond the included amounts for your enterprise.'
-product: '{% data reusables.gated-features.enterprise-accounts %}'
+intro: "You can use your Microsoft Enterprise Agreement to enable and pay for {% data variables.product.prodname_actions %} and {% data variables.product.prodname_registry %} usage beyond the included amounts for your enterprise."
+product: "{% data reusables.gated-features.enterprise-accounts %}"
 redirect_from:
   - /github/setting-up-and-managing-billing-and-payments-on-github/connecting-an-azure-subscription-to-your-enterprise
   - /github/setting-up-and-managing-your-enterprise/connecting-an-azure-subscription-to-your-enterprise
 versions:
-  fpt: '*'
+  fpt: "*"
 shortTitle: Connect an Azure subscription
 ---
+
 ## About Azure subscriptions and {% data variables.product.product_name %}
 
 {% data reusables.enterprise-accounts.billing-microsoft-ea-overview %} For more information, see "[About billing for {% data variables.product.prodname_actions %}](/billing/managing-billing-for-github-actions/about-billing-for-github-actions) and "[About billing for {% data variables.product.prodname_registry %}](/billing/managing-billing-for-github-packages/about-billing-for-github-packages)."
@@ -23,6 +24,7 @@ To connect your Azure subscription, you must have owner permissions to the subsc
 {% data reusables.enterprise-accounts.settings-tab %}
 {% data reusables.enterprise-accounts.billing-tab %}
 {% data reusables.enterprise-accounts.payment-information-tab %}
+
 1. Under "Payment Information", click **Add Azure Subscription**.
 1. To sign in to your Microsoft account, follow the prompts.
 1. Review the "Permissions requested" prompt. If you agree with the terms, click **Accept**.
@@ -37,5 +39,6 @@ After you disconnect your Azure subscription from your enterprise account, your 
 {% data reusables.enterprise-accounts.settings-tab %}
 {% data reusables.enterprise-accounts.billing-tab %}
 {% data reusables.enterprise-accounts.payment-information-tab %}
+
 1. Under "Azure subscription", to the right of the subscription ID you want to disconnect, click **{% octicon "trash" aria-label="The trash icon" %}**.
 1. Review the prompt, then click **Remove**.

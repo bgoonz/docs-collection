@@ -7,20 +7,22 @@ redirect_from:
   - /articles/upgrading-or-downgrading-your-clients-paid-organization
   - /github/setting-up-and-managing-billing-and-payments-on-github/setting-up-paid-organizations-for-procurement-companies/upgrading-or-downgrading-your-clients-paid-organization
 versions:
-  fpt: '*'
+  fpt: "*"
 type: how_to
 topics:
   - Organizations
   - Upgrades
 shortTitle: Upgrade or downgrade
 ---
+
 {% data reusables.organizations.reseller-ask-to-become-billing-manager %}
 
 {% tip %}
 
 **Tips**:
+
 - Before you upgrade your client's organization, you can [view or update the payment method on file for the organization](/articles/adding-or-editing-a-payment-method).
-- These instructions are for upgrading and downgrading organizations on the *per-seat subscription*. If your client pays for {% data variables.product.product_name %} using a *legacy per-repository* plan, you can upgrade or [downgrade](/articles/downgrading-your-github-subscription) their legacy plan, or [switch their organization to per-seat pricing](/articles/upgrading-your-github-subscription).
+- These instructions are for upgrading and downgrading organizations on the _per-seat subscription_. If your client pays for {% data variables.product.product_name %} using a _legacy per-repository_ plan, you can upgrade or [downgrade](/articles/downgrading-your-github-subscription) their legacy plan, or [switch their organization to per-seat pricing](/articles/upgrading-your-github-subscription).
 
 {% endtip %}
 

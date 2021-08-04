@@ -1,12 +1,12 @@
 ---
 title: About licensing for GitHub Advanced Security
-intro: 'If you want to use {% data variables.product.prodname_GH_advanced_security %} features in a private or internal repository, you need a license. These features are available free of charge for public repositories.'
-product: '{% data reusables.gated-features.ghas %}'
+intro: "If you want to use {% data variables.product.prodname_GH_advanced_security %} features in a private or internal repository, you need a license. These features are available free of charge for public repositories."
+product: "{% data reusables.gated-features.ghas %}"
 redirect_from:
   - /github/setting-up-and-managing-billing-and-payments-on-github/about-licensing-for-github-advanced-security
   - /github/setting-up-and-managing-billing-and-payments-on-github/managing-licensing-for-github-advanced-security/about-licensing-for-github-advanced-security
 versions:
-  fpt: '*'
+  fpt: "*"
 type: overview
 topics:
   - Advanced Security
@@ -14,13 +14,14 @@ topics:
   - Licensing
 shortTitle: About licensing
 ---
+
 ## About licensing for {% data variables.product.prodname_GH_advanced_security %}
 
 If you want to use {% data variables.product.prodname_GH_advanced_security %} features on any repository apart from a public repository on {% data variables.product.prodname_dotcom_the_website %}, you will need a license. For more information about {% data variables.product.prodname_GH_advanced_security %}, see "[About {% data variables.product.prodname_GH_advanced_security %}](/github/getting-started-with-github/about-github-advanced-security)."
 
 {% data reusables.advanced-security.license-overview %}
 
-{% data reusables.dotcom_billing.pricing_cal %} 
+{% data reusables.dotcom_billing.pricing_cal %}
 
 To discuss licensing {% data variables.product.prodname_GH_advanced_security %} for your enterprise account, contact {% data variables.contact.contact_enterprise_sales %}.
 

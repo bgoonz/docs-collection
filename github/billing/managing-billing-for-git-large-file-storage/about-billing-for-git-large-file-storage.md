@@ -1,18 +1,19 @@
 ---
 title: About billing for Git Large File Storage
-intro: 'If you purchase additional storage and bandwidth for {% data variables.large_files.product_name_long %}, your purchase shares your account''s existing billing date, payment method, and receipt.'
+intro: "If you purchase additional storage and bandwidth for {% data variables.large_files.product_name_long %}, your purchase shares your account's existing billing date, payment method, and receipt."
 redirect_from:
   - /github/setting-up-and-managing-billing-and-payments-on-github/about-billing-for-git-large-file-storage
   - /articles/about-billing-for-git-large-file-storage
   - /github/setting-up-and-managing-billing-and-payments-on-github/managing-billing-for-git-large-file-storage/about-billing-for-git-large-file-storage
 versions:
-  fpt: '*'
+  fpt: "*"
 type: overview
 topics:
   - LFS
   - Upgrades
 shortTitle: About Git LFS billing
 ---
+
 ## About billing for {% data variables.large_files.product_name_long %}
 
 {% data reusables.large_files.free-storage-bandwidth-amount %} {% data reusables.large_files.does_not_carry %}

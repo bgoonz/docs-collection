@@ -6,7 +6,7 @@ redirect_from:
   - /github/managing-security-vulnerabilities/publishing-a-maintainer-security-advisory
   - /github/managing-security-vulnerabilities/publishing-a-security-advisory
 versions:
-  fpt: '*'
+  fpt: "*"
 type: how_to
 topics:
   - Security advisories
@@ -15,6 +15,7 @@ topics:
   - Repositories
 shortTitle: Publish advisories
 ---
+
 <!--Marketing-LINK: From /features/security/software-supply-chain page "Publishing a security advisory".-->
 
 Anyone with admin permissions to a security advisory can publish the security advisory.
@@ -49,14 +50,14 @@ When you publish a draft advisory from a public repository, everyone is able to 
 
 - The current version of the advisory data.
 - Any advisory credits that the credited users have accepted.
-  
+
 {% note %}
 
 **Note**: The general public will never have access to the edit history of the advisory, and will only see the published version.
 
 {% endnote %}
 
-After you publish a security advisory, the URL for the security advisory will remain the same as before you published the security advisory. Anyone with read access to the repository can see the security advisory. Collaborators on the security advisory can continue to view past conversations, including the full comment stream, in the security advisory unless someone with admin permissions removes the collaborator from the security advisory. 
+After you publish a security advisory, the URL for the security advisory will remain the same as before you published the security advisory. Anyone with read access to the repository can see the security advisory. Collaborators on the security advisory can continue to view past conversations, including the full comment stream, in the security advisory unless someone with admin permissions removes the collaborator from the security advisory.
 
 If you need to update or correct information in a security advisory that you've published, you can edit the security advisory. For more information, see "[Editing a security advisory](/github/managing-security-vulnerabilities/editing-a-security-advisory)."
 
@@ -68,13 +69,10 @@ Anyone with admin permissions to a security advisory can request a CVE identific
 
 {% data reusables.repositories.navigate-to-repo %}
 {% data reusables.repositories.sidebar-security %}
-{% data reusables.repositories.sidebar-advisories %}
-4. In the "Security Advisories" list, click the security advisory you'd like to request a CVE identification number for.
-  ![Security advisory in list](/assets/images/help/security/security-advisory-in-list.png)
-5. Use the **Publish advisory** drop-down menu, and click **Request CVE**.
-  ![Request CVE in drop-down](/assets/images/help/security/security-advisory-drop-down-request-cve.png)
-6. Click **Request CVE**.
-  ![Request CVE button](/assets/images/help/security/security-advisory-request-cve-button.png)
+{% data reusables.repositories.sidebar-advisories %} 4. In the "Security Advisories" list, click the security advisory you'd like to request a CVE identification number for.
+![Security advisory in list](/assets/images/help/security/security-advisory-in-list.png) 5. Use the **Publish advisory** drop-down menu, and click **Request CVE**.
+![Request CVE in drop-down](/assets/images/help/security/security-advisory-drop-down-request-cve.png) 6. Click **Request CVE**.
+![Request CVE button](/assets/images/help/security/security-advisory-request-cve-button.png)
 
 ## Publishing a security advisory
 
@@ -82,12 +80,10 @@ Publishing a security advisory deletes the temporary private fork for the securi
 
 {% data reusables.repositories.navigate-to-repo %}
 {% data reusables.repositories.sidebar-security %}
-{% data reusables.repositories.sidebar-advisories %}
-4. In the "Security Advisories" list, click the security advisory you'd like to publish.
-  ![Security advisory in list](/assets/images/help/security/security-advisory-in-list.png)
-5. At the bottom of the page, click **Publish advisory**.
-  ![Publish advisory button](/assets/images/help/security/publish-advisory-button.png)
-  
+{% data reusables.repositories.sidebar-advisories %} 4. In the "Security Advisories" list, click the security advisory you'd like to publish.
+![Security advisory in list](/assets/images/help/security/security-advisory-in-list.png) 5. At the bottom of the page, click **Publish advisory**.
+![Publish advisory button](/assets/images/help/security/publish-advisory-button.png)
+
 ## {% data variables.product.prodname_dependabot_alerts %} for published security advisories
 
 {% data reusables.repositories.github-reviews-security-advisories %}

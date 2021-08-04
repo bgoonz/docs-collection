@@ -1,6 +1,6 @@
 ---
 title: About searching on GitHub
-intro: 'Our integrated search covers the many repositories, users, and lines of code on {% data variables.product.product_name %}.'
+intro: "Our integrated search covers the many repositories, users, and lines of code on {% data variables.product.product_name %}."
 redirect_from:
   - /articles/using-the-command-bar/
   - /articles/github-search-basics/
@@ -10,12 +10,13 @@ redirect_from:
   - /articles/about-searching-on-github
   - /github/searching-for-information-on-github/about-searching-on-github
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - GitHub search
 ---
+
 {% data reusables.search.you-can-search-globally %}
 
 - To search globally across all of {% data variables.product.product_name %}, type what you're looking for into the search field at the top of any page, and choose "All {% data variables.product.prodname_dotcom %}" in the search drop-down menu.
@@ -26,6 +27,7 @@ topics:
 **Notes:**
 
 {% ifversion fpt or ghes %}
+
 - {% data reusables.search.required_login %}{% endif %}
 - {% data variables.product.prodname_pages %} sites are not searchable on {% data variables.product.product_name %}. However you can search the source content if it exists in the default branch of a repository, using code search. For more information, see "[Searching code](/articles/searching-code)." For more information about {% data variables.product.prodname_pages %}, see "[What is GitHub Pages?](/articles/what-is-github-pages/)"
 - Currently our search doesn't support exact matching.
@@ -60,6 +62,7 @@ The {% data variables.search.advanced_url %} provides a visual interface for con
 ![Advanced Search](/assets/images/help/search/advanced_search_demo.gif)
 
 {% ifversion not ghae %}
+
 ## Searching across {% data variables.product.prodname_enterprise %} and {% data variables.product.prodname_dotcom_the_website %} simultaneously
 
 If you use {% data variables.product.prodname_enterprise %} and you're a member of a {% data variables.product.prodname_dotcom_the_website %} organization using {% data variables.product.prodname_ghe_cloud %}, your {% data variables.product.prodname_enterprise %} site administrator can enable {% data variables.product.prodname_github_connect %} so that you can search across both environments at the same time. For more information, see "[Enabling {% data variables.product.prodname_unified_search %} between {% data variables.product.prodname_enterprise %} and {% data variables.product.prodname_dotcom_the_website %}](/enterprise/admin/guides/developer-workflow/enabling-unified-search-between-github-enterprise-server-and-github-com)."

@@ -5,8 +5,8 @@ redirect_from:
   - /github/visualizing-repository-data-with-graphs/about-the-dependency-graph
   - /code-security/supply-chain-security/about-the-dependency-graph
 versions:
-  fpt: '*'
-  ghes: '>=3.0'
+  fpt: "*"
+  ghes: ">=3.0"
 type: overview
 topics:
   - Dependency graph
@@ -14,6 +14,7 @@ topics:
   - Repositories
 shortTitle: Dependency graph
 ---
+
 <!--For this article in earlier GHES versions, see /content/github/visualizing-repository-data-with-graphs-->
 <!--Marketing-LINK: From /features/security and /features/security/software-supply-chain pages "How GitHub's dependency graph is generated".-->
 
@@ -46,6 +47,7 @@ The dependency graph includes all the dependencies of a repository that are deta
 The dependency graph identifies indirect dependencies{% ifversion fpt %} either explicitly from a lock file or by checking the dependencies of your direct dependencies. For the most reliable graph, you should use lock files (or their equivalent) because they define exactly which versions of the direct and indirect dependencies you currently use. If you use lock files, you also ensure that all contributors to the repository are using the same versions, which will make it easier for you to test and debug code{% else %} from the lock files{% endif %}.
 
 {% ifversion fpt %}
+
 ## Dependents included
 
 For public repositories, only public repositories that depend on it or on packages that it publishes are reported. This information is not reported for private repositories.{% endif %}
@@ -71,16 +73,16 @@ When the dependency graph is first enabled, any manifest and lock files for supp
 
 The recommended formats explicitly define which versions are used for all direct and all indirect dependencies. If you use these formats, your dependency graph is more accurate. It also reflects the current build set up and enables the dependency graph to report vulnerabilities in both direct and indirect dependencies.{% ifversion fpt %} Indirect dependencies that are inferred from a manifest file (or equivalent) are excluded from the checks for vulnerable dependencies.{% endif %}
 
-| Package manager | Languages | Recommended formats | All supported formats |
-| --- | --- | --- | ---|
-| Composer             | PHP           | `composer.lock` | `composer.json`, `composer.lock` |
-| `dotnet` CLI | .NET languages (C#, C++, F#, VB)  |   `.csproj`, `.vbproj`, `.nuspec`, `.vcxproj`, `.fsproj` |  `.csproj`, `.vbproj`, `.nuspec`, `.vcxproj`, `.fsproj`, `packages.config` |{% ifversion fpt or ghes > 3.1 %}
-| Go modules | Go | `go.mod` | `go.mod` |
-{% endif %}| Maven | Java, Scala |  `pom.xml`  | `pom.xml`  |
-| npm | JavaScript |            `package-lock.json` | `package-lock.json`, `package.json`|
-| Python PIP      | Python                    | `requirements.txt`, `pipfile.lock` | `requirements.txt`, `pipfile`, `pipfile.lock`, `setup.py`* |
-| RubyGems             | Ruby           | `Gemfile.lock` | `Gemfile.lock`, `Gemfile`, `*.gemspec` |
-| Yarn | JavaScript | `yarn.lock` | `package.json`, `yarn.lock` |
+| Package manager | Languages                        | Recommended formats                                    | All supported formats                                                     |
+| --------------- | -------------------------------- | ------------------------------------------------------ | ------------------------------------------------------------------------- | --------------------------------- |
+| Composer        | PHP                              | `composer.lock`                                        | `composer.json`, `composer.lock`                                          |
+| `dotnet` CLI    | .NET languages (C#, C++, F#, VB) | `.csproj`, `.vbproj`, `.nuspec`, `.vcxproj`, `.fsproj` | `.csproj`, `.vbproj`, `.nuspec`, `.vcxproj`, `.fsproj`, `packages.config` | {% ifversion fpt or ghes > 3.1 %} |
+| Go modules      | Go                               | `go.mod`                                               | `go.mod`                                                                  |
+| {% endif %}     | Maven                            | Java, Scala                                            | `pom.xml`                                                                 | `pom.xml`                         |
+| npm             | JavaScript                       | `package-lock.json`                                    | `package-lock.json`, `package.json`                                       |
+| Python PIP      | Python                           | `requirements.txt`, `pipfile.lock`                     | `requirements.txt`, `pipfile`, `pipfile.lock`, `setup.py`\*               |
+| RubyGems        | Ruby                             | `Gemfile.lock`                                         | `Gemfile.lock`, `Gemfile`, `*.gemspec`                                    |
+| Yarn            | JavaScript                       | `yarn.lock`                                            | `package.json`, `yarn.lock`                                               |
 
 {% note %}
 

@@ -1,6 +1,6 @@
 ---
 title: Selling your app on GitHub Marketplace
-intro: 'Learn about requirements and best practices for selling your app on {% data variables.product.prodname_marketplace %}.'
+intro: "Learn about requirements and best practices for selling your app on {% data variables.product.prodname_marketplace %}."
 redirect_from:
   - /apps/marketplace/administering-listing-plans-and-user-accounts/
   - /apps/adding-integrations/managing-pricing-and-payments-for-a-github-marketplace-listing/
@@ -9,7 +9,7 @@ redirect_from:
   - /apps/marketplace/selling-your-app/
   - /marketplace/selling-your-app
 versions:
-  fpt: '*'
+  fpt: "*"
 topics:
   - Marketplace
 children:
@@ -18,4 +18,3 @@ children:
   - /receiving-payment-for-app-purchases
 shortTitle: Sell apps on the Marketplace
 ---
-

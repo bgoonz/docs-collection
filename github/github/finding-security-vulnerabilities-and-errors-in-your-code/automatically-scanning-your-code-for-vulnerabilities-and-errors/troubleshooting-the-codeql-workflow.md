@@ -1,15 +1,16 @@
 ---
 title: Troubleshooting the CodeQL workflow
 shortTitle: Troubleshooting CodeQL
-intro: 'If you''re having problems with {% data variables.product.prodname_code_scanning %}, you can troubleshoot by using these tips for resolving issues.'
-product: '{% data reusables.gated-features.code-scanning %}'
+intro: "If you're having problems with {% data variables.product.prodname_code_scanning %}, you can troubleshoot by using these tips for resolving issues."
+product: "{% data reusables.gated-features.code-scanning %}"
 versions:
-  ghes: '2.22'
+  ghes: "2.22"
 topics:
   - Security
 redirect_from:
   - /github/finding-security-vulnerabilities-and-errors-in-your-code/troubleshooting-the-codeql-workflow
 ---
+
 <!--See /content/code-security/secure-coding for the latest version of this article -->
 
 {% data reusables.code-scanning.beta %}
@@ -23,9 +24,9 @@ To produce more detailed logging output, you can enable step debug logging. For 
 
 If an automatic build of code for a compiled language within your project fails, try the following troubleshooting steps.
 
-- Remove the `autobuild` step from your {% data variables.product.prodname_code_scanning %} workflow and add specific build steps. For information about editing the workflow, see  "[Configuring {% data variables.product.prodname_code_scanning %}](/github/finding-security-vulnerabilities-and-errors-in-your-code/configuring-code-scanning#editing-a-code-scanning-workflow)." For more information about replacing the `autobuild` step, see "[Configuring the {% data variables.product.prodname_codeql %} workflow for compiled languages](/github/finding-security-vulnerabilities-and-errors-in-your-code/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)."
+- Remove the `autobuild` step from your {% data variables.product.prodname_code_scanning %} workflow and add specific build steps. For information about editing the workflow, see "[Configuring {% data variables.product.prodname_code_scanning %}](/github/finding-security-vulnerabilities-and-errors-in-your-code/configuring-code-scanning#editing-a-code-scanning-workflow)." For more information about replacing the `autobuild` step, see "[Configuring the {% data variables.product.prodname_codeql %} workflow for compiled languages](/github/finding-security-vulnerabilities-and-errors-in-your-code/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)."
 
-- If your workflow doesn't explicitly specify the languages to analyze, {% data variables.product.prodname_codeql %} implicitly detects the supported languages in your code base. In this configuration, out of the compiled languages C/C++, C#, and Java, {% data variables.product.prodname_codeql %} only analyzes the language with the most source files. Edit the workflow and add a build matrix specifying the languages you want to analyze. The default CodeQL analysis workflow uses such a matrix. 
+- If your workflow doesn't explicitly specify the languages to analyze, {% data variables.product.prodname_codeql %} implicitly detects the supported languages in your code base. In this configuration, out of the compiled languages C/C++, C#, and Java, {% data variables.product.prodname_codeql %} only analyzes the language with the most source files. Edit the workflow and add a build matrix specifying the languages you want to analyze. The default CodeQL analysis workflow uses such a matrix.
 
   The following extracts from a workflow show how you can use a matrix within the job strategy to specify languages, and then reference each language within the "Initialize {% data variables.product.prodname_codeql %}" step:
 
@@ -45,7 +46,7 @@ If an automatic build of code for a compiled language within your project fails,
         with:
           languages: {% raw %}${{ matrix.language }}{% endraw %}
   ```
-   
+
   For more information about editing the workflow, see "[Configuring code scanning](/github/finding-security-vulnerabilities-and-errors-in-your-code/configuring-code-scanning)."
 
 ## No code found during the build
@@ -54,37 +55,39 @@ If your workflow fails with an error `No source code was seen during the build` 
 
 1. Automatic language detection identified a supported language, but there is no analyzable code of that language in the repository. A typical example is when our language detection service finds a file associated with a particular programming language like a `.h`, or `.gyp` file, but no corresponding executable code is present in the repository. To solve the problem, you can manually define the languages you want to analyze by updating the list of languages in the `language` matrix. For example, the following configuration will analyze only Go, and JavaScript.
 
-  ```yaml
-  strategy:
-    fail-fast: false
-    matrix:
-      # Override automatic language detection by changing the list below
-      # Supported options are:
-      # ['csharp', 'cpp', 'go', 'java', 'javascript', 'python']
-      language: ['go', 'javascript']
-  ```
+```yaml
+strategy:
+  fail-fast: false
+  matrix:
+    # Override automatic language detection by changing the list below
+    # Supported options are:
+    # ['csharp', 'cpp', 'go', 'java', 'javascript', 'python']
+    language: ["go", "javascript"]
+```
+
 For more information, see the workflow extract in "[Automatic build for a compiled language fails](#automatic-build-for-a-compiled-language-fails)" above.
-1. Your {% data variables.product.prodname_code_scanning %} workflow is analyzing a compiled language (C, C++, C#, or Java), but the code was not compiled. By default, the {% data variables.product.prodname_codeql %} analysis workflow contains an `autobuild` step, however, this step represents a best effort process, and may not succeed in building your code, depending on your specific build environment. Compilation may also fail if you have removed the `autobuild` step and did not include build steps manually.  For more information about specifying build steps, see "[Configuring the {% data variables.product.prodname_codeql %} workflow for compiled languages](/github/finding-security-vulnerabilities-and-errors-in-your-code/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)."
-1. Your workflow is analyzing a compiled language (C, C++, C#, or Java), but portions of your build are cached to improve performance (most likely to occur with build systems like Gradle or Bazel). Since {% data variables.product.prodname_codeql %} observes the activity of the compiler to understand the data flows in a repository, {% data variables.product.prodname_codeql %} requires a complete build to take place in order to perform analysis. 
-1. Your workflow is analyzing a compiled language (C, C++, C#, or Java), but compilation does not occur between the `init` and `analyze` steps in the workflow. {% data variables.product.prodname_codeql %} requires that your build happens in between these two steps in order to observe the activity of the compiler and perform analysis. 
+
+1. Your {% data variables.product.prodname_code_scanning %} workflow is analyzing a compiled language (C, C++, C#, or Java), but the code was not compiled. By default, the {% data variables.product.prodname_codeql %} analysis workflow contains an `autobuild` step, however, this step represents a best effort process, and may not succeed in building your code, depending on your specific build environment. Compilation may also fail if you have removed the `autobuild` step and did not include build steps manually. For more information about specifying build steps, see "[Configuring the {% data variables.product.prodname_codeql %} workflow for compiled languages](/github/finding-security-vulnerabilities-and-errors-in-your-code/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)."
+1. Your workflow is analyzing a compiled language (C, C++, C#, or Java), but portions of your build are cached to improve performance (most likely to occur with build systems like Gradle or Bazel). Since {% data variables.product.prodname_codeql %} observes the activity of the compiler to understand the data flows in a repository, {% data variables.product.prodname_codeql %} requires a complete build to take place in order to perform analysis.
+1. Your workflow is analyzing a compiled language (C, C++, C#, or Java), but compilation does not occur between the `init` and `analyze` steps in the workflow. {% data variables.product.prodname_codeql %} requires that your build happens in between these two steps in order to observe the activity of the compiler and perform analysis.
 1. Your compiled code (in C, C++, C#, or Java) was compiled successfully, but {% data variables.product.prodname_codeql %} was unable to detect the compiler invocations. The most common causes are:
 
-   * Running your build process in a separate container to {% data variables.product.prodname_codeql %}. For more information, see "[Running CodeQL code scanning in a container](/github/finding-security-vulnerabilities-and-errors-in-your-code/running-codeql-code-scanning-in-a-container)."
-   * Building using a distributed build system external to GitHub Actions, using a daemon process.
-   * {% data variables.product.prodname_codeql %} isn't aware of the specific compiler you are using.
+   - Running your build process in a separate container to {% data variables.product.prodname_codeql %}. For more information, see "[Running CodeQL code scanning in a container](/github/finding-security-vulnerabilities-and-errors-in-your-code/running-codeql-code-scanning-in-a-container)."
+   - Building using a distributed build system external to GitHub Actions, using a daemon process.
+   - {% data variables.product.prodname_codeql %} isn't aware of the specific compiler you are using.
 
-  For .NET Framework projects, and for C# projects using either `dotnet build` or `msbuild` that target .NET Core 2, you should specify `/p:UseSharedCompilation=false` in your workflow's `run` step, when you build your code. The `UseSharedCompilation` flag isn't necessary for .NET Core 3.0 and later.
-  
-  For example, the following configuration for C# will pass the flag during the first build step.
+For .NET Framework projects, and for C# projects using either `dotnet build` or `msbuild` that target .NET Core 2, you should specify `/p:UseSharedCompilation=false` in your workflow's `run` step, when you build your code. The `UseSharedCompilation` flag isn't necessary for .NET Core 3.0 and later.
 
-   ``` yaml
-   - run: |
-       dotnet build /p:UseSharedCompilation=false 
-   ```
+For example, the following configuration for C# will pass the flag during the first build step.
 
-  If you encounter another problem with your specific compiler or configuration, contact {% data variables.contact.contact_support %}.
+```yaml
+- run: |
+    dotnet build /p:UseSharedCompilation=false
+```
 
-For more information about specifying build steps, see "[Configuring the {% data variables.product.prodname_codeql %} workflow for compiled languages](/github/finding-security-vulnerabilities-and-errors-in-your-code/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)." 
+If you encounter another problem with your specific compiler or configuration, contact {% data variables.contact.contact_support %}.
+
+For more information about specifying build steps, see "[Configuring the {% data variables.product.prodname_codeql %} workflow for compiled languages](/github/finding-security-vulnerabilities-and-errors-in-your-code/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language)."
 
 ## Portions of my repository were not analyzed using `autobuild`
 
@@ -92,7 +95,7 @@ The {% data variables.product.prodname_codeql %} `autobuild` feature uses heuris
 
 ## The build takes too long
 
-If your build with {% data variables.product.prodname_codeql %} analysis takes too long to run, there are several approaches you can try to reduce the build time. 
+If your build with {% data variables.product.prodname_codeql %} analysis takes too long to run, there are several approaches you can try to reduce the build time.
 
 ### Increase the memory or cores
 
@@ -110,7 +113,7 @@ For compiled languages like Java, C, C++, and C#, {% data variables.product.prod
 
 For interpreted languages like Go, JavaScript, Python, and TypeScript, that {% data variables.product.prodname_codeql %} analyzes without a specific build, you can specify additional configuration options to limit the amount of code to analyze. For more information, see "[Specifying directories to scan](/github/finding-security-vulnerabilities-and-errors-in-your-code/configuring-code-scanning#specifying-directories-to-scan)."
 
-If you split your analysis into multiple workflows as described above, we still recommend that you have at least one workflow which runs on a `schedule` which analyzes all of the code in your repository. Because {% data variables.product.prodname_codeql %} analyzes data flows between components, some complex security behaviors may only be detected on a complete build. 
+If you split your analysis into multiple workflows as described above, we still recommend that you have at least one workflow which runs on a `schedule` which analyzes all of the code in your repository. Because {% data variables.product.prodname_codeql %} analyzes data flows between components, some complex security behaviors may only be detected on a complete build.
 
 ### Run only during a `schedule` event
 
@@ -129,8 +132,8 @@ On very large projects, {% data variables.product.prodname_codeql %} may run out
 If you're using an old {% data variables.product.prodname_codeql %} workflow you may get the following warning in the output from the "Initialize {% data variables.product.prodname_codeql %}" action:
 
 ```
-Warning: 1 issue was detected with this workflow: git checkout HEAD^2 is no longer 
-necessary. Please remove this step as Code Scanning recommends analyzing the merge 
+Warning: 1 issue was detected with this workflow: git checkout HEAD^2 is no longer
+necessary. Please remove this step as Code Scanning recommends analyzing the merge
 commit for best results.
 ```
 
@@ -162,4 +165,4 @@ The revised `steps` section of the workflow will look like this:
       ...
 ```
 
-For more information about editing the {% data variables.product.prodname_codeql %} workflow file, see  "[Configuring {% data variables.product.prodname_code_scanning %}](/github/finding-security-vulnerabilities-and-errors-in-your-code/configuring-code-scanning#editing-a-code-scanning-workflow)."
+For more information about editing the {% data variables.product.prodname_codeql %} workflow file, see "[Configuring {% data variables.product.prodname_code_scanning %}](/github/finding-security-vulnerabilities-and-errors-in-your-code/configuring-code-scanning#editing-a-code-scanning-workflow)."

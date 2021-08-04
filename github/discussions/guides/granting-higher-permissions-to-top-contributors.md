@@ -2,7 +2,7 @@
 title: Granting higher permissions to top contributors
 intro: Repository administrators can promote any community member to a moderator and maintainer.
 versions:
-  fpt: '*'
+  fpt: "*"
 shortTitle: Grant higher permissions
 ---
 
@@ -16,6 +16,7 @@ The most helpful contributors for the past 30 days are highlighted on the {% dat
 
 {% data reusables.repositories.navigate-to-repo %}
 {% data reusables.discussions.discussions-tab %}
+
 1. Compare the list of contributors with their access permissions to see who qualifies to moderate the discussion.
 
 ## Step 2: Review permission levels for {% data variables.product.prodname_discussions %}

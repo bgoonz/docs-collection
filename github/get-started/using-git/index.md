@@ -1,6 +1,6 @@
 ---
 title: Using Git
-intro: 'Use Git to manage your {% data variables.product.product_name %} repositories from your computer.'
+intro: "Use Git to manage your {% data variables.product.product_name %} repositories from your computer."
 redirect_from:
   - /articles/using-common-git-commands
   - /github/using-git/using-common-git-commands
@@ -11,9 +11,9 @@ redirect_from:
   - /github/using-git/changing-author-info
   - /github/getting-started-with-github/using-git/
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 children:
   - /pushing-commits-to-a-remote-repository
   - /getting-changes-from-a-remote-repository
@@ -24,4 +24,3 @@ children:
   - /using-git-rebase-on-the-command-line
   - /resolving-merge-conflicts-after-a-git-rebase
 ---
-

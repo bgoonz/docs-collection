@@ -1,18 +1,19 @@
 ---
 title: About enterprise accounts
-intro: 'With {% data variables.product.prodname_ghe_cloud %}, you can create an enterprise account to enable collaboration between your organizations, while giving administrators a single point of visibility and management.'
-product: '{% data reusables.gated-features.enterprise-accounts %}'
+intro: "With {% data variables.product.prodname_ghe_cloud %}, you can create an enterprise account to enable collaboration between your organizations, while giving administrators a single point of visibility and management."
+product: "{% data reusables.gated-features.enterprise-accounts %}"
 redirect_from:
   - /articles/about-github-business-accounts/
   - /articles/about-enterprise-accounts
   - /github/setting-up-and-managing-your-enterprise-account/about-enterprise-accounts
   - /github/setting-up-and-managing-your-enterprise/about-enterprise-accounts
 versions:
-  fpt: '*'
-  ghes: '*'
+  fpt: "*"
+  ghes: "*"
 topics:
   - Enterprise
 ---
+
 ## About enterprise accounts
 
 An enterprise account allows you to manage multiple {% data variables.product.prodname_dotcom %} organizations and {% data variables.product.prodname_ghe_server %} instances. Your enterprise account must have a handle, like an organization or personal account on {% data variables.product.prodname_dotcom %}. Enterprise administrators can manage settings and preferences, like:

@@ -1,15 +1,15 @@
 ---
 title: Managing disruptive comments
-intro: 'You can {% ifversion fpt %}hide, edit,{% else %}edit{% endif %} or delete comments on issues, pull requests, and commits.'
+intro: "You can {% ifversion fpt %}hide, edit,{% else %}edit{% endif %} or delete comments on issues, pull requests, and commits."
 redirect_from:
   - /articles/editing-a-comment/
   - /articles/deleting-a-comment/
   - /articles/managing-disruptive-comments
   - /github/building-a-strong-community/managing-disruptive-comments
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Community
 shortTitle: Manage comments
@@ -17,7 +17,7 @@ shortTitle: Manage comments
 
 ## Hiding a comment
 
-Anyone with write access to a repository can hide comments on issues, pull requests, and commits. 
+Anyone with write access to a repository can hide comments on issues, pull requests, and commits.
 
 If a comment is off-topic, outdated, or resolved, you may want to hide a comment to keep a discussion focused or make a pull request easier to navigate and review. Hidden comments are minimized but people with read access to the repository can expand them.
 
@@ -25,13 +25,13 @@ If a comment is off-topic, outdated, or resolved, you may want to hide a comment
 
 1. Navigate to the comment you'd like to hide.
 2. In the upper-right corner of the comment, click {% octicon "kebab-horizontal" aria-label="The horizontal kebab icon" %}, then click **Hide**.
-  ![The horizontal kebab icon and comment moderation menu showing the edit, hide, delete options](/assets/images/help/repository/comment-menu.png)
+   ![The horizontal kebab icon and comment moderation menu showing the edit, hide, delete options](/assets/images/help/repository/comment-menu.png)
 3. Using the "Choose a reason" drop-down menu, click a reason to hide the comment. Then click, **Hide comment**.
-  {% ifversion fpt %}
-  ![Choose reason for hiding comment drop-down menu](/assets/images/help/repository/choose-reason-for-hiding-comment.png)
-  {% else %}
-  ![Choose reason for hiding comment drop-down menu](/assets/images/help/repository/choose-reason-for-hiding-comment-ghe.png)
-  {% endif %}
+   {% ifversion fpt %}
+   ![Choose reason for hiding comment drop-down menu](/assets/images/help/repository/choose-reason-for-hiding-comment.png)
+   {% else %}
+   ![Choose reason for hiding comment drop-down menu](/assets/images/help/repository/choose-reason-for-hiding-comment-ghe.png)
+   {% endif %}
 
 ## Unhiding a comment
 
@@ -59,11 +59,11 @@ Comment authors and anyone with write access to a repository can also delete sen
 
 1. Navigate to the comment you'd like to edit.
 2. In the upper-right corner of the comment, click {% octicon "kebab-horizontal" aria-label="The horizontal kebab icon" %}, then click **Edit**.
-  ![The horizontal kebab icon and comment moderation menu showing the edit, hide, delete, and report options](/assets/images/help/repository/comment-menu.png)
+   ![The horizontal kebab icon and comment moderation menu showing the edit, hide, delete, and report options](/assets/images/help/repository/comment-menu.png)
 3. In the comment window, delete the content you'd like to remove, then type `[REDACTED]` to replace it.
-  ![Comment window with redacted content](/assets/images/help/issues/redacted-content-comment.png)
+   ![Comment window with redacted content](/assets/images/help/issues/redacted-content-comment.png)
 4. At the bottom of the comment, type a note indicating that you have edited the comment, and optionally, why you edited the comment.
-  ![Comment window with added note that content was redacted](/assets/images/help/issues/note-content-redacted-comment.png)
+   ![Comment window with added note that content was redacted](/assets/images/help/issues/note-content-redacted-comment.png)
 5. Click **Update comment**.
 
 ## Deleting a comment
@@ -86,5 +86,5 @@ If a comment contains some constructive content that adds to the conversation in
 
 1. Navigate to the comment you'd like to delete.
 2. In the upper-right corner of the comment, click {% octicon "kebab-horizontal" aria-label="The horizontal kebab icon" %}, then click **Delete**.
-  ![The horizontal kebab icon and comment moderation menu showing the edit, hide, delete, and report options](/assets/images/help/repository/comment-menu.png)
+   ![The horizontal kebab icon and comment moderation menu showing the edit, hide, delete, and report options](/assets/images/help/repository/comment-menu.png)
 3. Optionally, write a comment noting that you deleted a comment and why.

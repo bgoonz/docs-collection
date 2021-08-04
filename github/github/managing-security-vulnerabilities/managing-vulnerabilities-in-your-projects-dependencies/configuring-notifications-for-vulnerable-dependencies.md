@@ -1,14 +1,15 @@
 ---
 title: Configuring notifications for vulnerable dependencies
 shortTitle: Configuring notifications
-intro: 'Optimize how you receive notifications about  {% ifversion ghes > 2.21 %}{% data variables.product.prodname_dependabot %}{% else %}security{% endif %} alerts.'
+intro: "Optimize how you receive notifications about  {% ifversion ghes > 2.21 %}{% data variables.product.prodname_dependabot %}{% else %}security{% endif %} alerts."
 versions:
-  ghes: '* <=2.22'
+  ghes: "* <=2.22"
 topics:
   - Security
 redirect_from:
   - /github/managing-security-vulnerabilities/configuring-notifications-for-vulnerable-dependencies
 ---
+
 <!--See /content/code-security/supply-chain-security/configuring-notifications-for-vulnerable-dependencies for the current version of this article -->
 
 ## About notifications for vulnerable dependencies
@@ -33,9 +34,9 @@ You can configure notification settings for yourself or your organization from t
 {% data reusables.notifications.vulnerable-dependency-notification-options %}
 
 {% ifversion ghes > 2.21 %}
-  ![{% data variables.product.prodname_dependabot_alerts %} options](/assets/images/help/notifications-v2/dependabot-alerts-options.png)
+![{% data variables.product.prodname_dependabot_alerts %} options](/assets/images/help/notifications-v2/dependabot-alerts-options.png)
 {% else %}
-  ![Security alerts options](/assets/images/help/notifications-v2/security-alerts-options.png)
+![Security alerts options](/assets/images/help/notifications-v2/security-alerts-options.png)
 {% endif %}
 
 {% note %}

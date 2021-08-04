@@ -7,13 +7,14 @@ redirect_from:
   - /github/using-git/caching-your-github-credentials-in-git
   - /github/getting-started-with-github/caching-your-github-credentials-in-git
   - /github/getting-started-with-github/getting-started-with-git/caching-your-github-credentials-in-git
-intro: 'If you''re [cloning {% data variables.product.product_name %} repositories using HTTPS](/github/getting-started-with-github/about-remote-repositories), you can use a credential helper to tell Git to remember your credentials.'
+intro: "If you're [cloning {% data variables.product.product_name %} repositories using HTTPS](/github/getting-started-with-github/about-remote-repositories), you can use a credential helper to tell Git to remember your credentials."
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 shortTitle: Caching credentials
 ---
+
 If you clone {% data variables.product.product_name %} repositories using SSH, then you authenticate using an SSH key instead of using other credentials. For information about setting up an SSH connection, see "[Generating an SSH Key](/articles/generating-an-ssh-key)."
 
 {% mac %}
@@ -31,28 +32,33 @@ If you clone {% data variables.product.product_name %} repositories using SSH, t
 Install Git and the `osxkeychain helper` and tell Git to use it.
 
 1. Find out if Git and the `osxkeychain helper` are already installed:
-  ```shell
-  $ git credential-osxkeychain
-  # Test for the cred helper
-  > Usage: git credential-osxkeychain &lt;get|store|erase>
-  ```
-2. If the `osxkeychain helper` isn't installed and you're running OS X version 10.9 or above, your computer will prompt you to download it as a part of the Xcode Command Line Tools:
-  ```shell
-  $ git credential-osxkeychain
-  > xcode-select: note: no developer tools were found at '/Applications/Xcode.app',
-  > requesting install. Choose an option in the dialog to download the command line developer tools.
-  ```
 
- Alternatively,  you can install Git and the `osxkeychain helper` by using [Homebrew](http://brew.sh/):
-  ```shell
-  $ brew install git
-  ```
+```shell
+$ git credential-osxkeychain
+# Test for the cred helper
+> Usage: git credential-osxkeychain &lt;get|store|erase>
+```
+
+2. If the `osxkeychain helper` isn't installed and you're running OS X version 10.9 or above, your computer will prompt you to download it as a part of the Xcode Command Line Tools:
+
+```shell
+$ git credential-osxkeychain
+> xcode-select: note: no developer tools were found at '/Applications/Xcode.app',
+> requesting install. Choose an option in the dialog to download the command line developer tools.
+```
+
+Alternatively, you can install Git and the `osxkeychain helper` by using [Homebrew](http://brew.sh/):
+
+```shell
+$ brew install git
+```
 
 4. Tell Git to use `osxkeychain helper` using the global `credential.helper` config:
-  ```shell
-  $ git config --global credential.helper osxkeychain
-  # Set git to use the osxkeychain credential helper
-  ```
+
+```shell
+$ git config --global credential.helper osxkeychain
+# Set git to use the osxkeychain credential helper
+```
 
 The next time you clone an HTTPS URL that requires authentication, Git will prompt you for your username and password. {% data reusables.user_settings.password-authentication-deprecation %}
 
@@ -87,15 +93,18 @@ $ git config --global credential.helper wincred
 Turn on the credential helper so that Git will save your password in memory for some time. By default, Git will cache your password for 15 minutes.
 
 1. In Terminal, enter the following:
-  ```shell
-  $ git config --global credential.helper cache
-  # Set git to use the credential memory cache
-  ```
+
+```shell
+$ git config --global credential.helper cache
+# Set git to use the credential memory cache
+```
+
 2. To change the default password cache timeout, enter the following:
-  ```shell
-  $ git config --global credential.helper 'cache --timeout=3600'
-  # Set the cache to timeout after 1 hour (setting is in seconds)
-  ```
+
+```shell
+$ git config --global credential.helper 'cache --timeout=3600'
+# Set the cache to timeout after 1 hour (setting is in seconds)
+```
 
 For more options for storing your credentials on Linux, see [Credential Storage](https://git-scm.com/book/en/v2/Git-Tools-Credential-Storage) in Pro Git.
 

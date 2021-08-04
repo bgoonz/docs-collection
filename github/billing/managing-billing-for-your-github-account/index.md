@@ -1,7 +1,7 @@
 ---
 title: Managing billing for your GitHub account
 shortTitle: Your GitHub account
-intro: '{% data variables.product.product_name %} offers free and paid products for every account. You can upgrade, downgrade, and view pending changes to your account''s subscription at any time.'
+intro: "{% data variables.product.product_name %} offers free and paid products for every account. You can upgrade, downgrade, and view pending changes to your account's subscription at any time."
 redirect_from:
   - /github/setting-up-and-managing-billing-and-payments-on-github/managing-billing-for-your-github-account
   - /categories/97/articles/
@@ -14,7 +14,7 @@ redirect_from:
   - /articles/managing-your-organization-s-paid-seats/
   - /articles/managing-billing-for-your-github-account
 versions:
-  fpt: '*'
+  fpt: "*"
 children:
   - /about-billing-for-github-accounts
   - /about-per-user-pricing
@@ -24,4 +24,3 @@ children:
   - /downgrading-your-github-subscription
   - /discounted-subscriptions-for-github-accounts
 ---
-

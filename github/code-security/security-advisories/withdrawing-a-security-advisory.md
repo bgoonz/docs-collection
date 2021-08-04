@@ -4,7 +4,7 @@ intro: You can withdraw a security advisory that you've published.
 redirect_from:
   - /github/managing-security-vulnerabilities/withdrawing-a-security-advisory
 versions:
-  fpt: '*'
+  fpt: "*"
 type: how_to
 topics:
   - Security advisories

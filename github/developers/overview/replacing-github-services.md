@@ -1,17 +1,16 @@
 ---
 title: Replacing GitHub Services
-intro: 'If you''re still relying on the deprecated {% data variables.product.prodname_dotcom %} Services, learn how to migrate your service hooks to webhooks.'
+intro: "If you're still relying on the deprecated {% data variables.product.prodname_dotcom %} Services, learn how to migrate your service hooks to webhooks."
 redirect_from:
   - /guides/replacing-github-services/
   - /v3/guides/automating-deployments-to-integrators/
   - /v3/guides/replacing-github-services
 versions:
-  fpt: '*'
-  ghes: '*'
+  fpt: "*"
+  ghes: "*"
 topics:
   - API
 ---
-
 
 We have deprecated GitHub Services in favor of integrating with webhooks. This guide helps you transition to webhooks from GitHub Services. For more information on this announcement, see the [blog post](https://developer.github.com/changes/2018-10-01-denying-new-github-services).
 
@@ -32,12 +31,15 @@ As an alternative to the email service, you can now start using email notificati
 GitHub Services (sometimes referred to as Service Hooks) is the legacy method of integrating where GitHub hosted a portion of our integrator’s services via [the `github-services` repository](https://github.com/github/github-services). Actions performed on GitHub trigger these services, and you can use these services to trigger actions outside of GitHub.
 
 {% ifversion ghes or ghae %}
+
 ## Finding repositories that use GitHub Services
+
 We provide a command-line script that helps you identify which repositories on your appliance use GitHub Services. For more information, see [ghe-legacy-github-services-report](/enterprise/{{currentVersion}}/admin/articles/command-line-utilities/#ghe-legacy-github-services-report).{% endif %}
 
 ## GitHub Services vs. webhooks
 
 The key differences between GitHub Services and webhooks:
+
 - **Configuration**: GitHub Services have service-specific configuration options, while webhooks are simply configured by specifying a URL and a set of events.
 - **Custom logic**: GitHub Services can have custom logic to respond with multiple actions as part of processing a single event, while webhooks have no custom logic.
 - **Types of requests**: GitHub Services can make HTTP and non-HTTP requests, while webhooks can make HTTP requests only.
@@ -68,6 +70,7 @@ The {% data variables.product.prodname_ghe_server %} 2.17 release will be the fi
 Please [contact us](https://github.com/contact?form%5Bsubject%5D=GitHub+Services+Deprecation) with any questions.
 
 As a high-level overview, the process of migration typically involves:
-  - Identifying how and where your product is using GitHub Services.
-  - Identifying the corresponding webhook events you need to configure in order to move to plain webhooks.
-  - Implementing the design using either [{% data variables.product.prodname_oauth_apps %}](/apps/building-oauth-apps/) or [{% data variables.product.prodname_github_apps %}. {% data variables.product.prodname_github_apps %}](/apps/building-github-apps/) are preferred. To learn more about why {% data variables.product.prodname_github_apps %} are preferred, see "[Reasons for switching to {% data variables.product.prodname_github_apps %}](/apps/migrating-oauth-apps-to-github-apps/#reasons-for-switching-to-github-apps)."
+
+- Identifying how and where your product is using GitHub Services.
+- Identifying the corresponding webhook events you need to configure in order to move to plain webhooks.
+- Implementing the design using either [{% data variables.product.prodname_oauth_apps %}](/apps/building-oauth-apps/) or [{% data variables.product.prodname_github_apps %}. {% data variables.product.prodname_github_apps %}](/apps/building-github-apps/) are preferred. To learn more about why {% data variables.product.prodname_github_apps %} are preferred, see "[Reasons for switching to {% data variables.product.prodname_github_apps %}](/apps/migrating-oauth-apps-to-github-apps/#reasons-for-switching-to-github-apps)."

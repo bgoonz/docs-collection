@@ -1,12 +1,12 @@
 ---
 title: Managing files on GitHub
-intro: 'On {% data variables.product.product_name %}, you can create, edit, move, and delete files in a repository.'
+intro: "On {% data variables.product.product_name %}, you can create, edit, move, and delete files in a repository."
 redirect_from:
   - /articles/managing-files-on-github
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 topics:
   - Repositories
 children:
@@ -21,4 +21,3 @@ children:
   - /renaming-a-file
   - /getting-permanent-links-to-files
 ---
-

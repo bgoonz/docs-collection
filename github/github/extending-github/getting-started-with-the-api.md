@@ -3,9 +3,9 @@ title: Getting started with the API
 redirect_from:
   - /articles/getting-started-with-the-api
 versions:
-  fpt: '*'
-  ghes: '*'
-  ghae: '*'
+  fpt: "*"
+  ghes: "*"
+  ghae: "*"
 shortTitle: Get started API
 ---
 

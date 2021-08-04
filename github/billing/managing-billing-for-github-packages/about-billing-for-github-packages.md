@@ -1,18 +1,19 @@
 ---
 title: About billing for GitHub Packages
-intro: 'If you want to use {% data variables.product.prodname_registry %} beyond the storage or data transfer included in your account, you will be billed for additional usage.'
-product: '{% data reusables.gated-features.packages %}'
+intro: "If you want to use {% data variables.product.prodname_registry %} beyond the storage or data transfer included in your account, you will be billed for additional usage."
+product: "{% data reusables.gated-features.packages %}"
 redirect_from:
   - /github/setting-up-and-managing-billing-and-payments-on-github/about-billing-for-github-packages
   - /github/setting-up-and-managing-billing-and-payments-on-github/managing-billing-for-github-packages/about-billing-for-github-packages
 versions:
-  fpt: '*'
+  fpt: "*"
 type: overview
 topics:
   - Packages
   - Spending limits
 shortTitle: About billing
 ---
+
 ## About billing for {% data variables.product.prodname_registry %}
 
 {% data reusables.package_registry.packages-billing %}
@@ -29,20 +30,20 @@ If you purchased {% data variables.product.prodname_enterprise %} through a Micr
 
 Data transfer resets every month, while storage usage does not.
 
-Product | Storage | Data transfer (per month)
-------- | ------- | ---------
-{% data variables.product.prodname_free_user %} | 500MB | 1GB
-{% data variables.product.prodname_pro %} | 2GB | 10GB
-{% data variables.product.prodname_free_team %} for organizations | 500MB | 1GB |
-{% data variables.product.prodname_team %} | 2GB | 10GB
-{% data variables.product.prodname_ghe_cloud %} | 50GB | 100GB
+| Product                                                           | Storage | Data transfer (per month) |
+| ----------------------------------------------------------------- | ------- | ------------------------- |
+| {% data variables.product.prodname_free_user %}                   | 500MB   | 1GB                       |
+| {% data variables.product.prodname_pro %}                         | 2GB     | 10GB                      |
+| {% data variables.product.prodname_free_team %} for organizations | 500MB   | 1GB                       |
+| {% data variables.product.prodname_team %}                        | 2GB     | 10GB                      |
+| {% data variables.product.prodname_ghe_cloud %}                   | 50GB    | 100GB                     |
 
 All data transferred out, when triggered by {% data variables.product.prodname_actions %}, and data transferred in from any source is free. We determine you are downloading packages using {% data variables.product.prodname_actions %} when you log in to {% data variables.product.prodname_registry %} using a `GITHUB_TOKEN`.
 
-||Hosted|Self-Hosted|
-|-|-|-|
-|Access using a `GITHUB_TOKEN`|Free|Free|
-|Access using a personal access token|Free|$|
+|                                      | Hosted | Self-Hosted |
+| ------------------------------------ | ------ | ----------- |
+| Access using a `GITHUB_TOKEN`        | Free   | Free        |
+| Access using a personal access token | Free   | $           |
 
 Storage usage is shared with build artifacts produced by {% data variables.product.prodname_actions %} for repositories owned by your account. For more information, see "[About billing for {% data variables.product.prodname_actions %}](/billing/managing-billing-for-github-actions/about-billing-for-github-actions)."
 

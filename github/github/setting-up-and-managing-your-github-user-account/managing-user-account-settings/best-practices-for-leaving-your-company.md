@@ -1,22 +1,23 @@
 ---
 title: Best practices for leaving your company
-intro: 'Changing jobs is a fact of life. If you use your GitHub user account for both personal *and* work purposes, there are a few things to keep in mind when you leave your company or organization.'
+intro: "Changing jobs is a fact of life. If you use your GitHub user account for both personal *and* work purposes, there are a few things to keep in mind when you leave your company or organization."
 redirect_from:
   - /articles/best-practices-for-leaving-your-company
   - /github/setting-up-and-managing-your-github-user-account/best-practices-for-leaving-your-company
 versions:
-  fpt: '*'
+  fpt: "*"
 topics:
   - Accounts
 shortTitle: Leaving your company
 ---
+
 Before you leave your company, make sure you update the following information in your user account:
 
 - Unverify your company email address by [deleting it in your Email settings](/articles/changing-your-primary-email-address). You can then re-add it without verifying to keep any associated commits linked to your account.
 - [Change your primary email address](/articles/changing-your-primary-email-address) from your company email to your personal email.
-{% ifversion fpt %}
+  {% ifversion fpt %}
 - [Verify your new primary email address](/articles/verifying-your-email-address).
-{% endif %}
+  {% endif %}
 - [Change your GitHub username](/articles/changing-your-github-username) to remove any references to your company or organization, if necessary.
 
 ## Leaving organizations

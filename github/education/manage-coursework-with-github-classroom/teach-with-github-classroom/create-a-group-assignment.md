@@ -2,11 +2,12 @@
 title: Create a group assignment
 intro: You can create a collaborative assignment for teams of students who participate in your course.
 versions:
-  fpt: '*'
+  fpt: "*"
 redirect_from:
   - /education/manage-coursework-with-github-classroom/create-group-assignments
   - /education/manage-coursework-with-github-classroom/create-a-group-assignment
 ---
+
 ## About group assignments
 
 {% data reusables.classroom.assignments-group-definition %} Students can work together on a group assignment in a shared repository, like a team of professional developers.
@@ -84,7 +85,7 @@ If you've already created a group assignment for the classroom, you can reuse a 
 
 ### Choosing a template repository
 
-By default, a new assignment will create an empty repository for each team that a student creates. {% data reusables.classroom.you-can-choose-a-template-repository %} 
+By default, a new assignment will create an empty repository for each team that a student creates. {% data reusables.classroom.you-can-choose-a-template-repository %}
 
 {% data reusables.classroom.assignments-guide-choose-template-repository %}
 

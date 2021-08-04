@@ -1,13 +1,13 @@
 ---
 title: Configuring Codespaces for your project
-intro: 'You can use a `devcontainer.json` file to define a {% data variables.product.prodname_codespaces %} environment for your repository.'
+intro: "You can use a `devcontainer.json` file to define a {% data variables.product.prodname_codespaces %} environment for your repository."
 permissions: People with write permissions to a repository can create or edit the codespace configuration.
 redirect_from:
   - /github/developing-online-with-github-codespaces/configuring-github-codespaces-for-your-project
   - /codespaces/setting-up-your-codespace/configuring-codespaces-for-your-project
   - /github/developing-online-with-codespaces/configuring-codespaces-for-your-project
 versions:
-  fpt: '*'
+  fpt: "*"
 type: how_to
 topics:
   - Codespaces
@@ -34,7 +34,7 @@ For information about the settings and properties that you can set in a `devcont
 
 ### Dockerfile
 
-A Dockerfile also lives in the `.devcontainer` folder. 
+A Dockerfile also lives in the `.devcontainer` folder.
 
 You can add a Dockerfile to your project to define a container image and install software. In the Dockerfile, you can use `FROM` to specify the container image.
 
@@ -62,32 +62,31 @@ Reference your Dockerfile in your `devcontainer.json` file by using the `dockerf
 }
 ```
 
-For more information on using a Dockerfile in a dev container, see [Create a development container](https://code.visualstudio.com/docs/remote/create-dev-container#_dockerfile) in the {% data variables.product.prodname_vscode %} documentation. 
+For more information on using a Dockerfile in a dev container, see [Create a development container](https://code.visualstudio.com/docs/remote/create-dev-container#_dockerfile) in the {% data variables.product.prodname_vscode %} documentation.
 
 ## Using the default configuration
 
 If you don't define a configuration in your repository, {% data variables.product.prodname_dotcom %} creates a codespace with a base Linux image. The base Linux image includes languages and runtimes like Python, Node.js, JavaScript, TypeScript, C++, Java, .NET, PHP, PowerShell, Go, Ruby, and Rust. It also includes other developer tools and utilities like git, GitHub CLI, yarn, openssh, and vim. To see all the languages, runtimes, and tools that are included use the `devcontainer-info content-url` command inside your codespace terminal and follow the url that the command outputs.
 
-Alternatively, for more information about everything that is included in the base Linux image, see the latest file in the [`microsoft/vscode-dev-containers`](https://github.com/microsoft/vscode-dev-containers/tree/main/containers/codespaces-linux) repository. 
+Alternatively, for more information about everything that is included in the base Linux image, see the latest file in the [`microsoft/vscode-dev-containers`](https://github.com/microsoft/vscode-dev-containers/tree/main/containers/codespaces-linux) repository.
 
 The default configuration is a good option if you're working on a small project that uses the languages and tools that {% data variables.product.prodname_codespaces %} provides.
-
 
 ## Using a predefined container configuration
 
 Predefined container definitions include a common configuration for a particular project type, and can help you quickly get started with a configuration that already has the appropriate container options, {% data variables.product.prodname_vscode %} settings, and {% data variables.product.prodname_vscode %} extensions that should be installed.
 
-Using a predefined configuration is a great idea if you need some additional extensibility. You can also start with a predefined configuration and amend it as needed for your project's setup. 
+Using a predefined configuration is a great idea if you need some additional extensibility. You can also start with a predefined configuration and amend it as needed for your project's setup.
 
 {% data reusables.codespaces.command-palette-container %}
+
 1. Click the definition you want to use.
-  ![List of predefined container definitions](/assets/images/help/codespaces/predefined-container-definitions-list.png)
+   ![List of predefined container definitions](/assets/images/help/codespaces/predefined-container-definitions-list.png)
 1. Follow the prompts to customize your definition.
 1. Click **OK**.
-  ![OK button](/assets/images/help/codespaces/prebuilt-container-ok-button.png)
+   ![OK button](/assets/images/help/codespaces/prebuilt-container-ok-button.png)
 1. To apply the changes, in the bottom right corner of the screen, click **Rebuild now**. For more information about rebuilding your container, see "[Applying changes to your configuration](#applying-changes-to-your-configuration)."
-  !["Codespaces: Rebuild Container" in the command palette](/assets/images/help/codespaces/rebuild-prompt.png)
-
+   !["Codespaces: Rebuild Container" in the command palette](/assets/images/help/codespaces/rebuild-prompt.png)
 
 ## Creating a custom codespace configuration
 
@@ -99,8 +98,8 @@ In the file, you can use [supported configuration keys](https://code.visualstudi
 
 You can define default editor settings for {% data variables.product.prodname_vscode %} in two places.
 
-* Editor settings defined in `.vscode/settings.json` are applied as _Workspace_-scoped settings in the codespace.
-* Editor settings defined in the `settings` key in `devcontainer.json` are applied as _Remote [Codespaces]_-scoped settings in the codespace.
+- Editor settings defined in `.vscode/settings.json` are applied as _Workspace_-scoped settings in the codespace.
+- Editor settings defined in the `settings` key in `devcontainer.json` are applied as _Remote [Codespaces]_-scoped settings in the codespace.
 
 After updating the `devcontainer.json` file, you can rebuild the container for your codespace to apply the changes. For more information, see "[Applying changes to your configuration](#applying-changes-to-your-configuration)."
 
@@ -139,8 +138,9 @@ For more information about the available settings for `devcontainer.json`, see [
 {% data reusables.codespaces.apply-devcontainer-changes %}
 
 {% data reusables.codespaces.rebuild-command %}
+
 1. {% data reusables.codespaces.recovery-mode %} Fix the errors in the configuration.
-  ![Error message about recovery mode](/assets/images/help/codespaces/recovery-mode-error-message.png)
+   ![Error message about recovery mode](/assets/images/help/codespaces/recovery-mode-error-message.png)
    - To diagnose the error by reviewing the creation logs, click **View creation log**.
    - To fix the errors identified in the logs, update your `devcontainer.json` file.
-   - To apply the changes, rebuild your container. 
+   - To apply the changes, rebuild your container.

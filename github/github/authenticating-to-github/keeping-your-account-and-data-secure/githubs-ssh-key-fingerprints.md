@@ -7,12 +7,13 @@ redirect_from:
   - /articles/githubs-ssh-key-fingerprints
   - /github/authenticating-to-github/githubs-ssh-key-fingerprints
 versions:
-  fpt: '*'
+  fpt: "*"
 topics:
   - Identity
   - Access management
 shortTitle: SSH key fingerprints
 ---
+
 These are {% data variables.product.prodname_dotcom %}'s public key fingerprints:
 
 - `SHA256:nThbg6kXUpJWGl7E1IGOCspRomTxdCARLviKw6E5SY8` (RSA)

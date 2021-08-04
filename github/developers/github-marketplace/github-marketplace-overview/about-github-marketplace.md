@@ -1,15 +1,16 @@
 ---
 title: About GitHub Marketplace
-intro: 'Learn about {% data variables.product.prodname_marketplace %} where you can share your apps and actions publicly with all {% data variables.product.product_name %} users.'
+intro: "Learn about {% data variables.product.prodname_marketplace %} where you can share your apps and actions publicly with all {% data variables.product.product_name %} users."
 redirect_from:
   - /apps/marketplace/getting-started/
   - /marketplace/getting-started
   - /developers/github-marketplace/about-github-marketplace
 versions:
-  fpt: '*'
+  fpt: "*"
 topics:
   - Marketplace
 ---
+
 [{% data variables.product.prodname_marketplace %}](https://github.com/marketplace) connects you to developers who want to extend and improve their {% data variables.product.prodname_dotcom %} workflows. You can list free and paid tools for developers to use in {% data variables.product.prodname_marketplace %}. {% data variables.product.prodname_marketplace %} offers developers two types of tools: {% data variables.product.prodname_actions %} and Apps, and each tool requires different steps for adding it to {% data variables.product.prodname_marketplace %}.
 
 ## GitHub Actions
@@ -20,7 +21,7 @@ To learn about publishing {% data variables.product.prodname_actions %} in {% da
 
 ## Apps
 
-Anyone can share their apps with other users for free on {% data variables.product.prodname_marketplace %} but only apps owned by organizations can sell their app. 
+Anyone can share their apps with other users for free on {% data variables.product.prodname_marketplace %} but only apps owned by organizations can sell their app.
 
 To publish paid plans for your app and display a marketplace badge, you must complete the publisher verification process. For more information, see "[Applying for publisher verification for your organization](/developers/github-marketplace/applying-for-publisher-verification-for-your-organization)" or "[Requirements for listing an app](/developers/github-marketplace/requirements-for-listing-an-app)."
 
@@ -59,6 +60,6 @@ You can access metrics and transactions for your listing. For more information, 
 - "[Viewing metrics for your listing](/developers/github-marketplace/viewing-metrics-for-your-listing)"
 - "[Viewing transactions for your listing](/developers/github-marketplace/viewing-transactions-for-your-listing)"
 
-## Contacting Support 
+## Contacting Support
 
 If you have questions about {% data variables.product.prodname_marketplace %}, please contact {% data variables.contact.contact_support %} directly.
