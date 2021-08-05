@@ -1,4 +1,4 @@
---- title: Your first form slug: Learn/Forms/Your_first_form tags: - Beginner - CSS - CodingScripting - Example - Forms - Guide - HTML - Learn - Web ---
+--- title: Your first form slug: Learn/Forms/Your\_first\_form tags: - Beginner - CSS - CodingScripting - Example - Forms - Guide - HTML - Learn - Web ---
 
 {{LearnSidebar}}{{NextMenu("Learn/Forms/How\_to\_structure\_a\_web\_form", "Learn/Forms")}}
 
@@ -6,7 +6,8 @@ The first article in our series provides you with your very first experience of 
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Basic computer literacy, and a basic <a href="/en-US/docs/Learn/HTML/Introduction_to_HTML">understanding of HTML</a>.</td></tr><tr class="even"><td>Objective:</td><td>To gain familiarity with what web forms are, what they are used for, how to think about designing them, and the basic HTML elements you'll need for simple cases.</td></tr></tbody></table>
 
-## What are web forms?
+What are web forms?
+-------------------
 
 **Web forms** are one of the main points of interaction between a user and a web site or application. Forms allow users to enter data, which is generally sent to a web server for processing and storage (see [Sending form data](/en-US/docs/Learn/Forms/Sending_and_retrieving_form_data) later in the module), or used on the client-side to immediately update the interface in some way (for example, add another item to a list, or show or hide a UI feature).
 
@@ -14,14 +15,15 @@ A web form's HTML is made up of one or more **form controls** (sometimes called 
 
 Form controls can also be programmed to enforce specific formats or values to be entered (**form validation**), and paired with text labels that describe their purpose to both sighted and blind users.
 
-## Designing your form
+Designing your form
+-------------------
 
 Before starting to code, it's always better to step back and take the time to think about your form. Designing a quick mockup will help you to define the right set of data you want to ask your user to enter. From a user experience (UX) point of view, it's important to remember that the bigger your form, the more you risk frustrating people and losing users. Keep it simple and stay focused: ask only for the data you absolutely need.
 
 Designing forms is an important step when you are building a site or application. It's beyond the scope of this article to cover the user experience of forms, but if you want to dig into that topic you should read the following articles:
 
-- Smashing Magazine has some [good articles about forms UX](https://www.smashingmagazine.com/2018/08/ux-html5-mobile-form-part-1/), including an older but still relevant [Extensive Guide To Web Form Usability](https://www.smashingmagazine.com/2011/11/extensive-guide-web-form-usability/) article.
-- UXMatters is also a very thoughtful resource with good advice from [basic best practices](https://www.uxmatters.com/mt/archives/2012/05/7-basic-best-practices-for-buttons.php) to complex concerns such as [multi-page forms](https://www.uxmatters.com/mt/archives/2010/03/pagination-in-web-forms-evaluating-the-effectiveness-of-web-forms.php).
+-   Smashing Magazine has some [good articles about forms UX](https://www.smashingmagazine.com/2018/08/ux-html5-mobile-form-part-1/), including an older but still relevant [Extensive Guide To Web Form Usability](https://www.smashingmagazine.com/2011/11/extensive-guide-web-form-usability/) article.
+-   UXMatters is also a very thoughtful resource with good advice from [basic best practices](https://www.uxmatters.com/mt/archives/2012/05/7-basic-best-practices-for-buttons.php) to complex concerns such as [multi-page forms](https://www.uxmatters.com/mt/archives/2010/03/pagination-in-web-forms-evaluating-the-effectiveness-of-web-forms.php).
 
 In this article, we'll build a simple contact form. Let's make a rough sketch.
 
@@ -29,7 +31,8 @@ In this article, we'll build a simple contact form. Let's make a rough sketch.
 
 Our form will contain three text fields and one button. We are asking the user for their name, their e-mail and the message they want to send. Hitting the button will send their data to a web server.
 
-## Active learning: Implementing our form HTML
+Active learning: Implementing our form HTML
+-------------------------------------------
 
 Ok, let's have a go at creating the HTML for our form. We will use the following HTML elements: {{HTMLelement("form")}}, {{HTMLelement("label")}}, {{HTMLelement("input")}}, {{HTMLelement("textarea")}}, and {{HTMLelement("button")}}.
 
@@ -45,8 +48,8 @@ All forms start with a {{HTMLelement("form")}} element, like this:
 
 This element formally defines a form. It's a container element like a {{HTMLelement("section")}} or {{HTMLelement("footer")}} element, but specifically for containing forms; it also supports some specific attributes to configure the way the form behaves. All of its attributes are optional, but it's standard practice to always set at least the [`action`](/en-US/docs/Web/HTML/Attributes/action) and [`method`](/en-US/docs/Web/HTML/Attributes/method) attributes:
 
-- The `action` attribute defines the location (URL) where the form's collected data should be sent when it is submitted.
-- The `method` attribute defines which HTTP method to send the data with (usually `get` or `post`).
+-   The `action` attribute defines the location (URL) where the form's collected data should be sent when it is submitted.
+-   The `method` attribute defines which HTTP method to send the data with (usually `get` or `post`).
 
 **Note**: We'll look at how those attributes work in our [Sending form data](/en-US/docs/Learn/Forms/Sending_and_retrieving_form_data) article later on.
 
@@ -56,9 +59,9 @@ For now, add the above {{htmlelement("form")}} element into your HTML {{htmlelem
 
 Our contact form is not complex: the data entry portion contains three text fields, each with a corresponding {{HTMLelement("label")}}:
 
-- The input field for the name is a {{HTMLelement("input/text", "single-line text field")}}.
-- The input field for the e-mail is an {{HTMLelement("input/email", "input of type email")}}: a single-line text field that accepts only e-mail addresses.
-- The input field for the message is a {{HTMLelement("textarea")}}; a multiline text field.
+-   The input field for the name is a {{HTMLelement("input/text", "single-line text field")}}.
+-   The input field for the e-mail is an {{HTMLelement("input/email", "input of type email")}}: a single-line text field that accepts only e-mail addresses.
+-   The input field for the message is a {{HTMLelement("textarea")}}; a multiline text field.
 
 In terms of HTML code we need something like the following to implement these form widgets:
 
@@ -87,8 +90,8 @@ There is great benefit to doing this — it associates the label with the form c
 
 On the {{HTMLelement("input")}} element, the most important attribute is the `type` attribute. This attribute is extremely important because it defines the way the {{HTMLelement("input")}} element appears and behaves. You'll find more about this in the [Basic native form controls](/en-US/docs/Learn/Forms/Basic_native_form_controls) article later on.
 
-- In our simple example, we use the value {{HTMLelement("input/text")}} for the first input — the default value for this attribute. It represents a basic single-line text field that accepts any kind of text input.
-- For the second input, we use the value {{HTMLelement("input/email")}}, which defines a single-line text field that only accepts a well-formed e-mail address. This turns a basic text field into a kind of "intelligent" field that will perform some validation checks on the data typed by the user. It also causes a more appropriate keyboard layout for entering email addresses (e.g. with an @ symbol by default) to appear on devices with dynamic keyboards, like smartphones. You'll find out more about form validation in the [client-side form validation](/en-US/docs/Learn/Forms/Form_validation) article later on.
+-   In our simple example, we use the value {{HTMLelement("input/text")}} for the first input — the default value for this attribute. It represents a basic single-line text field that accepts any kind of text input.
+-   For the second input, we use the value {{HTMLelement("input/email")}}, which defines a single-line text field that only accepts a well-formed e-mail address. This turns a basic text field into a kind of "intelligent" field that will perform some validation checks on the data typed by the user. It also causes a more appropriate keyboard layout for entering email addresses (e.g. with an @ symbol by default) to appear on devices with dynamic keyboards, like smartphones. You'll find out more about form validation in the [client-side form validation](/en-US/docs/Learn/Forms/Form_validation) article later on.
 
 Last but not least, note the syntax of `<input>` vs. `<textarea></textarea>`. This is one of the oddities of HTML. The `<input>` tag is an empty element, meaning that it doesn't need a closing tag. {{HTMLElement("textarea")}} is not an empty element, meaning it should be closed with the proper ending tag. This has an impact on a specific feature of forms: the way you define the default value. To define the default value of an {{HTMLElement("input")}} element you have to use the [`value`](/en-US/docs/Web/HTML/Attributes/value) attribute like this:
 
@@ -110,13 +113,14 @@ The markup for our form is almost complete; we just need to add a button to allo
 
 The {{htmlelement("button")}} element also accepts a `type` attribute — this accepts one of three values: `submit`, `reset`, or `button`.
 
-- A click on a `submit` button (the default value) sends the form's data to the web page defined by the `action` attribute of the {{HTMLelement("form")}} element.
-- A click on a `reset` button resets all the form widgets to their default value immediately. From a UX point of view, this is considered bad practice, so you should avoid using this type of button unless you really have a good reason to include one.
-- A click on a `button` button does... nothing! That sounds silly, but it's amazingly useful for building custom buttons — you can define their chosen functionality with JavaScript.
+-   A click on a `submit` button (the default value) sends the form's data to the web page defined by the `action` attribute of the {{HTMLelement("form")}} element.
+-   A click on a `reset` button resets all the form widgets to their default value immediately. From a UX point of view, this is considered bad practice, so you should avoid using this type of button unless you really have a good reason to include one.
+-   A click on a `button` button does... nothing! That sounds silly, but it's amazingly useful for building custom buttons — you can define their chosen functionality with JavaScript.
 
 **Note**: You can also use the {{HTMLElement("input")}} element with the corresponding `type` to produce a button, for example `<input type="submit">`. The main advantage of the {{HTMLelement("button")}} element is that the {{HTMLelement("input")}} element only allows plain text in its label whereas the {{HTMLelement("button")}} element allows full HTML content, allowing more complex, creative button content.
 
-## Basic form styling
+Basic form styling
+------------------
 
 Now that you have finished writing your form's HTML code, try saving it and looking at it in a browser. At the moment, you'll see that it looks rather ugly.
 
@@ -202,7 +206,8 @@ Save and reload, and you'll see that your form should look much less ugly.
 
 **Note**: You can find our version on GitHub at [first-form-styled.html](https://github.com/mdn/learning-area/blob/master/html/forms/your-first-HTML-form/first-form-styled.html) ([also see it live](https://mdn.github.io/learning-area/html/forms/your-first-HTML-form/first-form-styled.html)).
 
-## Sending form data to your web server
+Sending form data to your web server
+------------------------------------
 
 The last part, and perhaps the trickiest, is to handle form data on the server side. The {{HTMLelement("form")}} element defines where and how to send the data thanks to the [`action`](/en-US/docs/Web/HTML/Attributes/action) and [`method`](/en-US/docs/Web/HTML/Attributes/method) attributes.
 
@@ -231,7 +236,8 @@ In our example, the form will send 3 pieces of data named "`user_name`", "`user_
 
 On the server side, the script at the URL "`/my-handling-form-page`" will receive the data as a list of 3 key/value items contained in the HTTP request. The way this script will handle that data is up to you. Each server-side language (PHP, Python, Ruby, Java, C\#, etc.) has its own mechanism of handling form data. It's beyond the scope of this guide to go deeply into that subject, but if you want to know more, we have provided some examples in our [Sending form data](/en-US/docs/Learn/Forms/Sending_and_retrieving_form_data) article later on.
 
-## Summary
+Summary
+-------
 
 Congratulations, you've built your first web form. It looks like this live:
 
@@ -241,21 +247,22 @@ That's only the beginning, however — now it's time to take a deeper look. For
 
 {{NextMenu("Learn/Forms/How\_to\_structure\_a\_web\_form", "Learn/Forms")}}
 
-## In this module
+In this module
+--------------
 
-- [Your first form](/en-US/docs/Learn/Forms/Your_first_form)
-- [How to structure a web form](/en-US/docs/Learn/Forms/How_to_structure_a_web_form)
-- [Basic native form controls](/en-US/docs/Learn/Forms/Basic_native_form_controls)
-- [The HTML5 input types](/en-US/docs/Learn/Forms/HTML5_input_types)
-- [Other form controls](/en-US/docs/Learn/Forms/Other_form_controls)
-- [Styling web forms](/en-US/docs/Learn/Forms/Styling_web_forms)
-- [Advanced form styling](/en-US/docs/Learn/Forms/Advanced_form_styling)
-- [UI pseudo-classes](/en-US/docs/Learn/Forms/UI_pseudo-classes)
-- [Client-side form validation](/en-US/docs/Learn/Forms/Form_validation)
-- [Sending form data](/en-US/docs/Learn/Forms/Sending_and_retrieving_form_data)
+-   [Your first form](/en-US/docs/Learn/Forms/Your_first_form)
+-   [How to structure a web form](/en-US/docs/Learn/Forms/How_to_structure_a_web_form)
+-   [Basic native form controls](/en-US/docs/Learn/Forms/Basic_native_form_controls)
+-   [The HTML5 input types](/en-US/docs/Learn/Forms/HTML5_input_types)
+-   [Other form controls](/en-US/docs/Learn/Forms/Other_form_controls)
+-   [Styling web forms](/en-US/docs/Learn/Forms/Styling_web_forms)
+-   [Advanced form styling](/en-US/docs/Learn/Forms/Advanced_form_styling)
+-   [UI pseudo-classes](/en-US/docs/Learn/Forms/UI_pseudo-classes)
+-   [Client-side form validation](/en-US/docs/Learn/Forms/Form_validation)
+-   [Sending form data](/en-US/docs/Learn/Forms/Sending_and_retrieving_form_data)
 
 ### Advanced Topics
 
-- [How to build custom form controls](/en-US/docs/Learn/Forms/How_to_build_custom_form_controls)
-- [Sending forms through JavaScript](/en-US/docs/Learn/Forms/Sending_forms_through_JavaScript)
-- [Property compatibility table for form widgets](/en-US/docs/Learn/Forms/Property_compatibility_table_for_form_controls)
+-   [How to build custom form controls](/en-US/docs/Learn/Forms/How_to_build_custom_form_controls)
+-   [Sending forms through JavaScript](/en-US/docs/Learn/Forms/Sending_forms_through_JavaScript)
+-   [Property compatibility table for form widgets](/en-US/docs/Learn/Forms/Property_compatibility_table_for_form_controls)

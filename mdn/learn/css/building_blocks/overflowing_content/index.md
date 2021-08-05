@@ -1,4 +1,4 @@
---- title: Overflowing content slug: Learn/CSS/Building_blocks/Overflowing_content tags: - Beginner - Block Formatting Context - CSS - Data Loss - Learn - overflow ---
+--- title: Overflowing content slug: Learn/CSS/Building\_blocks/Overflowing\_content tags: - Beginner - Block Formatting Context - CSS - Data Loss - Learn - overflow ---
 
 {{LearnSidebar}}{{PreviousMenuNext("Learn/CSS/Building\_blocks/Handling\_different\_text\_directions", "Learn/CSS/Building\_blocks/Values\_and\_units", "Learn/CSS/Building\_blocks")}}
 
@@ -6,11 +6,13 @@ Overflow is what happens when there is too much content to fit in a container. I
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Basic computer literacy, <a href="/en-US/docs/Learn/Getting_started_with_the_web/Installing_basic_software">basic software installed</a>, basic knowledge of <a href="/en-US/docs/Learn/Getting_started_with_the_web/Dealing_with_files">working with files</a>, HTML basics (study <a href="/en-US/docs/Learn/HTML/Introduction_to_HTML">Introduction to HTML</a>), and an idea of how CSS works (study <a href="/en-US/docs/Learn/CSS/First_steps">CSS first steps</a>.)</td></tr><tr class="even"><td>Objective:</td><td>To understand overflow and how to manage it.</td></tr></tbody></table>
 
-## What is overflow?
+What is overflow?
+-----------------
 
 Everything in CSS is a box. You can constrain the size of these boxes by assigning values of {{cssxref("width")}} and {{cssxref("height")}} (or {{cssxref("inline-size")}} and {{cssxref("block-size")}}). **Overflow happens when there is too much content to fit in a box.** CSS provides various tools to manage overflow. As you go further with CSS layout and writing CSS, you will encounter more overflow situations.
 
-## CSS tries to avoid "data loss"
+CSS tries to avoid "data loss"
+------------------------------
 
 Let's consider two examples that demonstrate the default behavior of CSS when there is overflow.
 
@@ -30,7 +32,8 @@ If you restrict a box with a `width` or a `height`, CSS trusts you to know what 
 
 The next two lessons explain different approaches to control sizing in ways that are less prone to overflow. However, if you need a fixed size, you can also control how the overflow behaves. Let's read on!
 
-## The overflow property
+The overflow property
+---------------------
 
 The  {{cssxref("overflow")}} property is how you take control of an element's overflow. It is the way you instruct the browser how it should behave. The default value of overflow is `visible`. With this default, we can see content when it overflows.
 
@@ -62,11 +65,13 @@ If you only want scrollbars to appear when there is more content than can fit in
 
 {{EmbedGHLiveSample("css-examples/learn/overflow/auto.html", '100%', 600)}}
 
-## Overflow establishes a Block Formatting Context
+Overflow establishes a Block Formatting Context
+-----------------------------------------------
 
 When you use a value of overflow such as `scroll` or `auto`, you create a **Block Formatting Context** (BFC). The content of the box that you have changed the value of `overflow` for acquires a self-contained layout. Content outside the container cannot poke into the container, and nothing can poke out of that container into the surrounding layout. This enables scrolling behavior, as all box content needs to be contained and not overlap, in order to create a consistent scrolling experience.
 
-## Unwanted overflow in web design
+Unwanted overflow in web design
+-------------------------------
 
 Modern layout methods (described in  [CSS layout](/en-US/docs/Learn/CSS/CSS_layout)) manage overflow. They largely work without assumptions or dependencies for how much content there will be on a web page.
 
@@ -74,24 +79,27 @@ This has not always been the norm. In the past, some sites were built with fixed
 
 When developing a site, always keep overflow in mind. Test designs with large and small amounts of content. Increase the font sizes of text. Generally ensure that your CSS works in a robust way. Changing the value of overflow to hide content, or to add scrollbars, is likely to be reserved for a few select use cases. (for example, where you intend to have a scrolling box)
 
-## Test your skills!
+Test your skills!
+-----------------
 
 There is a lot to absorb from this lesson! Can you remember the most important information? To check your understanding, see [Test your skills: overflow](/en-US/docs/Learn/CSS/Building_blocks/Overflow_Tasks).
 
-## Summary
+Summary
+-------
 
 This lesson introduced the concept of overflow. You should understand that default CSS avoids making overflowing content invisible. You have discovered that you can manage potential overflow, and also, that you should test work to make sure it does not accidentally cause problematic overflow.
 
 {{PreviousMenuNext("Learn/CSS/Building\_blocks/Handling\_different\_text\_directions", "Learn/CSS/Building\_blocks/Values\_and\_units", "Learn/CSS/Building\_blocks")}}
 
-## In this module
+In this module
+--------------
 
 1.  [Cascade and inheritance](/en-US/docs/Learn/CSS/Building_blocks/Cascade_and_inheritance)
 2.  [CSS selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors)
-    - [Type, class, and ID selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Type_Class_and_ID_Selectors)
-    - [Attribute selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Attribute_selectors)
-    - [Pseudo-classes and pseudo-elements](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Pseudo-classes_and_pseudo-elements)
-    - [Combinators](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Combinators)
+    -   [Type, class, and ID selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Type_Class_and_ID_Selectors)
+    -   [Attribute selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Attribute_selectors)
+    -   [Pseudo-classes and pseudo-elements](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Pseudo-classes_and_pseudo-elements)
+    -   [Combinators](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Combinators)
 3.  [The box model](/en-US/docs/Learn/CSS/Building_blocks/The_box_model)
 4.  [Backgrounds and borders](/en-US/docs/Learn/CSS/Building_blocks/Backgrounds_and_borders)
 5.  [Handling different text directions](/en-US/docs/Learn/CSS/Building_blocks/Handling_different_text_directions)

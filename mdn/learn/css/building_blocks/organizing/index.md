@@ -1,4 +1,4 @@
---- title: Organizing your CSS slug: Learn/CSS/Building_blocks/Organizing tags: - Beginner - CSS - CodingScripting - Learn - comments - formatting - methodologies - organizing - post-processor - pre-processor - styleguide ---
+--- title: Organizing your CSS slug: Learn/CSS/Building\_blocks/Organizing tags: - Beginner - CSS - CodingScripting - Learn - comments - formatting - methodologies - organizing - post-processor - pre-processor - styleguide ---
 
 {{LearnSidebar}}{{PreviousMenu("Learn/CSS/Building\_blocks/Debugging\_CSS", "Learn/CSS/Building\_blocks")}}
 
@@ -6,7 +6,8 @@ As you start to work on larger stylesheets and big projects you will discover th
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Basic computer literacy, <a href="/en-US/docs/Learn/Getting_started_with_the_web/Installing_basic_software">basic software installed</a>, basic knowledge of <a href="/en-US/docs/Learn/Getting_started_with_the_web/Dealing_with_files">working with files</a>, HTML basics (study <a href="/en-US/docs/Learn/HTML/Introduction_to_HTML">Introduction to HTML</a>), and an idea of how CSS works (study <a href="/en-US/docs/Learn/CSS/First_steps">CSS first steps</a>.)</td></tr><tr class="even"><td>Objective:</td><td>To learn some tips and best practices for organizing stylesheets, and find out about some of the naming conventions and tools in common usage to help with CSS organization and team working.</td></tr></tbody></table>
 
-## Tips to keep your CSS tidy
+Tips to keep your CSS tidy
+--------------------------
 
 Here are some general suggestions for ways to keep your stylesheets organized and tidy.
 
@@ -78,12 +79,12 @@ Perhaps you followed a tutorial to achieve something, and the CSS isn't very sel
 
 It is a good idea to have all of the common styling first in the stylesheet. This means all of the styles which will generally apply unless you do something special with that element. You will typically have rules set up for:
 
-- `body`
-- `p`
-- `h1`, `h2`, `h3`, `h4`, `h5`
-- `ul` and `ol`
-- The `table` properties
-- Links
+-   `body`
+-   `p`
+-   `h1`, `h2`, `h3`, `h4`, `h5`
+-   `ul` and `ol`
+-   The `table` properties
+-   Links
 
 In this section of the stylesheet we are providing default styling for the type on the site, setting up a default style for data tables and lists and so on.
 
@@ -151,7 +152,8 @@ For example, we might have an online store as part of the site, with a lot of CS
 
 This can make it easier to keep your CSS organized, and also means that if multiple people are working on the CSS, you will have fewer situations where two people need to work on the same stylesheet at once, leading to conflicts in source control.
 
-## Other tools that can help
+Other tools that can help
+-------------------------
 
 CSS itself doesn't have much in the way of in-built organization; therefore, the level of consistency in your CSS will largely depend on you. The web community has developed various tools and approaches that can help you to manage larger CSS projects. Since you are likely to come across these aids when working with other people, and since they are often of help generally, we've included a short guide to some of them.
 
@@ -207,7 +209,7 @@ In OOCSS, you would create one pattern called `media` that would have all of the
 
     .list-item {
       border-bottom: 1px solid grey;
-    }
+    } 
 
 In your HTML, the comment would need both the `media` and `comment` classes applied:
 
@@ -252,7 +254,7 @@ The disadvantage of using such a system is that they can seem overly complex, es
 
 ### Build systems for CSS
 
-Another way to organize CSS is to take advantage of some of the tooling that is available for front-end developers, which allows you to take a slightly more programmatic approach to writing CSS. There are a number of tools, which we refer to as _pre-processors_ and _post-processors_. A pre-processor runs over your raw files and turns them into a stylesheet, whereas a post-processor takes your finished stylesheet and does something to it — perhaps to optimize it in order that it will load faster.
+Another way to organize CSS is to take advantage of some of the tooling that is available for front-end developers, which allows you to take a slightly more programmatic approach to writing CSS. There are a number of tools, which we refer to as *pre-processors* and *post-processors*. A pre-processor runs over your raw files and turns them into a stylesheet, whereas a post-processor takes your finished stylesheet and does something to it — perhaps to optimize it in order that it will load faster.
 
 Using any of these tools will require that your development environment be able to run the scripts that do the pre- and post-processing. Many code editors can do this for you, or you can install command line tools to help.
 
@@ -299,7 +301,8 @@ If the partials are all loaded into an index file, as implied above, you can the
 
 If you are concerned about adding size to your stylesheets, for example, by adding a lot of additional comments and whitespace, then a post-processing step could be to optimize the CSS by stripping out anything unnecessary in the production version. An example of a post-processor solution for doing this would be [cssnano](https://cssnano.co/).
 
-## Wrapping up
+Wrapping up
+-----------
 
 This is the final part of our Learning CSS Guide, and as you can see there are many ways in which your exploration of CSS can continue from this point.
 
@@ -309,14 +312,15 @@ You should also now have the skills to explore the rest of the [MDN CSS](/en-US/
 
 {{PreviousMenu("Learn/CSS/Building\_blocks/Debugging\_CSS", "Learn/CSS/Building\_blocks")}}
 
-## In this module
+In this module
+--------------
 
 1.  [Cascade and inheritance](/en-US/docs/Learn/CSS/Building_blocks/Cascade_and_inheritance)
 2.  [CSS selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors)
-    - [Type, class, and ID selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Type_Class_and_ID_Selectors)
-    - [Attribute selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Attribute_selectors)
-    - [Pseudo-classes and pseudo-elements](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Pseudo-classes_and_pseudo-elements)
-    - [Combinators](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Combinators)
+    -   [Type, class, and ID selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Type_Class_and_ID_Selectors)
+    -   [Attribute selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Attribute_selectors)
+    -   [Pseudo-classes and pseudo-elements](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Pseudo-classes_and_pseudo-elements)
+    -   [Combinators](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Combinators)
 3.  [The box model](/en-US/docs/Learn/CSS/Building_blocks/The_box_model)
 4.  [Backgrounds and borders](/en-US/docs/Learn/CSS/Building_blocks/Backgrounds_and_borders)
 5.  [Handling different text directions](/en-US/docs/Learn/CSS/Building_blocks/Handling_different_text_directions)

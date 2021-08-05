@@ -1,4 +1,4 @@
---- title: Advanced styling effects slug: Learn/CSS/Building_blocks/Advanced_styling_effects tags: - Article - Beginner - Blend modes - Boxes - CSS - CodingScripting - Filters - Styling - box shadows - effects - shapes ---
+--- title: Advanced styling effects slug: Learn/CSS/Building\_blocks/Advanced\_styling\_effects tags: - Article - Beginner - Blend modes - Boxes - CSS - CodingScripting - Filters - Styling - box shadows - effects - shapes ---
 
 {{LearnSidebar}}
 
@@ -6,7 +6,8 @@ This article acts as a box of tricks, providing an introduction to some interest
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>HTML basics (study <a href="/en-US/docs/Learn/HTML/Introduction_to_HTML">Introduction to HTML</a>) and an idea of how CSS works (study <a href="/en-US/docs/Learn/CSS/First_steps">CSS first steps</a>.)</td></tr><tr class="even"><td>Objective:</td><td>To get an idea about how to use some of the advanced styling effects available in modern browsers.</td></tr></tbody></table>
 
-## Box shadows
+Box shadows
+-----------
 
 {{cssxref("box-shadow")}} allows you to apply one or more drop shadows to an element's box. Like text shadows, box shadows are supported pretty well across browsers, including IE9+ and Edge. Users of older IE versions might just have to cope with no shadows, so just test your designs to make sure your content is legible without them.
 
@@ -124,7 +125,8 @@ When the button is pressed in, the active state causes the first box shadow to b
 
 **Note**: There is another item that can be set in the `box-shadow` value — another length value can be optionally set just before the color value, which is a **spread radius**. If set, this causes the shadow to become bigger than the original box. It is not very commonly used, but worth mentioning.
 
-## Filters
+Filters
+-------
 
 While you can't change the composure of an image using CSS, there are some creative things you can do. One very nice property, which can help you bring interest to your designs, is the  {{cssxref("filter")}} property. This property enables Photoshop-like filters right from CSS.
 
@@ -142,14 +144,15 @@ In this next example we are applying our filter to a box, and comparing it to a 
 
 {{EmbedGHLiveSample("css-examples/learn/images/filter-text.html", '100%', 600)}}
 
-## Blend modes
+Blend modes
+-----------
 
 CSS blend modes allow us to add blend modes to elements that specify a blending effect when two elements overlap — the final color shown for each pixel will be the result of a combination of the original pixel color, and that of the pixel in the layer underneath it. Blend modes are again very familiar to users of graphics applications like Photoshop.
 
 There are two properties that use blend modes in CSS:
 
-- {{cssxref("background-blend-mode")}}, which blends together multiple background images and colors set on a single element.
-- {{cssxref("mix-blend-mode")}}, which blends together the element it is set on with elements it is overlapping — both background and content.
+-   {{cssxref("background-blend-mode")}}, which blends together multiple background images and colors set on a single element.
+-   {{cssxref("mix-blend-mode")}}, which blends together the element it is set on with elements it is overlapping — both background and content.
 
 You can find a lot more examples than are available here in our [blend-modes.html](https://mdn.github.io/learning-area/css/styling-boxes/advanced_box_effects/blend-modes.html) example page (see [source code](https://github.com/mdn/learning-area/blob/master/css/styling-boxes/advanced_box_effects/blend-modes.html)), and on the {{cssxref("&lt;blend-mode&gt;")}} reference page.
 
@@ -251,7 +254,8 @@ You can see here that the multiply mix blend has blended together not only the t
 
 **Note**: Don't worry if you don't understand some of the layout properties above, like {{cssxref("position")}}, {{cssxref("top")}}, {{cssxref("bottom")}}, {{cssxref("z-index")}}, etc. We will cover these in detail in our [CSS Layout](/en-US/docs/Learn/CSS/CSS_layout) module.
 
-## CSS shapes
+CSS shapes
+----------
 
 While it is true that everything in CSS is a rectangular box, and images are a physical rectangular box, we can make it look as if our content flows around non-rectangular things by using [CSS Shapes](/en-US/docs/Web/CSS/CSS_Shapes).
 
@@ -267,7 +271,8 @@ The shape in this example is not reacting to the content of the image file. Inst
 
 The `circle()` function is just one of a few basic shapes that are defined, however there are a number of different ways to create shapes. For more information and example code for CSS Shapes see the [Guides to CSS Shapes](/en-US/docs/Web/CSS/CSS_Shapes/Overview_of_CSS_Shapes) on MDN.
 
-## -webkit-background-clip: text
+-webkit-background-clip: text
+-----------------------------
 
 Another feature we thought we'd mention briefly is the `text` value for {{cssxref("background-clip")}}. When used along with the proprietary `-webkit-text-fill-color: transparent;` feature, this allows you to clip background images to the shape of the element's text, making for some nice effects. This is not an official standard, but has been implemented across multiple browsers, as it is popular, and used fairly widely by developers. When used in this context, both of the properties would require a `-webkit-` vendor prefix, even for Non-Webkit/Chrome-based browsers:
 
@@ -282,6 +287,7 @@ If you do want to use such features in your production work, make sure to test a
 
 **Note**: For a full `-webkit-background-clip: text` code example, see [background-clip-text.html](https://mdn.github.io/learning-area/css/styling-boxes/advanced_box_effects/background-clip-text.html) (see also the [source code](https://github.com/mdn/learning-area/blob/master/css/styling-boxes/advanced_box_effects/background-clip-text.html)).
 
-## Summary
+Summary
+-------
 
 We hope this article was fun — playing with shiny toys generally is, and it is always interesting to see what kinds of advanced styling tools are becoming available in modern browsers.

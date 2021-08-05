@@ -1,8 +1,9 @@
---- title: Example 5 slug: Learn/Forms/How_to_build_custom_form_controls/Example_5 tags: - Forms - HTML ---
+--- title: Example 5 slug: Learn/Forms/How\_to\_build\_custom\_form\_controls/Example\_5 tags: - Forms - HTML ---
 
 This is the last example that explain [how to build custom form widgets](/en-US/docs/Learn/Forms/How_to_build_custom_form_controls).
 
-## Change states
+Change states
+-------------
 
 ### HTML Content
 

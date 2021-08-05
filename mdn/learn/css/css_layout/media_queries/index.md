@@ -1,4 +1,4 @@
---- title: Beginner's guide to media queries slug: Learn/CSS/CSS_layout/Media_queries tags: - Beginner - CSS - Layout - Learn - media query ---
+--- title: Beginner's guide to media queries slug: Learn/CSS/CSS\_layout/Media\_queries tags: - Beginner - CSS - Layout - Learn - media query ---
 
 {{learnsidebar}}{{PreviousMenuNext("Learn/CSS/CSS\_layout/Responsive\_Design", "Learn/CSS/CSS\_layout/Legacy\_Layout\_Methods", "Learn/CSS/CSS\_layout")}}
 
@@ -6,7 +6,8 @@ The **CSS Media Query** gives you a way to apply CSS only when the browser and d
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>HTML basics (study <a href="/en-US/docs/Learn/HTML/Introduction_to_HTML">Introduction to HTML</a>), and an idea of how CSS works (study <a href="/en-US/docs/Learn/CSS/First_steps">CSS first steps</a> and <a href="/en-US/docs/Learn/CSS/Building_blocks">CSS building blocks</a>.)</td></tr><tr class="even"><td>Objective:</td><td>To understand how to use media queries, and the most common approach for using them to create responsive designs.</td></tr></tbody></table>
 
-## Media Query Basics
+Media Query Basics
+------------------
 
 The simplest media query syntax looks like this:
 
@@ -16,18 +17,18 @@ The simplest media query syntax looks like this:
 
 It consists of:
 
-- A media type, which tells the browser what kind of media this code is for (e.g. print, or screen).
-- A media expression, which is a rule, or test that must be passed for the contained CSS to be applied.
-- A set of CSS rules that will be applied if the test passes and the media type is correct.
+-   A media type, which tells the browser what kind of media this code is for (e.g. print, or screen).
+-   A media expression, which is a rule, or test that must be passed for the contained CSS to be applied.
+-   A set of CSS rules that will be applied if the test passes and the media type is correct.
 
 ### Media types
 
 The possible types of media you can specify are:
 
-- `all`
-- `print`
-- `screen`
-- `speech`
+-   `all`
+-   `print`
+-   `screen`
+-   `speech`
 
 The following media query will only set the body to 12pt if the page is printed. It will not apply when the page is loaded in a browser.
 
@@ -107,7 +108,8 @@ Also in Level 4 is the `pointer` media feature. This takes three possible values
 
 Using `pointer` can help you to design better interfaces that respond to the type of interaction a user is having with a screen. For example, you could create larger hit areas if you know that the user is interacting with the device as a touchscreen.
 
-## More complex media queries
+More complex media queries
+--------------------------
 
 With all of the different possible media queries, you may want to combine them, or create lists of queries — any of which could be matched.
 
@@ -147,7 +149,8 @@ You can negate an entire media query by using the `not` operator. This reverses 
 
 [Open this example](https://mdn.github.io/css-examples/learn/media-queries/not.html) in the browser, or [view the source](https://github.com/mdn/css-examples/blob/master/learn/media-queries/not.html).
 
-## How to choose breakpoints
+How to choose breakpoints
+-------------------------
 
 In the early days of responsive design, many designers would attempt to target very specific screen sizes. Lists of the sizes of the screens of popular phones and tablets were published in order that designs could be created to neatly match those viewports.
 
@@ -157,7 +160,8 @@ The [Responsive Design Mode](/en-US/docs/Tools/Responsive_Design_Mode) in Firef
 
 ![A screenshot of a layout in a mobile view in Firefox DevTools.](rwd-mode.png)
 
-## Active learning: mobile first responsive design
+Active learning: mobile first responsive design
+-----------------------------------------------
 
 Broadly, you can take two approaches to a responsive design. You can start with your desktop or widest view and then add breakpoints to move things around as the viewport becomes smaller, or you can start with the smallest view and add layout as the viewport becomes larger. This second approach is described as **mobile first** responsive design and is quite often the best approach to follow.
 
@@ -318,7 +322,8 @@ Lets continue to expand the width until we feel there is enough room for the sid
 
 If you look at the final example at different widths you can see how the design responds and works as a single column, two columns, or three columns, depending on the available width. This is a very simple example of a mobile first responsive design.
 
-## The viewport meta tag
+The viewport meta tag
+---------------------
 
 If you look at the HTML source in the above example, you'll see the following element included in the head of the document:
 
@@ -332,7 +337,8 @@ To remedy this, including a viewport meta tag like the one above on your page te
 
 There are a number of other options you can put inside the `content` attribute of the viewport meta tag — see [Using the viewport meta tag to control layout on mobile browsers](/en-US/docs/Web/HTML/Viewport_meta_tag) for more details.
 
-## Do you really need a media query?
+Do you really need a media query?
+---------------------------------
 
 Flexbox, Grid, and multi-column layout all give you ways to create flexible and even responsive components without the need for a media query. It's always worth considering whether these layout methods can achieve what you want without adding media queries. For example, you might want a set of cards that are at least 200 pixels wide, with as many of these 200 pixels as will fit into the main article. This can be achieved with grid layout, using no media queries at all.
 
@@ -379,11 +385,13 @@ This could be achieved using the following:
 
 With the example open in your browser, make the screen wider and narrower to see the number of column tracks change. The nice thing about this method is that grid is not looking at the viewport width, but the width it has available for this component. It might seem strange to wrap up a section about media queries with a suggestion that you might not need one at all! However, in practice you will find that good use of modern layout methods, enhanced with media queries, will give the best results.
 
-## Test your skills!
+Test your skills!
+-----------------
 
 You've reached the end of this article, but can you remember the most important information? You can find a test to verify that you've retained this information before you move on — see [Test your skills: Responsive Web Design](/en-US/docs/Learn/CSS/CSS_layout/rwd_skills).
 
-## Summary
+Summary
+-------
 
 In this lesson you have learned about media queries, and also discovered how to use them in practice to create a mobile first responsive design.
 
@@ -393,17 +401,18 @@ You could also experiment with adding different components and seeing whether th
 
 {{PreviousMenuNext("Learn/CSS/CSS\_layout/Responsive\_Design", "Learn/CSS/CSS\_layout/Legacy\_Layout\_Methods", "Learn/CSS/CSS\_layout")}}
 
-## In this module
+In this module
+--------------
 
-- [Introduction to CSS layout](/en-US/docs/Learn/CSS/CSS_layout/Introduction)
-- [Normal flow](/en-US/docs/Learn/CSS/CSS_layout/Normal_Flow)
-- [Flexbox](/en-US/docs/Learn/CSS/CSS_layout/Flexbox)
-- [Grid](/en-US/docs/Learn/CSS/CSS_layout/Grids)
-- [Floats](/en-US/docs/Learn/CSS/CSS_layout/Floats)
-- [Positioning](/en-US/docs/Learn/CSS/CSS_layout/Positioning)
-- [Multiple-column layout](/en-US/docs/Learn/CSS/CSS_layout/Multiple-column_Layout)
-- [Responsive design](/en-US/docs/Learn/CSS/CSS_layout/Responsive_Design)
-- [Beginner's guide to media queries](/en-US/docs/Learn/CSS/CSS_layout/Media_queries)
-- [Legacy layout methods](/en-US/docs/Learn/CSS/CSS_layout/Legacy_Layout_Methods)
-- [Supporting older browsers](/en-US/docs/Learn/CSS/CSS_layout/Supporting_Older_Browsers)
-- [Fundamental layout comprehension assessment](/en-US/docs/Learn/CSS/CSS_layout/Fundamental_Layout_Comprehension)
+-   [Introduction to CSS layout](/en-US/docs/Learn/CSS/CSS_layout/Introduction)
+-   [Normal flow](/en-US/docs/Learn/CSS/CSS_layout/Normal_Flow)
+-   [Flexbox](/en-US/docs/Learn/CSS/CSS_layout/Flexbox)
+-   [Grid](/en-US/docs/Learn/CSS/CSS_layout/Grids)
+-   [Floats](/en-US/docs/Learn/CSS/CSS_layout/Floats)
+-   [Positioning](/en-US/docs/Learn/CSS/CSS_layout/Positioning)
+-   [Multiple-column layout](/en-US/docs/Learn/CSS/CSS_layout/Multiple-column_Layout)
+-   [Responsive design](/en-US/docs/Learn/CSS/CSS_layout/Responsive_Design)
+-   [Beginner's guide to media queries](/en-US/docs/Learn/CSS/CSS_layout/Media_queries)
+-   [Legacy layout methods](/en-US/docs/Learn/CSS/CSS_layout/Legacy_Layout_Methods)
+-   [Supporting older browsers](/en-US/docs/Learn/CSS/CSS_layout/Supporting_Older_Browsers)
+-   [Fundamental layout comprehension assessment](/en-US/docs/Learn/CSS/CSS_layout/Fundamental_Layout_Comprehension)

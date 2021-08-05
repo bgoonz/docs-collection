@@ -1,4 +1,4 @@
---- title: Fundamental text and font styling slug: Learn/CSS/Styling_text/Fundamentals tags: - Article - Beginner - CSS - Guide - Style - Text - alignment - family - font - shorthand - spacing - weight ---
+--- title: Fundamental text and font styling slug: Learn/CSS/Styling\_text/Fundamentals tags: - Article - Beginner - CSS - Guide - Style - Text - alignment - family - font - shorthand - spacing - weight ---
 
 {{LearnSidebar}}
 
@@ -8,7 +8,8 @@
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Basic computer literacy, HTML basics (study <a href="/en-US/docs/Learn/HTML/Introduction_to_HTML">Introduction to HTML</a>), CSS basics (study <a href="/en-US/docs/Learn/CSS/First_steps">Introduction to CSS</a>).</td></tr><tr class="even"><td>Objective:</td><td>To learn the fundamental properties and techniques needed to style text on web pages.</td></tr></tbody></table>
 
-## What is involved in styling text in CSS?
+What is involved in styling text in CSS?
+----------------------------------------
 
 If you have worked with HTML or CSS already, e.g., by working through these tutorials in order, then you know that text inside an element is laid out inside the element's content box. It starts at the top left of the content area (or the top right, in the case of RTL language content), and flows towards the end of the line. Once it reaches the end, it goes down to the next line and flows to the end again. This pattern repeats until all the content has been placed in the box. Text content effectively behaves like a series of inline elements, being laid out on lines adjacent to one another, and not creating line breaks until the end of the line is reached, or unless you force a line break manually using the {{htmlelement("br")}} element.
 
@@ -16,12 +17,13 @@ If you have worked with HTML or CSS already, e.g., by working through these tuto
 
 The CSS properties used to style text generally fall into two categories, which we'll look at separately in this article:
 
-- **Font styles**: Properties that affect a text's font, e.g., which font gets applied, it's size, and whether it's bold, italic, etc.
-- **Text layout styles**: Properties that affect the spacing and other layout features of the text, allowing manipulation of, for example, the space between lines and letters, and how the text is aligned within the content box.
+-   **Font styles**: Properties that affect a text's font, e.g., which font gets applied, it's size, and whether it's bold, italic, etc.
+-   **Text layout styles**: Properties that affect the spacing and other layout features of the text, allowing manipulation of, for example, the space between lines and letters, and how the text is aligned within the content box.
 
 **Note**: Bear in mind that the text inside an element is all affected as one single entity. You can't select and style subsections of text unless you wrap them in an appropriate element (such as a {{htmlelement("span")}} or {{htmlelement("strong")}}), or use a text-specific pseudo-element like [::first-letter](/en-US/docs/Web/CSS/::first-letter) (selects the first letter of an element's text), [::first-line](/en-US/docs/Web/CSS/::first-line) (selects the first line of an element's text), or [::selection](/en-US/docs/Web/CSS/::selection) (selects the text currently highlighted by the cursor.)
 
-## Fonts
+Fonts
+-----
 
 Let's move straight on to look at properties for styling fonts. In this example, we'll apply some CSS properties to the following HTML sample:
 
@@ -79,7 +81,7 @@ Speaking of font availability, there are only a certain number of fonts that are
 
 Most of the time, as web developers we want to have more specific control over the fonts used to display our text content. The problem is to find a way to know which font is available on the computer used to see our web pages. There is no way to know this in every case, but the web safe fonts are known to be available on nearly all instances of the most used operating systems (Windows, macOS, the most common Linux distributions, Android, and iOS).
 
-The list of actual web safe fonts will change as operating systems evolve, but it's reasonable to consider the following fonts web safe, at least for now (many of them have been popularized thanks to the Microsoft _[Core fonts for the Web](https://en.wikipedia.org/wiki/Core_fonts_for_the_Web)_ initiative in the late 90s and early 2000s):
+The list of actual web safe fonts will change as operating systems evolve, but it's reasonable to consider the following fonts web safe, at least for now (many of them have been popularized thanks to the Microsoft *[Core fonts for the Web](https://en.wikipedia.org/wiki/Core_fonts_for_the_Web)* initiative in the late 90s and early 2000s):
 
 <table><thead><tr class="header"><th>Name</th><th>Generic type</th><th>Notes</th></tr></thead><tbody><tr class="odd"><td>Arial</td><td>sans-serif</td><td>It's often considered best practice to also add <em>Helvetica</em> as a preferred alternative to <em>Arial</em> as, although their font faces are almost identical, <em>Helvetica</em> is considered to have a nicer shape, even if <em>Arial</em> is more broadly available.</td></tr><tr class="even"><td>Courier New</td><td>monospace</td><td>Some OSes have an alternative (possibly older) version of the <em>Courier New</em> font called <em>Courier</em>. It's considered best practice to use both with <em>Courier New</em> as the preferred alternative.</td></tr><tr class="odd"><td>Georgia</td><td>serif</td><td></td></tr><tr class="even"><td>Times New Roman</td><td>serif</td><td>Some OSes have an alternative (possibly older) version of the <em>Times New Roman</em> font called <em>Times</em>. It's considered best practice to use both with <em>Times New Roman</em> as the preferred alternative.</td></tr><tr class="odd"><td>Trebuchet MS</td><td>sans-serif</td><td>You should be careful with using this font — it isn't widely available on mobile OSes.</td></tr><tr class="even"><td>Verdana</td><td>sans-serif</td><td></td></tr></tbody></table>
 
@@ -89,15 +91,15 @@ The list of actual web safe fonts will change as operating systems evolve, but i
 
 #### Default fonts
 
-CSS defines five generic names for fonts:  `serif`, `sans-serif`, `monospace`, `cursive`, and `fantasy`. These are very generic and the exact font face used from these generic names can vary between each browser and each operating system that they are displayed on. It represents a _worst case scenario_ where the browser will try its best to provide a font that looks appropriate. `serif`, `sans-serif`, and `monospace` are quite predictable and should provide something reasonable. On the other hand, `cursive` and `fantasy` are less predictable and we recommend using them very carefully, testing as you go.
+CSS defines five generic names for fonts:  `serif`, `sans-serif`, `monospace`, `cursive`, and `fantasy`. These are very generic and the exact font face used from these generic names can vary between each browser and each operating system that they are displayed on. It represents a *worst case scenario* where the browser will try its best to provide a font that looks appropriate. `serif`, `sans-serif`, and `monospace` are quite predictable and should provide something reasonable. On the other hand, `cursive` and `fantasy` are less predictable and we recommend using them very carefully, testing as you go.
 
 The five names are defined as follows:
 
-<table><thead><tr class="header"><th>Term</th><th>Definition</th><th>Example</th></tr></thead><tbody><tr class="odd"><td><code>serif</code></td><td>Fonts that have serifs (the flourishes and other small details you see at the ends of the strokes in some typefaces)</td><td><span style="font-family: serif;">My big red elephant</span></td></tr><tr class="even"><td><code>sans-serif</code></td><td>Fonts that don't have serifs.</td><td><span style="font-family: sans-serif;">My big red elephant</span></td></tr><tr class="odd"><td><code>monospace</code></td><td>Fonts where every character has the same width, typically used in code listings.</td><td><span style="font-family: monospace;">My big red elephant</span></td></tr><tr class="even"><td><code>cursive</code></td><td>Fonts that are intended to emulate handwriting, with flowing, connected strokes.</td><td><span style="font-family: cursive;">My big red elephant</span></td></tr><tr class="odd"><td><code>fantasy</code></td><td>Fonts that are intended to be decorative.</td><td><span style="font-family: fantasy;">My big red elephant</span></td></tr></tbody></table>
+<table><thead><tr class="header"><th>Term</th><th>Definition</th><th>Example</th></tr></thead><tbody><tr class="odd"><td><code>serif</code></td><td>Fonts that have serifs (the flourishes and other small details you see at the ends of the strokes in some typefaces)</td><td><span style="font-family: serif">My big red elephant</span></td></tr><tr class="even"><td><code>sans-serif</code></td><td>Fonts that don't have serifs.</td><td><span style="font-family: sans-serif">My big red elephant</span></td></tr><tr class="odd"><td><code>monospace</code></td><td>Fonts where every character has the same width, typically used in code listings.</td><td><span style="font-family: monospace">My big red elephant</span></td></tr><tr class="even"><td><code>cursive</code></td><td>Fonts that are intended to emulate handwriting, with flowing, connected strokes.</td><td><span style="font-family: cursive">My big red elephant</span></td></tr><tr class="odd"><td><code>fantasy</code></td><td>Fonts that are intended to be decorative.</td><td><span style="font-family: fantasy">My big red elephant</span></td></tr></tbody></table>
 
 #### Font stacks
 
-Since you can't guarantee the availability of the fonts you want to use on your webpages (even a web font _could_ fail for some reason), you can supply a **font stack** so that the browser has multiple fonts it can choose from. This involves a `font-family` value consisting of multiple font names separated by commas, e.g.,
+Since you can't guarantee the availability of the fonts you want to use on your webpages (even a web font *could* fail for some reason), you can supply a **font stack** so that the browser has multiple fonts it can choose from. This involves a `font-family` value consisting of multiple font names separated by commas, e.g.,
 
     p {
       font-family: "Trebuchet MS", Verdana, sans-serif;
@@ -137,9 +139,9 @@ This gives us the following result:
 
 In our previous module's [CSS values and units](/en-US/docs/Learn/CSS/Building_blocks/Values_and_units) article, we reviewed length and size units. Font size (set with the {{cssxref("font-size")}} property) can take values measured in most of these units (and others, such as [percentages](/en-US/docs/Learn/CSS/Building_blocks/Values_and_units#percentages)); however, the most common units you'll use to size text are:
 
-- `px` (pixels): The number of pixels high you want the text to be. This is an absolute unit — it results in the same final computed value for the font on the page in pretty much any situation.
-- `em`s: 1 `em` is equal to the font size set on the parent element of the current element we are styling (more specifically, the width of a capital letter M contained inside the parent element.) This can become tricky to work out if you have a lot of nested elements with different font sizes set, but it is doable, as you'll see below. Why bother? It is quite natural once you get used to it, and you can use `em` to size everything, not just text. You can have an entire website sized using `em`, which makes maintenance easy.
-- `rem`s: These work just like `em`, except that 1 `rem` is equal to the font size set on the root element of the document (i.e. {{htmlelement("html")}}), not the parent element. This makes doing the maths to work out your font sizes much easier, although if you want to support really old browsers, you might struggle — `rem` is not supported in Internet Explorer 8 and below.
+-   `px` (pixels): The number of pixels high you want the text to be. This is an absolute unit — it results in the same final computed value for the font on the page in pretty much any situation.
+-   `em`s: 1 `em` is equal to the font size set on the parent element of the current element we are styling (more specifically, the width of a capital letter M contained inside the parent element.) This can become tricky to work out if you have a lot of nested elements with different font sizes set, but it is doable, as you'll see below. Why bother? It is quite natural once you get used to it, and you can use `em` to size everything, not just text. You can have an entire website sized using `em`, which makes maintenance easy.
+-   `rem`s: These work just like `em`, except that 1 `rem` is equal to the font size set on the root element of the document (i.e. {{htmlelement("html")}}), not the parent element. This makes doing the maths to work out your font sizes much easier, although if you want to support really old browsers, you might struggle — `rem` is not supported in Internet Explorer 8 and below.
 
 The `font-size` of an element is inherited from that element's parent element. This all starts with the root element of the entire document — {{htmlelement("html")}} — the standard `font-size` of which is set to 16`px` across browsers. Any paragraph (or another element that doesn't have a different size set by the browser) inside the root element will have a final size of 16 `px`. Other elements may have different default sizes, for example, an {{htmlelement("h1")}} element has a size of 2 `em` set by default. So it will have a final size of 32 `px`.
 
@@ -189,28 +191,27 @@ Our new result is like so:
 
 CSS provides four common properties to alter the visual weight/emphasis of text:
 
-- {{cssxref("font-style")}}: Used to turn italic text on or off. Possible values are as follows (you'll rarely use this, unless you want to turn some italic styling off for some reason):
-  - `normal`: Sets the text to the normal font (turns existing italics off.)
-  - `italic`: Sets the text to use the _italic version of the font_, if available; if not, it will simulate italics with oblique instead.
-  - `oblique`: Sets the text to use a simulated version of an italic font, created by <span style="font-style: oblique;">slanting the normal version</span>.
-- {{cssxref("font-weight")}}: Sets how bold the text is. This has many values available in case you have many font variants available (such as _-light_, _-normal_, _-bold_, _-extrabold_, _-black_, etc.), but realistically you'll rarely use any of them except for `normal` and `bold`:
-  - `normal`, `bold`: Normal and **bold** font weight
-  - `lighter`, `bolder`: Sets the current element's boldness to be one step lighter or heavier than its parent element's boldness.
-  - `100`–`900`: Numeric boldness values that provide finer grained control than the above keywords, if needed.
-- {{cssxref("text-transform")}}: Allows you to set your font to be transformed. Values include:
-  - `none`: Prevents any transformation.
-  - `uppercase`: Transforms <span style="text-transform: uppercase;">all text to capitals</span>.
-  - `lowercase`: Transforms all text to lower case.
-  - `capitalize`: Transforms all words to <span style="text-transform: capitalize;">have the first letter capitalized</span>.
-  - `full-width`: Transforms all glyphs to be <span style="text-transform: full-width;">written inside a fixed-width square</span>, similar to a monospace font, allowing aligning of, e.g., Latin characters along with Asian language glyphs (like Chinese, Japanese, Korean).
-- {{cssxref("text-decoration")}}: Sets/unsets text decorations on fonts (you'll mainly use this to unset the default underline on links when styling them.) Available values are:
+-   {{cssxref("font-style")}}: Used to turn italic text on or off. Possible values are as follows (you'll rarely use this, unless you want to turn some italic styling off for some reason):
+    -   `normal`: Sets the text to the normal font (turns existing italics off.)
+    -   `italic`: Sets the text to use the *italic version of the font*, if available; if not, it will simulate italics with oblique instead.
+    -   `oblique`: Sets the text to use a simulated version of an italic font, created by <span style="font-style: oblique">slanting the normal version</span>.
+-   {{cssxref("font-weight")}}: Sets how bold the text is. This has many values available in case you have many font variants available (such as *-light*, *-normal*, *-bold*, *-extrabold*, *-black*, etc.), but realistically you'll rarely use any of them except for `normal` and `bold`:
+    -   `normal`, `bold`: Normal and **bold** font weight
+    -   `lighter`, `bolder`: Sets the current element's boldness to be one step lighter or heavier than its parent element's boldness.
+    -   `100`–`900`: Numeric boldness values that provide finer grained control than the above keywords, if needed. 
+-   {{cssxref("text-transform")}}: Allows you to set your font to be transformed. Values include:
+    -   `none`: Prevents any transformation.
+    -   `uppercase`: Transforms <span style="text-transform: uppercase">all text to capitals</span>.
+    -   `lowercase`: Transforms all text to lower case.
+    -   `capitalize`: Transforms all words to <span style="text-transform: capitalize">have the first letter capitalized</span>.
+    -   `full-width`: Transforms all glyphs to be <span style="text-transform: full-width">written inside a fixed-width square</span>, similar to a monospace font, allowing aligning of, e.g., Latin characters along with Asian language glyphs (like Chinese, Japanese, Korean).
+-   {{cssxref("text-decoration")}}: Sets/unsets text decorations on fonts (you'll mainly use this to unset the default underline on links when styling them.) Available values are:
+    -   `none`: Unsets any text decorations already present.
+    -   `underline`: <span class="underline">Underlines the text</span>.
+    -   `overline`: <span style="text-decoration: overline">Gives the text an overline</span>.
+    -   `line-through`: Puts a <s>strikethrough over the text</s>.
 
-  - `none`: Unsets any text decorations already present.
-  - `underline`: <span class="underline">Underlines the text</span>.
-  - `overline`: <span style="text-decoration: overline;">Gives the text an overline</span>.
-  - `line-through`: Puts a <s>strikethrough over the text</s>.
-
-  You should note that {{cssxref("text-decoration")}} can accept multiple values at once if you want to add multiple decorations simultaneously, for example, <span style="text-decoration: underline overline;">`text-decoration: underline overline`</span>. Also note that {{cssxref("text-decoration")}} is a shorthand property for {{cssxref("text-decoration-line")}}, {{cssxref("text-decoration-style")}}, and {{cssxref("text-decoration-color")}}. You can use combinations of these property values to create interesting effects, for example <span style="text-decoration: line-through red wavy;">`text-decoration: line-through red wavy`.</span>
+    You should note that {{cssxref("text-decoration")}} can accept multiple values at once if you want to add multiple decorations simultaneously, for example, <span style="text-decoration: underline overline">`text-decoration: underline overline`</span>. Also note that {{cssxref("text-decoration")}} is a shorthand property for {{cssxref("text-decoration-line")}}, {{cssxref("text-decoration-style")}}, and {{cssxref("text-decoration-color")}}. You can use combinations of these property values to create interesting effects, for example <span style="text-decoration: line-through red wavy">`text-decoration: line-through red wavy`.</span>
 
 Let's look at adding a couple of these properties to our example:
 
@@ -308,7 +309,8 @@ If we applied this to the {{htmlelement("h1")}} element in our Tommy The Cat exa
 
 **Note**: You can see more interesting examples of `text-shadow` usage in the Sitepoint article [Moonlighting with CSS text-shadow](https://www.sitepoint.com/moonlighting-css-text-shadow/).
 
-## Text layout
+Text layout
+-----------
 
 With basic font properties out the way, let's have a look at properties we can use to affect text layout.
 
@@ -316,10 +318,10 @@ With basic font properties out the way, let's have a look at properties we can u
 
 The {{cssxref("text-align")}} property is used to control how text is aligned within its containing content box. The available values are listed below. They work in pretty much the same way as they do in a regular word processor application:
 
-- `left`: Left-justifies the text.
-- `right`: Right-justifies the text.
-- `center`: Centers the text.
-- `justify`: Makes the text spread out, varying the gaps in between the words so that all lines of text are the same width. You need to use this carefully — it can look terrible, especially when applied to a paragraph with lots of long words in it. If you are going to use this, you should also think about using something else along with it, such as {{cssxref("hyphens")}}, to break some of the longer words across lines.
+-   `left`: Left-justifies the text.
+-   `right`: Right-justifies the text.
+-   `center`: Centers the text.
+-   `justify`: Makes the text spread out, varying the gaps in between the words so that all lines of text are the same width. You need to use this carefully — it can look terrible, especially when applied to a paragraph with lots of long words in it. If you are going to use this, you should also think about using something else along with it, such as {{cssxref("hyphens")}}, to break some of the longer words across lines.
 
 If we applied `text-align: center;` to the {{htmlelement("h1")}} in our example, we'd end up with this:
 
@@ -466,35 +468,36 @@ The above properties give you an idea of how to start styling text on a webpage,
 
 Font styles:
 
-- {{cssxref("font-variant")}}: Switch between small caps and normal font alternatives.
-- {{cssxref("font-kerning")}}: Switch font kerning options on and off.
-- {{cssxref("font-feature-settings")}}: Switch various [OpenType](https://en.wikipedia.org/wiki/OpenType) font features on and off.
-- {{cssxref("font-variant-alternates")}}: Control the use of alternate glyphs for a given font-face.
-- {{cssxref("font-variant-caps")}}: Control the use of alternate capital glyphs.
-- {{cssxref("font-variant-east-asian")}}: Control the usage of alternate glyphs for East Asian scripts, like Japanese and Chinese.
-- {{cssxref("font-variant-ligatures")}}: Control which ligatures and contextual forms are used in text.
-- {{cssxref("font-variant-numeric")}}: Control the usage of alternate glyphs for numbers, fractions, and ordinal markers.
-- {{cssxref("font-variant-position")}}: Control the usage of alternate glyphs of smaller sizes positioned as superscript or subscript.
-- {{cssxref("font-size-adjust")}}: Adjust the visual size of the font independently of its actual font size.
-- {{cssxref("font-stretch")}}: Switch between possible alternative stretched versions of a given font.
-- {{cssxref("text-underline-position")}}: Specify the position of underlines set using the `text-decoration-line` property `underline` value.
-- {{cssxref("text-rendering")}}: Try to perform some text rendering optimization.
+-   {{cssxref("font-variant")}}: Switch between small caps and normal font alternatives.
+-   {{cssxref("font-kerning")}}: Switch font kerning options on and off.
+-   {{cssxref("font-feature-settings")}}: Switch various [OpenType](https://en.wikipedia.org/wiki/OpenType) font features on and off.
+-   {{cssxref("font-variant-alternates")}}: Control the use of alternate glyphs for a given font-face.
+-   {{cssxref("font-variant-caps")}}: Control the use of alternate capital glyphs.
+-   {{cssxref("font-variant-east-asian")}}: Control the usage of alternate glyphs for East Asian scripts, like Japanese and Chinese.
+-   {{cssxref("font-variant-ligatures")}}: Control which ligatures and contextual forms are used in text.
+-   {{cssxref("font-variant-numeric")}}: Control the usage of alternate glyphs for numbers, fractions, and ordinal markers.
+-   {{cssxref("font-variant-position")}}: Control the usage of alternate glyphs of smaller sizes positioned as superscript or subscript.
+-   {{cssxref("font-size-adjust")}}: Adjust the visual size of the font independently of its actual font size.
+-   {{cssxref("font-stretch")}}: Switch between possible alternative stretched versions of a given font.
+-   {{cssxref("text-underline-position")}}: Specify the position of underlines set using the `text-decoration-line` property `underline` value.
+-   {{cssxref("text-rendering")}}: Try to perform some text rendering optimization.
 
 Text layout styles:
 
-- {{cssxref("text-indent")}}: Specify how much horizontal space should be left before the beginning of the first line of the text content.
-- {{cssxref("text-overflow")}}: Define how overflowed content that is not displayed is signaled to users.
-- {{cssxref("white-space")}}: Define how whitespace and associated line breaks inside the element are handled.
-- {{cssxref("word-break")}}: Specify whether to break lines within words.
-- {{cssxref("direction")}}: Define the text direction (This depends on the language and usually it's better to let HTML handle that part as it is tied to the text content.)
-- {{cssxref("hyphens")}}: Switch on and off hyphenation for supported languages.
-- {{cssxref("line-break")}}: Relax or strengthen line breaking for Asian languages.
-- {{cssxref("text-align-last")}}: Define how the last line of a block or a line, right before a forced line break, is aligned.
-- {{cssxref("text-orientation")}}: Define the orientation of the text in a line.
-- {{cssxref("overflow-wrap")}}: Specify whether or not the browser may break lines within words in order to prevent overflow.
-- {{cssxref("writing-mode")}}: Define whether lines of text are laid out horizontally or vertically and the direction in which subsequent lines flow.
+-   {{cssxref("text-indent")}}: Specify how much horizontal space should be left before the beginning of the first line of the text content.
+-   {{cssxref("text-overflow")}}: Define how overflowed content that is not displayed is signaled to users.
+-   {{cssxref("white-space")}}: Define how whitespace and associated line breaks inside the element are handled.
+-   {{cssxref("word-break")}}: Specify whether to break lines within words.
+-   {{cssxref("direction")}}: Define the text direction (This depends on the language and usually it's better to let HTML handle that part as it is tied to the text content.)
+-   {{cssxref("hyphens")}}: Switch on and off hyphenation for supported languages.
+-   {{cssxref("line-break")}}: Relax or strengthen line breaking for Asian languages.
+-   {{cssxref("text-align-last")}}: Define how the last line of a block or a line, right before a forced line break, is aligned.
+-   {{cssxref("text-orientation")}}: Define the orientation of the text in a line.
+-   {{cssxref("overflow-wrap")}}: Specify whether or not the browser may break lines within words in order to prevent overflow.
+-   {{cssxref("writing-mode")}}: Define whether lines of text are laid out horizontally or vertically and the direction in which subsequent lines flow.
 
-## Font shorthand
+Font shorthand
+--------------
 
 Many font properties can also be set through the shorthand property {{cssxref("font")}}. These are written in the following order:  {{cssxref("font-style")}}, {{cssxref("font-variant")}}, {{cssxref("font-weight")}}, {{cssxref("font-stretch")}}, {{cssxref("font-size")}}, {{cssxref("line-height")}}, and {{cssxref("font-family")}}.
 
@@ -506,11 +509,12 @@ A full example would look like this:
 
     font: italic normal bold normal 3em/1.5 Helvetica, Arial, sans-serif;
 
-## Active learning: Playing with styling text
+Active learning: Playing with styling text
+------------------------------------------
 
 In this active learning session we don't have any specific exercises for you to do. We'd just like you to have a good play with some font/text layout properties. See for yourself what you can come up with! You can either do this using offline HTML/CSS files, or enter your code into the live editable example below.
 
-If you make a mistake, you can always reset it using the _Reset_ button.
+If you make a mistake, you can always reset it using the *Reset* button.
 
 ###### Playable code
 
@@ -562,22 +566,25 @@ If you make a mistake, you can always reset it using the _Reset_ button.
 
 {{ EmbedLiveSample('Playable\_code', 700, 800) }}
 
-## Test your skills!
+Test your skills!
+-----------------
 
 You've reached the end of this article, but can you remember the most important information going forward? You can find an assessment to verify that you've retained this information at the end of the module — see [Typesetting a community school homepage](/en-US/docs/Learn/CSS/Styling_text/Typesetting_a_homepage).
 
 This assessment tests all the knowledge discussed in this module, so you might want to read the other articles before moving on to it.
 
-## Summary
+Summary
+-------
 
 We hoped you enjoyed playing with text in this article! The next article will provide you with all you need to know about styling HTML lists.
 
 {{NextMenu("Learn/CSS/Styling\_text/Styling\_lists", "Learn/CSS/Styling\_text")}}
 
-## In this module
+In this module
+--------------
 
-- [Fundamental text and font styling](/en-US/docs/Learn/CSS/Styling_text/Fundamentals)
-- [Styling lists](/en-US/docs/Learn/CSS/Styling_text/Styling_lists)
-- [Styling links](/en-US/docs/Learn/CSS/Styling_text/Styling_links)
-- [Web fonts](/en-US/docs/Learn/CSS/Styling_text/Web_fonts)
-- [Typesetting a community school homepage](/en-US/docs/Learn/CSS/Styling_text/Typesetting_a_homepage)
+-   [Fundamental text and font styling](/en-US/docs/Learn/CSS/Styling_text/Fundamentals)
+-   [Styling lists](/en-US/docs/Learn/CSS/Styling_text/Styling_lists)
+-   [Styling links](/en-US/docs/Learn/CSS/Styling_text/Styling_links)
+-   [Web fonts](/en-US/docs/Learn/CSS/Styling_text/Web_fonts)
+-   [Typesetting a community school homepage](/en-US/docs/Learn/CSS/Styling_text/Typesetting_a_homepage)

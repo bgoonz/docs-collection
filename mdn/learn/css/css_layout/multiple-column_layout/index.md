@@ -1,4 +1,4 @@
---- title: Multiple-column layout slug: Learn/CSS/CSS_layout/Multiple-column_Layout tags: - Beginner - CSS - Guide - Layout - Learn - Learning - Multi-col - Multiple columns ---
+--- title: Multiple-column layout slug: Learn/CSS/CSS\_layout/Multiple-column\_Layout tags: - Beginner - CSS - Guide - Layout - Learn - Learning - Multi-col - Multiple columns ---
 
 {{LearnSidebar}}
 
@@ -8,9 +8,10 @@ The multiple-column layout specification gives you a method of laying content ou
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>HTML basics (study <a href="/en-US/docs/Learn/HTML/Introduction_to_HTML">Introduction to HTML</a>), and an idea of How CSS works (study <a href="/en-US/docs/Learn/CSS/First_steps">Introduction to CSS</a>.)</td></tr><tr class="even"><td>Objective:</td><td>To learn how to create multiple-column layout on webpages, such as you might find in a newspaper.</td></tr></tbody></table>
 
-## A basic example
+A basic example
+---------------
 
-We will now explore how to use multiple-column layout, often referred to as _multicol_. You can follow along by [downloading the multicol starting point file](https://github.com/mdn/learning-area/blob/master/css/css-layout/multicol/0-starting-point.html) and adding the CSS into the appropriate places. At the bottom of the section you can see a live example of what the final code should look like.
+We will now explore how to use multiple-column layout, often referred to as *multicol*. You can follow along by [downloading the multicol starting point file](https://github.com/mdn/learning-area/blob/master/css/css-layout/multicol/0-starting-point.html) and adding the CSS into the appropriate places. At the bottom of the section you can see a live example of what the final code should look like.
 
 Our starting point contains some very simple HTML; a wrapper with a class of `container` inside which is a heading and some paragraphs.
 
@@ -30,7 +31,7 @@ The columns that you create have flexible widths — the browser works out how m
       margin: 2em auto;
       font: .9em/1.2 Arial, Helvetica, sans-serif;
     }
-
+        
 
     <div class="container">
       <h1>Simple multicol example</h1>
@@ -91,12 +92,13 @@ The browser will now give you as many columns as it can of the size that you spe
 
 {{ EmbedLiveSample('Multicol\_2', '100%', 400) }}
 
-## Styling the columns
+Styling the columns
+-------------------
 
 The columns created by multicol cannot be styled individually. There is no way to make one column bigger than other columns, or to change the background or text color of a single column. You have two opportunities to change the way that columns display:
 
-- Changing the size of the gap between columns using the {{cssxref("column-gap")}}.
-- Adding a rule between columns with {{cssxref("column-rule")}}.
+-   Changing the size of the gap between columns using the {{cssxref("column-gap")}}.
+-   Adding a rule between columns with {{cssxref("column-rule")}}.
 
 Using your example above, change the size of the gap by adding a `column-gap` property:
 
@@ -148,7 +150,8 @@ Try adding rules of different styles and colors.
 
 Something to take note of is that the rule does not take up any width of its own. It lies across the gap you created with `column-gap`. To make more space either side of the rule you will need to increase the `column-gap` size.
 
-## Spanning columns
+Spanning columns
+----------------
 
 You can cause an element to span across all of the columns. In this case the content breaks when the spanning element is introduced and continues below creating a new set of column boxes. To cause an element to span all of the columns use the {{cssxref("column-span")}} property set to `all`.
 
@@ -193,7 +196,8 @@ Note that it isn't possible to cause an element to span some columns. The proper
 
 {{ EmbedLiveSample('Multicol\_Span', '100%', 400) }}
 
-## Columns and fragmentation
+Columns and fragmentation
+-------------------------
 
 The content of a multi-column layout is fragmented. It essentially behaves the same way as content behaves in paged media — such as when you print a webpage. When you turn your content into a multicol container it is fragmented into columns, and the content breaks to allow this to happen.
 
@@ -206,7 +210,7 @@ Sometimes, this breaking will happen in places that lead to a poor reading exper
       max-width: 900px;
       margin: 2em auto;
       font: .9em/1.2 Arial, Helvetica, sans-serif;
-    }
+    }            
 
     <div class="container">
         <div class="card">
@@ -302,7 +306,7 @@ Reload the page and your boxes should stay in one piece.
       max-width: 900px;
       margin: 2em auto;
       font: .9em/1.2 Arial, Helvetica, sans-serif;
-    }
+    }              
 
     <div class="container">
         <div class="card">
@@ -378,32 +382,36 @@ Reload the page and your boxes should stay in one piece.
 
 {{ EmbedLiveSample('Multicol\_5', '100%', 600) }}
 
-## Test your skills!
+Test your skills!
+-----------------
 
 You've reached the end of this article, but can you remember the most important information? You can find some further tests to verify that you've retained this information before you move on — see [Test your skills: Multiple-column Layout](/en-US/docs/Learn/CSS/CSS_layout/Multicol_skills).
 
-## Summary
+Summary
+-------
 
 You now know how to use the basic features of multiple-column layout, another tool at your disposal when choosing a layout method for the designs you are building.
 
-## See also
+See also
+--------
 
-- [CSS Fragmentation](/en-US/docs/Web/CSS/CSS_Fragmentation)
-- [Using multi-column layouts](/en-US/docs/Web/CSS/CSS_Columns/Using_multi-column_layouts)
+-   [CSS Fragmentation](/en-US/docs/Web/CSS/CSS_Fragmentation)
+-   [Using multi-column layouts](/en-US/docs/Web/CSS/CSS_Columns/Using_multi-column_layouts)
 
 {{PreviousMenuNext("Learn/CSS/CSS\_layout/Positioning", "Learn/CSS/CSS\_layout/Responsive\_Design", "Learn/CSS/CSS\_layout")}}
 
-## In this module
+In this module
+--------------
 
-- [Introduction to CSS layout](/en-US/docs/Learn/CSS/CSS_layout/Introduction)
-- [Normal flow](/en-US/docs/Learn/CSS/CSS_layout/Normal_Flow)
-- [Flexbox](/en-US/docs/Learn/CSS/CSS_layout/Flexbox)
-- [Grid](/en-US/docs/Learn/CSS/CSS_layout/Grids)
-- [Floats](/en-US/docs/Learn/CSS/CSS_layout/Floats)
-- [Positioning](/en-US/docs/Learn/CSS/CSS_layout/Positioning)
-- [Multiple-column layout](/en-US/docs/Learn/CSS/CSS_layout/Multiple-column_Layout)
-- [Responsive design](/en-US/docs/Learn/CSS/CSS_layout/Responsive_Design)
-- [Beginner's guide to media queries](/en-US/docs/Learn/CSS/CSS_layout/Media_queries)
-- [Legacy layout methods](/en-US/docs/Learn/CSS/CSS_layout/Legacy_Layout_Methods)
-- [Supporting older browsers](/en-US/docs/Learn/CSS/CSS_layout/Supporting_Older_Browsers)
-- [Fundamental layout comprehension assessment](/en-US/docs/Learn/CSS/CSS_layout/Fundamental_Layout_Comprehension)
+-   [Introduction to CSS layout](/en-US/docs/Learn/CSS/CSS_layout/Introduction)
+-   [Normal flow](/en-US/docs/Learn/CSS/CSS_layout/Normal_Flow)
+-   [Flexbox](/en-US/docs/Learn/CSS/CSS_layout/Flexbox)
+-   [Grid](/en-US/docs/Learn/CSS/CSS_layout/Grids)
+-   [Floats](/en-US/docs/Learn/CSS/CSS_layout/Floats)
+-   [Positioning](/en-US/docs/Learn/CSS/CSS_layout/Positioning)
+-   [Multiple-column layout](/en-US/docs/Learn/CSS/CSS_layout/Multiple-column_Layout)
+-   [Responsive design](/en-US/docs/Learn/CSS/CSS_layout/Responsive_Design)
+-   [Beginner's guide to media queries](/en-US/docs/Learn/CSS/CSS_layout/Media_queries)
+-   [Legacy layout methods](/en-US/docs/Learn/CSS/CSS_layout/Legacy_Layout_Methods)
+-   [Supporting older browsers](/en-US/docs/Learn/CSS/CSS_layout/Supporting_Older_Browsers)
+-   [Fundamental layout comprehension assessment](/en-US/docs/Learn/CSS/CSS_layout/Fundamental_Layout_Comprehension)

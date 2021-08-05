@@ -1,4 +1,4 @@
---- title: UI pseudo-classes slug: Learn/Forms/UI_pseudo-classes tags: - Beginner - CSS - Example - Forms - Guide - HTML - Pseudo-classes - Styling - Web ---
+--- title: UI pseudo-classes slug: Learn/Forms/UI\_pseudo-classes tags: - Beginner - CSS - Example - Forms - Guide - HTML - Pseudo-classes - Styling - Web ---
 
 {{LearnSidebar}}{{PreviousMenuNext("Learn/Forms/Advanced\_form\_styling", "Learn/Forms/Form\_validation", "Learn/Forms")}}
 
@@ -6,26 +6,28 @@ In the previous articles, we covered the styling of various form controls, in a 
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Basic computer literacy, and a basic understanding of <a href="/en-US/docs/Learn/HTML/Introduction_to_HTML">HTML</a> and <a href="/en-US/docs/Learn/CSS/First_steps">CSS</a>, including general knowledge of <a href="/en-US/docs/Learn/CSS/Building_blocks/Selectors/Pseudo-classes_and_pseudo-elements">pseudo-classes and pseudo-elements</a>.</td></tr><tr class="even"><td>Objective:</td><td>To understand what parts of forms are hard to style, and why; to learn what can be done to customize them.</td></tr></tbody></table>
 
-## What pseudo-classes do we have available?
+What pseudo-classes do we have available?
+-----------------------------------------
 
 The original pseudo-classes available to us (as of [CSS 2.1](https://www.w3.org/TR/CSS21/selector.html#dynamic-pseudo-classes)) that are relevant to forms are:
 
-- {{cssxref(":hover")}}: Selects an element only when it is being hovered over by a mouse pointer.
-- {{cssxref(":focus")}}: Selects an element only when it is focused (i.e. by being tabbed to via the keyboard).
-- {{cssxref(":active")}}: selects an element only when it is being activated (i.e. while it is being clicked on, or when the Return/Enter key is being pressed down in the case of a keyboard activation).
+-   {{cssxref(":hover")}}: Selects an element only when it is being hovered over by a mouse pointer.
+-   {{cssxref(":focus")}}: Selects an element only when it is focused (i.e. by being tabbed to via the keyboard).
+-   {{cssxref(":active")}}: selects an element only when it is being activated (i.e. while it is being clicked on, or when the Return/Enter key is being pressed down in the case of a keyboard activation).
 
 These basic pseudo-classes should be familiar to you now. More recently, the [CSS Selector Level 3](https://www.w3.org/TR/css3-selectors/) and [CSS Basic UI Level 3](https://dev.w3.org/csswg/css3-ui/#pseudo-classes) added more pseudo-classes related to HTML forms that provide several other useful targeting conditions that you can take advantage of. We'll discuss these in more detail in the sections below, but briefly, the main ones we'll be looking at are:
 
-- {{cssxref(':required')}} and {{cssxref(':optional')}}: Targets required or optional form controls.
-- {{cssxref(":valid")}} and {{cssxref(":invalid")}}, and {{cssxref(":in-range")}} and {{cssxref(":out-of-range")}}: Target form controls that are valid/invalid according to form validation constraints set on them, or in-range/out-of-range.
-- {{cssxref(":enabled")}} and {{cssxref(":disabled")}}, and {{cssxref(":read-only")}} and {{cssxref(":read-write")}}: Target enabled or disabled form controls (e.g. with the `disabled` HTML attribute set), and read-write or read-only form controls (e.g. with the `readonly` HTML attribute set).
-- {{cssxref(":checked")}}, {{cssxref(":indeterminate")}}, and {{cssxref(":default")}}: Respectively target checkboxes and radio buttons that are checked, in an indeterminate state (neither checked or not checked), and the default selected option when the page loads (e.g. an `<input type="checkbox">` with the `checked` attribute set, or an `<option>` element with the `selected` attribute set).
+-   {{cssxref(':required')}} and {{cssxref(':optional')}}: Targets required or optional form controls.
+-   {{cssxref(":valid")}} and {{cssxref(":invalid")}}, and {{cssxref(":in-range")}} and {{cssxref(":out-of-range")}}: Target form controls that are valid/invalid according to form validation constraints set on them, or in-range/out-of-range.
+-   {{cssxref(":enabled")}} and {{cssxref(":disabled")}}, and {{cssxref(":read-only")}} and {{cssxref(":read-write")}}: Target enabled or disabled form controls (e.g. with the `disabled` HTML attribute set), and read-write or read-only form controls (e.g. with the `readonly` HTML attribute set).
+-   {{cssxref(":checked")}}, {{cssxref(":indeterminate")}}, and {{cssxref(":default")}}: Respectively target checkboxes and radio buttons that are checked, in an indeterminate state (neither checked or not checked), and the default selected option when the page loads (e.g. an `<input type="checkbox">` with the `checked` attribute set, or an `<option>` element with the `selected` attribute set).
 
 There are many others too, but the ones listed above are the most obviously useful. Some of the others are aimed at solving very specific niche problems, or not very well supported in browsers yet. The ones listed above all have pretty good browser support, but of course, you should test your form implementations carefully to make sure they work for your target audience.
 
 **Note**: A number of the pseudo-classes discussed here are concerned with styling form controls based on their validation state (is their data valid, or not?) You'll learn much more about setting and controlling validation constraints in our next article — [Client-side form validation](/en-US/docs/Learn/Forms/Form_validation) — but for now we'll keep things simple with regards to form validation, so it doesn't confuse things.
 
-## Styling inputs based on whether they are required or not
+Styling inputs based on whether they are required or not
+--------------------------------------------------------
 
 One of the most basic concepts with regards to client-side form validation is whether a form input is required (it has to be filled in before the form can be submitted) or optional.
 
@@ -76,7 +78,8 @@ In the next section, we'll look at a better example of indicating required field
 
 **Note**: If one radio button in a same-named group of radio buttons has the `required` attribute, all the radio buttons will be invalid until one is selected, but only the one with the attribute assigned will actually match {{cssxref(':required')}}**.**
 
-## Using generated content with pseudo-classes
+Using generated content with pseudo-classes
+-------------------------------------------
 
 In previous articles, we've seen the usage of [generated content](/en-US/docs/Web/CSS/CSS_Generated_Content), but we thought now would be a good time to talk about it in a bit more detail.
 
@@ -155,7 +158,8 @@ Then we give the generated content the content "required", which is what we want
 
 {{EmbedGHLiveSample("learning-area/html/forms/pseudo-classes/required-optional-generated.html", '100%', 430)}}
 
-## Styling controls based on whether their data is valid
+Styling controls based on whether their data is valid
+-----------------------------------------------------
 
 The other really important, fundamental concept in form validation is whether a form control's data is valid or not (in the case of numerical data, we can also talk about in-range and out-of-range data). Form controls with [constraint limitations](/en-US/docs/Web/Guide/HTML/HTML5/Constraint_validation) can be targeted based on these states.
 
@@ -163,11 +167,11 @@ The other really important, fundamental concept in form validation is whether a 
 
 You can target form controls using the {{cssxref(":valid")}} and {{cssxref(":invalid")}} pseudo-classes. Some points worth bearing in mind:
 
-- Controls with no constraint validation will always be valid, and therefore matched with `:valid`.
-- Controls with `required` set on them that have no value are counted as invalid — they will be matched with `:invalid` and `:required`.
-- Controls with built-in validation, such as `<input type="email">` or `<input type="url">` are (matched with) `:invalid` when the data entered into them does not match the pattern they are looking for (but they are valid when empty).
-- Controls whose current value is outside the range limits specified by the {{htmlattrxref("min", "input")}} and {{htmlattrxref("max","input")}} attributes are (matched with) `:invalid`, but also matched by {{cssxref(":out-of-range")}}, as you'll see later on.
-- There are some other ways to make an element matched by `:valid`/`:invalid`, as you'll see in the [Client-side form validation](/en-US/docs/Learn/Forms/Form_validation) article. But we'll keep things simple for now.
+-   Controls with no constraint validation will always be valid, and therefore matched with `:valid`.
+-   Controls with `required` set on them that have no value are counted as invalid — they will be matched with `:invalid` and `:required`.
+-   Controls with built-in validation, such as `<input type="email">` or `<input type="url">` are (matched with) `:invalid` when the data entered into them does not match the pattern they are looking for (but they are valid when empty).
+-   Controls whose current value is outside the range limits specified by the {{htmlattrxref("min", "input")}} and {{htmlattrxref("max","input")}} attributes are (matched with) `:invalid`, but also matched by {{cssxref(":out-of-range")}}, as you'll see later on.
+-   There are some other ways to make an element matched by `:valid`/`:invalid`, as you'll see in the [Client-side form validation](/en-US/docs/Learn/Forms/Form_validation) article. But we'll keep things simple for now.
 
 Let's go in and look at a simple example of `:valid`/`:invalid` (see [valid-invalid.html](https://mdn.github.io/learning-area/html/forms/pseudo-classes/valid-invalid.html) for the live version, and also check out the [source code](https://github.com/mdn/learning-area/blob/master/html/forms/pseudo-classes/valid-invalid.html)).
 
@@ -271,7 +275,8 @@ This works quite nicely — when the page first loads, "Required" is shown, alon
 
 **Note**: To enter an invalid/out-of-range value, you'll have to actually focus the form and type it in using the keyboard. The spinner buttons won't let you increment/decrement the value outside the allowable range.
 
-## Styling enabled and disabled inputs, and read-only and read-write
+Styling enabled and disabled inputs, and read-only and read-write
+-----------------------------------------------------------------
 
 An enabled element is an element that can be activated; it can be selected, clicked on, typed into, etc.  A disabled element on the other hand cannot be interacted with in any way, and its data isn't even sent to the server
 
@@ -401,12 +406,13 @@ Firefox only supported these pseudo-classes with a prefix up to version 78; at w
 
 **Note**: `:enabled` and `:read-write` are two more pseudo-classes that you'll probably rarely use, given that they describe the default states of input elements.
 
-## Radio and checkbox states — checked, default, indeterminate
+Radio and checkbox states — checked, default, indeterminate
+-----------------------------------------------------------
 
 As we've seen in earlier articles in the module, {{HTMLElement("input/radio", "radio buttons")}} and {{HTMLElement("input/checkbox", "checkboxes")}} can be checked or unchecked. But there are a couple of other states to consider too:
 
-- {{cssxref(":default")}}: Matches radios/checkboxes that are checked by default, on page load (i.e. by setting the `checked` attribute on them) These match the {{cssxref(":default")}} pseudo-class, even if the user unchecks them.
-- {{cssxref(":indeterminate")}}: When radios/checkboxes are neither checked nor unchecked, they are considered _indeterminate_ and will match the {{cssxref(":indeterminate")}} pseudo-class. More on what this means below.
+-   {{cssxref(":default")}}: Matches radios/checkboxes that are checked by default, on page load (i.e. by setting the `checked` attribute on them) These match the {{cssxref(":default")}} pseudo-class, even if the user unchecks them.
+-   {{cssxref(":indeterminate")}}: When radios/checkboxes are neither checked nor unchecked, they are considered *indeterminate* and will match the {{cssxref(":indeterminate")}} pseudo-class. More on what this means below.
 
 ### :checked
 
@@ -446,9 +452,9 @@ As mentioned above, the {{cssxref(":default")}} pseudo-class matches radios/chec
 
 Also mentioned above radios/checkboxes will be matched by the {{cssxref(":indeterminate")}} pseudo-class when they are in a state where they are neither checked nor unchecked. But what does this mean? Elements that are indeterminate include:
 
-- {{HTMLElement("input/radio")}} inputs, when all radio buttons in a same-named group are unchecked
-- {{HTMLElement("input/checkbox")}} inputs whose `indeterminate` property is set to `true` via JavaScript
-- {{HTMLElement("progress")}} elements that have no value.
+-   {{HTMLElement("input/radio")}} inputs, when all radio buttons in a same-named group are unchecked
+-   {{HTMLElement("input/checkbox")}} inputs whose `indeterminate` property is set to `true` via JavaScript
+-   {{HTMLElement("progress")}} elements that have no value.
 
 This isn't something you'll likely use very often. One use case could be an indicator to tell users that they really need to select a radio button before they move on.
 
@@ -512,46 +518,50 @@ See the live result below:
 
 **Note**: You can find an [interesting example involving `indeterminate` states](/en-US/docs/Web/HTML/Element/input/checkbox#indeterminate_state_checkboxes) on the `<input type="checkbox">` reference page.
 
-## More pseudo-classes
+More pseudo-classes
+-------------------
 
 There are a number of other pseudo-classes of interest, and we don't have space to write about them all in detail here. Let's talk about a few more that you should take the time to investigate.
 
 The following are fairly well-supported in modern browsers:
 
-- The {{cssxref(":focus-within")}} pseudo-class matches an element that has received focus or _contains_ an element that has received focus. This is useful if you want a whole form to highlight in some way when an input inside it is focused.
-- The {{cssxref(":focus-visible")}} pseudo-class matches focused elements that received focus via keyboard interaction (rather than touch or mouse) — useful if you want to show a different style for keyboard focus compared to mouse (or other) focus.
-- The {{cssxref(":placeholder-shown")}} pseudo-class matches {{htmlelement('input')}} and {{htmlelement('textarea')}} elements that have their placeholder showing (i.e. the contents of the `placeholder` attribute) because the value of the element is empty.
+-   The {{cssxref(":focus-within")}} pseudo-class matches an element that has received focus or *contains* an element that has received focus. This is useful if you want a whole form to highlight in some way when an input inside it is focused.
+-   The {{cssxref(":focus-visible")}} pseudo-class matches focused elements that received focus via keyboard interaction (rather than touch or mouse) — useful if you want to show a different style for keyboard focus compared to mouse (or other) focus.
+-   The {{cssxref(":placeholder-shown")}} pseudo-class matches {{htmlelement('input')}} and {{htmlelement('textarea')}} elements that have their placeholder showing (i.e. the contents of the `placeholder` attribute) because the value of the element is empty.
 
 The following are also interesting, but as yet not well-supported in browsers:
 
-- The {{cssxref(":blank")}} pseudo-class selects empty form controls. {{cssxref(":empty")}} also matches elements that have no children, like {{HTMLElement("input")}}, but it is more general — it also matches other empty elements like {{HTMLElement("br")}} and {{HTMLElement("hr")}}. `:empty` has reasonable browser support; the `:blank` pseudo-class's specification is not yet finished, so it not yet supported in any browser.
-- The `:user-invalid` pseudo-class, when supported, will be similar to {{cssxref(":invalid")}}, but with better user experience. If the value is valid when the input receives focus, the element may match `:invalid` as the user enters data if the value is temporarily invalid, but will only match `:user-invalid` when the element loses focus. If the value was originally invalid, it will match both `:invalid` and `:user-invalid` for the whole duration of the focus. In a similar manner to `:invalid`, it will stop matching `:user-invalid` if the value does become valid.
+-   The {{cssxref(":blank")}} pseudo-class selects empty form controls. {{cssxref(":empty")}} also matches elements that have no children, like {{HTMLElement("input")}}, but it is more general — it also matches other empty elements like {{HTMLElement("br")}} and {{HTMLElement("hr")}}. `:empty` has reasonable browser support; the `:blank` pseudo-class's specification is not yet finished, so it not yet supported in any browser.
+-   The `:user-invalid` pseudo-class, when supported, will be similar to {{cssxref(":invalid")}}, but with better user experience. If the value is valid when the input receives focus, the element may match `:invalid` as the user enters data if the value is temporarily invalid, but will only match `:user-invalid` when the element loses focus. If the value was originally invalid, it will match both `:invalid` and `:user-invalid` for the whole duration of the focus. In a similar manner to `:invalid`, it will stop matching `:user-invalid` if the value does become valid.
 
-## Test your skills!
+Test your skills!
+-----------------
 
 You've reached the end of this article, but can you remember the most important information? You can find some further tests to verify that you've retained this information before you move on — see [Test your skills: Advanced styling](/en-US/docs/Learn/Forms/Test_your_skills:_Advanced_styling).
 
-## Summary
+Summary
+-------
 
 This completes our look at UI pseudo-classes that relate to form inputs. Keep playing with them, and create some fun form styles! Next up, we'll move on to something different — [client-side form validation](/en-US/docs/Learn/Forms/Form_validation).
 
 {{PreviousMenuNext("Learn/Forms/Advanced\_form\_styling", "Learn/Forms/Form\_validation", "Learn/Forms")}}
 
-## In this module
+In this module
+--------------
 
-- [Your first form](/en-US/docs/Learn/Forms/Your_first_form)
-- [How to structure a web form](/en-US/docs/Learn/Forms/How_to_structure_a_web_form)
-- [Basic native form controls](/en-US/docs/Learn/Forms/Basic_native_form_controls)
-- [The HTML5 input types](/en-US/docs/Learn/Forms/HTML5_input_types)
-- [Other form controls](/en-US/docs/Learn/Forms/Other_form_controls)
-- [Styling web forms](/en-US/docs/Learn/Forms/Styling_web_forms)
-- [Advanced form styling](/en-US/docs/Learn/Forms/Advanced_form_styling)
-- [UI pseudo-classes](/en-US/docs/Learn/Forms/UI_pseudo-classes)
-- [Client-side form validation](/en-US/docs/Learn/Forms/Form_validation)
-- [Sending form data](/en-US/docs/Learn/Forms/Sending_and_retrieving_form_data)
+-   [Your first form](/en-US/docs/Learn/Forms/Your_first_form)
+-   [How to structure a web form](/en-US/docs/Learn/Forms/How_to_structure_a_web_form)
+-   [Basic native form controls](/en-US/docs/Learn/Forms/Basic_native_form_controls)
+-   [The HTML5 input types](/en-US/docs/Learn/Forms/HTML5_input_types)
+-   [Other form controls](/en-US/docs/Learn/Forms/Other_form_controls)
+-   [Styling web forms](/en-US/docs/Learn/Forms/Styling_web_forms)
+-   [Advanced form styling](/en-US/docs/Learn/Forms/Advanced_form_styling)
+-   [UI pseudo-classes](/en-US/docs/Learn/Forms/UI_pseudo-classes)
+-   [Client-side form validation](/en-US/docs/Learn/Forms/Form_validation)
+-   [Sending form data](/en-US/docs/Learn/Forms/Sending_and_retrieving_form_data)
 
 ### Advanced Topics
 
-- [How to build custom form controls](/en-US/docs/Learn/Forms/How_to_build_custom_form_controls)
-- [Sending forms through JavaScript](/en-US/docs/Learn/Forms/Sending_forms_through_JavaScript)
-- [Property compatibility table for form widgets](/en-US/docs/Learn/Forms/Property_compatibility_table_for_form_controls)
+-   [How to build custom form controls](/en-US/docs/Learn/Forms/How_to_build_custom_form_controls)
+-   [Sending forms through JavaScript](/en-US/docs/Learn/Forms/Sending_forms_through_JavaScript)
+-   [Property compatibility table for form widgets](/en-US/docs/Learn/Forms/Property_compatibility_table_for_form_controls)

@@ -1,4 +1,4 @@
---- title: create fancy boxes slug: Learn/CSS/Howto/create_fancy_boxes tags: - Beginner - CSS - CodingScripting - Learn ---
+--- title: create fancy boxes slug: Learn/CSS/Howto/create\_fancy\_boxes tags: - Beginner - CSS - CodingScripting - Learn ---
 
 CSS boxes are the building blocks of any web page styled with CSS. Making them nice looking is both fun and challenging. It's fun because it's all about turning a design idea into working code; it's challenging because of the constraints of CSS. Let's do some fancy boxes.
 
@@ -12,14 +12,15 @@ We are about to see many examples, but we will always work on the most simple pi
 
 Ok, that's a very small bit of HTML, what can we tweak on that element? All of the following:
 
-- Its box model properties: {{cssxref("width")}}, {{cssxref("height")}}, {{cssxref("padding")}}, {{cssxref("border")}}, etc.
-- Its background properties: {{cssxref("background")}}, {{cssxref("background-color")}}, {{cssxref("background-image")}}, {{cssxref("background-position")}}, {{cssxref("background-size")}}, etc.
-- Its pseudo-element: {{cssxref("::before")}} and {{cssxref("::after")}}
-- and some aside properties like: {{cssxref("box-shadow")}}, {{cssxref("transform")}}, {{cssxref("outline")}}, etc.
+-   Its box model properties: {{cssxref("width")}}, {{cssxref("height")}}, {{cssxref("padding")}}, {{cssxref("border")}}, etc.
+-   Its background properties: {{cssxref("background")}}, {{cssxref("background-color")}}, {{cssxref("background-image")}}, {{cssxref("background-position")}}, {{cssxref("background-size")}}, etc.
+-   Its pseudo-element: {{cssxref("::before")}} and {{cssxref("::after")}}
+-   and some aside properties like: {{cssxref("box-shadow")}}, {{cssxref("transform")}}, {{cssxref("outline")}}, etc.
 
 So we have a very large playground. Let the fun begin.
 
-## Box model tweak
+Box model tweak
+---------------
 
 The box model alone allows us to do some basic stuff, like adding simple borders, making squares, etc.. It starts to get interesting when you push the properties to the limit by having negative `padding` and/or- `margin` by having `border-radius` larger than the actual size of the box.
 
@@ -58,16 +59,17 @@ Yes, we get a circle:
 
 {{ EmbedLiveSample('Making\_circles', '100%', '120') }}
 
-## Backgrounds
+Backgrounds
+-----------
 
 When we talk about a fancy box, the core properties to handle that are [background-\* properties](/en-US/docs/Web/CSS/CSS_Backgrounds_and_Borders). When you start fiddling with backgrounds it's like your CSS box is turned into a blank canvas you'll fill.
 
 Before we jump to some practical examples, let's step back a bit as there are two things you should know about backgrounds.
 
-- It's possible to set [several backgrounds](/en-US/docs/Web/CSS/CSS_Backgrounds_and_Borders/Using_multiple_backgrounds) on a single box. They are stacked on top of each other like layers.
-- Backgrounds can be either solid colors or images: solid color always fills the whole surface but images can be scaled and positioned.
+-   It's possible to set [several backgrounds](/en-US/docs/Web/CSS/CSS_Backgrounds_and_Borders/Using_multiple_backgrounds) on a single box. They are stacked on top of each other like layers.
+-   Backgrounds can be either solid colors or images: solid color always fills the whole surface but images can be scaled and positioned.
 
-  <div class="fancy">Hi! I want to be fancy.</div>
+    <div class="fancy">Hi! I want to be fancy.</div>
 
 Okay, let's have fun with backgrounds:
 
@@ -104,7 +106,8 @@ Okay, let's have fun with backgrounds:
 
 Gradients can be used in some very creative ways. If you want to see some creative examples, take a look at [Lea Verou's CSS patterns](https://lea.verou.me/css3patterns/). Just remember that such use of gradient is quite expensive, performance wise. If you want to learn more about gradient, feel free to get into [our dedicated article](/en-US/docs/Web/CSS/CSS_Images/Using_CSS_gradients).
 
-## Pseudo-elements
+Pseudo-elements
+---------------
 
 When styling a single box, you could find yourself limited and could wish to have more boxes to create even more amazing styles. Most of the time, that leads to polluting the DOM by adding extra HTML element for the unique purpose of style. Even if it is necessary, it's somewhat considered bad practice. One solution to avoid such pitfalls is to use [CSS pseudo-elements](/en-US/docs/Web/CSS/Pseudo-elements).
 
@@ -247,7 +250,8 @@ So here comes our style:
 
 {{ EmbedLiveSample('Blockquote', '100%', '300') }}
 
-## All together and more
+All together and more
+---------------------
 
 So it's possible to create a wonderful effect when we mix all of this together. At some point, to accomplish such box embellishment is a matter of creativity, both in design and technical use of CSS properties. By doing such it's possible to create optical illusions that can bring your boxes alive like in this example:
 

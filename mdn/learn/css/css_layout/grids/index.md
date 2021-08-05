@@ -1,4 +1,4 @@
---- title: Grids slug: Learn/CSS/CSS_layout/Grids tags: - Article - Beginner - CSS - CSS Grids - CodingScripting - Grids - Guide - Layout - Learn - Tutorial - grid design - grid framework - grid system ---
+--- title: Grids slug: Learn/CSS/CSS\_layout/Grids tags: - Article - Beginner - CSS - CSS Grids - CodingScripting - Grids - Guide - Layout - Learn - Tutorial - grid design - grid framework - grid system ---
 
 {{LearnSidebar}}
 
@@ -8,7 +8,8 @@ CSS Grid Layout is a two-dimensional layout system for the web. It lets you lay 
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>HTML basics (study <a href="/en-US/docs/Learn/HTML/Introduction_to_HTML">Introduction to HTML</a>), and an idea of how CSS works (study <a href="/en-US/docs/Learn/CSS/First_steps">Introduction to CSS</a> and <a href="/en-US/docs/Learn/CSS/Building_blocks">Styling boxes</a>.)</td></tr><tr class="even"><td>Objective:</td><td>To understand the fundamental concepts behind grid layout systems, and how to implement a grid layout using CSS  Grid.</td></tr></tbody></table>
 
-## What is grid layout?
+What is grid layout?
+--------------------
 
 A grid is a collection of horizontal and vertical lines creating a pattern against which we can line up our design elements. They help us to create designs where elements don’t jump around or change width as we move from page to page, providing greater consistency on our websites.
 
@@ -16,7 +17,8 @@ A grid will typically have **columns**, **rows**, and then gaps between each row
 
 ![](grid.png)
 
-## Creating your grid in CSS
+Creating your grid in CSS
+-------------------------
 
 Having decided on the grid that your design needs, you can use CSS Grid Layout to create that grid in CSS and place items onto it. We will look at the basic features of Grid Layout first and then explore how to create a simple grid system for your project.
 
@@ -59,7 +61,7 @@ Add the 2nd declaration to your CSS rule, then reload the page, and you should s
       padding: 10px;
       background-color: rgb(207,232,220);
       border: 2px solid rgb(79,185,227);
-    }
+    }          
 
     <div class="container">
      <div>One</div>
@@ -69,12 +71,12 @@ Add the 2nd declaration to your CSS rule, then reload the page, and you should s
      <div>Five</div>
      <div>Six</div>
      <div>Seven</div>
-    </div>
+    </div> 
 
     .container {
       display: grid;
       grid-template-columns: 200px 200px 200px;
-    }
+    } 
 
 {{ EmbedLiveSample('Grid\_1', '100%', 400) }}
 
@@ -118,7 +120,7 @@ The first track now gets `2fr` of the available space and the other two tracks g
       background-color: rgb(207,232,220);
       border: 2px solid rgb(79,185,227);
     }
-
+                    
 
     <div class="container">
       <div>One</div>
@@ -128,11 +130,11 @@ The first track now gets `2fr` of the available space and the other two tracks g
       <div>Five</div>
       <div>Six</div>
       <div>Seven</div>
-    </div>
+    </div>                        
 
 {{ EmbedLiveSample('Grid\_2', '100%', 400) }}
 
-**Note**: The `fr` unit distributes _available_ space, not _all_ space. Therefore if one of your tracks has something large inside it there will be less free space to share out.
+**Note**: The `fr` unit distributes *available* space, not *all* space. Therefore if one of your tracks has something large inside it there will be less free space to share out.
 
 ### Gaps between tracks
 
@@ -167,7 +169,7 @@ These gaps can be any length unit or a percentage, but not an `fr` unit.
       background-color: rgb(207,232,220);
       border: 2px solid rgb(79,185,227);
     }
-
+                    
 
     <div class="container">
       <div>One</div>
@@ -222,7 +224,7 @@ By default, tracks created in the implicit grid are `auto` sized, which in gener
       padding: 10px;
       background-color: rgb(207,232,220);
       border: 2px solid rgb(79,185,227);
-    }
+    }                  
 
     <div class="container">
       <div>One</div>
@@ -233,7 +235,7 @@ By default, tracks created in the implicit grid are `auto` sized, which in gener
       <div>Six</div>
       <div>Seven</div>
     </div>
-
+                            
 
     .container {
       display: grid;
@@ -246,7 +248,7 @@ By default, tracks created in the implicit grid are `auto` sized, which in gener
 
 ### The minmax() function
 
-Our 100-pixel tall tracks won’t be very useful if we add content into those tracks that is taller than 100 pixels, in which case it would cause an overflow. It might be better to have tracks that are _at least_ 100 pixels tall and can still expand if more content gets into them. A fairly basic fact about the web is that you never really know how tall something is going to be; additional content or larger font sizes can cause problems with designs that attempt to be pixel perfect in every dimension.
+Our 100-pixel tall tracks won’t be very useful if we add content into those tracks that is taller than 100 pixels, in which case it would cause an overflow. It might be better to have tracks that are *at least* 100 pixels tall and can still expand if more content gets into them. A fairly basic fact about the web is that you never really know how tall something is going to be; additional content or larger font sizes can cause problems with designs that attempt to be pixel perfect in every dimension.
 
 The {{cssxref("minmax()")}} function lets us set a minimum and maximum size for a track, for example `minmax(100px, auto)`. The minimum size is 100 pixels, but the maximum is `auto`, which will expand to fit the content. Try changing `grid-auto-rows` to use a minmax value:
 
@@ -280,7 +282,7 @@ Try this in your file now, using the below CSS:
       background-color: rgb(207,232,220);
       border: 2px solid rgb(79,185,227);
     }
-
+                    
 
     <div class="container">
       <div>One</div>
@@ -290,7 +292,7 @@ Try this in your file now, using the below CSS:
       <div>Five</div>
       <div>Six</div>
       <div>Seven</div>
-    </div>
+    </div>                      
 
     .container {
       display: grid;
@@ -303,21 +305,22 @@ Try this in your file now, using the below CSS:
 
 This works because grid is creating as many 200 pixel columns as will fit into the container, then sharing whatever space is leftover between all of the columns — the maximum is 1fr which, as we already know, distributes space evenly between tracks.
 
-## Line-based placement
+Line-based placement
+--------------------
 
 We now move on from creating a grid, to placing things on the grid. Our grid always has lines, which lines start at 1 and relate to the Writing Mode of the document. Therefore in English, column line 1 is on the left hand side of the grid and row line 1 at the top. In Arabic column line 1 would be on the right hand side, as Arabic is written right to left.
 
 We can place things according to these lines by specifying the start and end line. We do this using the following properties:
 
-- {{cssxref("grid-column-start")}}
-- {{cssxref("grid-column-end")}}
-- {{cssxref("grid-row-start")}}
-- {{cssxref("grid-row-end")}}
+-   {{cssxref("grid-column-start")}}
+-   {{cssxref("grid-column-end")}}
+-   {{cssxref("grid-row-start")}}
+-   {{cssxref("grid-row-end")}}
 
 These properties can all have a line number as the value. You can also use the shorthand properties:
 
-- {{cssxref("grid-column")}}
-- {{cssxref("grid-row")}}
+-   {{cssxref("grid-column")}}
+-   {{cssxref("grid-row")}}
 
 These let you specify the start and end lines at once, separated by a `/` — a forward slash character.
 
@@ -404,13 +407,14 @@ We will instead place all of the elements for our site on the grid, using the gr
         <p>Nam vulputate diam nec tempor bibendum. Donec luctus augue eget malesuada ultrices. Phasellus turpis est, posuere sit amet dapibus ut, facilisis sed est.</p>
       </aside>
       <footer>Contact me@mysite.com</footer>
-    </div>
+    </div>               
 
 {{ EmbedLiveSample('Grid\_6', '100%', 400) }}
 
 **Note**: you can also use the value `-1` to target the end column or row line, and count inwards from the end using negative values. Note that lines count always from the edges of the explicit grid, not the [implicit grid](/en-US/docs/Glossary/Grid).
 
-## Positioning with grid-template-areas
+Positioning with grid-template-areas
+------------------------------------
 
 An alternative way to place items on your grid is to use the {{cssxref("grid-template-areas")}} property and giving the various elements of your design a name.
 
@@ -490,7 +494,7 @@ Reload the page and you will see that your items have been placed just as before
     footer {
       grid-area: footer;
     }
-
+                    
 
     <div class="container">
       <header>This is my lovely blog</header>
@@ -504,21 +508,22 @@ Reload the page and you will see that your items have been placed just as before
         <p>Nam vulputate diam nec tempor bibendum. Donec luctus augue eget malesuada ultrices. Phasellus turpis est, posuere sit amet dapibus ut, facilisis sed est.</p>
       </aside>
       <footer>Contact me@mysite.com</footer>
-    </div>
+    </div>                     
 
 {{ EmbedLiveSample('Grid\_7', '100%', 400) }}
 
 The rules for `grid-template-areas` are as follows:
 
-- You need to have every cell of the grid filled.
-- To span across two cells, repeat the name.
-- To leave a cell empty, use a `.` (period).
-- Areas must be rectangular — you can’t have an L-shaped area for example.
-- Areas can't be repeated in different locations.
+-   You need to have every cell of the grid filled.
+-   To span across two cells, repeat the name.
+-   To leave a cell empty, use a `.` (period).
+-   Areas must be rectangular — you can’t have an L-shaped area for example.
+-   Areas can't be repeated in different locations.
 
 You can play around with our layout, changing the footer to only sit underneath the content and the sidebar to span all the way down for example. This is a very nice way to describe a layout as it is obvious from the CSS exactly what is happening.
 
-## A CSS Grid, grid framework
+A CSS Grid, grid framework
+--------------------------
 
 Grid "frameworks" tend to be based around 12 or 16 column grids and with CSS Grid, you don’t need any third party tool to give you such a framework — it's already there in the spec.
 
@@ -590,7 +595,7 @@ Grid "frameworks" tend to be based around 12 or 16 column grids and with CSS Gri
     aside {
       border-right: 1px solid #999;
     }
-
+                    
 
     <div class="container">
       <header>This is my lovely blog</header>
@@ -605,7 +610,7 @@ Grid "frameworks" tend to be based around 12 or 16 column grids and with CSS Gri
       </aside>
       <footer>Contact me@mysite.com</footer>
     </div>
-
+                            
 
 {{ EmbedLiveSample('Grid\_8', '100%', 400) }}
 
@@ -613,32 +618,36 @@ If you use the [Firefox Grid Inspector](/en-US/docs/Tools/Page_Inspector/How_to/
 
 ![A 12 column grid overlaid on our design.](learn-grids-inspector.png)
 
-## Test your skills!
+Test your skills!
+-----------------
 
 You've reached the end of this article, but can you remember the most important information? You can find some further tests to verify that you've retained this information before you move on — see [Test your skills: Grids](/en-US/docs/Learn/CSS/CSS_layout/Grid_skills).
 
-## Summary
+Summary
+-------
 
 In this overview we have toured the main features of CSS Grid Layout. You should be able to start using it in your designs. To dig further into the specification, read our guides to Grid Layout, which can be found below.
 
-## See also
+See also
+--------
 
-- [CSS Grid guides](/en-US/docs/Web/CSS/CSS_Grid_Layout#guides)
-- [CSS Grid Inspector: Examine grid layouts](/en-US/docs/Tools/Page_Inspector/How_to/Examine_grid_layouts)
+-   [CSS Grid guides](/en-US/docs/Web/CSS/CSS_Grid_Layout#guides)
+-   [CSS Grid Inspector: Examine grid layouts](/en-US/docs/Tools/Page_Inspector/How_to/Examine_grid_layouts)
 
 {{PreviousMenuNext("Learn/CSS/CSS\_layout/Flexbox", "Learn/CSS/CSS\_layout/Floats", "Learn/CSS/CSS\_layout")}}
 
-## In this module
+In this module
+--------------
 
-- [Introduction to CSS layout](/en-US/docs/Learn/CSS/CSS_layout/Introduction)
-- [Normal flow](/en-US/docs/Learn/CSS/CSS_layout/Normal_Flow)
-- [Flexbox](/en-US/docs/Learn/CSS/CSS_layout/Flexbox)
-- [Grid](/en-US/docs/Learn/CSS/CSS_layout/Grids)
-- [Floats](/en-US/docs/Learn/CSS/CSS_layout/Floats)
-- [Positioning](/en-US/docs/Learn/CSS/CSS_layout/Positioning)
-- [Multiple-column layout](/en-US/docs/Learn/CSS/CSS_layout/Multiple-column_Layout)
-- [Responsive design](/en-US/docs/Learn/CSS/CSS_layout/Responsive_Design)
-- [Beginner's guide to media queries](/en-US/docs/Learn/CSS/CSS_layout/Media_queries)
-- [Legacy layout methods](/en-US/docs/Learn/CSS/CSS_layout/Legacy_Layout_Methods)
-- [Supporting older browsers](/en-US/docs/Learn/CSS/CSS_layout/Supporting_Older_Browsers)
-- [Fundamental layout comprehension assessment](/en-US/docs/Learn/CSS/CSS_layout/Fundamental_Layout_Comprehension)
+-   [Introduction to CSS layout](/en-US/docs/Learn/CSS/CSS_layout/Introduction)
+-   [Normal flow](/en-US/docs/Learn/CSS/CSS_layout/Normal_Flow)
+-   [Flexbox](/en-US/docs/Learn/CSS/CSS_layout/Flexbox)
+-   [Grid](/en-US/docs/Learn/CSS/CSS_layout/Grids)
+-   [Floats](/en-US/docs/Learn/CSS/CSS_layout/Floats)
+-   [Positioning](/en-US/docs/Learn/CSS/CSS_layout/Positioning)
+-   [Multiple-column layout](/en-US/docs/Learn/CSS/CSS_layout/Multiple-column_Layout)
+-   [Responsive design](/en-US/docs/Learn/CSS/CSS_layout/Responsive_Design)
+-   [Beginner's guide to media queries](/en-US/docs/Learn/CSS/CSS_layout/Media_queries)
+-   [Legacy layout methods](/en-US/docs/Learn/CSS/CSS_layout/Legacy_Layout_Methods)
+-   [Supporting older browsers](/en-US/docs/Learn/CSS/CSS_layout/Supporting_Older_Browsers)
+-   [Fundamental layout comprehension assessment](/en-US/docs/Learn/CSS/CSS_layout/Fundamental_Layout_Comprehension)

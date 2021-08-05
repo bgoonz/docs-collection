@@ -91,7 +91,6 @@ Add to `DAO` the following function:
 
     }
 
-
 ### Add Mutation to Schema
 
 Replace `schemaDefinition` with the code:

@@ -1,10 +1,11 @@
---- title: What are browser developer tools? slug: Learn/Common_questions/What_are_browser_developer_tools tags: - Beginner - Browser - CSS - CodingScripting - Dev Tools - HTML - JavaScript - Learn ---
+--- title: What are browser developer tools? slug: Learn/Common\_questions/What\_are\_browser\_developer\_tools tags: - Beginner - Browser - CSS - CodingScripting - Dev Tools - HTML - JavaScript - Learn ---
 
 Every modern web browser includes a powerful suite of developer tools. These tools do a range of things, from inspecting currently-loaded HTML, CSS and JavaScript to showing which assets the page has requested and how long they took to load. This article explains how to use the basic functions of your browser's devtools.
 
 **Note**: Before you run through the examples below, open the [Beginner's example site](https://mdn.github.io/beginner-html-site-scripted/) that we built during the [Getting started with the Web](/en-US/docs/Learn/Getting_started_with_the_web) article series. You should have this open as you follow the steps below.
 
-## How to open the devtools in your browser
+How to open the devtools in your browser
+----------------------------------------
 
 The devtools live inside your browser in a subwindow that looks roughly like this, depending on what browser you are using:
 
@@ -12,30 +13,31 @@ The devtools live inside your browser in a subwindow that looks roughly like thi
 
 How do you pull it up? Three ways:
 
-- **_Keyboard:_** _Ctrl + Shift + I_, except
-  - **Internet Explorer and Edge:** F12
-  - **macOS:** _<span class="Unicode">⌘ + ⌥ + I </span>_
-- <span class="Unicode">**_Menu bar:_** </span>
-  - **Firefox:** Menu ![](2014-01-10-13-08-08-f52b8c.png) <span class="Unicode">_<span class="Unicode">➤ Web Developer </span><span class="Unicode">➤ Toggle Tools, </span>_<span class="Unicode">or </span>_Tools ➤_</span> _Web Developer ➤ Toggle Tools_
-  - **Chrome:** _<span class="Unicode">More tools</span> ➤ Developer tools_
-  - **Safari:** _<span class="Unicode">Develop ➤</span> Show Web Inspector._ If you can't see the _Develop_ menu, go to _Safari<span class="Unicode"> ➤</span> Preferences ➤ Advanced_, and check the _Show Develop menu in menu bar_ checkbox.
-  - **Opera**: _<span class="Unicode">Developer ➤</span> Developer tools_
-- **_Context menu:_** Press-and-hold/right-click an item on a webpage (Ctrl-click on the Mac), and choose _Inspect Element_ from the context menu that appears. (_An added bonus:_ this method straight-away highlights the code of the element you right-clicked.)
+-   ***Keyboard:*** *Ctrl + Shift + I*, except
+    -   **Internet Explorer and Edge:** F12
+    -   **macOS:** *<span class="Unicode">⌘ + ⌥ + I </span>*
+-   <span class="Unicode">***Menu bar:*** </span>
+    -   **Firefox:** Menu ![](2014-01-10-13-08-08-f52b8c.png) <span class="Unicode">*<span class="Unicode">➤ Web Developer </span><span class="Unicode">➤ Toggle Tools, </span>*<span class="Unicode">or </span>*Tools ➤*</span> *Web Developer ➤ Toggle Tools*
+    -   **Chrome:** *<span class="Unicode">More tools</span> ➤ Developer tools*
+    -   **Safari:** *<span class="Unicode">Develop ➤</span> Show Web Inspector.* If you can't see the *Develop* menu, go to *Safari<span class="Unicode"> ➤</span> Preferences ➤ Advanced*, and check the *Show Develop menu in menu bar* checkbox. 
+    -   **Opera**: *<span class="Unicode">Developer ➤</span> Developer tools*
+-   ***Context menu:*** Press-and-hold/right-click an item on a webpage (Ctrl-click on the Mac), and choose *Inspect Element* from the context menu that appears. (*An added bonus:* this method straight-away highlights the code of the element you right-clicked.)
 
 ![](inspector_context.png)
 
-## The Inspector: DOM explorer and CSS editor
+The Inspector: DOM explorer and CSS editor
+------------------------------------------
 
 The developer tools usually open by default to the inspector, which looks something like the following screenshot. This tool shows what the HTML on your page looks like at runtime, as well as what CSS is applied to each element on the page. It also allows you to instantly modify the HTML and CSS and see the results of your changes reflected live in the browser viewport.
 
 ![](inspector_highlighted.png)
 
-If you _don't_ see the inspector,
+If you *don't* see the inspector,
 
-- Tap/click the _Inspector_ tab.
-- In Internet Explorer, tap/click _DOM Explorer,_ or press Ctrl + 1.
-- In Microsoft Edge, or Opera, tap/click Elements.
-- In Safari, the controls are not so clearly presented, but you should see the HTML if you haven't selected something else to appear in the window. Press the _Style_ button to see the CSS.
+-   Tap/click the *Inspector* tab.
+-   In Internet Explorer, tap/click *DOM Explorer,* or press Ctrl + 1.
+-   In Microsoft Edge, or Opera, tap/click Elements.
+-   In Safari, the controls are not so clearly presented, but you should see the HTML if you haven't selected something else to appear in the window. Press the *Style* button to see the CSS.
 
 ### Exploring the DOM inspector
 
@@ -43,13 +45,13 @@ For a start, right-click (Ctrl-click) an HTML element in the DOM inspector and l
 
 ![](dom_inspector.png)
 
-- **Delete Node** (sometimes _Delete Element_). Deletes the current element.
-- **Edit as HTML** (sometimes _Add attribute_/_Edit text_). Lets you change the HTML and see the results on the fly. Very useful for debugging and testing.
-- **:hover/:active/:focus**. Forces element states to be toggled on, so you can see what their styling would look like.
-- **Copy/Copy as HTML**. Copy the currently selected HTML.
-- Some browsers also have _Copy CSS Path_ and _Copy XPath_ available, to allow you to copy the CSS selector or XPath expression that would select the current HTML element.
+-   **Delete Node** (sometimes *Delete Element*). Deletes the current element.
+-   **Edit as HTML** (sometimes *Add attribute*/*Edit text*). Lets you change the HTML and see the results on the fly. Very useful for debugging and testing.
+-   **:hover/:active/:focus**. Forces element states to be toggled on, so you can see what their styling would look like.
+-   **Copy/Copy as HTML**. Copy the currently selected HTML.
+-   Some browsers also have *Copy CSS Path* and *Copy XPath* available, to allow you to copy the CSS selector or XPath expression that would select the current HTML element.
 
-Try editing some of your DOM now. Double-click an element, or right-click it and choose _Edit as HTML_ from the context menu. You can make any changes you'd like, but you cannot save your changes.
+Try editing some of your DOM now. Double-click an element, or right-click it and choose *Edit as HTML* from the context menu. You can make any changes you'd like, but you cannot save your changes.
 
 ### Exploring the CSS editor
 
@@ -59,31 +61,32 @@ By default, the CSS editor displays the CSS rules applied to the currently selec
 
 These features are especially handy:
 
-- The rules applied to the current element are shown in order of most-to-least-specific.
-- Click the checkboxes next to each declaration to see what would happen if you removed the declaration.
-- Click the little arrow next to each shorthand property to show the property's longhand equivalents.
-- Click a property name or value to bring up a text box, where you can key in a new value to get a live preview of a style change.
-- Next to each rule is the file name and line number the rule is defined in. Clicking that rule causes the dev tools to jump to show it in its own view, where it can generally be edited and saved.
-- You can also click the closing curly brace of any rule to bring up a text box on a new line, where you can write a completely new declaration for your page.
+-   The rules applied to the current element are shown in order of most-to-least-specific.
+-   Click the checkboxes next to each declaration to see what would happen if you removed the declaration.
+-   Click the little arrow next to each shorthand property to show the property's longhand equivalents.
+-   Click a property name or value to bring up a text box, where you can key in a new value to get a live preview of a style change.
+-   Next to each rule is the file name and line number the rule is defined in. Clicking that rule causes the dev tools to jump to show it in its own view, where it can generally be edited and saved.
+-   You can also click the closing curly brace of any rule to bring up a text box on a new line, where you can write a completely new declaration for your page.
 
 You'll notice a number of clickable tabs at the top of the CSS Viewer:
 
-- _Computed_: This shows the computed styles for the currently selected element (the final, normalized values that the browser applies).
-- _Layout_: In Firefox, this area includes two sections:
-  - _Box Model_: represents visually the current element's box model, so you can see at a glance what padding, border and margin is applied to it, and how big its content is.
-  - _Grid_: If the page you are inspecting uses CSS Grid, this section allows you to view the grid details.
-- _Fonts_: In Firefox, the _Fonts_ tab shows the fonts applied to the current element.
+-   *Computed*: This shows the computed styles for the currently selected element (the final, normalized values that the browser applies).
+-   *Layout*: In Firefox, this area includes two sections:
+    -   *Box Model*: represents visually the current element's box model, so you can see at a glance what padding, border and margin is applied to it, and how big its content is.
+    -   *Grid*: If the page you are inspecting uses CSS Grid, this section allows you to view the grid details.
+-   *Fonts*: In Firefox, the *Fonts* tab shows the fonts applied to the current element.
 
 ### Find out more
 
 Find more out about the Inspector in different browsers:
 
-- [Firefox Page inspector](/en-US/docs/Tools/Page_Inspector)
-- [IE DOM Explorer](https://msdn.microsoft.com/en-us/library/ie/dn255008%28v=vs.85%29.aspx)
-- [Chrome DOM inspector](https://developer.chrome.com/devtools/docs/dom-and-styles) (Opera's inspector works the same as this)
-- [Safari DOM inspector and style explorer](https://developer.apple.com/library/safari/documentation/AppleApplications/Conceptual/Safari_Developer_Guide/ResourcesandtheDOM/ResourcesandtheDOM.html#//apple_ref/doc/uid/TP40007874-CH3-SW1)
+-   [Firefox Page inspector](/en-US/docs/Tools/Page_Inspector)
+-   [IE DOM Explorer](https://msdn.microsoft.com/en-us/library/ie/dn255008%28v=vs.85%29.aspx)
+-   [Chrome DOM inspector](https://developer.chrome.com/devtools/docs/dom-and-styles) (Opera's inspector works the same as this)
+-   [Safari DOM inspector and style explorer](https://developer.apple.com/library/safari/documentation/AppleApplications/Conceptual/Safari_Developer_Guide/ResourcesandtheDOM/ResourcesandtheDOM.html#//apple_ref/doc/uid/TP40007874-CH3-SW1)
 
-## The JavaScript debugger
+The JavaScript debugger
+-----------------------
 
 The JavaScript debugger allows you to watch the value of variables and set breakpoints, places in your code that you want to pause execution and identify the problems that prevent your code from executing properly.
 
@@ -91,7 +94,7 @@ The JavaScript debugger allows you to watch the value of variables and set break
 
 To get to the debugger:
 
-**Firefox**: Select ![](2014-01-10-13-08-08-f52b8c.png) ➤ _Web Developer_ ➤ _Debugger_ or press Ctrl + Shift + S to open the JavaScript Debugger. If the tools are already displayed, click on the **Debugger** tab.
+**Firefox**: Select ![](2014-01-10-13-08-08-f52b8c.png) ➤ *Web Developer* ➤ *Debugger* or press Ctrl + Shift + S to open the JavaScript Debugger. If the tools are already displayed, click on the **Debugger** tab.
 
 **Chrome**: Open the Developer tools and then select the **Sources** tab. (Opera works the same way.)
 
@@ -135,18 +138,19 @@ The final section, **Scopes**, shows what values are visible from various points
 
 Find more out about the JavaScript debugger in different browsers:
 
-- [Firefox JavaScript Debugger](/en-US/docs/Tools/Debugger)
-- [Microsoft Edge Debugger](https://docs.microsoft.com/en-us/microsoft-edge/devtools-guide/debugger)
-- [Chrome Debugger](https://developers.google.com/web/tools/chrome-devtools/javascript/)
-- [Safari Debugger](https://developer.apple.com/safari/tools/)
+-   [Firefox JavaScript Debugger](/en-US/docs/Tools/Debugger)
+-   [Microsoft Edge Debugger](https://docs.microsoft.com/en-us/microsoft-edge/devtools-guide/debugger)
+-   [Chrome Debugger](https://developers.google.com/web/tools/chrome-devtools/javascript/)
+-   [Safari Debugger](https://developer.apple.com/safari/tools/)
 
-## The JavaScript console
+The JavaScript console
+----------------------
 
 The JavaScript console is an incredibly useful tool for debugging JavaScript that isn't working as expected. It allows you to run lines of JavaScript against the page currently loaded in the browser, and reports the errors encountered as the browser tries to execute your code. To access the console in any browser:
 
 If the developer tools are already open, click or press the Console tab.
 
-If not, Firefox allows you to open the console directly using Ctrl + Shift + K or using the menu command: Menu ![](2014-01-10-13-08-08-f52b8c.png) <span class="Unicode">_<span class="Unicode">➤ Web Developer </span><span class="Unicode">➤ Web Console, </span>_<span class="Unicode">or </span>_Tools ➤_</span> _Web Developer ➤ Web Console._ On other browser, open the developer tools and then click the Console tab.
+If not, Firefox allows you to open the console directly using Ctrl + Shift + K or using the menu command: Menu ![](2014-01-10-13-08-08-f52b8c.png) <span class="Unicode">*<span class="Unicode">➤ Web Developer </span><span class="Unicode">➤ Web Console, </span>*<span class="Unicode">or </span>*Tools ➤*</span> *Web Developer ➤ Web Console.* On other browser, open the developer tools and then click the Console tab.
 
 This will give you a window like the following:
 
@@ -159,8 +163,8 @@ To see what happens, try entering the following snippets of code into the consol
 2.  document.querySelector('html').style.backgroundColor = 'purple';
 
 3.  const myWordmark = document.createElement('img');
-    myWordmark.setAttribute('src','https://blog.mozilla.org/press/wp-content/themes/OneMozilla/img/mozilla-wordmark.png');
-    document.querySelector('h1').appendChild(myWordmark);
+        myWordmark.setAttribute('src','https://blog.mozilla.org/press/wp-content/themes/OneMozilla/img/mozilla-wordmark.png');
+        document.querySelector('h1').appendChild(myWordmark);
 
 Now try entering the following incorrect versions of the code and see what you get.
 
@@ -169,8 +173,8 @@ Now try entering the following incorrect versions of the code and see what you g
 2.  document.cheeseSelector('html').style.backgroundColor = 'purple';
 
 3.  const myWordmark = document.createElement('img');
-    myBanana.setAttribute('src','https://blog.mozilla.org/press/wp-content/themes/OneMozilla/img/mozilla-wordmark.png');
-    document.querySelector('h1').appendChild(myWordmark);
+        myBanana.setAttribute('src','https://blog.mozilla.org/press/wp-content/themes/OneMozilla/img/mozilla-wordmark.png');
+        document.querySelector('h1').appendChild(myWordmark);
 
 You'll start to see the kind of errors that the browser returns. Often these errors are fairly cryptic, but it should be pretty simple to figure these problems out!
 
@@ -178,12 +182,13 @@ You'll start to see the kind of errors that the browser returns. Often these err
 
 Find more out about the JavaScript console in different browsers:
 
-- [Firefox Web Console](/en-US/docs/Tools/Web_Console)
-- [IE JavaScript console](https://msdn.microsoft.com/en-us/library/ie/dn255006%28v=vs.85%29.aspx)
-- [Chrome JavaScript Console](https://developer.chrome.com/devtools/docs/console) (Opera's inspector works the same as this)
-- [Safari Console](https://developer.apple.com/library/safari/documentation/AppleApplications/Conceptual/Safari_Developer_Guide/Console/Console.html#//apple_ref/doc/uid/TP40007874-CH6-SW1)
+-   [Firefox Web Console](/en-US/docs/Tools/Web_Console)
+-   [IE JavaScript console](https://msdn.microsoft.com/en-us/library/ie/dn255006%28v=vs.85%29.aspx)
+-   [Chrome JavaScript Console](https://developer.chrome.com/devtools/docs/console) (Opera's inspector works the same as this)
+-   [Safari Console](https://developer.apple.com/library/safari/documentation/AppleApplications/Conceptual/Safari_Developer_Guide/Console/Console.html#//apple_ref/doc/uid/TP40007874-CH6-SW1)
 
-## See also
+See also
+--------
 
-- [Debugging HTML](/en-US/docs/Learn/HTML/Introduction_to_HTML/Debugging_HTML)
-- [Debugging CSS](/en-US/docs/Learn/CSS/Building_blocks/Debugging_CSS)
+-   [Debugging HTML](/en-US/docs/Learn/HTML/Introduction_to_HTML/Debugging_HTML)
+-   [Debugging CSS](/en-US/docs/Learn/CSS/Building_blocks/Debugging_CSS)

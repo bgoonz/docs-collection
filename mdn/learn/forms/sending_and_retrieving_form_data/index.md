@@ -1,4 +1,4 @@
---- title: Sending form data slug: Learn/Forms/Sending_and_retrieving_form_data tags: - Beginner - CodingScripting - Files - Forms - Guide - HTML - HTTP - Headers - Security - Web ---
+--- title: Sending form data slug: Learn/Forms/Sending\_and\_retrieving\_form\_data tags: - Beginner - CodingScripting - Files - Forms - Guide - HTML - HTTP - Headers - Security - Web ---
 
 {{LearnSidebar}}{{PreviousMenu("Learn/Forms/Form\_validation", "Learn/Forms")}}
 
@@ -8,7 +8,8 @@ Once the form data has been validated on the client-side, it is okay to submit t
 
 First we'll discuss what happens to the data when a form is submitted.
 
-## Client/server architecture
+Client/server architecture
+--------------------------
 
 At it's most basic, the web uses a client/server architecture that can be summarized as follows. a client (usually a web browser) sends a request to a server (most of the time a web server like [Apache](https://httpd.apache.org/), [Nginx](https://www.nginx.com/), [IIS](https://www.iis.net/), [Tomcat](https://tomcat.apache.org/), etc.), using the [HTTP protocol](/en-US/docs/Web/HTTP). The server answers the request using the same protocol.
 
@@ -18,7 +19,8 @@ An HTML form on a web page is nothing more than a convenient user-friendly way t
 
 **Note**: To get a better idea of how client-server architectures work, read our [Server-side website programming first steps](/en-US/docs/Learn/Server-side/First_steps) module.
 
-## On the client side: defining how to send the data
+On the client side: defining how to send the data
+-------------------------------------------------
 
 The {{HTMLElement("form")}} element defines how the data will be sent. All of its attributes are designed to let you configure the request to be sent when a user hits a submit button. The two most important attributes are {{htmlattrxref("action","form")}} and {{htmlattrxref("method","form")}}.
 
@@ -74,8 +76,8 @@ Since the `GET` method has been used, you'll see the URL `www.foo.com/?say=Hi&to
 
 ![](url-parameters.png)The data is appended to the URL as a series of name/value pairs. After the URL web address has ended, we include a question mark (`?`) followed by the name/value pairs, each one separated by an ampersand (`&`). In this case we are passing two pieces of data to the server:
 
-- `say`, which has a value of `Hi`
-- `to`, which has a value of `Mom`
+-   `say`, which has a value of `Hi`
+-   `to`, which has a value of `Mom`
 
 The HTTP request looks like this:
 
@@ -136,7 +138,8 @@ The only thing displayed to the user is the URL called. As we mentioned above, w
 1.  If you need to send a password (or any other sensitive piece of data), never use the `GET` method or you risk displaying it in the URL bar, which would be very insecure.
 2.  If you need to send a large amount of data, the `POST` method is preferred because some browsers limit the sizes of URLs. In addition, many servers limit the length of URLs they accept.
 
-## On the server side: retrieving the data
+On the server side: retrieving the data
+---------------------------------------
 
 Whichever HTTP method you choose, the server receives a string that will be parsed in order to get the data as a list of key/value pairs. The way you access this list depends on the development platform you use and on any specific frameworks you may be using with it.
 
@@ -157,9 +160,9 @@ This example displays a page with the data we sent. You can see this in action i
 
 ![](php-result.png)
 
-**Note**: This example won't work when you load it into a browser locally — browsers cannnot interpret PHP code, so when the form is submitted the browser will just offer to download the PHP file for you. To get it to work, you need to run the example through a PHP server of some kind. Good options for local PHP testing are [MAMP](https://www.mamp.info/en/downloads/) (Mac and Windows) and [AMPPS](https://ampps.com/download) (Mac, Windows, Linux).
-
-Note also that if you are using MAMP but don't have MAMP Pro installed (or if the MAMP Pro demo time trial has expired), you might have trouble getting it working. To get it working again, we have found that you can load up the MAMP app, then choose the menu options _MAMP_ &gt; _Preferences_ &gt; _PHP_, and set "Standard Version:" to "7.2.x" (x will differ depending on what version you have installed).
+**Note**: This example won't work when you load it into a browser locally — browsers cannnot interpret PHP code, so when the form is submitted the browser will just offer to download the PHP file for you. To get it to work, you need to run the example through a PHP server of some kind. Good options for local PHP testing are [MAMP](https://www.mamp.info/en/downloads/) (Mac and Windows) and [AMPPS](https://ampps.com/download) (Mac, Windows, Linux).  
+  
+Note also that if you are using MAMP but don't have MAMP Pro installed (or if the MAMP Pro demo time trial has expired), you might have trouble getting it working. To get it working again, we have found that you can load up the MAMP app, then choose the menu options *MAMP* &gt; *Preferences* &gt; *PHP*, and set "Standard Version:" to "7.2.x" (x will differ depending on what version you have installed).
 
 ### Example: Python
 
@@ -182,8 +185,8 @@ This example shows how you would use Python to do the same thing — display the
 
 The two templates referenced in the above code are as follows (these need to be in a subdirectory called `templates` in the same directory as the `python-example.py` file, if you try to run the example yourself):
 
-- [form.html](https://github.com/mdn/learning-area/blob/master/html/forms/sending-form-data/templates/form.html): The same form as we saw above in the {{anch("The POST method")}} section but with the `action` set to `\{{ url_for('hello') }}`. This is a [Jinja2](http://jinja.pocoo.org/docs/2.9/) template, which is basically HTML but can contain calls to the Python code that is running the web server contained in curly braces. `url_for('hello')` is basically saying "redirect to `/hello` when the form is submitted".
-- [greeting.html](https://github.com/mdn/learning-area/blob/master/html/forms/sending-form-data/templates/greeting.html): This template just contains a line that renders the two bits of data passed to it when it is rendered. This is done via the `hello()` function seen above, which runs when the `/hello` URL is navigated to.
+-   [form.html](https://github.com/mdn/learning-area/blob/master/html/forms/sending-form-data/templates/form.html): The same form as we saw above in the {{anch("The POST method")}} section but with the `action` set to `\{{ url_for('hello') }}`. This is a [Jinja2](http://jinja.pocoo.org/docs/2.9/) template, which is basically HTML but can contain calls to the Python code that is running the web server contained in curly braces. `url_for('hello')` is basically saying "redirect to `/hello` when the form is submitted".
+-   [greeting.html](https://github.com/mdn/learning-area/blob/master/html/forms/sending-form-data/templates/greeting.html): This template just contains a line that renders the two bits of data passed to it when it is rendered. This is done via the `hello()` function seen above, which runs when the `/hello` URL is navigated to.
 
 **Note**: Again, this code won't work if you just try to load it into a browser directly. Python works a bit differently to PHP — to run this code locally you'll need to [install Python/PIP](/en-US/docs/Learn/Server-side/Django/development_environment#installing_python_3), then install Flask using `pip3 install flask`. At this point you should be able to run the example using `python3 python-example.py`, then navigating to `localhost:5000` in your browser.
 
@@ -191,16 +194,17 @@ The two templates referenced in the above code are as follows (these need to be 
 
 There are many other server-side technologies you can use for form handling, including Perl, Java, .Net, Ruby, etc. Just pick the one you like best. That said, it's worth noting that it's very uncommon to use these technologies directly because this can be tricky. It's more common to use one of the many high quality frameworks that make handling forms easier, such as:
 
-- [Django](/en-US/docs/Learn/Server-side/Django) for Python (a bit more heavyweight than [Flask](http://flask.pocoo.org/), but with more tools and options).
-- [Express](/en-US/docs/Learn/Server-side/Express_Nodejs) for Node.js.
-- [Laravel](https://laravel.com/) for PHP.
-- [Ruby On Rails](https://rubyonrails.org/) for Ruby.
+-   [Django](/en-US/docs/Learn/Server-side/Django) for Python (a bit more heavyweight than [Flask](http://flask.pocoo.org/), but with more tools and options).
+-   [Express](/en-US/docs/Learn/Server-side/Express_Nodejs) for Node.js.
+-   [Laravel](https://laravel.com/) for PHP.
+-   [Ruby On Rails](https://rubyonrails.org/) for Ruby.
 
-It's worth noting that even using these frameworks, working with forms isn't necessarily _easy_. But it's much easier than trying to write all the functionality yourself from scratch, and will save you a lot of time.
+It's worth noting that even using these frameworks, working with forms isn't necessarily *easy*. But it's much easier than trying to write all the functionality yourself from scratch, and will save you a lot of time.
 
 **Note**: It is beyond the scope of this article to teach you any server-side languages or frameworks. The links above will give you some help, should you wish to learn them.
 
-## A special case: sending files
+A special case: sending files
+-----------------------------
 
 Sending files with HTML forms is a special case. Files are binary data — or considered as such — whereas all other data is text data. Because HTTP is a text protocol, there are special requirements for handling binary data.
 
@@ -210,9 +214,9 @@ This attribute lets you specify the value of the `Content-Type` HTTP header incl
 
 If you want to send files, you need to take three extra steps:
 
-- Set the {{htmlattrxref("method","form")}} attribute to `POST` because file content can't be put inside URL parameters.
-- Set the value of {{htmlattrxref("enctype","form")}} to `multipart/form-data` because the data will be split into multiple parts, one for each file plus one for the text data included in the form body (if text is also entered into the form).
-- Include one or more `<input type="file">` controls to allow your users to select the file(s) that will be uploaded.
+-   Set the {{htmlattrxref("method","form")}} attribute to `POST` because file content can't be put inside URL parameters.
+-   Set the value of {{htmlattrxref("enctype","form")}} to `multipart/form-data` because the data will be split into multiple parts, one for each file plus one for the text data included in the form body (if text is also entered into the form).
+-   Include one or more `<input type="file">` controls to allow your users to select the file(s) that will be uploaded.
 
 For example:
 
@@ -228,7 +232,8 @@ For example:
 
 **Note:** Servers can be configured with a size limit for files and HTTP requests in order to prevent abuse.
 
-## Security issues
+Security issues
+---------------
 
 Each time you send data to a server, you need to consider security. HTML forms are by far the most common server attack vectors (places where attacks can occur). The problems never come from the HTML forms themselves — they come from how the server handles data.
 
@@ -240,43 +245,46 @@ So, how do you fight these threats? This is a topic far beyond this guide, but t
 
 All data that comes to your server must be checked and sanitized. Always. No exception.
 
-- **Escape potentially dangerous characters**. The specific characters you should be cautious with vary depending on the context in which the data is used and the server platform you employ, but all server-side languages have functions for this. Things to watch out for are character sequences that look like executable code (such as [JavaScript](/en-US/docs/Learn/JavaScript) or [SQL](https://en.wikipedia.org/wiki/SQL) commands).
-- **Limit the incoming amount of data to allow only what's necessary**.
-- **Sandbox uploaded files**. Store them on a different server and allow access to the file only through a different subdomain or even better through a completely different domain.
+-   **Escape potentially dangerous characters**. The specific characters you should be cautious with vary depending on the context in which the data is used and the server platform you employ, but all server-side languages have functions for this. Things to watch out for are character sequences that look like executable code (such as [JavaScript](/en-US/docs/Learn/JavaScript) or [SQL](https://en.wikipedia.org/wiki/SQL) commands).
+-   **Limit the incoming amount of data to allow only what's necessary**.
+-   **Sandbox uploaded files**. Store them on a different server and allow access to the file only through a different subdomain or even better through a completely different domain.
 
 You should avoid many/most problems if you follow these three rules, but it's always a good idea to get a security review performed by a competent third party. Don't assume that you've seen all the possible problems.
 
-## Summary
+Summary
+-------
 
 As we'd alluded to above, sending form data is easy, but securing an application can be tricky. Just remember that a front-end developer is not the one who should define the security model of the data.It's possible to perform [client-side form validation](/en-US/docs/Learn/Forms/Form_validation), but the server can't trust this validation because it has no way to truly know what has really happened on the client-side.
 
 If you've worked your way through these tutorials in order, you now know how to markup and style a form, do client-side validation, and have some idea about submitting a form.
 
-## See also
+See also
+--------
 
 If you want to learn more about securing a web application, you can dig into these resources:
 
-- [Server-side website programming first steps](/en-US/docs/Learn/Server-side/First_steps)
-- [The Open Web Application Security Project (OWASP)](https://www.owasp.org/index.php/Main_Page)
-- [Web Security by Mozilla](https://infosec.mozilla.org/guidelines/web_security)
+-   [Server-side website programming first steps](/en-US/docs/Learn/Server-side/First_steps)
+-   [The Open Web Application Security Project (OWASP)](https://www.owasp.org/index.php/Main_Page)
+-   [Web Security by Mozilla](https://infosec.mozilla.org/guidelines/web_security)
 
 {{PreviousMenu("Learn/Forms/Form\_validation", "Learn/Forms")}}
 
-## In this module
+In this module
+--------------
 
-- [Your first form](/en-US/docs/Learn/Forms/Your_first_form)
-- [How to structure a web form](/en-US/docs/Learn/Forms/How_to_structure_a_web_form)
-- [Basic native form controls](/en-US/docs/Learn/Forms/Basic_native_form_controls)
-- [The HTML5 input types](/en-US/docs/Learn/Forms/HTML5_input_types)
-- [Other form controls](/en-US/docs/Learn/Forms/Other_form_controls)
-- [Styling web forms](/en-US/docs/Learn/Forms/Styling_web_forms)
-- [Advanced form styling](/en-US/docs/Learn/Forms/Advanced_form_styling)
-- [UI pseudo-classes](/en-US/docs/Learn/Forms/UI_pseudo-classes)
-- [Client-side form validation](/en-US/docs/Learn/Forms/Form_validation)
-- [Sending form data](/en-US/docs/Learn/Forms/Sending_and_retrieving_form_data)
+-   [Your first form](/en-US/docs/Learn/Forms/Your_first_form)
+-   [How to structure a web form](/en-US/docs/Learn/Forms/How_to_structure_a_web_form)
+-   [Basic native form controls](/en-US/docs/Learn/Forms/Basic_native_form_controls)
+-   [The HTML5 input types](/en-US/docs/Learn/Forms/HTML5_input_types)
+-   [Other form controls](/en-US/docs/Learn/Forms/Other_form_controls)
+-   [Styling web forms](/en-US/docs/Learn/Forms/Styling_web_forms)
+-   [Advanced form styling](/en-US/docs/Learn/Forms/Advanced_form_styling)
+-   [UI pseudo-classes](/en-US/docs/Learn/Forms/UI_pseudo-classes)
+-   [Client-side form validation](/en-US/docs/Learn/Forms/Form_validation)
+-   [Sending form data](/en-US/docs/Learn/Forms/Sending_and_retrieving_form_data)
 
 ### Advanced Topics
 
-- [How to build custom form controls](/en-US/docs/Learn/Forms/How_to_build_custom_form_controls)
-- [Sending forms through JavaScript](/en-US/docs/Learn/Forms/Sending_forms_through_JavaScript)
-- [Property compatibility table for form widgets](/en-US/docs/Learn/Forms/Property_compatibility_table_for_form_controls)
+-   [How to build custom form controls](/en-US/docs/Learn/Forms/How_to_build_custom_form_controls)
+-   [Sending forms through JavaScript](/en-US/docs/Learn/Forms/Sending_forms_through_JavaScript)
+-   [Property compatibility table for form widgets](/en-US/docs/Learn/Forms/Property_compatibility_table_for_form_controls)

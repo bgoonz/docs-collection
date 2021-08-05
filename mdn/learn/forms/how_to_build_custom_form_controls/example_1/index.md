@@ -1,8 +1,9 @@
---- title: Example 1 slug: Learn/Forms/How_to_build_custom_form_controls/Example_1 tags: - Forms - Guide - HTML ---
+--- title: Example 1 slug: Learn/Forms/How\_to\_build\_custom\_form\_controls/Example\_1 tags: - Forms - Guide - HTML ---
 
 This is the first example of code that explains [how to build a custom form widget](/en-US/docs/Learn/Forms/How_to_build_custom_form_controls).
 
-## Basic state
+Basic state
+-----------
 
 ### HTML
 
@@ -136,7 +137,8 @@ This is the first example of code that explains [how to build a custom form widg
 
 {{ EmbedLiveSample('Basic\_state', 120, 130) }}
 
-## Active state
+Active state
+------------
 
 ### HTML
 
@@ -269,7 +271,8 @@ This is the first example of code that explains [how to build a custom form widg
 
 {{ EmbedLiveSample('Active\_state', 120, 130) }}
 
-## Open state
+Open state
+----------
 
 ### HTML
 

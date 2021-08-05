@@ -1,4 +1,4 @@
---- title: Practical positioning examples slug: Learn/CSS/CSS_layout/Practical_positioning_examples tags: - Article - Beginner - CSS - CodingScripting - Guide - Layout - Learn - absolute - fixed - relative ---
+--- title: Practical positioning examples slug: Learn/CSS/CSS\_layout/Practical\_positioning\_examples tags: - Article - Beginner - CSS - CodingScripting - Guide - Layout - Learn - absolute - fixed - relative ---
 
 {{LearnSidebar}}
 
@@ -6,7 +6,8 @@ This article shows how to build some real world examples to illustrate what kind
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>HTML basics (study <a href="/en-US/docs/Learn/HTML/Introduction_to_HTML">Introduction to HTML</a>), and an idea of How CSS works (study <a href="/en-US/docs/Learn/CSS/First_steps">Introduction to CSS</a>.)</td></tr><tr class="even"><td>Objective:</td><td>To get an idea of the practicalities of positioning</td></tr></tbody></table>
 
-## A tabbed info-box
+A tabbed info-box
+-----------------
 
 The first example we'll look at is a classic tabbed info box — a very common feature used when you want to pack a lot of information into a small area. This includes information-heavy apps like strategy/war games, mobile versions of websites where the screen is narrow and space is limited, and compact information boxes where you might want to make lots of information available without having it fill the whole UI. Our simple example will look like this once we are finished:
 
@@ -186,17 +187,18 @@ The final step to getting this feature working is to add some JavaScript. Put th
 
 This code does the following:
 
-- First we save a reference to all the tabs and all the panels in two variables called `tabs` and `panels`, so we can easily do things to them later on.
-- Then we use a `for` loop to cycle through all the tabs and run a function called `setTabHandler()` on each one, which sets up the functionality that should occur when each one is clicked on. When run, the function is passed a reference to the particular tab it is being run for, and an index number `i` that indentifies the tab's position in the `tabs` array.
-- In the `setTabHandler()` function, the tab has an `onclick` event handler set on it, so that when the tab is clicked, the following occurs:
-  - A `for` loop is used to cycle through all the tabs and remove any classes that are present on them.
-  - A `class` of `active` is set on the tab that was clicked on — remember from earlier that this class has an associated rule in the CSS that sets the same {{cssxref("color")}} and {{cssxref("background-color")}} on the tab as the panels are styled with.
-  - A `for` loop is used to cycle through all the panels and remove any classes that are present on them.
-  - A class of `active-panel` is set on the panel that corresponds to the tab that was clicked on — remember from earlier that this class has an associated rule in the CSS that sets its {{cssxref("z-index")}} to 1, making it appear over the top of the other panels.
+-   First we save a reference to all the tabs and all the panels in two variables called `tabs` and `panels`, so we can easily do things to them later on.
+-   Then we use a `for` loop to cycle through all the tabs and run a function called `setTabHandler()` on each one, which sets up the functionality that should occur when each one is clicked on. When run, the function is passed a reference to the particular tab it is being run for, and an index number `i` that indentifies the tab's position in the `tabs` array.
+-   In the `setTabHandler()` function, the tab has an `onclick` event handler set on it, so that when the tab is clicked, the following occurs:
+    -   A `for` loop is used to cycle through all the tabs and remove any classes that are present on them.
+    -   A `class` of `active` is set on the tab that was clicked on — remember from earlier that this class has an associated rule in the CSS that sets the same {{cssxref("color")}} and {{cssxref("background-color")}} on the tab as the panels are styled with.
+    -   A `for` loop is used to cycle through all the panels and remove any classes that are present on them.
+    -   A class of `active-panel` is set on the panel that corresponds to the tab that was clicked on — remember from earlier that this class has an associated rule in the CSS that sets its {{cssxref("z-index")}} to 1, making it appear over the top of the other panels.
 
 That's it for the first example. Keep your code open, as we'll be adding to it in the second one.
 
-## A fixed position tabbed info-box
+A fixed position tabbed info-box
+--------------------------------
 
 In our second example, we will take our first example — our info-box — and add it into the context of a full web page. But not only that — we'll give it fixed position so that it stays in the same position in the browser window. When the main content scrolls, the info-box will stay in the same position on the screen. Our finished example will look like this:
 
@@ -253,7 +255,8 @@ To start with, we give the content the same {{cssxref("background-color")}}, {{c
 
 This marks the end of the second example; we hope you'll find the third just as interesting.
 
-## A sliding hidden panel
+A sliding hidden panel
+----------------------
 
 The final example we'll present here is a panel that slides on and off the screen at the press of an icon — as mentioned earlier, this is popular for situations like mobile layouts, where the available screen spaces is small, so you don't want to use up most of it by showing a menu or info panel instead of the useful content.
 
@@ -301,10 +304,10 @@ First let's deal with the form elements — add the following CSS in between you
 
 The first rule styles the `<label>`; here we've:
 
-- Set a large {{cssxref("font-size")}} to make the icon nice and big.
-- Set {{cssxref("position")}} `absolute` on it, and used {{cssxref("top")}} and {{cssxref("right")}} to position it nicely in the top-right corner.
-- Set a {{cssxref("z-index")}} of 1 on it — this is so that when the info panel is styled and shown, it doesn't cover up the icon; instead the icon will sit on top of it so it can be pressed again to hide the info pane.
-- Used the {{cssxref("cursor")}} property to change the mouse cursor when it is hovering over the icon to a hand pointer (like the one you see when links are hovered over), as an extra visual clue to users that the icon does something interesting.
+-   Set a large {{cssxref("font-size")}} to make the icon nice and big.
+-   Set {{cssxref("position")}} `absolute` on it, and used {{cssxref("top")}} and {{cssxref("right")}} to position it nicely in the top-right corner.
+-   Set a {{cssxref("z-index")}} of 1 on it — this is so that when the info panel is styled and shown, it doesn't cover up the icon; instead the icon will sit on top of it so it can be pressed again to hide the info pane.
+-   Used the {{cssxref("cursor")}} property to change the mouse cursor when it is hovering over the icon to a hand pointer (like the one you see when links are hovered over), as an extra visual clue to users that the icon does something interesting.
 
 The second rule sets {{cssxref("position")}} `absolute` on the actual checkbox `<input>` element, and hides it off the top of the screen. We don't actually want to see this on our UI.
 
@@ -329,11 +332,11 @@ Now it's time to style the actual sliding panel itself. Add the following rule t
 
 There's a lot going on here — let's discuss it bit by bit:
 
-- First, we set some simple {{cssxref("background-color")}} and {{cssxref("color")}} on the info box.
-- Next, we set a fixed {{cssxref("width")}} on the panel, and make its {{cssxref("height")}} the entire height of the browser viewport.
-- We also include some horizontal {{cssxref("padding")}} to space it out a bit.
-- Next we set {{cssxref("position")}}`: fixed;` on the panel so it will always appear in the same place, even if the page has content to scroll. We glue it to the {{cssxref("top")}} of the viewport, and set it so that by default it is offscreen to the {{cssxref("right")}}.
-- Finally, we set a {{cssxref("transition")}} on the element. Transitions are an interesting feature that allow you to make changes between states happen smoothly, rather than just going "on", "off" abruptly. In this case we are intending to make the panel slide smoothly onscreen when the checkbox is checked. (Or to put it another way, when the question mark icon is clicked — remember, clicking the `<label>` will check the associated checkbox! We told you it was a hack.) You will learn a lot more about...
+-   First, we set some simple {{cssxref("background-color")}} and {{cssxref("color")}} on the info box.
+-   Next, we set a fixed {{cssxref("width")}} on the panel, and make its {{cssxref("height")}} the entire height of the browser viewport.
+-   We also include some horizontal {{cssxref("padding")}} to space it out a bit.
+-   Next we set {{cssxref("position")}}`: fixed;` on the panel so it will always appear in the same place, even if the page has content to scroll. We glue it to the {{cssxref("top")}} of the viewport, and set it so that by default it is offscreen to the {{cssxref("right")}}.
+-   Finally, we set a {{cssxref("transition")}} on the element. Transitions are an interesting feature that allow you to make changes between states happen smoothly, rather than just going "on", "off" abruptly. In this case we are intending to make the panel slide smoothly onscreen when the checkbox is checked. (Or to put it another way, when the question mark icon is clicked — remember, clicking the `<label>` will check the associated checkbox! We told you it was a hack.) You will learn a lot more about...
 
 ### Setting the checked state
 
@@ -347,21 +350,23 @@ The selector is pretty complex here — we are selecting the `<aside>` element a
 
 So there you have it — a rather clever JavaScript-free way to create a toggling button effect. This will work in IE9 and above (the smooth transition will work in IE10 and above.) This effect does have some concerns — this is a bit of an abuse of form elements, as they weren't intended for this purpose. In addition, the effect is not great in terms of accessibility; the label is not focusable by default, and the non-semantic use of the form elements could cause issues with screen readers. JavaScript and a link or button might be more appropriate, but it is still fun to experiment with.
 
-## Summary
+Summary
+-------
 
 So that rounds off our look at positioning — by now, you should have an idea of how the basic mechanics work, as well as understanding how to start applying these to build some interesting UI features. Don't worry if you didn't get this all immediately — positioning is a fairly advanced topic, and you can always work through the articles again to aid your understanding. The next subject we'll turn to is Flexbox.
 
-## In this module
+In this module
+--------------
 
-- [Introduction to CSS layout](/en-US/docs/Learn/CSS/CSS_layout/Introduction)
-- [Normal flow](/en-US/docs/Learn/CSS/CSS_layout/Normal_Flow)
-- [Flexbox](/en-US/docs/Learn/CSS/CSS_layout/Flexbox)
-- [Grid](/en-US/docs/Learn/CSS/CSS_layout/Grids)
-- [Floats](/en-US/docs/Learn/CSS/CSS_layout/Floats)
-- [Positioning](/en-US/docs/Learn/CSS/CSS_layout/Positioning)
-- [Multiple-column layout](/en-US/docs/Learn/CSS/CSS_layout/Multiple-column_Layout)
-- [Responsive design](/en-US/docs/Learn/CSS/CSS_layout/Responsive_Design)
-- [Beginner's guide to media queries](/en-US/docs/Learn/CSS/CSS_layout/Media_queries)
-- [Legacy layout methods](/en-US/docs/Learn/CSS/CSS_layout/Legacy_Layout_Methods)
-- [Supporting older browsers](/en-US/docs/Learn/CSS/CSS_layout/Supporting_Older_Browsers)
-- [Fundamental layout comprehension assessment](/en-US/docs/Learn/CSS/CSS_layout/Fundamental_Layout_Comprehension)
+-   [Introduction to CSS layout](/en-US/docs/Learn/CSS/CSS_layout/Introduction)
+-   [Normal flow](/en-US/docs/Learn/CSS/CSS_layout/Normal_Flow)
+-   [Flexbox](/en-US/docs/Learn/CSS/CSS_layout/Flexbox)
+-   [Grid](/en-US/docs/Learn/CSS/CSS_layout/Grids)
+-   [Floats](/en-US/docs/Learn/CSS/CSS_layout/Floats)
+-   [Positioning](/en-US/docs/Learn/CSS/CSS_layout/Positioning)
+-   [Multiple-column layout](/en-US/docs/Learn/CSS/CSS_layout/Multiple-column_Layout)
+-   [Responsive design](/en-US/docs/Learn/CSS/CSS_layout/Responsive_Design)
+-   [Beginner's guide to media queries](/en-US/docs/Learn/CSS/CSS_layout/Media_queries)
+-   [Legacy layout methods](/en-US/docs/Learn/CSS/CSS_layout/Legacy_Layout_Methods)
+-   [Supporting older browsers](/en-US/docs/Learn/CSS/CSS_layout/Supporting_Older_Browsers)
+-   [Fundamental layout comprehension assessment](/en-US/docs/Learn/CSS/CSS_layout/Fundamental_Layout_Comprehension)

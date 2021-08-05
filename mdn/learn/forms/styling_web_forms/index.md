@@ -1,4 +1,4 @@
---- title: Styling web forms slug: Learn/Forms/Styling_web_forms tags: - Beginner - CSS - Example - Forms - Guide - HTML - Learn - Web ---
+--- title: Styling web forms slug: Learn/Forms/Styling\_web\_forms tags: - Beginner - CSS - Example - Forms - Guide - HTML - Learn - Web ---
 
 {{LearnSidebar}}{{PreviousMenuNext("Learn/Forms/Other\_form\_controls","Learn/Forms/Advanced\_form\_styling","Learn/Forms")}}
 
@@ -6,7 +6,8 @@ In the previous few articles we looked at all the HTML you'll need to create and
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Basic computer literacy, and a basic understanding of <a href="/en-US/docs/Learn/HTML/Introduction_to_HTML">HTML</a> and <a href="/en-US/docs/Learn/CSS/First_steps">CSS</a>.</td></tr><tr class="even"><td>Objective:</td><td>To understand the issues behind styling forms, and learn some of the basic styling techniques that will be useful to you.</td></tr></tbody></table>
 
-## Why is styling form widgets challenging?
+Why is styling form widgets challenging?
+----------------------------------------
 
 Form controls were added to HTML in [the HTML 2 specification](https://www.ietf.org/rfc/rfc1866.txt) in 1995; CSS wasn't released until late 1996, and wasn't supported very well by browsers for a few years after that. Browsers relied on the underlying operating system to manage and render form controls.
 
@@ -34,8 +35,8 @@ Some elements can be styled with few if any problems across platforms. These inc
 
 Some elements are more difficult to style, requiring more complex CSS or some more specific tricks:
 
-- Checkboxes and radio buttons
-- `<input type="search">`
+-   Checkboxes and radio buttons
+-   `<input type="search">`
 
 We describe how to handle these more specific features in the article [Advanced form styling](/en-US/docs/Learn/Forms/Advanced_form_styling)[.](/en-US/docs/Learn/Forms/Advanced_form_styling)
 
@@ -43,12 +44,12 @@ We describe how to handle these more specific features in the article [Advanced 
 
 Some elements can't be styled thoroughly using CSS. These include:
 
-- `<input type="color">`
-- Date-related controls such as `<input type="datetime-local">`
-- `<input type="range">`
-- `<input type="file">`
-- Elements involved in creating dropdown widgets, including {{HTMLElement("select")}}, {{HTMLElement("option")}}, {{HTMLElement("optgroup")}} and {{HTMLElement("datalist")}}.
-- {{HTMLElement("progress")}} and {{HTMLElement("meter")}}
+-   `<input type="color">`
+-   Date-related controls such as `<input type="datetime-local">`
+-   `<input type="range">`
+-   `<input type="file">`
+-   Elements involved in creating dropdown widgets, including {{HTMLElement("select")}}, {{HTMLElement("option")}}, {{HTMLElement("optgroup")}} and {{HTMLElement("datalist")}}.
+-   {{HTMLElement("progress")}} and {{HTMLElement("meter")}}
 
 Again, we'll describe what can be done in terms of styling these elements in [Advanced form styling](/en-US/docs/Learn/Forms/Advanced_form_styling)[.](/en-US/docs/Learn/Forms/Advanced_form_styling)
 
@@ -58,7 +59,8 @@ If you want to thoroughly customize those widgets, you really have to create you
 
 **Note**: there are some proprietary CSS pseudo-elements available that allow you to style internal components of these form controls, such as {{cssxref('::-moz-range-track')}}, but these are not consistent across browsers, so can't be relied upon. We will mention these later as well.
 
-## The good
+The good
+--------
 
 To style form controls that are easy to style with CSS, you shouldn't face much if any difficulties, since they mostly behave like any other HTML element. We already looked at some simple form styling in [Your first form](/en-US/docs/Learn/Forms/Your_first_form), and the [CSS building blocks](/en-US/docs/Learn/CSS/Building_blocks) module contains some [useful form styling essentials](/en-US/docs/Learn/CSS/Building_blocks/Images_media_form_elements#form_elements) too.
 
@@ -130,7 +132,8 @@ The {{HTMLElement("legend")}} element is very important for accessibility — it
 
 **Note**: You could also use the {{cssxref("transform")}} property to help you with positioning your `<legend>`. However, when you position it with for example a `transform: translateY();`, it moves but leaves an ugly gap in the `<fieldset>` border, which is not easy to get rid of.
 
-## A specific styling example
+A specific styling example
+--------------------------
 
 Let's look at a concrete example of how to style an HTML form. We will build a fancy-looking "postcard" contact form; [see here for the finished version](https://mdn.github.io/learning-area/html/forms/postcard-example/).
 
@@ -321,31 +324,34 @@ And voila! Your form should now look like this:
 
 **Note**: If your example does not work quite like you expected and you want to check it against our version, you can find it on GitHub — see it [running live](https://mdn.github.io/learning-area/html/forms/postcard-example/) (also see [the source code](https://github.com/mdn/learning-area/tree/master/html/forms/postcard-example)).
 
-## Test your skills!
+Test your skills!
+-----------------
 
 You've reached the end of this article, but can you remember the most important information? You can find some further tests to verify that you've retained this information before you move on — see [Test your skills: Styling basics](/en-US/docs/Learn/Forms/Test_your_skills:_Styling_basics).
 
-## Summary
+Summary
+-------
 
 As you can see, as long as we want to build forms with just text fields and buttons, it's easy to style them using CSS. [In the next article](/en-US/docs/Learn/Forms/Advanced_form_styling), we will see how to handle form widgets which fall into the "bad" and "ugly" categories.
 
 {{PreviousMenuNext("Learn/Forms/Other\_form\_controls","Learn/Forms/Advanced\_form\_styling","Learn/Forms")}}
 
-## In this module
+In this module
+--------------
 
-- [Your first form](/en-US/docs/Learn/Forms/Your_first_form)
-- [How to structure a web form](/en-US/docs/Learn/Forms/How_to_structure_a_web_form)
-- [Basic native form controls](/en-US/docs/Learn/Forms/Basic_native_form_controls)
-- [The HTML5 input types](/en-US/docs/Learn/Forms/HTML5_input_types)
-- [Other form controls](/en-US/docs/Learn/Forms/Other_form_controls)
-- [Styling web forms](/en-US/docs/Learn/Forms/Styling_web_forms)
-- [Advanced form styling](/en-US/docs/Learn/Forms/Advanced_form_styling)
-- [UI pseudo-classes](/en-US/docs/Learn/Forms/UI_pseudo-classes)
-- [Client-side form validation](/en-US/docs/Learn/Forms/Form_validation)
-- [Sending form data](/en-US/docs/Learn/Forms/Sending_and_retrieving_form_data)
+-   [Your first form](/en-US/docs/Learn/Forms/Your_first_form)
+-   [How to structure a web form](/en-US/docs/Learn/Forms/How_to_structure_a_web_form)
+-   [Basic native form controls](/en-US/docs/Learn/Forms/Basic_native_form_controls)
+-   [The HTML5 input types](/en-US/docs/Learn/Forms/HTML5_input_types)
+-   [Other form controls](/en-US/docs/Learn/Forms/Other_form_controls)
+-   [Styling web forms](/en-US/docs/Learn/Forms/Styling_web_forms)
+-   [Advanced form styling](/en-US/docs/Learn/Forms/Advanced_form_styling)
+-   [UI pseudo-classes](/en-US/docs/Learn/Forms/UI_pseudo-classes)
+-   [Client-side form validation](/en-US/docs/Learn/Forms/Form_validation)
+-   [Sending form data](/en-US/docs/Learn/Forms/Sending_and_retrieving_form_data)
 
 ### Advanced Topics
 
-- [How to build custom form controls](/en-US/docs/Learn/Forms/How_to_build_custom_form_controls)
-- [Sending forms through JavaScript](/en-US/docs/Learn/Forms/Sending_forms_through_JavaScript)
-- [Property compatibility table for form widgets](/en-US/docs/Learn/Forms/Property_compatibility_table_for_form_controls)
+-   [How to build custom form controls](/en-US/docs/Learn/Forms/How_to_build_custom_form_controls)
+-   [Sending forms through JavaScript](/en-US/docs/Learn/Forms/Sending_forms_through_JavaScript)
+-   [Property compatibility table for form widgets](/en-US/docs/Learn/Forms/Property_compatibility_table_for_form_controls)

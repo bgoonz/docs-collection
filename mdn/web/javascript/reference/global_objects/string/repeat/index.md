@@ -55,8 +55,7 @@ A new string containing the specified number of copies of the given string.
 "abc".repeat(2); // 'abcabc'
 "abc".repeat(3.5); // 'abcabcabc' (count will be converted to integer)
 "abc"
-  .repeat(1 / 0)
-  (
+  .repeat(1 / 0)(
     // RangeError
 
     { toString: () => "abc", repeat: String.prototype.repeat }

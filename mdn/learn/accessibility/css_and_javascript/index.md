@@ -20,7 +20,7 @@ Let's start off by looking at CSS.
 
 ### Correct semantics and user expectation
 
-It is possible to use CSS to make any HTML element look like _anything_, but this doesn't mean that you should. As we frequently mentioned in our [HTML: A good basis for accessibility](/en-US/docs/Learn/Accessibility/HTML) article, you should use the appropriate semantic element for the job, whenever possible. If you don't, it can cause confusion and usability issues for everyone, but particularly users with disabilities. Using correct semantics has a lot to do with user expectations — elements look and behave in certain ways, according to their functionality, and these common conventions are expected by users.
+It is possible to use CSS to make any HTML element look like *anything*, but this doesn't mean that you should. As we frequently mentioned in our [HTML: A good basis for accessibility](/en-US/docs/Learn/Accessibility/HTML) article, you should use the appropriate semantic element for the job, whenever possible. If you don't, it can cause confusion and usability issues for everyone, but particularly users with disabilities. Using correct semantics has a lot to do with user expectations — elements look and behave in certain ways, according to their functionality, and these common conventions are expected by users.
 
 As an example, a screen reader user can't navigate a page via heading elements if the developer hasn't appropriately used heading elements to markup the content. By the same token, a heading loses its visual purpose if you style it so it doesn't look like a heading.
 
@@ -52,9 +52,9 @@ Some typical CSS might look like this:
 
 You should:
 
-- Select sensible font sizes, line heights, letter spacing, etc. to make your text logical, legible, and comfortable to read.
-- Make sure your headings stand out from your body text, typically big and bold like the default styling. Your lists should look like lists.
-- Your text color should contrast well with your background color.
+-   Select sensible font sizes, line heights, letter spacing, etc. to make your text logical, legible, and comfortable to read.
+-   Make sure your headings stand out from your body text, typically big and bold like the default styling. Your lists should look like lists.
+-   Your text color should contrast well with your background color.
 
 See [HTML text fundamentals](/en-US/docs/Learn/HTML/Introduction_to_HTML/HTML_text_fundamentals) and [Styling text](/en-US/docs/Learn/CSS/Styling_text) for more information.
 
@@ -169,12 +169,13 @@ On the other hand, you shouldn't use {{cssxref("visibility")}}`:hidden` or {{css
 
 It is possible for users to override your styles with their own custom styles, for example:
 
-- See Sarah Maddox's <a href="https://www.itsupportguides.com/knowledge-base/computer-accessibility/how-to-use-a-custom-style-sheet-css-with-firefox/" class="external external-icon">How to use a custom style sheet (CSS) with Firefox</a> for a useful guide covering how to do this manually in Firefox, and [How to use a custom style sheet (CSS) with Internet Explorer](https://www.itsupportguides.com/knowledge-base/computer-accessibility/how-to-use-a-custom-style-sheet-css-with-internet-explorer/) by Adrian Gordon for the equivalent IE instructions.
-- It is probably easier to do it using an extension, for example the Stylish extension is available for [Firefox](https://addons.mozilla.org/en-US/firefox/addon/stylish/), [Safari](https://safari-extensions.apple.com/details/?id=com.sobolev.stylish-5555L95H45), [Opera](https://addons.opera.com/en/extensions/details/stylish/), and [Chrome](https://chrome.google.com/webstore/detail/stylish/fjnbnpbmkenffdnngjfgmeleoegfcffe).
+-   See Sarah Maddox's <a href="https://www.itsupportguides.com/knowledge-base/computer-accessibility/how-to-use-a-custom-style-sheet-css-with-firefox/" class="external external-icon">How to use a custom style sheet (CSS) with Firefox</a> for a useful guide covering how to do this manually in Firefox, and [How to use a custom style sheet (CSS) with Internet Explorer](https://www.itsupportguides.com/knowledge-base/computer-accessibility/how-to-use-a-custom-style-sheet-css-with-internet-explorer/) by Adrian Gordon for the equivalent IE instructions.
+-   It is probably easier to do it using an extension, for example the Stylish extension is available for [Firefox](https://addons.mozilla.org/en-US/firefox/addon/stylish/), [Safari](https://safari-extensions.apple.com/details/?id=com.sobolev.stylish-5555L95H45), [Opera](https://addons.opera.com/en/extensions/details/stylish/), and [Chrome](https://chrome.google.com/webstore/detail/stylish/fjnbnpbmkenffdnngjfgmeleoegfcffe).
 
 Users might do this for a variety of reasons. A visually impaired user might want to make the text bigger on all websites they visit, or a user with severe color deficiency might want to put all websites in high contrast colors that are easy for them to see. Whatever the need, you should be comfortable with this, and make your designs flexible enough so that such changes will work in your design. As an example, you might want to make sure your main content area can handle bigger text (maybe it will start to scroll to allow it all to be seen), and won't just hide it, or break completely.
 
-## JavaScript
+JavaScript
+----------
 
 JavaScript can also break accessibility, depending on how it is used.
 
@@ -182,8 +183,8 @@ Modern JavaScript is a powerful language, and we can do so much with it these da
 
 Simple content and functionality is arguably easy to make accessible — for example text, images, tables, forms and push button that activate functions. As we looked at in our [HTML: A good basis for accessibility](/en-US/docs/Learn/Accessibility/HTML) article, the key considerations are:
 
-- Good semantics: Using the right element for the right job. For example, making sure you use headings and paragraphs, and {{htmlelement("button")}} and {{htmlelement("a")}} elements
-- Making sure content is available as text, either directly as text content, good text labels for form elements, or [text alternatives](/en-US/docs/Learn/Accessibility/HTML#text_alternatives), e.g. alt text for images.
+-   Good semantics: Using the right element for the right job. For example, making sure you use headings and paragraphs, and {{htmlelement("button")}} and {{htmlelement("a")}} elements
+-   Making sure content is available as text, either directly as text content, good text labels for form elements, or [text alternatives](/en-US/docs/Learn/Accessibility/HTML#text_alternatives), e.g. alt text for images.
 
 We also looked at an example of how to use JavaScript to build in functionality where it is missing — see [Building keyboard accessibility back in](/en-US/docs/Learn/Accessibility/HTML#building_keyboard_accessibility_back_in). This is not ideal — really you should just use the right element for the right job — but it shows that it is possible in situations where for some reason you can't control the markup that is used. Another way to improve accessibility for non-semantic JavaScript-powered widgets is to use WAI-ARIA to provide extra semantics for screen reader users. The next article will also cover this in detail.
 
@@ -201,8 +202,8 @@ You should keep **unobtrusive JavaScript** in mind when creating your content. T
 
 Good example uses of unobtrusive JavaScript include:
 
-- Providing client-side form validation, which alerts users to problems with their form entries quickly, without having to wait for the server to check the data. If it isn't available, the form will still work, but validation might be slower.
-- Providing custom controls for HTML5 `<video>`s that are accessible to keyboard-only users, along with a direct link to the video that can be used to access it if JavaScript is not available (the default `<video>` browser controls aren't keyboard accessible in most browsers).
+-   Providing client-side form validation, which alerts users to problems with their form entries quickly, without having to wait for the server to check the data. If it isn't available, the form will still work, but validation might be slower.
+-   Providing custom controls for HTML5 `<video>`s that are accessible to keyboard-only users, along with a direct link to the video that can be used to access it if JavaScript is not available (the default `<video>` browser controls aren't keyboard accessible in most browsers).
 
 As an example, we've written a quick and dirty client-side form validation example — see [form-validation.html](https://github.com/mdn/learning-area/blob/master/accessibility/css/form-validation.html) (also [see the demo live](https://mdn.github.io/learning-area/accessibility/css/form-validation.html)). Here you'll see a simple form; when you try to submit the form with one or both fields left empty, the submit fails, and an error message box appears to tell you what is wrong.
 
@@ -298,11 +299,13 @@ The first two lines run the functions when the mouse pointer hovers over and sto
 
 The [click](/en-US/docs/Web/API/Element/click_event) event is interesting — it sounds mouse-dependent, but most browsers will activate [onclick](/en-US/docs/Web/API/GlobalEventHandlers/onclick) event handlers after Enter/Return is pressed on a link or form element that has focus, or when such an element is tapped on a touchscreen device. This doesn't work by default however when you allow a non-default-focusable event to have focus using tabindex — in such cases you need to detect specifically when that exact key is pressed (see [Building keyboard accessibility back in](/en-US/docs/Learn/Accessibility/HTML#building_keyboard_accessibility_back_in)).
 
-## Test your skills!
+Test your skills!
+-----------------
 
 You've reached the end of this article, but can you remember the most important information? You can find some further tests to verify that you've retained this information before you move on — see [Test your skills: CSS and JavaScript accessibility](/en-US/docs/Learn/Accessibility/CSS_and_JavaScript/Test_your_skills:_CSS_and_JavaScript_accessibility).
 
-## Summary
+Summary
+-------
 
 We hope this article has given you a good amount of detail and understanding about the accessibility issues surrounding CSS and JavaScript use on web pages.
 
@@ -310,12 +313,13 @@ Next up, WAI-ARIA!
 
 {{PreviousMenuNext("Learn/Accessibility/HTML","Learn/Accessibility/WAI-ARIA\_basics", "Learn/Accessibility")}}
 
-## In this module
+In this module
+--------------
 
-- [What is accessibility?](/en-US/docs/Learn/Accessibility/What_is_accessibility)
-- [HTML: A good basis for accessibility](/en-US/docs/Learn/Accessibility/HTML)
-- [CSS and JavaScript accessibility best practices](/en-US/docs/Learn/Accessibility/CSS_and_JavaScript)
-- [WAI-ARIA basics](/en-US/docs/Learn/Accessibility/WAI-ARIA_basics)
-- [Accessible multimedia](/en-US/docs/Learn/Accessibility/Multimedia)
-- [Mobile accessibility](/en-US/docs/Learn/Accessibility/Mobile)
-- [Accessibility troubleshooting](/en-US/docs/Learn/Accessibility/Accessibility_troubleshooting)
+-   [What is accessibility?](/en-US/docs/Learn/Accessibility/What_is_accessibility)
+-   [HTML: A good basis for accessibility](/en-US/docs/Learn/Accessibility/HTML)
+-   [CSS and JavaScript accessibility best practices](/en-US/docs/Learn/Accessibility/CSS_and_JavaScript)
+-   [WAI-ARIA basics](/en-US/docs/Learn/Accessibility/WAI-ARIA_basics)
+-   [Accessible multimedia](/en-US/docs/Learn/Accessibility/Multimedia)
+-   [Mobile accessibility](/en-US/docs/Learn/Accessibility/Mobile)
+-   [Accessibility troubleshooting](/en-US/docs/Learn/Accessibility/Accessibility_troubleshooting)

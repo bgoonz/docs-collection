@@ -1,4 +1,4 @@
---- title: Getting started with CSS slug: Learn/CSS/First_steps/Getting_started tags: - Beginner - CSS - Classes - Elements - Example - Learn - Selectors - Syntax - state ---
+--- title: Getting started with CSS slug: Learn/CSS/First\_steps/Getting\_started tags: - Beginner - CSS - Classes - Elements - Example - Learn - Selectors - Syntax - state ---
 
 {{LearnSidebar}}
 
@@ -8,7 +8,8 @@ In this article we will take a simple HTML document and apply CSS to it, learnin
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Basic computer literacy, <a href="/en-US/docs/Learn/Getting_started_with_the_web/Installing_basic_software">basic software installed</a>, basic knowledge of <a href="/en-US/docs/Learn/Getting_started_with_the_web/Dealing_with_files">working with files</a>, and HTML basics (study <a href="/en-US/docs/Learn/HTML/Introduction_to_HTML">Introduction to HTML</a>.)</td></tr><tr class="even"><td>Objective:</td><td>To understand the basics of linking a CSS document to an HTML file, and be able to do simple text formatting with CSS.</td></tr></tbody></table>
 
-## Starting with some HTML
+Starting with some HTML
+-----------------------
 
 Our starting point is an HTML document. You can copy the code from below if you want to work on your own computer. Save the code below as `index.html` in a folder on your machine.
 
@@ -40,7 +41,8 @@ Our starting point is an HTML document. You can copy the code from below if you 
 
 **Note**: If you are reading this on a device or an environment where you can't easily create files, then don't worry — live code editors are provided below to allow you to write example code right here in the page.
 
-## Adding CSS to our document
+Adding CSS to our document
+--------------------------
 
 The very first thing we need to do is to tell the HTML document that we have some CSS rules we want it to use. There are three different ways to apply CSS to an HTML document that you'll commonly come across, however, for now, we will look at the most usual and useful way of doing so — linking CSS from the head of your document.
 
@@ -60,9 +62,10 @@ Save your HTML and CSS files and reload the page in a web browser. The level one
 
 You can continue to work in `styles.css` locally, or you can use our interactive editor below to continue with this tutorial. The interactive editor acts as if the CSS in the first panel is linked to the HTML document, just as we have with our document above.
 
-## Styling HTML elements
+Styling HTML elements
+---------------------
 
-By making our heading red we have already demonstrated that we can target and style an HTML element. We do this by targeting an _element selector_ — this is a selector that directly matches an HTML element name. To target all paragraphs in the document you would use the selector `p`. To turn all paragraphs green you would use:
+By making our heading red we have already demonstrated that we can target and style an HTML element. We do this by targeting an *element selector* — this is a selector that directly matches an HTML element name. To target all paragraphs in the document you would use the selector `p`. To turn all paragraphs green you would use:
 
     p {
       color: green;
@@ -78,7 +81,8 @@ Try this out in the interactive editor below (edit the code boxes), or in your l
 
 {{EmbedGHLiveSample("css-examples/learn/getting-started/started1.html", '100%', 900)}}
 
-## Changing the default behavior of elements
+Changing the default behavior of elements
+-----------------------------------------
 
 When we look at a well-marked up HTML document, even something as simple as our example, we can see how the browser is making the HTML readable by adding some default styling. Headings are large and bold and our list has bullets. This happens because browsers have internal stylesheets containing default styles, which they apply to all pages by default; without them all of the text would run together in a clump and we would have to style everything from scratch. All modern browsers display HTML content by default in pretty much the same way.
 
@@ -94,7 +98,8 @@ The `list-style-type` property is a good property to look at on MDN to see which
 
 Looking at that page you will discover that in addition to removing the list bullets you can change them — try changing them to square bullets by using a value of `square`.
 
-## Adding a class
+Adding a class
+--------------
 
 So far we have styled elements based on their HTML element names. This works as long as you want all of the elements of that type in your document to look the same. Most of the time that isn't the case and so you will need to find a way to select a subset of the elements without changing the others. The most common way to do this is to add a class to your HTML element and target that class.
 
@@ -134,7 +139,8 @@ This syntax means "target any `li` element that has a class of special". If you 
 
 As you can imagine, some classes might be applied to many elements and you don't want to have to keep editing your CSS every time something new needs to take on that style. Therefore it is sometimes best to bypass the element and refer to the class, unless you know that you want to create some special rules for one element alone, and perhaps want to make sure they are not applied to other things.
 
-## Styling things based on their location in a document
+Styling things based on their location in a document
+----------------------------------------------------
 
 There are times when you will want something to look different based on where it is in the document. There are a number of selectors that can help you here, but for now we will look at just a couple. In our document, there are two `<em>` elements — one inside a paragraph and the other inside a list item. To select only an `<em>` that is nested inside an `<li>` element I can use a selector called the **descendant combinator**, which takes the form of a space between two other selectors.
 
@@ -160,7 +166,8 @@ The live example below includes the two rules above. Try adding a rule to make a
 
 **Note**: As you can see, CSS gives us several ways to target elements, and we've only scratched the surface so far! We will be taking a proper look at all of these selectors and many more in our [Selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors) articles later on in the course.
 
-## Styling things based on state
+Styling things based on state
+-----------------------------
 
 The final type of styling we shall take a look at in this tutorial is the ability to style things based on their state. A straightforward example of this is when styling links. When we style a link we need to target the `<a>` (anchor) element. This has different states depending on whether it is unvisited, visited, being hovered over, focused via the keyboard, or in the process of being clicked (activated). You can use CSS to target these different states — the CSS below styles unvisited links pink and visited links green.
 
@@ -190,7 +197,8 @@ Your visitor may well be on a computer with a mouse or trackpad, or a phone with
 
 A plain HTML document is generally accessible to everyone — as you start to style that document it is important that you don't make it less accessible.
 
-## Combining selectors and combinators
+Combining selectors and combinators
+-----------------------------------
 
 It is worth noting that you can combine multiple selectors and combinators together. For example:
 
@@ -214,7 +222,8 @@ In the original HTML we provided, the only element styled is `<span class="speci
 
 Don't worry if this seems complicated at the moment — you'll soon start to get the hang of it as you write more CSS.
 
-## Wrapping up
+Wrapping up
+-----------
 
 In this tutorial, we have taken a look at a number of ways in which you can style a document using CSS. We will be developing this knowledge as we move through the rest of the lessons. However you now already know enough to style text, apply CSS based on different ways of targeting elements in the document, and look up properties and values in the MDN documentation.
 
@@ -222,7 +231,8 @@ In the next lesson we will be taking a look at how CSS is structured.
 
 {{PreviousMenuNext("Learn/CSS/First\_steps/What\_is\_CSS", "Learn/CSS/First\_steps/How\_CSS\_is\_structured", "Learn/CSS/First\_steps")}}
 
-## In this module
+In this module
+--------------
 
 1.  [What is CSS?](/en-US/docs/Learn/CSS/First_steps/What_is_CSS)
 2.  [Getting started with CSS](/en-US/docs/Learn/CSS/First_steps/Getting_started)

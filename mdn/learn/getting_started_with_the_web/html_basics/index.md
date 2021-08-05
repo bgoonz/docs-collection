@@ -1,4 +1,4 @@
---- title: HTML basics slug: Learn/Getting_started_with_the_web/HTML_basics tags: - Beginner - CodingScripting - Doctype html - HTML - Learn - Web - l10n:priority ---
+--- title: HTML basics slug: Learn/Getting\_started\_with\_the\_web/HTML\_basics tags: - Beginner - CodingScripting - Doctype html - HTML - Learn - Web - l10n:priority ---
 
 {{LearnSidebar}}
 
@@ -6,9 +6,10 @@
 
 HTML (**H**yper**t**ext **M**arkup **L**anguage) is the code that is used to structure a web page and its content. For example, content could be structured within a set of paragraphs, a list of bulleted points, or using images and data tables. As the title suggests, this article will give you a basic understanding of HTML and its functions.
 
-## So what is HTML?
+So what is HTML?
+----------------
 
-HTML is a _markup language_ that defines the structure of your content. HTML consists of a series of **{{Glossary("element", "elements")}}**, which you use to enclose, or wrap, different parts of the content to make it appear a certain way, or act a certain way. The enclosing {{Glossary("tag", "tags")}} can make a word or image hyperlink to somewhere else, can italicize words, can make the font bigger or smaller, and so on.  For example, take the following line of content:
+HTML is a *markup language* that defines the structure of your content. HTML consists of a series of **{{Glossary("element", "elements")}}**, which you use to enclose, or wrap, different parts of the content to make it appear a certain way, or act a certain way. The enclosing {{Glossary("tag", "tags")}} can make a word or image hyperlink to somewhere else, can italicize words, can make the font bigger or smaller, and so on.  For example, take the following line of content:
 
     My cat is very grumpy
 
@@ -25,7 +26,7 @@ Let's explore this paragraph element a bit further.
 The main parts of our element are as follows:
 
 1.  **The opening tag:** This consists of the name of the element (in this case, p), wrapped in opening and closing **angle brackets**. This states where the element begins or starts to take effect — in this case where the paragraph begins.
-2.  **The closing tag:** This is the same as the opening tag, except that it includes a _forward slash_ before the element name. This states where the element ends — in this case where the paragraph ends. Failing to add a closing tag is one of the standard beginner errors and can lead to strange results.
+2.  **The closing tag:** This is the same as the opening tag, except that it includes a *forward slash* before the element name. This states where the element ends — in this case where the paragraph ends. Failing to add a closing tag is one of the standard beginner errors and can lead to strange results.
 3.  **The content:** This is the content of the element, which in this case, is just text.
 4.  **The element:** The opening tag, the closing tag, and the content together comprise the element.
 
@@ -33,7 +34,7 @@ Elements can also have attributes that look like the following:
 
 ![](grumpy-cat-attribute-small.png)
 
-Attributes contain extra information about the element that you don't want to appear in the actual content. Here, `class` is the attribute *name* and `editor-note` is the attribute _value_. The `class` attribute allows you to give the element a non-unique identifier that can be used to target it (and any other elements with the same `class` value) with style information and other things.
+Attributes contain extra information about the element that you don't want to appear in the actual content. Here, `class` is the attribute *name* and `editor-note` is the attribute *value*. The `class` attribute allows you to give the element a non-unique identifier that can be used to target it (and any other elements with the same `class` value) with style information and other things.
 
 An attribute should always have the following:
 
@@ -80,14 +81,15 @@ That wraps up the basics of individual HTML elements, but they aren't handy on t
 
 Here, we have the following:
 
-- `<!DOCTYPE html>` — doctype. It is a required preamble. In the mists of time, when HTML was young (around 1991/92), doctypes were meant to act as links to a set of rules that the HTML page had to follow to be considered good HTML, which could mean automatic error checking and other useful things. However these days, they don't do much and are basically just needed to make sure your document behaves correctly. That's all you need to know for now.
-- `<html></html>` — the {{htmlelement("html")}} element. This element wraps all the content on the entire page and is sometimes known as the root element.
-- `<head></head>` — the {{htmlelement("head")}} element. This element acts as a container for all the stuff you want to include on the HTML page that _isn't_ the content you are showing to your page's viewers. This includes things like {{Glossary("keyword", "keywords")}} and a page description that you want to appear in search results, CSS to style our content, character set declarations, and more.
-- `<meta charset="utf-8">` — This element sets the character set your document should use to UTF-8 which includes most characters from the vast majority of written languages. Essentially, it can now handle any textual content you might put on it. There is no reason not to set this and it can help avoid some problems later on.
-- `<title></title>` — the {{htmlelement("title")}} element. This sets the title of your page, which is the title that appears in the browser tab the page is loaded in. It is also used to describe the page when you bookmark/favorite it.
-- `<body></body>` — the {{htmlelement("body")}} element. This contains _all_ the content that you want to show to web users when they visit your page, whether that's text, images, videos, games, playable audio tracks, or whatever else.
+-   `<!DOCTYPE html>` — doctype. It is a required preamble. In the mists of time, when HTML was young (around 1991/92), doctypes were meant to act as links to a set of rules that the HTML page had to follow to be considered good HTML, which could mean automatic error checking and other useful things. However these days, they don't do much and are basically just needed to make sure your document behaves correctly. That's all you need to know for now.
+-   `<html></html>` — the {{htmlelement("html")}} element. This element wraps all the content on the entire page and is sometimes known as the root element.
+-   `<head></head>` — the {{htmlelement("head")}} element. This element acts as a container for all the stuff you want to include on the HTML page that *isn't* the content you are showing to your page's viewers. This includes things like {{Glossary("keyword", "keywords")}} and a page description that you want to appear in search results, CSS to style our content, character set declarations, and more.
+-   `<meta charset="utf-8">` — This element sets the character set your document should use to UTF-8 which includes most characters from the vast majority of written languages. Essentially, it can now handle any textual content you might put on it. There is no reason not to set this and it can help avoid some problems later on.
+-   `<title></title>` — the {{htmlelement("title")}} element. This sets the title of your page, which is the title that appears in the browser tab the page is loaded in. It is also used to describe the page when you bookmark/favorite it.
+-   `<body></body>` — the {{htmlelement("body")}} element. This contains *all* the content that you want to show to web users when they visit your page, whether that's text, images, videos, games, playable audio tracks, or whatever else.
 
-## Images
+Images
+------
 
 Let's turn our attention to the {{htmlelement("img")}} element again:
 
@@ -108,7 +110,8 @@ Try coming up with some better alt text for your image now.
 
 Find out more about accessibility in our [accessibility learning module](/en-US/docs/Learn/Accessibility).
 
-## Marking up text
+Marking up text
+---------------
 
 This section will cover some of the essential HTML elements you'll use for marking up the text.
 
@@ -131,7 +134,7 @@ As explained above, {{htmlelement("p")}} elements are for containing paragraphs 
 
     <p>This is a single paragraph</p>
 
-Add your sample text (you should have it from [_What will your website look like?_](/en-US/docs/Learn/Getting_started_with_the_web/What_will_your_website_look_like)) into one or a few paragraphs, placed directly below your {{htmlelement("img")}} element.
+Add your sample text (you should have it from [*What will your website look like?*](/en-US/docs/Learn/Getting_started_with_the_web/What_will_your_website_look_like)) into one or a few paragraphs, placed directly below your {{htmlelement("img")}} element.
 
 ### Lists
 
@@ -160,7 +163,8 @@ We could modify the markup to this
 
 Try adding an ordered or unordered list to your example page.
 
-## Links
+Links
+-----
 
 Links are very important — they are what makes the web a web! To add a link, we need to use a simple element — {{htmlelement("a")}} — "a" being the short form for "anchor". To make text within your paragraph into a link, follow these steps:
 
@@ -177,16 +181,17 @@ Links are very important — they are what makes the web a web! To add a link, w
 
         <a href="https://www.mozilla.org/en-US/about/manifesto/">Mozilla Manifesto</a>
 
-You might get unexpected results if you omit the `https://` or `http://` part, called the _protocol_, at the beginning of the web address. After making a link, click it to make sure it is sending you where you wanted it to.
+You might get unexpected results if you omit the `https://` or `http://` part, called the *protocol*, at the beginning of the web address. After making a link, click it to make sure it is sending you where you wanted it to.
 
-`href` might appear like a rather obscure choice for an attribute name at first. If you are having trouble remembering it, remember that it stands for **\*h**ypertext **ref**erence\*.
+`href` might appear like a rather obscure choice for an attribute name at first. If you are having trouble remembering it, remember that it stands for ***h**ypertext **ref**erence*.
 
 Add a link to your page now, if you haven't already done so.
 
-## Conclusion
+Conclusion
+----------
 
-If you have followed all the instructions in this article, you should end up with a page that looks like the one below (you can also [view it here](https://mdn.github.io/beginner-html-site/)):
-
+If you have followed all the instructions in this article, you should end up with a page that looks like the one below (you can also [view it here](https://mdn.github.io/beginner-html-site/)):  
+  
 ![A web page screenshot showing a firefox logo, a heading saying mozilla is cool, and two paragraphs of filler text](finished-test-page-small.png)
 
 If you get stuck, you can always compare your work with our [finished example code](https://github.com/mdn/beginner-html-site/blob/gh-pages/index.html) on GitHub.
@@ -195,13 +200,14 @@ Here, we have only really scratched the surface of HTML. To find out more, go to
 
 {{PreviousMenuNext("Learn/Getting\_started\_with\_the\_web/Dealing\_with\_files", "Learn/Getting\_started\_with\_the\_web/CSS\_basics", "Learn/Getting\_started\_with\_the\_web")}}
 
-## In this module
+In this module
+--------------
 
-- <span id="Installing_basic_software">[Installing basic software](/en-US/docs/Learn/Getting_started_with_the_web/Installing_basic_software)</span>
-- <span id="What_will_your_website_look_like">[What will your website look like?](/en-US/docs/Learn/Getting_started_with_the_web/What_will_your_website_look_like)</span>
-- <span id="Dealing_with_files">[Dealing with files](/en-US/docs/Learn/Getting_started_with_the_web/Dealing_with_files)</span>
-- <span id="HTML_basics">[HTML basics](/en-US/docs/Learn/Getting_started_with_the_web/HTML_basics)</span>
-- <span id="CSS_basics">[CSS basics](/en-US/docs/Learn/Getting_started_with_the_web/CSS_basics)</span>
-- <span id="JavaScript_basics">[JavaScript basics](/en-US/docs/Learn/Getting_started_with_the_web/JavaScript_basics)</span>
-- <span id="Publishing_your_website">[Publishing your website](/en-US/docs/Learn/Getting_started_with_the_web/Publishing_your_website)</span>
-- <span id="How_the_web_works">[How the web works](/en-US/docs/Learn/Getting_started_with_the_web/How_the_Web_works)</span>
+-   <span id="Installing_basic_software">[Installing basic software](/en-US/docs/Learn/Getting_started_with_the_web/Installing_basic_software)</span>
+-   <span id="What_will_your_website_look_like">[What will your website look like?](/en-US/docs/Learn/Getting_started_with_the_web/What_will_your_website_look_like)</span>
+-   <span id="Dealing_with_files">[Dealing with files](/en-US/docs/Learn/Getting_started_with_the_web/Dealing_with_files)</span>
+-   <span id="HTML_basics">[HTML basics](/en-US/docs/Learn/Getting_started_with_the_web/HTML_basics)</span>
+-   <span id="CSS_basics">[CSS basics](/en-US/docs/Learn/Getting_started_with_the_web/CSS_basics)</span>
+-   <span id="JavaScript_basics">[JavaScript basics](/en-US/docs/Learn/Getting_started_with_the_web/JavaScript_basics)</span>
+-   <span id="Publishing_your_website">[Publishing your website](/en-US/docs/Learn/Getting_started_with_the_web/Publishing_your_website)</span>
+-   <span id="How_the_web_works">[How the web works](/en-US/docs/Learn/Getting_started_with_the_web/How_the_Web_works)</span>

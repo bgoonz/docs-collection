@@ -66,10 +66,12 @@ codeql database create &lt;database&gt; --command&lt;build&gt; \
 ```
 
 {% else %}
+
 ```shell
 codeql database create &lt;database&gt; --command&lt;build&gt; --language=&lt;language-identifier&gt;
 
 ```
+
 {% endif %}
 {% note %}
 
@@ -77,14 +79,14 @@ codeql database create &lt;database&gt; --command&lt;build&gt; --language=&lt;la
 
 {% endnote %}
 
-| Option | Required | Usage |
-|--------|:--------:|-----|
-| `<database>` | {% octicon "check-circle-fill" aria-label="Required" %} | Specify the name and location of a directory to create for the {% data variables.product.prodname_codeql %} database. The command will fail if you try to overwrite an existing directory. If you also specify `--db-cluster`, this is the parent directory and a subdirectory is created for each language analyzed.|
-| <nobr>`--language`</nobr> | {% octicon "check-circle-fill" aria-label="Required" %} | Specify the identifier for the language to create a database for, one of: `{% data reusables.code-scanning.codeql-languages-keywords %}` (use `javascript` to analyze TypeScript code). {% ifversion fpt or ghes > 3.1 or ghae-next %}When used with <nobr>`--db-cluster`</nobr>, the option accepts a comma-separated list, or can be specified more than once.{% endif %}
-| <nobr>`--command`</nobr> | | Recommended. Use to specify the build command or script that invokes the build process for the codebase. Commands are run from the current folder or, where it is defined, from <nobr>`--source-root`</nobr>. Not needed for Python and JavaScript/TypeScript analysis. | {% ifversion fpt or ghes > 3.1 or ghae-next %}
-| <nobr>`--db-cluster`</nobr> | | Optional. Use in multi-language codebases to generate one database for each language specified by <nobr>`--language`</nobr>.
-| <nobr>`--no-run-unnecessary-builds`</nobr> | | Recommended. Use to suppress the build command for languages where the {% data variables.product.prodname_codeql_cli %} does not need to monitor the build (for example, Python and JavaScript/TypeScript). {% endif %}
-| <nobr>`--source-root`</nobr> | | Optional. Use if you run the CLI outside the checkout root of the repository. By default, the `database create` command assumes that the current directory is the root directory for the source files, use this option to specify a different location. |
+| Option                                     |                        Required                         | Usage                                                                                                                                                                                                                                                                                                                                                                       |
+| ------------------------------------------ | :-----------------------------------------------------: | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------- |
+| `<database>`                               | {% octicon "check-circle-fill" aria-label="Required" %} | Specify the name and location of a directory to create for the {% data variables.product.prodname_codeql %} database. The command will fail if you try to overwrite an existing directory. If you also specify `--db-cluster`, this is the parent directory and a subdirectory is created for each language analyzed.                                                       |
+| <nobr>`--language`</nobr>                  | {% octicon "check-circle-fill" aria-label="Required" %} | Specify the identifier for the language to create a database for, one of: `{% data reusables.code-scanning.codeql-languages-keywords %}` (use `javascript` to analyze TypeScript code). {% ifversion fpt or ghes > 3.1 or ghae-next %}When used with <nobr>`--db-cluster`</nobr>, the option accepts a comma-separated list, or can be specified more than once.{% endif %} |
+| <nobr>`--command`</nobr>                   |                                                         | Recommended. Use to specify the build command or script that invokes the build process for the codebase. Commands are run from the current folder or, where it is defined, from <nobr>`--source-root`</nobr>. Not needed for Python and JavaScript/TypeScript analysis.                                                                                                     | {% ifversion fpt or ghes > 3.1 or ghae-next %} |
+| <nobr>`--db-cluster`</nobr>                |                                                         | Optional. Use in multi-language codebases to generate one database for each language specified by <nobr>`--language`</nobr>.                                                                                                                                                                                                                                                |
+| <nobr>`--no-run-unnecessary-builds`</nobr> |                                                         | Recommended. Use to suppress the build command for languages where the {% data variables.product.prodname_codeql_cli %} does not need to monitor the build (for example, Python and JavaScript/TypeScript). {% endif %}                                                                                                                                                     |
+| <nobr>`--source-root`</nobr>               |                                                         | Optional. Use if you run the CLI outside the checkout root of the repository. By default, the `database create` command assumes that the current directory is the root directory for the source files, use this option to specify a different location.                                                                                                                     |
 
 For more information, see [Creating {% data variables.product.prodname_codeql %} databases](https://codeql.github.com/docs/codeql-cli/creating-codeql-databases/) in the documentation for the {% data variables.product.prodname_codeql_cli %}.
 
@@ -111,6 +113,7 @@ $ codeql database create /codeql-dbs/example-repo --language=javascript \
 ```
 
 {% ifversion fpt or ghes > 3.1 or ghae-next %}
+
 ### Multiple language example
 
 This example creates two {% data variables.product.prodname_codeql %} databases for the repository checked out at `/checkouts/example-repo-multi`. It uses:
@@ -142,22 +145,24 @@ Finalizing databases at /codeql-dbs/example-repo-multi.
 Successfully created databases at /codeql-dbs/example-repo-multi.
 $
 
-````
+```
+
 {% endif %}
 
 ## Analyzing a {% data variables.product.prodname_codeql %} database
 
 1. Create a {% data variables.product.prodname_codeql %} database (see above).{% if codeql-packs %}
 2. Optional, run `codeql pack download` to download any {% data variables.product.prodname_codeql %} packs (beta) that you want to run during analysis. For more information, see "[Downloading and using {% data variables.product.prodname_codeql %} query packs](#downloading-and-using-codeql-query-packs)" below.
-    ```shell
-    codeql pack download &lt;packs&gt;
-    ```
-    {% endif %}
+   ```shell
+   codeql pack download &lt;packs&gt;
+   ```
+   {% endif %}
 3. Run `codeql database analyze` on the database and specify which {% if codeql-packs %}packs and/or{% endif %}queries to use.
-  ```shell
-  codeql database analyze &lt;database&gt; --format=&lt;format&gt; \
-      --output=&lt;output&gt;  {% if codeql-packs %}&lt;packs,queries&gt;{% else %} &lt;queries&gt;{% endif %}
-````
+
+```shell
+codeql database analyze &lt;database&gt; --format=&lt;format&gt; \
+    --output=&lt;output&gt;  {% if codeql-packs %}&lt;packs,queries&gt;{% else %} &lt;queries&gt;{% endif %}
+```
 
 {% ifversion fpt or ghes > 3.1 or ghae-next %}
 {% note %}

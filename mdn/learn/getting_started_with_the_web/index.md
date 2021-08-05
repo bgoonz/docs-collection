@@ -1,10 +1,11 @@
---- title: Getting started with the Web slug: Learn/Getting_started_with_the_web tags: - Beginner - CSS - Design - Guide - HTML - Index - 'l10n:priority' - publishing - theory ---
+--- title: Getting started with the Web slug: Learn/Getting\_started\_with\_the\_web tags: - Beginner - CSS - Design - Guide - HTML - Index - "l10n:priority" - publishing - theory ---
 
 {{LearnSidebar}}
 
-_Getting started with the Web_ is a concise series introducing you to the practicalities of web development. You'll set up the tools you need to construct a simple webpage and publish your own simple code.
+*Getting started with the Web* is a concise series introducing you to the practicalities of web development. You'll set up the tools you need to construct a simple webpage and publish your own simple code.
 
-## The story of your first website
+The story of your first website
+-------------------------------
 
 It's a lot of work to create a professional website, so if you're new to web development, we encourage you to start small. You won't build another Facebook right away, but it's not hard to make your own simple website online, so we'll start there.
 
@@ -42,7 +43,8 @@ Once you have finished writing the code and organizing the files that make up yo
 
 When you access your favorite website, a lot of complicated things happen in the background that you may not know about. [How the web works](/en-US/docs/Learn/Getting_started_with_the_web/How_the_Web_works) outlines what happens when you view a webpage on your computer.
 
-## See also
+See also
+--------
 
-- [Web Demystified](https://www.youtube.com/playlist?list=PLo3w8EB99pqLEopnunz-dOOBJ8t-Wgt2g): A great series of videos explaining web fundamentals, aimed at complete beginners to web development. Created by [Jérémie Patonnier](https://twitter.com/JeremiePat).
-- [The web and web standards](/en-US/docs/Learn/Getting_started_with_the_web/The_web_and_web_standards): This article provides some useful background on the Web — how it came about, what web standard technologies are, how they work together, why "web developer" is a great career to choose, and what kinds of best practices you'll learn about through the course.
+-   [Web Demystified](https://www.youtube.com/playlist?list=PLo3w8EB99pqLEopnunz-dOOBJ8t-Wgt2g): A great series of videos explaining web fundamentals, aimed at complete beginners to web development. Created by [Jérémie Patonnier](https://twitter.com/JeremiePat).
+-   [The web and web standards](/en-US/docs/Learn/Getting_started_with_the_web/The_web_and_web_standards): This article provides some useful background on the Web — how it came about, what web standard technologies are, how they work together, why "web developer" is a great career to choose, and what kinds of best practices you'll learn about through the course.

@@ -1,10 +1,11 @@
---- title: CSS property compatibility table for form controls slug: Learn/Forms/Property_compatibility_table_for_form_controls tags: - Advanced - CSS - Forms - Guide - HTML - Junk - NeedsUpdate - Web ---
+--- title: CSS property compatibility table for form controls slug: Learn/Forms/Property\_compatibility\_table\_for\_form\_controls tags: - Advanced - CSS - Forms - Guide - HTML - Junk - NeedsUpdate - Web ---
 
 {{learnsidebar}}
 
 The following compatibility tables try to summarize the state of CSS support for HTML forms. Due to the complexity of CSS and HTML forms, these tables can't be considered a perfect reference. However, they will give you good insight into what can and can't be done, which will help you learn how to do things.
 
-## How to read the tables
+How to read the tables
+----------------------
 
 ### Values
 
@@ -43,13 +44,14 @@ Indicates that the property is applied with the extra rule below:
       background: none;
     }
 
-## Compatibility tables
+Compatibility tables
+--------------------
 
 ### Global behaviors
 
 Some behaviors are common to many browsers at a global level:
 
-{{cssxref("border")}}, {{cssxref("background")}}, {{cssxref("border-radius")}}, {{cssxref("height")}}  
+ {{cssxref("border")}}, {{cssxref("background")}}, {{cssxref("border-radius")}}, {{cssxref("height")}}   
 Using one of these properties can partially or fully turn off the native look & feel of widgets on some browsers. Be careful when you use them.
 
 {{cssxref("line-height")}}  
@@ -76,7 +78,7 @@ T
 
 Note
 
-_CSS box model_
+*CSS box model*
 
 {{cssxref("width")}}
 
@@ -117,7 +119,7 @@ Yes
 1.  WebKit browsers (mostly on Mac OSX and iOS) use the native look & feel for the search fields. Therefore, it's required to use `-webkit-appearance:none` to be able to apply this property to search fields.
 2.  On Windows 7, Internet Explorer 9 does not apply the border unless `background:none` is applied.
 
-_Text and font_
+*Text and font*
 
 {{cssxref("color")}}<sup>\[1\]</sup>
 
@@ -181,7 +183,7 @@ Yes
 
 Yes
 
-_Border and background_
+*Border and background*
 
 {{cssxref("background")}}
 
@@ -220,7 +222,7 @@ T
 
 Note
 
-_CSS box model_
+*CSS box model*
 
 {{cssxref("width")}}
 
@@ -256,7 +258,7 @@ Yes
 
 1.  This property is not applied on WebKit based browsers on Mac OSX or iOS.
 
-_Text and font_
+*Text and font*
 
 {{cssxref("color")}}
 
@@ -314,7 +316,7 @@ Yes
 
 Yes
 
-_Border and background_
+*Border and background*
 
 {{cssxref("background")}}
 
@@ -350,7 +352,7 @@ T
 
 Note
 
-_CSS box model_
+*CSS box model*
 
 {{cssxref("width")}}
 
@@ -386,7 +388,7 @@ Partial<sup>\[1\]</sup>
 
 1.  On Opera, the spinners are zoomed in, which can hide the content of the field.
 
-_Text and font_
+*Text and font*
 
 {{cssxref("color")}}
 
@@ -444,7 +446,7 @@ N.A.
 
 N.A.
 
-_Border and background_
+*Border and background*
 
 {{cssxref("background")}}
 
@@ -478,7 +480,7 @@ T
 
 Note
 
-_CSS box model_
+*CSS box model*
 
 {{cssxref("width")}}
 
@@ -514,7 +516,7 @@ No
 
 No
 
-_Text and font_
+*Text and font*
 
 {{cssxref("color")}}
 
@@ -570,7 +572,7 @@ N.A.
 
 N.A.
 
-_Border and background_
+*Border and background*
 
 {{cssxref("background")}}
 
@@ -602,7 +604,7 @@ T
 
 Note
 
-_CSS box model_
+*CSS box model*
 
 {{cssxref("width")}}
 
@@ -639,7 +641,7 @@ Partial<sup>\[2\]</sup>
 1.  The property is applied, but in an inconsistent way between browsers on Mac OSX.
 2.  The property is well applied on the `{{htmlelement("select")}}` element, but is inconsistently handled on `{{htmlelement("option")}}` and `{{htmlelement("optgroup")}}` elements.
 
-_Text and font_
+*Text and font*
 
 {{cssxref("color")}}
 
@@ -713,7 +715,7 @@ Partial<sup>\[1\]</sup>
 
 1.  Most of the browsers only support this property on the `{{htmlelement("select")}}` element.
 
-_Border and background_
+*Border and background*
 
 {{cssxref("background")}}
 
@@ -749,7 +751,7 @@ T
 
 Note
 
-_CSS box model_
+*CSS box model*
 
 {{cssxref("width")}}
 
@@ -783,7 +785,7 @@ Partial<sup>\[1\]</sup>
 
 1.  Opera does not support {{cssxref("padding-top")}} and {{cssxref("padding-bottom")}} on the `{{htmlelement("select")}}` element.
 
-_Text and font_
+*Text and font*
 
 {{cssxref("color")}}
 
@@ -849,7 +851,7 @@ Partial<sup>\[1\]</sup>
 
 1.  Most of the browsers only support this property on the `{{htmlelement("select")}}` element.
 
-_Border and background_
+*Border and background*
 
 {{cssxref("background")}}
 
@@ -885,7 +887,7 @@ T
 
 Note
 
-_CSS box model_
+*CSS box model*
 
 {{cssxref("width")}}
 
@@ -917,7 +919,7 @@ No
 
 No
 
-_Text and font_
+*Text and font*
 
 {{cssxref("color")}}
 
@@ -973,7 +975,7 @@ No
 
 No
 
-_Border and background_
+*Border and background*
 
 {{cssxref("background")}}
 
@@ -1005,7 +1007,7 @@ T
 
 Note
 
-_CSS box model_
+*CSS box model*
 
 {{cssxref("width")}}
 
@@ -1037,7 +1039,7 @@ No
 
 No
 
-_Text and font_
+*Text and font*
 
 {{cssxref("color")}}
 
@@ -1099,7 +1101,7 @@ No
 
 No
 
-_Border and background_
+*Border and background*
 
 {{cssxref("background")}}
 
@@ -1135,7 +1137,7 @@ T
 
 Note
 
-_CSS box model_
+*CSS box model*
 
 {{cssxref("width")}}
 
@@ -1167,7 +1169,7 @@ No
 
 No
 
-_Text and font_
+*Text and font*
 
 {{cssxref("color")}}
 
@@ -1223,7 +1225,7 @@ No
 
 No
 
-_Border and background_
+*Border and background*
 
 {{cssxref("background")}}
 
@@ -1255,7 +1257,7 @@ T
 
 Note
 
-_CSS box model_
+*CSS box model*
 
 {{cssxref("width")}}
 
@@ -1291,7 +1293,7 @@ Yes
 
 1.  Opera handles this like a select widget with the same restriction.
 
-_Text and font_
+*Text and font*
 
 {{cssxref("color")}}
 
@@ -1347,7 +1349,7 @@ N.A.
 
 N.A.
 
-_Border and background_
+*Border and background*
 
 {{cssxref("background")}}
 
@@ -1381,7 +1383,7 @@ T
 
 Note
 
-_CSS box model_
+*CSS box model*
 
 {{cssxref("width")}}
 
@@ -1415,7 +1417,7 @@ Partial<sup>\[1\]</sup>
 
 1.  Chrome hides the `{{htmlelement("progress")}}` and `{{htmlelement("meter")}}` element when the {{cssxref("padding")}} property is applied on a tweaked element.
 
-_Text and font_
+*Text and font*
 
 {{cssxref("color")}}
 
@@ -1471,7 +1473,7 @@ N.A.
 
 N.A.
 
-_Border and background_
+*Border and background*
 
 {{cssxref("background")}}
 
@@ -1505,7 +1507,7 @@ T
 
 Note
 
-_CSS box model_
+*CSS box model*
 
 {{cssxref("width")}}
 
@@ -1541,7 +1543,7 @@ Yes
 
 1.  The {{cssxref("padding")}} is applied, but has no visual effect.
 
-_Text and font_
+*Text and font*
 
 {{cssxref("color")}}
 
@@ -1597,7 +1599,7 @@ N.A.
 
 N.A.
 
-_Border and background_
+*Border and background*
 
 {{cssxref("background")}}
 
@@ -1631,7 +1633,7 @@ T
 
 Note
 
-_CSS box model_
+*CSS box model*
 
 {{cssxref("width")}}
 
@@ -1663,7 +1665,7 @@ Yes
 
 Yes
 
-_Text and font_
+*Text and font*
 
 {{cssxref("color")}}
 
@@ -1719,7 +1721,7 @@ N.A.
 
 N.A.
 
-_Border and background_
+*Border and background*
 
 {{cssxref("background")}}
 
@@ -1743,24 +1745,25 @@ Partial<sup>\[1\]</sup>
 
 1.  IE9 does not support this property.
 
-## See also
+See also
+--------
 
 ### Learning path
 
-- [Your first HTML form](/en-US/docs/Learn/Forms/Your_first_form)
-- [How to structure an HTML form](/en-US/docs/Learn/Forms/How_to_structure_a_web_form)
-- [The native form widgets](/en-US/docs/Learn/Forms/Basic_native_form_controls)
-- [HTML5 input types](/en-US/docs/Learn/Forms/HTML5_input_types)
-- [Additional form controls](/en-US/docs/Learn/Forms/Other_form_controls)
-- [UI pseudo-classes](/en-US/docs/Learn/Forms/UI_pseudo-classes)
-- [Styling HTML forms](/en-US/docs/Learn/Forms/Styling_web_forms)
-- [Form data validation](/en-US/docs/Learn/Forms/Form_validation)
-- [Sending form data](/en-US/docs/Learn/Forms/Sending_and_retrieving_form_data)
+-   [Your first HTML form](/en-US/docs/Learn/Forms/Your_first_form)
+-   [How to structure an HTML form](/en-US/docs/Learn/Forms/How_to_structure_a_web_form)
+-   [The native form widgets](/en-US/docs/Learn/Forms/Basic_native_form_controls)
+-   [HTML5 input types](/en-US/docs/Learn/Forms/HTML5_input_types)
+-   [Additional form controls](/en-US/docs/Learn/Forms/Other_form_controls)
+-   [UI pseudo-classes](/en-US/docs/Learn/Forms/UI_pseudo-classes)
+-   [Styling HTML forms](/en-US/docs/Learn/Forms/Styling_web_forms)
+-   [Form data validation](/en-US/docs/Learn/Forms/Form_validation)
+-   [Sending form data](/en-US/docs/Learn/Forms/Sending_and_retrieving_form_data)
 
 ### Advanced Topics
 
-- [Sending forms through JavaScript](/en-US/docs/Learn/Forms/Sending_forms_through_JavaScript)
-- [How to build custom form widgets](/en-US/docs/Learn/Forms/How_to_build_custom_form_controls)
-- [HTML forms in legacy browsers](/en-US/docs/Learn/Forms/HTML_forms_in_legacy_browsers)
-- [Advanced styling for HTML forms](/en-US/docs/Learn/Forms/Advanced_form_styling)
-- [Property compatibility table for form widgets](/en-US/docs/Learn/Forms/Property_compatibility_table_for_form_controls)
+-   [Sending forms through JavaScript](/en-US/docs/Learn/Forms/Sending_forms_through_JavaScript)
+-   [How to build custom form widgets](/en-US/docs/Learn/Forms/How_to_build_custom_form_controls)
+-   [HTML forms in legacy browsers](/en-US/docs/Learn/Forms/HTML_forms_in_legacy_browsers)
+-   [Advanced styling for HTML forms](/en-US/docs/Learn/Forms/Advanced_form_styling)
+-   [Property compatibility table for form widgets](/en-US/docs/Learn/Forms/Property_compatibility_table_for_form_controls)

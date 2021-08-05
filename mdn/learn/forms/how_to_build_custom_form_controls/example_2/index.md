@@ -1,8 +1,9 @@
---- title: Example 2 slug: Learn/Forms/How_to_build_custom_form_controls/Example_2 tags: - Forms - HTML ---
+--- title: Example 2 slug: Learn/Forms/How\_to\_build\_custom\_form\_controls/Example\_2 tags: - Forms - HTML ---
 
 This is the second example that explain [how to build custom form widgets](/en-US/docs/Learn/Forms/How_to_build_custom_form_controls).
 
-## JS
+JS
+--
 
 ### HTML Content
 
@@ -165,7 +166,8 @@ This is the second example that explain [how to build custom form widgets](/en-U
 
 {{ EmbedLiveSample('JS', 120, 130) }}
 
-## No JS
+No JS
+-----
 
 ### HTML Content
 

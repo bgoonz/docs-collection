@@ -1,4 +1,4 @@
---- title: Handling different text directions slug: Learn/CSS/Building_blocks/Handling_different_text_directions tags: - Beginner - CSS - Learn - logical properties - writing modes ---
+--- title: Handling different text directions slug: Learn/CSS/Building\_blocks/Handling\_different\_text\_directions tags: - Beginner - CSS - Learn - logical properties - writing modes ---
 
 {{LearnSidebar}}{{PreviousMenuNext("Learn/CSS/Building\_blocks/Backgrounds\_and\_borders", "Learn/CSS/Building\_blocks/Overflowing\_content", "Learn/CSS/Building\_blocks")}}
 
@@ -8,7 +8,8 @@ In recent years however, CSS has evolved in order to better support different di
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Basic computer literacy, <a href="/en-US/docs/Learn/Getting_started_with_the_web/Installing_basic_software">basic software installed</a>, basic knowledge of <a href="/en-US/docs/Learn/Getting_started_with_the_web/Dealing_with_files">working with files</a>, HTML basics (study <a href="/en-US/docs/Learn/HTML/Introduction_to_HTML">Introduction to HTML</a>), and an idea of how CSS works (study <a href="/en-US/docs/Learn/CSS/First_steps">CSS first steps</a>.)</td></tr><tr class="even"><td>Objective:</td><td>To understand the importance of writing modes to modern CSS.</td></tr></tbody></table>
 
-## What are writing modes?
+What are writing modes?
+-----------------------
 
 A writing mode in CSS refers to whether the text is running horizontally or vertically. The {{cssxref("writing-mode")}} property lets us switch from one writing mode to another. You don't need to be working in a language which uses a vertical writing mode to want to do this — you could also change the writing mode of parts of your layout for creative purposes.
 
@@ -18,13 +19,14 @@ In the example below we have a heading displayed using `writing-mode: vertical-r
 
 The three possible values for the `writing-mode` property are:
 
-- `horizontal-tb`: Top-to-bottom block flow direction. Sentences run horizontally.
-- `vertical-rl`: Right-to-left block flow direction. Sentences run vertically.
-- `vertical-lr`: Left-to-right block flow direction. Sentences run vertically.
+-   `horizontal-tb`: Top-to-bottom block flow direction. Sentences run horizontally.
+-   `vertical-rl`: Right-to-left block flow direction. Sentences run vertically.
+-   `vertical-lr`: Left-to-right block flow direction. Sentences run vertically.
 
 So the `writing-mode` property is in reality setting the direction in which block-level elements are displayed on the page — either from top-to-bottom, right-to-left, or left-to-right. This then dictates the direction text flows in sentences.
 
-## Writing modes and block and inline layout
+Writing modes and block and inline layout
+-----------------------------------------
 
 We have already discussed [block and inline layout](/en-US/docs/Learn/CSS/Building_blocks/The_box_model#block_and_inline_boxes), and the fact that some things display as block elements and others as inline elements. As we have seen described above, block and inline is tied to the writing mode of the document, and not the physical screen. Blocks are only displayed from the top to the bottom of the page if you are using a writing mode that displays text horizontally, such as English.
 
@@ -46,9 +48,10 @@ Once you start to look at CSS layout, and in particular the newer layout methods
 
 In addition to writing mode we also have text direction. As mentioned above, some languages such as Arabic are written horizontally, but right-to-left. This is not something you are likely to use in a creative sense — if you want to line something up on the right there are other ways to do so — however it is important to understand this as part of the nature of CSS. The web is not just for languages that are displayed left-to-right!
 
-Due to the fact that writing mode and direction of text can change, newer CSS layout methods do not refer to left and right, and top and bottom. Instead they will talk about _start_ and _end_ along with this idea of inline and block. Don't worry too much about that right now, but keep these ideas in mind as you start to look at layout; you will find it really helpful in your understanding of CSS.
+Due to the fact that writing mode and direction of text can change, newer CSS layout methods do not refer to left and right, and top and bottom. Instead they will talk about *start* and *end* along with this idea of inline and block. Don't worry too much about that right now, but keep these ideas in mind as you start to look at layout; you will find it really helpful in your understanding of CSS.
 
-## Logical properties and values
+Logical properties and values
+-----------------------------
 
 The reason to talk about writing modes and direction at this point in your learning is that we have already looked at a lot of properties that are tied to the physical dimensions of the screen, and these make more sense when in a horizontal writing mode.
 
@@ -100,11 +103,13 @@ Currently, only Firefox supports flow relative values  for `float`. If you are
 
 The logical properties and values are newer than their physical equivalents, and therefore have only recently been implemented in browsers. You can check any property page on MDN to see how far back the browser support goes. If you are not using multiple writing modes then for now you might prefer to use the physical versions. However, ultimately we expect that people will transition to the logical versions for most things, as they make a lot of sense once you start also dealing with layout methods such as flexbox and grid.
 
-## Test your skills!
+Test your skills!
+-----------------
 
 We have covered a lot in this article, but can you remember the most important information? You can find some further tests to verify that you've retained this information before you move on — see [Test your skills: writing modes](/en-US/docs/Learn/CSS/Building_blocks/Writing_Modes_Tasks).
 
-## Summary
+Summary
+-------
 
 The concepts explained in this lesson are becoming increasingly important in CSS. An understanding of the block and inline direction — and how text flow changes with a change in writing mode — will be very useful going forward. It will help you in understanding CSS even if you never use a writing mode other than a horizontal one.
 
@@ -112,14 +117,15 @@ In the next module we will take a good look at overflow in CSS.
 
 {{PreviousMenuNext("Learn/CSS/Building\_blocks/Backgrounds\_and\_borders", "Learn/CSS/Building\_blocks/Overflowing\_content", "Learn/CSS/Building\_blocks")}}
 
-## In this module
+In this module
+--------------
 
 1.  [Cascade and inheritance](/en-US/docs/Learn/CSS/Building_blocks/Cascade_and_inheritance)
 2.  [CSS selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors)
-    - [Type, class, and ID selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Type_Class_and_ID_Selectors)
-    - [Attribute selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Attribute_selectors)
-    - [Pseudo-classes and pseudo-elements](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Pseudo-classes_and_pseudo-elements)
-    - [Combinators](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Combinators)
+    -   [Type, class, and ID selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Type_Class_and_ID_Selectors)
+    -   [Attribute selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Attribute_selectors)
+    -   [Pseudo-classes and pseudo-elements](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Pseudo-classes_and_pseudo-elements)
+    -   [Combinators](/en-US/docs/Learn/CSS/Building_blocks/Selectors/Combinators)
 3.  [The box model](/en-US/docs/Learn/CSS/Building_blocks/The_box_model)
 4.  [Backgrounds and borders](/en-US/docs/Learn/CSS/Building_blocks/Backgrounds_and_borders)
 5.  [Handling different text directions](/en-US/docs/Learn/CSS/Building_blocks/Handling_different_text_directions)

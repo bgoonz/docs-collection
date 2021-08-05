@@ -1,4 +1,4 @@
---- title: How do you make sure your website works properly? slug: Learn/Common_questions/Checking_that_your_web_site_is_working_properly tags: - Beginner - Document - Guide - NeedsActiveLearning - Web - Web Development - WebMechanics - troubleshooting ---
+--- title: How do you make sure your website works properly? slug: Learn/Common\_questions/Checking\_that\_your\_web\_site\_is\_working\_properly tags: - Beginner - Document - Guide - NeedsActiveLearning - Web - Web Development - WebMechanics - troubleshooting ---
 
 In this article we go over various troubleshooting steps for a website and some basic actions to take in order to solve these issues.
 
@@ -10,11 +10,13 @@ A distant web server often behaves quite differently from a local one, so it's a
 
 Let's see how to diagnose and solve those problems.
 
-## Active Learning
+Active Learning
+---------------
 
-_There is no active learning available yet. [Please, consider contributing](/en-US/docs/MDN/Contribute/Getting_started)._
+*There is no active learning available yet. [Please, consider contributing](/en-US/docs/MDN/Contribute/Getting_started).*
 
-## Dig deeper
+Dig deeper
+----------
 
 ### Test in your browser
 
@@ -75,8 +77,8 @@ Save, [push to the server](/en-US/docs/Learn/Common_questions/Upload_files_to_a_
 
 There you go! Let's look at the {{Glossary("HTTP")}} statuses again:
 
-- **200** for `/` and for `unicorn_pic.png` means that we succeeded in reloading the page and the image.
-- **304** for `basic.css` means that this file has not changed since the last request, so the browser can use the file in its cache rather than receiving a fresh copy.
+-   **200** for `/` and for `unicorn_pic.png` means that we succeeded in reloading the page and the image.
+-   **304** for `basic.css` means that this file has not changed since the last request, so the browser can use the file in its cache rather than receiving a fresh copy.
 
 So we fixed the error and learned a few HTTP statuses along the way!
 
@@ -137,13 +139,14 @@ Just keep in mind a handy keyboard shortcut: **Ctrl+C**.  Ctrl+C sends an “in
 
 ### A simple checklist
 
-- Check for 404s
-- Make sure all webpages are behaving as you expect
-- Check your website in several browsers to make sure it renders consistently
+-   Check for 404s
+-   Make sure all webpages are behaving as you expect
+-   Check your website in several browsers to make sure it renders consistently
 
-## Next steps
+Next steps
+----------
 
 Congratulations, your website is up and running for anyone to visit. That's a huge achievement. Now, you can start digging deeper into various subjects.
 
-- Since people can come to your website from all over the world, you should consider making it [accessible to everybody](/en-US/docs/Learn/Common_questions/What_is_accessibility).
-- Is the design of your website a bit too rough? It's time to [learn more about CSS](/en-US/docs/Learn/CSS/First_steps/How_CSS_works).
+-   Since people can come to your website from all over the world, you should consider making it [accessible to everybody](/en-US/docs/Learn/Common_questions/What_is_accessibility).
+-   Is the design of your website a bit too rough? It's time to [learn more about CSS](/en-US/docs/Learn/CSS/First_steps/How_CSS_works).

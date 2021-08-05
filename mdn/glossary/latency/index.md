@@ -7,5 +7,3 @@ Latency can be a factor in any kind of data flow, but is most commonly discussed
 ## Learn more
 
 - [Understanding Latency](/en-US/docs/Web/Performance/Understanding_latency)
-
-

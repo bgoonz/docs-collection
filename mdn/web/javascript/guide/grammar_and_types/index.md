@@ -610,7 +610,7 @@ Template literals provide syntactic sugar for constructing strings. (This is sim
 
 ```js
 // Basic literal string creation
-`In JavaScript '\n' is a line-feed.`// Multiline strings
+`In JavaScript '\n' is a line-feed.` // Multiline strings
 `In JavaScript, template strings can run
  over multiple lines, but double and single
  quoted strings cannot.`;

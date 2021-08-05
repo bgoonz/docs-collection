@@ -1,4 +1,4 @@
---- title: HTML text fundamentals slug: Learn/HTML/Introduction_to_HTML/HTML_text_fundamentals tags: - Beginner - CodingScripting - Guide - HTML - Introduction to HTML - Learn - Text - headings - paragraphs - semantics ---
+--- title: HTML text fundamentals slug: Learn/HTML/Introduction\_to\_HTML/HTML\_text\_fundamentals tags: - Beginner - CodingScripting - Guide - HTML - Introduction to HTML - Learn - Text - headings - paragraphs - semantics ---
 
 {{LearnSidebar}}
 
@@ -8,7 +8,8 @@ One of HTML's main jobs is to give text structure so that a browser can display 
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Basic HTML familiarity, as covered in <a href="/en-US/docs/Learn/HTML/Introduction_to_HTML/Getting_started">Getting started with HTML</a>.</td></tr><tr class="even"><td>Objective:</td><td>Learn how to mark up a basic page of text to give it structure and meaning—including paragraphs, headings, lists, emphasis, and quotations.</td></tr></tbody></table>
 
-## The basics: headings and paragraphs
+The basics: headings and paragraphs
+-----------------------------------
 
 Most structured text consists of headings and paragraphs, whether you are reading a story, a newspaper, a college textbook, a magazine, etc.
 
@@ -48,9 +49,9 @@ For example, in this story, the `<h1>` element represents the title of the sto
 
 It's really up to you what the elements involved represent, as long as the hierarchy makes sense. You just need to bear in mind a few best practices as you create such structures:
 
-- Preferably, you should use a single `<h1>` per page—this is the top level heading, and all others sit below this in the hierarchy.
-- Make sure you use the headings in the correct order in the hierarchy. Don't use `<h3>` elements to represent subheadings, followed by `<h2>` elements to represent sub-subheadings—that doesn't make sense and will lead to weird results.
-- Of the six heading levels available, you should aim to use no more than three per page, unless you feel it is necessary. Documents with many levels (i.e., a deep heading hierarchy) become unwieldy and difficult to navigate. On such occasions, it is advisable to spread the content over multiple pages if possible.
+-   Preferably, you should use a single `<h1>` per page—this is the top level heading, and all others sit below this in the hierarchy.
+-   Make sure you use the headings in the correct order in the hierarchy. Don't use `<h3>` elements to represent subheadings, followed by `<h2>` elements to represent sub-subheadings—that doesn't make sense and will lead to weird results.
+-   Of the six heading levels available, you should aim to use no more than three per page, unless you feel it is necessary. Documents with many levels (i.e., a deep heading hierarchy) become unwieldy and difficult to navigate. On such occasions, it is advisable to spread the content over multiple pages if possible.
 
 ### Why do we need structure?
 
@@ -62,18 +63,18 @@ However, when you open the document in your browser, you'll see that the text ap
 
 This is because there are no elements to give the content structure, so the browser does not know what is a heading and what is a paragraph. Furthermore:
 
-- Users looking at a web page tend to scan quickly to find relevant content, often just reading the headings, to begin with. (We usually <a href="https://www.nngroup.com/articles/how-long-do-users-stay-on-web-pages/" class="external external-icon">spend a very short time on a web page</a>.) If they can't see anything useful within a few seconds, they'll likely get frustrated and go somewhere else.
-- Search engines indexing your page consider the contents of headings as important keywords for influencing the page's search rankings. Without headings, your page will perform poorly in terms of {{glossary("SEO")}} (Search Engine Optimization).
-- Severely visually impaired people often don't read web pages; they listen to them instead. This is done with software called a <a href="https://en.wikipedia.org/wiki/Screen_reader" class="external external-icon" title="screen readers">screen reader</a>. This software provides ways to get fast access to given text content. Among the various techniques used, they provide an outline of the document by reading out the headings, allowing their users to find the information they need quickly. If headings are not available, they will be forced to listen to the whole document read out loud.
-- To style content with {{glossary("CSS")}}, or make it do interesting things with {{glossary("JavaScript")}}, you need to have elements wrapping the relevant content, so CSS/JavaScript can effectively target it.
+-   Users looking at a web page tend to scan quickly to find relevant content, often just reading the headings, to begin with. (We usually <a href="https://www.nngroup.com/articles/how-long-do-users-stay-on-web-pages/" class="external external-icon">spend a very short time on a web page</a>.) If they can't see anything useful within a few seconds, they'll likely get frustrated and go somewhere else.
+-   Search engines indexing your page consider the contents of headings as important keywords for influencing the page's search rankings. Without headings, your page will perform poorly in terms of {{glossary("SEO")}} (Search Engine Optimization).
+-   Severely visually impaired people often don't read web pages; they listen to them instead. This is done with software called a <a href="https://en.wikipedia.org/wiki/Screen_reader" class="external external-icon" title="screen readers">screen reader</a>. This software provides ways to get fast access to given text content. Among the various techniques used, they provide an outline of the document by reading out the headings, allowing their users to find the information they need quickly. If headings are not available, they will be forced to listen to the whole document read out loud.
+-   To style content with {{glossary("CSS")}}, or make it do interesting things with {{glossary("JavaScript")}}, you need to have elements wrapping the relevant content, so CSS/JavaScript can effectively target it.
 
 Therefore, we need to give our content structural markup.
 
 ### Active learning: Giving our content structure
 
-Let's jump straight in with a live example. In the example below, add elements to the raw text in the _Input_ field so that it appears as a heading and two paragraphs in the _Output_ field.
+Let's jump straight in with a live example. In the example below, add elements to the raw text in the *Input* field so that it appears as a heading and two paragraphs in the *Output* field.
 
-If you make a mistake, you can always reset it using the _Reset_ button. If you get stuck, press the _Show solution_ button to see the answer.
+If you make a mistake, you can always reset it using the *Reset* button. If you get stuck, press the *Show solution* button to see the answer.
 
 ###### Playable code
 
@@ -204,13 +205,14 @@ In a similar vein, we need to make sure we are using the correct elements, givin
 
 By default, the browser will give it a large font size to make it look like a heading (although you could style it to look like anything you wanted using CSS). More importantly, its semantic value will be used in multiple ways, for example by search engines and screen readers (as mentioned above).
 
-On the other hand, you could make any element _look_ like a top level heading. Consider the following:
+On the other hand, you could make any element *look* like a top level heading. Consider the following:
 
     <span style="font-size: 32px; margin: 21px 0; display: block;">Is this a top level heading?</span>
 
 This is a {{htmlelement("span")}} element. It has no semantics. You use it to wrap content when you want to apply CSS to it (or do something to it with JavaScript) without giving it any extra meaning. (You'll find out more about these later on in the course.) We've applied some CSS to it to make it look like a top level heading, but since it has no semantic value, it will not get any of the extra benefits described above. It is a good idea to use the relevant HTML element for the job.
 
-## Lists
+Lists
+-----
 
 Now let's turn our attention to lists. Lists are everywhere in life—from your shopping list to the list of directions you subconsciously follow to get to your house every day, to the lists of instructions you are following in these tutorials! Lists are everywhere on the web, too, and we've got three different types to worry about.
 
@@ -367,7 +369,7 @@ Try editing the live sample below to create your very own HTML unordered list.
 
 ### Ordered
 
-Ordered lists are lists in which the order of the items _does_ matter. Let's take a set of directions as an example:
+Ordered lists are lists in which the order of the items *does* matter. Let's take a set of directions as an example:
 
     Drive to the end of the road
     Turn right
@@ -662,7 +664,7 @@ So at this point in the article, you have all the information you need to mark u
 
 {{ EmbedLiveSample('Playable\_code\_4', 900, 500, "", "", "hide-codepen-jsfiddle") }}
 
-If you get stuck, you can always press the _Show solution_ button, or check out our [text-complete.html](https://github.com/mdn/learning-area/blob/master/html/introduction-to-html/html-text-formatting/text-complete.html) example on our github repo.
+If you get stuck, you can always press the *Show solution* button, or check out our [text-complete.html](https://github.com/mdn/learning-area/blob/master/html/introduction-to-html/html-text-formatting/text-complete.html) example on our github repo.
 
 ### Nesting lists
 
@@ -693,17 +695,18 @@ Since the last two bullets are very closely related to the one before them (they
 
 Try going back to the previous active learning example and updating the second list like this.
 
-## Emphasis and importance
+Emphasis and importance
+-----------------------
 
 In human language, we often emphasize certain words to alter the meaning of a sentence, and we often want to mark certain words as important or different in some way. HTML provides various semantic elements to allow us to mark up textual content with such effects, and in this section, we'll look at a few of the most common ones.
 
 ### Emphasis
 
-When we want to add emphasis in spoken language, we _stress_ certain words, subtly altering the meaning of what we are saying. Similarly, in written language we tend to stress words by putting them in italics. For example, the following two sentences have different meanings.
+When we want to add emphasis in spoken language, we *stress* certain words, subtly altering the meaning of what we are saying. Similarly, in written language we tend to stress words by putting them in italics. For example, the following two sentences have different meanings.
 
 I am glad you weren't late.
 
-I am _glad_ you weren't _late_.
+I am *glad* you weren't *late*.
 
 The first sentence sounds genuinely relieved that the person wasn't late. In contrast, the second one sounds sarcastic or passive-aggressive, expressing annoyance that the person arrived a bit late.
 
@@ -866,9 +869,9 @@ HTML5 redefined `<b>`, `<i>`, and `<u>` with new, somewhat confusing, semantic r
 
 Here's the best rule of thumb: It's likely appropriate to use `<b>`, `<i>`, or `<u>` to convey a meaning traditionally conveyed with bold, italics, or underline, provided there is no more suitable element. However, it always remains critical to keep an accessibility mindset. The concept of italics isn't very helpful to people using screen readers, or to people using a writing system other than the Latin alphabet.
 
-- {{HTMLElement('i')}} is used to convey a meaning traditionally conveyed by italic: foreign words, taxonomic designation, technical terms, a thought...
-- {{HTMLElement('b')}} is used to convey a meaning traditionally conveyed by bold: key words, product names, lead sentence...
-- {{HTMLElement('u')}} is used to convey a meaning traditionally conveyed by underline: proper name, misspelling...
+-   {{HTMLElement('i')}} is used to convey a meaning traditionally conveyed by italic: foreign words, taxonomic designation, technical terms, a thought...
+-   {{HTMLElement('b')}} is used to convey a meaning traditionally conveyed by bold: key words, product names, lead sentence...
+-   {{HTMLElement('u')}} is used to convey a meaning traditionally conveyed by underline: proper name, misspelling...
 
 A kind warning about underline: **People strongly associate underlining with hyperlinks.** Therefore, on the web, it's best to underline only links. Use the `<u>` element when it's semantically appropriate, but consider using CSS to change the default underline to something more appropriate on the web. The example below illustrates how it can be done.
 
@@ -900,24 +903,27 @@ A kind warning about underline: **People strongly associate underlining with hyp
       </li>
     </ol>
 
-## Test your skills!
+Test your skills!
+-----------------
 
 You've reached the end of this article, but can you remember the most important information? You can find some further tests to verify that you've retained this information before you move on—see [Test your skills: HTML text basics](/en-US/docs/Learn/HTML/Introduction_to_HTML/Test_your_skills:_HTML_text_basics).
 
-## Summary
+Summary
+-------
 
 That's it for now! This article should have given you a good idea of how to start marking up text in HTML and introduced you to some of the most important elements in this area. There are a lot more semantic elements to cover in this area, and we'll look at a lot more in our [Advanced text formatting](/en-US/docs/Learn/HTML/Introduction_to_HTML/Advanced_text_formatting) article later on in the course. In the next article, we'll be looking in detail at how to [create hyperlinks](/en-US/docs/Learn/HTML/Introduction_to_HTML/Creating_hyperlinks), possibly the most important element on the web.
 
 {{PreviousMenuNext("Learn/HTML/Introduction\_to\_HTML/The\_head\_metadata\_in\_HTML", "Learn/HTML/Introduction\_to\_HTML/Creating\_hyperlinks", "Learn/HTML/Introduction\_to\_HTML")}}
 
-## In this module
+In this module
+--------------
 
-- [Getting started with HTML](/en-US/docs/Learn/HTML/Introduction_to_HTML/Getting_started)
-- [What’s in the head? Metadata in HTML](/en-US/docs/Learn/HTML/Introduction_to_HTML/The_head_metadata_in_HTML)
-- [HTML text fundamentals](/en-US/docs/Learn/HTML/Introduction_to_HTML/HTML_text_fundamentals)
-- [Creating hyperlinks](/en-US/docs/Learn/HTML/Introduction_to_HTML/Creating_hyperlinks)
-- [Advanced text formatting](/en-US/docs/Learn/HTML/Introduction_to_HTML/Advanced_text_formatting)
-- [Document and website structure](/en-US/docs/Learn/HTML/Introduction_to_HTML/Document_and_website_structure)
-- [Debugging HTML](/en-US/docs/Learn/HTML/Introduction_to_HTML/Debugging_HTML)
-- [Marking up a letter](/en-US/docs/Learn/HTML/Introduction_to_HTML/Marking_up_a_letter)
-- [Structuring a page of content](/en-US/docs/Learn/HTML/Introduction_to_HTML/Structuring_a_page_of_content)
+-   [Getting started with HTML](/en-US/docs/Learn/HTML/Introduction_to_HTML/Getting_started)
+-   [What’s in the head? Metadata in HTML](/en-US/docs/Learn/HTML/Introduction_to_HTML/The_head_metadata_in_HTML)
+-   [HTML text fundamentals](/en-US/docs/Learn/HTML/Introduction_to_HTML/HTML_text_fundamentals)
+-   [Creating hyperlinks](/en-US/docs/Learn/HTML/Introduction_to_HTML/Creating_hyperlinks)
+-   [Advanced text formatting](/en-US/docs/Learn/HTML/Introduction_to_HTML/Advanced_text_formatting)
+-   [Document and website structure](/en-US/docs/Learn/HTML/Introduction_to_HTML/Document_and_website_structure)
+-   [Debugging HTML](/en-US/docs/Learn/HTML/Introduction_to_HTML/Debugging_HTML)
+-   [Marking up a letter](/en-US/docs/Learn/HTML/Introduction_to_HTML/Marking_up_a_letter)
+-   [Structuring a page of content](/en-US/docs/Learn/HTML/Introduction_to_HTML/Structuring_a_page_of_content)

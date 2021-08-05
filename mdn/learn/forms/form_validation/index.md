@@ -1,4 +1,4 @@
---- title: Client-side form validation slug: Learn/Forms/Form_validation tags: - Beginner - Example - Forms - Guide - HTML - JavaScript - Learn - Web - regex ---
+--- title: Client-side form validation slug: Learn/Forms/Form\_validation tags: - Beginner - Example - Forms - Guide - HTML - JavaScript - Learn - Web - regex ---
 
 {{LearnSidebar}}
 
@@ -10,16 +10,17 @@ Before submitting data to the server, it is important to ensure all required for
 
 Client-side validation is an initial check and an important feature of good user experience; by catching invalid data on the client-side, the user can fix it straight away. If it gets to the server and is then rejected, a noticeable delay is caused by a round trip to the server and then back to the client-side to tell the user to fix their data.
 
-However, client-side validation _should not be considered_ an exhaustive security measure! Your apps should always perform security checks on any form-submitted data on the _server-side_ **as well** as the client-side, because client-side validation is too easy to bypass, so malicious users can still easily send bad data through to your server. Read [Website security](/en-US/docs/Learn/Server-side/First_steps/Website_security) for an idea of what _could_ happen; implementing server-side validation is somewhat beyond the scope of this module, but you should bear it in mind.
+However, client-side validation *should not be considered* an exhaustive security measure! Your apps should always perform security checks on any form-submitted data on the *server-side* **as well** as the client-side, because client-side validation is too easy to bypass, so malicious users can still easily send bad data through to your server. Read [Website security](/en-US/docs/Learn/Server-side/First_steps/Website_security) for an idea of what *could* happen; implementing server-side validation is somewhat beyond the scope of this module, but you should bear it in mind.
 
-## What is form validation?
+What is form validation?
+------------------------
 
 Go to any popular site with a registration form, and you will notice that they provide feedback when you don't enter your data in the format they are expecting. You'll get messages such as:
 
-- "This field is required" (You can't leave this field blank).
-- "Please enter your phone number in the format xxx-xxxx" (A specific data format is required for it to be considered valid).
-- "Please enter a valid email address" (the data you entered is not in the right format).
-- "Your password needs to be between 8 and 30 characters long and contain one uppercase letter, one symbol, and a number." (A very specific data format is required for your data).
+-   "This field is required" (You can't leave this field blank).
+-   "Please enter your phone number in the format xxx-xxxx" (A specific data format is required for it to be considered valid).
+-   "Please enter a valid email address" (the data you entered is not in the right format).
+-   "Your password needs to be between 8 and 30 characters long and contain one uppercase letter, one symbol, and a number." (A very specific data format is required for your data).
 
 This is called **form validation**. When you enter data, the browser and/or the web server will check to see that the data is in the correct format and within the constraints set by the application. Validation done in the browser is called **client-side** validation, while validation done on the server is called **server-side** validation. In this chapter we are focusing on client-side validation.
 
@@ -27,43 +28,46 @@ If the information is correctly formatted, the application allows the data to be
 
 We want to make filling out web forms as easy as possible. So why do we insist on validating our forms? There are three main reasons:
 
-- **We want to get the right data, in the right format.** Our applications won't work properly if our users' data is stored in the wrong format, is incorrect, or is omitted altogether.
-- **We want to protect our users' data**. Forcing our users to enter secure passwords makes it easier to protect their account information.
-- **We want to protect ourselves**. There are many ways that malicious users can misuse unprotected forms to damage the application (see [Website security](/en-US/docs/Learn/Server-side/First_steps/Website_security)).  
-  {{warning("Never trust data passed to your server from the client. Even if your form is validating correctly and preventing malformed input on the client-side, a malicious user can still alter the network request.")}}
+-   **We want to get the right data, in the right format.** Our applications won't work properly if our users' data is stored in the wrong format, is incorrect, or is omitted altogether.
+-   **We want to protect our users' data**. Forcing our users to enter secure passwords makes it easier to protect their account information.
+-   **We want to protect ourselves**. There are many ways that malicious users can misuse unprotected forms to damage the application (see [Website security](/en-US/docs/Learn/Server-side/First_steps/Website_security)).  
+    {{warning("Never trust data passed to your server from the client. Even if your form is validating correctly and preventing malformed input on the client-side, a malicious user can still alter the network request.")}}
 
-## Different types of client-side validation
+Different types of client-side validation
+-----------------------------------------
 
 There are two different types of client-side validation that you'll encounter on the web:
 
-- **Built-in form validation** uses HTML5 form validation features, which we've discussed in many places throughout this module. This validation generally doesn't require much JavaScript. Built-in form validation has better performance than JavaScript, but it is not as customizable as JavaScript validation.
-- **JavaScript** validation is coded using JavaScript. This validation is completely customizable, but you need to create it all (or use a library).
+-   **Built-in form validation** uses HTML5 form validation features, which we've discussed in many places throughout this module. This validation generally doesn't require much JavaScript. Built-in form validation has better performance than JavaScript, but it is not as customizable as JavaScript validation.
+-   **JavaScript** validation is coded using JavaScript. This validation is completely customizable, but you need to create it all (or use a library).
 
-## Using built-in form validation
+Using built-in form validation
+------------------------------
 
 One of the most significant features of [HTML5 form controls](/en-US/docs/Learn/Forms/HTML5_input_types) is the ability to validate most user data without relying on JavaScript. This is done by using validation attributes on form elements. We've seen many of these earlier in the course, but to recap:
 
-- `required`: Specifies whether a form field needs to be filled in before the form can be submitted.
-- `minlength` and `maxlength`: Specifies the minimum and maximum length of textual data (strings)
-- `min` and `max`: Specifies the minimum and maximum values of numerical input types
-- `type`: Specifies whether the data needs to be a number, an email address, or some other specific preset type.
-- `pattern`: Specifies a [regular expression](/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) that defines a pattern the entered data needs to follow.
+-   `required`: Specifies whether a form field needs to be filled in before the form can be submitted.
+-   `minlength` and `maxlength`: Specifies the minimum and maximum length of textual data (strings)
+-   `min` and `max`: Specifies the minimum and maximum values of numerical input types
+-   `type`: Specifies whether the data needs to be a number, an email address, or some other specific preset type. 
+-   `pattern`: Specifies a [regular expression](/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) that defines a pattern the entered data needs to follow.
 
 If the data entered in a form field follows all of the rules specified by the above attributes, it is considered valid. If not, it is considered invalid.
 
 When an element is valid, the following things are true:
 
-- The element matches the {{cssxref(":valid")}} CSS pseudo-class, which lets you apply a specific style to valid elements.
-- If the user tries to send the data, the browser will submit the form, provided there is nothing else stopping it from doing so (e.g., JavaScript).
+-   The element matches the {{cssxref(":valid")}} CSS pseudo-class, which lets you apply a specific style to valid elements.
+-   If the user tries to send the data, the browser will submit the form, provided there is nothing else stopping it from doing so (e.g., JavaScript).
 
 When an element is invalid, the following things are true:
 
-- The element matches the {{cssxref(":invalid")}} CSS pseudo-class, and sometimes other UI pseudo-classes (e.g., {{cssxref(":out-of-range")}}) depending on the error, which lets you apply a specific style to invalid elements.
-- If the user tries to send the data, the browser will block the form and display an error message.
+-   The element matches the {{cssxref(":invalid")}} CSS pseudo-class, and sometimes other UI pseudo-classes (e.g., {{cssxref(":out-of-range")}}) depending on the error, which lets you apply a specific style to invalid elements.
+-   If the user tries to send the data, the browser will block the form and display an error message.
 
 **Note**: There are several errors that will prevent the form from being submitted, including a {{domxref('validityState.badInput', 'badInput')}}, {{domxref('validityState.patternMismatch','patternMismatch')}}, {{domxref('validityState.rangeOverflow','rangeOverflow')}} or {{domxref('validityState.rangeUnderflow','rangeUnderflow')}}, {{domxref('validityState.stepMismatch','stepMismatch')}}, {{domxref('validityState.tooLong','tooLong')}} or {{domxref('validityState.tooShort','tooShort')}}, {{domxref('validityState.typeMismatch','typeMismatch')}}, {{domxref('validityState.valueMissing','valueMissing')}}, or a {{domxref('validityState.customError','customError')}}.
 
-## Built-in form validation examples
+Built-in form validation examples
+---------------------------------
 
 In this section, we'll test out some of the attributes that we discussed above.
 
@@ -115,7 +119,7 @@ Note the CSS that is included in the example file:
       border: 2px solid black;
     }
 
-This CSS causes the input to have a red dashed border when it is invalid and a more subtle solid black border when valid. We also added a background gradient when the input is required _and_ invalid. Try out the new behavior in the example below:
+This CSS causes the input to have a red dashed border when it is invalid and a more subtle solid black border when valid. We also added a background gradient when the input is required *and* invalid. Try out the new behavior in the example below:
 
 {{EmbedLiveSample("The\_required\_attribute", "100%", 80)}}
 
@@ -133,12 +137,12 @@ Another useful validation feature is the [`pattern`](/en-US/docs/Web/HTML/Attrib
 
 Regexps are quite complex, and we don't intend to teach you them exhaustively in this article. Below are some examples to give you a basic idea of how they work.
 
-- `a` — Matches one character that is `a` (not `b`, not `aa`, and so on).
-- `abc` — Matches `a`, followed by `b`, followed by `c`.
-- `ab?c`—Matches `a`, optionally followed by a single `b`, followed by `c`. ( `ac` or `abc`)
-- `ab*c`—Matches `a`, optionally followed by any number of `b`s, followed by `c`. ( `ac` , `abc`, `abbbbbc`, and so on).
-- `a|b` — Matches one character that is `a` or `b`.
-- `abc|xyz` — Matches exactly `abc` or exactly `xyz` (but not `abcxyz` or `a` or `y`, and so on).
+-   `a` — Matches one character that is `a` (not `b`, not `aa`, and so on).
+-   `abc` — Matches `a`, followed by `b`, followed by `c`.
+-   `ab?c`—Matches `a`, optionally followed by a single `b`, followed by `c`. ( `ac` or `abc`)
+-   `ab*c`—Matches `a`, optionally followed by any number of `b`s, followed by `c`. ( `ac` , `abc`, `abbbbbc`, and so on).
+-   `a|b` — Matches one character that is `a` or `b`.
+-   `abc|xyz` — Matches exactly `abc` or exactly `xyz` (but not `abcxyz` or `a` or `y`, and so on).
 
 There are many more possibilities that we don't cover here. For a complete list and many examples, consult our [Regular expressions](/en-US/docs/Web/JavaScript/Guide/Regular_Expressions) documentation.
 
@@ -202,20 +206,20 @@ Now delete the contents of the `<body>` element, and replace it with the followi
       </div>
     </form>
 
-- Here you'll see that we've given the `text` field a `minlength` and `maxlength` of six, which is the same length as banana and cherry.
-- We've also given the `number` field a `min` of one and a `max` of ten. Entered numbers outside this range will show as invalid; users won't be able to use the increment/decrement arrows to move the value outside of this range. If the user manually enters a number outside of this range, the data is invalid. The number is not required, so removing the value will still result in a valid value.
+-   Here you'll see that we've given the `text` field a `minlength` and `maxlength` of six, which is the same length as banana and cherry.
+-   We've also given the `number` field a `min` of one and a `max` of ten. Entered numbers outside this range will show as invalid; users won't be able to use the increment/decrement arrows to move the value outside of this range. If the user manually enters a number outside of this range, the data is invalid. The number is not required, so removing the value will still result in a valid value.
 
-  input:invalid {
-  border: 2px dashed red;
-  }
+    input:invalid {
+      border: 2px dashed red;
+    }
 
-  input:valid {
-  border: 2px solid black;
-  }
+    input:valid {
+      border: 2px solid black;
+    }
 
-  div {
-  margin-bottom: 10px;
-  }
+    div {
+      margin-bottom: 10px;
+    }
 
 Here is the example running live:
 
@@ -313,7 +317,8 @@ See [Validation-related attributes](/en-US/docs/Web/Guide/HTML/HTML5/Constraint_
 
 **Note**: You can find this example live on GitHub as [full-example.html](https://mdn.github.io/learning-area/html/forms/form-validation/full-example.html) (see also the [source code](https://github.com/mdn/learning-area/blob/master/html/forms/form-validation/full-example.html).)
 
-## Validating forms using JavaScript
+Validating forms using JavaScript
+---------------------------------
 
 You must use JavaScript if you want to take control over the look and feel of native error messages or to deal with legacy browsers that do not support HTML's built-in form validation. In this section we will look at the different ways to do this.
 
@@ -321,31 +326,31 @@ You must use JavaScript if you want to take control over the look and feel of n
 
 Most browsers support the [Constraint Validation API](/en-US/docs/Web/API/Constraint_validation), which consists of a set of methods and properties available on the following form element DOM interfaces:
 
-- `HTMLButtonElement` (represents a `<button>` element)
-- `HTMLFieldSetElement` (represents a `<fieldset>` element)
-- `HTMLInputElement` (represents an `<input>` element)
-- `HTMLOutputElement` (represents an `<output>` element)
-- `HTMLSelectElement` (represents a `<select>` element)
-- `HTMLTextAreaElement` (represents a `<textarea>` element)
+-   `HTMLButtonElement` (represents a `<button>` element)
+-   `HTMLFieldSetElement` (represents a `<fieldset>` element)
+-   `HTMLInputElement` (represents an `<input>` element)
+-   `HTMLOutputElement` (represents an `<output>` element)
+-   `HTMLSelectElement` (represents a `<select>` element)
+-   `HTMLTextAreaElement` (represents a `<textarea>` element)
 
 The Constraint validation API makes the following properties available on the above elements.
 
-- `validationMessage`: Returns a localized message describing the validation constraints that the control doesn't satisfy (if any). If the control is not a candidate for constraint validation (`willValidate` is `false`) or the element's value satisfies its constraints (is valid), this will return an empty string.
-- `validity`: Returns a `ValidityState` object that contains several properties describing the validity state of the element. You can find full details of all the available properties in the {{domxref("ValidityState")}} reference page; below is listed a few of the more common ones:
-  - {{domxref("ValidityState.patternMismatch", "patternMismatch")}}: Returns `true` if the value does not match the specified {{htmlattrxref("pattern", "input")}}, and `false` if it does match. If true, the element matches the {{cssxref(":invalid")}} CSS pseudo-class.
-  - {{domxref("ValidityState.tooLong", "tooLong")}}: Returns `true` if the value is longer than the maximum length specified by the {{htmlattrxref("maxlength", "input")}} attribute, or `false` if it is shorter than or equal to the maximum. If true, the element matches the {{cssxref(":invalid")}} CSS pseudo-class.
-  - {{domxref("ValidityState.tooShort", "tooShort")}}: Returns `true` if the value is shorter than the minimum length specified by the {{htmlattrxref("minlength", "input")}} attribute, or `false` if it is greater than or equal to the minimum. If true, the element matches the {{cssxref(":invalid")}} CSS pseudo-class.
-  - {{domxref("ValidityState.rangeOverflow", "rangeOverflow")}}: Returns `true` if the value is greater than the maximum specified by the {{htmlattrxref("max", "input")}} attribute, or `false` if it is less than or equal to the maximum. If true, the element matches the {{cssxref(":invalid")}} and {{cssxref(":out-of-range")}} CSS pseudo-classes.
-  - {{domxref("ValidityState.rangeUnderflow", "rangeUnderflow")}}: Returns `true` if the value is less than the minimum specified by the {{htmlattrxref("min", "input")}} attribute, or `false` if it is greater than or equal to the minimum. If true, the element matches the {{cssxref(":invalid")}} and {{cssxref(":out-of-range")}} CSS pseudo-classes.
-  - {{domxref("ValidityState.typeMismatch", "typeMismatch")}}: Returns `true` if the value is not in the required syntax (when {{htmlattrxref("type", "input")}} is `email` or `url`), or `false` if the syntax is correct. If `true`, the element matches the {{cssxref(":invalid")}} CSS pseudo-class.
-  - `valid`: Returns `true` if the element meets all its validation constraints, and is therefore considered to be valid, or `false` if it fails any constraint. If true, the element matches the {{cssxref(":valid")}} CSS pseudo-class; the {{cssxref(":invalid")}} CSS pseudo-class otherwise.
-  - `valueMissing`: Returns `true` if the element has a {{htmlattrxref("required", "input")}} attribute, but no value, or `false` otherwise. If true, the element matches the {{cssxref(":invalid")}} CSS pseudo-class.
-- `willValidate`: Returns `true` if the element will be validated when the form is submitted; `false` otherwise.
+-   `validationMessage`: Returns a localized message describing the validation constraints that the control doesn't satisfy (if any). If the control is not a candidate for constraint validation (`willValidate` is `false`) or the element's value satisfies its constraints (is valid), this will return an empty string.
+-   `validity`: Returns a `ValidityState` object that contains several properties describing the validity state of the element. You can find full details of all the available properties in the {{domxref("ValidityState")}} reference page; below is listed a few of the more common ones:
+    -   {{domxref("ValidityState.patternMismatch", "patternMismatch")}}: Returns `true` if the value does not match the specified {{htmlattrxref("pattern", "input")}}, and `false` if it does match. If true, the element matches the {{cssxref(":invalid")}} CSS pseudo-class.
+    -   {{domxref("ValidityState.tooLong", "tooLong")}}: Returns `true` if the value is longer than the maximum length specified by the {{htmlattrxref("maxlength", "input")}} attribute, or `false` if it is shorter than or equal to the maximum. If true, the element matches the {{cssxref(":invalid")}} CSS pseudo-class.
+    -   {{domxref("ValidityState.tooShort", "tooShort")}}: Returns `true` if the value is shorter than the minimum length specified by the {{htmlattrxref("minlength", "input")}} attribute, or `false` if it is greater than or equal to the minimum. If true, the element matches the {{cssxref(":invalid")}} CSS pseudo-class.
+    -   {{domxref("ValidityState.rangeOverflow", "rangeOverflow")}}: Returns `true` if the value is greater than the maximum specified by the {{htmlattrxref("max", "input")}} attribute, or `false` if it is less than or equal to the maximum. If true, the element matches the {{cssxref(":invalid")}} and {{cssxref(":out-of-range")}} CSS pseudo-classes.
+    -   {{domxref("ValidityState.rangeUnderflow", "rangeUnderflow")}}: Returns `true` if the value is less than the minimum specified by the {{htmlattrxref("min", "input")}} attribute, or `false` if it is greater than or equal to the minimum. If true, the element matches the {{cssxref(":invalid")}} and {{cssxref(":out-of-range")}} CSS pseudo-classes.
+    -   {{domxref("ValidityState.typeMismatch", "typeMismatch")}}: Returns `true` if the value is not in the required syntax (when {{htmlattrxref("type", "input")}} is `email` or `url`), or `false` if the syntax is correct. If `true`, the element matches the {{cssxref(":invalid")}} CSS pseudo-class.
+    -   `valid`: Returns `true` if the element meets all its validation constraints, and is therefore considered to be valid, or `false` if it fails any constraint. If true, the element matches the {{cssxref(":valid")}} CSS pseudo-class; the {{cssxref(":invalid")}} CSS pseudo-class otherwise.
+    -   `valueMissing`: Returns `true` if the element has a {{htmlattrxref("required", "input")}} attribute, but no value, or `false` otherwise. If true, the element matches the {{cssxref(":invalid")}} CSS pseudo-class.
+-   `willValidate`: Returns `true` if the element will be validated when the form is submitted; `false` otherwise.
 
 The Constraint Validation API also makes the following methods available on the above elements.
 
-- `checkValidity()`: Returns `true` if the element's value has no validity problems; `false` otherwise. If the element is invalid, this method also fires an [`invalid` event](/en-US/docs/Web/API/HTMLInputElement/invalid_event) on the element.
-- `setCustomValidity(message)`: Adds a custom error message to the element; if you set a custom error message, the element is considered to be invalid, and the specified error is displayed. This lets you use JavaScript code to establish a validation failure other than those offered by the standard HTML5 validation constraints. The message is shown to the user when reporting the problem.
+-   `checkValidity()`: Returns `true` if the element's value has no validity problems; `false` otherwise. If the element is invalid, this method also fires an [`invalid` event](/en-US/docs/Web/API/HTMLInputElement/invalid_event) on the element.
+-   `setCustomValidity(message)`: Adds a custom error message to the element; if you set a custom error message, the element is considered to be invalid, and the specified error is displayed. This lets you use JavaScript code to establish a validation failure other than those offered by the standard HTML5 validation constraints. The message is shown to the user when reporting the problem.
 
 #### Implementing a customized error message
 
@@ -353,8 +358,8 @@ As you saw in the HTML5 validation constraint examples earlier, each time a us
 
 These automated messages have two drawbacks:
 
-- There is no standard way to change their look and feel with CSS.
-- They depend on the browser locale, which means that you can have a page in one language but an error message displayed in another language, as seen in the following Firefox screenshot.
+-   There is no standard way to change their look and feel with CSS.
+-   They depend on the browser locale, which means that you can have a page in one language but an error message displayed in another language, as seen in the following Firefox screenshot.
 
 ![Example of an error message with Firefox in French on an English page](error-firefox-win7.png)
 
@@ -527,9 +532,9 @@ Now lets look at the JavaScript that implements the custom error validation.
 
 The comments explain things pretty well, but briefly:
 
-- Every time we change the value of the input, we check to see if it contains valid data. If it has then we remove any error message being shown. If the data is not valid, we run `showError()` to show the appropriate error.
-- Every time we try to submit the form, we again check to see if the data is valid. If so, we let the form submit. If not, we run `showError()` to show the appropriate error, and stop the form submitting with `preventDefault()`.
-- The `showError()` function uses various properties of the input's `validity` object to determine what the error is, and then displays an error message as appropriate.
+-   Every time we change the value of the input, we check to see if it contains valid data. If it has then we remove any error message being shown. If the data is not valid, we run `showError()` to show the appropriate error.
+-   Every time we try to submit the form, we again check to see if the data is valid. If so, we let the form submit. If not, we run `showError()` to show the appropriate error, and stop the form submitting with `preventDefault()`.
+-   The `showError()` function uses various properties of the input's `validity` object to determine what the error is, and then displays an error message as appropriate.
 
 Here is the live result:
 
@@ -556,10 +561,10 @@ This is clearly a UI matter. You have to decide how the form will behave. Does 
 How can I help the user to correct invalid data?  
 In order to reduce the user's frustration, it's very important to provide as much helpful information as possible in order to guide them in correcting their inputs. You should offer up-front suggestions so they know what's expected, as well as clear error messages. If you want to dig into form validation UI requirements, here are some useful articles you should read:
 
-- SmashingMagazine: [Form-Field Validation: The Errors-Only Approach](https://uxdesign.smashingmagazine.com/2012/06/27/form-field-validation-errors-only-approach/)
-- SmashingMagazine: [Web Form Validation: Best Practices and Tutorials](https://www.smashingmagazine.com/2009/07/07/web-form-validation-best-practices-and-tutorials/)
-- WebFX: [10 Tips for Optimizing Web Form Submission Usability](https://www.webfx.com/blog/web-design/10-tips-for-optimizing-web-form-submission-usability/)
-- A List Apart: [Inline Validation in Web Forms](https://www.alistapart.com/articles/inline-validation-in-web-forms/)
+-   SmashingMagazine: [Form-Field Validation: The Errors-Only Approach](https://uxdesign.smashingmagazine.com/2012/06/27/form-field-validation-errors-only-approach/)
+-   SmashingMagazine: [Web Form Validation: Best Practices and Tutorials](https://www.smashingmagazine.com/2009/07/07/web-form-validation-best-practices-and-tutorials/)
+-   WebFX: [10 Tips for Optimizing Web Form Submission Usability](https://www.webfx.com/blog/web-design/10-tips-for-optimizing-web-form-submission-usability/)
+-   A List Apart: [Inline Validation in Web Forms](https://www.alistapart.com/articles/inline-validation-in-web-forms/)
 
 #### An example that doesn't use the constraint validation API
 
@@ -716,37 +721,40 @@ The result looks like this:
 
 As you can see, it's not that hard to build a validation system on your own. The difficult part is to make it generic enough to use both cross-platform and on any form you might create. There are many libraries available to perform form validation, such as [Validate.js](https://rickharrison.github.io/validate.js/).
 
-## Test your skills!
+Test your skills!
+-----------------
 
 You've reached the end of this article, but can you remember the most important information? You can find some further tests to verify that you've retained this information before you move on — see [Test your skills: Form validation](/en-US/docs/Learn/Forms/Test_your_skills:_Form_validation).
 
-## Summary
+Summary
+-------
 
-Client-side form validation sometimes requires JavaScript if you want to customize styling and error messages, but it _always_ requires you to think carefully about the user. Always remember to help your users correct the data they provide. To that end, be sure to:
+Client-side form validation sometimes requires JavaScript if you want to customize styling and error messages, but it *always* requires you to think carefully about the user. Always remember to help your users correct the data they provide. To that end, be sure to:
 
-- Display explicit error messages.
-- Be permissive about the input format.
-- Point out exactly where the error occurs, especially on large forms.
+-   Display explicit error messages.
+-   Be permissive about the input format.
+-   Point out exactly where the error occurs, especially on large forms.
 
 Once you have checked that the form is filled out correctly, the form can be submitted. We'll cover [sending form data](/en-US/docs/Learn/Forms/Sending_and_retrieving_form_data) next.
 
 {{PreviousMenuNext("Learn/Forms/UI\_pseudo-classes", "Learn/Forms/Sending\_and\_retrieving\_form\_data", "Learn/HTML/Forms")}}
 
-## In this module
+In this module
+--------------
 
-- [Your first form](/en-US/docs/Learn/Forms/Your_first_form)
-- [How to structure a web form](/en-US/docs/Learn/Forms/How_to_structure_a_web_form)
-- [Basic native form controls](/en-US/docs/Learn/Forms/Basic_native_form_controls)
-- [The HTML5 input types](/en-US/docs/Learn/Forms/HTML5_input_types)
-- [Other form controls](/en-US/docs/Learn/Forms/Other_form_controls)
-- [Styling web forms](/en-US/docs/Learn/Forms/Styling_web_forms)
-- [Advanced form styling](/en-US/docs/Learn/Forms/Advanced_form_styling)
-- [UI pseudo-classes](/en-US/docs/Learn/Forms/UI_pseudo-classes)
-- [Client-side form validation](/en-US/docs/Learn/Forms/Form_validation)
-- [Sending form data](/en-US/docs/Learn/Forms/Sending_and_retrieving_form_data)
+-   [Your first form](/en-US/docs/Learn/Forms/Your_first_form)
+-   [How to structure a web form](/en-US/docs/Learn/Forms/How_to_structure_a_web_form)
+-   [Basic native form controls](/en-US/docs/Learn/Forms/Basic_native_form_controls)
+-   [The HTML5 input types](/en-US/docs/Learn/Forms/HTML5_input_types)
+-   [Other form controls](/en-US/docs/Learn/Forms/Other_form_controls)
+-   [Styling web forms](/en-US/docs/Learn/Forms/Styling_web_forms)
+-   [Advanced form styling](/en-US/docs/Learn/Forms/Advanced_form_styling)
+-   [UI pseudo-classes](/en-US/docs/Learn/Forms/UI_pseudo-classes)
+-   [Client-side form validation](/en-US/docs/Learn/Forms/Form_validation)
+-   [Sending form data](/en-US/docs/Learn/Forms/Sending_and_retrieving_form_data)
 
 ### Advanced Topics
 
-- [How to build custom form controls](/en-US/docs/Learn/Forms/How_to_build_custom_form_controls)
-- [Sending forms through JavaScript](/en-US/docs/Learn/Forms/Sending_forms_through_JavaScript)
-- [Property compatibility table for form widgets](/en-US/docs/Learn/Forms/Property_compatibility_table_for_form_controls)
+-   [How to build custom form controls](/en-US/docs/Learn/Forms/How_to_build_custom_form_controls)
+-   [Sending forms through JavaScript](/en-US/docs/Learn/Forms/Sending_forms_through_JavaScript)
+-   [Property compatibility table for form widgets](/en-US/docs/Learn/Forms/Property_compatibility_table_for_form_controls)

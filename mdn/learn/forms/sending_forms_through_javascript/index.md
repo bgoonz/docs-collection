@@ -1,10 +1,11 @@
---- title: Sending forms through JavaScript slug: Learn/Forms/Sending_forms_through_JavaScript tags: - Advanced - Example - Forms - Forms Guide - Guide - HTML - HTML forms - JavaScript - Learn - Security - Web - Web Forms ---
+--- title: Sending forms through JavaScript slug: Learn/Forms/Sending\_forms\_through\_JavaScript tags: - Advanced - Example - Forms - Forms Guide - Guide - HTML - HTML forms - JavaScript - Learn - Security - Web - Web Forms ---
 
 {{LearnSidebar}}
 
 <span class="seoSummary">HTML forms can send an [HTTP](/en-US/docs/Web/HTTP) request declaratively. But forms can also prepare an HTTP request to send via JavaScript, for example via `XMLHttpRequest`. This article explores such approaches.</span>
 
-## A form is not always a form
+A form is not always a form
+---------------------------
 
 With progressive web apps, single page apps, and framework based apps, it's common to use [HTML forms](/en-US/docs/Learn/Forms) to send data without loading a new document when response data is received. Let's first talk about why this requires a different approach.
 
@@ -28,13 +29,14 @@ But if you want to use a third party service, you need to send the data in the f
 
 So how should we send such data? The different techniques you'll require are done below.
 
-## Sending form data
+Sending form data
+-----------------
 
 There are 3 ways to send form data:
 
-- Building an `XMLHttpRequest` manually.
-- Using a standalone `FormData` object.
-- Using `FormData` bound to a `<form>` element.
+-   Building an `XMLHttpRequest` manually.
+-   Using a standalone `FormData` object.
+-   Using `FormData` bound to a `<form>` element.
 
 Let's look at them in detail.
 
@@ -203,7 +205,8 @@ Here's the live result:
 
 You can even get more involved with the process by using the form's {{domxref("HTMLFormElement.elements", "elements")}} property to get a list of all of the data elements in the form and manually manage them one at a time. To learn more about that, see the example in {{SectionOnPage("/en-US/docs/Web/API/HTMLFormElement.elements", "Accessing the element list's contents")}}.
 
-## Dealing with binary data
+Dealing with binary data
+------------------------
 
 If you use a {{domxref("FormData","FormData")}} object with a form that includes `<input type="file">` widgets, the data will be processed automatically. But to send binary data by hand, there's extra work to do.
 
@@ -350,28 +353,30 @@ Here's the live result:
 
 {{EmbedLiveSample("Dealing\_with\_binary\_data", "100%", 150)}}
 
-## Conclusion
+Conclusion
+----------
 
 Depending on the browser and the type of data you are dealing with, sending form data through JavaScript can be easy or difficult. The {{domxref("FormData","FormData")}} object is generally the answer, and you can use a [polyfill](https://github.com/jimmywarting/FormData) for it on legacy browsers.
 
-## See also
+See also
+--------
 
 ### Learning path
 
-- [Your first HTML form](/en-US/docs/Learn/Forms/Your_first_form)
-- [How to structure an HTML form](/en-US/docs/Learn/Forms/How_to_structure_a_web_form)
-- [The native form widgets](/en-US/docs/Learn/Forms/Basic_native_form_controls)
-- [HTML5 input types](/en-US/docs/Learn/Forms/HTML5_input_types)
-- [Additional form controls](/en-US/docs/Learn/Forms/Other_form_controls)
-- [UI pseudo-classes](/en-US/docs/Learn/Forms/UI_pseudo-classes)
-- [Styling HTML forms](/en-US/docs/Learn/Forms/Styling_web_forms)
-- [Form data validation](/en-US/docs/Learn/Forms/Form_validation)
-- [Sending form data](/en-US/docs/Learn/Forms/Sending_and_retrieving_form_data)
+-   [Your first HTML form](/en-US/docs/Learn/Forms/Your_first_form)
+-   [How to structure an HTML form](/en-US/docs/Learn/Forms/How_to_structure_a_web_form)
+-   [The native form widgets](/en-US/docs/Learn/Forms/Basic_native_form_controls)
+-   [HTML5 input types](/en-US/docs/Learn/Forms/HTML5_input_types)
+-   [Additional form controls](/en-US/docs/Learn/Forms/Other_form_controls)
+-   [UI pseudo-classes](/en-US/docs/Learn/Forms/UI_pseudo-classes)
+-   [Styling HTML forms](/en-US/docs/Learn/Forms/Styling_web_forms)
+-   [Form data validation](/en-US/docs/Learn/Forms/Form_validation)
+-   [Sending form data](/en-US/docs/Learn/Forms/Sending_and_retrieving_form_data)
 
 ### Advanced Topics
 
-- [Sending forms through JavaScript](/en-US/docs/Learn/Forms/Sending_forms_through_JavaScript)
-- [How to build custom form widgets](/en-US/docs/Learn/Forms/How_to_build_custom_form_controls)
-- [HTML forms in legacy browsers](/en-US/docs/Learn/Forms/HTML_forms_in_legacy_browsers)
-- [Advanced styling for HTML forms](/en-US/docs/Learn/Forms/Advanced_form_styling)
-- [Property compatibility table for form widgets](/en-US/docs/Learn/Forms/Property_compatibility_table_for_form_controls)
+-   [Sending forms through JavaScript](/en-US/docs/Learn/Forms/Sending_forms_through_JavaScript)
+-   [How to build custom form widgets](/en-US/docs/Learn/Forms/How_to_build_custom_form_controls)
+-   [HTML forms in legacy browsers](/en-US/docs/Learn/Forms/HTML_forms_in_legacy_browsers)
+-   [Advanced styling for HTML forms](/en-US/docs/Learn/Forms/Advanced_form_styling)
+-   [Property compatibility table for form widgets](/en-US/docs/Learn/Forms/Property_compatibility_table_for_form_controls)

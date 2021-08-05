@@ -1,4 +1,4 @@
---- title: Basic native form controls slug: Learn/Forms/Basic_native_form_controls tags: - Beginner - Controls - Example - Forms - Guide - HTML - Input - Web - Widgets ---
+--- title: Basic native form controls slug: Learn/Forms/Basic\_native\_form\_controls tags: - Beginner - Controls - Example - Forms - Guide - HTML - Input - Web - Widgets ---
 
 {{LearnSidebar}}
 
@@ -10,12 +10,13 @@ In the [previous article](/en-US/docs/Learn/Forms/How_to_structure_a_web_form), 
 
 You've already met some form elements, including {{HTMLelement('form')}}, {{HTMLelement('fieldset')}}, {{HTMLelement('legend')}}, {{HTMLelement('textarea')}}, {{HTMLelement('label')}}, {{HTMLelement('button')}}, and {{HTMLelement('input')}}. This article covers:
 
-- The common input types {{HTMLelement('input/button', 'button')}}, {{HTMLelement('input/checkbox', 'checkbox')}}, {{HTMLelement('input/file', 'file')}}, {{HTMLelement('input/hidden', 'hidden')}}, {{HTMLelement('input/image', 'image')}}, {{HTMLelement('input/password', 'password')}}, {{HTMLelement('input/radio', 'radio')}}, {{HTMLelement('input/reset', 'reset')}}, {{HTMLelement('input/submit', 'submit')}}, and {{HTMLelement('input/text', 'text')}}.
-- Some of the attributes that are common to all form controls.
+-   The common input types {{HTMLelement('input/button', 'button')}}, {{HTMLelement('input/checkbox', 'checkbox')}}, {{HTMLelement('input/file', 'file')}}, {{HTMLelement('input/hidden', 'hidden')}}, {{HTMLelement('input/image', 'image')}}, {{HTMLelement('input/password', 'password')}}, {{HTMLelement('input/radio', 'radio')}}, {{HTMLelement('input/reset', 'reset')}}, {{HTMLelement('input/submit', 'submit')}}, and {{HTMLelement('input/text', 'text')}}.
+-   Some of the attributes that are common to all form controls.
 
 **Note**: The features discussed in this article are supported in all browsers, which is not the case for all form controls. We cover newer form controls added in HTML5 in the next two articles. If you want a more advanced reference, you should consult our [HTML forms element reference](/en-US/docs/Web/HTML/Element#forms), and in particular our extensive [&lt;input&gt; types](/en-US/docs/Web/HTML/Element/input) reference.
 
-## Text input fields
+Text input fields
+-----------------
 
 Text {{htmlelement("input")}} fields are the most basic form widgets. They are a very convenient way to let the user enter any kind of data, and we've already seen a few simple examples.
 
@@ -23,10 +24,10 @@ Text {{htmlelement("input")}} fields are the most basic form widgets. They are a
 
 All basic text controls share some common behaviors:
 
-- They can be marked as {{htmlattrxref("readonly","input")}} (the user cannot modify the input value but it is still sent with the rest of the form data) or {{htmlattrxref("disabled","input")}} (the input value can't be modified and is never sent with the rest of the form data).
-- They can have a {{htmlattrxref("placeholder","input")}}; this is text that appears inside the text input box that should be used to briefly describe the purpose of the box.
-- They can be constrained in [`size`](/en-US/docs/Web/HTML/Attributes/size) (the physical size of the box) and [`maxlength`](/en-US/docs/Web/HTML/Attributes/maxlength) (the maximum number of characters that can be entered into the box).
-- They can benefit from [spell checking](/en-US/docs/Web/HTML/Element/input#attr-spellcheck) (using the [`spellcheck`](/en-US/docs/Web/HTML/Global_attributes/spellcheck) attribute), if the browser supports it.
+-   They can be marked as {{htmlattrxref("readonly","input")}} (the user cannot modify the input value but it is still sent with the rest of the form data) or {{htmlattrxref("disabled","input")}} (the input value can't be modified and is never sent with the rest of the form data).
+-   They can have a {{htmlattrxref("placeholder","input")}}; this is text that appears inside the text input box that should be used to briefly describe the purpose of the box.
+-   They can be constrained in [`size`](/en-US/docs/Web/HTML/Attributes/size) (the physical size of the box) and [`maxlength`](/en-US/docs/Web/HTML/Attributes/maxlength) (the maximum number of characters that can be entered into the box).
+-   They can benefit from [spell checking](/en-US/docs/Web/HTML/Element/input#attr-spellcheck) (using the [`spellcheck`](/en-US/docs/Web/HTML/Global_attributes/spellcheck) attribute), if the browser supports it.
 
 **Note**: The {{htmlelement("input")}} element is unique amongst HTML elements because it can take many different forms depending on its `type` attribute value. It is used for creating most types of form widgets including single line text fields, time and date controls, controls without text input like checkboxes, radio buttons, and color pickers, and buttons.
 
@@ -42,7 +43,7 @@ Here is a basic single line text field example:
 
 Single line text fields have only one true constraint: if you type text with line breaks, the browser removes those line breaks before sending the data to the server.
 
-_The following screenshot shows default, focused and disabled text input types in Firefox 71 and Safari on macOS and in Chrome 79 and Edge 18 on Windows 10._
+*The following screenshot shows default, focused and disabled text input types in Firefox 71 and Safari on macOS and in Chrome 79 and Edge 18 on Windows 10.*
 
 ![Screenshot of the disabled attribute and default :focus styles on a text input in Firefox, Safari, Chrome and Edge.](disabled.png)
 
@@ -70,11 +71,12 @@ If you create such an element, it's required to set its `name` and `value` attri
 
 Other text input types, like {{HTMLElement("input/search", "search")}}, {{HTMLElement("input/url", "url")}}, and {{HTMLElement("input/tel", "tel")}}, were added with HTML5. Those will be covered in the next tutorial, HTML5 input types.
 
-## Checkable items: checkboxes and radio buttons
+Checkable items: checkboxes and radio buttons
+---------------------------------------------
 
 Checkable items are controls whose state you can change by clicking on them or their associated labels. There are two kinds of checkable item: the check box and the radio button. Both use the [`checked`](/en-US/docs/Web/HTML/Attributes/checked) attribute to indicate whether the widget is checked by default or not.
 
-It's worth noting that these widgets do not behave exactly like other form widgets. For most form widgets, once the form is submitted all widgets that have a [`name`](/en-US/docs/Web/HTML/Attributes/name) attribute are sent, even if no value has been filled out. In the case of checkable items, their values are sent only if they are checked. If they are not checked, nothing is sent, not even their name. If they are checked but have no value, the name is sent with a value of _on._
+It's worth noting that these widgets do not behave exactly like other form widgets. For most form widgets, once the form is submitted all widgets that have a [`name`](/en-US/docs/Web/HTML/Attributes/name) attribute are sent, even if no value has been filled out. In the case of checkable items, their values are sent only if they are checked. If they are not checked, nothing is sent, not even their name. If they are checked but have no value, the name is sent with a value of *on.*
 
 **Note**: You can find the examples from this section on GitHub as [checkable-items.html](https://github.com/mdn/learning-area/blob/master/html/forms/native-form-widgets/checkable-items.html) ([see it live also](https://mdn.github.io/learning-area/html/forms/native-form-widgets/checkable-items.html)).
 
@@ -144,7 +146,8 @@ The following screenshots show unchecked and checked radio buttons, radio button
 
 ![Radio buttons on Firefox 71 and Safari 13 on Mac and Chrome 79 and Edge 18 on Windows 10](radios.png)
 
-## Actual buttons
+Actual buttons
+--------------
 
 The radio button isn't actually a button, despite its name; let's move on and look at actual buttons! There are three input types that produce buttons:
 
@@ -205,8 +208,8 @@ An image button is created using an {{HTMLElement("input")}} element with its {{
 
 If the image button is used to submit the form, this control doesn't submit its value — instead, the X and Y coordinates of the click on the image are submitted (the coordinates are relative to the image, meaning that the upper-left corner of the image represents the coordinate (0, 0)). The coordinates are sent as two key/value pairs:
 
-- The X value key is the value of the {{htmlattrxref("name","input")}} attribute followed by the string "_.x_".
-- The Y value key is the value of the {{htmlattrxref("name","input")}} attribute followed by the string "_.y_".
+-   The X value key is the value of the {{htmlattrxref("name","input")}} attribute followed by the string "*.x*".
+-   The Y value key is the value of the {{htmlattrxref("name","input")}} attribute followed by the string "*.y*".
 
 So for example when you click on the image at coordinate (123, 456) and it submits via the `get` method, you'll see the values appended to the URL as follows:
 
@@ -214,7 +217,8 @@ So for example when you click on the image at coordinate (123, 456) and it submi
 
 This is a very convenient way to build a "hot map". How these values are sent and retrieved is detailed in the [Sending form data](/en-US/docs/Learn/Forms/Sending_and_retrieving_form_data) article.
 
-## File picker
+File picker
+-----------
 
 There is one last `<input>` type that came to us in early HTML: the file input type. Forms are able to send files to a server (this specific action is also detailed in the [Sending form data](/en-US/docs/Learn/Forms/Sending_and_retrieving_form_data) article). The file picker widget can be used to choose one or more files to send.
 
@@ -232,37 +236,41 @@ On some mobile devices, the file picker can access photos, videos, and audio cap
     <input type="file" accept="video/*;capture=camcorder">
     <input type="file" accept="audio/*;capture=microphone">
 
-## Common attributes
+Common attributes
+-----------------
 
 Many of the elements used to define form controls have some of their own specific attributes. However, there is a set of attributes common to all form elements. You've met some of these already, but below is a list of those common attributes, for your reference:
 
 <table><thead><tr class="header"><th>Attribute name</th><th>Default value</th><th>Description</th></tr></thead><tbody><tr class="odd"><td><code>autofocus</code></td><td>false</td><td>This Boolean attribute lets you specify that the element should automatically have input focus when the page loads. Only one form-associated element in a document can have this attribute specified.</td></tr><tr class="even"><td><code>disabled</code></td><td>false</td><td>This Boolean attribute indicates that the user cannot interact with the element. If this attribute is not specified, the element inherits its setting from the containing element, for example, {{HTMLElement("fieldset")}}; if there is no containing element with the <code>disabled</code> attribute set, then the element is enabled.</td></tr><tr class="odd"><td><code>form</code></td><td></td><td>The <code>&lt;form&gt;</code> element that the widget is associated with, used if it is not nested within that form. The value of the attribute must be the <code>id</code> attribute of a {{HTMLElement("form")}} element in the same document. This lets you associate a form control with a form it is outside of, even if it is inside a different form element.</td></tr><tr class="even"><td><code>name</code></td><td></td><td>The name of the element; this is submitted with the form data.</td></tr><tr class="odd"><td><code>value</code></td><td></td><td>The element's initial value.</td></tr></tbody></table>
 
-## Test your skills!
+Test your skills!
+-----------------
 
 You've reached the end of this article, but can you remember the most important information? You can find some further tests to verify that you've retained this information before you move on — see [Test your skills: Basic controls](/en-US/docs/Learn/Forms/Test_your_skills:_Basic_controls).
 
-## Summary
+Summary
+-------
 
 This article has covered the older input types — the original set introduced in the early days of HTML that is well supported in all browsers. In the next section, we'll take a look at the newer values of the `type` attribute that were added in HTML5.
 
 {{PreviousMenuNext("Learn/Forms/How\_to\_structure\_a\_web\_form", "Learn/Forms/HTML5\_input\_types", "Learn/Forms")}}
 
-## In this module
+In this module
+--------------
 
-- [Your first form](/en-US/docs/Learn/Forms/Your_first_form)
-- [How to structure a web form](/en-US/docs/Learn/Forms/How_to_structure_a_web_form)
-- [Basic native form controls](/en-US/docs/Learn/Forms/Basic_native_form_controls)
-- [The HTML5 input types](/en-US/docs/Learn/Forms/HTML5_input_types)
-- [Other form controls](/en-US/docs/Learn/Forms/Other_form_controls)
-- [Styling web forms](/en-US/docs/Learn/Forms/Styling_web_forms)
-- [Advanced form styling](/en-US/docs/Learn/Forms/Advanced_form_styling)
-- [UI pseudo-classes](/en-US/docs/Learn/Forms/UI_pseudo-classes)
-- [Client-side form validation](/en-US/docs/Learn/Forms/Form_validation)
-- [Sending form data](/en-US/docs/Learn/Forms/Sending_and_retrieving_form_data)
+-   [Your first form](/en-US/docs/Learn/Forms/Your_first_form)
+-   [How to structure a web form](/en-US/docs/Learn/Forms/How_to_structure_a_web_form)
+-   [Basic native form controls](/en-US/docs/Learn/Forms/Basic_native_form_controls)
+-   [The HTML5 input types](/en-US/docs/Learn/Forms/HTML5_input_types)
+-   [Other form controls](/en-US/docs/Learn/Forms/Other_form_controls)
+-   [Styling web forms](/en-US/docs/Learn/Forms/Styling_web_forms)
+-   [Advanced form styling](/en-US/docs/Learn/Forms/Advanced_form_styling)
+-   [UI pseudo-classes](/en-US/docs/Learn/Forms/UI_pseudo-classes)
+-   [Client-side form validation](/en-US/docs/Learn/Forms/Form_validation)
+-   [Sending form data](/en-US/docs/Learn/Forms/Sending_and_retrieving_form_data)
 
 ### Advanced Topics
 
-- [How to build custom form controls](/en-US/docs/Learn/Forms/How_to_build_custom_form_controls)
-- [Sending forms through JavaScript](/en-US/docs/Learn/Forms/Sending_forms_through_JavaScript)
-- [Property compatibility table for form widgets](/en-US/docs/Learn/Forms/Property_compatibility_table_for_form_controls)
+-   [How to build custom form controls](/en-US/docs/Learn/Forms/How_to_build_custom_form_controls)
+-   [Sending forms through JavaScript](/en-US/docs/Learn/Forms/Sending_forms_through_JavaScript)
+-   [Property compatibility table for form widgets](/en-US/docs/Learn/Forms/Property_compatibility_table_for_form_controls)

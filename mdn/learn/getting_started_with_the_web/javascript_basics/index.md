@@ -1,4 +1,4 @@
---- title: JavaScript basics slug: Learn/Getting_started_with_the_web/JavaScript_basics tags: - Beginner - CodingScripting - JavaScript - Learn - Web - l10n:priority ---
+--- title: JavaScript basics slug: Learn/Getting\_started\_with\_the\_web/JavaScript\_basics tags: - Beginner - CodingScripting - JavaScript - Learn - Web - l10n:priority ---
 
 {{LearnSidebar}}
 
@@ -6,7 +6,8 @@
 
 JavaScript is a programming language that adds interactivity to your website. This happens in games, in the behavior of responses when buttons are pressed or with data entry on forms; with dynamic styling; with animation, etc. This article helps you get started with JavaScript and furthers your understanding of what is possible.
 
-## What is JavaScript?
+What is JavaScript?
+-------------------
 
 {{Glossary("JavaScript")}} ("JS" for short) is a full-fledged {{Glossary("Dynamic programming language", "dynamic programming language")}} that can add interactivity to a website. It was invented by Brendan Eich (co-founder of the Mozilla project, the Mozilla Foundation, and the Mozilla Corporation).
 
@@ -14,19 +15,20 @@ JavaScript is versatile and beginner-friendly. With more experience, you'll be a
 
 JavaScript itself is relatively compact, yet very flexible. Developers have written a variety of tools on top of the core JavaScript language, unlocking a vast amount of functionality with minimum effort. These include:
 
-- Browser Application Programming Interfaces ({{Glossary("API","APIs")}}) built into web browsers, providing functionality such as dynamically creating HTML and setting CSS styles; collecting and manipulating a video stream from a user's webcam, or generating 3D graphics and audio samples.
-- Third-party APIs that allow developers to incorporate functionality in sites from other content providers, such as Twitter or Facebook.
-- Third-party frameworks and libraries that you can apply to HTML to accelerate the work of building sites and applications.
+-   Browser Application Programming Interfaces ({{Glossary("API","APIs")}}) built into web browsers, providing functionality such as dynamically creating HTML and setting CSS styles; collecting and manipulating a video stream from a user's webcam, or generating 3D graphics and audio samples.
+-   Third-party APIs that allow developers to incorporate functionality in sites from other content providers, such as Twitter or Facebook.
+-   Third-party frameworks and libraries that you can apply to HTML to accelerate the work of building sites and applications.
 
 It's outside the scope of this article—as a light introduction to JavaScript—to present the details of how the core JavaScript language is different from the tools listed above. You can learn more in MDN's [JavaScript learning area](/en-US/docs/Learn/JavaScript), as well as in other parts of MDN.
 
 The section below introduces some aspects of the core language and offers an opportunity to play with a few browser API features too. Have fun!
 
-## A _Hello world!_ example
+A *Hello world!* example
+------------------------
 
 JavaScript is one of the most popular modern web technologies! As your JavaScript skills grow, your websites will enter a new dimension of power and creativity.
 
-However, getting comfortable with JavaScript is more challenging than getting comfortable with HTML and CSS. You may have to start small, and progress gradually. To begin, let's examine how to add JavaScript to your page for creating a _Hello world!_ example. (_Hello world!_ is [the standard for introductory programming examples](https://en.wikipedia.org/wiki/%22Hello,_World!%22_program).)
+However, getting comfortable with JavaScript is more challenging than getting comfortable with HTML and CSS. You may have to start small, and progress gradually. To begin, let's examine how to add JavaScript to your page for creating a *Hello world!* example. (*Hello world!* is [the standard for introductory programming examples](https://en.wikipedia.org/wiki/%22Hello,_World!%22_program).)
 
 **Important**: If you haven't been following along with the rest of our course, [download this example code](https://github.com/mdn/beginner-html-site-styled/archive/gh-pages.zip) and use it as a starting point.
 
@@ -49,13 +51,14 @@ If the JavaScript loads first and it is supposed to affect the HTML that hasn't 
 
 ### What happened?
 
-The heading text changed to _Hello world!_ using JavaScript. You did this by using a function called `{{domxref("Document.querySelector", "querySelector()")}}` to grab a reference to your heading, and then store it in a variable called `myHeading`. This is similar to what we did using CSS selectors. When you want to do something to an element, you need to select it first.
+The heading text changed to *Hello world!* using JavaScript. You did this by using a function called `{{domxref("Document.querySelector", "querySelector()")}}` to grab a reference to your heading, and then store it in a variable called `myHeading`. This is similar to what we did using CSS selectors. When you want to do something to an element, you need to select it first.
 
-Following that, the code set the value of the `myHeading` variable's `{{domxref("Node.textContent", "textContent")}}` property (which represents the content of the heading) to _Hello world!_.
+Following that, the code set the value of the `myHeading` variable's `{{domxref("Node.textContent", "textContent")}}` property (which represents the content of the heading) to *Hello world!*.
 
 **Note**: Both of the features you used in this exercise are parts of the [Document Object Model (DOM) API](/en-US/docs/Web/API/Document_Object_Model), which has the capability to manipulate documents.
 
-## Language basics crash course
+Language basics crash course
+----------------------------
 
 To give you a better understanding of how JavaScript works, let's explain some of the core features of the language. It's worth noting that these features are common to all programming languages. If you master these fundamentals, you have a head start on coding in other languages too!
 
@@ -117,7 +120,7 @@ If your comment contains no line breaks, it's an option to put it behind two sla
 
 An `{{Glossary("operator")}}` is a mathematical symbol that produces a result based on two values (or variables). In the following table, you can see some of the simplest operators, along with some examples to try in the JavaScript console.
 
-<table><colgroup><col style="width: 25%" /><col style="width: 25%" /><col style="width: 25%" /><col style="width: 25%" /></colgroup><thead><tr class="header"><th>Operator</th><th>Explanation</th><th>Symbol(s)</th><th>Example</th></tr></thead><tbody><tr class="odd"><td>Addition</td><td>Add two numbers together or combine two strings.</td><td><code>+</code></td><td><code>6 + 9;     'Hello ' + 'world!';</code></td></tr><tr class="even"><td>Subtraction, Multiplication, Division</td><td>These do what you'd expect them to do in basic math.</td><td><code>-</code>, <code>*</code>, <code>/</code></td><td><code>9 - 3;     8 * 2; // multiply in JS is an asterisk     9 / 3;</code></td></tr><tr class="odd"><td>Assignment</td><td>As you've seen already: this assigns a value to a variable.</td><td><code>=</code></td><td><code>let myVariable = 'Bob';</code></td></tr><tr class="even"><td>Equality</td><td>This performs a test to see if two values are equal. It returns a <code>true</code>/<code>false</code> (Boolean) result.</td><td><code>===</code></td><td><code>let myVariable = 3;     myVariable === 4;</code></td></tr><tr class="odd"><td>Not, Does-not-equal</td><td>This returns the logically opposite value of what it precedes. It turns a <code>true</code> into a <code>false</code>, etc.. When it is used alongside the Equality operator, the negation operator tests whether two values are <em>not</em> equal.</td><td><code>!</code>, <code>!==</code></td><td><p>For "Not", the basic expression is <code>true</code>, but the comparison returns <code>false</code> because we negate it:</p><p><code>let myVariable = 3;      !(myVariable === 3);</code></p><p>"Does-not-equal" gives basically the same result with different syntax. Here we are testing "is <code>myVariable</code> NOT equal to 3". This returns<code> false</code> because <code>myVariable</code> IS equal to 3:</p><p><code>let myVariable = 3;      myVariable !== 3;</code></p></td></tr></tbody></table>
+<table><colgroup><col style="width: 25%" /><col style="width: 25%" /><col style="width: 25%" /><col style="width: 25%" /></colgroup><thead><tr class="header"><th>Operator</th><th>Explanation</th><th>Symbol(s)</th><th>Example</th></tr></thead><tbody><tr class="odd"><td>Addition</td><td>Add two numbers together or combine two strings.</td><td><code>+</code></td><td><code>6 + 9;           'Hello ' + 'world!';</code></td></tr><tr class="even"><td>Subtraction, Multiplication, Division</td><td>These do what you'd expect them to do in basic math.</td><td><code>-</code>, <code>*</code>, <code>/</code></td><td><code>9 - 3;           8 * 2; // multiply in JS is an asterisk           9 / 3;</code></td></tr><tr class="odd"><td>Assignment</td><td>As you've seen already: this assigns a value to a variable.</td><td><code>=</code></td><td><code>let myVariable = 'Bob';</code></td></tr><tr class="even"><td>Equality</td><td>This performs a test to see if two values are equal. It returns a <code>true</code>/<code>false</code> (Boolean) result.</td><td><code>===</code></td><td><code>let myVariable = 3;           myVariable === 4;</code></td></tr><tr class="odd"><td>Not, Does-not-equal</td><td>This returns the logically opposite value of what it precedes. It turns a <code>true</code> into a <code>false</code>, etc.. When it is used alongside the Equality operator, the negation operator tests whether two values are <em>not</em> equal.</td><td><code>!</code>, <code>!==</code></td><td><p>For "Not", the basic expression is <code>true</code>, but the comparison returns <code>false</code> because we negate it:</p><p><code>let myVariable = 3;             !(myVariable === 3);</code></p><p>"Does-not-equal" gives basically the same result with different syntax. Here we are testing "is <code>myVariable</code> NOT equal to 3". This returns<code> false</code> because <code>myVariable</code> IS equal to 3:</p><p><code>let myVariable = 3;             myVariable !== 3;</code></p></td></tr></tbody></table>
 
 There are a lot more operators to explore, but this is enough for now. See [Expressions and operators](/en-US/docs/Web/JavaScript/Reference/Operators) for a complete list.
 
@@ -186,7 +189,8 @@ is equivalent to
 
 It's just shorter.
 
-## Supercharging our example website
+Supercharging our example website
+---------------------------------
 
 With this review of JavaScript basics completed (above), let's add some new features to our example site.
 
@@ -198,7 +202,7 @@ In this section, you will learn how to use JavaScript and DOM API features to al
 
 1.  Choose an image you want to feature on your example site. Ideally, the image will be the same size as the image you added previously, or as close as possible.
 2.  Save this image in your `images` folder.
-3.  Rename the image _firefox2.png_.
+3.  Rename the image *firefox2.png*.
 4.  Add the JavaScript below to your `main.js` file.
 
         let myImage = document.querySelector('img');
@@ -242,7 +246,7 @@ Next, let's change the page title to a personalized welcome message when the use
           myHeading.textContent = 'Mozilla is cool, ' + myName;
         }
 
-    The `setUserName()` function contains a [`prompt()`](/en-US/docs/Web/API/Window/prompt) function, which displays a dialog box, similar to `alert()`. This `prompt()` function does more than `alert()`, asking the user to enter data, and storing it in a variable after the user clicks _OK._ In this case, we are asking the user to enter a name. Next, the code calls on an API `localStorage`, which allows us to store data in the browser and retrieve it later. We use localStorage's `setItem()` function to create and store a data item called `'name'`, setting its value to the `myName` variable which contains the user's entry for the name. Finally, we set the `textContent` of the heading to a string, plus the user's newly stored name.
+    The `setUserName()` function contains a [`prompt()`](/en-US/docs/Web/API/Window/prompt) function, which displays a dialog box, similar to `alert()`. This `prompt()` function does more than `alert()`, asking the user to enter data, and storing it in a variable after the user clicks *OK.* In this case, we are asking the user to enter a name. Next, the code calls on an API `localStorage`, which allows us to store data in the browser and retrieve it later. We use localStorage's `setItem()` function to create and store a data item called `'name'`, setting its value to the `myName` variable which contains the user's entry for the name. Finally, we set the `textContent` of the heading to a string, plus the user's newly stored name.
 
 4.  Add the `if ... else` block (below). We could call this initialization code, as it structures the app when it first loads.
 
@@ -263,9 +267,9 @@ Next, let's change the page title to a personalized welcome message when the use
 
 ### A user name of null?
 
-When you run the example and get the dialog box that prompts you to enter your user name, try pressing the _Cancel_ button. You should end up with a title that reads _Mozilla is cool, null_. This happens because—when you cancel the prompt—the value is set as `null`. _Null_ is a special value in JavaScript that refers to the absence of a value.
+When you run the example and get the dialog box that prompts you to enter your user name, try pressing the *Cancel* button. You should end up with a title that reads *Mozilla is cool, null*. This happens because—when you cancel the prompt—the value is set as `null`. *Null* is a special value in JavaScript that refers to the absence of a value.
 
-Also, try clicking _OK_ without entering a name. You should end up with a title that reads _Mozilla is cool,_ for fairly obvious reasons.
+Also, try clicking *OK* without entering a name. You should end up with a title that reads *Mozilla is cool,* for fairly obvious reasons.
 
 To avoid these problems, you could check that the user hasn't entered a blank name. Update your `setUserName()` function to this:
 
@@ -281,7 +285,8 @@ To avoid these problems, you could check that the user hasn't entered a blank na
 
 In human language, this means: If `myName` has no value, run `setUserName()` again from the start. If it does have a value (if the above statement is not true), then store the value in `localStorage` and set it as the heading's text.
 
-## Conclusion
+Conclusion
+----------
 
 If you have followed all the instructions in this article, you should end up with a page that looks something like the image below. You can also [view our version](https://mdn.github.io/beginner-html-site-scripted/).
 
@@ -291,9 +296,10 @@ If you get stuck, you can compare your work with our [finished example code on G
 
 We have just scratched the surface of JavaScript. If you enjoyed playing, and wish to go further, take advantage of the resources listed below.
 
-## See also
+See also
+--------
 
-[Dynamic client-side scripting with JavaScript](/en-US/docs/Learn/JavaScript)  
+ [Dynamic client-side scripting with JavaScript](/en-US/docs/Learn/JavaScript)   
 Dive into JavaScript in much more detail.
 
 [Learn JavaScript](https://learnjavascript.online/)  
@@ -301,13 +307,14 @@ This is an excellent resource for aspiring web developers! Learn JavaScript in a
 
 {{PreviousMenuNext("Learn/Getting\_started\_with\_the\_web/CSS\_basics", "Learn/Getting\_started\_with\_the\_web/Publishing\_your\_website", "Learn/Getting\_started\_with\_the\_web")}}
 
-## In this module
+In this module
+--------------
 
-- <span id="Installing_basic_software">[Installing basic software](/en-US/docs/Learn/Getting_started_with_the_web/Installing_basic_software)</span>
-- <span id="What_will_your_website_look_like">[What will your website look like?](/en-US/docs/Learn/Getting_started_with_the_web/What_will_your_website_look_like)</span>
-- <span id="Dealing_with_files">[Dealing with files](/en-US/docs/Learn/Getting_started_with_the_web/Dealing_with_files)</span>
-- <span id="HTML_basics">[HTML basics](/en-US/docs/Learn/Getting_started_with_the_web/HTML_basics)</span>
-- <span id="CSS_basics">[CSS basics](/en-US/docs/Learn/Getting_started_with_the_web/CSS_basics)</span>
-- <span id="JavaScript_basics">[JavaScript basics](/en-US/docs/Learn/Getting_started_with_the_web/JavaScript_basics)</span>
-- <span id="Publishing_your_website">[Publishing your website](/en-US/docs/Learn/Getting_started_with_the_web/Publishing_your_website)</span>
-- <span id="How_the_web_works">[How the web works](/en-US/docs/Learn/Getting_started_with_the_web/How_the_Web_works)</span>
+-   <span id="Installing_basic_software">[Installing basic software](/en-US/docs/Learn/Getting_started_with_the_web/Installing_basic_software)</span>
+-   <span id="What_will_your_website_look_like">[What will your website look like?](/en-US/docs/Learn/Getting_started_with_the_web/What_will_your_website_look_like)</span>
+-   <span id="Dealing_with_files">[Dealing with files](/en-US/docs/Learn/Getting_started_with_the_web/Dealing_with_files)</span>
+-   <span id="HTML_basics">[HTML basics](/en-US/docs/Learn/Getting_started_with_the_web/HTML_basics)</span>
+-   <span id="CSS_basics">[CSS basics](/en-US/docs/Learn/Getting_started_with_the_web/CSS_basics)</span>
+-   <span id="JavaScript_basics">[JavaScript basics](/en-US/docs/Learn/Getting_started_with_the_web/JavaScript_basics)</span>
+-   <span id="Publishing_your_website">[Publishing your website](/en-US/docs/Learn/Getting_started_with_the_web/Publishing_your_website)</span>
+-   <span id="How_the_web_works">[How the web works](/en-US/docs/Learn/Getting_started_with_the_web/How_the_Web_works)</span>

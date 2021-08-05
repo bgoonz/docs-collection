@@ -8,7 +8,8 @@ With web access on mobile devices being so popular and renowned platforms such a
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Basic computer literacy, a basic understanding of HTML, CSS, and JavaScript, and an understanding of the <a href="/en-US/docs/Learn/Accessibility">previous articles in the course</a>.</td></tr><tr class="even"><td>Objective:</td><td>To understand what problems exist with accessibility on mobile devices, and how to overcome them.</td></tr></tbody></table>
 
-## Accessibility on mobile devices
+Accessibility on mobile devices
+-------------------------------
 
 The state of accessibility — and support for web standards in general — is good in modern mobile devices. Long gone are the days when mobile devices ran completely different web technologies to desktop browsers, forcing developers to use browser sniffing and serve them completely separate sites (although quite a few companies still detect usage of mobile devices and serve them a separate mobile domain).
 
@@ -18,11 +19,12 @@ To make a website accessible and usable on mobile, you just need to follow gener
 
 There are some exceptions that need special consideration for mobile; the main ones are:
 
-- Control mechanisms — Make sure interface controls such as buttons are accessible on mobiles (i.e., mainly touchscreen), as well as desktops/laptops (mainly mouse/keyboard).
-- User input — Make user input requirements as painless as possible on mobile (e.g., in forms, keep typing to a minimum).
-- Responsive design — Make sure layouts work on mobile, conserve image download sizes, and think about the provision of images for high-resolution screens.
+-   Control mechanisms — Make sure interface controls such as buttons are accessible on mobiles (i.e., mainly touchscreen), as well as desktops/laptops (mainly mouse/keyboard).
+-   User input — Make user input requirements as painless as possible on mobile (e.g., in forms, keep typing to a minimum).
+-   Responsive design — Make sure layouts work on mobile, conserve image download sizes, and think about the provision of images for high-resolution screens.
 
-## Summary of screenreader testing on Android and iOS
+Summary of screenreader testing on Android and iOS
+--------------------------------------------------
 
 The most common mobile platforms have fully functional screen readers. These function in much the same way as desktop screenreaders, except they are largely operated using touch gestures rather than key combinations.
 
@@ -82,9 +84,9 @@ For example, with TalkBack turned on:
 1.  Open your web browser.
 2.  Activate the URL bar.
 3.  Enter a web page that has a bunch of headings on it, such as the front page of bbc.co.uk. To enter the text of the URL:
-    - Select the URL bar by swiping left/right till you get to it, and then double-tapping.
-    - Hold your finger down on the virtual keyboard until you get the character you want, and then release your finger to type it. Repeat for each character.
-    - Once you've finished, find the Enter key and press it.
+    -   Select the URL bar by swiping left/right till you get to it, and then double-tapping.
+    -   Hold your finger down on the virtual keyboard until you get the character you want, and then release your finger to type it. Repeat for each character.
+    -   Once you've finished, find the Enter key and press it.
 4.  Swipe left and right to move between different items on the page.
 5.  Swipe up and right with a smooth motion to enter the local content menu.
 6.  Swipe right until you find the "Headings and Landmarks" option.
@@ -97,9 +99,9 @@ For example, with TalkBack turned on:
 
 A mobile version of VoiceOver is built into the iOS operating system.
 
-To turn it on, go to Your *Settings* app and select _Accessibility &gt; VoiceOver_. Press the *VoiceOver* slider to enable it (you'll also see a number of other options related to VoiceOver on this page).
+To turn it on, go to Your *Settings* app and select *Accessibility &gt; VoiceOver*. Press the *VoiceOver* slider to enable it (you'll also see a number of other options related to VoiceOver on this page).
 
-**Note**: Some older iOS devices have the VoiceOver menu at _Settings app_ &gt; _General_ &gt; _Accessibility_ &gt; _VoiceOver_.
+**Note**: Some older iOS devices have the VoiceOver menu at *Settings app* &gt; *General* &gt; *Accessibility* &gt; *VoiceOver*.
 
 Once VoiceOver is enabled, iOS's basic control gestures will be a bit different:
 
@@ -121,8 +123,8 @@ When VoiceOver is turned on, you have a navigation feature called the Rotor avai
 
 1.  Twist two fingers around on the screen like you are turning a dial. Each option will be read aloud as you twist further around. You can go back and forth to cycle through the options.
 2.  Once you've found the option you want:
-    - Release your fingers to select it.
-    - If it is an option you can iterate the value of (such as Volume or Speaking Rate), you can do a swipe up or down to increase or decrease the value of the selected item.
+    -   Release your fingers to select it.
+    -   If it is an option you can iterate the value of (such as Volume or Speaking Rate), you can do a swipe up or down to increase or decrease the value of the selected item.
 
 The options available under the Rotor are context-sensitive — they will differ depending on what app or view you are in (see below for an example).
 
@@ -133,23 +135,24 @@ Let's have a go at web browsing with VoiceOver:
 1.  Open your web browser.
 2.  Activate the URL bar.
 3.  Enter a web page that has a bunch of headings on it, such as the front page of bbc.co.uk. To enter the text of the URL:
-    - Select the URL bar by swiping left/right until you get to it, and then double-tapping.
-    - For each character, hold your finger down on the virtual keyboard until you get the character you want, and then release your finger to select it. Double-tap to type it.
-    - Once you've finished, find the Enter key and press it.
+    -   Select the URL bar by swiping left/right until you get to it, and then double-tapping.
+    -   For each character, hold your finger down on the virtual keyboard until you get the character you want, and then release your finger to select it. Double-tap to type it.
+    -   Once you've finished, find the Enter key and press it.
 4.  Swipe left and right to move between items on the page. You can double-tap an item to select it (e.g., follow a link).
 5.  By default, the selected Rotor option will be Speaking Rate; you can currently swipe up and down to increase or decrease the speaking rate.
 6.  Now turn two fingers around the screen like a dial to show the rotor and move between its options. Here are a few examples of the options available:
-    - _Speaking Rate_: Change the speaking rate.
-    - _Containers_: Move between different semantic containers on the page.
-    - _Headings_: Move between headings on the page.
-    - _Links_: Move between links on the page.
-    - _Form Controls_: Move between form controls on the page.
-    - _Language_: Move between different translations, if they are available.
+    -   *Speaking Rate*: Change the speaking rate.
+    -   *Containers*: Move between different semantic containers on the page.
+    -   *Headings*: Move between headings on the page.
+    -   *Links*: Move between links on the page.
+    -   *Form Controls*: Move between form controls on the page.
+    -   *Language*: Move between different translations, if they are available.
 7.  Select *Headings*. Now you'll be able to swipe up and down to move between headings on the page.
 
 **Note:** For a more complete reference covering the VoiceOver gestures available and other hints on accessibility testing on iOS, see [Test Accessibility on Your Device with VoiceOver](https://developer.apple.com/library/content/technotes/TestingAccessibilityOfiOSApps/TestAccessibilityonYourDevicewithVoiceOver/TestAccessibilityonYourDevicewithVoiceOver.html#//apple_ref/doc/uid/TP40012619-CH3).
 
-## Control mechanisms
+Control mechanisms
+------------------
 
 In our CSS and JavaScript accessibility article, we looked at the idea of events that are specific to a certain type of control mechanism (see [Mouse-specific events](/en-US/docs/Learn/Accessibility/CSS_and_JavaScript#mouse-specific_events)). To recap, these cause accessibility issues because other control mechanisms can't activate the associated functionality.
 
@@ -182,15 +185,16 @@ We've provided a simple example that shows how to use the mouse and touch events
 
 **Note:** You can also see fully functional examples showing how to implement different control mechanisms at [Implementing game control mechanisms](/en-US/docs/Games/Techniques/Control_mechanisms).
 
-## Responsive design
+Responsive design
+-----------------
 
 [Responsive design](/en-US/docs/Web/Progressive_web_apps/Responsive/responsive_design_building_blocks) is the practice of making your layouts and other features of your apps dynamically change depending on factors such as screen size and resolution, so they are usable and accessible to users of different device types.
 
 In particular, the most common problems that need to be addressed for mobile are:
 
-- Suitability of layouts for mobile devices. A multi-column layout won't work as well on a narrow screen, for example, and the text size may need to be increased so it is legible. Such issues can be solved by creating a responsive layout using technologies such as [media queries](/en-US/docs/Web/CSS/Media_Queries), [viewport](/en-US/docs/Web/HTML/Viewport_meta_tag), and [flexbox](/en-US/docs/Learn/CSS/CSS_layout/Flexbox).
-- Conserving image sizes downloaded. In general, small screen devices won't need images that are as large as their desktop counterparts, and they are more likely to be on slow network connections. Therefore, it is wise to serve smaller images to narrow screen devices as appropriate. You can handle this using [responsive image techniques](/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images).
-- Thinking about high resolutions. Many mobile devices have high-resolution screens, and therefore need higher-resolution images so that the display can continue to look crisp and sharp. Again, you can serve images as appropriate using responsive image techniques. In addition, many image requirements can be fulfilled using the SVG vector images format, which is well-supported across browsers today. SVG has a small file size and will stay sharp regardless of whatever size is being displayed  (see [Adding vector graphics to the web](/en-US/docs/Learn/HTML/Multimedia_and_embedding/Adding_vector_graphics_to_the_Web) for more details).
+-   Suitability of layouts for mobile devices. A multi-column layout won't work as well on a narrow screen, for example, and the text size may need to be increased so it is legible. Such issues can be solved by creating a responsive layout using technologies such as [media queries](/en-US/docs/Web/CSS/Media_Queries), [viewport](/en-US/docs/Web/HTML/Viewport_meta_tag), and [flexbox](/en-US/docs/Learn/CSS/CSS_layout/Flexbox).
+-   Conserving image sizes downloaded. In general, small screen devices won't need images that are as large as their desktop counterparts, and they are more likely to be on slow network connections. Therefore, it is wise to serve smaller images to narrow screen devices as appropriate. You can handle this using [responsive image techniques](/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images).
+-   Thinking about high resolutions. Many mobile devices have high-resolution screens, and therefore need higher-resolution images so that the display can continue to look crisp and sharp. Again, you can serve images as appropriate using responsive image techniques. In addition, many image requirements can be fulfilled using the SVG vector images format, which is well-supported across browsers today. SVG has a small file size and will stay sharp regardless of whatever size is being displayed  (see [Adding vector graphics to the web](/en-US/docs/Learn/HTML/Multimedia_and_embedding/Adding_vector_graphics_to_the_Web) for more details).
 
 **Note:** We won't provide a full discussion of responsive design techniques here, as they are covered in other places around MDN (see above links).
 
@@ -214,7 +218,8 @@ When implementing such a menu, you need to make sure that the control to reveal 
 
 Click here for a [good hamburger menu example](https://fritz-weisshart.de/meg_men/).
 
-## User input
+User input
+----------
 
 On mobile devices, inputting data tends to be more annoying for users than the equivalent experience on desktop computers. It is more convenient to type text into form inputs using a desktop or laptop keyboard than a touchscreen virtual keyboard or a tiny mobile physical keyboard.
 
@@ -222,28 +227,31 @@ For this reason, it is worth trying to minimize the amount of typing needed. As 
 
 It is also worth considering the use of HTML5 form input types such as the date on mobile platforms as they handle them well — both Android and iOS, for example, display usable widgets that fit well with the device experience. See [html5-form-examples.html](https://github.com/mdn/learning-area/blob/master/accessibility/mobile/html5-form-examples.html) for some examples (see the [HTML5 form examples live](https://mdn.github.io/learning-area/accessibility/mobile/html5-form-examples.html)) — try loading these and manipulating them on mobile devices. For example:
 
-- Types `number`, `tel`, and `email` display suitable virtual keyboards for entering numbers/telephone numbers.
-- Types `time` and `date` display suitable pickers for selecting times and dates.
+-   Types `number`, `tel`, and `email` display suitable virtual keyboards for entering numbers/telephone numbers.
+-   Types `time` and `date` display suitable pickers for selecting times and dates.
 
 If you want to provide a different solution for desktops, you could always serve different markup to your mobile devices using feature detection. See [input types](https://diveinto.html5doctor.com/detect.html#input-types) for raw information on detecting different input types, and also check out our [feature detection article](/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Feature_detection) for much more information.
 
-## Summary
+Summary
+-------
 
 In this article, we have provided you with some details about common mobile accessibility-specific issues and how to overcome them. We also took you through the usage of the most common screenreaders to aid you in accessibility testing.
 
-## See also
+See also
+--------
 
-- [Guidelines For Mobile Web Development](https://www.smashingmagazine.com/guidelines-for-mobile-web-development/) — A list of articles in _Smashing Magazine_ covering different techniques for mobile web design.
-- [Make your site work on touch devices](https://www.creativebloq.com/javascript/make-your-site-work-touch-devices-51411644) — Useful article about using touch events to get interactions working on mobile devices.
+-   [Guidelines For Mobile Web Development](https://www.smashingmagazine.com/guidelines-for-mobile-web-development/) — A list of articles in *Smashing Magazine* covering different techniques for mobile web design.
+-   [Make your site work on touch devices](https://www.creativebloq.com/javascript/make-your-site-work-touch-devices-51411644) — Useful article about using touch events to get interactions working on mobile devices.
 
 {{PreviousMenuNext("Learn/Accessibility/Multimedia","Learn/Accessibility/Accessibility\_troubleshooting", "Learn/Accessibility")}}
 
-## In this module
+In this module
+--------------
 
-- [What is accessibility?](/en-US/docs/Learn/Accessibility/What_is_accessibility)
-- [HTML: A good basis for accessibility](/en-US/docs/Learn/Accessibility/HTML)
-- [CSS and JavaScript accessibility best practices](/en-US/docs/Learn/Accessibility/CSS_and_JavaScript)
-- [WAI-ARIA basics](/en-US/docs/Learn/Accessibility/WAI-ARIA_basics)
-- [Accessible multimedia](/en-US/docs/Learn/Accessibility/Multimedia)
-- [Mobile accessibility](/en-US/docs/Learn/Accessibility/Mobile)
-- [Accessibility troubleshooting](/en-US/docs/Learn/Accessibility/Accessibility_troubleshooting)
+-   [What is accessibility?](/en-US/docs/Learn/Accessibility/What_is_accessibility)
+-   [HTML: A good basis for accessibility](/en-US/docs/Learn/Accessibility/HTML)
+-   [CSS and JavaScript accessibility best practices](/en-US/docs/Learn/Accessibility/CSS_and_JavaScript)
+-   [WAI-ARIA basics](/en-US/docs/Learn/Accessibility/WAI-ARIA_basics)
+-   [Accessible multimedia](/en-US/docs/Learn/Accessibility/Multimedia)
+-   [Mobile accessibility](/en-US/docs/Learn/Accessibility/Mobile)
+-   [Accessibility troubleshooting](/en-US/docs/Learn/Accessibility/Accessibility_troubleshooting)

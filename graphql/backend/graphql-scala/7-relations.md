@@ -332,7 +332,6 @@ Replace current `VoteType` declaration with the following one:
         AddFields(Field("link",  LinkType, resolve = c => linksFetcher.defer(c.value.linkId)))
       )
 
-
 Now you’re ready to execute a query like that:
 
     query {

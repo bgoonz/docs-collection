@@ -1,10 +1,11 @@
---- title: How to fill a box with an image without distorting it slug: Learn/CSS/Howto/Fill_a_box_with_an_image tags: - Basic - Beginner - CSS - CSS:Getting_Started - Guide - Web ---
+--- title: How to fill a box with an image without distorting it slug: Learn/CSS/Howto/Fill\_a\_box\_with\_an\_image tags: - Basic - Beginner - CSS - CSS:Getting\_Started - Guide - Web ---
 
 {{LearnSidebar}}
 
 In this guide you can learn a technique for causing an HTML image to completely fill a box.
 
-## Using object-fit
+Using object-fit
+----------------
 
 When you add an image to a page using the HTML {{htmlelement("img")}} element, the image will maintain the size and aspect ratio of the image file, or that of any HTML {{htmlattrxref("width")}} or {{htmlattrxref("height")}} attributes. Sometimes you would like the image to completely fill the box that you have placed it in. In that case you first need to decide what happens if the image is the wrong aspect ratio for the container.
 

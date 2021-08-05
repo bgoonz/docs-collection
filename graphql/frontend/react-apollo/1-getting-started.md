@@ -182,7 +182,6 @@ Open `src/index.js` and replace the contents with the following:
       document.getElementById('root')
     );
 
-
 Let’s take a look at what’s going on in the code snippet above:
 
 1.  We import all the dependencies we need to wire up the Apollo client, all from `@apollo/client`.

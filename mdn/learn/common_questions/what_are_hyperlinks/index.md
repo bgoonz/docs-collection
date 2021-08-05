@@ -1,10 +1,11 @@
---- title: What are hyperlinks? slug: Learn/Common_questions/What_are_hyperlinks tags: - Beginner - Infrastructure - Navigation - NeedsActiveLearning ---
+--- title: What are hyperlinks? slug: Learn/Common\_questions/What\_are\_hyperlinks tags: - Beginner - Infrastructure - Navigation - NeedsActiveLearning ---
 
 In this article, we'll go over what hyperlinks are and why they matter.
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>You should know <a href="/en-US/docs/Learn/Common_questions/How_does_the_Internet_work">how the Internet works</a> and be familiar with <a href="/en-US/docs/Learn/Common_questions/Pages_sites_servers_and_search_engines">the difference between a webpage, a website, a web server, and a search engine</a>.</td></tr><tr class="even"><td>Objective:</td><td>Learn about links on the web and why they matter.</td></tr></tbody></table>
 
-## Summary
+Summary
+-------
 
 Hyperlinks, usually called links, are a foundational concept behind the Web. To explain what links are, we need to step back to the very basics of Web architecture.
 
@@ -12,7 +13,7 @@ Back in 1989, Tim Berners-Lee, the Web's inventor, spoke of the three pillars on
 
 1.  {{Glossary("URL")}}, an address system that keeps track of Web documents
 2.  {{Glossary("HTTP")}}, a transfer protocol to find documents when given their URLs
-3.  {{Glossary("HTML")}}, a document format allowing for embedded _hyperlinks_
+3.  {{Glossary("HTML")}}, a document format allowing for embedded *hyperlinks*
 
 As you can see in the three pillars, everything on the Web revolves around documents and how to access them. The Web's original purpose was to provide an easy way to reach, read, and navigate through text documents. Since then, the Web has evolved to provide access to images, videos, and binary data, but these improvements have hardly changed the three pillars.
 
@@ -24,7 +25,8 @@ Links stand out from the surrounding text by being underlined and in blue text. 
 
 Links are the breakthrough that made the Web so useful and successful. In the rest of this article, we discuss the various types of links and their importance to modern Web design.
 
-## Deeper dive
+Deeper dive
+-----------
 
 As we said, a link is a text string tied to a URL, and we use links to allow easy jumping from one document to another. That said, there are some nuances worth considering:
 
@@ -55,15 +57,16 @@ Links matter both to users and search engines. Every time search engines crawl a
 
 Links influence how readily a search engine will link to your site. The trouble is, it's hard to measure search engines' activities. Companies naturally want their sites to rank highly in search results.  We know the following about how search engines determine a site's rank:
 
-- A link's _visible text_ influences which search queries will find a given URL.
-- The more _incoming links_ a webpage can boast of, the higher it ranks in search results.
-- _External links_ influence the search ranking both of source and target webpages, but it is unclear by how much.
+-   A link's *visible text* influences which search queries will find a given URL.
+-   The more *incoming links* a webpage can boast of, the higher it ranks in search results.
+-   *External links* influence the search ranking both of source and target webpages, but it is unclear by how much.
 
 [SEO](https://en.wikipedia.org/wiki/Search_engine_optimization) (search engine optimization) is the study of how to make websites rank highly in search results. Improving a website's use of links is one helpful SEO technique.
 
-## Next steps
+Next steps
+----------
 
 Now you'll want to set up some webpages with links.
 
-- To get some more theoretical background, learn about [URLs and their structure](/en-US/docs/Learn/Common_questions/What_is_a_URL), since every link points to a URL.
-- Want something a bit more practical? The [Creating hyperlinks](/en-US/docs/Learn/HTML/Introduction_to_HTML/Creating_hyperlinks) article of our [Introduction to HTML](/en-US/docs/Learn/HTML/Introduction_to_HTML) module explains how to implement links in detail.
+-   To get some more theoretical background, learn about [URLs and their structure](/en-US/docs/Learn/Common_questions/What_is_a_URL), since every link points to a URL.
+-   Want something a bit more practical? The [Creating hyperlinks](/en-US/docs/Learn/HTML/Introduction_to_HTML/Creating_hyperlinks) article of our [Introduction to HTML](/en-US/docs/Learn/HTML/Introduction_to_HTML) module explains how to implement links in detail.
