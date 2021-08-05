@@ -14,131 +14,128 @@ Menu
 
 <a href="../../index.html" class="navbar__brand"><img src="../../../d33wubrfki0l68.cloudfront.net/0834d0215db51e91525a25acf97433051f280f2f/c30f5/img/redux.svg" alt="Redux Logo" class="themedImage_1VuW themedImage--light_3UqQ navbar__logo" /><img src="../../../d33wubrfki0l68.cloudfront.net/0834d0215db51e91525a25acf97433051f280f2f/c30f5/img/redux.svg" alt="Redux Logo" class="themedImage_1VuW themedImage--dark_hz6m navbar__logo" /><strong>Redux</strong></a>
 
--   <a href="../../introduction/getting-started.html" class="menu__link">Getting Started</a>
--   <a href="../essentials/part-1-overview-concepts.html" class="menu__link">Tutorial</a>
--   <a href="../../api/api-reference.html" class="menu__link">API</a>
--   <a href="../../faq.html" class="menu__link">FAQ</a>
--   <a href="../../style-guide/style-guide.html" class="menu__link">Best Practices</a>
--   <a href="../../../github.com/reduxjs/redux.html" class="menu__link">GitHub</a>
--   <a href="../../introduction/getting-started.html#help-and-discussion" class="menu__link">Need help?</a>
+- <a href="../../introduction/getting-started.html" class="menu__link">Getting Started</a>
+- <a href="../essentials/part-1-overview-concepts.html" class="menu__link">Tutorial</a>
+- <a href="../../api/api-reference.html" class="menu__link">API</a>
+- <a href="../../faq.html" class="menu__link">FAQ</a>
+- <a href="../../style-guide/style-guide.html" class="menu__link">Best Practices</a>
+- <a href="../../../github.com/reduxjs/redux.html" class="menu__link">GitHub</a>
+- <a href="../../introduction/getting-started.html#help-and-discussion" class="menu__link">Need help?</a>
 
 Menu
 
--   <a href="#!" class="menu__link menu__link--sublist">Introduction</a>
-    -   <a href="../../introduction/getting-started.html" class="menu__link">Getting Started with Redux</a>
-    -   <a href="../../introduction/installation.html" class="menu__link">Installation</a>
-    -   <a href="../../introduction/core-concepts.html" class="menu__link">Core Concepts</a>
-    -   <a href="../../introduction/learning-resources.html" class="menu__link">Learning Resources</a>
-    -   <a href="../../introduction/ecosystem.html" class="menu__link">Ecosystem</a>
-    -   <a href="../../introduction/examples.html" class="menu__link">Examples</a>
--   <a href="#!" class="menu__link menu__link--sublist menu__link--active">Tutorials</a>
-    -   <a href="../index.html" class="menu__link">Tutorials Index</a>
-    -   <a href="../quick-start.html" class="menu__link">Quick Start</a>
-    -   <a href="../typescript-quick-start.html" class="menu__link">TypeScript Quick Start</a>
-    -   <a href="#!" class="menu__link menu__link--sublist">Redux Essentials</a>
-        -   <a href="../essentials/part-1-overview-concepts.html" class="menu__link">Redux Overview and Concepts</a>
-        -   <a href="../essentials/part-2-app-structure.html" class="menu__link">Redux App Structure</a>
-        -   <a href="../essentials/part-3-data-flow.html" class="menu__link">Basic Redux Data Flow</a>
-        -   <a href="../essentials/part-4-using-data.html" class="menu__link">Using Redux Data</a>
-        -   <a href="../essentials/part-5-async-logic.html" class="menu__link">Async Logic and Data Fetching</a>
-        -   <a href="../essentials/part-6-performance-normalization.html" class="menu__link">Performance and Normalizing Data</a>
-    -   <a href="#!" class="menu__link menu__link--sublist menu__link--active">Redux Fundamentals</a>
-        -   <a href="part-1-overview.html" class="menu__link">Redux Overview</a>
-        -   <a href="part-2-concepts-data-flow.html" class="menu__link">Redux Concepts and Data Flow</a>
-        -   <a href="part-3-state-actions-reducers.html" class="menu__link">State, Actions, and Reducers</a>
-        -   <a href="part-4-store.html" class="menu__link menu__link--active active">Store</a>
-        -   <a href="part-5-ui-react.html" class="menu__link">UI and React</a>
-        -   <a href="part-6-async-logic.html" class="menu__link">Async Logic and Data Fetching</a>
-        -   <a href="part-7-standard-patterns.html" class="menu__link">Standard Redux Patterns</a>
-        -   <a href="part-8-modern-redux.html" class="menu__link">Modern Redux with Redux Toolkit</a>
--   <a href="#!" class="menu__link menu__link--sublist">Recipes</a>
-    -   <a href="../../recipes/recipe-index.html" class="menu__link">Recipes: Index</a>
-    -   <a href="../../recipes/configuring-your-store.html" class="menu__link">Configuring Your Store</a>
-    -   <a href="../../recipes/usage-with-typescript.html" class="menu__link">Usage With TypeScript</a>
-    -   <a href="../../recipes/migrating-to-redux.html" class="menu__link">Migrating to Redux</a>
-    -   <a href="../../recipes/using-object-spread-operator.html" class="menu__link">Using Object Spread Operator</a>
-    -   <a href="../../recipes/reducing-boilerplate.html" class="menu__link">Reducing Boilerplate</a>
-    -   <a href="../../recipes/server-rendering.html" class="menu__link">Server Rendering</a>
-    -   <a href="../../recipes/writing-tests.html" class="menu__link">Writing Tests</a>
-    -   <a href="../../recipes/computing-derived-data.html" class="menu__link">Computing Derived Data</a>
-    -   <a href="../../recipes/implementing-undo-history.html" class="menu__link">Implementing Undo History</a>
-    -   <a href="../../recipes/isolating-redux-sub-apps.html" class="menu__link">Isolating Redux Sub-Apps</a>
-    -   <a href="../../recipes/code-splitting.html" class="menu__link">Code Splitting</a>
-    -   <a href="../../recipes/troubleshooting.html" class="menu__link">Troubleshooting</a>
-    -   <a href="#!" class="menu__link menu__link--sublist">Structuring Reducers</a>
-        -   <a href="../../recipes/structuring-reducers/structuring-reducers.html" class="menu__link">Structuring Reducers</a>
-        -   <a href="../../recipes/structuring-reducers/prerequisite-concepts.html" class="menu__link">Prerequisite Concepts</a>
-        -   <a href="../../recipes/structuring-reducers/basic-reducer-structure.html" class="menu__link">Basic Reducer Structure</a>
-        -   <a href="../../recipes/structuring-reducers/splitting-reducer-logic.html" class="menu__link">Splitting Reducer Logic</a>
-        -   <a href="../../recipes/structuring-reducers/refactoring-reducer-example.html" class="menu__link">Refactoring Reducers Example</a>
-        -   <a href="../../recipes/structuring-reducers/using-combinereducers.html" class="menu__link">Using combineReducers</a>
-        -   <a href="../../recipes/structuring-reducers/beyond-combinereducers.html" class="menu__link">Beyond combineReducers</a>
-        -   <a href="../../recipes/structuring-reducers/normalizing-state-shape.html" class="menu__link">Normalizing State Shape</a>
-        -   <a href="../../recipes/structuring-reducers/updating-normalized-data.html" class="menu__link">Updating Normalized Data</a>
-        -   <a href="../../recipes/structuring-reducers/reusing-reducer-logic.html" class="menu__link">Reusing Reducer Logic</a>
-        -   <a href="../../recipes/structuring-reducers/immutable-update-patterns.html" class="menu__link">Immutable Update Patterns</a>
-        -   <a href="../../recipes/structuring-reducers/initializing-state.html" class="menu__link">Initializing State</a>
--   <a href="#!" class="menu__link menu__link--sublist">Understanding Redux</a>
-    -   <a href="#!" class="menu__link menu__link--sublist">Thinking in Redux</a>
-        -   <a href="../../understanding/thinking-in-redux/motivation.html" class="menu__link">Motivation</a>
-        -   <a href="../../understanding/thinking-in-redux/three-principles.html" class="menu__link">Three Principles</a>
-        -   <a href="../../understanding/thinking-in-redux/glossary.html" class="menu__link">Glossary</a>
-    -   <a href="#!" class="menu__link menu__link--sublist">History and Design</a>
-        -   <a href="../../understanding/history-and-design/prior-art.html" class="menu__link">Prior Art</a>
-        -   <a href="../../understanding/history-and-design/middleware.html" class="menu__link">Middleware</a>
--   <a href="#!" class="menu__link menu__link--sublist">FAQ</a>
-    -   <a href="../../faq.html" class="menu__link">FAQ Index</a>
-    -   <a href="../../faq/general.html" class="menu__link">General</a>
-    -   <a href="../../faq/reducers.html" class="menu__link">Reducers</a>
-    -   <a href="../../faq/organizing-state.html" class="menu__link">Organizing State</a>
-    -   <a href="../../faq/store-setup.html" class="menu__link">Store Setup</a>
-    -   <a href="../../faq/actions.html" class="menu__link">Actions</a>
-    -   <a href="../../faq/immutable-data.html" class="menu__link">Immutable Data</a>
-    -   <a href="../../faq/code-structure.html" class="menu__link">Code Structure</a>
-    -   <a href="../../faq/performance.html" class="menu__link">Performance</a>
-    -   <a href="../../faq/design-decisions.html" class="menu__link">Design Decisions</a>
-    -   <a href="../../faq/react-redux.html" class="menu__link">React Redux</a>
-    -   <a href="../../faq/miscellaneous.html" class="menu__link">Miscellaneous</a>
--   <a href="#!" class="menu__link menu__link--sublist">Style Guide</a>
-    -   <a href="../../style-guide/style-guide.html" class="menu__link">Style Guide: Best Practices</a>
--   <a href="#!" class="menu__link menu__link--sublist">API Reference</a>
-    -   <a href="../../api/api-reference.html" class="menu__link">API Reference</a>
-    -   <a href="../../api/createstore.html" class="menu__link">createStore</a>
-    -   <a href="../../api/store.html" class="menu__link">Store</a>
-    -   <a href="../../api/combinereducers.html" class="menu__link">combineReducers</a>
-    -   <a href="../../api/applymiddleware.html" class="menu__link">applyMiddleware</a>
-    -   <a href="../../api/bindactioncreators.html" class="menu__link">bindActionCreators</a>
-    -   <a href="../../api/compose.html" class="menu__link">compose</a>
--   <a href="#!" class="menu__link menu__link--sublist">Redux Toolkit</a>
-    -   <a href="../../redux-toolkit/overview.html" class="menu__link">Redux Toolkit: Overview</a>
+- <a href="#!" class="menu__link menu__link--sublist">Introduction</a>
+  - <a href="../../introduction/getting-started.html" class="menu__link">Getting Started with Redux</a>
+  - <a href="../../introduction/installation.html" class="menu__link">Installation</a>
+  - <a href="../../introduction/core-concepts.html" class="menu__link">Core Concepts</a>
+  - <a href="../../introduction/learning-resources.html" class="menu__link">Learning Resources</a>
+  - <a href="../../introduction/ecosystem.html" class="menu__link">Ecosystem</a>
+  - <a href="../../introduction/examples.html" class="menu__link">Examples</a>
+- <a href="#!" class="menu__link menu__link--sublist menu__link--active">Tutorials</a>
+  - <a href="../index.html" class="menu__link">Tutorials Index</a>
+  - <a href="../quick-start.html" class="menu__link">Quick Start</a>
+  - <a href="../typescript-quick-start.html" class="menu__link">TypeScript Quick Start</a>
+  - <a href="#!" class="menu__link menu__link--sublist">Redux Essentials</a>
+    - <a href="../essentials/part-1-overview-concepts.html" class="menu__link">Redux Overview and Concepts</a>
+    - <a href="../essentials/part-2-app-structure.html" class="menu__link">Redux App Structure</a>
+    - <a href="../essentials/part-3-data-flow.html" class="menu__link">Basic Redux Data Flow</a>
+    - <a href="../essentials/part-4-using-data.html" class="menu__link">Using Redux Data</a>
+    - <a href="../essentials/part-5-async-logic.html" class="menu__link">Async Logic and Data Fetching</a>
+    - <a href="../essentials/part-6-performance-normalization.html" class="menu__link">Performance and Normalizing Data</a>
+  - <a href="#!" class="menu__link menu__link--sublist menu__link--active">Redux Fundamentals</a>
+    - <a href="part-1-overview.html" class="menu__link">Redux Overview</a>
+    - <a href="part-2-concepts-data-flow.html" class="menu__link">Redux Concepts and Data Flow</a>
+    - <a href="part-3-state-actions-reducers.html" class="menu__link">State, Actions, and Reducers</a>
+    - <a href="part-4-store.html" class="menu__link menu__link--active active">Store</a>
+    - <a href="part-5-ui-react.html" class="menu__link">UI and React</a>
+    - <a href="part-6-async-logic.html" class="menu__link">Async Logic and Data Fetching</a>
+    - <a href="part-7-standard-patterns.html" class="menu__link">Standard Redux Patterns</a>
+    - <a href="part-8-modern-redux.html" class="menu__link">Modern Redux with Redux Toolkit</a>
+- <a href="#!" class="menu__link menu__link--sublist">Recipes</a>
+  - <a href="../../recipes/recipe-index.html" class="menu__link">Recipes: Index</a>
+  - <a href="../../recipes/configuring-your-store.html" class="menu__link">Configuring Your Store</a>
+  - <a href="../../recipes/usage-with-typescript.html" class="menu__link">Usage With TypeScript</a>
+  - <a href="../../recipes/migrating-to-redux.html" class="menu__link">Migrating to Redux</a>
+  - <a href="../../recipes/using-object-spread-operator.html" class="menu__link">Using Object Spread Operator</a>
+  - <a href="../../recipes/reducing-boilerplate.html" class="menu__link">Reducing Boilerplate</a>
+  - <a href="../../recipes/server-rendering.html" class="menu__link">Server Rendering</a>
+  - <a href="../../recipes/writing-tests.html" class="menu__link">Writing Tests</a>
+  - <a href="../../recipes/computing-derived-data.html" class="menu__link">Computing Derived Data</a>
+  - <a href="../../recipes/implementing-undo-history.html" class="menu__link">Implementing Undo History</a>
+  - <a href="../../recipes/isolating-redux-sub-apps.html" class="menu__link">Isolating Redux Sub-Apps</a>
+  - <a href="../../recipes/code-splitting.html" class="menu__link">Code Splitting</a>
+  - <a href="../../recipes/troubleshooting.html" class="menu__link">Troubleshooting</a>
+  - <a href="#!" class="menu__link menu__link--sublist">Structuring Reducers</a>
+    - <a href="../../recipes/structuring-reducers/structuring-reducers.html" class="menu__link">Structuring Reducers</a>
+    - <a href="../../recipes/structuring-reducers/prerequisite-concepts.html" class="menu__link">Prerequisite Concepts</a>
+    - <a href="../../recipes/structuring-reducers/basic-reducer-structure.html" class="menu__link">Basic Reducer Structure</a>
+    - <a href="../../recipes/structuring-reducers/splitting-reducer-logic.html" class="menu__link">Splitting Reducer Logic</a>
+    - <a href="../../recipes/structuring-reducers/refactoring-reducer-example.html" class="menu__link">Refactoring Reducers Example</a>
+    - <a href="../../recipes/structuring-reducers/using-combinereducers.html" class="menu__link">Using combineReducers</a>
+    - <a href="../../recipes/structuring-reducers/beyond-combinereducers.html" class="menu__link">Beyond combineReducers</a>
+    - <a href="../../recipes/structuring-reducers/normalizing-state-shape.html" class="menu__link">Normalizing State Shape</a>
+    - <a href="../../recipes/structuring-reducers/updating-normalized-data.html" class="menu__link">Updating Normalized Data</a>
+    - <a href="../../recipes/structuring-reducers/reusing-reducer-logic.html" class="menu__link">Reusing Reducer Logic</a>
+    - <a href="../../recipes/structuring-reducers/immutable-update-patterns.html" class="menu__link">Immutable Update Patterns</a>
+    - <a href="../../recipes/structuring-reducers/initializing-state.html" class="menu__link">Initializing State</a>
+- <a href="#!" class="menu__link menu__link--sublist">Understanding Redux</a>
+  - <a href="#!" class="menu__link menu__link--sublist">Thinking in Redux</a>
+    - <a href="../../understanding/thinking-in-redux/motivation.html" class="menu__link">Motivation</a>
+    - <a href="../../understanding/thinking-in-redux/three-principles.html" class="menu__link">Three Principles</a>
+    - <a href="../../understanding/thinking-in-redux/glossary.html" class="menu__link">Glossary</a>
+  - <a href="#!" class="menu__link menu__link--sublist">History and Design</a>
+    - <a href="../../understanding/history-and-design/prior-art.html" class="menu__link">Prior Art</a>
+    - <a href="../../understanding/history-and-design/middleware.html" class="menu__link">Middleware</a>
+- <a href="#!" class="menu__link menu__link--sublist">FAQ</a>
+  - <a href="../../faq.html" class="menu__link">FAQ Index</a>
+  - <a href="../../faq/general.html" class="menu__link">General</a>
+  - <a href="../../faq/reducers.html" class="menu__link">Reducers</a>
+  - <a href="../../faq/organizing-state.html" class="menu__link">Organizing State</a>
+  - <a href="../../faq/store-setup.html" class="menu__link">Store Setup</a>
+  - <a href="../../faq/actions.html" class="menu__link">Actions</a>
+  - <a href="../../faq/immutable-data.html" class="menu__link">Immutable Data</a>
+  - <a href="../../faq/code-structure.html" class="menu__link">Code Structure</a>
+  - <a href="../../faq/performance.html" class="menu__link">Performance</a>
+  - <a href="../../faq/design-decisions.html" class="menu__link">Design Decisions</a>
+  - <a href="../../faq/react-redux.html" class="menu__link">React Redux</a>
+  - <a href="../../faq/miscellaneous.html" class="menu__link">Miscellaneous</a>
+- <a href="#!" class="menu__link menu__link--sublist">Style Guide</a>
+  - <a href="../../style-guide/style-guide.html" class="menu__link">Style Guide: Best Practices</a>
+- <a href="#!" class="menu__link menu__link--sublist">API Reference</a>
+  - <a href="../../api/api-reference.html" class="menu__link">API Reference</a>
+  - <a href="../../api/createstore.html" class="menu__link">createStore</a>
+  - <a href="../../api/store.html" class="menu__link">Store</a>
+  - <a href="../../api/combinereducers.html" class="menu__link">combineReducers</a>
+  - <a href="../../api/applymiddleware.html" class="menu__link">applyMiddleware</a>
+  - <a href="../../api/bindactioncreators.html" class="menu__link">bindActionCreators</a>
+  - <a href="../../api/compose.html" class="menu__link">compose</a>
+- <a href="#!" class="menu__link menu__link--sublist">Redux Toolkit</a>
+  - <a href="../../redux-toolkit/overview.html" class="menu__link">Redux Toolkit: Overview</a>
 
-<span id="redux-fundamentals-part-4-store" class="anchor enhancedAnchor_2LWZ"></span>Redux Fundamentals, Part 4: Store<a href="#redux-fundamentals-part-4-store" class="hash-link" title="Direct link to heading">#</a>
-=======================================================================================================================================================================================================================
+# <span id="redux-fundamentals-part-4-store" class="anchor enhancedAnchor_2LWZ"></span>Redux Fundamentals, Part 4: Store<a href="#redux-fundamentals-part-4-store" class="hash-link" title="Direct link to heading">#</a>
 
 ##### <span class="admonition-icon"> </span>What You'll Learn
 
--   How to create a Redux store
--   How to use the store to update state and listen for updates
--   How to configure the store to extend its capabilities
--   How to set up the Redux DevTools Extension to debug your app
+- How to create a Redux store
+- How to use the store to update state and listen for updates
+- How to configure the store to extend its capabilities
+- How to set up the Redux DevTools Extension to debug your app
 
-<span id="introduction" class="anchor enhancedAnchor_2LWZ"></span>Introduction<a href="#introduction" class="hash-link" title="Direct link to heading">#</a>
-------------------------------------------------------------------------------------------------------------------------------------------------------------
+## <span id="introduction" class="anchor enhancedAnchor_2LWZ"></span>Introduction<a href="#introduction" class="hash-link" title="Direct link to heading">#</a>
 
 In [Part 3: State, Actions, and Reducers](part-3-state-actions-reducers.html), we started writing our example todo app. We listed business requirements, defined the **state** structure we need to make the app work, and created a series of action types to describe "what happened" and match the kinds of events that can happen as a user interacts with our app. We also wrote **reducer** functions that can handle updating our `state.todos` and `state.filters` sections, and saw how we can use the Redux `combineReducers` function to create a "root reducer" based on the different "slice reducers" for each feature in our app.
 
 Now, it's time to pull those pieces together, with the central piece of a Redux app: the **store**.
 
-<span id="redux-store" class="anchor enhancedAnchor_2LWZ"></span>Redux Store<a href="#redux-store" class="hash-link" title="Direct link to heading">#</a>
----------------------------------------------------------------------------------------------------------------------------------------------------------
+## <span id="redux-store" class="anchor enhancedAnchor_2LWZ"></span>Redux Store<a href="#redux-store" class="hash-link" title="Direct link to heading">#</a>
 
 The Redux **store** brings together the state, actions, and reducers that make up your app. The store has several responsibilities:
 
--   Holds the current application state inside
--   Allows access to the current state via [`store.getState()`](../../api/store.html#getState);
--   Allows state to be updated via [`store.dispatch(action)`](../../api/store.html#dispatch);
--   Registers listener callbacks via [`store.subscribe(listener)`](../../api/store.html#subscribe);
--   Handles unregistering of listeners via the `unsubscribe` function returned by [`store.subscribe(listener)`](../../api/store.html#subscribe).
+- Holds the current application state inside
+- Allows access to the current state via [`store.getState()`](../../api/store.html#getState);
+- Allows state to be updated via [`store.dispatch(action)`](../../api/store.html#dispatch);
+- Registers listener callbacks via [`store.subscribe(listener)`](../../api/store.html#subscribe);
+- Handles unregistering of listeners via the `unsubscribe` function returned by [`store.subscribe(listener)`](../../api/store.html#subscribe).
 
 It's important to note that **you'll only have a single store in a Redux application**. When you want to split your data handling logic, you'll use [reducer composition](part-3-state-actions-reducers.html#splitting-reducers) and create multiple reducers that can be combined together, instead of creating separate stores.
 
@@ -198,8 +195,7 @@ storeStatePersistenceExample.js
 
 Copy
 
-<span id="dispatching-actions" class="anchor enhancedAnchor_2LWZ"></span>Dispatching Actions<a href="#dispatching-actions" class="hash-link" title="Direct link to heading">#</a>
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## <span id="dispatching-actions" class="anchor enhancedAnchor_2LWZ"></span>Dispatching Actions<a href="#dispatching-actions" class="hash-link" title="Direct link to heading">#</a>
 
 Now that we have created a store, let's verify our program works! Even without any UI, we can already test the update logic.
 
@@ -289,17 +285,17 @@ Copy
 
 Remember, every time we call `store.dispatch(action)`:
 
--   The store calls `rootReducer(state, action)`
-    -   That root reducer may call other slice reducers inside of itself, like `todosReducer(state.todos, action)`
--   The store saves the *new* state value inside
--   The store calls all the listener subscription callbacks
--   If a listener has access to the `store`, it can now call `store.getState()` to read the latest state value
+- The store calls `rootReducer(state, action)`
+  - That root reducer may call other slice reducers inside of itself, like `todosReducer(state.todos, action)`
+- The store saves the _new_ state value inside
+- The store calls all the listener subscription callbacks
+- If a listener has access to the `store`, it can now call `store.getState()` to read the latest state value
 
 If we look at the console log output from that example, you can see how the Redux state changes as each action was dispatched:
 
 ![Logged Redux state after dispatching actions](../../../d33wubrfki0l68.cloudfront.net/9d150ae03734f187be6fd7782d7a1d87a78441db/cd37e/assets/images/initial-state-updates-67635eb69036940412b749502d6f1e5)
 
-Notice that our app did *not* log anything from the last action. That's because we removed the listener callback when we called `unsubscribe()`, so nothing else ran after the action was dispatched.
+Notice that our app did _not_ log anything from the last action. That's because we removed the listener callback when we called `unsubscribe()`, so nothing else ran after the action was dispatched.
 
 We specified the behavior of our app before we even started writing the UI. That helps give us confidence that the app will work as intended.
 
@@ -329,8 +325,7 @@ todosSlice.spec.js
 
 Copy
 
-<span id="inside-a-redux-store" class="anchor enhancedAnchor_2LWZ"></span>Inside a Redux Store<a href="#inside-a-redux-store" class="hash-link" title="Direct link to heading">#</a>
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## <span id="inside-a-redux-store" class="anchor enhancedAnchor_2LWZ"></span>Inside a Redux Store<a href="#inside-a-redux-store" class="hash-link" title="Direct link to heading">#</a>
 
 It might be helpful to take a peek inside a Redux store to see how it works. Here's a miniature example of a working Redux store, in about 25 lines of code:
 
@@ -392,12 +387,12 @@ This small version of a Redux store works well enough that you could use it to r
 
 As you can see, the actual logic here is fairly short:
 
--   The store has the current `state` value and `reducer` function inside of itself
--   `getState` returns the current state value
--   `subscribe` keeps an array of listener callbacks and returns a function to remove the new callback
--   `dispatch` calls the reducer, saves the state, and runs the listeners
--   The store dispatches one action on startup to initialize the reducers with their state
--   The store API is an object with `{dispatch, subscribe, getState}` inside
+- The store has the current `state` value and `reducer` function inside of itself
+- `getState` returns the current state value
+- `subscribe` keeps an array of listener callbacks and returns a function to remove the new callback
+- `dispatch` calls the reducer, saves the state, and runs the listeners
+- The store dispatches one action on startup to initialize the reducers with their state
+- The store API is an object with `{dispatch, subscribe, getState}` inside
 
 To emphasize one of those in particular: notice that `getState` just returns whatever the current `state` value is. That means that **by default, nothing prevents you from accidentally mutating the current state value!** This code will run without any errors, but it's incorrect:
 
@@ -411,8 +406,8 @@ Copy
 
 In other words:
 
--   The Redux store doesn't make an extra copy of the `state` value when you call `getState()`. It's exactly the same reference that was returned from the root reducer function
--   The Redux store doesn't do anything else to prevent accidental mutations. It *is* possible to mutate the state, either inside a reducer or outside the store, and you must always be careful to avoid mutations.
+- The Redux store doesn't make an extra copy of the `state` value when you call `getState()`. It's exactly the same reference that was returned from the root reducer function
+- The Redux store doesn't do anything else to prevent accidental mutations. It _is_ possible to mutate the state, either inside a reducer or outside the store, and you must always be careful to avoid mutations.
 
 One common cause of accidental mutations is sorting arrays. [**Calling `array.sort()` actually mutates the existing array**](../../../doesitmutate.xyz/sort/index.html). If we called `const sortedTodos = state.todos.sort()`, we'd end up mutating the real store state unintentionally.
 
@@ -420,8 +415,7 @@ One common cause of accidental mutations is sorting arrays. [**Calling `array.so
 
 In [Part 8: Modern Redux](part-8-modern-redux.html), we'll see how Redux Toolkit helps avoid mutations in reducers, and detects and warns about accidental mutations outside of reducers.
 
-<span id="configuring-the-store" class="anchor enhancedAnchor_2LWZ"></span>Configuring the Store<a href="#configuring-the-store" class="hash-link" title="Direct link to heading">#</a>
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## <span id="configuring-the-store" class="anchor enhancedAnchor_2LWZ"></span>Configuring the Store<a href="#configuring-the-store" class="hash-link" title="Direct link to heading">#</a>
 
 We've already seen that we can pass `rootReducer` and `preloadedState` arguments to `createStore`. However, `createStore` can also take one more argument, which is used to customize the store's abilities and give it new powers.
 
@@ -433,8 +427,8 @@ For this tutorial, we won't go into details about how store enhancers actually w
 
 Our project has two small example store enhancers available, in the `src/exampleAddons/enhancers.js` file:
 
--   `sayHiOnDispatch`: an enhancer that always logs `'Hi'!` to the console every time an action is dispatched
--   `includeMeaningOfLife`: an enhancer that always adds the field `meaningOfLife: 42` to the value returned from `getState()`
+- `sayHiOnDispatch`: an enhancer that always logs `'Hi'!` to the console every time an action is dispatched
+- `includeMeaningOfLife`: an enhancer that always adds the field `meaningOfLife: 42` to the value returned from `getState()`
 
 Let's start by using `sayHiOnDispatch`. First, we'll import it, and pass it to `createStore`:
 
@@ -480,7 +474,7 @@ Now look at the console. You should see `'Hi!'` logged there, in between the oth
 
 The `sayHiOnDispatch` enhancer wrapped the original `store.dispatch` function with its own specialized version of `dispatch`. When we called `store.dispatch()`, we were actually calling the wrapper function from `sayHiOnDispatch`, which called the original and then printed 'Hi'.
 
-Now, let's try adding a second enhancer. We can import `includeMeaningOfLife` from that same file... but we have a problem. **`createStore` only accepts one enhancer as its third argument!** How can we pass *two* enhancers at the same time?
+Now, let's try adding a second enhancer. We can import `includeMeaningOfLife` from that same file... but we have a problem. **`createStore` only accepts one enhancer as its third argument!** How can we pass _two_ enhancers at the same time?
 
 What we really need is some way to merge both the `sayHiOnDispatch` enhancer and the `includeMeaningOfLife` enhancer into a single combined enhancer, and then pass that instead.
 
@@ -550,8 +544,7 @@ If you don't have any `preloadedState` to pass in, you can pass the `enhancer` a
 
 Copy
 
-<span id="middleware" class="anchor enhancedAnchor_2LWZ"></span>Middleware<a href="#middleware" class="hash-link" title="Direct link to heading">#</a>
-------------------------------------------------------------------------------------------------------------------------------------------------------
+## <span id="middleware" class="anchor enhancedAnchor_2LWZ"></span>Middleware<a href="#middleware" class="hash-link" title="Direct link to heading">#</a>
 
 Enhancers are powerful because they can override or replace any of the store's methods: `dispatch`, `getState`, and `subscribe`.
 
@@ -621,9 +614,9 @@ And we can see the output in the console:
 
 So how does that work?
 
-**Middleware form a pipeline around the store's `dispatch` method**. When we call `store.dispatch(action)`, we're *actually* calling the first middleware in the pipeline. That middleware can then do anything it wants when it sees the action. Typically, a middleware will check to see if the action is a specific type that it cares about, much like a reducer would. If it's the right type, the middleware might run some custom logic. Otherwise, it passes the action to the next middleware in the pipeline.
+**Middleware form a pipeline around the store's `dispatch` method**. When we call `store.dispatch(action)`, we're _actually_ calling the first middleware in the pipeline. That middleware can then do anything it wants when it sees the action. Typically, a middleware will check to see if the action is a specific type that it cares about, much like a reducer would. If it's the right type, the middleware might run some custom logic. Otherwise, it passes the action to the next middleware in the pipeline.
 
-*Unlike* a reducer, **middleware can have side effects inside**, including timeouts and other async logic.
+_Unlike_ a reducer, **middleware can have side effects inside**, including timeouts and other async logic.
 
 In this case, the action is passed through:
 
@@ -633,7 +626,7 @@ In this case, the action is passed through:
 4.  The original `store.dispatch`
 5.  The root reducer inside `store`
 
-And since these are all function calls, they all *return* from that call stack. So, the `print1` middleware is the first to run, and the last to finish.
+And since these are all function calls, they all _return_ from that call stack. So, the `print1` middleware is the first to run, and the last to finish.
 
 ### <span id="writing-custom-middleware" class="anchor enhancedAnchor_2LWZ"></span>Writing Custom Middleware<a href="#writing-custom-middleware" class="hash-link" title="Direct link to heading">#</a>
 
@@ -673,17 +666,17 @@ Copy
 
 Let's break down what these three functions do and what their arguments are.
 
--   `exampleMiddleware`: The outer function is actually the "middleware" itself. It will be called by `applyMiddleware`, and receives a `storeAPI` object containing the store's `{dispatch, getState}` functions. These are the same `dispatch` and `getState` functions that are actually part of the store. If you call this `dispatch` function, it will send the action to the *start* of the middleware pipeline. This is only called once.
--   `wrapDispatch`: The middle function receives a function called `next` as its argument. This function is actually the *next middleware* in the pipeline. If this middleware is the last one in the sequence, then `next` is actually the original `store.dispatch` function instead. Calling `next(action)` passes the middleware to the *next* middleware in the pipeline. This is also only called once
--   `handleAction`: Finally, the inner function receives the current `action` as its argument, and will be called *every* time an action is dispatched.
+- `exampleMiddleware`: The outer function is actually the "middleware" itself. It will be called by `applyMiddleware`, and receives a `storeAPI` object containing the store's `{dispatch, getState}` functions. These are the same `dispatch` and `getState` functions that are actually part of the store. If you call this `dispatch` function, it will send the action to the _start_ of the middleware pipeline. This is only called once.
+- `wrapDispatch`: The middle function receives a function called `next` as its argument. This function is actually the _next middleware_ in the pipeline. If this middleware is the last one in the sequence, then `next` is actually the original `store.dispatch` function instead. Calling `next(action)` passes the middleware to the _next_ middleware in the pipeline. This is also only called once
+- `handleAction`: Finally, the inner function receives the current `action` as its argument, and will be called _every_ time an action is dispatched.
 
 ##### <span class="admonition-icon"> </span>tip
 
 You can give these middleware functions any names you want, but it can help to use these names to remember what each one does:
 
--   Outer: `someCustomMiddleware` (or whatever your middleware is called)
--   Middle: `wrapDispatch`
--   Inner: `handleAction`
+- Outer: `someCustomMiddleware` (or whatever your middleware is called)
+- Middle: `wrapDispatch`
+- Inner: `handleAction`
 
 Because these are normal functions, we can also write them using ES6 arrow functions. This lets us write them shorter because arrow functions don't have to have a `return` statement, but it can also be a bit harder to read if you're not yet familiar with arrow functions and implicit returns.
 
@@ -729,11 +722,11 @@ Copy
 
 Whenever an action is dispatched:
 
--   The first part of the `handleAction` function runs, and we print `'dispatching'`
--   We pass the action to the `next` section, which may be another middleware or the real `store.dispatch`
--   Eventually the reducers run and the state is updated, and the `next` function returns
--   We can now call `storeAPI.getState()` and see what the new state is
--   We finish by returning whatever `result` value came from the `next` middleware
+- The first part of the `handleAction` function runs, and we print `'dispatching'`
+- We pass the action to the `next` section, which may be another middleware or the real `store.dispatch`
+- Eventually the reducers run and the state is updated, and the `next` function returns
+- We can now call `storeAPI.getState()` and see what the new state is
+- We finish by returning whatever `result` value came from the `next` middleware
 
 Any middleware can return any value, and the return value from the first middleware in the pipeline is actually returned when you call `store.dispatch()`. For example:
 
@@ -793,18 +786,17 @@ So, what can we do with middleware? Lots of things!
 
 A middleware can do anything it wants when it sees a dispatched action:
 
--   Log something to the console
--   Set timeouts
--   Make asynchronous API calls
--   Modify the action
--   Pause the action or even stop it entirely
+- Log something to the console
+- Set timeouts
+- Make asynchronous API calls
+- Modify the action
+- Pause the action or even stop it entirely
 
 and anything else you can think of.
 
-In particular, **middleware are *intended* to contain logic with side effects**. In addition, **middleware can modify `dispatch` to accept things that are *not* plain action objects**. We'll talk more about both of these [in Part 6: Async Logic](part-6-async-logic.html).
+In particular, **middleware are _intended_ to contain logic with side effects**. In addition, **middleware can modify `dispatch` to accept things that are _not_ plain action objects**. We'll talk more about both of these [in Part 6: Async Logic](part-6-async-logic.html).
 
-<span id="redux-devtools" class="anchor enhancedAnchor_2LWZ"></span>Redux DevTools<a href="#redux-devtools" class="hash-link" title="Direct link to heading">#</a>
-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## <span id="redux-devtools" class="anchor enhancedAnchor_2LWZ"></span>Redux DevTools<a href="#redux-devtools" class="hash-link" title="Direct link to heading">#</a>
 
 Finally, there's one more very important thing to cover with configuring the store.
 
@@ -858,10 +850,10 @@ Make sure that `index.js` is still dispatching an action after importing the sto
 
 There's a list of dispatched actions on the left. If we click one of them, the right pane shows several tabs:
 
--   The contents of that action object
--   The entire Redux state as it looked after the reducer ran
--   The diff between the previous state and this state
--   If enabled, the function stack trace leading back to the line of code that called `store.dispatch()` in the first place
+- The contents of that action object
+- The entire Redux state as it looked after the reducer ran
+- The diff between the previous state and this state
+- If enabled, the function stack trace leading back to the line of code that called `store.dispatch()` in the first place
 
 Here's what the "State" and "Diff" tabs look like after we dispatched that "add todo" action:
 
@@ -871,8 +863,7 @@ Here's what the "State" and "Diff" tabs look like after we dispatched that "add 
 
 These are very powerful tools that can help us debug our apps and understand exactly what's happening inside.
 
-<span id="what-youve-learned" class="anchor enhancedAnchor_2LWZ"></span>What You've Learned<a href="#what-youve-learned" class="hash-link" title="Direct link to heading">#</a>
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## <span id="what-youve-learned" class="anchor enhancedAnchor_2LWZ"></span>What You've Learned<a href="#what-youve-learned" class="hash-link" title="Direct link to heading">#</a>
 
 As you've seen, the store is the central piece of every Redux application. Stores contain state and handle actions by running reducers, and can be customized to add additional behaviors.
 
@@ -882,29 +873,28 @@ And as a reminder, here's what we covered in this section:
 
 ##### <span class="admonition-icon"> </span>Summary
 
--   **Redux apps always have a single store**
-    -   Stores are created with the Redux `createStore` API
-    -   Every store has a single root reducer function
--   **Stores have three main methods**
-    -   `getState` returns the current state
-    -   `dispatch` sends an action to the reducer to update the state
-    -   `subscribe` takes a listener callback that runs each time an action is dispatched
--   **Store enhancers let us customize the store when it's created**
-    -   Enhancers wrap the store and can override its methods
-    -   `createStore` accepts one enhancer as an argument
-    -   Multiple enhancers can be merged together using the `compose` API
--   **Middleware are the main way to customize the store**
-    -   Middleware are added using the `applyMiddleware` enhancer
-    -   Middleware are written as three nested functions inside each other
-    -   Middleware run each time an action is dispatched
-    -   Middleware can have side effects inside
--   **The Redux DevTools let you see what's changed in your app over time**
-    -   The DevTools Extension can be installed in your browser
-    -   The store needs the DevTools enhancer added, using `composeWithDevTools`
-    -   The DevTools show dispatched actions and changes in state over time
+- **Redux apps always have a single store**
+  - Stores are created with the Redux `createStore` API
+  - Every store has a single root reducer function
+- **Stores have three main methods**
+  - `getState` returns the current state
+  - `dispatch` sends an action to the reducer to update the state
+  - `subscribe` takes a listener callback that runs each time an action is dispatched
+- **Store enhancers let us customize the store when it's created**
+  - Enhancers wrap the store and can override its methods
+  - `createStore` accepts one enhancer as an argument
+  - Multiple enhancers can be merged together using the `compose` API
+- **Middleware are the main way to customize the store**
+  - Middleware are added using the `applyMiddleware` enhancer
+  - Middleware are written as three nested functions inside each other
+  - Middleware run each time an action is dispatched
+  - Middleware can have side effects inside
+- **The Redux DevTools let you see what's changed in your app over time**
+  - The DevTools Extension can be installed in your browser
+  - The store needs the DevTools enhancer added, using `composeWithDevTools`
+  - The DevTools show dispatched actions and changes in state over time
 
-<span id="whats-next" class="anchor enhancedAnchor_2LWZ"></span>What's Next?<a href="#whats-next" class="hash-link" title="Direct link to heading">#</a>
---------------------------------------------------------------------------------------------------------------------------------------------------------
+## <span id="whats-next" class="anchor enhancedAnchor_2LWZ"></span>What's Next?<a href="#whats-next" class="hash-link" title="Direct link to heading">#</a>
 
 We now have a working Redux store that can run our reducers and update the state when we dispatch actions.
 
@@ -922,40 +912,40 @@ Next
 
 Redux Fundamentals, Part 5: UI and React »
 
--   <a href="#introduction" class="table-of-contents__link">Introduction</a>
--   <a href="#redux-store" class="table-of-contents__link">Redux Store</a>
-    -   <a href="#creating-a-store" class="table-of-contents__link">Creating a Store</a>
-    -   <a href="#loading-initial-state" class="table-of-contents__link">Loading Initial State</a>
--   <a href="#dispatching-actions" class="table-of-contents__link">Dispatching Actions</a>
--   <a href="#inside-a-redux-store" class="table-of-contents__link">Inside a Redux Store</a>
--   <a href="#configuring-the-store" class="table-of-contents__link">Configuring the Store</a>
-    -   <a href="#creating-a-store-with-enhancers" class="table-of-contents__link">Creating a Store with Enhancers</a>
--   <a href="#middleware" class="table-of-contents__link">Middleware</a>
-    -   <a href="#using-middleware" class="table-of-contents__link">Using Middleware</a>
-    -   <a href="#writing-custom-middleware" class="table-of-contents__link">Writing Custom Middleware</a>
-    -   <a href="#your-first-custom-middleware" class="table-of-contents__link">Your First Custom Middleware</a>
-    -   <a href="#middleware-use-cases" class="table-of-contents__link">Middleware Use Cases</a>
--   <a href="#redux-devtools" class="table-of-contents__link">Redux DevTools</a>
-    -   <a href="#adding-the-devtools-to-the-store" class="table-of-contents__link">Adding the DevTools to the Store</a>
--   <a href="#what-youve-learned" class="table-of-contents__link">What You've Learned</a>
--   <a href="#whats-next" class="table-of-contents__link">What's Next?</a>
+- <a href="#introduction" class="table-of-contents__link">Introduction</a>
+- <a href="#redux-store" class="table-of-contents__link">Redux Store</a>
+  - <a href="#creating-a-store" class="table-of-contents__link">Creating a Store</a>
+  - <a href="#loading-initial-state" class="table-of-contents__link">Loading Initial State</a>
+- <a href="#dispatching-actions" class="table-of-contents__link">Dispatching Actions</a>
+- <a href="#inside-a-redux-store" class="table-of-contents__link">Inside a Redux Store</a>
+- <a href="#configuring-the-store" class="table-of-contents__link">Configuring the Store</a>
+  - <a href="#creating-a-store-with-enhancers" class="table-of-contents__link">Creating a Store with Enhancers</a>
+- <a href="#middleware" class="table-of-contents__link">Middleware</a>
+  - <a href="#using-middleware" class="table-of-contents__link">Using Middleware</a>
+  - <a href="#writing-custom-middleware" class="table-of-contents__link">Writing Custom Middleware</a>
+  - <a href="#your-first-custom-middleware" class="table-of-contents__link">Your First Custom Middleware</a>
+  - <a href="#middleware-use-cases" class="table-of-contents__link">Middleware Use Cases</a>
+- <a href="#redux-devtools" class="table-of-contents__link">Redux DevTools</a>
+  - <a href="#adding-the-devtools-to-the-store" class="table-of-contents__link">Adding the DevTools to the Store</a>
+- <a href="#what-youve-learned" class="table-of-contents__link">What You've Learned</a>
+- <a href="#whats-next" class="table-of-contents__link">What's Next?</a>
 
 #### Docs
 
--   <a href="../../introduction/getting-started.html" class="footer__link-item">Getting Started</a>
--   <a href="../essentials/part-1-overview-concepts.html" class="footer__link-item">Tutorial</a>
--   <a href="../../faq.html" class="footer__link-item">FAQ</a>
--   <a href="../../api/api-reference.html" class="footer__link-item">API Reference</a>
+- <a href="../../introduction/getting-started.html" class="footer__link-item">Getting Started</a>
+- <a href="../essentials/part-1-overview-concepts.html" class="footer__link-item">Tutorial</a>
+- <a href="../../faq.html" class="footer__link-item">FAQ</a>
+- <a href="../../api/api-reference.html" class="footer__link-item">API Reference</a>
 
 #### Community
 
--   <a href="../../../discord.com/invite/0ZcbPKXt5bZ6au5t.html" class="footer__link-item">Reactiflux Discord</a>
--   <a href="../../../stackoverflow.com/questions/tagged/redux.html" class="footer__link-item">Stack Overflow</a>
--   <a href="../../introduction/getting-started.html#help-and-discussion" class="footer__link-item">Feedback</a>
+- <a href="../../../discord.com/invite/0ZcbPKXt5bZ6au5t.html" class="footer__link-item">Reactiflux Discord</a>
+- <a href="../../../stackoverflow.com/questions/tagged/redux.html" class="footer__link-item">Stack Overflow</a>
+- <a href="../../introduction/getting-started.html#help-and-discussion" class="footer__link-item">Feedback</a>
 
 #### More
 
--   <a href="../../../github.com/reduxjs/redux.html" class="footer__link-item">GitHub</a>
--   [![Deploys by Netlify](../../../www.netlify.com/img/global/badges/netlify-color-accent.svg)](../../../www.netlify.com/index.html)
+- <a href="../../../github.com/reduxjs/redux.html" class="footer__link-item">GitHub</a>
+- [![Deploys by Netlify](../../../www.netlify.com/img/global/badges/netlify-color-accent.svg)](../../../www.netlify.com/index.html)
 
 <a href="../../index.html" class="footerLogoLink_MyFc"><img src="../../../d33wubrfki0l68.cloudfront.net/0834d0215db51e91525a25acf97433051f280f2f/c30f5/img/redux.svg" alt="Redux Logo" class="themedImage_1VuW themedImage--light_3UqQ footer__logo" /><img src="../../../d33wubrfki0l68.cloudfront.net/0834d0215db51e91525a25acf97433051f280f2f/c30f5/img/redux.svg" alt="Redux Logo" class="themedImage_1VuW themedImage--dark_hz6m footer__logo" /></a>

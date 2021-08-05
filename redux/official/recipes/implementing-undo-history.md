@@ -16,111 +16,110 @@ Menu
 
 <a href="../index.html" class="navbar__brand"><img src="../../d33wubrfki0l68.cloudfront.net/0834d0215db51e91525a25acf97433051f280f2f/c30f5/img/redux.svg" alt="Redux Logo" class="themedImage_1VuW themedImage--light_3UqQ navbar__logo" /><img src="../../d33wubrfki0l68.cloudfront.net/0834d0215db51e91525a25acf97433051f280f2f/c30f5/img/redux.svg" alt="Redux Logo" class="themedImage_1VuW themedImage--dark_hz6m navbar__logo" /><strong>Redux</strong></a>
 
--   <a href="../introduction/getting-started.html" class="menu__link">Getting Started</a>
--   <a href="../tutorials/essentials/part-1-overview-concepts.html" class="menu__link">Tutorial</a>
--   <a href="../api/api-reference.html" class="menu__link">API</a>
--   <a href="../faq.html" class="menu__link">FAQ</a>
--   <a href="../style-guide/style-guide.html" class="menu__link">Best Practices</a>
--   <a href="../../github.com/reduxjs/redux.html" class="menu__link">GitHub</a>
--   <a href="../introduction/getting-started.html#help-and-discussion" class="menu__link">Need help?</a>
+- <a href="../introduction/getting-started.html" class="menu__link">Getting Started</a>
+- <a href="../tutorials/essentials/part-1-overview-concepts.html" class="menu__link">Tutorial</a>
+- <a href="../api/api-reference.html" class="menu__link">API</a>
+- <a href="../faq.html" class="menu__link">FAQ</a>
+- <a href="../style-guide/style-guide.html" class="menu__link">Best Practices</a>
+- <a href="../../github.com/reduxjs/redux.html" class="menu__link">GitHub</a>
+- <a href="../introduction/getting-started.html#help-and-discussion" class="menu__link">Need help?</a>
 
 Menu
 
--   <a href="#!" class="menu__link menu__link--sublist">Introduction</a>
-    -   <a href="../introduction/getting-started.html" class="menu__link">Getting Started with Redux</a>
-    -   <a href="../introduction/installation.html" class="menu__link">Installation</a>
-    -   <a href="../introduction/core-concepts.html" class="menu__link">Core Concepts</a>
-    -   <a href="../introduction/learning-resources.html" class="menu__link">Learning Resources</a>
-    -   <a href="../introduction/ecosystem.html" class="menu__link">Ecosystem</a>
-    -   <a href="../introduction/examples.html" class="menu__link">Examples</a>
--   <a href="#!" class="menu__link menu__link--sublist">Tutorials</a>
-    -   <a href="../tutorials/index.html" class="menu__link">Tutorials Index</a>
-    -   <a href="../tutorials/quick-start.html" class="menu__link">Quick Start</a>
-    -   <a href="../tutorials/typescript-quick-start.html" class="menu__link">TypeScript Quick Start</a>
-    -   <a href="#!" class="menu__link menu__link--sublist">Redux Essentials</a>
-        -   <a href="../tutorials/essentials/part-1-overview-concepts.html" class="menu__link">Redux Overview and Concepts</a>
-        -   <a href="../tutorials/essentials/part-2-app-structure.html" class="menu__link">Redux App Structure</a>
-        -   <a href="../tutorials/essentials/part-3-data-flow.html" class="menu__link">Basic Redux Data Flow</a>
-        -   <a href="../tutorials/essentials/part-4-using-data.html" class="menu__link">Using Redux Data</a>
-        -   <a href="../tutorials/essentials/part-5-async-logic.html" class="menu__link">Async Logic and Data Fetching</a>
-        -   <a href="../tutorials/essentials/part-6-performance-normalization.html" class="menu__link">Performance and Normalizing Data</a>
-    -   <a href="#!" class="menu__link menu__link--sublist">Redux Fundamentals</a>
-        -   <a href="../tutorials/fundamentals/part-1-overview.html" class="menu__link">Redux Overview</a>
-        -   <a href="../tutorials/fundamentals/part-2-concepts-data-flow.html" class="menu__link">Redux Concepts and Data Flow</a>
-        -   <a href="../tutorials/fundamentals/part-3-state-actions-reducers.html" class="menu__link">State, Actions, and Reducers</a>
-        -   <a href="../tutorials/fundamentals/part-4-store.html" class="menu__link">Store</a>
-        -   <a href="../tutorials/fundamentals/part-5-ui-react.html" class="menu__link">UI and React</a>
-        -   <a href="../tutorials/fundamentals/part-6-async-logic.html" class="menu__link">Async Logic and Data Fetching</a>
-        -   <a href="../tutorials/fundamentals/part-7-standard-patterns.html" class="menu__link">Standard Redux Patterns</a>
-        -   <a href="../tutorials/fundamentals/part-8-modern-redux.html" class="menu__link">Modern Redux with Redux Toolkit</a>
--   <a href="#!" class="menu__link menu__link--sublist menu__link--active">Recipes</a>
-    -   <a href="recipe-index.html" class="menu__link">Recipes: Index</a>
-    -   <a href="configuring-your-store.html" class="menu__link">Configuring Your Store</a>
-    -   <a href="usage-with-typescript.html" class="menu__link">Usage With TypeScript</a>
-    -   <a href="migrating-to-redux.html" class="menu__link">Migrating to Redux</a>
-    -   <a href="using-object-spread-operator.html" class="menu__link">Using Object Spread Operator</a>
-    -   <a href="reducing-boilerplate.html" class="menu__link">Reducing Boilerplate</a>
-    -   <a href="server-rendering.html" class="menu__link">Server Rendering</a>
-    -   <a href="writing-tests.html" class="menu__link">Writing Tests</a>
-    -   <a href="computing-derived-data.html" class="menu__link">Computing Derived Data</a>
-    -   <a href="implementing-undo-history.html" class="menu__link menu__link--active active">Implementing Undo History</a>
-    -   <a href="isolating-redux-sub-apps.html" class="menu__link">Isolating Redux Sub-Apps</a>
-    -   <a href="code-splitting.html" class="menu__link">Code Splitting</a>
-    -   <a href="troubleshooting.html" class="menu__link">Troubleshooting</a>
-    -   <a href="#!" class="menu__link menu__link--sublist">Structuring Reducers</a>
-        -   <a href="structuring-reducers/structuring-reducers.html" class="menu__link">Structuring Reducers</a>
-        -   <a href="structuring-reducers/prerequisite-concepts.html" class="menu__link">Prerequisite Concepts</a>
-        -   <a href="structuring-reducers/basic-reducer-structure.html" class="menu__link">Basic Reducer Structure</a>
-        -   <a href="structuring-reducers/splitting-reducer-logic.html" class="menu__link">Splitting Reducer Logic</a>
-        -   <a href="structuring-reducers/refactoring-reducer-example.html" class="menu__link">Refactoring Reducers Example</a>
-        -   <a href="structuring-reducers/using-combinereducers.html" class="menu__link">Using combineReducers</a>
-        -   <a href="structuring-reducers/beyond-combinereducers.html" class="menu__link">Beyond combineReducers</a>
-        -   <a href="structuring-reducers/normalizing-state-shape.html" class="menu__link">Normalizing State Shape</a>
-        -   <a href="structuring-reducers/updating-normalized-data.html" class="menu__link">Updating Normalized Data</a>
-        -   <a href="structuring-reducers/reusing-reducer-logic.html" class="menu__link">Reusing Reducer Logic</a>
-        -   <a href="structuring-reducers/immutable-update-patterns.html" class="menu__link">Immutable Update Patterns</a>
-        -   <a href="structuring-reducers/initializing-state.html" class="menu__link">Initializing State</a>
--   <a href="#!" class="menu__link menu__link--sublist">Understanding Redux</a>
-    -   <a href="#!" class="menu__link menu__link--sublist">Thinking in Redux</a>
-        -   <a href="../understanding/thinking-in-redux/motivation.html" class="menu__link">Motivation</a>
-        -   <a href="../understanding/thinking-in-redux/three-principles.html" class="menu__link">Three Principles</a>
-        -   <a href="../understanding/thinking-in-redux/glossary.html" class="menu__link">Glossary</a>
-    -   <a href="#!" class="menu__link menu__link--sublist">History and Design</a>
-        -   <a href="../understanding/history-and-design/prior-art.html" class="menu__link">Prior Art</a>
-        -   <a href="../understanding/history-and-design/middleware.html" class="menu__link">Middleware</a>
--   <a href="#!" class="menu__link menu__link--sublist">FAQ</a>
-    -   <a href="../faq.html" class="menu__link">FAQ Index</a>
-    -   <a href="../faq/general.html" class="menu__link">General</a>
-    -   <a href="../faq/reducers.html" class="menu__link">Reducers</a>
-    -   <a href="../faq/organizing-state.html" class="menu__link">Organizing State</a>
-    -   <a href="../faq/store-setup.html" class="menu__link">Store Setup</a>
-    -   <a href="../faq/actions.html" class="menu__link">Actions</a>
-    -   <a href="../faq/immutable-data.html" class="menu__link">Immutable Data</a>
-    -   <a href="../faq/code-structure.html" class="menu__link">Code Structure</a>
-    -   <a href="../faq/performance.html" class="menu__link">Performance</a>
-    -   <a href="../faq/design-decisions.html" class="menu__link">Design Decisions</a>
-    -   <a href="../faq/react-redux.html" class="menu__link">React Redux</a>
-    -   <a href="../faq/miscellaneous.html" class="menu__link">Miscellaneous</a>
--   <a href="#!" class="menu__link menu__link--sublist">Style Guide</a>
-    -   <a href="../style-guide/style-guide.html" class="menu__link">Style Guide: Best Practices</a>
--   <a href="#!" class="menu__link menu__link--sublist">API Reference</a>
-    -   <a href="../api/api-reference.html" class="menu__link">API Reference</a>
-    -   <a href="../api/createstore.html" class="menu__link">createStore</a>
-    -   <a href="../api/store.html" class="menu__link">Store</a>
-    -   <a href="../api/combinereducers.html" class="menu__link">combineReducers</a>
-    -   <a href="../api/applymiddleware.html" class="menu__link">applyMiddleware</a>
-    -   <a href="../api/bindactioncreators.html" class="menu__link">bindActionCreators</a>
-    -   <a href="../api/compose.html" class="menu__link">compose</a>
--   <a href="#!" class="menu__link menu__link--sublist">Redux Toolkit</a>
-    -   <a href="../redux-toolkit/overview.html" class="menu__link">Redux Toolkit: Overview</a>
+- <a href="#!" class="menu__link menu__link--sublist">Introduction</a>
+  - <a href="../introduction/getting-started.html" class="menu__link">Getting Started with Redux</a>
+  - <a href="../introduction/installation.html" class="menu__link">Installation</a>
+  - <a href="../introduction/core-concepts.html" class="menu__link">Core Concepts</a>
+  - <a href="../introduction/learning-resources.html" class="menu__link">Learning Resources</a>
+  - <a href="../introduction/ecosystem.html" class="menu__link">Ecosystem</a>
+  - <a href="../introduction/examples.html" class="menu__link">Examples</a>
+- <a href="#!" class="menu__link menu__link--sublist">Tutorials</a>
+  - <a href="../tutorials/index.html" class="menu__link">Tutorials Index</a>
+  - <a href="../tutorials/quick-start.html" class="menu__link">Quick Start</a>
+  - <a href="../tutorials/typescript-quick-start.html" class="menu__link">TypeScript Quick Start</a>
+  - <a href="#!" class="menu__link menu__link--sublist">Redux Essentials</a>
+    - <a href="../tutorials/essentials/part-1-overview-concepts.html" class="menu__link">Redux Overview and Concepts</a>
+    - <a href="../tutorials/essentials/part-2-app-structure.html" class="menu__link">Redux App Structure</a>
+    - <a href="../tutorials/essentials/part-3-data-flow.html" class="menu__link">Basic Redux Data Flow</a>
+    - <a href="../tutorials/essentials/part-4-using-data.html" class="menu__link">Using Redux Data</a>
+    - <a href="../tutorials/essentials/part-5-async-logic.html" class="menu__link">Async Logic and Data Fetching</a>
+    - <a href="../tutorials/essentials/part-6-performance-normalization.html" class="menu__link">Performance and Normalizing Data</a>
+  - <a href="#!" class="menu__link menu__link--sublist">Redux Fundamentals</a>
+    - <a href="../tutorials/fundamentals/part-1-overview.html" class="menu__link">Redux Overview</a>
+    - <a href="../tutorials/fundamentals/part-2-concepts-data-flow.html" class="menu__link">Redux Concepts and Data Flow</a>
+    - <a href="../tutorials/fundamentals/part-3-state-actions-reducers.html" class="menu__link">State, Actions, and Reducers</a>
+    - <a href="../tutorials/fundamentals/part-4-store.html" class="menu__link">Store</a>
+    - <a href="../tutorials/fundamentals/part-5-ui-react.html" class="menu__link">UI and React</a>
+    - <a href="../tutorials/fundamentals/part-6-async-logic.html" class="menu__link">Async Logic and Data Fetching</a>
+    - <a href="../tutorials/fundamentals/part-7-standard-patterns.html" class="menu__link">Standard Redux Patterns</a>
+    - <a href="../tutorials/fundamentals/part-8-modern-redux.html" class="menu__link">Modern Redux with Redux Toolkit</a>
+- <a href="#!" class="menu__link menu__link--sublist menu__link--active">Recipes</a>
+  - <a href="recipe-index.html" class="menu__link">Recipes: Index</a>
+  - <a href="configuring-your-store.html" class="menu__link">Configuring Your Store</a>
+  - <a href="usage-with-typescript.html" class="menu__link">Usage With TypeScript</a>
+  - <a href="migrating-to-redux.html" class="menu__link">Migrating to Redux</a>
+  - <a href="using-object-spread-operator.html" class="menu__link">Using Object Spread Operator</a>
+  - <a href="reducing-boilerplate.html" class="menu__link">Reducing Boilerplate</a>
+  - <a href="server-rendering.html" class="menu__link">Server Rendering</a>
+  - <a href="writing-tests.html" class="menu__link">Writing Tests</a>
+  - <a href="computing-derived-data.html" class="menu__link">Computing Derived Data</a>
+  - <a href="implementing-undo-history.html" class="menu__link menu__link--active active">Implementing Undo History</a>
+  - <a href="isolating-redux-sub-apps.html" class="menu__link">Isolating Redux Sub-Apps</a>
+  - <a href="code-splitting.html" class="menu__link">Code Splitting</a>
+  - <a href="troubleshooting.html" class="menu__link">Troubleshooting</a>
+  - <a href="#!" class="menu__link menu__link--sublist">Structuring Reducers</a>
+    - <a href="structuring-reducers/structuring-reducers.html" class="menu__link">Structuring Reducers</a>
+    - <a href="structuring-reducers/prerequisite-concepts.html" class="menu__link">Prerequisite Concepts</a>
+    - <a href="structuring-reducers/basic-reducer-structure.html" class="menu__link">Basic Reducer Structure</a>
+    - <a href="structuring-reducers/splitting-reducer-logic.html" class="menu__link">Splitting Reducer Logic</a>
+    - <a href="structuring-reducers/refactoring-reducer-example.html" class="menu__link">Refactoring Reducers Example</a>
+    - <a href="structuring-reducers/using-combinereducers.html" class="menu__link">Using combineReducers</a>
+    - <a href="structuring-reducers/beyond-combinereducers.html" class="menu__link">Beyond combineReducers</a>
+    - <a href="structuring-reducers/normalizing-state-shape.html" class="menu__link">Normalizing State Shape</a>
+    - <a href="structuring-reducers/updating-normalized-data.html" class="menu__link">Updating Normalized Data</a>
+    - <a href="structuring-reducers/reusing-reducer-logic.html" class="menu__link">Reusing Reducer Logic</a>
+    - <a href="structuring-reducers/immutable-update-patterns.html" class="menu__link">Immutable Update Patterns</a>
+    - <a href="structuring-reducers/initializing-state.html" class="menu__link">Initializing State</a>
+- <a href="#!" class="menu__link menu__link--sublist">Understanding Redux</a>
+  - <a href="#!" class="menu__link menu__link--sublist">Thinking in Redux</a>
+    - <a href="../understanding/thinking-in-redux/motivation.html" class="menu__link">Motivation</a>
+    - <a href="../understanding/thinking-in-redux/three-principles.html" class="menu__link">Three Principles</a>
+    - <a href="../understanding/thinking-in-redux/glossary.html" class="menu__link">Glossary</a>
+  - <a href="#!" class="menu__link menu__link--sublist">History and Design</a>
+    - <a href="../understanding/history-and-design/prior-art.html" class="menu__link">Prior Art</a>
+    - <a href="../understanding/history-and-design/middleware.html" class="menu__link">Middleware</a>
+- <a href="#!" class="menu__link menu__link--sublist">FAQ</a>
+  - <a href="../faq.html" class="menu__link">FAQ Index</a>
+  - <a href="../faq/general.html" class="menu__link">General</a>
+  - <a href="../faq/reducers.html" class="menu__link">Reducers</a>
+  - <a href="../faq/organizing-state.html" class="menu__link">Organizing State</a>
+  - <a href="../faq/store-setup.html" class="menu__link">Store Setup</a>
+  - <a href="../faq/actions.html" class="menu__link">Actions</a>
+  - <a href="../faq/immutable-data.html" class="menu__link">Immutable Data</a>
+  - <a href="../faq/code-structure.html" class="menu__link">Code Structure</a>
+  - <a href="../faq/performance.html" class="menu__link">Performance</a>
+  - <a href="../faq/design-decisions.html" class="menu__link">Design Decisions</a>
+  - <a href="../faq/react-redux.html" class="menu__link">React Redux</a>
+  - <a href="../faq/miscellaneous.html" class="menu__link">Miscellaneous</a>
+- <a href="#!" class="menu__link menu__link--sublist">Style Guide</a>
+  - <a href="../style-guide/style-guide.html" class="menu__link">Style Guide: Best Practices</a>
+- <a href="#!" class="menu__link menu__link--sublist">API Reference</a>
+  - <a href="../api/api-reference.html" class="menu__link">API Reference</a>
+  - <a href="../api/createstore.html" class="menu__link">createStore</a>
+  - <a href="../api/store.html" class="menu__link">Store</a>
+  - <a href="../api/combinereducers.html" class="menu__link">combineReducers</a>
+  - <a href="../api/applymiddleware.html" class="menu__link">applyMiddleware</a>
+  - <a href="../api/bindactioncreators.html" class="menu__link">bindActionCreators</a>
+  - <a href="../api/compose.html" class="menu__link">compose</a>
+- <a href="#!" class="menu__link menu__link--sublist">Redux Toolkit</a>
+  - <a href="../redux-toolkit/overview.html" class="menu__link">Redux Toolkit: Overview</a>
 
-<span id="implementing-undo-history" class="anchor enhancedAnchor_2LWZ"></span>Implementing Undo History<a href="#implementing-undo-history" class="hash-link" title="Direct link to heading">#</a>
-===================================================================================================================================================================================================
+# <span id="implementing-undo-history" class="anchor enhancedAnchor_2LWZ"></span>Implementing Undo History<a href="#implementing-undo-history" class="hash-link" title="Direct link to heading">#</a>
 
 ##### <span class="admonition-icon"> </span>Prerequisites
 
--   Completion of the ["Redux Fundamentals" tutorial](../tutorials/fundamentals/part-1-overview.html)
--   Understanding of ["reducer composition"](../tutorials/fundamentals/part-3-state-actions-reducers.html#splitting-reducers)
+- Completion of the ["Redux Fundamentals" tutorial](../tutorials/fundamentals/part-1-overview.html)
+- Understanding of ["reducer composition"](../tutorials/fundamentals/part-3-state-actions-reducers.html#splitting-reducers)
 
 Building an Undo and Redo functionality into an app has traditionally required conscious effort from the developer. It is not an easy problem with classical MVC frameworks because you need to keep track of every past state by cloning all relevant models. In addition, you need to be mindful of the undo stack because the user-initiated changes should be undoable.
 
@@ -128,9 +127,9 @@ This means that implementing Undo and Redo in an MVC application usually forces 
 
 With Redux, however, implementing undo history is a breeze. There are three reasons for this:
 
--   There are no multiple models—just a state subtree that you want to keep track of.
--   The state is already immutable, and mutations are already described as discrete actions, which is close to the undo stack mental model.
--   The reducer `(state, action) => state` signature makes it natural to implement generic “reducer enhancers” or “higher order reducers”. They are functions that take your reducer and enhance it with some additional functionality while preserving its signature. Undo history is exactly such a case.
+- There are no multiple models—just a state subtree that you want to keep track of.
+- The state is already immutable, and mutations are already described as discrete actions, which is close to the undo stack mental model.
+- The reducer `(state, action) => state` signature makes it natural to implement generic “reducer enhancers” or “higher order reducers”. They are functions that take your reducer and enhance it with some additional functionality while preserving its signature. Undo history is exactly such a case.
 
 In the first part of this recipe, we will explain the underlying concepts that make Undo and Redo possible to implement in a generic way.
 
@@ -138,12 +137,11 @@ In the second part of this recipe, we will show how to use [Redux Undo](../../gi
 
 [![demo of todos-with-undo](../../i.imgur.com/lvDFHkH.gif)](../../twitter.com/dan_abramov/status/647038407286390784.html)
 
-<span id="understanding-undo-history" class="anchor enhancedAnchor_2LWZ"></span>Understanding Undo History<a href="#understanding-undo-history" class="hash-link" title="Direct link to heading">#</a>
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## <span id="understanding-undo-history" class="anchor enhancedAnchor_2LWZ"></span>Understanding Undo History<a href="#understanding-undo-history" class="hash-link" title="Direct link to heading">#</a>
 
 ### <span id="designing-the-state-shape" class="anchor enhancedAnchor_2LWZ"></span>Designing the State Shape<a href="#designing-the-state-shape" class="hash-link" title="Direct link to heading">#</a>
 
-Undo history is also part of your app's state, and there is no reason why we should approach it differently. Regardless of the type of the state changing over time, when you implement Undo and Redo, you want to keep track of the *history* of this state at different points in time.
+Undo history is also part of your app's state, and there is no reason why we should approach it differently. Regardless of the type of the state changing over time, when you implement Undo and Redo, you want to keep track of the _history_ of this state at different points in time.
 
 For example, the state shape of a counter app might look like this:
 
@@ -157,9 +155,9 @@ Copy
 
 If we wanted to implement Undo and Redo in such an app, we'd need to store more state so we can answer the following questions:
 
--   Is there anything left to undo or redo?
--   What is the current state?
--   What are the past (and future) states in the undo stack?
+- Is there anything left to undo or redo?
+- What is the current state?
+- What are the past (and future) states in the undo stack?
 
 It is reasonable to suggest that our state shape should change to answer these questions:
 
@@ -395,21 +393,21 @@ Let's talk through the algorithm to manipulate the state shape described above. 
 
 #### <span id="handling-undo" class="anchor enhancedAnchor_2LWZ"></span>Handling Undo<a href="#handling-undo" class="hash-link" title="Direct link to heading">#</a>
 
--   Remove the *last* element from the `past`.
--   Set the `present` to the element we removed in the previous step.
--   Insert the old `present` state at the *beginning* of the `future`.
+- Remove the _last_ element from the `past`.
+- Set the `present` to the element we removed in the previous step.
+- Insert the old `present` state at the _beginning_ of the `future`.
 
 #### <span id="handling-redo" class="anchor enhancedAnchor_2LWZ"></span>Handling Redo<a href="#handling-redo" class="hash-link" title="Direct link to heading">#</a>
 
--   Remove the *first* element from the `future`.
--   Set the `present` to the element we removed in the previous step.
--   Insert the old `present` state at the *end* of the `past`.
+- Remove the _first_ element from the `future`.
+- Set the `present` to the element we removed in the previous step.
+- Insert the old `present` state at the _end_ of the `past`.
 
 #### <span id="handling-other-actions" class="anchor enhancedAnchor_2LWZ"></span>Handling Other Actions<a href="#handling-other-actions" class="hash-link" title="Direct link to heading">#</a>
 
--   Insert the `present` at the end of the `past`.
--   Set the `present` to the new state after handling the action.
--   Clear the `future`.
+- Insert the `present` at the end of the `past`.
+- Set the `present` to the new state after handling the action.
+- Clear the `future`.
 
 ### <span id="first-attempt-writing-a-reducer" class="anchor enhancedAnchor_2LWZ"></span>First Attempt: Writing a Reducer<a href="#first-attempt-writing-a-reducer" class="hash-link" title="Direct link to heading">#</a>
 
@@ -479,9 +477,9 @@ Copy
 
 This implementation isn't usable because it leaves out three important questions:
 
--   Where do we get the initial `present` state from? We don't seem to know it beforehand.
--   Where do we react to the external actions to save the `present` to the `past`?
--   How do we actually delegate the control over the `present` state to a custom reducer?
+- Where do we get the initial `present` state from? We don't seem to know it beforehand.
+- Where do we react to the external actions to save the `present` to the `past`?
+- How do we actually delegate the control over the `present` state to a custom reducer?
 
 It seems that reducer isn't the right abstraction, but we're very close.
 
@@ -489,7 +487,7 @@ It seems that reducer isn't the right abstraction, but we're very close.
 
 You might be familiar with [higher order functions](../../en.wikipedia.org/wiki/Higher-order_function.html). If you use React, you might be familiar with [higher order components](../../medium.com/%40dan_abramov/mixins-are-dead-long-live-higher-order-components-94a0d2f9e750.html). Here is a variation on the same pattern, applied to reducers.
 
-A *reducer enhancer* (or a *higher order reducer*) is a function that takes a reducer, and returns a new reducer that is able to handle new actions, or to hold more state, delegating control to the inner reducer for the actions it doesn't understand. This isn't a new pattern—technically, [`combineReducers()`](../api/combinereducers.html) is also a reducer enhancer because it takes reducers and returns a new reducer.
+A _reducer enhancer_ (or a _higher order reducer_) is a function that takes a reducer, and returns a new reducer that is able to handle new actions, or to hold more state, delegating control to the inner reducer for the actions it doesn't understand. This isn't a new pattern—technically, [`combineReducers()`](../api/combinereducers.html) is also a reducer enhancer because it takes reducers and returns a new reducer.
 
 A reducer enhancer that doesn't do anything looks like this:
 
@@ -647,7 +645,7 @@ We can now wrap any reducer into `undoable` reducer enhancer to teach it to reac
 
 <span class="token plain">store</span><span class="token punctuation" style="color: #f8f8f2">.</span><span class="token method function property-access" style="color: #e6d874">dispatch</span><span class="token punctuation" style="color: #f8f8f2">(</span><span class="token punctuation" style="color: #f8f8f2">{</span><span class="token plain"></span>
 
-<span class="token plain"> type</span><span class="token operator" style="color: #f8f8f2">:</span><span class="token plain"> </span><span class="token string" style="color: #a6e22e">'ADD\_TODO'</span><span class="token punctuation" style="color: #f8f8f2">,</span><span class="token plain"></span>
+<span class="token plain"> type</span><span class="token operator" style="color: #f8f8f2">:</span><span class="token plain"> </span><span class="token string" style="color: #a6e22e">'ADD_TODO'</span><span class="token punctuation" style="color: #f8f8f2">,</span><span class="token plain"></span>
 
 <span class="token plain"> text</span><span class="token operator" style="color: #f8f8f2">:</span><span class="token plain"> </span><span class="token string" style="color: #a6e22e">'Use Redux'</span><span class="token plain"></span>
 
@@ -657,7 +655,7 @@ We can now wrap any reducer into `undoable` reducer enhancer to teach it to reac
 
 <span class="token plain">store</span><span class="token punctuation" style="color: #f8f8f2">.</span><span class="token method function property-access" style="color: #e6d874">dispatch</span><span class="token punctuation" style="color: #f8f8f2">(</span><span class="token punctuation" style="color: #f8f8f2">{</span><span class="token plain"></span>
 
-<span class="token plain"> type</span><span class="token operator" style="color: #f8f8f2">:</span><span class="token plain"> </span><span class="token string" style="color: #a6e22e">'ADD\_TODO'</span><span class="token punctuation" style="color: #f8f8f2">,</span><span class="token plain"></span>
+<span class="token plain"> type</span><span class="token operator" style="color: #f8f8f2">:</span><span class="token plain"> </span><span class="token string" style="color: #a6e22e">'ADD_TODO'</span><span class="token punctuation" style="color: #f8f8f2">,</span><span class="token plain"></span>
 
 <span class="token plain"> text</span><span class="token operator" style="color: #f8f8f2">:</span><span class="token plain"> </span><span class="token string" style="color: #a6e22e">'Implement Undo'</span><span class="token plain"></span>
 
@@ -677,8 +675,7 @@ There is an important gotcha: you need to remember to append `.present` to the c
 
 You might have heard that Redux was influenced by [Elm Architecture](../../github.com/evancz/elm-architecture-tutorial/index.html). It shouldn't come as a surprise that this example is very similar to [elm-undo-redo package](../../package.elm-lang.org/packages/TheSeamau5/elm-undo-redo/2.0.html).
 
-<span id="using-redux-undo" class="anchor enhancedAnchor_2LWZ"></span>Using Redux Undo<a href="#using-redux-undo" class="hash-link" title="Direct link to heading">#</a>
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## <span id="using-redux-undo" class="anchor enhancedAnchor_2LWZ"></span>Using Redux Undo<a href="#using-redux-undo" class="hash-link" title="Direct link to heading">#</a>
 
 This was all very informative, but can't we just drop a library and use it instead of implementing `undoable` ourselves? Sure, we can! Meet [Redux Undo](../../github.com/omnidan/redux-undo.html), a library that provides simple Undo and Redo functionality for any part of your Redux tree.
 
@@ -760,7 +757,7 @@ Now the `todos` part of the state looks like this:
 
 <span class="token punctuation" style="color: #f8f8f2">{</span><span class="token plain"></span>
 
-<span class="token plain"> visibilityFilter</span><span class="token operator" style="color: #f8f8f2">:</span><span class="token plain"> </span><span class="token string" style="color: #a6e22e">'SHOW\_ALL'</span><span class="token punctuation" style="color: #f8f8f2">,</span><span class="token plain"></span>
+<span class="token plain"> visibilityFilter</span><span class="token operator" style="color: #f8f8f2">:</span><span class="token plain"> </span><span class="token string" style="color: #a6e22e">'SHOW_ALL'</span><span class="token punctuation" style="color: #f8f8f2">,</span><span class="token plain"></span>
 
 <span class="token plain"> todos</span><span class="token operator" style="color: #f8f8f2">:</span><span class="token plain"> </span><span class="token punctuation" style="color: #f8f8f2">{</span><span class="token plain"></span>
 
@@ -960,34 +957,34 @@ Next
 
 Isolating Redux Sub-Apps »
 
--   <a href="#understanding-undo-history" class="table-of-contents__link">Understanding Undo History</a>
-    -   <a href="#designing-the-state-shape" class="table-of-contents__link">Designing the State Shape</a>
-    -   <a href="#designing-the-algorithm" class="table-of-contents__link">Designing the Algorithm</a>
-    -   <a href="#first-attempt-writing-a-reducer" class="table-of-contents__link">First Attempt: Writing a Reducer</a>
-    -   <a href="#meet-reducer-enhancers" class="table-of-contents__link">Meet Reducer Enhancers</a>
-    -   <a href="#second-attempt-writing-a-reducer-enhancer" class="table-of-contents__link">Second Attempt: Writing a Reducer Enhancer</a>
--   <a href="#using-redux-undo" class="table-of-contents__link">Using Redux Undo</a>
-    -   <a href="#installation" class="table-of-contents__link">Installation</a>
-    -   <a href="#wrapping-the-reducer" class="table-of-contents__link">Wrapping the Reducer</a>
-    -   <a href="#updating-the-selectors" class="table-of-contents__link">Updating the Selectors</a>
-    -   <a href="#adding-the-buttons" class="table-of-contents__link">Adding the Buttons</a>
+- <a href="#understanding-undo-history" class="table-of-contents__link">Understanding Undo History</a>
+  - <a href="#designing-the-state-shape" class="table-of-contents__link">Designing the State Shape</a>
+  - <a href="#designing-the-algorithm" class="table-of-contents__link">Designing the Algorithm</a>
+  - <a href="#first-attempt-writing-a-reducer" class="table-of-contents__link">First Attempt: Writing a Reducer</a>
+  - <a href="#meet-reducer-enhancers" class="table-of-contents__link">Meet Reducer Enhancers</a>
+  - <a href="#second-attempt-writing-a-reducer-enhancer" class="table-of-contents__link">Second Attempt: Writing a Reducer Enhancer</a>
+- <a href="#using-redux-undo" class="table-of-contents__link">Using Redux Undo</a>
+  - <a href="#installation" class="table-of-contents__link">Installation</a>
+  - <a href="#wrapping-the-reducer" class="table-of-contents__link">Wrapping the Reducer</a>
+  - <a href="#updating-the-selectors" class="table-of-contents__link">Updating the Selectors</a>
+  - <a href="#adding-the-buttons" class="table-of-contents__link">Adding the Buttons</a>
 
 #### Docs
 
--   <a href="../introduction/getting-started.html" class="footer__link-item">Getting Started</a>
--   <a href="../tutorials/essentials/part-1-overview-concepts.html" class="footer__link-item">Tutorial</a>
--   <a href="../faq.html" class="footer__link-item">FAQ</a>
--   <a href="../api/api-reference.html" class="footer__link-item">API Reference</a>
+- <a href="../introduction/getting-started.html" class="footer__link-item">Getting Started</a>
+- <a href="../tutorials/essentials/part-1-overview-concepts.html" class="footer__link-item">Tutorial</a>
+- <a href="../faq.html" class="footer__link-item">FAQ</a>
+- <a href="../api/api-reference.html" class="footer__link-item">API Reference</a>
 
 #### Community
 
--   <a href="../../discord.com/invite/0ZcbPKXt5bZ6au5t.html" class="footer__link-item">Reactiflux Discord</a>
--   <a href="../../stackoverflow.com/questions/tagged/redux.html" class="footer__link-item">Stack Overflow</a>
--   <a href="../introduction/getting-started.html#help-and-discussion" class="footer__link-item">Feedback</a>
+- <a href="../../discord.com/invite/0ZcbPKXt5bZ6au5t.html" class="footer__link-item">Reactiflux Discord</a>
+- <a href="../../stackoverflow.com/questions/tagged/redux.html" class="footer__link-item">Stack Overflow</a>
+- <a href="../introduction/getting-started.html#help-and-discussion" class="footer__link-item">Feedback</a>
 
 #### More
 
--   <a href="../../github.com/reduxjs/redux.html" class="footer__link-item">GitHub</a>
--   [![Deploys by Netlify](../../www.netlify.com/img/global/badges/netlify-color-accent.svg)](../../www.netlify.com/index.html)
+- <a href="../../github.com/reduxjs/redux.html" class="footer__link-item">GitHub</a>
+- [![Deploys by Netlify](../../www.netlify.com/img/global/badges/netlify-color-accent.svg)](../../www.netlify.com/index.html)
 
 <a href="../index.html" class="footerLogoLink_MyFc"><img src="../../d33wubrfki0l68.cloudfront.net/0834d0215db51e91525a25acf97433051f280f2f/c30f5/img/redux.svg" alt="Redux Logo" class="themedImage_1VuW themedImage--light_3UqQ footer__logo" /><img src="../../d33wubrfki0l68.cloudfront.net/0834d0215db51e91525a25acf97433051f280f2f/c30f5/img/redux.svg" alt="Redux Logo" class="themedImage_1VuW themedImage--dark_hz6m footer__logo" /></a>

@@ -2,10 +2,8 @@
 
 [&lt;Go Back&gt;](../right.html)
 
- [history-and-design](history-and-design/right.html)
+[history-and-design](history-and-design/right.html)
 
- [thinking-in-redux](thinking-in-redux/right.html)
+[thinking-in-redux](thinking-in-redux/right.html)
 
-  
-
-Folders: 3  
+Folders: 3

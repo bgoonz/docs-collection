@@ -14,120 +14,118 @@ Menu
 
 <a href="../../index.html" class="navbar__brand"><img src="../../../d33wubrfki0l68.cloudfront.net/0834d0215db51e91525a25acf97433051f280f2f/c30f5/img/redux.svg" alt="Redux Logo" class="themedImage_1VuW themedImage--light_3UqQ navbar__logo" /><img src="../../../d33wubrfki0l68.cloudfront.net/0834d0215db51e91525a25acf97433051f280f2f/c30f5/img/redux.svg" alt="Redux Logo" class="themedImage_1VuW themedImage--dark_hz6m navbar__logo" /><strong>Redux</strong></a>
 
--   <a href="../../introduction/getting-started.html" class="menu__link">Getting Started</a>
--   <a href="part-1-overview-concepts.html" class="menu__link">Tutorial</a>
--   <a href="../../api/api-reference.html" class="menu__link">API</a>
--   <a href="../../faq.html" class="menu__link">FAQ</a>
--   <a href="../../style-guide/style-guide.html" class="menu__link">Best Practices</a>
--   <a href="../../../github.com/reduxjs/redux.html" class="menu__link">GitHub</a>
--   <a href="../../introduction/getting-started.html#help-and-discussion" class="menu__link">Need help?</a>
+- <a href="../../introduction/getting-started.html" class="menu__link">Getting Started</a>
+- <a href="part-1-overview-concepts.html" class="menu__link">Tutorial</a>
+- <a href="../../api/api-reference.html" class="menu__link">API</a>
+- <a href="../../faq.html" class="menu__link">FAQ</a>
+- <a href="../../style-guide/style-guide.html" class="menu__link">Best Practices</a>
+- <a href="../../../github.com/reduxjs/redux.html" class="menu__link">GitHub</a>
+- <a href="../../introduction/getting-started.html#help-and-discussion" class="menu__link">Need help?</a>
 
 Menu
 
--   <a href="#!" class="menu__link menu__link--sublist">Introduction</a>
-    -   <a href="../../introduction/getting-started.html" class="menu__link">Getting Started with Redux</a>
-    -   <a href="../../introduction/installation.html" class="menu__link">Installation</a>
-    -   <a href="../../introduction/core-concepts.html" class="menu__link">Core Concepts</a>
-    -   <a href="../../introduction/learning-resources.html" class="menu__link">Learning Resources</a>
-    -   <a href="../../introduction/ecosystem.html" class="menu__link">Ecosystem</a>
-    -   <a href="../../introduction/examples.html" class="menu__link">Examples</a>
--   <a href="#!" class="menu__link menu__link--sublist menu__link--active">Tutorials</a>
-    -   <a href="../index.html" class="menu__link">Tutorials Index</a>
-    -   <a href="../quick-start.html" class="menu__link">Quick Start</a>
-    -   <a href="../typescript-quick-start.html" class="menu__link">TypeScript Quick Start</a>
-    -   <a href="#!" class="menu__link menu__link--sublist menu__link--active">Redux Essentials</a>
-        -   <a href="part-1-overview-concepts.html" class="menu__link">Redux Overview and Concepts</a>
-        -   <a href="part-2-app-structure.html" class="menu__link">Redux App Structure</a>
-        -   <a href="part-3-data-flow.html" class="menu__link">Basic Redux Data Flow</a>
-        -   <a href="part-4-using-data.html" class="menu__link menu__link--active active">Using Redux Data</a>
-        -   <a href="part-5-async-logic.html" class="menu__link">Async Logic and Data Fetching</a>
-        -   <a href="part-6-performance-normalization.html" class="menu__link">Performance and Normalizing Data</a>
-    -   <a href="#!" class="menu__link menu__link--sublist">Redux Fundamentals</a>
-        -   <a href="../fundamentals/part-1-overview.html" class="menu__link">Redux Overview</a>
-        -   <a href="../fundamentals/part-2-concepts-data-flow.html" class="menu__link">Redux Concepts and Data Flow</a>
-        -   <a href="../fundamentals/part-3-state-actions-reducers.html" class="menu__link">State, Actions, and Reducers</a>
-        -   <a href="../fundamentals/part-4-store.html" class="menu__link">Store</a>
-        -   <a href="../fundamentals/part-5-ui-react.html" class="menu__link">UI and React</a>
-        -   <a href="../fundamentals/part-6-async-logic.html" class="menu__link">Async Logic and Data Fetching</a>
-        -   <a href="../fundamentals/part-7-standard-patterns.html" class="menu__link">Standard Redux Patterns</a>
-        -   <a href="../fundamentals/part-8-modern-redux.html" class="menu__link">Modern Redux with Redux Toolkit</a>
--   <a href="#!" class="menu__link menu__link--sublist">Recipes</a>
-    -   <a href="../../recipes/recipe-index.html" class="menu__link">Recipes: Index</a>
-    -   <a href="../../recipes/configuring-your-store.html" class="menu__link">Configuring Your Store</a>
-    -   <a href="../../recipes/usage-with-typescript.html" class="menu__link">Usage With TypeScript</a>
-    -   <a href="../../recipes/migrating-to-redux.html" class="menu__link">Migrating to Redux</a>
-    -   <a href="../../recipes/using-object-spread-operator.html" class="menu__link">Using Object Spread Operator</a>
-    -   <a href="../../recipes/reducing-boilerplate.html" class="menu__link">Reducing Boilerplate</a>
-    -   <a href="../../recipes/server-rendering.html" class="menu__link">Server Rendering</a>
-    -   <a href="../../recipes/writing-tests.html" class="menu__link">Writing Tests</a>
-    -   <a href="../../recipes/computing-derived-data.html" class="menu__link">Computing Derived Data</a>
-    -   <a href="../../recipes/implementing-undo-history.html" class="menu__link">Implementing Undo History</a>
-    -   <a href="../../recipes/isolating-redux-sub-apps.html" class="menu__link">Isolating Redux Sub-Apps</a>
-    -   <a href="../../recipes/code-splitting.html" class="menu__link">Code Splitting</a>
-    -   <a href="../../recipes/troubleshooting.html" class="menu__link">Troubleshooting</a>
-    -   <a href="#!" class="menu__link menu__link--sublist">Structuring Reducers</a>
-        -   <a href="../../recipes/structuring-reducers/structuring-reducers.html" class="menu__link">Structuring Reducers</a>
-        -   <a href="../../recipes/structuring-reducers/prerequisite-concepts.html" class="menu__link">Prerequisite Concepts</a>
-        -   <a href="../../recipes/structuring-reducers/basic-reducer-structure.html" class="menu__link">Basic Reducer Structure</a>
-        -   <a href="../../recipes/structuring-reducers/splitting-reducer-logic.html" class="menu__link">Splitting Reducer Logic</a>
-        -   <a href="../../recipes/structuring-reducers/refactoring-reducer-example.html" class="menu__link">Refactoring Reducers Example</a>
-        -   <a href="../../recipes/structuring-reducers/using-combinereducers.html" class="menu__link">Using combineReducers</a>
-        -   <a href="../../recipes/structuring-reducers/beyond-combinereducers.html" class="menu__link">Beyond combineReducers</a>
-        -   <a href="../../recipes/structuring-reducers/normalizing-state-shape.html" class="menu__link">Normalizing State Shape</a>
-        -   <a href="../../recipes/structuring-reducers/updating-normalized-data.html" class="menu__link">Updating Normalized Data</a>
-        -   <a href="../../recipes/structuring-reducers/reusing-reducer-logic.html" class="menu__link">Reusing Reducer Logic</a>
-        -   <a href="../../recipes/structuring-reducers/immutable-update-patterns.html" class="menu__link">Immutable Update Patterns</a>
-        -   <a href="../../recipes/structuring-reducers/initializing-state.html" class="menu__link">Initializing State</a>
--   <a href="#!" class="menu__link menu__link--sublist">Understanding Redux</a>
-    -   <a href="#!" class="menu__link menu__link--sublist">Thinking in Redux</a>
-        -   <a href="../../understanding/thinking-in-redux/motivation.html" class="menu__link">Motivation</a>
-        -   <a href="../../understanding/thinking-in-redux/three-principles.html" class="menu__link">Three Principles</a>
-        -   <a href="../../understanding/thinking-in-redux/glossary.html" class="menu__link">Glossary</a>
-    -   <a href="#!" class="menu__link menu__link--sublist">History and Design</a>
-        -   <a href="../../understanding/history-and-design/prior-art.html" class="menu__link">Prior Art</a>
-        -   <a href="../../understanding/history-and-design/middleware.html" class="menu__link">Middleware</a>
--   <a href="#!" class="menu__link menu__link--sublist">FAQ</a>
-    -   <a href="../../faq.html" class="menu__link">FAQ Index</a>
-    -   <a href="../../faq/general.html" class="menu__link">General</a>
-    -   <a href="../../faq/reducers.html" class="menu__link">Reducers</a>
-    -   <a href="../../faq/organizing-state.html" class="menu__link">Organizing State</a>
-    -   <a href="../../faq/store-setup.html" class="menu__link">Store Setup</a>
-    -   <a href="../../faq/actions.html" class="menu__link">Actions</a>
-    -   <a href="../../faq/immutable-data.html" class="menu__link">Immutable Data</a>
-    -   <a href="../../faq/code-structure.html" class="menu__link">Code Structure</a>
-    -   <a href="../../faq/performance.html" class="menu__link">Performance</a>
-    -   <a href="../../faq/design-decisions.html" class="menu__link">Design Decisions</a>
-    -   <a href="../../faq/react-redux.html" class="menu__link">React Redux</a>
-    -   <a href="../../faq/miscellaneous.html" class="menu__link">Miscellaneous</a>
--   <a href="#!" class="menu__link menu__link--sublist">Style Guide</a>
-    -   <a href="../../style-guide/style-guide.html" class="menu__link">Style Guide: Best Practices</a>
--   <a href="#!" class="menu__link menu__link--sublist">API Reference</a>
-    -   <a href="../../api/api-reference.html" class="menu__link">API Reference</a>
-    -   <a href="../../api/createstore.html" class="menu__link">createStore</a>
-    -   <a href="../../api/store.html" class="menu__link">Store</a>
-    -   <a href="../../api/combinereducers.html" class="menu__link">combineReducers</a>
-    -   <a href="../../api/applymiddleware.html" class="menu__link">applyMiddleware</a>
-    -   <a href="../../api/bindactioncreators.html" class="menu__link">bindActionCreators</a>
-    -   <a href="../../api/compose.html" class="menu__link">compose</a>
--   <a href="#!" class="menu__link menu__link--sublist">Redux Toolkit</a>
-    -   <a href="../../redux-toolkit/overview.html" class="menu__link">Redux Toolkit: Overview</a>
+- <a href="#!" class="menu__link menu__link--sublist">Introduction</a>
+  - <a href="../../introduction/getting-started.html" class="menu__link">Getting Started with Redux</a>
+  - <a href="../../introduction/installation.html" class="menu__link">Installation</a>
+  - <a href="../../introduction/core-concepts.html" class="menu__link">Core Concepts</a>
+  - <a href="../../introduction/learning-resources.html" class="menu__link">Learning Resources</a>
+  - <a href="../../introduction/ecosystem.html" class="menu__link">Ecosystem</a>
+  - <a href="../../introduction/examples.html" class="menu__link">Examples</a>
+- <a href="#!" class="menu__link menu__link--sublist menu__link--active">Tutorials</a>
+  - <a href="../index.html" class="menu__link">Tutorials Index</a>
+  - <a href="../quick-start.html" class="menu__link">Quick Start</a>
+  - <a href="../typescript-quick-start.html" class="menu__link">TypeScript Quick Start</a>
+  - <a href="#!" class="menu__link menu__link--sublist menu__link--active">Redux Essentials</a>
+    - <a href="part-1-overview-concepts.html" class="menu__link">Redux Overview and Concepts</a>
+    - <a href="part-2-app-structure.html" class="menu__link">Redux App Structure</a>
+    - <a href="part-3-data-flow.html" class="menu__link">Basic Redux Data Flow</a>
+    - <a href="part-4-using-data.html" class="menu__link menu__link--active active">Using Redux Data</a>
+    - <a href="part-5-async-logic.html" class="menu__link">Async Logic and Data Fetching</a>
+    - <a href="part-6-performance-normalization.html" class="menu__link">Performance and Normalizing Data</a>
+  - <a href="#!" class="menu__link menu__link--sublist">Redux Fundamentals</a>
+    - <a href="../fundamentals/part-1-overview.html" class="menu__link">Redux Overview</a>
+    - <a href="../fundamentals/part-2-concepts-data-flow.html" class="menu__link">Redux Concepts and Data Flow</a>
+    - <a href="../fundamentals/part-3-state-actions-reducers.html" class="menu__link">State, Actions, and Reducers</a>
+    - <a href="../fundamentals/part-4-store.html" class="menu__link">Store</a>
+    - <a href="../fundamentals/part-5-ui-react.html" class="menu__link">UI and React</a>
+    - <a href="../fundamentals/part-6-async-logic.html" class="menu__link">Async Logic and Data Fetching</a>
+    - <a href="../fundamentals/part-7-standard-patterns.html" class="menu__link">Standard Redux Patterns</a>
+    - <a href="../fundamentals/part-8-modern-redux.html" class="menu__link">Modern Redux with Redux Toolkit</a>
+- <a href="#!" class="menu__link menu__link--sublist">Recipes</a>
+  - <a href="../../recipes/recipe-index.html" class="menu__link">Recipes: Index</a>
+  - <a href="../../recipes/configuring-your-store.html" class="menu__link">Configuring Your Store</a>
+  - <a href="../../recipes/usage-with-typescript.html" class="menu__link">Usage With TypeScript</a>
+  - <a href="../../recipes/migrating-to-redux.html" class="menu__link">Migrating to Redux</a>
+  - <a href="../../recipes/using-object-spread-operator.html" class="menu__link">Using Object Spread Operator</a>
+  - <a href="../../recipes/reducing-boilerplate.html" class="menu__link">Reducing Boilerplate</a>
+  - <a href="../../recipes/server-rendering.html" class="menu__link">Server Rendering</a>
+  - <a href="../../recipes/writing-tests.html" class="menu__link">Writing Tests</a>
+  - <a href="../../recipes/computing-derived-data.html" class="menu__link">Computing Derived Data</a>
+  - <a href="../../recipes/implementing-undo-history.html" class="menu__link">Implementing Undo History</a>
+  - <a href="../../recipes/isolating-redux-sub-apps.html" class="menu__link">Isolating Redux Sub-Apps</a>
+  - <a href="../../recipes/code-splitting.html" class="menu__link">Code Splitting</a>
+  - <a href="../../recipes/troubleshooting.html" class="menu__link">Troubleshooting</a>
+  - <a href="#!" class="menu__link menu__link--sublist">Structuring Reducers</a>
+    - <a href="../../recipes/structuring-reducers/structuring-reducers.html" class="menu__link">Structuring Reducers</a>
+    - <a href="../../recipes/structuring-reducers/prerequisite-concepts.html" class="menu__link">Prerequisite Concepts</a>
+    - <a href="../../recipes/structuring-reducers/basic-reducer-structure.html" class="menu__link">Basic Reducer Structure</a>
+    - <a href="../../recipes/structuring-reducers/splitting-reducer-logic.html" class="menu__link">Splitting Reducer Logic</a>
+    - <a href="../../recipes/structuring-reducers/refactoring-reducer-example.html" class="menu__link">Refactoring Reducers Example</a>
+    - <a href="../../recipes/structuring-reducers/using-combinereducers.html" class="menu__link">Using combineReducers</a>
+    - <a href="../../recipes/structuring-reducers/beyond-combinereducers.html" class="menu__link">Beyond combineReducers</a>
+    - <a href="../../recipes/structuring-reducers/normalizing-state-shape.html" class="menu__link">Normalizing State Shape</a>
+    - <a href="../../recipes/structuring-reducers/updating-normalized-data.html" class="menu__link">Updating Normalized Data</a>
+    - <a href="../../recipes/structuring-reducers/reusing-reducer-logic.html" class="menu__link">Reusing Reducer Logic</a>
+    - <a href="../../recipes/structuring-reducers/immutable-update-patterns.html" class="menu__link">Immutable Update Patterns</a>
+    - <a href="../../recipes/structuring-reducers/initializing-state.html" class="menu__link">Initializing State</a>
+- <a href="#!" class="menu__link menu__link--sublist">Understanding Redux</a>
+  - <a href="#!" class="menu__link menu__link--sublist">Thinking in Redux</a>
+    - <a href="../../understanding/thinking-in-redux/motivation.html" class="menu__link">Motivation</a>
+    - <a href="../../understanding/thinking-in-redux/three-principles.html" class="menu__link">Three Principles</a>
+    - <a href="../../understanding/thinking-in-redux/glossary.html" class="menu__link">Glossary</a>
+  - <a href="#!" class="menu__link menu__link--sublist">History and Design</a>
+    - <a href="../../understanding/history-and-design/prior-art.html" class="menu__link">Prior Art</a>
+    - <a href="../../understanding/history-and-design/middleware.html" class="menu__link">Middleware</a>
+- <a href="#!" class="menu__link menu__link--sublist">FAQ</a>
+  - <a href="../../faq.html" class="menu__link">FAQ Index</a>
+  - <a href="../../faq/general.html" class="menu__link">General</a>
+  - <a href="../../faq/reducers.html" class="menu__link">Reducers</a>
+  - <a href="../../faq/organizing-state.html" class="menu__link">Organizing State</a>
+  - <a href="../../faq/store-setup.html" class="menu__link">Store Setup</a>
+  - <a href="../../faq/actions.html" class="menu__link">Actions</a>
+  - <a href="../../faq/immutable-data.html" class="menu__link">Immutable Data</a>
+  - <a href="../../faq/code-structure.html" class="menu__link">Code Structure</a>
+  - <a href="../../faq/performance.html" class="menu__link">Performance</a>
+  - <a href="../../faq/design-decisions.html" class="menu__link">Design Decisions</a>
+  - <a href="../../faq/react-redux.html" class="menu__link">React Redux</a>
+  - <a href="../../faq/miscellaneous.html" class="menu__link">Miscellaneous</a>
+- <a href="#!" class="menu__link menu__link--sublist">Style Guide</a>
+  - <a href="../../style-guide/style-guide.html" class="menu__link">Style Guide: Best Practices</a>
+- <a href="#!" class="menu__link menu__link--sublist">API Reference</a>
+  - <a href="../../api/api-reference.html" class="menu__link">API Reference</a>
+  - <a href="../../api/createstore.html" class="menu__link">createStore</a>
+  - <a href="../../api/store.html" class="menu__link">Store</a>
+  - <a href="../../api/combinereducers.html" class="menu__link">combineReducers</a>
+  - <a href="../../api/applymiddleware.html" class="menu__link">applyMiddleware</a>
+  - <a href="../../api/bindactioncreators.html" class="menu__link">bindActionCreators</a>
+  - <a href="../../api/compose.html" class="menu__link">compose</a>
+- <a href="#!" class="menu__link menu__link--sublist">Redux Toolkit</a>
+  - <a href="../../redux-toolkit/overview.html" class="menu__link">Redux Toolkit: Overview</a>
 
-<span id="redux-essentials-part-4-using-redux-data" class="anchor enhancedAnchor_2LWZ"></span>Redux Essentials, Part 4: Using Redux Data<a href="#redux-essentials-part-4-using-redux-data" class="hash-link" title="Direct link to heading">#</a>
-==================================================================================================================================================================================================================================================
+# <span id="redux-essentials-part-4-using-redux-data" class="anchor enhancedAnchor_2LWZ"></span>Redux Essentials, Part 4: Using Redux Data<a href="#redux-essentials-part-4-using-redux-data" class="hash-link" title="Direct link to heading">#</a>
 
 ##### <span class="admonition-icon"> </span>What You'll Learn
 
--   Using Redux data in multiple React components
--   Organizing logic that dispatches actions
--   Writing more complex update logic in reducers
+- Using Redux data in multiple React components
+- Organizing logic that dispatches actions
+- Writing more complex update logic in reducers
 
 ##### <span class="admonition-icon"> </span>Prerequisites
 
--   Understanding the [Redux data flow and React-Redux APIs from Part 3](part-3-data-flow.html)
--   Familiarity with [the React Router `<Link>` and `<Route>` components for page routing](../../../reactrouter.com/web/api.html)
+- Understanding the [Redux data flow and React-Redux APIs from Part 3](part-3-data-flow.html)
+- Familiarity with [the React Router `<Link>` and `<Route>` components for page routing](../../../reactrouter.com/web/api.html)
 
-<span id="introduction" class="anchor enhancedAnchor_2LWZ"></span>Introduction<a href="#introduction" class="hash-link" title="Direct link to heading">#</a>
-------------------------------------------------------------------------------------------------------------------------------------------------------------
+## <span id="introduction" class="anchor enhancedAnchor_2LWZ"></span>Introduction<a href="#introduction" class="hash-link" title="Direct link to heading">#</a>
 
 In [Part 3: Basic Redux Data Flow](part-3-data-flow.html), we saw how to start from an empty Redux+React project setup, add a new slice of state, and create React components that can read data from the Redux store and dispatch actions to update that data. We also looked at how data flows through the application, with components dispatching actions, reducers processing actions and returning new state, and components reading the new state and rerendering the UI.
 
@@ -137,8 +135,7 @@ Now that you know the core steps to write Redux logic, we're going to use those 
 
 As a reminder, the code examples focus on the key concepts and changes for each section. See the CodeSandbox projects and the [`tutorial-steps` branch in the project repo](../../../github.com/reduxjs/redux-essentials-example-app/tree/tutorial-steps.html) for the complete changes in the application.
 
-<span id="showing-single-posts" class="anchor enhancedAnchor_2LWZ"></span>Showing Single Posts<a href="#showing-single-posts" class="hash-link" title="Direct link to heading">#</a>
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## <span id="showing-single-posts" class="anchor enhancedAnchor_2LWZ"></span>Showing Single Posts<a href="#showing-single-posts" class="hash-link" title="Direct link to heading">#</a>
 
 Since we have the ability to add new posts to the Redux store, we can add some more features that use the post data in different ways.
 
@@ -216,7 +213,7 @@ It's possible that we might not have a matching post entry in the store - maybe 
 
 Assuming we do have the right post object in the store, `useSelector` will return that, and we can use it to render the title and content of the post in the page.
 
-You might notice that this looks fairly similar to the logic we have in the body of our `<PostsList>` component, where we loop over the whole `posts` array to show post excerpts the main feed. We *could* try to extract a `Post` component that could be used in both places, but there are already some differences in how we're showing a post excerpt and the whole post. It's usually better to keep writing things separately for a while even if there's some duplication, and then we can decide later if the different sections of code are similar enough that we can really extract a reusable component.
+You might notice that this looks fairly similar to the logic we have in the body of our `<PostsList>` component, where we loop over the whole `posts` array to show post excerpts the main feed. We _could_ try to extract a `Post` component that could be used in both places, but there are already some differences in how we're showing a post excerpt and the whole post. It's usually better to keep writing things separately for a while even if there's some duplication, and then we can decide later if the different sections of code are similar enough that we can really extract a reusable component.
 
 ### <span id="adding-the-single-post-route" class="anchor enhancedAnchor_2LWZ"></span>Adding the Single Post Route<a href="#adding-the-single-post-route" class="hash-link" title="Direct link to heading">#</a>
 
@@ -380,8 +377,7 @@ app/Navbar.js
 
 Copy
 
-<span id="editing-posts" class="anchor enhancedAnchor_2LWZ"></span>Editing Posts<a href="#editing-posts" class="hash-link" title="Direct link to heading">#</a>
----------------------------------------------------------------------------------------------------------------------------------------------------------------
+## <span id="editing-posts" class="anchor enhancedAnchor_2LWZ"></span>Editing Posts<a href="#editing-posts" class="hash-link" title="Direct link to heading">#</a>
 
 As a user, it's really annoying to finish writing a post, save it, and realize you made a mistake somewhere. Having the ability to edit a post after we created it would be useful.
 
@@ -395,10 +391,10 @@ Inside of the `createSlice()` call, we should add a new function into the `reduc
 
 In order to update a post object, we need to know:
 
--   The ID of the post being updated, so that we can find the right post object in the state
--   The new `title` and `content` fields that the user typed in
+- The ID of the post being updated, so that we can find the right post object in the state
+- The new `title` and `content` fields that the user typed in
 
-Redux action objects are required to have a `type` field, which is normally a descriptive string, and may also contain other fields with more information about what happened. By convention, we normally put the additional info in a field called `action.payload`, but it's up to us to decide what the `payload` field contains - it could be a string, a number, an object, an array, or something else. In this case, since we have three pieces of information we need, let's plan on having the `payload` field be an object with the three fields inside of it. That means the action object will look like `{type: 'posts/postUpdated', payload: {id,                             title, content}}`.
+Redux action objects are required to have a `type` field, which is normally a descriptive string, and may also contain other fields with more information about what happened. By convention, we normally put the additional info in a field called `action.payload`, but it's up to us to decide what the `payload` field contains - it could be a string, a number, an object, an array, or something else. In this case, since we have three pieces of information we need, let's plan on having the `payload` field be an object with the three fields inside of it. That means the action object will look like `{type: 'posts/postUpdated', payload: {id, title, content}}`.
 
 By default, the action creators generated by `createSlice` expect you to pass in one argument, and that value will be put into the action object as `action.payload`. So, we can pass an object containing those fields as the argument to the `postUpdated` action creator.
 
@@ -702,8 +698,7 @@ features/posts/AddPostForm.js
 
 Copy
 
-<span id="users-and-posts" class="anchor enhancedAnchor_2LWZ"></span>Users and Posts<a href="#users-and-posts" class="hash-link" title="Direct link to heading">#</a>
----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## <span id="users-and-posts" class="anchor enhancedAnchor_2LWZ"></span>Users and Posts<a href="#users-and-posts" class="hash-link" title="Direct link to heading">#</a>
 
 So far, we only have one slice of state. The logic is defined in `postsSlice.js`, the data is stored in `state.posts`, and all of our components have been related to the posts feature. Real applications will probably have many different slices of state, and several different "feature folders" for the Redux logic and React components.
 
@@ -1001,8 +996,7 @@ Notice that we're following the same pattern in each of our components as we go.
 
 We can now import the `PostAuthor` component into both `PostsList.js` and `SinglePostPage.js`, and render it as `<PostAuthor userId={post.user} />`, and every time we add a post entry, the selected user's name should show up inside of the rendered post.
 
-<span id="more-post-features" class="anchor enhancedAnchor_2LWZ"></span>More Post Features<a href="#more-post-features" class="hash-link" title="Direct link to heading">#</a>
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## <span id="more-post-features" class="anchor enhancedAnchor_2LWZ"></span>More Post Features<a href="#more-post-features" class="hash-link" title="Direct link to heading">#</a>
 
 At this point, we can create and edit posts. Let's add some additional logic to make our posts feed more useful.
 
@@ -1098,7 +1092,7 @@ Copy
 
 Our `<PostsList>` is currently showing all the posts in the same order the posts are kept in the Redux store. Our example has the oldest post first, and any time we add a new post, it gets added to the end of the posts array. That means the newest post is always at the bottom of the page.
 
-Typically, social media feeds show the newest posts first, and you scroll down to see older posts. Even though the data is being kept oldest-first in the store, we can reorder the data in our `<PostsList>` component so that the newest post is first. In theory, since we know that the `state.posts` array is already sorted, we *could* just reverse the list. But, it's better to go ahead and sort it ourselves just to be sure.
+Typically, social media feeds show the newest posts first, and you scroll down to see older posts. Even though the data is being kept oldest-first in the store, we can reorder the data in our `<PostsList>` component so that the newest post is first. In theory, since we know that the `state.posts` array is already sorted, we _could_ just reverse the list. But, it's better to go ahead and sort it ourselves just to be sure.
 
 Since `array.sort()` mutates the existing array, we need to make a copy of `state.posts` and sort that copy. We know that our `post.date` fields are being kept as date timestamp strings, and we can directly compare those to sort the posts in the right order:
 
@@ -1272,9 +1266,9 @@ Like with editing posts, we need to know the ID of the post, and which reaction 
 
 Copy
 
-As we've seen already, `createSlice` lets us write "mutating" logic in our reducers. If we weren't using `createSlice` and the Immer library, the line `existingPost.reactions[reaction]++` would indeed mutate the existing `post.reactions` object, and this would probably cause bugs elsewhere in our app because we didn't follow the rules of reducers. But, since we *are* using `createSlice`, we can write this more complex update logic in a simpler way, and let Immer do the work of turning this code into a safe immutable update.
+As we've seen already, `createSlice` lets us write "mutating" logic in our reducers. If we weren't using `createSlice` and the Immer library, the line `existingPost.reactions[reaction]++` would indeed mutate the existing `post.reactions` object, and this would probably cause bugs elsewhere in our app because we didn't follow the rules of reducers. But, since we _are_ using `createSlice`, we can write this more complex update logic in a simpler way, and let Immer do the work of turning this code into a safe immutable update.
 
-Notice that **our action object just contains the minimum amount of information needed to describe what happened**. We know which post we need to update, and which reaction name was clicked on. We *could* have calculated the new reaction counter value and put that in the action, but **it's always better to keep the action objects as small as possible, and do the state update calculations in the reducer**. This also means that **reducers can contain as much logic as necessary to calculate the new state**.
+Notice that **our action object just contains the minimum amount of information needed to describe what happened**. We know which post we need to update, and which reaction name was clicked on. We _could_ have calculated the new reaction counter value and put that in the action, but **it's always better to keep the action objects as small as possible, and do the state update calculations in the reducer**. This also means that **reducers can contain as much logic as necessary to calculate the new state**.
 
 ##### <span class="admonition-icon"> </span>info
 
@@ -1354,8 +1348,7 @@ Copy
 
 Now, every time we click a reaction button, the counter should increment. If we browse around to different parts of the app, we should see the correct counter values displayed any time we look at this post, even if we click a reaction button in the `<PostsList>` and then look at the post by itself on the `<SinglePostPage>`.
 
-<span id="what-youve-learned" class="anchor enhancedAnchor_2LWZ"></span>What You've Learned<a href="#what-youve-learned" class="hash-link" title="Direct link to heading">#</a>
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## <span id="what-youve-learned" class="anchor enhancedAnchor_2LWZ"></span>What You've Learned<a href="#what-youve-learned" class="hash-link" title="Direct link to heading">#</a>
 
 Here's what our app looks like after all these changes:
 
@@ -1365,21 +1358,20 @@ We've covered a lot of information and concepts in this section. Let's recap the
 
 ##### <span class="admonition-icon"> </span>Summary
 
--   **Any React component can use data from the Redux store as needed**
-    -   Any component can read any data that is in the Redux store
-    -   Multiple components can read the same data, even at the same time
-    -   Components should extract the smallest amount of data they need to render themselves
-    -   Components can combine values from props, state, and the Redux store to determine what UI they need to render. They can read multiple pieces of data from the store, and reshape the data as needed for display.
-    -   Any component can dispatch actions to cause state updates
--   **Redux action creators can prepare action objects with the right contents**
-    -   `createSlice` and `createAction` can accept a "prepare callback" that returns the action payload
-    -   Unique IDs and other random values should be put in the action, not calculated in the reducer
--   **Reducers should contain the actual state update logic**
-    -   Reducers can contain whatever logic is needed to calculate the next state
-    -   Action objects should contain just enough info to describe what happened
+- **Any React component can use data from the Redux store as needed**
+  - Any component can read any data that is in the Redux store
+  - Multiple components can read the same data, even at the same time
+  - Components should extract the smallest amount of data they need to render themselves
+  - Components can combine values from props, state, and the Redux store to determine what UI they need to render. They can read multiple pieces of data from the store, and reshape the data as needed for display.
+  - Any component can dispatch actions to cause state updates
+- **Redux action creators can prepare action objects with the right contents**
+  - `createSlice` and `createAction` can accept a "prepare callback" that returns the action payload
+  - Unique IDs and other random values should be put in the action, not calculated in the reducer
+- **Reducers should contain the actual state update logic**
+  - Reducers can contain whatever logic is needed to calculate the next state
+  - Action objects should contain just enough info to describe what happened
 
-<span id="whats-next" class="anchor enhancedAnchor_2LWZ"></span>What's Next?<a href="#whats-next" class="hash-link" title="Direct link to heading">#</a>
---------------------------------------------------------------------------------------------------------------------------------------------------------
+## <span id="whats-next" class="anchor enhancedAnchor_2LWZ"></span>What's Next?<a href="#whats-next" class="hash-link" title="Direct link to heading">#</a>
 
 By now you should be comfortable working with data in the Redux store and React components. So far we've just used data that was in the initial state or added by the user. In [Part 5: Async Logic and Data Fetching](part-5-async-logic.html), we'll see how to work with data that comes from a server API.
 
@@ -1395,40 +1387,40 @@ Next
 
 Redux Essentials, Part 5: Async Logic and Data Fetching »
 
--   <a href="#introduction" class="table-of-contents__link">Introduction</a>
--   <a href="#showing-single-posts" class="table-of-contents__link">Showing Single Posts</a>
-    -   <a href="#creating-a-single-post-page" class="table-of-contents__link">Creating a Single Post Page</a>
-    -   <a href="#adding-the-single-post-route" class="table-of-contents__link">Adding the Single Post Route</a>
--   <a href="#editing-posts" class="table-of-contents__link">Editing Posts</a>
-    -   <a href="#updating-post-entries" class="table-of-contents__link">Updating Post Entries</a>
-    -   <a href="#creating-an-edit-post-form" class="table-of-contents__link">Creating an Edit Post Form</a>
-    -   <a href="#preparing-action-payloads" class="table-of-contents__link">Preparing Action Payloads</a>
--   <a href="#users-and-posts" class="table-of-contents__link">Users and Posts</a>
-    -   <a href="#adding-a-users-slice" class="table-of-contents__link">Adding a Users Slice</a>
-    -   <a href="#adding-authors-for-posts" class="table-of-contents__link">Adding Authors for Posts</a>
--   <a href="#more-post-features" class="table-of-contents__link">More Post Features</a>
-    -   <a href="#storing-dates-for-posts" class="table-of-contents__link">Storing Dates for Posts</a>
-    -   <a href="#sorting-the-posts-list" class="table-of-contents__link">Sorting the Posts List</a>
-    -   <a href="#post-reaction-buttons" class="table-of-contents__link">Post Reaction Buttons</a>
--   <a href="#what-youve-learned" class="table-of-contents__link">What You've Learned</a>
--   <a href="#whats-next" class="table-of-contents__link">What's Next?</a>
+- <a href="#introduction" class="table-of-contents__link">Introduction</a>
+- <a href="#showing-single-posts" class="table-of-contents__link">Showing Single Posts</a>
+  - <a href="#creating-a-single-post-page" class="table-of-contents__link">Creating a Single Post Page</a>
+  - <a href="#adding-the-single-post-route" class="table-of-contents__link">Adding the Single Post Route</a>
+- <a href="#editing-posts" class="table-of-contents__link">Editing Posts</a>
+  - <a href="#updating-post-entries" class="table-of-contents__link">Updating Post Entries</a>
+  - <a href="#creating-an-edit-post-form" class="table-of-contents__link">Creating an Edit Post Form</a>
+  - <a href="#preparing-action-payloads" class="table-of-contents__link">Preparing Action Payloads</a>
+- <a href="#users-and-posts" class="table-of-contents__link">Users and Posts</a>
+  - <a href="#adding-a-users-slice" class="table-of-contents__link">Adding a Users Slice</a>
+  - <a href="#adding-authors-for-posts" class="table-of-contents__link">Adding Authors for Posts</a>
+- <a href="#more-post-features" class="table-of-contents__link">More Post Features</a>
+  - <a href="#storing-dates-for-posts" class="table-of-contents__link">Storing Dates for Posts</a>
+  - <a href="#sorting-the-posts-list" class="table-of-contents__link">Sorting the Posts List</a>
+  - <a href="#post-reaction-buttons" class="table-of-contents__link">Post Reaction Buttons</a>
+- <a href="#what-youve-learned" class="table-of-contents__link">What You've Learned</a>
+- <a href="#whats-next" class="table-of-contents__link">What's Next?</a>
 
 #### Docs
 
--   <a href="../../introduction/getting-started.html" class="footer__link-item">Getting Started</a>
--   <a href="part-1-overview-concepts.html" class="footer__link-item">Tutorial</a>
--   <a href="../../faq.html" class="footer__link-item">FAQ</a>
--   <a href="../../api/api-reference.html" class="footer__link-item">API Reference</a>
+- <a href="../../introduction/getting-started.html" class="footer__link-item">Getting Started</a>
+- <a href="part-1-overview-concepts.html" class="footer__link-item">Tutorial</a>
+- <a href="../../faq.html" class="footer__link-item">FAQ</a>
+- <a href="../../api/api-reference.html" class="footer__link-item">API Reference</a>
 
 #### Community
 
--   <a href="../../../discord.com/invite/0ZcbPKXt5bZ6au5t.html" class="footer__link-item">Reactiflux Discord</a>
--   <a href="../../../stackoverflow.com/questions/tagged/redux.html" class="footer__link-item">Stack Overflow</a>
--   <a href="../../introduction/getting-started.html#help-and-discussion" class="footer__link-item">Feedback</a>
+- <a href="../../../discord.com/invite/0ZcbPKXt5bZ6au5t.html" class="footer__link-item">Reactiflux Discord</a>
+- <a href="../../../stackoverflow.com/questions/tagged/redux.html" class="footer__link-item">Stack Overflow</a>
+- <a href="../../introduction/getting-started.html#help-and-discussion" class="footer__link-item">Feedback</a>
 
 #### More
 
--   <a href="../../../github.com/reduxjs/redux.html" class="footer__link-item">GitHub</a>
--   [![Deploys by Netlify](../../../www.netlify.com/img/global/badges/netlify-color-accent.svg)](../../../www.netlify.com/index.html)
+- <a href="../../../github.com/reduxjs/redux.html" class="footer__link-item">GitHub</a>
+- [![Deploys by Netlify](../../../www.netlify.com/img/global/badges/netlify-color-accent.svg)](../../../www.netlify.com/index.html)
 
 <a href="../../index.html" class="footerLogoLink_MyFc"><img src="../../../d33wubrfki0l68.cloudfront.net/0834d0215db51e91525a25acf97433051f280f2f/c30f5/img/redux.svg" alt="Redux Logo" class="themedImage_1VuW themedImage--light_3UqQ footer__logo" /><img src="../../../d33wubrfki0l68.cloudfront.net/0834d0215db51e91525a25acf97433051f280f2f/c30f5/img/redux.svg" alt="Redux Logo" class="themedImage_1VuW themedImage--dark_hz6m footer__logo" /></a>

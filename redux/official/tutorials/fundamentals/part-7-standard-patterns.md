@@ -14,130 +14,128 @@ Menu
 
 <a href="../../index.html" class="navbar__brand"><img src="../../../d33wubrfki0l68.cloudfront.net/0834d0215db51e91525a25acf97433051f280f2f/c30f5/img/redux.svg" alt="Redux Logo" class="themedImage_1VuW themedImage--light_3UqQ navbar__logo" /><img src="../../../d33wubrfki0l68.cloudfront.net/0834d0215db51e91525a25acf97433051f280f2f/c30f5/img/redux.svg" alt="Redux Logo" class="themedImage_1VuW themedImage--dark_hz6m navbar__logo" /><strong>Redux</strong></a>
 
--   <a href="../../introduction/getting-started.html" class="menu__link">Getting Started</a>
--   <a href="../essentials/part-1-overview-concepts.html" class="menu__link">Tutorial</a>
--   <a href="../../api/api-reference.html" class="menu__link">API</a>
--   <a href="../../faq.html" class="menu__link">FAQ</a>
--   <a href="../../style-guide/style-guide.html" class="menu__link">Best Practices</a>
--   <a href="../../../github.com/reduxjs/redux.html" class="menu__link">GitHub</a>
--   <a href="../../introduction/getting-started.html#help-and-discussion" class="menu__link">Need help?</a>
+- <a href="../../introduction/getting-started.html" class="menu__link">Getting Started</a>
+- <a href="../essentials/part-1-overview-concepts.html" class="menu__link">Tutorial</a>
+- <a href="../../api/api-reference.html" class="menu__link">API</a>
+- <a href="../../faq.html" class="menu__link">FAQ</a>
+- <a href="../../style-guide/style-guide.html" class="menu__link">Best Practices</a>
+- <a href="../../../github.com/reduxjs/redux.html" class="menu__link">GitHub</a>
+- <a href="../../introduction/getting-started.html#help-and-discussion" class="menu__link">Need help?</a>
 
 Menu
 
--   <a href="#!" class="menu__link menu__link--sublist">Introduction</a>
-    -   <a href="../../introduction/getting-started.html" class="menu__link">Getting Started with Redux</a>
-    -   <a href="../../introduction/installation.html" class="menu__link">Installation</a>
-    -   <a href="../../introduction/core-concepts.html" class="menu__link">Core Concepts</a>
-    -   <a href="../../introduction/learning-resources.html" class="menu__link">Learning Resources</a>
-    -   <a href="../../introduction/ecosystem.html" class="menu__link">Ecosystem</a>
-    -   <a href="../../introduction/examples.html" class="menu__link">Examples</a>
--   <a href="#!" class="menu__link menu__link--sublist menu__link--active">Tutorials</a>
-    -   <a href="../index.html" class="menu__link">Tutorials Index</a>
-    -   <a href="../quick-start.html" class="menu__link">Quick Start</a>
-    -   <a href="../typescript-quick-start.html" class="menu__link">TypeScript Quick Start</a>
-    -   <a href="#!" class="menu__link menu__link--sublist">Redux Essentials</a>
-        -   <a href="../essentials/part-1-overview-concepts.html" class="menu__link">Redux Overview and Concepts</a>
-        -   <a href="../essentials/part-2-app-structure.html" class="menu__link">Redux App Structure</a>
-        -   <a href="../essentials/part-3-data-flow.html" class="menu__link">Basic Redux Data Flow</a>
-        -   <a href="../essentials/part-4-using-data.html" class="menu__link">Using Redux Data</a>
-        -   <a href="../essentials/part-5-async-logic.html" class="menu__link">Async Logic and Data Fetching</a>
-        -   <a href="../essentials/part-6-performance-normalization.html" class="menu__link">Performance and Normalizing Data</a>
-    -   <a href="#!" class="menu__link menu__link--sublist menu__link--active">Redux Fundamentals</a>
-        -   <a href="part-1-overview.html" class="menu__link">Redux Overview</a>
-        -   <a href="part-2-concepts-data-flow.html" class="menu__link">Redux Concepts and Data Flow</a>
-        -   <a href="part-3-state-actions-reducers.html" class="menu__link">State, Actions, and Reducers</a>
-        -   <a href="part-4-store.html" class="menu__link">Store</a>
-        -   <a href="part-5-ui-react.html" class="menu__link">UI and React</a>
-        -   <a href="part-6-async-logic.html" class="menu__link">Async Logic and Data Fetching</a>
-        -   <a href="part-7-standard-patterns.html" class="menu__link menu__link--active active">Standard Redux Patterns</a>
-        -   <a href="part-8-modern-redux.html" class="menu__link">Modern Redux with Redux Toolkit</a>
--   <a href="#!" class="menu__link menu__link--sublist">Recipes</a>
-    -   <a href="../../recipes/recipe-index.html" class="menu__link">Recipes: Index</a>
-    -   <a href="../../recipes/configuring-your-store.html" class="menu__link">Configuring Your Store</a>
-    -   <a href="../../recipes/usage-with-typescript.html" class="menu__link">Usage With TypeScript</a>
-    -   <a href="../../recipes/migrating-to-redux.html" class="menu__link">Migrating to Redux</a>
-    -   <a href="../../recipes/using-object-spread-operator.html" class="menu__link">Using Object Spread Operator</a>
-    -   <a href="../../recipes/reducing-boilerplate.html" class="menu__link">Reducing Boilerplate</a>
-    -   <a href="../../recipes/server-rendering.html" class="menu__link">Server Rendering</a>
-    -   <a href="../../recipes/writing-tests.html" class="menu__link">Writing Tests</a>
-    -   <a href="../../recipes/computing-derived-data.html" class="menu__link">Computing Derived Data</a>
-    -   <a href="../../recipes/implementing-undo-history.html" class="menu__link">Implementing Undo History</a>
-    -   <a href="../../recipes/isolating-redux-sub-apps.html" class="menu__link">Isolating Redux Sub-Apps</a>
-    -   <a href="../../recipes/code-splitting.html" class="menu__link">Code Splitting</a>
-    -   <a href="../../recipes/troubleshooting.html" class="menu__link">Troubleshooting</a>
-    -   <a href="#!" class="menu__link menu__link--sublist">Structuring Reducers</a>
-        -   <a href="../../recipes/structuring-reducers/structuring-reducers.html" class="menu__link">Structuring Reducers</a>
-        -   <a href="../../recipes/structuring-reducers/prerequisite-concepts.html" class="menu__link">Prerequisite Concepts</a>
-        -   <a href="../../recipes/structuring-reducers/basic-reducer-structure.html" class="menu__link">Basic Reducer Structure</a>
-        -   <a href="../../recipes/structuring-reducers/splitting-reducer-logic.html" class="menu__link">Splitting Reducer Logic</a>
-        -   <a href="../../recipes/structuring-reducers/refactoring-reducer-example.html" class="menu__link">Refactoring Reducers Example</a>
-        -   <a href="../../recipes/structuring-reducers/using-combinereducers.html" class="menu__link">Using combineReducers</a>
-        -   <a href="../../recipes/structuring-reducers/beyond-combinereducers.html" class="menu__link">Beyond combineReducers</a>
-        -   <a href="../../recipes/structuring-reducers/normalizing-state-shape.html" class="menu__link">Normalizing State Shape</a>
-        -   <a href="../../recipes/structuring-reducers/updating-normalized-data.html" class="menu__link">Updating Normalized Data</a>
-        -   <a href="../../recipes/structuring-reducers/reusing-reducer-logic.html" class="menu__link">Reusing Reducer Logic</a>
-        -   <a href="../../recipes/structuring-reducers/immutable-update-patterns.html" class="menu__link">Immutable Update Patterns</a>
-        -   <a href="../../recipes/structuring-reducers/initializing-state.html" class="menu__link">Initializing State</a>
--   <a href="#!" class="menu__link menu__link--sublist">Understanding Redux</a>
-    -   <a href="#!" class="menu__link menu__link--sublist">Thinking in Redux</a>
-        -   <a href="../../understanding/thinking-in-redux/motivation.html" class="menu__link">Motivation</a>
-        -   <a href="../../understanding/thinking-in-redux/three-principles.html" class="menu__link">Three Principles</a>
-        -   <a href="../../understanding/thinking-in-redux/glossary.html" class="menu__link">Glossary</a>
-    -   <a href="#!" class="menu__link menu__link--sublist">History and Design</a>
-        -   <a href="../../understanding/history-and-design/prior-art.html" class="menu__link">Prior Art</a>
-        -   <a href="../../understanding/history-and-design/middleware.html" class="menu__link">Middleware</a>
--   <a href="#!" class="menu__link menu__link--sublist">FAQ</a>
-    -   <a href="../../faq.html" class="menu__link">FAQ Index</a>
-    -   <a href="../../faq/general.html" class="menu__link">General</a>
-    -   <a href="../../faq/reducers.html" class="menu__link">Reducers</a>
-    -   <a href="../../faq/organizing-state.html" class="menu__link">Organizing State</a>
-    -   <a href="../../faq/store-setup.html" class="menu__link">Store Setup</a>
-    -   <a href="../../faq/actions.html" class="menu__link">Actions</a>
-    -   <a href="../../faq/immutable-data.html" class="menu__link">Immutable Data</a>
-    -   <a href="../../faq/code-structure.html" class="menu__link">Code Structure</a>
-    -   <a href="../../faq/performance.html" class="menu__link">Performance</a>
-    -   <a href="../../faq/design-decisions.html" class="menu__link">Design Decisions</a>
-    -   <a href="../../faq/react-redux.html" class="menu__link">React Redux</a>
-    -   <a href="../../faq/miscellaneous.html" class="menu__link">Miscellaneous</a>
--   <a href="#!" class="menu__link menu__link--sublist">Style Guide</a>
-    -   <a href="../../style-guide/style-guide.html" class="menu__link">Style Guide: Best Practices</a>
--   <a href="#!" class="menu__link menu__link--sublist">API Reference</a>
-    -   <a href="../../api/api-reference.html" class="menu__link">API Reference</a>
-    -   <a href="../../api/createstore.html" class="menu__link">createStore</a>
-    -   <a href="../../api/store.html" class="menu__link">Store</a>
-    -   <a href="../../api/combinereducers.html" class="menu__link">combineReducers</a>
-    -   <a href="../../api/applymiddleware.html" class="menu__link">applyMiddleware</a>
-    -   <a href="../../api/bindactioncreators.html" class="menu__link">bindActionCreators</a>
-    -   <a href="../../api/compose.html" class="menu__link">compose</a>
--   <a href="#!" class="menu__link menu__link--sublist">Redux Toolkit</a>
-    -   <a href="../../redux-toolkit/overview.html" class="menu__link">Redux Toolkit: Overview</a>
+- <a href="#!" class="menu__link menu__link--sublist">Introduction</a>
+  - <a href="../../introduction/getting-started.html" class="menu__link">Getting Started with Redux</a>
+  - <a href="../../introduction/installation.html" class="menu__link">Installation</a>
+  - <a href="../../introduction/core-concepts.html" class="menu__link">Core Concepts</a>
+  - <a href="../../introduction/learning-resources.html" class="menu__link">Learning Resources</a>
+  - <a href="../../introduction/ecosystem.html" class="menu__link">Ecosystem</a>
+  - <a href="../../introduction/examples.html" class="menu__link">Examples</a>
+- <a href="#!" class="menu__link menu__link--sublist menu__link--active">Tutorials</a>
+  - <a href="../index.html" class="menu__link">Tutorials Index</a>
+  - <a href="../quick-start.html" class="menu__link">Quick Start</a>
+  - <a href="../typescript-quick-start.html" class="menu__link">TypeScript Quick Start</a>
+  - <a href="#!" class="menu__link menu__link--sublist">Redux Essentials</a>
+    - <a href="../essentials/part-1-overview-concepts.html" class="menu__link">Redux Overview and Concepts</a>
+    - <a href="../essentials/part-2-app-structure.html" class="menu__link">Redux App Structure</a>
+    - <a href="../essentials/part-3-data-flow.html" class="menu__link">Basic Redux Data Flow</a>
+    - <a href="../essentials/part-4-using-data.html" class="menu__link">Using Redux Data</a>
+    - <a href="../essentials/part-5-async-logic.html" class="menu__link">Async Logic and Data Fetching</a>
+    - <a href="../essentials/part-6-performance-normalization.html" class="menu__link">Performance and Normalizing Data</a>
+  - <a href="#!" class="menu__link menu__link--sublist menu__link--active">Redux Fundamentals</a>
+    - <a href="part-1-overview.html" class="menu__link">Redux Overview</a>
+    - <a href="part-2-concepts-data-flow.html" class="menu__link">Redux Concepts and Data Flow</a>
+    - <a href="part-3-state-actions-reducers.html" class="menu__link">State, Actions, and Reducers</a>
+    - <a href="part-4-store.html" class="menu__link">Store</a>
+    - <a href="part-5-ui-react.html" class="menu__link">UI and React</a>
+    - <a href="part-6-async-logic.html" class="menu__link">Async Logic and Data Fetching</a>
+    - <a href="part-7-standard-patterns.html" class="menu__link menu__link--active active">Standard Redux Patterns</a>
+    - <a href="part-8-modern-redux.html" class="menu__link">Modern Redux with Redux Toolkit</a>
+- <a href="#!" class="menu__link menu__link--sublist">Recipes</a>
+  - <a href="../../recipes/recipe-index.html" class="menu__link">Recipes: Index</a>
+  - <a href="../../recipes/configuring-your-store.html" class="menu__link">Configuring Your Store</a>
+  - <a href="../../recipes/usage-with-typescript.html" class="menu__link">Usage With TypeScript</a>
+  - <a href="../../recipes/migrating-to-redux.html" class="menu__link">Migrating to Redux</a>
+  - <a href="../../recipes/using-object-spread-operator.html" class="menu__link">Using Object Spread Operator</a>
+  - <a href="../../recipes/reducing-boilerplate.html" class="menu__link">Reducing Boilerplate</a>
+  - <a href="../../recipes/server-rendering.html" class="menu__link">Server Rendering</a>
+  - <a href="../../recipes/writing-tests.html" class="menu__link">Writing Tests</a>
+  - <a href="../../recipes/computing-derived-data.html" class="menu__link">Computing Derived Data</a>
+  - <a href="../../recipes/implementing-undo-history.html" class="menu__link">Implementing Undo History</a>
+  - <a href="../../recipes/isolating-redux-sub-apps.html" class="menu__link">Isolating Redux Sub-Apps</a>
+  - <a href="../../recipes/code-splitting.html" class="menu__link">Code Splitting</a>
+  - <a href="../../recipes/troubleshooting.html" class="menu__link">Troubleshooting</a>
+  - <a href="#!" class="menu__link menu__link--sublist">Structuring Reducers</a>
+    - <a href="../../recipes/structuring-reducers/structuring-reducers.html" class="menu__link">Structuring Reducers</a>
+    - <a href="../../recipes/structuring-reducers/prerequisite-concepts.html" class="menu__link">Prerequisite Concepts</a>
+    - <a href="../../recipes/structuring-reducers/basic-reducer-structure.html" class="menu__link">Basic Reducer Structure</a>
+    - <a href="../../recipes/structuring-reducers/splitting-reducer-logic.html" class="menu__link">Splitting Reducer Logic</a>
+    - <a href="../../recipes/structuring-reducers/refactoring-reducer-example.html" class="menu__link">Refactoring Reducers Example</a>
+    - <a href="../../recipes/structuring-reducers/using-combinereducers.html" class="menu__link">Using combineReducers</a>
+    - <a href="../../recipes/structuring-reducers/beyond-combinereducers.html" class="menu__link">Beyond combineReducers</a>
+    - <a href="../../recipes/structuring-reducers/normalizing-state-shape.html" class="menu__link">Normalizing State Shape</a>
+    - <a href="../../recipes/structuring-reducers/updating-normalized-data.html" class="menu__link">Updating Normalized Data</a>
+    - <a href="../../recipes/structuring-reducers/reusing-reducer-logic.html" class="menu__link">Reusing Reducer Logic</a>
+    - <a href="../../recipes/structuring-reducers/immutable-update-patterns.html" class="menu__link">Immutable Update Patterns</a>
+    - <a href="../../recipes/structuring-reducers/initializing-state.html" class="menu__link">Initializing State</a>
+- <a href="#!" class="menu__link menu__link--sublist">Understanding Redux</a>
+  - <a href="#!" class="menu__link menu__link--sublist">Thinking in Redux</a>
+    - <a href="../../understanding/thinking-in-redux/motivation.html" class="menu__link">Motivation</a>
+    - <a href="../../understanding/thinking-in-redux/three-principles.html" class="menu__link">Three Principles</a>
+    - <a href="../../understanding/thinking-in-redux/glossary.html" class="menu__link">Glossary</a>
+  - <a href="#!" class="menu__link menu__link--sublist">History and Design</a>
+    - <a href="../../understanding/history-and-design/prior-art.html" class="menu__link">Prior Art</a>
+    - <a href="../../understanding/history-and-design/middleware.html" class="menu__link">Middleware</a>
+- <a href="#!" class="menu__link menu__link--sublist">FAQ</a>
+  - <a href="../../faq.html" class="menu__link">FAQ Index</a>
+  - <a href="../../faq/general.html" class="menu__link">General</a>
+  - <a href="../../faq/reducers.html" class="menu__link">Reducers</a>
+  - <a href="../../faq/organizing-state.html" class="menu__link">Organizing State</a>
+  - <a href="../../faq/store-setup.html" class="menu__link">Store Setup</a>
+  - <a href="../../faq/actions.html" class="menu__link">Actions</a>
+  - <a href="../../faq/immutable-data.html" class="menu__link">Immutable Data</a>
+  - <a href="../../faq/code-structure.html" class="menu__link">Code Structure</a>
+  - <a href="../../faq/performance.html" class="menu__link">Performance</a>
+  - <a href="../../faq/design-decisions.html" class="menu__link">Design Decisions</a>
+  - <a href="../../faq/react-redux.html" class="menu__link">React Redux</a>
+  - <a href="../../faq/miscellaneous.html" class="menu__link">Miscellaneous</a>
+- <a href="#!" class="menu__link menu__link--sublist">Style Guide</a>
+  - <a href="../../style-guide/style-guide.html" class="menu__link">Style Guide: Best Practices</a>
+- <a href="#!" class="menu__link menu__link--sublist">API Reference</a>
+  - <a href="../../api/api-reference.html" class="menu__link">API Reference</a>
+  - <a href="../../api/createstore.html" class="menu__link">createStore</a>
+  - <a href="../../api/store.html" class="menu__link">Store</a>
+  - <a href="../../api/combinereducers.html" class="menu__link">combineReducers</a>
+  - <a href="../../api/applymiddleware.html" class="menu__link">applyMiddleware</a>
+  - <a href="../../api/bindactioncreators.html" class="menu__link">bindActionCreators</a>
+  - <a href="../../api/compose.html" class="menu__link">compose</a>
+- <a href="#!" class="menu__link menu__link--sublist">Redux Toolkit</a>
+  - <a href="../../redux-toolkit/overview.html" class="menu__link">Redux Toolkit: Overview</a>
 
-<span id="redux-fundamentals-part-7-standard-redux-patterns" class="anchor enhancedAnchor_2LWZ"></span>Redux Fundamentals, Part 7: Standard Redux Patterns<a href="#redux-fundamentals-part-7-standard-redux-patterns" class="hash-link" title="Direct link to heading">#</a>
-=============================================================================================================================================================================================================================================================================
+# <span id="redux-fundamentals-part-7-standard-redux-patterns" class="anchor enhancedAnchor_2LWZ"></span>Redux Fundamentals, Part 7: Standard Redux Patterns<a href="#redux-fundamentals-part-7-standard-redux-patterns" class="hash-link" title="Direct link to heading">#</a>
 
 ##### <span class="admonition-icon"> </span>What You'll Learn
 
--   Standard patterns used in real-world Redux apps, and why those patterns exist:
-    -   Action creators for encapsulating action objects
-    -   Memoized selectors for improving performance
-    -   Tracking request status via loading enums
-    -   Normalizing state for managing collections of items
-    -   Working with promises and thunks
+- Standard patterns used in real-world Redux apps, and why those patterns exist:
+  - Action creators for encapsulating action objects
+  - Memoized selectors for improving performance
+  - Tracking request status via loading enums
+  - Normalizing state for managing collections of items
+  - Working with promises and thunks
 
 ##### <span class="admonition-icon"> </span>Prerequisites
 
--   Understanding the topics in all previous sections
+- Understanding the topics in all previous sections
 
 In [Part 6: Async Logic and Data Fetching](part-6-async-logic.html), we saw how to use Redux middleware to write async logic that can talk to the store. In particular, we used the Redux "thunk" middleware to write functions that can contain reusable async logic, without knowing what Redux store they'll be talking to ahead of time.
 
 So far, we've covered the basics of how Redux actually works. However, real world Redux applications use some additional patterns on top of those basics.
 
-It's important to note that **none of these patterns are *required* to use Redux!** But, there are very good reasons why each of these patterns exists, and you'll see some or all of them in almost every Redux codebase.
+It's important to note that **none of these patterns are _required_ to use Redux!** But, there are very good reasons why each of these patterns exists, and you'll see some or all of them in almost every Redux codebase.
 
 In this section, we'll rework our existing todo app code to use some of these patterns, and talk about why they're commonly used in Redux apps. Then, in [**Part 8**](part-8-modern-redux.html), we'll talk about "modern Redux", including **how to use our official [Redux Toolkit](../../../redux-toolkit.js.org/index.html) package to simplify all the Redux logic we've written "by hand"** in our app, and why **we recommend using Redux Toolkit as the standard approach for writing Redux apps**.
 
-<span id="action-creators" class="anchor enhancedAnchor_2LWZ"></span>Action Creators<a href="#action-creators" class="hash-link" title="Direct link to heading">#</a>
----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## <span id="action-creators" class="anchor enhancedAnchor_2LWZ"></span>Action Creators<a href="#action-creators" class="hash-link" title="Direct link to heading">#</a>
 
 In our app, we've been writing action objects directly in the code, where they're being dispatched:
 
@@ -177,14 +175,14 @@ Copy
 
 #### Detailed Explanation: Why use Action Creators?
 
-In our small example todo app, writing action objects by hand every time isn't too difficult. In fact, by switching to using action creators, we've added *more* work - now we have to write a function *and* the action object.
+In our small example todo app, writing action objects by hand every time isn't too difficult. In fact, by switching to using action creators, we've added _more_ work - now we have to write a function _and_ the action object.
 
 But, what if we needed to dispatch the same action from many parts of the application? Or what if there's some additional logic that we have to do every time we dispatch an action, like creating a unique ID? We'd end up having to copy-paste the additional setup logic every time we need to dispatch that action.
 
 Action creators have two primary purposes:
 
--   They prepare and format the contents of action objects
--   They encapsulate any additional work needed whenever we create those actions
+- They prepare and format the contents of action objects
+- They encapsulate any additional work needed whenever we create those actions
 
 That way, we have a consistent approach for creating actions, whether or not there's any extra work that needs to be done. The same goes for thunks as well.
 
@@ -402,7 +400,7 @@ src/features/todos/todosSlice.js
 
 Copy
 
-Similarly, we *could* shorten the plain action creators if we wanted to:
+Similarly, we _could_ shorten the plain action creators if we wanted to:
 
 src/features/todos/todosSlice.js
 
@@ -416,10 +414,9 @@ It's up to you to decide whether using arrow functions this way is better or not
 
 For more details on why action creators are useful, see:
 
--   [Idiomatic Redux: Why Use Action Creators?](../../../blog.isquaredsoftware.com/2016/10/idiomatic-redux-why-use-action-creators/index.html)
+- [Idiomatic Redux: Why Use Action Creators?](../../../blog.isquaredsoftware.com/2016/10/idiomatic-redux-why-use-action-creators/index.html)
 
-<span id="memoized-selectors" class="anchor enhancedAnchor_2LWZ"></span>Memoized Selectors<a href="#memoized-selectors" class="hash-link" title="Direct link to heading">#</a>
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## <span id="memoized-selectors" class="anchor enhancedAnchor_2LWZ"></span>Memoized Selectors<a href="#memoized-selectors" class="hash-link" title="Direct link to heading">#</a>
 
 We've already seen that we can write "selector" functions, which accept the Redux `state` object as an argument, and return a value:
 
@@ -427,30 +424,30 @@ We've already seen that we can write "selector" functions, which accept the Redu
 
 Copy
 
-What if we need to *derive* some data? For example, maybe we want to have an array of only the todo IDs:
+What if we need to _derive_ some data? For example, maybe we want to have an array of only the todo IDs:
 
 <span class="token keyword" style="color: #f92672">const</span><span class="token plain"> </span><span class="token function-variable function" style="color: #e6d874">selectTodoIds</span><span class="token plain"> </span><span class="token operator" style="color: #f8f8f2">=</span><span class="token plain"> </span><span class="token parameter">state</span><span class="token plain"> </span><span class="token arrow operator" style="color: #f8f8f2">=&gt;</span><span class="token plain"> state</span><span class="token punctuation" style="color: #f8f8f2">.</span><span class="token property-access">todos</span><span class="token punctuation" style="color: #f8f8f2">.</span><span class="token method function property-access" style="color: #e6d874">map</span><span class="token punctuation" style="color: #f8f8f2">(</span><span class="token parameter">todo</span><span class="token plain"> </span><span class="token arrow operator" style="color: #f8f8f2">=&gt;</span><span class="token plain"> todo</span><span class="token punctuation" style="color: #f8f8f2">.</span><span class="token property-access">id</span><span class="token punctuation" style="color: #f8f8f2">)</span>
 
 Copy
 
-However, `array.map()` always returns a new array reference. We know that the React-Redux `useSelector` hook will re-run its selector function after *every* dispatched action, and if the selector result changes, it will force the component to re-render.
+However, `array.map()` always returns a new array reference. We know that the React-Redux `useSelector` hook will re-run its selector function after _every_ dispatched action, and if the selector result changes, it will force the component to re-render.
 
-In this example, **calling `useSelector(selectTodoIds)` will *always* cause the component to re-render after *every* action, because it's returning a new array reference!**
+In this example, **calling `useSelector(selectTodoIds)` will _always_ cause the component to re-render after _every_ action, because it's returning a new array reference!**
 
 In Part 5, we saw that [we can pass `shallowEqual` as an argument to `useSelector`](part-5-ui-react.html#selecting-data-in-list-items-by-id). There's another option here, though: we could use "memoized" selectors.
 
 **Memoization** is a kind of caching - specifically, saving the results of an expensive calculation, and reusing those results if we see the same inputs later.
 
-**Memoized selector functions** are selectors that save the most recent result value, and if you call them multiple times with the same inputs, will return the same result value. If you call them with *different* inputs than last time, they will recalculate a new result value, cache it, and return the new result.
+**Memoized selector functions** are selectors that save the most recent result value, and if you call them multiple times with the same inputs, will return the same result value. If you call them with _different_ inputs than last time, they will recalculate a new result value, cache it, and return the new result.
 
 ### <span id="memoizing-selectors-with-createselector" class="anchor enhancedAnchor_2LWZ"></span>Memoizing Selectors with `createSelector`<a href="#memoizing-selectors-with-createselector" class="hash-link" title="Direct link to heading">#</a>
 
 The **[Reselect library](../../../github.com/reduxjs/reselect.html) provides a `createSelector` API that will generate memoized selector functions**. `createSelector` accepts one or more "input selector" functions as arguments, plus an "output selector", and returns the new selector function. Every time you call the selector:
 
--   All "input selectors" are called with all of the arguments
--   If any of the input selector return values have changed, the "output selector" will re-run
--   All of the input selector results become arguments to the output selector
--   The final result of the output selector is cached for next time
+- All "input selectors" are called with all of the arguments
+- If any of the input selector return values have changed, the "output selector" will re-run
+- All of the input selector results become arguments to the output selector
+- The final result of the output selector is cached for next time
 
 Let's create a memoized version of `selectTodoIds` and use that with our `<TodoList>`.
 
@@ -588,7 +585,7 @@ Copy
 
 ##### <span class="admonition-icon"> </span>caution
 
-Note that we've now added an import dependency between two slices - the `todosSlice` is importing a value from the `filtersSlice`. This is legal, but be careful. **If two slices *both* try to import something from each other, you can end up with a "cyclic import dependency" problem that can cause your code to crash**. If that happens, try moving some common code to its own file and import from that file instead.
+Note that we've now added an import dependency between two slices - the `todosSlice` is importing a value from the `filtersSlice`. This is legal, but be careful. **If two slices _both_ try to import something from each other, you can end up with a "cyclic import dependency" problem that can cause your code to crash**. If that happens, try moving some common code to its own file and import from that file instead.
 
 Now we can use this new "filtered todos" selector as an input to another selector that returns the IDs of those todos:
 
@@ -612,7 +609,7 @@ If we switch `<TodoList>` to use `selectFilteredTodoIds`, we should then be able
 
 ![Todo app - todos marked completed](../../../d33wubrfki0l68.cloudfront.net/b6b70a0a0446ad205a9bbda9a54db0c6e48fa5c5/68bf1/assets/images/todos-app-markedcompleted-fe1ddaba1c85e3f9841728d3945)
 
-and then filter the list to *only* show completed todos:
+and then filter the list to _only_ show completed todos:
 
 ![Todo app - todos marked completed](../../../d33wubrfki0l68.cloudfront.net/4216f70d03b91fe46af6ad3721d06629448746cd/0d52e/assets/images/todos-app-showcompleted-6eeff512e106457fd4fb469d2f663)
 
@@ -692,25 +689,24 @@ Copy
 
 To learn more about how to use Reselect and memoized selectors, see:
 
--   The [Reselect docs](../../../github.com/reduxjs/reselect.html)
--   [Idiomatic Redux: Using Reselect Selectors for Encapsulation and Performance](../../../blog.isquaredsoftware.com/2017/12/idiomatic-redux-using-reselect-selectors/index.html)
+- The [Reselect docs](../../../github.com/reduxjs/reselect.html)
+- [Idiomatic Redux: Using Reselect Selectors for Encapsulation and Performance](../../../blog.isquaredsoftware.com/2017/12/idiomatic-redux-using-reselect-selectors/index.html)
 
-<span id="async-request-status" class="anchor enhancedAnchor_2LWZ"></span>Async Request Status<a href="#async-request-status" class="hash-link" title="Direct link to heading">#</a>
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## <span id="async-request-status" class="anchor enhancedAnchor_2LWZ"></span>Async Request Status<a href="#async-request-status" class="hash-link" title="Direct link to heading">#</a>
 
 We're using an async thunk to fetch the initial list of todos from the server. Since we're using a fake server API, that response comes back immediately. In a real app, the API call might take a while to resolve. In that case, it's common to show some kind of a loading spinner while we wait for the response to complete.
 
 This is usually handled in Redux apps by:
 
--   Having some kind of "loading state" value to indicate the current status of a request
--   Dispatching a "request started" action *before* making the API call, which is handled by changing the loading state value
--   Updating the loading state value again when the request completes to indicate that the call is done
+- Having some kind of "loading state" value to indicate the current status of a request
+- Dispatching a "request started" action _before_ making the API call, which is handled by changing the loading state value
+- Updating the loading state value again when the request completes to indicate that the call is done
 
 The UI layer then shows a loading spinner while the request is in progress, and switches to showing the actual data when the request is complete.
 
 We're going to update our todos slice to track a loading state value, and dispatch an additional `'todos/todosLoading'` action as part of the `fetchTodos` thunk.
 
-Right now, the `state` of our todos reducer is only the array of todos itself. If we want to track the loading state inside the todos slice, we'll need to reorganize the todos state to be an object that has the todos array *and* the loading state value. That also means rewriting the reducer logic to handle the additional nesting:
+Right now, the `state` of our todos reducer is only the array of todos itself. If we want to track the loading state inside the todos slice, we'll need to reorganize the todos state to be an object that has the todos array _and_ the loading state value. That also means rewriting the reducer logic to handle the additional nesting:
 
 src/features/todos/todosSlice.js
 
@@ -792,10 +788,10 @@ Copy
 
 There's a few important things to note here:
 
--   The todos array is now nested as `state.entities` in the `todosReducer` state object. The word "entities" is a term that means "unique items with an ID", which does describe our todo objects.
--   That also means the array is nested in the *entire* Redux state object as `state.todos.entities`
--   We now have to do extra steps in the reducer to copy the additional level of nesting for correct immutable updates, such as `state` object -&gt; `entities` array -&gt; `todo` object
--   Because the rest of our code is *only* accessing the todos state via selectors, **we only need to update the `selectTodos` selector** - the rest of the UI will continue to work as expected even though we reshaped our state considerably.
+- The todos array is now nested as `state.entities` in the `todosReducer` state object. The word "entities" is a term that means "unique items with an ID", which does describe our todo objects.
+- That also means the array is nested in the _entire_ Redux state object as `state.todos.entities`
+- We now have to do extra steps in the reducer to copy the additional level of nesting for correct immutable updates, such as `state` object -&gt; `entities` array -&gt; `todo` object
+- Because the rest of our code is _only_ accessing the todos state via selectors, **we only need to update the `selectTodos` selector** - the rest of the UI will continue to work as expected even though we reshaped our state considerably.
 
 ### <span id="loading-state-enum-values" class="anchor enhancedAnchor_2LWZ"></span>Loading State Enum Values<a href="#loading-state-enum-values" class="hash-link" title="Direct link to heading">#</a>
 
@@ -811,13 +807,13 @@ Copy
 
 instead of an `isLoading` boolean.
 
-A boolean limits us to two possibilities: "loading" or "not loading". In reality, **it's possible for a request to actually be in *many* different states**, such as:
+A boolean limits us to two possibilities: "loading" or "not loading". In reality, **it's possible for a request to actually be in _many_ different states**, such as:
 
--   Hasn't started at all
--   In progress
--   Succeeded
--   Failed
--   Succeeded, but now back in a situation where we might want to refetch
+- Hasn't started at all
+- In progress
+- Succeeded
+- Failed
+- Succeeded, but now back in a situation where we might want to refetch
 
 It's also possible that the app logic should only transition between specific states based on certain actions, and this is harder to implement using booleans.
 
@@ -827,7 +823,7 @@ Because of this, we recommend **storing loading state as a string enum value ins
 
 For a detailed explanation of why loading states should be enums, see:
 
--   [Redux Style Guide: treat reducers as state machines](../../style-guide/style-guide.html#treat-reducers-as-state-machines)
+- [Redux Style Guide: treat reducers as state machines](../../style-guide/style-guide.html#treat-reducers-as-state-machines)
 
 Based on that, we'll add a new "loading" action that will set our status to `'loading'`, and update the "loaded" action to reset the state flag to `'idle'`:
 
@@ -977,10 +973,9 @@ In a real app, we'd also want to handle API failure errors and other potential c
 
 Here's what the app looks like with that loading status enabled (to see the spinner again, reload the app preview or open it in a new tab):
 
-<span id="flux-standard-actions" class="anchor enhancedAnchor_2LWZ"></span>Flux Standard Actions<a href="#flux-standard-actions" class="hash-link" title="Direct link to heading">#</a>
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## <span id="flux-standard-actions" class="anchor enhancedAnchor_2LWZ"></span>Flux Standard Actions<a href="#flux-standard-actions" class="hash-link" title="Direct link to heading">#</a>
 
-The Redux store itself does not actually care what fields you put into your action object. It only cares that `action.type` exists and has a value, and normal Redux actions always use a string for `action.type`. That means that you *could* put any other fields into the action that you want. Maybe we could have `action.todo` for a "todo added" action, or `action.color`, and so on.
+The Redux store itself does not actually care what fields you put into your action object. It only cares that `action.type` exists and has a value, and normal Redux actions always use a string for `action.type`. That means that you _could_ put any other fields into the action that you want. Maybe we could have `action.todo` for a "todo added" action, or `action.color`, and so on.
 
 However, if every action uses different field names for its data fields, it can be hard to know ahead of time what fields you need to handle in each reducer.
 
@@ -988,20 +983,20 @@ That's why the Redux community came up with [the "Flux Standard Actions" convent
 
 The FSA convention says that:
 
--   If your action object has any actual data, that "data" value of your action should always go in `action.payload`
--   An action may also have an `action.meta` field with extra descriptive data
--   An action may have an `action.error` field with error information
+- If your action object has any actual data, that "data" value of your action should always go in `action.payload`
+- An action may also have an `action.meta` field with extra descriptive data
+- An action may have an `action.error` field with error information
 
-So, *all* Redux actions MUST:
+So, _all_ Redux actions MUST:
 
--   be a plain JavaScript object
--   have a `type` field
+- be a plain JavaScript object
+- have a `type` field
 
 And if you write your actions using the FSA pattern, an action MAY
 
--   have a `payload` field
--   have an `error` field
--   have a `meta` field
+- have a `payload` field
+- have an `error` field
+- have a `meta` field
 
 #### Detailed Explanation: FSAs and Errors
 
@@ -1011,20 +1006,19 @@ The FSA specification says that:
 
 The FSA specs also argue against having specific action types for things like "loading succeeded" and "loading failed".
 
-However, in practice, the Redux community has ignored the idea of using `action.error` as a boolean flag, and instead settled on separate action types, like `'todos/todosLoadingSucceeded'` and `'todos/todosLoadingFailed'`. This is because it's much easier to check for those action types than it is to first handle `'todos/todosLoaded'` and *then* check `if (action.error)`.
+However, in practice, the Redux community has ignored the idea of using `action.error` as a boolean flag, and instead settled on separate action types, like `'todos/todosLoadingSucceeded'` and `'todos/todosLoadingFailed'`. This is because it's much easier to check for those action types than it is to first handle `'todos/todosLoaded'` and _then_ check `if (action.error)`.
 
 You can do whichever approach works better for you, but most apps use separate action types for success and failure.
 
-<span id="normalized-state" class="anchor enhancedAnchor_2LWZ"></span>Normalized State<a href="#normalized-state" class="hash-link" title="Direct link to heading">#</a>
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## <span id="normalized-state" class="anchor enhancedAnchor_2LWZ"></span>Normalized State<a href="#normalized-state" class="hash-link" title="Direct link to heading">#</a>
 
 So far, we've kept our todos in an array. This is reasonable, because we received the data from the server as an array, and we also need to loop over the todos to show them as a list in the UI.
 
 However, in larger Redux apps, it is common to store data in a **normalized state structure**. "Normalization" means:
 
--   Making sure there is only one copy of each piece of data
--   Storing items in a way that allows directly finding items by ID
--   Referring to other items based on IDs, instead of copying the entire item
+- Making sure there is only one copy of each piece of data
+- Storing items in a way that allows directly finding items by ID
+- Referring to other items based on IDs, instead of copying the entire item
 
 For example, in a blogging application, you might have `Post` objects that point to `User` and `Comment` objects. There might be many posts by the same person, so if every `Post` object includes an entire `User`, we would have many copies of the same `User` object. Instead, a `Post` object would have a user ID value as `post.user`, and then we could look up `User` objects by ID as `state.users[post.user]`.
 
@@ -1288,17 +1282,16 @@ Fortunately, in [Part 8: Modern Redux with Redux Toolkit](part-8-modern-redux.ht
 
 For now, the important things to understand are:
 
--   Normalization *is* commonly used in Redux apps
--   The primary benefits are being able to look up individual items by ID and ensure that only one copy of an item exists in the state
+- Normalization _is_ commonly used in Redux apps
+- The primary benefits are being able to look up individual items by ID and ensure that only one copy of an item exists in the state
 
 ##### <span class="admonition-icon"> </span>info
 
 For more details on why normalization is useful with Redux, see:
 
--   [Structuring Reducers: Normalizing State Shape](../../recipes/structuring-reducers/normalizing-state-shape.html)
+- [Structuring Reducers: Normalizing State Shape](../../recipes/structuring-reducers/normalizing-state-shape.html)
 
-<span id="thunks-and-promises" class="anchor enhancedAnchor_2LWZ"></span>Thunks and Promises<a href="#thunks-and-promises" class="hash-link" title="Direct link to heading">#</a>
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## <span id="thunks-and-promises" class="anchor enhancedAnchor_2LWZ"></span>Thunks and Promises<a href="#thunks-and-promises" class="hash-link" title="Direct link to heading">#</a>
 
 We have one last pattern to look at for this section. We've already seen how to handle loading state in the Redux store based on dispatched actions. What if we need to look at the results of a thunk in our components?
 
@@ -1428,8 +1421,7 @@ Now, if we add a todo, we'll see a spinner in the header:
 
 ![Todo app - component loading spinner](../../../d33wubrfki0l68.cloudfront.net/5dc92c9d4782e4ac28c96afd10c19179a424c826/073f5/assets/images/todos-app-headerloading-9b4bca9cb4675bf35df09a2e709ec)
 
-<span id="what-youve-learned" class="anchor enhancedAnchor_2LWZ"></span>What You've Learned<a href="#what-youve-learned" class="hash-link" title="Direct link to heading">#</a>
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## <span id="what-youve-learned" class="anchor enhancedAnchor_2LWZ"></span>What You've Learned<a href="#what-youve-learned" class="hash-link" title="Direct link to heading">#</a>
 
 As you've seen, there's several additional patterns that are widely used in Redux apps. These patterns are not required, and may involve writing more code initially, but they provide benefits like making logic reusable, encapsulating implementation details, improving app performance, and making it easier to look up data.
 
@@ -1437,29 +1429,28 @@ As you've seen, there's several additional patterns that are widely used in Redu
 
 For more details on why these patterns exist and how Redux is meant to be used, see:
 
--   [Idiomatic Redux: The Tao of Redux, Part 1 - Implementation and Intent](../../../blog.isquaredsoftware.com/2017/05/idiomatic-redux-tao-of-redux-part-1/index.html)
--   [Idiomatic Redux: The Tao of Redux, Part 2 - Practice and Philosophy](../../../blog.isquaredsoftware.com/2017/05/idiomatic-redux-tao-of-redux-part-2/index.html)
+- [Idiomatic Redux: The Tao of Redux, Part 1 - Implementation and Intent](../../../blog.isquaredsoftware.com/2017/05/idiomatic-redux-tao-of-redux-part-1/index.html)
+- [Idiomatic Redux: The Tao of Redux, Part 2 - Practice and Philosophy](../../../blog.isquaredsoftware.com/2017/05/idiomatic-redux-tao-of-redux-part-2/index.html)
 
 Here's how our app looks after it's been fully converted to use these patterns:
 
 ##### <span class="admonition-icon"> </span>Summary
 
--   **Action creator functions encapsulate preparing action objects and thunks**
-    -   Action creators can accept arguments and contain setup logic, and return the final action object or thunk function
--   **Memoized selectors help improve Redux app performance**
-    -   Reselect has a `createSelector` API that generates memoized selectors
-    -   Memoized selectors return the same result reference if given the same inputs
--   **Request status should be stored as an enum, not booleans**
-    -   Using enums like `'idle'` and `'loading'` helps track status consistently
--   **"Flux Standard Actions" are the common convention for organizing action objects**
-    -   Actions use `payload` for data, `meta` for extra descriptions, and `error` for errors
--   **Normalized state makes it easier to find items by ID**
-    -   Normalized data is stored in objects instead of arrays, with item IDs as keys
--   **Thunks can return promises from `dispatch`**
-    -   Components can wait for async thunks to complete, then do more work
+- **Action creator functions encapsulate preparing action objects and thunks**
+  - Action creators can accept arguments and contain setup logic, and return the final action object or thunk function
+- **Memoized selectors help improve Redux app performance**
+  - Reselect has a `createSelector` API that generates memoized selectors
+  - Memoized selectors return the same result reference if given the same inputs
+- **Request status should be stored as an enum, not booleans**
+  - Using enums like `'idle'` and `'loading'` helps track status consistently
+- **"Flux Standard Actions" are the common convention for organizing action objects**
+  - Actions use `payload` for data, `meta` for extra descriptions, and `error` for errors
+- **Normalized state makes it easier to find items by ID**
+  - Normalized data is stored in objects instead of arrays, with item IDs as keys
+- **Thunks can return promises from `dispatch`**
+  - Components can wait for async thunks to complete, then do more work
 
-<span id="whats-next" class="anchor enhancedAnchor_2LWZ"></span>What's Next?<a href="#whats-next" class="hash-link" title="Direct link to heading">#</a>
---------------------------------------------------------------------------------------------------------------------------------------------------------
+## <span id="whats-next" class="anchor enhancedAnchor_2LWZ"></span>What's Next?<a href="#whats-next" class="hash-link" title="Direct link to heading">#</a>
 
 Writing all this code "by hand" can be time-consuming and difficult. **That's why we recommend that you use our official [Redux Toolkit](../../../redux-toolkit.js.org/index.html) package to write your Redux logic instead**.
 
@@ -1479,35 +1470,35 @@ Next
 
 Redux Fundamentals, Part 8: Modern Redux with Redux Toolkit »
 
--   <a href="#action-creators" class="table-of-contents__link">Action Creators</a>
-    -   <a href="#using-action-creators" class="table-of-contents__link">Using Action Creators</a>
--   <a href="#memoized-selectors" class="table-of-contents__link">Memoized Selectors</a>
-    -   <a href="#memoizing-selectors-with-createselector" class="table-of-contents__link">Memoizing Selectors with <code>createSelector</code></a>
-    -   <a href="#selectors-with-multiple-arguments" class="table-of-contents__link">Selectors with Multiple Arguments</a>
--   <a href="#async-request-status" class="table-of-contents__link">Async Request Status</a>
-    -   <a href="#loading-state-enum-values" class="table-of-contents__link">Loading State Enum Values</a>
--   <a href="#flux-standard-actions" class="table-of-contents__link">Flux Standard Actions</a>
--   <a href="#normalized-state" class="table-of-contents__link">Normalized State</a>
--   <a href="#thunks-and-promises" class="table-of-contents__link">Thunks and Promises</a>
--   <a href="#what-youve-learned" class="table-of-contents__link">What You've Learned</a>
--   <a href="#whats-next" class="table-of-contents__link">What's Next?</a>
+- <a href="#action-creators" class="table-of-contents__link">Action Creators</a>
+  - <a href="#using-action-creators" class="table-of-contents__link">Using Action Creators</a>
+- <a href="#memoized-selectors" class="table-of-contents__link">Memoized Selectors</a>
+  - <a href="#memoizing-selectors-with-createselector" class="table-of-contents__link">Memoizing Selectors with <code>createSelector</code></a>
+  - <a href="#selectors-with-multiple-arguments" class="table-of-contents__link">Selectors with Multiple Arguments</a>
+- <a href="#async-request-status" class="table-of-contents__link">Async Request Status</a>
+  - <a href="#loading-state-enum-values" class="table-of-contents__link">Loading State Enum Values</a>
+- <a href="#flux-standard-actions" class="table-of-contents__link">Flux Standard Actions</a>
+- <a href="#normalized-state" class="table-of-contents__link">Normalized State</a>
+- <a href="#thunks-and-promises" class="table-of-contents__link">Thunks and Promises</a>
+- <a href="#what-youve-learned" class="table-of-contents__link">What You've Learned</a>
+- <a href="#whats-next" class="table-of-contents__link">What's Next?</a>
 
 #### Docs
 
--   <a href="../../introduction/getting-started.html" class="footer__link-item">Getting Started</a>
--   <a href="../essentials/part-1-overview-concepts.html" class="footer__link-item">Tutorial</a>
--   <a href="../../faq.html" class="footer__link-item">FAQ</a>
--   <a href="../../api/api-reference.html" class="footer__link-item">API Reference</a>
+- <a href="../../introduction/getting-started.html" class="footer__link-item">Getting Started</a>
+- <a href="../essentials/part-1-overview-concepts.html" class="footer__link-item">Tutorial</a>
+- <a href="../../faq.html" class="footer__link-item">FAQ</a>
+- <a href="../../api/api-reference.html" class="footer__link-item">API Reference</a>
 
 #### Community
 
--   <a href="../../../discord.com/invite/0ZcbPKXt5bZ6au5t.html" class="footer__link-item">Reactiflux Discord</a>
--   <a href="../../../stackoverflow.com/questions/tagged/redux.html" class="footer__link-item">Stack Overflow</a>
--   <a href="../../introduction/getting-started.html#help-and-discussion" class="footer__link-item">Feedback</a>
+- <a href="../../../discord.com/invite/0ZcbPKXt5bZ6au5t.html" class="footer__link-item">Reactiflux Discord</a>
+- <a href="../../../stackoverflow.com/questions/tagged/redux.html" class="footer__link-item">Stack Overflow</a>
+- <a href="../../introduction/getting-started.html#help-and-discussion" class="footer__link-item">Feedback</a>
 
 #### More
 
--   <a href="../../../github.com/reduxjs/redux.html" class="footer__link-item">GitHub</a>
--   [![Deploys by Netlify](../../../www.netlify.com/img/global/badges/netlify-color-accent.svg)](../../../www.netlify.com/index.html)
+- <a href="../../../github.com/reduxjs/redux.html" class="footer__link-item">GitHub</a>
+- [![Deploys by Netlify](../../../www.netlify.com/img/global/badges/netlify-color-accent.svg)](../../../www.netlify.com/index.html)
 
 <a href="../../index.html" class="footerLogoLink_MyFc"><img src="../../../d33wubrfki0l68.cloudfront.net/0834d0215db51e91525a25acf97433051f280f2f/c30f5/img/redux.svg" alt="Redux Logo" class="themedImage_1VuW themedImage--light_3UqQ footer__logo" /><img src="../../../d33wubrfki0l68.cloudfront.net/0834d0215db51e91525a25acf97433051f280f2f/c30f5/img/redux.svg" alt="Redux Logo" class="themedImage_1VuW themedImage--dark_hz6m footer__logo" /></a>

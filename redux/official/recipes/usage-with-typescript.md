@@ -14,120 +14,118 @@ Menu
 
 <a href="../index.html" class="navbar__brand"><img src="../../d33wubrfki0l68.cloudfront.net/0834d0215db51e91525a25acf97433051f280f2f/c30f5/img/redux.svg" alt="Redux Logo" class="themedImage_1VuW themedImage--light_3UqQ navbar__logo" /><img src="../../d33wubrfki0l68.cloudfront.net/0834d0215db51e91525a25acf97433051f280f2f/c30f5/img/redux.svg" alt="Redux Logo" class="themedImage_1VuW themedImage--dark_hz6m navbar__logo" /><strong>Redux</strong></a>
 
--   <a href="../introduction/getting-started.html" class="menu__link">Getting Started</a>
--   <a href="../tutorials/essentials/part-1-overview-concepts.html" class="menu__link">Tutorial</a>
--   <a href="../api/api-reference.html" class="menu__link">API</a>
--   <a href="../faq.html" class="menu__link">FAQ</a>
--   <a href="../style-guide/style-guide.html" class="menu__link">Best Practices</a>
--   <a href="../../github.com/reduxjs/redux.html" class="menu__link">GitHub</a>
--   <a href="../introduction/getting-started.html#help-and-discussion" class="menu__link">Need help?</a>
+- <a href="../introduction/getting-started.html" class="menu__link">Getting Started</a>
+- <a href="../tutorials/essentials/part-1-overview-concepts.html" class="menu__link">Tutorial</a>
+- <a href="../api/api-reference.html" class="menu__link">API</a>
+- <a href="../faq.html" class="menu__link">FAQ</a>
+- <a href="../style-guide/style-guide.html" class="menu__link">Best Practices</a>
+- <a href="../../github.com/reduxjs/redux.html" class="menu__link">GitHub</a>
+- <a href="../introduction/getting-started.html#help-and-discussion" class="menu__link">Need help?</a>
 
 Menu
 
--   <a href="#!" class="menu__link menu__link--sublist">Introduction</a>
-    -   <a href="../introduction/getting-started.html" class="menu__link">Getting Started with Redux</a>
-    -   <a href="../introduction/installation.html" class="menu__link">Installation</a>
-    -   <a href="../introduction/core-concepts.html" class="menu__link">Core Concepts</a>
-    -   <a href="../introduction/learning-resources.html" class="menu__link">Learning Resources</a>
-    -   <a href="../introduction/ecosystem.html" class="menu__link">Ecosystem</a>
-    -   <a href="../introduction/examples.html" class="menu__link">Examples</a>
--   <a href="#!" class="menu__link menu__link--sublist">Tutorials</a>
-    -   <a href="../tutorials/index.html" class="menu__link">Tutorials Index</a>
-    -   <a href="../tutorials/quick-start.html" class="menu__link">Quick Start</a>
-    -   <a href="../tutorials/typescript-quick-start.html" class="menu__link">TypeScript Quick Start</a>
-    -   <a href="#!" class="menu__link menu__link--sublist">Redux Essentials</a>
-        -   <a href="../tutorials/essentials/part-1-overview-concepts.html" class="menu__link">Redux Overview and Concepts</a>
-        -   <a href="../tutorials/essentials/part-2-app-structure.html" class="menu__link">Redux App Structure</a>
-        -   <a href="../tutorials/essentials/part-3-data-flow.html" class="menu__link">Basic Redux Data Flow</a>
-        -   <a href="../tutorials/essentials/part-4-using-data.html" class="menu__link">Using Redux Data</a>
-        -   <a href="../tutorials/essentials/part-5-async-logic.html" class="menu__link">Async Logic and Data Fetching</a>
-        -   <a href="../tutorials/essentials/part-6-performance-normalization.html" class="menu__link">Performance and Normalizing Data</a>
-    -   <a href="#!" class="menu__link menu__link--sublist">Redux Fundamentals</a>
-        -   <a href="../tutorials/fundamentals/part-1-overview.html" class="menu__link">Redux Overview</a>
-        -   <a href="../tutorials/fundamentals/part-2-concepts-data-flow.html" class="menu__link">Redux Concepts and Data Flow</a>
-        -   <a href="../tutorials/fundamentals/part-3-state-actions-reducers.html" class="menu__link">State, Actions, and Reducers</a>
-        -   <a href="../tutorials/fundamentals/part-4-store.html" class="menu__link">Store</a>
-        -   <a href="../tutorials/fundamentals/part-5-ui-react.html" class="menu__link">UI and React</a>
-        -   <a href="../tutorials/fundamentals/part-6-async-logic.html" class="menu__link">Async Logic and Data Fetching</a>
-        -   <a href="../tutorials/fundamentals/part-7-standard-patterns.html" class="menu__link">Standard Redux Patterns</a>
-        -   <a href="../tutorials/fundamentals/part-8-modern-redux.html" class="menu__link">Modern Redux with Redux Toolkit</a>
--   <a href="#!" class="menu__link menu__link--sublist menu__link--active">Recipes</a>
-    -   <a href="recipe-index.html" class="menu__link">Recipes: Index</a>
-    -   <a href="configuring-your-store.html" class="menu__link">Configuring Your Store</a>
-    -   <a href="usage-with-typescript.html" class="menu__link menu__link--active active">Usage With TypeScript</a>
-    -   <a href="migrating-to-redux.html" class="menu__link">Migrating to Redux</a>
-    -   <a href="using-object-spread-operator.html" class="menu__link">Using Object Spread Operator</a>
-    -   <a href="reducing-boilerplate.html" class="menu__link">Reducing Boilerplate</a>
-    -   <a href="server-rendering.html" class="menu__link">Server Rendering</a>
-    -   <a href="writing-tests.html" class="menu__link">Writing Tests</a>
-    -   <a href="computing-derived-data.html" class="menu__link">Computing Derived Data</a>
-    -   <a href="implementing-undo-history.html" class="menu__link">Implementing Undo History</a>
-    -   <a href="isolating-redux-sub-apps.html" class="menu__link">Isolating Redux Sub-Apps</a>
-    -   <a href="code-splitting.html" class="menu__link">Code Splitting</a>
-    -   <a href="troubleshooting.html" class="menu__link">Troubleshooting</a>
-    -   <a href="#!" class="menu__link menu__link--sublist">Structuring Reducers</a>
-        -   <a href="structuring-reducers/structuring-reducers.html" class="menu__link">Structuring Reducers</a>
-        -   <a href="structuring-reducers/prerequisite-concepts.html" class="menu__link">Prerequisite Concepts</a>
-        -   <a href="structuring-reducers/basic-reducer-structure.html" class="menu__link">Basic Reducer Structure</a>
-        -   <a href="structuring-reducers/splitting-reducer-logic.html" class="menu__link">Splitting Reducer Logic</a>
-        -   <a href="structuring-reducers/refactoring-reducer-example.html" class="menu__link">Refactoring Reducers Example</a>
-        -   <a href="structuring-reducers/using-combinereducers.html" class="menu__link">Using combineReducers</a>
-        -   <a href="structuring-reducers/beyond-combinereducers.html" class="menu__link">Beyond combineReducers</a>
-        -   <a href="structuring-reducers/normalizing-state-shape.html" class="menu__link">Normalizing State Shape</a>
-        -   <a href="structuring-reducers/updating-normalized-data.html" class="menu__link">Updating Normalized Data</a>
-        -   <a href="structuring-reducers/reusing-reducer-logic.html" class="menu__link">Reusing Reducer Logic</a>
-        -   <a href="structuring-reducers/immutable-update-patterns.html" class="menu__link">Immutable Update Patterns</a>
-        -   <a href="structuring-reducers/initializing-state.html" class="menu__link">Initializing State</a>
--   <a href="#!" class="menu__link menu__link--sublist">Understanding Redux</a>
-    -   <a href="#!" class="menu__link menu__link--sublist">Thinking in Redux</a>
-        -   <a href="../understanding/thinking-in-redux/motivation.html" class="menu__link">Motivation</a>
-        -   <a href="../understanding/thinking-in-redux/three-principles.html" class="menu__link">Three Principles</a>
-        -   <a href="../understanding/thinking-in-redux/glossary.html" class="menu__link">Glossary</a>
-    -   <a href="#!" class="menu__link menu__link--sublist">History and Design</a>
-        -   <a href="../understanding/history-and-design/prior-art.html" class="menu__link">Prior Art</a>
-        -   <a href="../understanding/history-and-design/middleware.html" class="menu__link">Middleware</a>
--   <a href="#!" class="menu__link menu__link--sublist">FAQ</a>
-    -   <a href="../faq.html" class="menu__link">FAQ Index</a>
-    -   <a href="../faq/general.html" class="menu__link">General</a>
-    -   <a href="../faq/reducers.html" class="menu__link">Reducers</a>
-    -   <a href="../faq/organizing-state.html" class="menu__link">Organizing State</a>
-    -   <a href="../faq/store-setup.html" class="menu__link">Store Setup</a>
-    -   <a href="../faq/actions.html" class="menu__link">Actions</a>
-    -   <a href="../faq/immutable-data.html" class="menu__link">Immutable Data</a>
-    -   <a href="../faq/code-structure.html" class="menu__link">Code Structure</a>
-    -   <a href="../faq/performance.html" class="menu__link">Performance</a>
-    -   <a href="../faq/design-decisions.html" class="menu__link">Design Decisions</a>
-    -   <a href="../faq/react-redux.html" class="menu__link">React Redux</a>
-    -   <a href="../faq/miscellaneous.html" class="menu__link">Miscellaneous</a>
--   <a href="#!" class="menu__link menu__link--sublist">Style Guide</a>
-    -   <a href="../style-guide/style-guide.html" class="menu__link">Style Guide: Best Practices</a>
--   <a href="#!" class="menu__link menu__link--sublist">API Reference</a>
-    -   <a href="../api/api-reference.html" class="menu__link">API Reference</a>
-    -   <a href="../api/createstore.html" class="menu__link">createStore</a>
-    -   <a href="../api/store.html" class="menu__link">Store</a>
-    -   <a href="../api/combinereducers.html" class="menu__link">combineReducers</a>
-    -   <a href="../api/applymiddleware.html" class="menu__link">applyMiddleware</a>
-    -   <a href="../api/bindactioncreators.html" class="menu__link">bindActionCreators</a>
-    -   <a href="../api/compose.html" class="menu__link">compose</a>
--   <a href="#!" class="menu__link menu__link--sublist">Redux Toolkit</a>
-    -   <a href="../redux-toolkit/overview.html" class="menu__link">Redux Toolkit: Overview</a>
+- <a href="#!" class="menu__link menu__link--sublist">Introduction</a>
+  - <a href="../introduction/getting-started.html" class="menu__link">Getting Started with Redux</a>
+  - <a href="../introduction/installation.html" class="menu__link">Installation</a>
+  - <a href="../introduction/core-concepts.html" class="menu__link">Core Concepts</a>
+  - <a href="../introduction/learning-resources.html" class="menu__link">Learning Resources</a>
+  - <a href="../introduction/ecosystem.html" class="menu__link">Ecosystem</a>
+  - <a href="../introduction/examples.html" class="menu__link">Examples</a>
+- <a href="#!" class="menu__link menu__link--sublist">Tutorials</a>
+  - <a href="../tutorials/index.html" class="menu__link">Tutorials Index</a>
+  - <a href="../tutorials/quick-start.html" class="menu__link">Quick Start</a>
+  - <a href="../tutorials/typescript-quick-start.html" class="menu__link">TypeScript Quick Start</a>
+  - <a href="#!" class="menu__link menu__link--sublist">Redux Essentials</a>
+    - <a href="../tutorials/essentials/part-1-overview-concepts.html" class="menu__link">Redux Overview and Concepts</a>
+    - <a href="../tutorials/essentials/part-2-app-structure.html" class="menu__link">Redux App Structure</a>
+    - <a href="../tutorials/essentials/part-3-data-flow.html" class="menu__link">Basic Redux Data Flow</a>
+    - <a href="../tutorials/essentials/part-4-using-data.html" class="menu__link">Using Redux Data</a>
+    - <a href="../tutorials/essentials/part-5-async-logic.html" class="menu__link">Async Logic and Data Fetching</a>
+    - <a href="../tutorials/essentials/part-6-performance-normalization.html" class="menu__link">Performance and Normalizing Data</a>
+  - <a href="#!" class="menu__link menu__link--sublist">Redux Fundamentals</a>
+    - <a href="../tutorials/fundamentals/part-1-overview.html" class="menu__link">Redux Overview</a>
+    - <a href="../tutorials/fundamentals/part-2-concepts-data-flow.html" class="menu__link">Redux Concepts and Data Flow</a>
+    - <a href="../tutorials/fundamentals/part-3-state-actions-reducers.html" class="menu__link">State, Actions, and Reducers</a>
+    - <a href="../tutorials/fundamentals/part-4-store.html" class="menu__link">Store</a>
+    - <a href="../tutorials/fundamentals/part-5-ui-react.html" class="menu__link">UI and React</a>
+    - <a href="../tutorials/fundamentals/part-6-async-logic.html" class="menu__link">Async Logic and Data Fetching</a>
+    - <a href="../tutorials/fundamentals/part-7-standard-patterns.html" class="menu__link">Standard Redux Patterns</a>
+    - <a href="../tutorials/fundamentals/part-8-modern-redux.html" class="menu__link">Modern Redux with Redux Toolkit</a>
+- <a href="#!" class="menu__link menu__link--sublist menu__link--active">Recipes</a>
+  - <a href="recipe-index.html" class="menu__link">Recipes: Index</a>
+  - <a href="configuring-your-store.html" class="menu__link">Configuring Your Store</a>
+  - <a href="usage-with-typescript.html" class="menu__link menu__link--active active">Usage With TypeScript</a>
+  - <a href="migrating-to-redux.html" class="menu__link">Migrating to Redux</a>
+  - <a href="using-object-spread-operator.html" class="menu__link">Using Object Spread Operator</a>
+  - <a href="reducing-boilerplate.html" class="menu__link">Reducing Boilerplate</a>
+  - <a href="server-rendering.html" class="menu__link">Server Rendering</a>
+  - <a href="writing-tests.html" class="menu__link">Writing Tests</a>
+  - <a href="computing-derived-data.html" class="menu__link">Computing Derived Data</a>
+  - <a href="implementing-undo-history.html" class="menu__link">Implementing Undo History</a>
+  - <a href="isolating-redux-sub-apps.html" class="menu__link">Isolating Redux Sub-Apps</a>
+  - <a href="code-splitting.html" class="menu__link">Code Splitting</a>
+  - <a href="troubleshooting.html" class="menu__link">Troubleshooting</a>
+  - <a href="#!" class="menu__link menu__link--sublist">Structuring Reducers</a>
+    - <a href="structuring-reducers/structuring-reducers.html" class="menu__link">Structuring Reducers</a>
+    - <a href="structuring-reducers/prerequisite-concepts.html" class="menu__link">Prerequisite Concepts</a>
+    - <a href="structuring-reducers/basic-reducer-structure.html" class="menu__link">Basic Reducer Structure</a>
+    - <a href="structuring-reducers/splitting-reducer-logic.html" class="menu__link">Splitting Reducer Logic</a>
+    - <a href="structuring-reducers/refactoring-reducer-example.html" class="menu__link">Refactoring Reducers Example</a>
+    - <a href="structuring-reducers/using-combinereducers.html" class="menu__link">Using combineReducers</a>
+    - <a href="structuring-reducers/beyond-combinereducers.html" class="menu__link">Beyond combineReducers</a>
+    - <a href="structuring-reducers/normalizing-state-shape.html" class="menu__link">Normalizing State Shape</a>
+    - <a href="structuring-reducers/updating-normalized-data.html" class="menu__link">Updating Normalized Data</a>
+    - <a href="structuring-reducers/reusing-reducer-logic.html" class="menu__link">Reusing Reducer Logic</a>
+    - <a href="structuring-reducers/immutable-update-patterns.html" class="menu__link">Immutable Update Patterns</a>
+    - <a href="structuring-reducers/initializing-state.html" class="menu__link">Initializing State</a>
+- <a href="#!" class="menu__link menu__link--sublist">Understanding Redux</a>
+  - <a href="#!" class="menu__link menu__link--sublist">Thinking in Redux</a>
+    - <a href="../understanding/thinking-in-redux/motivation.html" class="menu__link">Motivation</a>
+    - <a href="../understanding/thinking-in-redux/three-principles.html" class="menu__link">Three Principles</a>
+    - <a href="../understanding/thinking-in-redux/glossary.html" class="menu__link">Glossary</a>
+  - <a href="#!" class="menu__link menu__link--sublist">History and Design</a>
+    - <a href="../understanding/history-and-design/prior-art.html" class="menu__link">Prior Art</a>
+    - <a href="../understanding/history-and-design/middleware.html" class="menu__link">Middleware</a>
+- <a href="#!" class="menu__link menu__link--sublist">FAQ</a>
+  - <a href="../faq.html" class="menu__link">FAQ Index</a>
+  - <a href="../faq/general.html" class="menu__link">General</a>
+  - <a href="../faq/reducers.html" class="menu__link">Reducers</a>
+  - <a href="../faq/organizing-state.html" class="menu__link">Organizing State</a>
+  - <a href="../faq/store-setup.html" class="menu__link">Store Setup</a>
+  - <a href="../faq/actions.html" class="menu__link">Actions</a>
+  - <a href="../faq/immutable-data.html" class="menu__link">Immutable Data</a>
+  - <a href="../faq/code-structure.html" class="menu__link">Code Structure</a>
+  - <a href="../faq/performance.html" class="menu__link">Performance</a>
+  - <a href="../faq/design-decisions.html" class="menu__link">Design Decisions</a>
+  - <a href="../faq/react-redux.html" class="menu__link">React Redux</a>
+  - <a href="../faq/miscellaneous.html" class="menu__link">Miscellaneous</a>
+- <a href="#!" class="menu__link menu__link--sublist">Style Guide</a>
+  - <a href="../style-guide/style-guide.html" class="menu__link">Style Guide: Best Practices</a>
+- <a href="#!" class="menu__link menu__link--sublist">API Reference</a>
+  - <a href="../api/api-reference.html" class="menu__link">API Reference</a>
+  - <a href="../api/createstore.html" class="menu__link">createStore</a>
+  - <a href="../api/store.html" class="menu__link">Store</a>
+  - <a href="../api/combinereducers.html" class="menu__link">combineReducers</a>
+  - <a href="../api/applymiddleware.html" class="menu__link">applyMiddleware</a>
+  - <a href="../api/bindactioncreators.html" class="menu__link">bindActionCreators</a>
+  - <a href="../api/compose.html" class="menu__link">compose</a>
+- <a href="#!" class="menu__link menu__link--sublist">Redux Toolkit</a>
+  - <a href="../redux-toolkit/overview.html" class="menu__link">Redux Toolkit: Overview</a>
 
-<span id="usage-with-typescript" class="anchor enhancedAnchor_2LWZ"></span>Usage with TypeScript<a href="#usage-with-typescript" class="hash-link" title="Direct link to heading">#</a>
-=======================================================================================================================================================================================
+# <span id="usage-with-typescript" class="anchor enhancedAnchor_2LWZ"></span>Usage with TypeScript<a href="#usage-with-typescript" class="hash-link" title="Direct link to heading">#</a>
 
 ##### <span class="admonition-icon"> </span>What You'll Learn
 
--   Standard patterns for setting up a Redux app with TypeScript
--   Techniques for correctly typing portions of Redux logic
+- Standard patterns for setting up a Redux app with TypeScript
+- Techniques for correctly typing portions of Redux logic
 
 ##### <span class="admonition-icon"> </span>Prerequisites
 
--   Understanding of [TypeScript syntax and terms](../../www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html)
--   Familiarity with TypeScript concepts like [generics](../../www.typescriptlang.org/docs/handbook/2/generics.html) and [utility types](../../www.typescriptlang.org/docs/handbook/utility-types.html)
--   Knowledge of [React Hooks](../../reactjs.org/docs/hooks-intro.html)
+- Understanding of [TypeScript syntax and terms](../../www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html)
+- Familiarity with TypeScript concepts like [generics](../../www.typescriptlang.org/docs/handbook/2/generics.html) and [utility types](../../www.typescriptlang.org/docs/handbook/utility-types.html)
+- Knowledge of [React Hooks](../../reactjs.org/docs/hooks-intro.html)
 
-<span id="overview" class="anchor enhancedAnchor_2LWZ"></span>Overview<a href="#overview" class="hash-link" title="Direct link to heading">#</a>
-------------------------------------------------------------------------------------------------------------------------------------------------
+## <span id="overview" class="anchor enhancedAnchor_2LWZ"></span>Overview<a href="#overview" class="hash-link" title="Direct link to heading">#</a>
 
 **TypeScript** is a typed superset of JavaScript that provides compile-time checking of source code. When used with Redux, TypeScript can help provide:
 
@@ -141,8 +139,7 @@ We believe that **[pragmatic use of TypeScript](../../blog.isquaredsoftware.com/
 
 There are multiple possible approaches to type checking Redux code. **This page shows our standard recommended patterns for using Redux and TypeScript together**, and is not an exhaustive guide. Following these patterns should result in a good TS usage experience, with **the best tradeoffs between type safety and amount of type declarations you have to add to your codebase**.
 
-<span id="standard-redux-toolkit-project-setup-with-typescript" class="anchor enhancedAnchor_2LWZ"></span>Standard Redux Toolkit Project Setup with TypeScript<a href="#standard-redux-toolkit-project-setup-with-typescript" class="hash-link" title="Direct link to heading">#</a>
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## <span id="standard-redux-toolkit-project-setup-with-typescript" class="anchor enhancedAnchor_2LWZ"></span>Standard Redux Toolkit Project Setup with TypeScript<a href="#standard-redux-toolkit-project-setup-with-typescript" class="hash-link" title="Direct link to heading">#</a>
 
 We assume that a typical Redux project is using Redux Toolkit and React Redux together.
 
@@ -198,8 +195,8 @@ Copy
 
 While it's possible to import the `RootState` and `AppDispatch` types into each component, it's better to **create pre-typed versions of the `useDispatch` and `useSelector` hooks for usage in your application**. This is important for a couple reasons:
 
--   For `useSelector`, it saves you the need to type `(state: RootState)` every time
--   For `useDispatch`, the default `Dispatch` type does not know about thunks or other middleware. In order to correctly dispatch thunks, you need to use the specific customized `AppDispatch` type from the store that includes the thunk middleware types, and use that with `useDispatch`. Adding a pre-typed `useDispatch` hook keeps you from forgetting to import `AppDispatch` where it's needed.
+- For `useSelector`, it saves you the need to type `(state: RootState)` every time
+- For `useDispatch`, the default `Dispatch` type does not know about thunks or other middleware. In order to correctly dispatch thunks, you need to use the specific customized `AppDispatch` type from the store that includes the thunk middleware types, and use that with `useDispatch`. Adding a pre-typed `useDispatch` hook keeps you from forgetting to import `AppDispatch` where it's needed.
 
 Since these are actual variables, not types, it's important to define them in a separate file such as `app/hooks.ts`, not the store setup file. This allows you to import them into any component file that needs to use the hooks, and avoids potential circular import dependency issues.
 
@@ -219,8 +216,7 @@ app/hooks.ts
 
 Copy
 
-<span id="application-usage" class="anchor enhancedAnchor_2LWZ"></span>Application Usage<a href="#application-usage" class="hash-link" title="Direct link to heading">#</a>
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## <span id="application-usage" class="anchor enhancedAnchor_2LWZ"></span>Application Usage<a href="#application-usage" class="hash-link" title="Direct link to heading">#</a>
 
 ### <span id="define-slice-state-and-action-types" class="anchor enhancedAnchor_2LWZ"></span>Define Slice State and Action Types<a href="#define-slice-state-and-action-types" class="hash-link" title="Direct link to heading">#</a>
 
@@ -356,8 +352,7 @@ features/counter/Counter.tsx
 
 Copy
 
-<span id="typing-additional-redux-logic" class="anchor enhancedAnchor_2LWZ"></span>Typing Additional Redux Logic<a href="#typing-additional-redux-logic" class="hash-link" title="Direct link to heading">#</a>
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## <span id="typing-additional-redux-logic" class="anchor enhancedAnchor_2LWZ"></span>Typing Additional Redux Logic<a href="#typing-additional-redux-logic" class="hash-link" title="Direct link to heading">#</a>
 
 ### <span id="type-checking-reducers" class="anchor enhancedAnchor_2LWZ"></span>Type Checking Reducers<a href="#type-checking-reducers" class="hash-link" title="Direct link to heading">#</a>
 
@@ -463,7 +458,7 @@ The dispatch generic should likely only be needed if you are dispatching additio
 
 Copy
 
-You will typically want to provide the `R` (return type) and `S` (state) generic arguments. Unfortunately, TS does not allow only providing *some* generic arguments, so the usual values for the other arguments are `unknown` for `E` and `AnyAction` for `A`:
+You will typically want to provide the `R` (return type) and `S` (state) generic arguments. Unfortunately, TS does not allow only providing _some_ generic arguments, so the usual values for the other arguments are `unknown` for `E` and `AnyAction` for `A`:
 
 <span class="token keyword" style="color: #f92672">import</span><span class="token plain"> </span><span class="token imports punctuation" style="color: #f8f8f2">{</span><span class="token imports"> </span><span class="token imports maybe-class-name">AnyAction</span><span class="token imports"> </span><span class="token imports punctuation" style="color: #f8f8f2">}</span><span class="token plain"> </span><span class="token keyword" style="color: #f92672">from</span><span class="token plain"> </span><span class="token string" style="color: #a6e22e">'redux'</span><span class="token plain"></span>
 
@@ -531,8 +526,7 @@ Note that this assumes that there is no meaningful return value from the thunk. 
 
 Don't forget that **the default `useDispatch` hook does not know about thunks**, and so dispatching a thunk will cause a type error. Be sure to [use an updated form of `Dispatch` in your components that recognizes thunks as an acceptable type to dispatch](#define-root-state-and-dispatch-types).
 
-<span id="usage-with-react-redux" class="anchor enhancedAnchor_2LWZ"></span>Usage with React Redux<a href="#usage-with-react-redux" class="hash-link" title="Direct link to heading">#</a>
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## <span id="usage-with-react-redux" class="anchor enhancedAnchor_2LWZ"></span>Usage with React Redux<a href="#usage-with-react-redux" class="hash-link" title="Direct link to heading">#</a>
 
 While [React Redux](../../react-redux.js.org/index.html) is a separate library from Redux itself, it is commonly used with React.
 
@@ -608,7 +602,7 @@ If you are still using `connect`, you should use the `ConnectedProps<T>` type ex
 
 <span class="token plain"></span><span class="token keyword" style="color: #f92672">const</span><span class="token plain"> mapDispatch </span><span class="token operator" style="color: #f8f8f2">=</span><span class="token plain"> </span><span class="token punctuation" style="color: #f8f8f2">{</span><span class="token plain"></span>
 
-<span class="token plain"> </span><span class="token function-variable function" style="color: #e6d874">toggleOn</span><span class="token operator" style="color: #f8f8f2">:</span><span class="token plain"> </span><span class="token punctuation" style="color: #f8f8f2">(</span><span class="token punctuation" style="color: #f8f8f2">)</span><span class="token plain"> </span><span class="token operator" style="color: #f8f8f2">=&gt;</span><span class="token plain"> </span><span class="token punctuation" style="color: #f8f8f2">(</span><span class="token punctuation" style="color: #f8f8f2">{</span><span class="token plain"> </span><span class="token keyword" style="color: #f92672">type</span><span class="token operator" style="color: #f8f8f2">:</span><span class="token plain"> </span><span class="token string" style="color: #a6e22e">'TOGGLE\_IS\_ON'</span><span class="token plain"> </span><span class="token punctuation" style="color: #f8f8f2">}</span><span class="token punctuation" style="color: #f8f8f2">)</span><span class="token plain"></span>
+<span class="token plain"> </span><span class="token function-variable function" style="color: #e6d874">toggleOn</span><span class="token operator" style="color: #f8f8f2">:</span><span class="token plain"> </span><span class="token punctuation" style="color: #f8f8f2">(</span><span class="token punctuation" style="color: #f8f8f2">)</span><span class="token plain"> </span><span class="token operator" style="color: #f8f8f2">=&gt;</span><span class="token plain"> </span><span class="token punctuation" style="color: #f8f8f2">(</span><span class="token punctuation" style="color: #f8f8f2">{</span><span class="token plain"> </span><span class="token keyword" style="color: #f92672">type</span><span class="token operator" style="color: #f8f8f2">:</span><span class="token plain"> </span><span class="token string" style="color: #a6e22e">'TOGGLE_IS_ON'</span><span class="token plain"> </span><span class="token punctuation" style="color: #f8f8f2">}</span><span class="token punctuation" style="color: #f8f8f2">)</span><span class="token plain"></span>
 
 <span class="token plain"></span><span class="token punctuation" style="color: #f8f8f2">}</span><span class="token plain"></span>
 
@@ -654,8 +648,7 @@ If you are still using `connect`, you should use the `ConnectedProps<T>` type ex
 
 Copy
 
-<span id="usage-with-redux-toolkit" class="anchor enhancedAnchor_2LWZ"></span>Usage with Redux Toolkit<a href="#usage-with-redux-toolkit" class="hash-link" title="Direct link to heading">#</a>
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## <span id="usage-with-redux-toolkit" class="anchor enhancedAnchor_2LWZ"></span>Usage with Redux Toolkit<a href="#usage-with-redux-toolkit" class="hash-link" title="Direct link to heading">#</a>
 
 The [Standard Redux Toolkit Project Setup with TypeScript](#standard-redux-toolkit-project-setup-with-typescript) section already covered the normal usage patterns for `configureStore` and `createSlice`, and the [Redux Toolkit "Usage with TypeScript" page](../../redux-toolkit.js.org/usage/usage-with-typescript.html) covers all of the RTK APIs in detail.
 
@@ -965,36 +958,34 @@ Typing `createEntityAdapter` only requires you to specify the entity type as the
 
 Copy
 
-<span id="additional-recommendations" class="anchor enhancedAnchor_2LWZ"></span>Additional Recommendations<a href="#additional-recommendations" class="hash-link" title="Direct link to heading">#</a>
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## <span id="additional-recommendations" class="anchor enhancedAnchor_2LWZ"></span>Additional Recommendations<a href="#additional-recommendations" class="hash-link" title="Direct link to heading">#</a>
 
 ### <span id="use-the-react-redux-hooks-api" class="anchor enhancedAnchor_2LWZ"></span>Use the React Redux Hooks API<a href="#use-the-react-redux-hooks-api" class="hash-link" title="Direct link to heading">#</a>
 
 **We recommend using the React Redux hooks API as the default approach**. The hooks API is much simpler to use with TypeScript, as `useSelector` is a simple hook that takes a selector function, and the return type is easily inferred from the type of the `state` argument.
 
-While `connect` still works fine, and *can* be typed, it's much more difficult to type correctly.
+While `connect` still works fine, and _can_ be typed, it's much more difficult to type correctly.
 
 ### <span id="avoid-action-type-unions" class="anchor enhancedAnchor_2LWZ"></span>Avoid Action Type Unions<a href="#avoid-action-type-unions" class="hash-link" title="Direct link to heading">#</a>
 
-**We specifically recommend *against* trying to create unions of action types**, as it provides no real benefit and actually misleads the compiler in some ways. See RTK maintainer Lenz Weber's post [Do Not Create Union Types with Redux Action Types](../../phryneas.de/redux-typescript-no-discriminating-union.html) for an explanation of why this is a problem.
+**We specifically recommend _against_ trying to create unions of action types**, as it provides no real benefit and actually misleads the compiler in some ways. See RTK maintainer Lenz Weber's post [Do Not Create Union Types with Redux Action Types](../../phryneas.de/redux-typescript-no-discriminating-union.html) for an explanation of why this is a problem.
 
 In addition, if you're using `createSlice`, you already know that all actions defined by that slice are being handled correctly.
 
-<span id="resources" class="anchor enhancedAnchor_2LWZ"></span>Resources<a href="#resources" class="hash-link" title="Direct link to heading">#</a>
----------------------------------------------------------------------------------------------------------------------------------------------------
+## <span id="resources" class="anchor enhancedAnchor_2LWZ"></span>Resources<a href="#resources" class="hash-link" title="Direct link to heading">#</a>
 
 For further information, see these additional resources:
 
--   Redux library documentation:
-    -   [React Redux docs: Static Typing](../../react-redux.js.org/using-react-redux/usage-with-typescript.html): Examples of how to use the React Redux APIs with TypeScript
-    -   [Redux Toolkit docs: Usage with TypeScript](../../redux-toolkit.js.org/usage/usage-with-typescript.html): Examples of how to use the Redux Toolkit APIs with TypeScript
--   React + Redux + TypeScript guides:
-    -   [React+TypeScript Cheatsheet](../../github.com/typescript-cheatsheets/react.html): a comprehensive guide to using React with TypeScript
-    -   [React + Redux in TypeScript Guide](../../github.com/piotrwitek/react-redux-typescript-guide.html): extensive information on patterns for using React and Redux with TypeScript
-        -   *Note: while this guide has some useful info, many of the patterns it shows go against our recommended practices shown in this page, such as using action type unions. We link this out of completeness*
--   Other articles:
-    -   [Do Not Create Union Types with Redux Action Types](../../phryneas.de/redux-typescript-no-discriminating-union.html)
-    -   [Redux with Code-Splitting and Type Checking](../../www.matthewgerstman.com/tech/redux-code-split-typecheck/index.html)
+- Redux library documentation:
+  - [React Redux docs: Static Typing](../../react-redux.js.org/using-react-redux/usage-with-typescript.html): Examples of how to use the React Redux APIs with TypeScript
+  - [Redux Toolkit docs: Usage with TypeScript](../../redux-toolkit.js.org/usage/usage-with-typescript.html): Examples of how to use the Redux Toolkit APIs with TypeScript
+- React + Redux + TypeScript guides:
+  - [React+TypeScript Cheatsheet](../../github.com/typescript-cheatsheets/react.html): a comprehensive guide to using React with TypeScript
+  - [React + Redux in TypeScript Guide](../../github.com/piotrwitek/react-redux-typescript-guide.html): extensive information on patterns for using React and Redux with TypeScript
+    - _Note: while this guide has some useful info, many of the patterns it shows go against our recommended practices shown in this page, such as using action type unions. We link this out of completeness_
+- Other articles:
+  - [Do Not Create Union Types with Redux Action Types](../../phryneas.de/redux-typescript-no-discriminating-union.html)
+  - [Redux with Code-Splitting and Type Checking](../../www.matthewgerstman.com/tech/redux-code-split-typecheck/index.html)
 
 <a href="configuring-your-store.html" class="pagination-nav__link"></a>
 
@@ -1008,48 +999,48 @@ Next
 
 Migrating to Redux »
 
--   <a href="#overview" class="table-of-contents__link">Overview</a>
--   <a href="#standard-redux-toolkit-project-setup-with-typescript" class="table-of-contents__link">Standard Redux Toolkit Project Setup with TypeScript</a>
-    -   <a href="#define-root-state-and-dispatch-types" class="table-of-contents__link">Define Root State and Dispatch Types</a>
-    -   <a href="#define-typed-hooks" class="table-of-contents__link">Define Typed Hooks</a>
--   <a href="#application-usage" class="table-of-contents__link">Application Usage</a>
-    -   <a href="#define-slice-state-and-action-types" class="table-of-contents__link">Define Slice State and Action Types</a>
-    -   <a href="#use-typed-hooks-in-components" class="table-of-contents__link">Use Typed Hooks in Components</a>
--   <a href="#typing-additional-redux-logic" class="table-of-contents__link">Typing Additional Redux Logic</a>
-    -   <a href="#type-checking-reducers" class="table-of-contents__link">Type Checking Reducers</a>
-    -   <a href="#type-checking-middleware" class="table-of-contents__link">Type Checking Middleware</a>
-    -   <a href="#type-checking-redux-thunks" class="table-of-contents__link">Type Checking Redux Thunks</a>
--   <a href="#usage-with-react-redux" class="table-of-contents__link">Usage with React Redux</a>
-    -   <a href="#typing-the-useselector-hook" class="table-of-contents__link">Typing the <code>useSelector</code> hook</a>
-    -   <a href="#typing-the-usedispatch-hook" class="table-of-contents__link">Typing the <code>useDispatch</code> hook</a>
-    -   <a href="#typing-the-connect-higher-order-component" class="table-of-contents__link">Typing the <code>connect</code> higher order component</a>
--   <a href="#usage-with-redux-toolkit" class="table-of-contents__link">Usage with Redux Toolkit</a>
-    -   <a href="#typing-configurestore" class="table-of-contents__link">Typing <code>configureStore</code></a>
-    -   <a href="#matching-actions" class="table-of-contents__link">Matching Actions</a>
-    -   <a href="#typing-createslice" class="table-of-contents__link">Typing <code>createSlice</code></a>
-    -   <a href="#typing-createasyncthunk" class="table-of-contents__link">Typing <code>createAsyncThunk</code></a>
-    -   <a href="#typing-createentityadapter" class="table-of-contents__link">Typing <code>createEntityAdapter</code></a>
--   <a href="#additional-recommendations" class="table-of-contents__link">Additional Recommendations</a>
-    -   <a href="#use-the-react-redux-hooks-api" class="table-of-contents__link">Use the React Redux Hooks API</a>
-    -   <a href="#avoid-action-type-unions" class="table-of-contents__link">Avoid Action Type Unions</a>
--   <a href="#resources" class="table-of-contents__link">Resources</a>
+- <a href="#overview" class="table-of-contents__link">Overview</a>
+- <a href="#standard-redux-toolkit-project-setup-with-typescript" class="table-of-contents__link">Standard Redux Toolkit Project Setup with TypeScript</a>
+  - <a href="#define-root-state-and-dispatch-types" class="table-of-contents__link">Define Root State and Dispatch Types</a>
+  - <a href="#define-typed-hooks" class="table-of-contents__link">Define Typed Hooks</a>
+- <a href="#application-usage" class="table-of-contents__link">Application Usage</a>
+  - <a href="#define-slice-state-and-action-types" class="table-of-contents__link">Define Slice State and Action Types</a>
+  - <a href="#use-typed-hooks-in-components" class="table-of-contents__link">Use Typed Hooks in Components</a>
+- <a href="#typing-additional-redux-logic" class="table-of-contents__link">Typing Additional Redux Logic</a>
+  - <a href="#type-checking-reducers" class="table-of-contents__link">Type Checking Reducers</a>
+  - <a href="#type-checking-middleware" class="table-of-contents__link">Type Checking Middleware</a>
+  - <a href="#type-checking-redux-thunks" class="table-of-contents__link">Type Checking Redux Thunks</a>
+- <a href="#usage-with-react-redux" class="table-of-contents__link">Usage with React Redux</a>
+  - <a href="#typing-the-useselector-hook" class="table-of-contents__link">Typing the <code>useSelector</code> hook</a>
+  - <a href="#typing-the-usedispatch-hook" class="table-of-contents__link">Typing the <code>useDispatch</code> hook</a>
+  - <a href="#typing-the-connect-higher-order-component" class="table-of-contents__link">Typing the <code>connect</code> higher order component</a>
+- <a href="#usage-with-redux-toolkit" class="table-of-contents__link">Usage with Redux Toolkit</a>
+  - <a href="#typing-configurestore" class="table-of-contents__link">Typing <code>configureStore</code></a>
+  - <a href="#matching-actions" class="table-of-contents__link">Matching Actions</a>
+  - <a href="#typing-createslice" class="table-of-contents__link">Typing <code>createSlice</code></a>
+  - <a href="#typing-createasyncthunk" class="table-of-contents__link">Typing <code>createAsyncThunk</code></a>
+  - <a href="#typing-createentityadapter" class="table-of-contents__link">Typing <code>createEntityAdapter</code></a>
+- <a href="#additional-recommendations" class="table-of-contents__link">Additional Recommendations</a>
+  - <a href="#use-the-react-redux-hooks-api" class="table-of-contents__link">Use the React Redux Hooks API</a>
+  - <a href="#avoid-action-type-unions" class="table-of-contents__link">Avoid Action Type Unions</a>
+- <a href="#resources" class="table-of-contents__link">Resources</a>
 
 #### Docs
 
--   <a href="../introduction/getting-started.html" class="footer__link-item">Getting Started</a>
--   <a href="../tutorials/essentials/part-1-overview-concepts.html" class="footer__link-item">Tutorial</a>
--   <a href="../faq.html" class="footer__link-item">FAQ</a>
--   <a href="../api/api-reference.html" class="footer__link-item">API Reference</a>
+- <a href="../introduction/getting-started.html" class="footer__link-item">Getting Started</a>
+- <a href="../tutorials/essentials/part-1-overview-concepts.html" class="footer__link-item">Tutorial</a>
+- <a href="../faq.html" class="footer__link-item">FAQ</a>
+- <a href="../api/api-reference.html" class="footer__link-item">API Reference</a>
 
 #### Community
 
--   <a href="../../discord.com/invite/0ZcbPKXt5bZ6au5t.html" class="footer__link-item">Reactiflux Discord</a>
--   <a href="../../stackoverflow.com/questions/tagged/redux.html" class="footer__link-item">Stack Overflow</a>
--   <a href="../introduction/getting-started.html#help-and-discussion" class="footer__link-item">Feedback</a>
+- <a href="../../discord.com/invite/0ZcbPKXt5bZ6au5t.html" class="footer__link-item">Reactiflux Discord</a>
+- <a href="../../stackoverflow.com/questions/tagged/redux.html" class="footer__link-item">Stack Overflow</a>
+- <a href="../introduction/getting-started.html#help-and-discussion" class="footer__link-item">Feedback</a>
 
 #### More
 
--   <a href="../../github.com/reduxjs/redux.html" class="footer__link-item">GitHub</a>
--   [![Deploys by Netlify](../../www.netlify.com/img/global/badges/netlify-color-accent.svg)](../../www.netlify.com/index.html)
+- <a href="../../github.com/reduxjs/redux.html" class="footer__link-item">GitHub</a>
+- [![Deploys by Netlify](../../www.netlify.com/img/global/badges/netlify-color-accent.svg)](../../www.netlify.com/index.html)
 
 <a href="../index.html" class="footerLogoLink_MyFc"><img src="../../d33wubrfki0l68.cloudfront.net/0834d0215db51e91525a25acf97433051f280f2f/c30f5/img/redux.svg" alt="Redux Logo" class="themedImage_1VuW themedImage--light_3UqQ footer__logo" /><img src="../../d33wubrfki0l68.cloudfront.net/0834d0215db51e91525a25acf97433051f280f2f/c30f5/img/redux.svg" alt="Redux Logo" class="themedImage_1VuW themedImage--dark_hz6m footer__logo" /></a>
