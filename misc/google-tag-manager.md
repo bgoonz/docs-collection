@@ -1,10 +1,8 @@
-Developer Guide
-===============
+# Developer Guide
 
 This document describes details of how to implement Google tag Manager on your site.
 
-Using a Data Layer
-------------------
+## Using a Data Layer
 
 To ensure maximum flexibility, portability, and ease of implementation, Google Tag Manager functions best when deployed alongside a data layer. A data layer is an object that contains all of the information that you want to pass to Google Tag Manager. Information such as events or variables can be passed to Google Tag Manager via the data layer, and triggers can be set up in Google Tag Manager based on the values of variables (e.g., fire a remarketing tag when `purchase_total` > $100) or based on the specific events. Variable values can also be passed through to other tags (e.g., pass `purchase_total` into the value field of a tag).
 
@@ -31,7 +29,9 @@ If the data layer code is called after the container snippet, any variables decl
 #### Incorrect
 
 <!-- Google Tag Manager -->\
+
 ...\
+
 <!-- End Google Tag Manager -->\
 <script>\
   dataLayer =  [{\ 'pageCategory':  'signup',\ 'visitorType':  'high-value'\ }];\
@@ -45,7 +45,9 @@ Note: If you put the Google Tag Manager container snippet above the dataLayer ar
   dataLayer =  [{\ 'pageCategory':  'signup',\ 'visitorType':  'high-value'\ }];\
 </script>\
 <!-- Google Tag Manager -->\
+
 ...\
+
 <!-- End Google Tag Manager -->
 
 Each of the variables declared within the data layer object will persist as long as the visitor remains on the current page. Data layer variables that are relevant across pages (e.g. `visitorType`) must therefore be declared in the data layer on each page of your website. While you don't need to put the same set of variables in the data layer on every page, you should use a consistent naming convention. In other words, if you set the page category on the signup page using `pageCategory`, to set a page category on a purchase page, you should do so using `pageCategory` as well.
@@ -58,7 +60,7 @@ Google Tag Manager provides a special data layer variable called an `event` th
 
 This functionality is accomplished by calling the `push` API as a method of the data layer on your page (e.g. attached to the particular elements to be tracked). The basic syntax for setting an event, then, is as follows:
 
-dataLayer.push({'event':  'event_name'});
+dataLayer.push({'event': 'event_name'});
 
 where `event_name` is a string indicating what the given event or element is.
 
@@ -72,29 +74,29 @@ Data layer variables may be pushed dynamically to the data layer to capture info
 
 As with events, this functionality is accomplished by calling the `push()` API to add or replace data layer variables in the data layer. The basic syntax for setting dynamic data layer variables, then, is as follows:
 
-dataLayer.push({'variable_name':  'variable_value'});
+dataLayer.push({'variable_name': 'variable_value'});
 
 Where `variable_name` is a string indicating the name of the data layer variable to be set, and `variable_value` is a string indicating the value of the data layer variable to be set or replaced.
 
 As an example, to set a data layer variable with a color preference when the visitor engages with a car customization widget, you might push the following dynamic data layer variable:
 
-dataLayer.push({'color':  'red'});
+dataLayer.push({'color': 'red'});
 
 ### One Push, Multiple Variables
 
 Instead of using `dataLayer.push()` for each variable and event, you can push multiple variables and events at once. Here's an example of how to do this:
 
-dataLayer.push({\ 'color':  'red',\ 'conversionValue':  50,\ 'event':  'customizeCar'\
+dataLayer.push({\ 'color': 'red',\ 'conversionValue': 50,\ 'event': 'customizeCar'\
 });
 
 You can use the same technique within a link event handler:
 
-<a  href="#"\
+<a href="#"\
    name="color"\
    onclick="dataLayer.push({\
-     'color':  'red',\
-     'conversionValue':  50,\
-     'event':  'customizeCar'});">Customize Color</a>
+     'color': 'red',\
+     'conversionValue': 50,\
+     'event': 'customizeCar'});">Customize Color</a>
 
 It's important to note that pushing a variable of the same name as an existing variable to the data layer will cause the existing value to be overwritten by the new value. For example, if upon clicking the above link, there were already a variable named `color` with a value of `blue` declared within the data layer, that value would be overwritten moving forward with the new value of `red`.
 
@@ -120,17 +122,17 @@ When you use assignment to assign values to `dataLayer` e.g. `dataLayer = [{'
 
 If you try to push a variable or event without the proper casing, the push will not work. Examples:
 
-datalayer.push({'pageTitle':  'Home'}); // Won't work
+datalayer.push({'pageTitle': 'Home'}); // Won't work
 
-dataLayer.push({'pageTitle':  'Home'}); // Better
+dataLayer.push({'pageTitle': 'Home'}); // Better
 
 #### Variable names should be enclosed in quotes
 
 While quotes are not strictly required for variable names that consist of only letters, numbers, and underscores, and which are not reserved words (e.g. function, export, native, etc.), to avoid issues, it's recommended that all variable names be enclosed in quotes. Examples:
 
-dataLayer.push({new-variable:  'value'}); // Won't work
+dataLayer.push({new-variable: 'value'}); // Won't work
 
-dataLayer.push({'new-variable':  'value'}); // Better
+dataLayer.push({'new-variable': 'value'}); // Better
 
 #### Variable names should be kept consistent across pages
 
@@ -139,18 +141,18 @@ If you use different variable names for the same variables on different pages, G
 ##### Won't work
 
 // Homepage:\
-dataLayer.push({'visitorType':  'low-value'});
+dataLayer.push({'visitorType': 'low-value'});
 
 // Checkout Page:\
-dataLayer.push({'visitor_type':  'high-value'});
+dataLayer.push({'visitor_type': 'high-value'});
 
 ##### Better
 
 // Homepage:\
-dataLayer.push({'visitorType':  'low-value'});
+dataLayer.push({'visitorType': 'low-value'});
 
 // Checkout Page:\
-dataLayer.push({'visitorType':  'high-value'});
+dataLayer.push({'visitorType': 'high-value'});
 
 #### Any information needed to fire tags on a page load must be declared in the data layer above the container snippet
 
@@ -177,8 +179,7 @@ Then, all references to your data layer (i.e. when declaring the data layer abov
 <script>\ myNewName  =  [{\ // ...\ }];\ myNewName.push({'variable_name':  'variable_value'});\
 </script>
 
-Migrating Tags to Google Tag Manager
-------------------------------------
+## Migrating Tags to Google Tag Manager
 
 In order to gain the most value from Google Tag Manager, we recommend that you migrate most of your existing tags into Google Tag Manager (tags that are [not supported](https://support.google.com/tagmanager/answer/6103576) should not be migrated). This section describes a best practice migration workflow. The process has 5 main steps:
 
@@ -202,15 +203,14 @@ In order to gain the most value from Google Tag Manager, we recommend that you m
 
     The last step is where you simultaneously swap out your old tags and publish your tags in Google Tag Manager. Within a few minutes of each other, you'll want to:
 
-    -   Remove your site tags in a single code push
-    -   Once you know this push is successful, press the "Publish" button for your container version.
+    - Remove your site tags in a single code push
+    - Once you know this push is successful, press the "Publish" button for your container version.
 
     This method might cause a small gap in data, but once the initial swap occurs, no more data gaps will appear. Alternatively, you could swap the order here and publish shortly before your site changes go live. This might cause minor, one-time data duplication instead of a small data gap.
 
 After you've completed the initial migration to Google Tag Manager, any subsequent tagging needs you have can be handled without site code changes via the Google Tag Manager interface.
 
-Multiple Domains
-----------------
+## Multiple Domains
 
 While you can use the same container for multiple websites it's recommended that each separate web property that you manage be deployed with its own container. This separation will prevent changes specific to one website from having undesired effects on other websites using the same container. In some situations, however, when multiple Top Level Domains or subdomains are considered to be members of the same website, it may be beneficial to manage their tags through the same Google Tag Manager container.
 
@@ -222,8 +222,7 @@ For example, you may choose to deploy your Google Analytics tracking code throug
 
 In such a case, you would add a line of code to your GA tracking code to manually set the first-party domain on which to set the GA cookies (e.g. on `www.example-petstore.com` and `dogs.example-petstore.com`, you might set the cookies to the common domain, `.example-petstore.com`). However, on the secondary site, `www.my-example-blogsite.com`, you might set the cookies to `.my-example-blogsite.com`. Therefore, you would want one of two GA tracking code tags (one set to `.example-petstore.com`, and one set to `.my-example-blogsite.com`) to fire on each of the two domains. If both domains were sharing a common GTM container, using the default "All Pages" trigger in Google Tag Manager, would cause each tag to fire on all pages of both domains.
 
-Multiple Containers on a Page
------------------------------
+## Multiple Containers on a Page
 
 For the best performance of a page, keep the number of Google Tag Manager containers on the page minimal.
 
@@ -248,39 +247,39 @@ If you use more than one container on a page, implement the container snippets w
 2.  Copy the following snippet and paste it immediately after the opening `<body>` tag on the page:
 
     <!-- Google Tag Manager (noscript) -->\
-    <noscript><iframe  src="//www.googletagmanager.com/ns.html?id=GTM-XXXX"\
-    height="0"  width="0"  style="display:none;visibility:hidden"></iframe></noscript>
 
-    <noscript><iframe  src="//www.googletagmanager.com/ns.html?id=GTM-YYYY"\
-    height="0"  width="0"  style="display:none;visibility:hidden"></iframe></noscript>\
+    <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-XXXX"\
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+    <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-YYYY"\
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>\
     <!-- End Google Tag Manager (noscript) -->
 
 Note that you can use only a single common data layer for all Google Tag Manager containers on a page because using more than one data layer can cause some triggers to stop working and could have other implications. So don't rename the data layer for a subset of containers on the page. You can, if necessary, rename the data layer for all containers on the page.
 
 Avoid implementing a Google Tag Manager container through a custom HTML tag in another Google Tag Manager container because it could add latency in the tags from the secondary container and could have other implications.
 
-Adding Data Layer Variables for Devices without JavaScript Support
-------------------------------------------------------------------
+## Adding Data Layer Variables for Devices without JavaScript Support
 
 In order to accommodate visitors who have JavaScript disabled or are visiting from devices that don't support JavaScript, Google Tag Manager includes a `<noscript>` snippet to deploy non-JavaScript dependent tags even when the primary GTM JavaScript cannot load.
 
 It's important to note, however, that the data layer (containing the data layer variables declared on page load) and any events or dynamic data layer variables pushed to the data layer all rely on JavaScript to function. Therefore, if any of the triggers to fire your non-JavaScript dependent tags (that you want to fire even when JavaScript can't load) depend on data layer variables, you must pass those Data Layer Variables to the `<noscript>` iframe as query parameters. For example, to fire a tag when the `pageCategory` is `sports` and the `visitorType` is `returning`, you would modify the container snippet on the given page as follows:
 
 <!-- Google Tag Manager (noscript) -->\
-<noscript><iframe  src="//www.googletagmanager.com/ns.html?id=GTM-XXXX&pageCategory=sports&visitorType=returning"  height="0"\ width="0"  style="display:none;visibility:hidden"></iframe></noscript>\
+
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-XXXX&pageCategory=sports&visitorType=returning" height="0"\ width="0" style="display:none;visibility:hidden"></iframe></noscript>\
+
 <!-- End Google Tag Manager (noscript) -->
 
 Where each data layer variable is appended to the end of the iframe's source URL as plain text query parameters separated by ampersands.
 
-Security
---------
+## Security
 
 Google Tag Manager incorporates a host of features to help ensure the security of your websites and apps. In addition to the following code-level security features, you may also want to familiarize yourself with Tag Manager's [access controls](https://support.google.com/tagmanager/answer/6107011) , [2-step verification](https://support.google.com/tagmanager/answer/4525539), and [malware detection](https://support.google.com/tagmanager/answer/6328489).
 
 Administrators can [restrict tag deployment](https://developers.google.com/tag-manager/web/restrict) for their installations to allow only specific tags to be deployed. You can also configure Google Tag Manager to work with a [CSP implementation](https://developers.google.com/tag-manager/web/csp).
 
-Using a protocol-relative URL
------------------------------
+## Using a protocol-relative URL
 
 By default, the Google Tag Manager container snippet always uses https to load containers (i.e., `https://www.googletagmanager.com`). This helps protect your container from malicious parties and snooping, and in many cases, also improves performance.
 
@@ -295,8 +294,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=\
 <!-- End Google Tag Manager -->
 
 <!-- Google Tag Manager (noscript) -->\
-<noscript><iframe  src="//www.googletagmanager.com/ns.html?id=GTM-XXXX"\
-height="0"  width="0"  style="display:none;visibility:hidden"></iframe></noscript>\
+
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-XXXX"\
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>\
+
 <!-- End Google Tag Manager (noscript) -->
 
 When using a protocol-relative URL, the container would be loaded using http on pages with an `http://` URL; and, would be loaded using https on pages with an `https://` URL.
