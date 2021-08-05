@@ -1,0 +1,788 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=e019406081c0b">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Perform efficient per-video-frame operations on video with requestVideoFrameCallback() </title>
+<meta name="description" content="The requestVideoFrameCallback() method allows web authors to register a callback that runs in the rendering steps when a new video frame is sent to the compositor. " />
+
+<link rel="canonical" href="https://web.dev/requestvideoframecallback-rvfc/" />
+
+<meta itemprop="name" content="Perform efficient per-video-frame operations on video with requestVideoFrameCallback() " />
+<meta itemprop="description" content="The requestVideoFrameCallback() method allows web authors to register a callback that runs in the rendering steps when a new video frame is sent to the compositor. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/gpmA4LxerS1wqYgY19W7.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/requestvideoframecallback-rvfc/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Perform efficient per-video-frame operations on video with requestVideoFrameCallback() " />
+<meta property="og:description" content="The requestVideoFrameCallback() method allows web authors to register a callback that runs in the rendering steps when a new video frame is sent to the compositor. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/gpmA4LxerS1wqYgY19W7.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="Film roll." />
+<meta property="tag" content="media" />
+<meta property="tag" content="capabilities" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Perform efficient per-video-frame operations on video with requestVideoFrameCallback() " />
+<meta name="twitter:description" content="The requestVideoFrameCallback() method allows web authors to register a callback that runs in the rendering steps when a new video frame is sent to the compositor. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/gpmA4LxerS1wqYgY19W7.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=c30ac8202d3c8', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=65f2c08dc2b2e', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="Film roll."     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/gpmA4LxerS1wqYgY19W7.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/gpmA4LxerS1wqYgY19W7.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/gpmA4LxerS1wqYgY19W7.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/gpmA4LxerS1wqYgY19W7.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/gpmA4LxerS1wqYgY19W7.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/gpmA4LxerS1wqYgY19W7.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/gpmA4LxerS1wqYgY19W7.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/gpmA4LxerS1wqYgY19W7.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/gpmA4LxerS1wqYgY19W7.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/gpmA4LxerS1wqYgY19W7.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/gpmA4LxerS1wqYgY19W7.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/gpmA4LxerS1wqYgY19W7.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/gpmA4LxerS1wqYgY19W7.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/gpmA4LxerS1wqYgY19W7.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/gpmA4LxerS1wqYgY19W7.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/gpmA4LxerS1wqYgY19W7.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/gpmA4LxerS1wqYgY19W7.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/gpmA4LxerS1wqYgY19W7.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#perform-efficient-per-video-frame-operations-on-video-with-lesscodegreaterrequestvideoframecallback()lesscodegreater" class="w-toc__header--link">
+        Perform efficient per-video-frame operations on video with <code>requestVideoFrameCallback()</code>
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#difference-with-requestanimationframe()">Difference with requestAnimationFrame()</a></li><li><a href="#what's-in-a-name">What's in a name?</a></li><li><a href="#browser-support-and-feature-detection">Browser support and feature detection</a></li><li><a href="#using-the-requestvideoframecallback()-method">Using the requestVideoFrameCallback() method</a></li><li><a href="#if-things-seem-one-frame-off...">If things seem one frame off…</a></li><li><a href="#demo">Demo</a></li><li><a href="#conclusions">Conclusions</a></li><li><a href="#acknowledgements">Acknowledgements</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@tomayac"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="perform-efficient-per-video-frame-operations-on-video-with-lesscodegreaterrequestvideoframecallback()lesscodegreater" class="w-article-header__headline">Perform efficient per-video-frame operations on video with <code>requestVideoFrameCallback()</code></h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          <p>Learn how to use the <code>requestVideoFrameCallback()</code> to work more efficiently with videos in the browser.</p>
+
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Jun 29, 2020</time>
+           <span class="w-author__separator">•</span> Updated <time>Aug 17, 2020</time> 
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/thomassteiner/"><img     alt="Thomas Steiner"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/thomassteiner/">Thomas Steiner</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/tomayac"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/tomayac">GitHub</a>
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://glitch.com/@tomayac"
+          >Glitch</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://blog.tomayac.com/">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>There's a new Web API on the block, defined in the
+<a href="https://wicg.github.io/video-rvfc/" rel="noopener"><code>HTMLVideoElement.requestVideoFrameCallback()</code></a>
+specification.
+The <code>requestVideoFrameCallback()</code> method allows web authors to register a callback
+that runs in the rendering steps when a new video frame is sent to the compositor.
+This is intended to allow developers to perform efficient per-video-frame operations on video,
+such as video processing and painting to a canvas, video analysis,
+or synchronization with external audio sources.</p>
+<h2 id="difference-with-requestanimationframe()">Difference with requestAnimationFrame() <a class="w-headline-link" href="#difference-with-requestanimationframe()">#</a></h2>
+<p>Operations like drawing a video frame to a canvas via
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage" rel="noopener"><code>drawImage()</code></a>
+made through this API will be synchronized as a best effort
+with the frame rate of the video playing on screen.
+Different from
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame" rel="noopener"><code>window.requestAnimationFrame()</code></a>,
+which usually fires about 60 times per second,
+<code>requestVideoFrameCallback()</code> is bound to the actual video frame rate—with an important
+<a href="https://wicg.github.io/video-rvfc/#ref-for-update-the-rendering%E2%91%A2:~:text=Note%3A%20The%20effective%20rate%20at%20which,browser%20would%20fire%20callbacks%20at%2060hz." rel="noopener">exception</a>:</p>
+<blockquote>
+<p>The effective rate at which callbacks are run is the lesser rate between the video's rate
+and the browser's rate.
+This means a 25fps video playing in a browser that paints at 60Hz
+would fire callbacks at 25Hz.
+A 120fps video in that same 60Hz browser would fire callbacks at 60Hz.</p>
+</blockquote>
+<h2 id="what's-in-a-name">What's in a name? <a class="w-headline-link" href="#what's-in-a-name">#</a></h2>
+<p>Due to its similarity with <code>window.requestAnimationFrame()</code>, the method initially
+was <a href="https://discourse.wicg.io/t/proposal-video-requestanimationframe/3691" rel="noopener">proposed as <code>video.requestAnimationFrame()</code></a>,
+but I'm happy with the new name,
+<code>requestVideoFrameCallback()</code>, which was agreed on
+after a <a href="https://github.com/WICG/video-rvfc/issues/44" rel="noopener">lengthy discussion</a>.
+Yay, <a href="https://css-tricks.com/what-is-bikeshedding/" rel="noopener">bikeshedding</a> for the win!</p>
+<h2 id="browser-support-and-feature-detection">Browser support and feature detection <a class="w-headline-link" href="#browser-support-and-feature-detection">#</a></h2>
+<p>The method is
+<a href="https://chromestatus.com/feature/6335927192387584" rel="noopener">implemented in Chromium</a>
+already, and
+<a href="https://mozilla.github.io/standards-positions/#requestVideoFrameCallback" rel="noopener">Mozilla folks like it</a>.
+For what it's worth, I have also filed a
+<a href="https://bugs.webkit.org/show_bug.cgi?id=211945" rel="noopener">WebKit bug</a> asking for it.
+Feature detection of the API works like this:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token string">'requestVideoFrameCallback'</span> <span class="token keyword">in</span> <span class="token class-name">HTMLVideoElement</span><span class="token punctuation">.</span>prototype<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token comment">// The API is supported! </span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><h2 id="using-the-requestvideoframecallback()-method">Using the requestVideoFrameCallback() method <a class="w-headline-link" href="#using-the-requestvideoframecallback()-method">#</a></h2>
+<p>If you have ever used the <code>requestAnimationFrame()</code> method, you will immediately feel at home with the <code>requestVideoFrameCallback()</code> method.
+You register an initial callback once, and then re-register whenever the callback fires.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> <span class="token function-variable function">doSomethingWithTheFrame</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">now<span class="token punctuation">,</span> metadata</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token comment">// Do something with the frame.</span><br>  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>now<span class="token punctuation">,</span> metadata<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token comment">// Re-register the callback to be notified about the next frame.</span><br>  video<span class="token punctuation">.</span><span class="token function">requestVideoFrameCallback</span><span class="token punctuation">(</span>doSomethingWithTheFrame<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span><br><span class="token comment">// Initially register the callback to be notified about the first frame.</span><br>video<span class="token punctuation">.</span><span class="token function">requestVideoFrameCallback</span><span class="token punctuation">(</span>doSomethingWithTheFrame<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>In the callback, <code>now</code> is a <a href="https://developer.mozilla.org/en-US/docs/Web/API/DOMHighResTimeStamp" rel="noopener"><code>DOMHighResTimeStamp</code></a>
+and <code>metadata</code> is a <a href="https://wicg.github.io/video-rvfc/#dictdef-videoframemetadata" rel="noopener"><code>VideoFrameMetadata</code></a>
+dictionary with the following properties:</p>
+<ul>
+<li><code>presentationTime</code>, of type <code>DOMHighResTimeStamp</code>:
+The time at which the user agent submitted the frame for composition.</li>
+<li><code>expectedDisplayTime</code>, of type <code>DOMHighResTimeStamp</code>:
+The time at which the user agent expects the frame to be visible.</li>
+<li><code>width</code>, of type <code>unsigned long</code>:
+The width of the video frame, in media pixels.</li>
+<li><code>height</code>, of type <code>unsigned long</code>:
+The height of the video frame, in media pixels.</li>
+<li><code>mediaTime</code>, of type <code>double</code>:
+The media presentation timestamp (PTS) in seconds of the frame presented (e.g., its timestamp on the <code>video.currentTime</code> timeline).</li>
+<li><code>presentedFrames</code>, of type <code>unsigned long</code>:
+A count of the number of frames submitted for composition. Allows clients to determine if frames were missed between instances of <code>VideoFrameRequestCallback</code>.</li>
+<li><code>processingDuration</code>, of type <code>double</code>:
+The elapsed duration in seconds from submission of the encoded packet with the same presentation timestamp (PTS) as this frame (e.g., same as the <code>mediaTime</code>) to the decoder until the decoded frame was ready for presentation.</li>
+</ul>
+<p>For WebRTC applications, additional properties may appear:</p>
+<ul>
+<li><code>captureTime</code>, of type <code>DOMHighResTimeStamp</code>:
+For video frames coming from either a local or remote source, this is the time at which the frame was captured by the camera.
+For a remote source, the capture time is estimated using clock synchronization and RTCP sender reports
+to convert RTP timestamps to capture time.</li>
+<li><code>receiveTime</code>, of type <code>DOMHighResTimeStamp</code>:
+For video frames coming from a remote source, this is the time the encoded frame was received
+by the platform, i.e., the time at which the last packet belonging to this frame was received over the network.</li>
+<li><code>rtpTimestamp</code>, of type <code>unsigned long</code>:
+The RTP timestamp associated with this video frame.</li>
+</ul>
+<div class="w-aside w-aside--note">
+<p>Note that <code>width</code> and <code>height</code> might differ from <code>videoWidth</code> and <code>videoHeight</code> in certain cases
+(e.g., an anamorphic video might have rectangular pixels).</p>
+</div>
+<p>Of special interest in this list is <code>mediaTime</code>.
+In Chromium's implementation, we use the audio clock as the time source that backs <code>video.currentTime</code>,
+whereas the <code>mediaTime</code> is directly populated by the <code>presentationTimestamp</code> of the frame.
+The <code>mediaTime</code> is what you should use if you want to exactly identify frames in a reproducible way,
+including to identify exactly which frames you missed.</p>
+<div class="w-aside w-aside--note">
+<p>Unfortunately, the video element does not guarantee frame-accurate <em>seeking</em>.
+This has been an ongoing <a href="https://github.com/w3c/media-and-entertainment/issues/4" rel="noopener">subject of discussion</a>.
+<a href="https://github.com/WICG/web-codecs" rel="noopener">WebCodecs</a> will eventually allow for frame accurate applications.</p>
+</div>
+<h3 id="if-things-seem-one-frame-off...">If things seem one frame off… <a class="w-headline-link" href="#if-things-seem-one-frame-off...">#</a></h3>
+<p>Vertical synchronization (or just vsync), is a graphics technology that synchronizes the frame rate of a video and the refresh rate of a monitor.
+Since <code>requestVideoFrameCallback()</code> runs on the main thread, but, under the hood, video compositing happens on the compositor thread,
+everything from this API is a best effort, and we do not offer any strict guarantees.
+What may be happening is that the API can be one vsync late relative to when a video frame is rendered.
+It takes one vsync for changes made to the web page through the API to appear on screen (same as <code>window.requestAnimationFrame()</code>).
+So if you keep updating the <code>mediaTime</code> or frame number on your web page and compare that
+against the numbered video frames, eventually the video will look like it is one frame ahead.</p>
+<p>What is really happening is that the frame is ready at vsync x, the callback is fired and the frame is rendered at vsync x+1,
+and changes made in the callback are rendered at vsync x+2.
+You can check whether the callback is a vsync late (and the frame is already rendered on screen)
+by checking whether the <code>metadata.expectedDisplayTime</code> is roughly <code>now</code> or one vsync in the future.
+If it is within about five to ten microseconds of <code>now</code>, the frame is already rendered;
+if the <code>expectedDisplayTime</code> is approximately sixteen milliseconds in the future (assuming your browser/screen is refreshing at 60Hz),
+then you are in sync with the frame.</p>
+<h2 id="demo">Demo <a class="w-headline-link" href="#demo">#</a></h2>
+<p>I have created a small
+<a href="https://requestvideoframecallback.glitch.me/" rel="noopener">demo on Glitch</a>
+that shows how frames are drawn on a canvas at exactly
+the frame rate of the video and
+where the frame metadata is logged for debugging purposes.
+The core logic is just a couple of lines of JavaScript.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">let</span> paintCount <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span><br><span class="token keyword">let</span> startTime <span class="token operator">=</span> <span class="token number">0.0</span><span class="token punctuation">;</span><br><br><span class="token keyword">const</span> <span class="token function-variable function">updateCanvas</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">now<span class="token punctuation">,</span> metadata</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token keyword">if</span> <span class="token punctuation">(</span>startTime <span class="token operator">===</span> <span class="token number">0.0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    startTime <span class="token operator">=</span> now<span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><br>  ctx<span class="token punctuation">.</span><span class="token function">drawImage</span><span class="token punctuation">(</span>video<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> canvas<span class="token punctuation">.</span>width<span class="token punctuation">,</span> canvas<span class="token punctuation">.</span>height<span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>  <span class="token keyword">const</span> elapsed <span class="token operator">=</span> <span class="token punctuation">(</span>now <span class="token operator">-</span> startTime<span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">1000.0</span><span class="token punctuation">;</span><br>  <span class="token keyword">const</span> fps <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token operator">++</span>paintCount <span class="token operator">/</span> elapsed<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toFixed</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  fpsInfo<span class="token punctuation">.</span>innerText <span class="token operator">=</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">video fps: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>fps<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span><br>  metadataInfo<span class="token punctuation">.</span>innerText <span class="token operator">=</span> <span class="token constant">JSON</span><span class="token punctuation">.</span><span class="token function">stringify</span><span class="token punctuation">(</span>metadata<span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>  video<span class="token punctuation">.</span><span class="token function">requestVideoFrameCallback</span><span class="token punctuation">(</span>updateCanvas<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span><br><br>video<span class="token punctuation">.</span><span class="token function">requestVideoFrameCallback</span><span class="token punctuation">(</span>updateCanvas<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><div class="glitch-embed-wrap" style="height: 1200px; width: 100%;">
+  <iframe
+    allow="camera; clipboard-read; clipboard-write; encrypted-media; geolocation; microphone; midi"
+    loading="lazy"
+    src="https://glitch.com/embed/#!/embed/requestvideoframecallback?attributionHidden=true&sidebarCollapsed=true&path=script.js&previewSize=100"
+    style="height: 100%; width: 100%; border: 0;"
+    title="requestvideoframecallback on Glitch"
+  ></iframe>
+</div>
+<h2 id="conclusions">Conclusions <a class="w-headline-link" href="#conclusions">#</a></h2>
+<p>I have done frame-level processing for a long time—without having access to the actual frames,
+only based on <code>video.currentTime</code>.
+I implemented video shot segmentation in JavaScript
+in a rough-and-ready manner; you can still read the accompanying
+<a href="https://www2012.universite-lyon.fr/proceedings/nocompanion/DevTrack_028.pdf" rel="noopener">research paper</a>.
+Had the <code>requestVideoFrameCallback()</code> existed back then, my life would have been much simpler…</p>
+<h2 id="acknowledgements">Acknowledgements <a class="w-headline-link" href="#acknowledgements">#</a></h2>
+<p>The <code>requestVideoFrameCallback</code> API was specified and implemented by
+<a href="https://github.com/tguilbert-google" rel="noopener">Thomas Guilbert</a>.
+This article was reviewed by <a href="https://github.com/jpmedley" rel="noopener">Joe Medley</a>
+and <a href="https://github.com/kaycebasques" rel="noopener">Kayce Basques</a>.
+<a href="https://unsplash.com/photos/tV80374iytg" rel="noopener">Hero image</a> by
+<a href="https://unsplash.com/@dmjdenise" rel="noopener">Denise Jans</a> on Unsplash.</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/media/">Media</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/capabilities/">Capabilities</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Aug 17, 2020</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/requestvideoframecallback-rvfc/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions="api"></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

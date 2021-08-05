@@ -1,0 +1,891 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=835b726f9ba8d">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Optimizing Web Vitals using Lighthouse</title>
+<meta name="description" content="Today, we will cover new tooling features in Lighthouse, PageSpeed and DevTools to help identify how your site can improve on the Web Vitals. " />
+
+<link rel="canonical" href="https://web.dev/optimize-vitals-lighthouse/" />
+
+<meta itemprop="name" content="Optimizing Web Vitals using Lighthouse" />
+<meta itemprop="description" content="Today, we will cover new tooling features in Lighthouse, PageSpeed and DevTools to help identify how your site can improve on the Web Vitals. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/6GPqQDYxZnVq8qF6DJ02.jpeg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/optimize-vitals-lighthouse/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Optimizing Web Vitals using Lighthouse" />
+<meta property="og:description" content="Today, we will cover new tooling features in Lighthouse, PageSpeed and DevTools to help identify how your site can improve on the Web Vitals. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/6GPqQDYxZnVq8qF6DJ02.jpeg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="A Lighthouse illuminating the sea" />
+<meta property="tag" content="fast" />
+<meta property="tag" content="performance" />
+<meta property="tag" content="web-vitals" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Optimizing Web Vitals using Lighthouse" />
+<meta name="twitter:description" content="Today, we will cover new tooling features in Lighthouse, PageSpeed and DevTools to help identify how your site can improve on the Web Vitals. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/6GPqQDYxZnVq8qF6DJ02.jpeg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=c8a11eb395d88', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=5d55562d5e3e7', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="A Lighthouse illuminating the sea"     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/6GPqQDYxZnVq8qF6DJ02.jpeg?auto=format"     srcset="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/6GPqQDYxZnVq8qF6DJ02.jpeg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/6GPqQDYxZnVq8qF6DJ02.jpeg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/6GPqQDYxZnVq8qF6DJ02.jpeg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/6GPqQDYxZnVq8qF6DJ02.jpeg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/6GPqQDYxZnVq8qF6DJ02.jpeg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/6GPqQDYxZnVq8qF6DJ02.jpeg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/6GPqQDYxZnVq8qF6DJ02.jpeg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/6GPqQDYxZnVq8qF6DJ02.jpeg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/6GPqQDYxZnVq8qF6DJ02.jpeg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/6GPqQDYxZnVq8qF6DJ02.jpeg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/6GPqQDYxZnVq8qF6DJ02.jpeg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/6GPqQDYxZnVq8qF6DJ02.jpeg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/6GPqQDYxZnVq8qF6DJ02.jpeg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/6GPqQDYxZnVq8qF6DJ02.jpeg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/6GPqQDYxZnVq8qF6DJ02.jpeg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/6GPqQDYxZnVq8qF6DJ02.jpeg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/6GPqQDYxZnVq8qF6DJ02.jpeg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#optimizing-web-vitals-using-lighthouse" class="w-toc__header--link">
+        Optimizing Web Vitals using Lighthouse
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#measure-core-web-vitals">Measure Core Web Vitals</a></li><li><a href="#identify-where-you-can-improve-on-web-vitals">Identify where you can improve on Web Vitals</a></li><li><a href="#identify-the-largest-contentful-paint-element">Identify the Largest Contentful Paint element</a></li><li><a href="#preload-late-discovered-images-to-improve-lcp">Preload late-discovered images to improve LCP</a></li><li><a href="#identify-cls-contributions">Identify CLS contributions</a></li><li><a href="#identifying-cls-from-images-without-dimensions">Identifying CLS from images without dimensions</a></li><li><a href="#identifying-cls-from-advertisements">Identifying CLS from advertisements</a></li><li><a href="#avoid-non-composited-animations">Avoid non-composited animations</a></li><li><a href="#debug-first-input-delay-total-blocking-time-long-tasks">Debug First Input Delay / Total Blocking Time / Long Tasks</a></li><li><a href="#block-network-requests-to-see-the-beforeafter-impact-in-lighthouse">Block network requests to see the before/after impact in Lighthouse</a></li><li><a href="#replace-costly-third-party-embeds-with-a-facade">Replace costly third-party embeds with a facade</a></li><li><a href="#beyond-core-web-vitals">Beyond Core Web Vitals</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@addyosmani"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="optimizing-web-vitals-using-lighthouse" class="w-article-header__headline">Optimizing Web Vitals using Lighthouse</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          Finding opportunities to improve user-experience with Chrome's web tooling.
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>May 11, 2021</time>
+          
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/addyosmani/"><img     alt="Addy Osmani"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LJyNTOzyWbowv2mrlzPS.jpeg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LJyNTOzyWbowv2mrlzPS.jpeg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LJyNTOzyWbowv2mrlzPS.jpeg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LJyNTOzyWbowv2mrlzPS.jpeg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LJyNTOzyWbowv2mrlzPS.jpeg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LJyNTOzyWbowv2mrlzPS.jpeg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/addyosmani/">Addy Osmani</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/addyosmani"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/addyosmani">GitHub</a>
+      </li>
+      
+      
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>Today, we'll cover new tooling features in Lighthouse, PageSpeed and DevTools to help identify
+how your site can improve on the <a href="/vitals">Web Vitals</a>.</p>
+<p>As a refresher on the tools, <a href="https://github.com/GoogleChrome/lighthouse" rel="noopener">Lighthouse</a> is an
+open-source, automated tool for improving the quality of web pages. You can find it in the <a href="https://developers.google.com/web/tools/chrome-devtools" rel="noopener">Chrome
+DevTools</a> suite of debugging tools and run
+it against any web page, public or requiring authentication. You can also find Lighthouse in
+<a href="https://developers.google.com/speed/pagespeed/insights/?url=https%3A%2F%2Fstore.google.com" rel="noopener">PageSpeed
+Insights</a>,
+<a href="https://github.com/GoogleChrome/lighthouse-ci" rel="noopener">CI</a> and
+<a href="https://www.webpagetest.org/easy" rel="noopener">WebPageTest</a>.</p>
+<p>Lighthouse 7.x includes new features like element screenshots, for easier visual inspection of
+parts of your UI impacting user-experience metrics (e.g. what nodes are contributing to layout
+shift).</p>
+<figure class="w-figure">
+<video muted autoplay loop>      
+<source type="video/mp4" src="https://storage.googleapis.com/web-dev-uploads/video/1L2RBhCLSnXjCnSlevaDjy3vba73/3G0x4Z1dmOcsusG7j1LE.mp4" type="video/mp4" width="1920" height="1080">    
+</video>
+</figure>
+<p>We've also shipped support for element screenshots on PageSpeed Insights, enabling a way to more
+easily spot issues for one-off performance runs of pages.</p>
+<figure class="w-figure">
+  <img     alt="Element Screenshots highlighting the DOM node contributing to layout shift in the page"          decoding="async"     height="483"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/mfkWFzyfO9XlJLYS80DE.png?auto=format"     srcset="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/mfkWFzyfO9XlJLYS80DE.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/mfkWFzyfO9XlJLYS80DE.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/mfkWFzyfO9XlJLYS80DE.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/mfkWFzyfO9XlJLYS80DE.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/mfkWFzyfO9XlJLYS80DE.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/mfkWFzyfO9XlJLYS80DE.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/mfkWFzyfO9XlJLYS80DE.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/mfkWFzyfO9XlJLYS80DE.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/mfkWFzyfO9XlJLYS80DE.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/mfkWFzyfO9XlJLYS80DE.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/mfkWFzyfO9XlJLYS80DE.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/mfkWFzyfO9XlJLYS80DE.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/mfkWFzyfO9XlJLYS80DE.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/mfkWFzyfO9XlJLYS80DE.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/mfkWFzyfO9XlJLYS80DE.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/mfkWFzyfO9XlJLYS80DE.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/mfkWFzyfO9XlJLYS80DE.png?auto=format&w=1600 1600w"          width="800"   />
+</figure>
+<h2 id="measure-core-web-vitals">Measure Core Web Vitals <a class="w-headline-link" href="#measure-core-web-vitals">#</a></h2>
+<p>Lighthouse can
+<a href="/vitals-measurement-getting-started/#measuring-web-vitals-using-lab-data">synthetically</a> measure
+the <a href="/vitals/">Core Web Vitals metrics</a> including <a href="/lcp/">Largest Contentful Paint</a>, <a href="/cls/">Cumulative
+Layout Shift</a> and <a href="/tbt/">Total Blocking Time</a> (a lab proxy for <a href="/fid/">First Input Delay</a>).
+These metrics reflect loading, layout stability, and interaction readiness. Other metrics such as
+<a href="/first-contentful-paint/">First Contentful Paint</a> highlighted in the <a href="https://developer.chrome.com/devsummit/sessions/future-of-core-web-vitals/" rel="noopener">future of
+Core Web Vitals (CWV)</a> are there too.</p>
+<p>The &quot;Metrics&quot; section of the Lighthouse report includes lab versions of these metrics. You can use
+this as a summary view of what aspects of user-experience require your attention.</p>
+<figure class="w-figure">
+  <img     alt="Lighthouse peformance metrics"          decoding="async"     height="485"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/VkLhdNb3fxtfttFZ1S6E.png?auto=format"     srcset="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/VkLhdNb3fxtfttFZ1S6E.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/VkLhdNb3fxtfttFZ1S6E.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/VkLhdNb3fxtfttFZ1S6E.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/VkLhdNb3fxtfttFZ1S6E.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/VkLhdNb3fxtfttFZ1S6E.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/VkLhdNb3fxtfttFZ1S6E.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/VkLhdNb3fxtfttFZ1S6E.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/VkLhdNb3fxtfttFZ1S6E.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/VkLhdNb3fxtfttFZ1S6E.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/VkLhdNb3fxtfttFZ1S6E.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/VkLhdNb3fxtfttFZ1S6E.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/VkLhdNb3fxtfttFZ1S6E.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/VkLhdNb3fxtfttFZ1S6E.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/VkLhdNb3fxtfttFZ1S6E.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/VkLhdNb3fxtfttFZ1S6E.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/VkLhdNb3fxtfttFZ1S6E.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/VkLhdNb3fxtfttFZ1S6E.png?auto=format&w=1600 1600w"          width="800"   />
+</figure>
+<div class="w-aside w-aside--note">
+<p>Lighthouse focuses on measuring user-experience during the initial page load in a lab
+setting, emulating a slow phone or desktop machine. If there is behavior on your page that may cause
+layout shifts or long JavaScript tasks after page-load, the lab metrics will not reflect this. Try
+the DevTools Performance panel, <a href="https://search.google.com/search-console/about" rel="noopener">Search Console</a>,
+the <a href="https://chrome.google.com/webstore/detail/web-vitals/ahfhijdlegdabablpippeagghigmibma?hl=en" rel="noopener">Web Vitals
+extension</a>,
+or <a href="/vitals-measurement-getting-started/#measuring-web-vitals-using-rum-data">RUM</a> for a post-load view into the metrics. </div></p>
+<figure class="w-figure">
+  <img     alt="Web Vitals lane in the devtools performance panel"          decoding="async"     height="476"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/PLMoiQpi12jT7BJUvlOJ.png?auto=format"     srcset="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/PLMoiQpi12jT7BJUvlOJ.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/PLMoiQpi12jT7BJUvlOJ.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/PLMoiQpi12jT7BJUvlOJ.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/PLMoiQpi12jT7BJUvlOJ.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/PLMoiQpi12jT7BJUvlOJ.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/PLMoiQpi12jT7BJUvlOJ.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/PLMoiQpi12jT7BJUvlOJ.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/PLMoiQpi12jT7BJUvlOJ.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/PLMoiQpi12jT7BJUvlOJ.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/PLMoiQpi12jT7BJUvlOJ.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/PLMoiQpi12jT7BJUvlOJ.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/PLMoiQpi12jT7BJUvlOJ.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/PLMoiQpi12jT7BJUvlOJ.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/PLMoiQpi12jT7BJUvlOJ.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/PLMoiQpi12jT7BJUvlOJ.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/PLMoiQpi12jT7BJUvlOJ.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/PLMoiQpi12jT7BJUvlOJ.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption>The new Web Vitals option in the DevTools Performance panel displays a
+track which highlights metric moments, such as Layout Shift (LS) shown above.</figcaption>
+</figure>
+<p><a href="/vitals-field-measurement-best-practices/">Field metrics</a>, such as those found in the <a href="https://developers.google.com/web/tools/chrome-user-experience-report" rel="noopener">Chrome UX
+Report</a> or
+<a href="https://developer.mozilla.org/en-US/docs/Web/Performance/Rum-vs-Synthetic" rel="noopener">RUM</a>, do not have this
+limitation and are a valuable complement to lab data as they reflect the experience real users
+have. Field data can't offer the kinds of diagnostic information you get in the lab, so the two go
+hand in hand.</p>
+<h2 id="identify-where-you-can-improve-on-web-vitals">Identify where you can improve on Web Vitals <a class="w-headline-link" href="#identify-where-you-can-improve-on-web-vitals">#</a></h2>
+<h3 id="identify-the-largest-contentful-paint-element">Identify the Largest Contentful Paint element <a class="w-headline-link" href="#identify-the-largest-contentful-paint-element">#</a></h3>
+<p>LCP is a measurement of perceived loading experience. It marks the point during page load when the
+primary–or &quot;largest&quot;–content has loaded and is visible to the user.</p>
+<p>Lighthouse has a &quot;Largest Contentful Paint element&quot; audit that identifies what element was the
+largest contentful paint. Hovering over the element will highlight it in the main browser window.</p>
+<figure class="w-figure">
+  <img     alt="Largest Contentful Paint element"          decoding="async"     height="505"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/qeNJwYAVxysRV0okWmf4.png?auto=format"     srcset="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/qeNJwYAVxysRV0okWmf4.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/qeNJwYAVxysRV0okWmf4.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/qeNJwYAVxysRV0okWmf4.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/qeNJwYAVxysRV0okWmf4.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/qeNJwYAVxysRV0okWmf4.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/qeNJwYAVxysRV0okWmf4.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/qeNJwYAVxysRV0okWmf4.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/qeNJwYAVxysRV0okWmf4.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/qeNJwYAVxysRV0okWmf4.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/qeNJwYAVxysRV0okWmf4.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/qeNJwYAVxysRV0okWmf4.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/qeNJwYAVxysRV0okWmf4.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/qeNJwYAVxysRV0okWmf4.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/qeNJwYAVxysRV0okWmf4.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/qeNJwYAVxysRV0okWmf4.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/qeNJwYAVxysRV0okWmf4.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/qeNJwYAVxysRV0okWmf4.png?auto=format&w=1600 1600w"          width="800"   />
+</figure>
+<p>If this element is an image, this information is a useful hint that you may want to optimize the loading
+of this image. Lighthouse includes a number of image optimization audits for helping you understand
+if your images could be better compressed, resized or delivered in a more optimal modern image
+format.</p>
+<figure class="w-figure">
+  <img     alt="Properly size images audit"          decoding="async"     height="468"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/8RVIyj6NiMfx7VDVbQmI.png?auto=format"     srcset="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/8RVIyj6NiMfx7VDVbQmI.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/8RVIyj6NiMfx7VDVbQmI.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/8RVIyj6NiMfx7VDVbQmI.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/8RVIyj6NiMfx7VDVbQmI.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/8RVIyj6NiMfx7VDVbQmI.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/8RVIyj6NiMfx7VDVbQmI.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/8RVIyj6NiMfx7VDVbQmI.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/8RVIyj6NiMfx7VDVbQmI.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/8RVIyj6NiMfx7VDVbQmI.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/8RVIyj6NiMfx7VDVbQmI.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/8RVIyj6NiMfx7VDVbQmI.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/8RVIyj6NiMfx7VDVbQmI.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/8RVIyj6NiMfx7VDVbQmI.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/8RVIyj6NiMfx7VDVbQmI.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/8RVIyj6NiMfx7VDVbQmI.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/8RVIyj6NiMfx7VDVbQmI.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/8RVIyj6NiMfx7VDVbQmI.png?auto=format&w=1600 1600w"          width="800"   />
+</figure>
+<p>You might also find <a href="https://gist.github.com/anniesullie/cf2982342337fd1b2be95c2d5fe5ea06" rel="noopener">LCP
+Bookmarklet</a> by Annie
+Sullivan useful for quickly identifying the LCP element with a red rectangle in just one click.</p>
+<figure class="w-figure">
+  <img     alt="Highlighting the LCP element with a bookmarklet"          decoding="async"     height="509"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/eZJdYsdfsNniDW1KRJkE.png?auto=format"     srcset="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/eZJdYsdfsNniDW1KRJkE.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/eZJdYsdfsNniDW1KRJkE.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/eZJdYsdfsNniDW1KRJkE.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/eZJdYsdfsNniDW1KRJkE.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/eZJdYsdfsNniDW1KRJkE.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/eZJdYsdfsNniDW1KRJkE.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/eZJdYsdfsNniDW1KRJkE.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/eZJdYsdfsNniDW1KRJkE.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/eZJdYsdfsNniDW1KRJkE.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/eZJdYsdfsNniDW1KRJkE.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/eZJdYsdfsNniDW1KRJkE.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/eZJdYsdfsNniDW1KRJkE.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/eZJdYsdfsNniDW1KRJkE.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/eZJdYsdfsNniDW1KRJkE.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/eZJdYsdfsNniDW1KRJkE.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/eZJdYsdfsNniDW1KRJkE.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/eZJdYsdfsNniDW1KRJkE.png?auto=format&w=1600 1600w"          width="800"   />
+</figure>
+<h3 id="preload-late-discovered-images-to-improve-lcp">Preload late-discovered images to improve LCP <a class="w-headline-link" href="#preload-late-discovered-images-to-improve-lcp">#</a></h3>
+<p>To improve the Largest Contentful Paint, <a href="/preload-responsive-images/">preload</a> your critical hero
+images if they are being discovered late by the browser. A late discovery can happen if a
+JavaScript bundle needs to be loaded before the image is discoverable.</p>
+<figure class="w-figure">
+  <img     alt="Preload the largest contentful paint image"          decoding="async"     height="489"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/K9EPBZdSFoyXVDHoDjTx.png?auto=format"     srcset="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/K9EPBZdSFoyXVDHoDjTx.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/K9EPBZdSFoyXVDHoDjTx.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/K9EPBZdSFoyXVDHoDjTx.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/K9EPBZdSFoyXVDHoDjTx.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/K9EPBZdSFoyXVDHoDjTx.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/K9EPBZdSFoyXVDHoDjTx.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/K9EPBZdSFoyXVDHoDjTx.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/K9EPBZdSFoyXVDHoDjTx.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/K9EPBZdSFoyXVDHoDjTx.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/K9EPBZdSFoyXVDHoDjTx.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/K9EPBZdSFoyXVDHoDjTx.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/K9EPBZdSFoyXVDHoDjTx.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/K9EPBZdSFoyXVDHoDjTx.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/K9EPBZdSFoyXVDHoDjTx.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/K9EPBZdSFoyXVDHoDjTx.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/K9EPBZdSFoyXVDHoDjTx.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/K9EPBZdSFoyXVDHoDjTx.png?auto=format&w=1600 1600w"          width="800"   />
+</figure>
+<div class="w-aside w-aside--note">
+<p><strong>Preload should be used sparingly</strong>. Early network bandwidth is a scarce resource and using preload can come at the cost of another resource. To use preload effectively, make sure resources are being ordered correctly to avoid regressing other metrics when other resources in the page are also considered important (e.g. critical CSS, JS, fonts). The <a href="https://docs.google.com/document/d/1ZEi-XXhpajrnq8oqs5SiW-CXR3jMc20jWIzN5QRy1QA/edit" rel="noopener">cost of preload</a> covers this in more detail.</p>
+</div>
+<p>Lighthouse 6.5 and above now suggests opportunities to apply this optimization.</p>
+<p>There are a few common questions we are asked about preloading LCP images that may also be worth
+briefly covering.</p>
+<p>Can you preload responsive images? <a href="/preload-responsive-images/#imagesrcset-and-imagesizes">Yes</a>.
+Let's say we have a responsive hero image as specified using <code>srcset</code> and <code>sizes</code> below:</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>img</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>lighthouse.jpg<span class="token punctuation">"</span></span>   <br>          <span class="token attr-name">srcset</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>lighthouse_400px.jpg 400w,   <br>                  lighthouse_800px.jpg 800w,   <br>                  lighthouse_1600px.jpg 1600w<span class="token punctuation">"</span></span> <span class="token attr-name">sizes</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>50vw<span class="token punctuation">"</span></span> <span class="token attr-name">alt</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>A helpful<br>Lighthouse<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>  </code></pre>
+</web-copy-code><p>Thanks to the <code>imagesrcset</code> and <code>imagesizes</code> attributes added to the <code>link</code> attribute, we can
+preload a responsive image using the same image selection logic used by <code>srcset</code> and <code>sizes</code>:</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>link</span> <span class="token attr-name">rel</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>preload<span class="token punctuation">"</span></span> <span class="token attr-name">as</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>image<span class="token punctuation">"</span></span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>lighthouse.jpg<span class="token punctuation">"</span></span>   <br>           <span class="token attr-name">imagesrcset</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>lighthouse_400px.jpg 400w,   <br>                        lighthouse_800px.jpg 800w,   <br>                        lighthouse_1600px.jpg 1600w<span class="token punctuation">"</span></span><br><span class="token attr-name">imagesizes</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>50vw<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>  </code></pre>
+</web-copy-code><p>Will the audit also highlight preload opportunities if the LCP image is defined via a CSS
+background? Yes.</p>
+<p>Any image flagged as the LCP image whether via CSS background or <code>&lt;img&gt;</code> is a candidate if it's
+discovered at a waterfall depth of three or more.</p>
+<h3 id="identify-cls-contributions">Identify CLS contributions <a class="w-headline-link" href="#identify-cls-contributions">#</a></h3>
+<p>Cumulative Layout Shift is a measurement of visual stability. It quantifies how much a page's
+content visually shifts around. Lighthouse has an audit for debugging CLS called &quot;Avoid large
+layout shifts&quot;.</p>
+<p>This audit highlights DOM elements that contribute the most to shifts of the page. In the Element
+column to the left you will see the list of these DOM elements and to the right, their overall CLS
+contribution.</p>
+<figure class="w-figure">
+  <img     alt="The avoid large layout shifts audit in Lighthouse highlighting relevant DOM nodes contributing to CLS"          decoding="async"     height="525"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/X31lkLFtfjDZdO2O7ytV.png?auto=format"     srcset="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/X31lkLFtfjDZdO2O7ytV.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/X31lkLFtfjDZdO2O7ytV.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/X31lkLFtfjDZdO2O7ytV.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/X31lkLFtfjDZdO2O7ytV.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/X31lkLFtfjDZdO2O7ytV.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/X31lkLFtfjDZdO2O7ytV.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/X31lkLFtfjDZdO2O7ytV.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/X31lkLFtfjDZdO2O7ytV.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/X31lkLFtfjDZdO2O7ytV.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/X31lkLFtfjDZdO2O7ytV.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/X31lkLFtfjDZdO2O7ytV.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/X31lkLFtfjDZdO2O7ytV.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/X31lkLFtfjDZdO2O7ytV.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/X31lkLFtfjDZdO2O7ytV.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/X31lkLFtfjDZdO2O7ytV.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/X31lkLFtfjDZdO2O7ytV.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/X31lkLFtfjDZdO2O7ytV.png?auto=format&w=1600 1600w"          width="800"   />
+</figure>
+<p>Thanks to the new Lighthouse Element Screenshots feature, we can both see a visual preview of the
+key elements noted in the audit as well as click-to-zoom for a clearer view:</p>
+<figure class="w-figure">
+  <img     alt="Clicking on an Element screenshot will expand it"          decoding="async"     height="525"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/L9geZVvkATRlAVcZA6dx.png?auto=format"     srcset="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/L9geZVvkATRlAVcZA6dx.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/L9geZVvkATRlAVcZA6dx.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/L9geZVvkATRlAVcZA6dx.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/L9geZVvkATRlAVcZA6dx.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/L9geZVvkATRlAVcZA6dx.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/L9geZVvkATRlAVcZA6dx.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/L9geZVvkATRlAVcZA6dx.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/L9geZVvkATRlAVcZA6dx.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/L9geZVvkATRlAVcZA6dx.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/L9geZVvkATRlAVcZA6dx.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/L9geZVvkATRlAVcZA6dx.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/L9geZVvkATRlAVcZA6dx.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/L9geZVvkATRlAVcZA6dx.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/L9geZVvkATRlAVcZA6dx.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/L9geZVvkATRlAVcZA6dx.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/L9geZVvkATRlAVcZA6dx.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/L9geZVvkATRlAVcZA6dx.png?auto=format&w=1600 1600w"          width="800"   />
+</figure>
+<p>For post-load CLS, there can be value in <em>persistently</em> visualizing with rectangles
+which elements contributed the most to CLS. This is a feature you'll find in third-party tools like
+SpeedCurve's <a href="https://speedcurve.com/blog/web-vitals-user-experience/" rel="noopener">Core Web Vitals dashboard</a>
+and which I love using <a href="https://defaced.dev/tools/layout-shift-gif-generator/" rel="noopener">Defaced's Layout Shift GIF
+Generator</a> for:</p>
+<figure class="w-figure">
+  <img     alt="the layout shift generator highlighting shifts"          decoding="async"     height="450"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/ju6XjKBYzF6G537myjUW.gif?auto=format"     srcset="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/ju6XjKBYzF6G537myjUW.gif?auto=format&w=200 200w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/ju6XjKBYzF6G537myjUW.gif?auto=format&w=228 228w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/ju6XjKBYzF6G537myjUW.gif?auto=format&w=260 260w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/ju6XjKBYzF6G537myjUW.gif?auto=format&w=296 296w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/ju6XjKBYzF6G537myjUW.gif?auto=format&w=338 338w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/ju6XjKBYzF6G537myjUW.gif?auto=format&w=385 385w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/ju6XjKBYzF6G537myjUW.gif?auto=format&w=439 439w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/ju6XjKBYzF6G537myjUW.gif?auto=format&w=500 500w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/ju6XjKBYzF6G537myjUW.gif?auto=format&w=571 571w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/ju6XjKBYzF6G537myjUW.gif?auto=format&w=650 650w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/ju6XjKBYzF6G537myjUW.gif?auto=format&w=741 741w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/ju6XjKBYzF6G537myjUW.gif?auto=format&w=845 845w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/ju6XjKBYzF6G537myjUW.gif?auto=format&w=964 964w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/ju6XjKBYzF6G537myjUW.gif?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/ju6XjKBYzF6G537myjUW.gif?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/ju6XjKBYzF6G537myjUW.gif?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/ju6XjKBYzF6G537myjUW.gif?auto=format&w=1600 1600w"          width="800"   />
+</figure>
+<p>For a site-wide view of layout shift issues, I get a lot of mileage out of <a href="https://support.google.com/webmasters/answer/9205520?hl=en" rel="noopener">Search Console's Core
+Web Vitals report</a>. This lets me see
+the kinds of pages on my site with a high CLS (in this case helping self-identify what template
+partials I need to spend my time on):</p>
+<figure class="w-figure">
+  <img     alt="Search Console displaying CLS issues"          decoding="async"     height="506"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/2Ihb2GYkbpGzYLYoZEDP.png?auto=format"     srcset="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/2Ihb2GYkbpGzYLYoZEDP.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/2Ihb2GYkbpGzYLYoZEDP.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/2Ihb2GYkbpGzYLYoZEDP.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/2Ihb2GYkbpGzYLYoZEDP.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/2Ihb2GYkbpGzYLYoZEDP.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/2Ihb2GYkbpGzYLYoZEDP.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/2Ihb2GYkbpGzYLYoZEDP.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/2Ihb2GYkbpGzYLYoZEDP.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/2Ihb2GYkbpGzYLYoZEDP.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/2Ihb2GYkbpGzYLYoZEDP.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/2Ihb2GYkbpGzYLYoZEDP.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/2Ihb2GYkbpGzYLYoZEDP.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/2Ihb2GYkbpGzYLYoZEDP.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/2Ihb2GYkbpGzYLYoZEDP.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/2Ihb2GYkbpGzYLYoZEDP.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/2Ihb2GYkbpGzYLYoZEDP.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/2Ihb2GYkbpGzYLYoZEDP.png?auto=format&w=1600 1600w"          width="800"   />
+</figure>
+<div class="w-aside w-aside--note">
+<p>To reduce layout shifts caused by Web Fonts, keep an eye on the new <a href="https://groups.google.com/a/chromium.org/g/blink-dev/c/1PVr94hZHjU/m/J0xT8-rlAQAJ" rel="noopener">size-adjust</a> descriptor for <code>@font-face</code>. This nable adjusting the size of fallback fonts to reduce CLS.</p>
+</div>
+<h3 id="identifying-cls-from-images-without-dimensions">Identifying CLS from images without dimensions <a class="w-headline-link" href="#identifying-cls-from-images-without-dimensions">#</a></h3>
+<p>To <a href="/optimize-cls/#images-without-dimensions">limit</a> Cumulative Layout Shift being caused by images
+without dimensions, include width and height size attributes on your images and video elements.
+This approach ensures that the browser can allocate the correct amount of space in the document
+while the image is loading.</p>
+<figure class="w-figure">
+  <img     alt="Audit for image elements without explicit width and height"          decoding="async"     height="489"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/fZRkmM18rvfy6y7LB1Qx.png?auto=format"     srcset="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/fZRkmM18rvfy6y7LB1Qx.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/fZRkmM18rvfy6y7LB1Qx.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/fZRkmM18rvfy6y7LB1Qx.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/fZRkmM18rvfy6y7LB1Qx.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/fZRkmM18rvfy6y7LB1Qx.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/fZRkmM18rvfy6y7LB1Qx.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/fZRkmM18rvfy6y7LB1Qx.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/fZRkmM18rvfy6y7LB1Qx.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/fZRkmM18rvfy6y7LB1Qx.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/fZRkmM18rvfy6y7LB1Qx.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/fZRkmM18rvfy6y7LB1Qx.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/fZRkmM18rvfy6y7LB1Qx.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/fZRkmM18rvfy6y7LB1Qx.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/fZRkmM18rvfy6y7LB1Qx.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/fZRkmM18rvfy6y7LB1Qx.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/fZRkmM18rvfy6y7LB1Qx.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/fZRkmM18rvfy6y7LB1Qx.png?auto=format&w=1600 1600w"          width="800"   />
+</figure>
+<p>See <a href="https://www.smashingmagazine.com/2020/03/setting-height-width-images-important-again/" rel="noopener">Setting Height And Width On Images Is Important
+Again</a> for a
+good write-up on the importance of thinking about image dimensions and aspect ratio.</p>
+<h3 id="identifying-cls-from-advertisements">Identifying CLS from advertisements <a class="w-headline-link" href="#identifying-cls-from-advertisements">#</a></h3>
+<p><a href="https://developers.google.com/publisher-ads-audits" rel="noopener">Publisher Ads for Lighthouse</a> allows you to
+find opportunities to improve the loading experience of ads on your page, including contributions
+to layout shift and long tasks that may push out how soon your page is usable by users. In
+Lighthouse, you can enable this via Community Plugins.</p>
+<figure class="w-figure">
+  <img     alt="Ads related audits highlighting opportunities to reduce time to request and layout shift"          decoding="async"     height="527"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/kR3jgctso6Hg0OxD8xwi.png?auto=format"     srcset="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/kR3jgctso6Hg0OxD8xwi.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/kR3jgctso6Hg0OxD8xwi.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/kR3jgctso6Hg0OxD8xwi.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/kR3jgctso6Hg0OxD8xwi.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/kR3jgctso6Hg0OxD8xwi.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/kR3jgctso6Hg0OxD8xwi.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/kR3jgctso6Hg0OxD8xwi.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/kR3jgctso6Hg0OxD8xwi.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/kR3jgctso6Hg0OxD8xwi.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/kR3jgctso6Hg0OxD8xwi.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/kR3jgctso6Hg0OxD8xwi.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/kR3jgctso6Hg0OxD8xwi.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/kR3jgctso6Hg0OxD8xwi.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/kR3jgctso6Hg0OxD8xwi.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/kR3jgctso6Hg0OxD8xwi.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/kR3jgctso6Hg0OxD8xwi.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/kR3jgctso6Hg0OxD8xwi.png?auto=format&w=1600 1600w"          width="800"   />
+</figure>
+<p>Remember that ads are one of the
+<a href="/optimize-cls/#ads-embeds-and-iframes-without-dimensions">largest</a> contributors to layout shifts
+on the web. It's important to:</p>
+<ul>
+<li>Take care when placing non-sticky ads near the top of the viewport</li>
+<li>Eliminate shifts by reserving the largest possible size for the ad slot</li>
+</ul>
+<h3 id="avoid-non-composited-animations">Avoid non-composited animations <a class="w-headline-link" href="#avoid-non-composited-animations">#</a></h3>
+<p>Animations which are non-composited can present themselves as janky on lower-end devices if heavy
+JavaScript tasks are keeping the main thread busy. Such animations can introduce layout shifts.</p>
+<p>If Chrome discovers an animation couldn't be composited, it reports it to a DevTools trace
+Lighthouse reads, allowing it to list which elements with animations weren't composited and for
+what reason. You can find these in the <a href="/non-composited-animations/">Avoid non-composited
+animations</a> audit.</p>
+<figure class="w-figure">
+  <img     alt="Audit for avoiding non-composited animations"          decoding="async"     height="528"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/heGuYXKeMrUftMvfrDU7.png?auto=format"     srcset="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/heGuYXKeMrUftMvfrDU7.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/heGuYXKeMrUftMvfrDU7.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/heGuYXKeMrUftMvfrDU7.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/heGuYXKeMrUftMvfrDU7.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/heGuYXKeMrUftMvfrDU7.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/heGuYXKeMrUftMvfrDU7.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/heGuYXKeMrUftMvfrDU7.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/heGuYXKeMrUftMvfrDU7.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/heGuYXKeMrUftMvfrDU7.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/heGuYXKeMrUftMvfrDU7.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/heGuYXKeMrUftMvfrDU7.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/heGuYXKeMrUftMvfrDU7.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/heGuYXKeMrUftMvfrDU7.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/heGuYXKeMrUftMvfrDU7.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/heGuYXKeMrUftMvfrDU7.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/heGuYXKeMrUftMvfrDU7.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/heGuYXKeMrUftMvfrDU7.png?auto=format&w=1600 1600w"          width="800"   />
+</figure>
+<h3 id="debug-first-input-delay-total-blocking-time-long-tasks">Debug First Input Delay / Total Blocking Time / Long Tasks <a class="w-headline-link" href="#debug-first-input-delay-total-blocking-time-long-tasks">#</a></h3>
+<p>First Input measures the time from when a user first interacts with a page (e.g. when they click a
+link, tap on a button, or use a custom, JavaScript-powered control) to the time when the browser is
+actually able to begin processing event handlers in response to that interaction. Long JavaScript
+Tasks can impact this metric and the proxy for this metric, Total Blocking Time.</p>
+<figure class="w-figure">
+  <img     alt="Audit for avoiding long main thread tasks"          decoding="async"     height="485"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LqBCtAXdByd4fBzoNc1K.png?auto=format"     srcset="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LqBCtAXdByd4fBzoNc1K.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LqBCtAXdByd4fBzoNc1K.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LqBCtAXdByd4fBzoNc1K.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LqBCtAXdByd4fBzoNc1K.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LqBCtAXdByd4fBzoNc1K.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LqBCtAXdByd4fBzoNc1K.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LqBCtAXdByd4fBzoNc1K.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LqBCtAXdByd4fBzoNc1K.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LqBCtAXdByd4fBzoNc1K.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LqBCtAXdByd4fBzoNc1K.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LqBCtAXdByd4fBzoNc1K.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LqBCtAXdByd4fBzoNc1K.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LqBCtAXdByd4fBzoNc1K.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LqBCtAXdByd4fBzoNc1K.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LqBCtAXdByd4fBzoNc1K.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LqBCtAXdByd4fBzoNc1K.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LqBCtAXdByd4fBzoNc1K.png?auto=format&w=1600 1600w"          width="800"   />
+</figure>
+<p>Lighthouse includes an <a href="/long-tasks-devtools/">Avoid long main-thread tasks</a> audit which lists the
+longest tasks on the main thread. This can be helpful for identifying the worst contributors to
+input delay. In the left column we can see the URL of scripts responsible for long main-thread
+tasks.</p>
+<p>To the right we can see the duration of these tasks. As a reminder, Long Tasks are tasks which
+execute for longer than 50 milliseconds. This is considered to block the main thread long enough to
+impact frame rate or input latency.</p>
+<p>If considering third-party services for monitoring, I also quite like the <a href="https://calibreapp.com/docs/features/main-thread-execution-timeline" rel="noopener">main-thread execution
+timeline</a> visual Calibre has
+for visualizing these costs, which highlights both parent and child tasks contributing to long
+tasks that impact interactivity.</p>
+<figure class="w-figure">
+  <img     alt="The main-thread execution timeline visual Calibre has"          decoding="async"     height="155"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/IGENqHBjC97pHslOQYc6.png?auto=format"     srcset="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/IGENqHBjC97pHslOQYc6.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/IGENqHBjC97pHslOQYc6.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/IGENqHBjC97pHslOQYc6.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/IGENqHBjC97pHslOQYc6.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/IGENqHBjC97pHslOQYc6.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/IGENqHBjC97pHslOQYc6.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/IGENqHBjC97pHslOQYc6.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/IGENqHBjC97pHslOQYc6.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/IGENqHBjC97pHslOQYc6.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/IGENqHBjC97pHslOQYc6.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/IGENqHBjC97pHslOQYc6.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/IGENqHBjC97pHslOQYc6.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/IGENqHBjC97pHslOQYc6.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/IGENqHBjC97pHslOQYc6.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/IGENqHBjC97pHslOQYc6.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/IGENqHBjC97pHslOQYc6.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/IGENqHBjC97pHslOQYc6.png?auto=format&w=1600 1600w"          width="800"   />
+</figure>
+<h3 id="block-network-requests-to-see-the-beforeafter-impact-in-lighthouse">Block network requests to see the before/after impact in Lighthouse <a class="w-headline-link" href="#block-network-requests-to-see-the-beforeafter-impact-in-lighthouse">#</a></h3>
+<p>Chrome DevTools supports <a href="https://developers.google.com/web/updates/2017/04/devtools-release-notes#block-requests" rel="noopener">blocking network
+requests</a>
+to see the impact of individual resources being removed or not being available. This can be helpful
+for understanding the cost individual scripts (e.g such as third-party embeds or trackers) have on
+metrics like Total Blocking Time (TBT) and Time to Interactive.</p>
+<p>Network request blocking happens to also work with Lighthouse! Let's take a quick look at the
+Lighthouse report for a site. The Perf score is 63/100 with a TBT of 400ms. Digging into the code,
+we find this site loads an Intersection Observer polyfill in Chrome which isn't necessary. Let's
+block it!</p>
+<figure class="w-figure">
+  <img     alt="Network request blocking"          decoding="async"     height="508"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/DPXEXhOZL0Czjm10lBox.png?auto=format"     srcset="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/DPXEXhOZL0Czjm10lBox.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/DPXEXhOZL0Czjm10lBox.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/DPXEXhOZL0Czjm10lBox.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/DPXEXhOZL0Czjm10lBox.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/DPXEXhOZL0Czjm10lBox.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/DPXEXhOZL0Czjm10lBox.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/DPXEXhOZL0Czjm10lBox.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/DPXEXhOZL0Czjm10lBox.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/DPXEXhOZL0Czjm10lBox.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/DPXEXhOZL0Czjm10lBox.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/DPXEXhOZL0Czjm10lBox.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/DPXEXhOZL0Czjm10lBox.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/DPXEXhOZL0Czjm10lBox.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/DPXEXhOZL0Czjm10lBox.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/DPXEXhOZL0Czjm10lBox.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/DPXEXhOZL0Czjm10lBox.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/DPXEXhOZL0Czjm10lBox.png?auto=format&w=1600 1600w"          width="800"   />
+</figure>
+<p>We can right-click on a script in the DevTools Network panel and click <code>Block Request URL</code> to block
+it. Here we'll do this for the Intersection Observer polyfill.</p>
+<figure class="w-figure">
+  <img     alt="Block request URLs in DevTools"          decoding="async"     height="354"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/iWB0jAtL0PKpwkmecOPf.png?auto=format"     srcset="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/iWB0jAtL0PKpwkmecOPf.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/iWB0jAtL0PKpwkmecOPf.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/iWB0jAtL0PKpwkmecOPf.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/iWB0jAtL0PKpwkmecOPf.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/iWB0jAtL0PKpwkmecOPf.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/iWB0jAtL0PKpwkmecOPf.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/iWB0jAtL0PKpwkmecOPf.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/iWB0jAtL0PKpwkmecOPf.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/iWB0jAtL0PKpwkmecOPf.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/iWB0jAtL0PKpwkmecOPf.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/iWB0jAtL0PKpwkmecOPf.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/iWB0jAtL0PKpwkmecOPf.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/iWB0jAtL0PKpwkmecOPf.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/iWB0jAtL0PKpwkmecOPf.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/iWB0jAtL0PKpwkmecOPf.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/iWB0jAtL0PKpwkmecOPf.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/iWB0jAtL0PKpwkmecOPf.png?auto=format&w=1600 1600w"          width="800"   />
+</figure>
+<p>Next we can re-run Lighthouse. This time we can see our performance score has improved (70/100) as
+has Total Blocking Time (400ms =&gt; 300ms).</p>
+<figure class="w-figure">
+  <img     alt="The after view of blocking costly network requests"          decoding="async"     height="508"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LiaMMxvy4prpFBIuSgfo.png?auto=format"     srcset="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LiaMMxvy4prpFBIuSgfo.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LiaMMxvy4prpFBIuSgfo.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LiaMMxvy4prpFBIuSgfo.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LiaMMxvy4prpFBIuSgfo.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LiaMMxvy4prpFBIuSgfo.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LiaMMxvy4prpFBIuSgfo.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LiaMMxvy4prpFBIuSgfo.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LiaMMxvy4prpFBIuSgfo.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LiaMMxvy4prpFBIuSgfo.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LiaMMxvy4prpFBIuSgfo.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LiaMMxvy4prpFBIuSgfo.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LiaMMxvy4prpFBIuSgfo.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LiaMMxvy4prpFBIuSgfo.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LiaMMxvy4prpFBIuSgfo.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LiaMMxvy4prpFBIuSgfo.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LiaMMxvy4prpFBIuSgfo.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LiaMMxvy4prpFBIuSgfo.png?auto=format&w=1600 1600w"          width="800"   />
+</figure>
+<h3 id="replace-costly-third-party-embeds-with-a-facade">Replace costly third-party embeds with a facade <a class="w-headline-link" href="#replace-costly-third-party-embeds-with-a-facade">#</a></h3>
+<p>It's common to use third-party resources for embedding videos, social media posts or widgets into
+pages. By default, most embeds eagerly load right away and can come with costly payloads that
+negatively impact the user-experience. This is wasteful if the third-party isn't critical (e.g. if
+the user needs to scroll before they see it).</p>
+<p>One pattern to improve performance of such widgets is to <a href="https://addyosmani.com/blog/import-on-interaction/" rel="noopener">lazy-load them on user
+interaction</a>. This can be done by rendering a
+lightweight preview of the widget (a facade) and only load the full version if a user interacts
+with it. Lighthouse has an audit that will recommend third-party resources which can be
+<a href="/third-party-facades/">lazy-loaded with a facade</a>, such as YouTube video embeds.</p>
+<figure class="w-figure">
+  <img     alt="Audit highlighting that some costly third party resources can be replaced"          decoding="async"     height="483"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/iciXy3oVlPH7VuwN7toy.png?auto=format"     srcset="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/iciXy3oVlPH7VuwN7toy.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/iciXy3oVlPH7VuwN7toy.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/iciXy3oVlPH7VuwN7toy.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/iciXy3oVlPH7VuwN7toy.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/iciXy3oVlPH7VuwN7toy.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/iciXy3oVlPH7VuwN7toy.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/iciXy3oVlPH7VuwN7toy.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/iciXy3oVlPH7VuwN7toy.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/iciXy3oVlPH7VuwN7toy.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/iciXy3oVlPH7VuwN7toy.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/iciXy3oVlPH7VuwN7toy.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/iciXy3oVlPH7VuwN7toy.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/iciXy3oVlPH7VuwN7toy.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/iciXy3oVlPH7VuwN7toy.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/iciXy3oVlPH7VuwN7toy.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/iciXy3oVlPH7VuwN7toy.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/iciXy3oVlPH7VuwN7toy.png?auto=format&w=1600 1600w"          width="800"   />
+</figure>
+<p>As a reminder, Lighthouse will <a href="/third-party-summary/">highlight third-party code</a> that blocks the main thread for over 250ms. This can surface all kinds of third-party scripts (including ones authored by Google) that may be worth better deferring or lazy-loading if what they render requires scrolling to view it.</p>
+<figure class="w-figure"> 
+  <img     alt="Reduce the cost of third-party JavaScript audit"          decoding="async"     height="556"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/K0Oxmu1XEN2P3NQIknyH.png?auto=format"     srcset="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/K0Oxmu1XEN2P3NQIknyH.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/K0Oxmu1XEN2P3NQIknyH.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/K0Oxmu1XEN2P3NQIknyH.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/K0Oxmu1XEN2P3NQIknyH.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/K0Oxmu1XEN2P3NQIknyH.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/K0Oxmu1XEN2P3NQIknyH.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/K0Oxmu1XEN2P3NQIknyH.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/K0Oxmu1XEN2P3NQIknyH.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/K0Oxmu1XEN2P3NQIknyH.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/K0Oxmu1XEN2P3NQIknyH.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/K0Oxmu1XEN2P3NQIknyH.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/K0Oxmu1XEN2P3NQIknyH.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/K0Oxmu1XEN2P3NQIknyH.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/K0Oxmu1XEN2P3NQIknyH.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/K0Oxmu1XEN2P3NQIknyH.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/K0Oxmu1XEN2P3NQIknyH.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/K0Oxmu1XEN2P3NQIknyH.png?auto=format&w=1600 1600w"          width="800"   />
+</figure>
+<h3 id="beyond-core-web-vitals">Beyond Core Web Vitals <a class="w-headline-link" href="#beyond-core-web-vitals">#</a></h3>
+<p>Beyond highlighting the Core Web Vitals, recent versions of Lighthouse and PageSpeed Insights also
+try to provide concrete guidance you can follow for improving how quickly JavaScript-heavy web
+applications can load if you have source maps turned on.</p>
+<p>These include a growing collection of audits for reducing the cost of JavaScript in your page, such
+as reducing reliance on polyfills and duplicates that may not be needed for the user-experience.</p>
+<p>For more information on Core Web Vitals tooling, keep an eye on the <a href="https://twitter.com/____lighthouse" rel="noopener">Lighthouse
+team</a> Twitter account and <a href="https://developers.google.com/web/updates/2020/05/devtools" rel="noopener">What's new in
+DevTools</a>.</p>
+<p><a href="https://unsplash.com/photos/7I9aCavB8RI" rel="noopener">Hero image</a> by
+<a href="https://unsplash.com/@mrs80z" rel="noopener">Mercedes Mehling</a>
+on <a href="https://unsplash.com" rel="noopener">Unsplash</a>.</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/performance/">Performance</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/web-vitals/">Web Vitals</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>May 11, 2021</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/optimize-vitals-lighthouse/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

@@ -1,0 +1,827 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=be35f6b63a1b2">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Custom bullets with CSS ::marker</title>
+<meta name="description" content="It is now trivial to customize the color, size or type of number or bullet when using a <ul> or <ol>." />
+
+<link rel="canonical" href="https://web.dev/css-marker-pseudo-element/" />
+
+<meta itemprop="name" content="Custom bullets with CSS ::marker" />
+<meta itemprop="description" content="It is now trivial to customize the color, size or type of number or bullet when using a <ul> or <ol>." />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/jbdOq0tGGzobMtaBsajn.png?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/css-marker-pseudo-element/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Custom bullets with CSS ::marker" />
+<meta property="og:description" content="It is now trivial to customize the color, size or type of number or bullet when using a <ul> or <ol>." />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/jbdOq0tGGzobMtaBsajn.png?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="Showing the anatomy of a single list item by putting separate boxes around the bullet and the text" />
+<meta property="tag" content="css" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Custom bullets with CSS ::marker" />
+<meta name="twitter:description" content="It is now trivial to customize the color, size or type of number or bullet when using a &lsaquo;ul&rsaquo; or &lsaquo;ol&rsaquo;." />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/jbdOq0tGGzobMtaBsajn.png?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=31ce39c6de0d9', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=d7c6e4b07ad86', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="Showing the anatomy of a single list item by putting separate boxes around the bullet and the text"     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/GPGTyXJOh0cH0wa1PvXH.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/GPGTyXJOh0cH0wa1PvXH.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/GPGTyXJOh0cH0wa1PvXH.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/GPGTyXJOh0cH0wa1PvXH.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/GPGTyXJOh0cH0wa1PvXH.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/GPGTyXJOh0cH0wa1PvXH.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/GPGTyXJOh0cH0wa1PvXH.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/GPGTyXJOh0cH0wa1PvXH.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/GPGTyXJOh0cH0wa1PvXH.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/GPGTyXJOh0cH0wa1PvXH.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/GPGTyXJOh0cH0wa1PvXH.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/GPGTyXJOh0cH0wa1PvXH.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/GPGTyXJOh0cH0wa1PvXH.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/GPGTyXJOh0cH0wa1PvXH.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/GPGTyXJOh0cH0wa1PvXH.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/GPGTyXJOh0cH0wa1PvXH.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/GPGTyXJOh0cH0wa1PvXH.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/GPGTyXJOh0cH0wa1PvXH.png?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#custom-bullets-with-css-::marker" class="w-toc__header--link">
+        Custom bullets with CSS ::marker
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#browser-compatibilty">Browser compatibilty</a></li><li><a href="#pseudo-elements">Pseudo-elements</a></li><li><a href="#creating-a-marker">Creating a marker</a></li><li><a href="#styling-a-marker">Styling a marker</a></li><li><a href="#debugging">Debugging</a></li><li><a href="#future-pseudo-element-styling">Future Pseudo-element styling</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@argyleink | i18n.authors.loirooriol.title"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="custom-bullets-with-css-::marker" class="w-article-header__headline">Custom bullets with CSS ::marker</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          It is now trivial to customize the color, size or type of number or bullet when using a &lt;ul&gt; or &lt;ol&gt;.
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Sep 2, 2020</time>
+           <span class="w-author__separator">•</span> Updated <time>Sep 2, 2020</time> 
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/adamargyle/"><img     alt="Adam Argyle"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/adamargyle/">Adam Argyle</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/argyleink"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/argyleink">GitHub</a>
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://glitch.com/@argyleink"
+          >Glitch</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://nerdy.dev">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+            <div class="w-author">
+  <a href="/authors/loirooriol/"><img     alt="Oriol Brufau"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/uedrGuXN8MZ0tg11zsmK.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/uedrGuXN8MZ0tg11zsmK.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/uedrGuXN8MZ0tg11zsmK.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/uedrGuXN8MZ0tg11zsmK.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/uedrGuXN8MZ0tg11zsmK.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/uedrGuXN8MZ0tg11zsmK.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/loirooriol/">Oriol Brufau</a>
+    </cite>
+    <ul class="w-author__link-list">
+      
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/Loirooriol">GitHub</a>
+      </li>
+      
+      
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>Thanks to Igalia, sponsored by Bloomberg, we can finally put our hacks away for styling lists. See!</p>
+<figure class="w-figure">
+  <img     alt=""     class="w-screenshot"     decoding="async"     height="384"          loading="lazy"     sizes="(min-width: 665px) 665px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/WOmqXrog0YoriZqqIzEZ.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/WOmqXrog0YoriZqqIzEZ.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/WOmqXrog0YoriZqqIzEZ.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/WOmqXrog0YoriZqqIzEZ.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/WOmqXrog0YoriZqqIzEZ.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/WOmqXrog0YoriZqqIzEZ.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/WOmqXrog0YoriZqqIzEZ.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/WOmqXrog0YoriZqqIzEZ.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/WOmqXrog0YoriZqqIzEZ.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/WOmqXrog0YoriZqqIzEZ.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/WOmqXrog0YoriZqqIzEZ.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/WOmqXrog0YoriZqqIzEZ.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/WOmqXrog0YoriZqqIzEZ.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/WOmqXrog0YoriZqqIzEZ.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/WOmqXrog0YoriZqqIzEZ.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/WOmqXrog0YoriZqqIzEZ.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/WOmqXrog0YoriZqqIzEZ.png?auto=format&w=1330 1330w"          width="665"   />
+  <figcaption class="w-figcaption">
+    <a href="https://glitch.com/edit/#!/marker-fun-example">View Source</a>
+  </figcaption>
+</figure>
+<p>Thanks to <a href="https://www.w3.org/TR/css-lists-3/#marker-pseudo" rel="noopener">CSS <code>::marker</code></a> we can change the content and some of the styles of bullets and numbers.</p>
+<h2 id="browser-compatibilty">Browser compatibilty <a class="w-headline-link" href="#browser-compatibilty">#</a></h2>
+<p><code>::marker</code> is supported in Firefox for desktop and Android, desktop Safari and iOS Safari (but only the <code>color</code> and <code>font-*</code> properties, see <a href="https://bugs.webkit.org/show_bug.cgi?id=204163" rel="noopener">Bug 204163</a>), and Chromium-based desktop and Android browsers. See MDN's <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/::marker#Browser_compatibility" rel="noopener">Browser compatibility</a> table for updates.</p>
+<h2 id="pseudo-elements">Pseudo-elements <a class="w-headline-link" href="#pseudo-elements">#</a></h2>
+<p>Consider the following essential HTML unordered list:</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>ul</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>li</span><span class="token punctuation">></span></span>Lorem ipsum dolor sit amet consectetur adipisicing elit<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>li</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>li</span><span class="token punctuation">></span></span>Dolores quaerat illo totam porro<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>li</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>li</span><span class="token punctuation">></span></span>Quidem aliquid perferendis voluptates<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>li</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>li</span><span class="token punctuation">></span></span>Ipsa adipisci fugit assumenda dicta voluptates nihil reprehenderit consequatur alias facilis rem<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>li</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>li</span><span class="token punctuation">></span></span>Fuga<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>li</span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>ul</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><p>Which results in the following unsurprising rendering:</p>
+<div class="glitch-embed-wrap" style="height: 480px; width: 100%;">
+  <iframe
+    src="https://glitch.com/embed/#!/embed/marker-plain-list?path=style.css&previewSize=100"
+    alt="List Demo on Glitch"
+    style="height: 100%; width: 100%; border: 0;">
+  </iframe>
+</div>
+<p>The dot at the beginning of each <code>&lt;li&gt;</code> item is free! The browser is drawing and creating a generated marker box for you.</p>
+<p>Today we're excited to talk about the <code>::marker</code> pseudo-element, which gives the ability to style the bullet element that browsers create for you.</p>
+<div class="w-aside w-aside--key-term">
+<p><strong>Key Term</strong>:
+A pseudo-element represents an element in the document other than those which exist in the document tree. For example, you can select the first line of a paragraph using the pseudo-element <code>p::first-line</code>, even though there is no HTML element wrapping that line of text.</p>
+</div>
+<h3 id="creating-a-marker">Creating a marker <a class="w-headline-link" href="#creating-a-marker">#</a></h3>
+<p>The <code>::marker</code> pseudo-element marker box is automatically generated inside every list item element, preceding the actual contents and the <code>::before</code> pseudo-element.</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">li::before</span> <span class="token punctuation">{</span><br>  <span class="token property">content</span><span class="token punctuation">:</span> <span class="token string">"::before"</span><span class="token punctuation">;</span><br>  <span class="token property">background</span><span class="token punctuation">:</span> lightgray<span class="token punctuation">;</span><br>  <span class="token property">border-radius</span><span class="token punctuation">:</span> 1ch<span class="token punctuation">;</span><br>  <span class="token property">padding-inline</span><span class="token punctuation">:</span> 1ch<span class="token punctuation">;</span><br>  <span class="token property">margin-inline-end</span><span class="token punctuation">:</span> 1ch<span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><div class="glitch-embed-wrap" style="height: 340px; width: 100%;">
+  <iframe
+    src="https://glitch.com/embed/#!/embed/marker-before-example?path=style.css&previewSize=100"
+    alt="List Demo on Glitch"
+    style="height: 100%; width: 100%; border: 0;">
+  </iframe>
+</div>
+<p>Typically, list items are <code>&lt;li&gt;</code> HTML elements, but other elements can also become list items with <code>display: list-item</code>.</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dl</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dt</span><span class="token punctuation">></span></span>Lorem<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dt</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dd</span><span class="token punctuation">></span></span>Lorem ipsum dolor sit amet consectetur adipisicing elit<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dd</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dd</span><span class="token punctuation">></span></span>Dolores quaerat illo totam porro<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dd</span><span class="token punctuation">></span></span><br><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dt</span><span class="token punctuation">></span></span>Ipsum<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dt</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dd</span><span class="token punctuation">></span></span>Quidem aliquid perferendis voluptates<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dd</span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dl</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><web-copy-code><pre class="language-css"><code class="language-css"><span class="highlight-line"><span class="token selector">dd</span> <span class="token punctuation">{</span></span><br><mark class="highlight-line highlight-line-active">  <span class="token property">display</span><span class="token punctuation">:</span> list-item<span class="token punctuation">;</span></mark><br><span class="highlight-line">  <span class="token property">list-style-type</span><span class="token punctuation">:</span> <span class="token string">"🤯"</span><span class="token punctuation">;</span></span><br><span class="highlight-line">  <span class="token property">padding-inline-start</span><span class="token punctuation">:</span> 1ch<span class="token punctuation">;</span></span><br><span class="highlight-line"><span class="token punctuation">}</span></span></code></pre>
+</web-copy-code><div class="glitch-embed-wrap" style="height: 420px; width: 100%;">
+  <iframe
+    src="https://glitch.com/embed/#!/embed/marker-definition-list?path=style.css&previewSize=100"
+    alt="List Demo on Glitch"
+    style="height: 100%; width: 100%; border: 0;">
+  </iframe>
+</div>
+<h3 id="styling-a-marker">Styling a marker <a class="w-headline-link" href="#styling-a-marker">#</a></h3>
+<p>Until <code>::marker</code>, lists could be styled using <code>list-style-type</code> and <code>list-style-image</code> to change the list item symbol with 1 line of CSS:</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">li</span> <span class="token punctuation">{</span><br>  <span class="token property">list-style-image</span><span class="token punctuation">:</span> <span class="token url"><span class="token function">url</span><span class="token punctuation">(</span>/right-arrow.svg<span class="token punctuation">)</span></span><span class="token punctuation">;</span><br>  <span class="token comment">/* OR */</span><br>  <span class="token property">list-style-type</span><span class="token punctuation">:</span> <span class="token string">'👉'</span><span class="token punctuation">;</span><br>  <span class="token property">padding-inline-start</span><span class="token punctuation">:</span> 1ch<span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><div class="glitch-embed-wrap" style="height: 420px; width: 100%;">
+  <iframe
+    src="https://glitch.com/embed/#!/embed/marker-list-style-type?path=style.css&previewSize=100"
+    alt="List Demo on Glitch"
+    style="height: 100%; width: 100%; border: 0;">
+  </iframe>
+</div>
+<p>That's handy but we need more. What about changing the color, size, spacing, etc!? That's where <code>::marker</code> comes to the rescue. It allows individual and global targeting of these pseudo-elements from CSS:</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">li::marker</span> <span class="token punctuation">{</span><br>  <span class="token property">color</span><span class="token punctuation">:</span> hotpink<span class="token punctuation">;</span><br><span class="token punctuation">}</span><br><br><span class="token selector">li:first-child::marker</span> <span class="token punctuation">{</span><br>  <span class="token property">font-size</span><span class="token punctuation">:</span> 5rem<span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><div class="glitch-embed-wrap" style="height: 420px; width: 100%;">
+  <iframe
+    src="https://glitch.com/embed/#!/embed/marker-style-introduction?path=style.css&previewSize=100"
+    alt="List Demo on Glitch"
+    style="height: 100%; width: 100%; border: 0;">
+  </iframe>
+</div>
+<div class="w-aside w-aside--caution">
+<p><strong>Caution</strong>:
+If the above list does not have pink bullets, then <code>::marker</code> is not supported in your browser.</p>
+</div>
+<p>The <code>list-style-type</code> property gives very limited styling possibilities. The <code>::marker</code> pseudo-element means that you can target the marker itself and apply styles directly to it. This allows for far more control.</p>
+<p>That said, you can't use every CSS property on a <code>::marker</code>. The list of which properties are allowed and not allowed are clearly indicated in the spec. If you try something interesting with this pseudo-element and it doesn't work, the list below is your guide into what can and can't be done with CSS:</p>
+<h4 id="allowed-css-::marker-properties">Allowed CSS <code>::marker</code> Properties <a class="w-headline-link" href="#allowed-css-::marker-properties">#</a></h4>
+<ul>
+<li><code>animation-*</code></li>
+<li><code>transition-*</code></li>
+<li><code>color</code></li>
+<li><code>direction</code></li>
+<li><code>font-*</code></li>
+<li><code>content</code></li>
+<li><code>unicode-bidi</code></li>
+<li><code>white-space</code></li>
+</ul>
+<p>Changing the contents of a <code>::marker</code> is done with <code>content</code> as opposed to <code>list-style-type</code>. In this next example the first item is styled using <code>list-style-type</code> and the second with <code>::marker</code>. The properties in the first case apply to the entire list item, not just the marker, which means that the text is animating as well as the marker. When using <code>::marker</code> we can target just the marker box and not the text.</p>
+<p>Also, note how the disallowed <code>background</code> property has no effect.</p>
+<div class="w-columns">
+<figure class="w-compare"><p class="w-compare__label w-compare__label--worse">List Styles</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">li:nth-child(1)</span> <span class="token punctuation">{</span><br>  <span class="token property">list-style-type</span><span class="token punctuation">:</span> <span class="token string">'?'</span><span class="token punctuation">;</span><br>  <span class="token property">font-size</span><span class="token punctuation">:</span> 2rem<span class="token punctuation">;</span><br>  <span class="token property">background</span><span class="token punctuation">:</span> <span class="token function">hsl</span><span class="token punctuation">(</span>200 20% 88%<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token property">animation</span><span class="token punctuation">:</span> color-change 3s ease-in-out infinite<span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><figcaption class="w-compare__caption">
+<p>Mixed results between the marker and the list item</p>
+</figcaption>
+</figure>
+<figure class="w-compare"><p class="w-compare__label w-compare__label--better">Marker Styles</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">li:nth-child(2)::marker</span> <span class="token punctuation">{</span><br>  <span class="token property">content</span><span class="token punctuation">:</span> <span class="token string">'!'</span><span class="token punctuation">;</span><br>  <span class="token property">font-size</span><span class="token punctuation">:</span> 2rem<span class="token punctuation">;</span><br>  <span class="token property">background</span><span class="token punctuation">:</span> <span class="token function">hsl</span><span class="token punctuation">(</span>200 20% 88%<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token property">animation</span><span class="token punctuation">:</span> color-change 3s ease-in-out infinite<span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><figcaption class="w-compare__caption">
+<p>Focused results between marker and list item</p>
+</figcaption>
+</figure>
+</div>
+<br>
+<div class="glitch-embed-wrap" style="height: 420px; width: 100%;">
+  <iframe
+    src="https://glitch.com/embed/#!/embed/marker-style-vs-list-style-type?path=style.css&previewSize=100"
+    alt="List Demo on Glitch"
+    style="height: 100%; width: 100%; border: 0;">
+  </iframe>
+</div>
+<div class="w-aside w-aside--gotchas"><strong>Gotchas!</strong>
+<p>In Chromium, <code>white-space</code> only works for inside positioned markers. For outside positioned markers, the style adjuster always forces <code>white-space: pre</code> in order to preserve the trailing space.</p>
+</div>
+<h4 id="changing-the-content-of-a-marker">Changing the content of a marker <a class="w-headline-link" href="#changing-the-content-of-a-marker">#</a></h4>
+<p>Here are some of the ways you could style your markers.</p>
+<p><strong>Changing all list items</strong></p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">li</span> <span class="token punctuation">{</span><br>  <span class="token property">list-style-type</span><span class="token punctuation">:</span> <span class="token string">"😍"</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><br><br><span class="token comment">/* OR */</span><br><br><span class="token selector">li::marker</span> <span class="token punctuation">{</span><br>  <span class="token property">content</span><span class="token punctuation">:</span> <span class="token string">"😍"</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><div class="glitch-embed-wrap" style="height: 420px; width: 100%;">
+  <iframe
+    src="https://glitch.com/embed/#!/embed/marker-change-all?path=style.css&previewSize=100"
+    alt="List Demo on Glitch"
+    style="height: 100%; width: 100%; border: 0;">
+  </iframe>
+</div>
+<p><strong>Changing just one list item</strong></p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">li:last-child::marker</span> <span class="token punctuation">{</span><br>  <span class="token property">content</span><span class="token punctuation">:</span> <span class="token string">"😍"</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><div class="glitch-embed-wrap" style="height: 420px; width: 100%;">
+  <iframe
+    src="https://glitch.com/embed/#!/embed/marker-change-one?path=style.css&previewSize=100"
+    alt="List Demo on Glitch"
+    style="height: 100%; width: 100%; border: 0;">
+  </iframe>
+</div>
+<p><strong>Changing a list item to SVG</strong></p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">li::marker</span> <span class="token punctuation">{</span><br>  <span class="token property">content</span><span class="token punctuation">:</span> <span class="token url"><span class="token function">url</span><span class="token punctuation">(</span>/heart.svg<span class="token punctuation">)</span></span><span class="token punctuation">;</span><br>  <span class="token property">content</span><span class="token punctuation">:</span> <span class="token url"><span class="token function">url</span><span class="token punctuation">(</span>#heart<span class="token punctuation">)</span></span><span class="token punctuation">;</span><br>  <span class="token property">content</span><span class="token punctuation">:</span> <span class="token url"><span class="token function">url</span><span class="token punctuation">(</span><span class="token string url">"data:image/svg+xml;charset=UTF-8,&lt;svg xmlns='http://www.w3.org/2000/svg' version='1.1' height='24' width='24'>&lt;path d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z' fill='none' stroke='hotpink' stroke-width='3'/>&lt;/svg>"</span><span class="token punctuation">)</span></span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><div class="glitch-embed-wrap" style="height: 420px; width: 100%;">
+  <iframe
+    src="https://glitch.com/embed/#!/embed/marker-inline-svg?path=style.css&previewSize=100"
+    alt="List Demo on Glitch"
+    style="height: 100%; width: 100%; border: 0;">
+  </iframe>
+</div>
+<p><strong>Changing numbered lists</strong>
+What about an <code>&lt;ol&gt;</code> though? The marker on an ordered list item is a number and not a bullet by default. In CSS these are called <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Lists_and_Counters/Using_CSS_counters" rel="noopener">Counters</a>, and they're quite powerful. They even have properties to set and reset where the number starts and ends, or switching them to roman numerals. Can we style that? Yep, and we can even use the marker content value to build our own numbering presentation.</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">li::marker</span> <span class="token punctuation">{</span><br>  <span class="token property">content</span><span class="token punctuation">:</span> <span class="token function">counter</span><span class="token punctuation">(</span>list-item<span class="token punctuation">)</span> <span class="token string">"› "</span><span class="token punctuation">;</span><br>  <span class="token property">color</span><span class="token punctuation">:</span> hotpink<span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><div class="glitch-embed-wrap" style="height: 420px; width: 100%;">
+  <iframe
+    src="https://glitch.com/embed/#!/embed/marker-numbered-lists?path=style.css&previewSize=100"
+    alt="List Demo on Glitch"
+    style="height: 100%; width: 100%; border: 0;">
+  </iframe>
+</div>
+<h3 id="debugging">Debugging <a class="w-headline-link" href="#debugging">#</a></h3>
+<p>Chrome DevTools is ready to help you inspect, debug and modify the styles applying to <code>::marker</code> pseudo elements.</p>
+<figure class="w-figure">
+  <img     alt="DevTools open and showing styles from the user agent and the user styles"     class="w-screenshot"     decoding="async"     height="574"          loading="lazy"     sizes="(min-width: 776px) 776px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/PYKVXEzycrMhQujXsNxQ.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/PYKVXEzycrMhQujXsNxQ.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/PYKVXEzycrMhQujXsNxQ.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/PYKVXEzycrMhQujXsNxQ.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/PYKVXEzycrMhQujXsNxQ.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/PYKVXEzycrMhQujXsNxQ.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/PYKVXEzycrMhQujXsNxQ.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/PYKVXEzycrMhQujXsNxQ.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/PYKVXEzycrMhQujXsNxQ.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/PYKVXEzycrMhQujXsNxQ.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/PYKVXEzycrMhQujXsNxQ.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/PYKVXEzycrMhQujXsNxQ.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/PYKVXEzycrMhQujXsNxQ.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/PYKVXEzycrMhQujXsNxQ.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/PYKVXEzycrMhQujXsNxQ.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/PYKVXEzycrMhQujXsNxQ.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/PYKVXEzycrMhQujXsNxQ.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/PYKVXEzycrMhQujXsNxQ.png?auto=format&w=1552 1552w"     style="max-inline-size: 480px"     width="776"   />
+</figure>
+<h3 id="future-pseudo-element-styling">Future Pseudo-element styling <a class="w-headline-link" href="#future-pseudo-element-styling">#</a></h3>
+<p>You can find out more about ::marker from:</p>
+<ul>
+<li><a href="https://www.smashingmagazine.com/2019/07/css-lists-markers-counters/" rel="noopener">CSS Lists, Markers and Counters</a> from <a href="https://www.smashingmagazine.com/" rel="noopener">Smashing Magazine</a></li>
+<li><a href="https://css-tricks.com/counting-css-counters-css-grid/" rel="noopener">Counting With CSS Counters and CSS Grid</a> from <a href="https://css-tricks.com/" rel="noopener">CSS-Tricks</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Lists_and_Counters/Using_CSS_counters" rel="noopener">Using CSS Counters</a> from <a href="https://developer.mozilla.org/" rel="noopener">MDN</a></li>
+</ul>
+<p>It's great to get access to something which has been hard to style. You might wish that you could style other automatically generated elements. You might be frustrated with <code>&lt;details&gt;</code> or the search input autocomplete indicator, things that are not implemented in the same way across browsers. One way to share what you need is by creating a want at <a href="https://webwewant.fyi" rel="noopener">https://webwewant.fyi</a>.</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/css/">CSS</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Sep 2, 2020</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/css-marker-pseudo-element/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions="api"></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

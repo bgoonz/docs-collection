@@ -1,0 +1,878 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=c2217d4fb170a">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Next-generation web styling</title>
+<meta name="description" content="Get up to date on some of the exciting new CSS features that are already supported in modern browsers—or soon will be! " />
+
+<link rel="canonical" href="https://web.dev/next-gen-css-2019/" />
+
+<meta itemprop="name" content="Next-generation web styling" />
+<meta itemprop="description" content="Get up to date on some of the exciting new CSS features that are already supported in modern browsers—or soon will be! " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/FRL8ZuF0ng2d37BufMOj.png?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/next-gen-css-2019/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Next-generation web styling" />
+<meta property="og:description" content="Get up to date on some of the exciting new CSS features that are already supported in modern browsers—or soon will be! " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/FRL8ZuF0ng2d37BufMOj.png?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="Adam Argyle and Una Kravetz showing that they'll talk about 12 CSS features." />
+<meta property="tag" content="css" />
+<meta property="tag" content="accessibility" />
+<meta property="tag" content="houdini" />
+<meta property="tag" content="layout" />
+<meta property="tag" content="ux" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Next-generation web styling" />
+<meta name="twitter:description" content="Get up to date on some of the exciting new CSS features that are already supported in modern browsers—or soon will be! " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/FRL8ZuF0ng2d37BufMOj.png?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=cedca097ff868', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=e4e051d03b148', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="Adam Argyle and Una Kravetz showing that they&#x27;ll talk about 12 CSS features."     class="w-hero w-hero--contain"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/FRL8ZuF0ng2d37BufMOj.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/FRL8ZuF0ng2d37BufMOj.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/FRL8ZuF0ng2d37BufMOj.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/FRL8ZuF0ng2d37BufMOj.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/FRL8ZuF0ng2d37BufMOj.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/FRL8ZuF0ng2d37BufMOj.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/FRL8ZuF0ng2d37BufMOj.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/FRL8ZuF0ng2d37BufMOj.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/FRL8ZuF0ng2d37BufMOj.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/FRL8ZuF0ng2d37BufMOj.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/FRL8ZuF0ng2d37BufMOj.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/FRL8ZuF0ng2d37BufMOj.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/FRL8ZuF0ng2d37BufMOj.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/FRL8ZuF0ng2d37BufMOj.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/FRL8ZuF0ng2d37BufMOj.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/FRL8ZuF0ng2d37BufMOj.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/FRL8ZuF0ng2d37BufMOj.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/FRL8ZuF0ng2d37BufMOj.png?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#next-generation-web-styling" class="w-toc__header--link">
+        Next-generation web styling
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#contents">Contents</a></li><li><a href="#scroll-snap">Scroll Snap</a></li><li><a href="#:focus-within">:focus-within</a></li><li><a href="#media-queries-level-5">Media Queries Level 5</a></li><li><a href="#logical-properties">Logical properties</a></li><li><a href="#position:-sticky">position: sticky</a></li><li><a href="#sticky-stack">Sticky Stack</a></li><li><a href="#sticky-slide">Sticky Slide</a></li><li><a href="#sticky-desperado">Sticky Desperado</a></li><li><a href="#backdrop-filter">backdrop-filter</a></li><li><a href="#:is()">:is()</a></li><li><a href="#gap">gap</a></li><li><a href="#css-houdini">CSS Houdini</a></li><li><a href="#overflow">Overflow</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@argyleink | @una"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="next-generation-web-styling" class="w-article-header__headline">Next-generation web styling</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          Get up to date on some of the exciting features in modern CSS.
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Dec 5, 2019</time>
+           <span class="w-author__separator">•</span> Updated <time>Sep 24, 2020</time> 
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/adamargyle/"><img     alt="Adam Argyle"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/adamargyle/">Adam Argyle</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/argyleink"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/argyleink">GitHub</a>
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://glitch.com/@argyleink"
+          >Glitch</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://nerdy.dev">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+            <div class="w-author">
+  <a href="/authors/una/"><img     alt="Una Kravets"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/c4bzyDkOZ9MhBaqp0HfW.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/c4bzyDkOZ9MhBaqp0HfW.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/c4bzyDkOZ9MhBaqp0HfW.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/c4bzyDkOZ9MhBaqp0HfW.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/c4bzyDkOZ9MhBaqp0HfW.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/c4bzyDkOZ9MhBaqp0HfW.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/una/">Una Kravets</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/una"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/una">GitHub</a>
+      </li>
+      
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://una.im/">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>There are a <em>ton</em> of exciting things happening in CSS right now—and
+many of them are already supported in today's browsers!
+Our talk at CDS 2019, which you can watch below,
+covers several new and upcoming features we thought should get some attention.</p>
+<p>This post focuses on the features you can use today,
+so be sure to watch the talk
+for a deeper discussion of upcoming features like Houdini.
+You can also find demos for all the features we discuss on our
+<a href="https://a.nerdy.dev/css-at-cds" rel="noopener">CSS@CDS page</a>.</p>
+<div class="youtube">  <lite-youtube    videoid="-oyeaIirVC0"      >  </lite-youtube></div>
+<h2 id="contents">Contents <a class="w-headline-link" href="#contents">#</a></h2>
+<ul>
+<li><a href="#scroll-snap">Scroll Snap</a></li>
+<li><a href="#:focus-within"><code>:focus-within</code></a></li>
+<li><a href="#media-queries-level-5">Media Queries Level 5</a></li>
+<li><a href="#logical-properties">Logical properties</a></li>
+<li><a href="#position:-sticky"><code>position: sticky</code></a></li>
+<li><a href="#backdrop-filter"><code>backdrop-filter</code></a></li>
+<li><a href="#is"><code>:is()</code></a></li>
+<li><a href="#gap"><code>gap</code></a></li>
+<li><a href="#css-houdini">CSS Houdini</a></li>
+<li><a href="#overflow">Overflow</a></li>
+</ul>
+<h2 id="scroll-snap">Scroll Snap <a class="w-headline-link" href="#scroll-snap">#</a></h2>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Scroll_Snap/Basic_concepts" rel="noopener">Scroll Snap</a> lets you define snap points as the user scrolls your content vertically, horizontally, or  both. It offers built-in scroll inertia and deceleration, and it's touch enabled.</p>
+<p>This sample code sets up horizontal scrolling in a <code>&lt;section&gt;</code> element with snap points aligned to the left sides of child <code>&lt;picture&gt;</code> elements:</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">section</span> <span class="token punctuation">{</span><br>  <span class="token property">overflow-x</span><span class="token punctuation">:</span> auto<span class="token punctuation">;</span><br>  <span class="token property">overscroll-behavior-x</span><span class="token punctuation">:</span> contain<span class="token punctuation">;</span><br>  <span class="token property">scroll-snap-type</span><span class="token punctuation">:</span> x mandatory<span class="token punctuation">;</span><br><span class="token punctuation">}</span><br><br><span class="token selector">section > picture</span> <span class="token punctuation">{</span><br>  <span class="token property">scroll-snap-align</span><span class="token punctuation">:</span> start<span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>Here's how it works:</p>
+<ul>
+<li>On the parent <code>&lt;section&gt;</code> element,
+<ul>
+<li><code>overflow-x</code> is set to <code>auto</code> to allow horizontal scrolling.</li>
+<li><code>overscroll-behavior-x</code> is set to <code>contain</code> to prevent any parent elements from scrolling when the user reaches the boundaries of the <code>&lt;section&gt;</code> element's scroll area. (This isn't strictly necessary for snapping, but it's usually a good idea.)</li>
+<li><code>scroll-snap-type</code> is set to <code>x</code>—for horizontal snapping—and <code>mandatory</code>—to ensure that the viewport always snaps to the closest snap point.</li>
+</ul>
+</li>
+<li>On the child <code>&lt;picture&gt;</code> elements, <code>scroll-snap-align</code> is set to start, which sets the snap points on the left side of each picture (assuming <code>direction</code> is set to <code>ltr</code>).</li>
+</ul>
+<p>And here's a live demo:</p>
+<iframe height="520" style="display: block; width: 400px; max-width: 100%; margin: 0 auto;" scrolling="no" title="Awww Scroll Snap [horizontal]" src="https://codepen.io/argyleink/embed/zYYZPqb?height=916&theme-id=dark&default-tab=result" frameborder="no" allowtransparency="true" allowfullscreen="true">
+  See the Pen <a href='https://codepen.io/argyleink/pen/zYYZPqb'>Awww Scroll Snap [horizontal]</a> by Adam Argyle
+  (<a href='https://codepen.io/argyleink'>@argyleink</a>) on <a href='https://codepen.io'>CodePen</a>.
+</iframe>
+<p>You can also take a look at demos for <a href="https://codepen.io/argyleink/pen/oNNZoZj" rel="noopener">vertical scroll snap</a> and <a href="https://codepen.io/argyleink/pen/MWWpOmz" rel="noopener">matrix scroll snap</a>.</p>
+<div class="w-aside w-aside--note">
+<p>While scroll snap supports vertical snapping, be cautious when using it at the page level since it can feel like control is being taken from the user in some cases. It's usually best to apply snapping to a component on your page rather than the page itself.</p>
+</div>
+<h2 id=":focus-within"><code>:focus-within</code> <a class="w-headline-link" href="#:focus-within">#</a></h2>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-within" rel="noopener"><code>:focus-within</code></a> addresses a long-standing accessibility issue: there are many cases when focusing a child element should affect the presentation of a parent element so that the UI is accessible to users of assistive technologies.</p>
+<p>For example, if you have a dropdown menu with several items, the menu should remain visible while any of the items has focus. Otherwise, the menu disappears for keyboard users.</p>
+<p><code>:focus-within</code> tells the browser to apply a style when focus is on any child element of a specified element. Returning to the menu example, by setting <code>:focus-within</code> on the menu element, you can make sure it stays visible when a menu item has focus:</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">.menu:focus-within</span> <span class="token punctuation">{</span><br>  <span class="token property">display</span><span class="token punctuation">:</span> block<span class="token punctuation">;</span><br>  <span class="token property">opacity</span><span class="token punctuation">:</span> 1<span class="token punctuation">;</span><br>  <span class="token property">visibility</span><span class="token punctuation">:</span> visible<span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><img     alt="An illustration showing the difference in behavior between focus and focus-within."          decoding="async"     height="559"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/NmLEz3wQMUv0QYIuhv2c.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/NmLEz3wQMUv0QYIuhv2c.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/NmLEz3wQMUv0QYIuhv2c.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/NmLEz3wQMUv0QYIuhv2c.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/NmLEz3wQMUv0QYIuhv2c.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/NmLEz3wQMUv0QYIuhv2c.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/NmLEz3wQMUv0QYIuhv2c.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/NmLEz3wQMUv0QYIuhv2c.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/NmLEz3wQMUv0QYIuhv2c.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/NmLEz3wQMUv0QYIuhv2c.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/NmLEz3wQMUv0QYIuhv2c.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/NmLEz3wQMUv0QYIuhv2c.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/NmLEz3wQMUv0QYIuhv2c.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/NmLEz3wQMUv0QYIuhv2c.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/NmLEz3wQMUv0QYIuhv2c.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/NmLEz3wQMUv0QYIuhv2c.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/NmLEz3wQMUv0QYIuhv2c.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/NmLEz3wQMUv0QYIuhv2c.png?auto=format&w=1600 1600w"          width="800"   />
+<p>Try tabbing through the focusable elements in the demo below. You'll notice that the menus remain visible as you focus on the menu items:</p>
+<iframe height="275" style="width: 100%;" scrolling="no" title="Simple CSS Dropdown Menu with Hover and :focus-within and Focus states" src="https://codepen.io/una/embed/RMmogp?height=265&theme-id=dark&default-tab=result" frameborder="no" allowtransparency="true" allowfullscreen="true">
+  See the Pen <a href='https://codepen.io/una/pen/RMmogp'>Simple CSS Dropdown Menu with Hover and :focus-within and Focus states</a> by Una Kravets
+  (<a href='https://codepen.io/una'>@una</a>) on <a href='https://codepen.io'>CodePen</a>.
+</iframe>
+<h2 id="media-queries-level-5">Media Queries Level 5 <a class="w-headline-link" href="#media-queries-level-5">#</a></h2>
+<p><a href="https://drafts.csswg.org/mediaqueries-5/#environment-blending" rel="noopener">New media queries</a> give us powerful ways to adjust the user experience of our apps based on a user's device preferences. Basically, the browser serves as a proxy for system-level preferences that we can respond to in our CSS using the <code>prefers-*</code> group of media queries:</p>
+<img     alt="A diagram showing media queries interpreting system-level user preferences."          decoding="async"     height="400"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/f5Y9OhN3VMQz8nZMcZar.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/f5Y9OhN3VMQz8nZMcZar.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/f5Y9OhN3VMQz8nZMcZar.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/f5Y9OhN3VMQz8nZMcZar.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/f5Y9OhN3VMQz8nZMcZar.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/f5Y9OhN3VMQz8nZMcZar.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/f5Y9OhN3VMQz8nZMcZar.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/f5Y9OhN3VMQz8nZMcZar.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/f5Y9OhN3VMQz8nZMcZar.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/f5Y9OhN3VMQz8nZMcZar.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/f5Y9OhN3VMQz8nZMcZar.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/f5Y9OhN3VMQz8nZMcZar.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/f5Y9OhN3VMQz8nZMcZar.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/f5Y9OhN3VMQz8nZMcZar.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/f5Y9OhN3VMQz8nZMcZar.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/f5Y9OhN3VMQz8nZMcZar.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/f5Y9OhN3VMQz8nZMcZar.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/f5Y9OhN3VMQz8nZMcZar.png?auto=format&w=1600 1600w"          width="800"   />
+<p>Here are the new queries we think developers will be most excited about:</p>
+<ul>
+<li><a href="https://developers.google.com/web/updates/2019/03/prefers-reduced-motion" rel="noopener">prefers-reduced-motion</a></li>
+<li><a href="/prefers-color-scheme/">prefers-color-scheme</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-contrast" rel="noopener">prefers-contrast</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-transparency" rel="noopener">prefers-reduced-transparency</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors" rel="noopener">forced-colors</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media/inverted-colors" rel="noopener">inverted-colors</a></li>
+</ul>
+<p>These queries are a huge win for accessibility. Previously we had no way to know, for example, that a user had set their OS to high-contrast mode. If you wanted to provide a high-contrast mode for a web app that remained true to your brand, you had to ask users to choose it from UI within your app. Now you can detect the high-contrast setting from the OS using <code>prefers-contrast</code>.</p>
+<p>One exciting implication of these media queries is that we can design for multiple combinations of system-level user preferences to accommodate the wide range of user preferences and accessibility needs. If a user wants high-contrast dark mode when in dimly lit environments, you can do that!</p>
+<p>It's important to Adam that &quot;prefers reduced motion&quot; doesn't get implemented as &quot;no motion.&quot; The user is saying they prefer less motion, not that they don't want any animation. He asserts reduced motion is not no motion. Here's an example that uses a crossfade animation when the user prefers reduced motion:</p>
+<figure class="w-figure">
+  <video controls autoplay loop muted>
+    <source src="https://storage.googleapis.com/web-dev-assets/next-gen-css-2019/reduced-motion.webm" type="video/webm; codecs=vp8">
+    <source src="https://storage.googleapis.com/web-dev-assets/next-gen-css-2019/reduced-motion.mp4" type="video/mp4; codecs=h264">
+  </video>
+</figure>
+<div class="w-aside w-aside--note">
+<p>In Chrome Canary, you can test CSS that uses <code>prefers-reduced-motion</code> or <code>prefers-color-scheme</code> by choosing the appropriate settings in the DevTools <strong>Rendering</strong> drawer. To access <strong>Rendering</strong>, <a href="https://developers.google.com/web/tools/chrome-devtools/command-menu" rel="noopener">open the Command Menu</a> and run the <code>Show Rendering</code> command.</p>
+</div>
+<h2 id="logical-properties">Logical properties <a class="w-headline-link" href="#logical-properties">#</a></h2>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Logical_Properties" rel="noopener">Logical properties</a> solve a problem that has gained visibility as more developers tackle internationalization. Many layout properties like <code>margin</code> and <code>padding</code> assume a language that is read top-to-bottom and left-to-right.</p>
+<img     alt="A diagram showing traditional CSS layout properties."          decoding="async"     height="559"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/mLz4eB2iG7yGUJ92DA0D.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/mLz4eB2iG7yGUJ92DA0D.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/mLz4eB2iG7yGUJ92DA0D.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/mLz4eB2iG7yGUJ92DA0D.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/mLz4eB2iG7yGUJ92DA0D.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/mLz4eB2iG7yGUJ92DA0D.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/mLz4eB2iG7yGUJ92DA0D.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/mLz4eB2iG7yGUJ92DA0D.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/mLz4eB2iG7yGUJ92DA0D.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/mLz4eB2iG7yGUJ92DA0D.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/mLz4eB2iG7yGUJ92DA0D.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/mLz4eB2iG7yGUJ92DA0D.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/mLz4eB2iG7yGUJ92DA0D.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/mLz4eB2iG7yGUJ92DA0D.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/mLz4eB2iG7yGUJ92DA0D.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/mLz4eB2iG7yGUJ92DA0D.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/mLz4eB2iG7yGUJ92DA0D.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/mLz4eB2iG7yGUJ92DA0D.png?auto=format&w=1600 1600w"          width="800"   />
+<p>When designing pages for multiple languages with varying writing modes, developers have had to adjust all those properties individually across multiple elements, which quickly becomes a maintainability nightmare.</p>
+<p>Logical properties let you maintain layout integrity across translations and writing modes. They dynamically update based on the semantic ordering of content rather than its spatial arrangement. With logical properties, each element has two dimensions:</p>
+<ul>
+<li>The <strong>block</strong> dimension is <strong>perpendicular</strong> to the flow of text in a line. (In English, <code>block-size</code> is the same as <code>height</code>.)</li>
+<li>The <strong>inline</strong> dimension is <strong>parallel</strong> to the flow of text in a line. (In English, <code>inline-size</code> is the same as <code>width</code>.)</li>
+</ul>
+<p>These dimension names apply to all logical layout properties. So, for example, in English, <code>block-start</code> is the same as <code>top</code>, and <code>inline-end</code> is the same as <code>right</code>.</p>
+<img     alt="A diagram showing new CSS logical layout properties."          decoding="async"     height="559"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/NcIz3jADhMnRMqRTUPKr.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/NcIz3jADhMnRMqRTUPKr.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/NcIz3jADhMnRMqRTUPKr.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/NcIz3jADhMnRMqRTUPKr.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/NcIz3jADhMnRMqRTUPKr.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/NcIz3jADhMnRMqRTUPKr.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/NcIz3jADhMnRMqRTUPKr.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/NcIz3jADhMnRMqRTUPKr.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/NcIz3jADhMnRMqRTUPKr.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/NcIz3jADhMnRMqRTUPKr.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/NcIz3jADhMnRMqRTUPKr.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/NcIz3jADhMnRMqRTUPKr.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/NcIz3jADhMnRMqRTUPKr.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/NcIz3jADhMnRMqRTUPKr.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/NcIz3jADhMnRMqRTUPKr.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/NcIz3jADhMnRMqRTUPKr.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/NcIz3jADhMnRMqRTUPKr.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/NcIz3jADhMnRMqRTUPKr.png?auto=format&w=1600 1600w"          width="800"   />
+<p>With logical properties, you can automatically update your layout for other languages by simply changing the <code>writing-mode</code> and <code>direction</code> properties for your page rather than updating dozens of layout properties on individual elements.</p>
+<p>You can see how logical properties work in the demo below by setting the <code>writing-mode</code> property on the <code>&lt;body&gt;</code> element to different values:</p>
+<iframe height="750" style="width: 100%;" scrolling="no" title="Logical Properties Demo" src="https://codepen.io/una/embed/mddxpaY?height=265&theme-id=dark&default-tab=css,result" frameborder="no" allowtransparency="true" allowfullscreen="true">
+  See the Pen <a href='https://codepen.io/una/pen/mddxpaY'>Logical Properties Demo</a> by Una Kravets
+  (<a href='https://codepen.io/una'>@una</a>) on <a href='https://codepen.io'>CodePen</a>.
+</iframe>
+<h2 id="position:-sticky"><code>position: sticky</code> <a class="w-headline-link" href="#position:-sticky">#</a></h2>
+<p>An element with <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/position#Sticky_positioning" rel="noopener"><code>position: sticky</code></a> remains in block flow until it starts to go offscreen,
+at which point it stops scrolling with the rest of the page
+and sticks to the position specified by the element's <code>top</code> value.
+The space allocated for that element remains in the flow,
+and the element returns to it when the user scrolls back up.</p>
+<p>Sticky positioning lets you create many useful effects that previously required JavaScript. To show some of the possibilities, we've created several demos. Each demo uses largely the same CSS and only slightly adjusts the HTML markup to create each effect.</p>
+<h3 id="sticky-stack"><a href="https://codepen.io/argyleink/pen/YzzZyMx" rel="noopener">Sticky Stack</a> <a class="w-headline-link" href="#sticky-stack">#</a></h3>
+<p>In this demo, all sticky elements share the same container. That means that each sticky element slides over the previous one as the user scrolls down. The sticky elements share the same stuck position.</p>
+<figure class="w-figure">
+  <video controls autoplay loop muted>
+    <source src="https://storage.googleapis.com/web-dev-assets/next-gen-css-2019/sticky-stack.webm" type="video/webm; codecs=vp8">
+    <source src="https://storage.googleapis.com/web-dev-assets/next-gen-css-2019/sticky-stack.mp4" type="video/mp4; codecs=h264">
+  </video>
+</figure>
+<h3 id="sticky-slide"><a href="https://codepen.io/argyleink/pen/abbJOjP" rel="noopener">Sticky Slide</a> <a class="w-headline-link" href="#sticky-slide">#</a></h3>
+<p>Here, the sticky elements are cousins. (That is, their parents are siblings.) When a sticky element hits the lower boundary of its container, it moves up with the container, creating the impression that lower sticky elements are pushing up higher ones. In other words, they appear to compete for the stuck position.</p>
+<figure class="w-figure">
+  <video controls autoplay loop muted>
+    <source src="https://storage.googleapis.com/web-dev-assets/next-gen-css-2019/sticky-slide.webm" type="video/webm; codecs=vp8">
+    <source src="https://storage.googleapis.com/web-dev-assets/next-gen-css-2019/sticky-slide.mp4" type="video/mp4; codecs=h264">
+  </video>
+</figure>
+<h3 id="sticky-desperado"><a href="https://codepen.io/argyleink/pen/qBBrbyx" rel="noopener">Sticky Desperado</a> <a class="w-headline-link" href="#sticky-desperado">#</a></h3>
+<p>Like Sticky Slide, the sticky elements in this demo are cousins. However, they've been placed in containers set to a two-column grid layout.</p>
+<figure class="w-figure">
+  <video controls autoplay loop muted>
+    <source src="https://storage.googleapis.com/web-dev-assets/next-gen-css-2019/sticky-desperado.webm" type="video/webm; codecs=vp8">
+    <source src="https://storage.googleapis.com/web-dev-assets/next-gen-css-2019/sticky-desperado.mp4" type="video/mp4; codecs=h264">
+  </video>
+</figure>
+<h2 id="backdrop-filter"><code>backdrop-filter</code> <a class="w-headline-link" href="#backdrop-filter">#</a></h2>
+<p>The <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/backdrop-filter" rel="noopener"><code>backdrop-filter</code></a> property lets you apply graphical effects to the area <em>behind</em> an element rather than to the element itself. This makes lots of cool effects that were previously only achievable using complicated CSS and JavaScript hacks doable with one line of CSS.</p>
+<p>For example, this demo uses <code>backdrop-filter</code> to achieve OS-style blurring:</p>
+<iframe height="510" style="width: 100%;" scrolling="no" title="mddjjor" src="https://codepen.io/una/embed/mddjjor?height=265&theme-id=dark&default-tab=result" frameborder="no" allowtransparency="true" allowfullscreen="true">
+  See the Pen <a href='https://codepen.io/una/pen/mddjjor'>mddjjor</a> by Una Kravets
+  (<a href='https://codepen.io/una'>@una</a>) on <a href='https://codepen.io'>CodePen</a>.
+</iframe>
+<p>We already have a <a href="/backdrop-filter/">great post about <code>backdrop-filter</code></a>, so head there for more info.</p>
+<h2 id=":is()"><code>:is()</code> <a class="w-headline-link" href="#:is()">#</a></h2>
+<p>While the <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/:is" rel="noopener"><code>:is()</code> pseudo-class</a> is actually over ten years old, it still doesn't see as much use as we think it deserves. It takes a comma-separated list of selectors as its argument and matches any selectors in that list. That flexibility makes it incredibly handy and can significantly reduce the amount of CSS you ship.</p>
+<p>Here's a quick example:</p>
+<figure class="w-figure">
+  <video controls autoplay loop muted>
+    <source src="https://storage.googleapis.com/web-dev-assets/next-gen-css-2019/is-animation.webm" type="video/webm; codecs=vp8">
+    <source src="https://storage.googleapis.com/web-dev-assets/next-gen-css-2019/is-animation.mp4" type="video/mp4; codecs=h264">
+  </video>
+</figure>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">button.focus,<br>button:focus</span> <span class="token punctuation">{</span><br>  …<br><span class="token punctuation">}</span><br><br><span class="token selector">article > h1,<br>article > h2,<br>article > h3,<br>article > h4,<br>article > h5,<br>article > h6</span> <span class="token punctuation">{</span><br>  …<br><span class="token punctuation">}</span><br><br><span class="token comment">/* selects the same elements as the code above */</span><br><span class="token selector">button:is(.focus, :focus)</span> <span class="token punctuation">{</span><br>  …<br><span class="token punctuation">}</span><br><br><span class="token selector">article > :is(h1,h2,h3,h4,h5,h6)</span> <span class="token punctuation">{</span><br>  …<br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><h2 id="gap"><code>gap</code> <a class="w-headline-link" href="#gap">#</a></h2>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Grid_Layout" rel="noopener">CSS grid layout</a> has had <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/gap" rel="noopener"><code>gap</code></a> (previously <code>grid-gap</code>) for some time. By specifying the internal spacing of a containing element rather than the spacing around child elements, <code>gap</code> solves many common layout issues. For example, with gap, you don't have to worry about margins on child elements causing unwanted whitespace around the edges of a containing element:</p>
+<img     alt="Illustration showing how the gap property avoids unintended spacing around edges of a container element."          decoding="async"     height="846"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/Jzlzz2MdQmMGudZxcvZk.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/Jzlzz2MdQmMGudZxcvZk.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/Jzlzz2MdQmMGudZxcvZk.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/Jzlzz2MdQmMGudZxcvZk.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/Jzlzz2MdQmMGudZxcvZk.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/Jzlzz2MdQmMGudZxcvZk.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/Jzlzz2MdQmMGudZxcvZk.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/Jzlzz2MdQmMGudZxcvZk.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/Jzlzz2MdQmMGudZxcvZk.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/Jzlzz2MdQmMGudZxcvZk.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/Jzlzz2MdQmMGudZxcvZk.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/Jzlzz2MdQmMGudZxcvZk.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/Jzlzz2MdQmMGudZxcvZk.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/Jzlzz2MdQmMGudZxcvZk.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/Jzlzz2MdQmMGudZxcvZk.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/Jzlzz2MdQmMGudZxcvZk.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/Jzlzz2MdQmMGudZxcvZk.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/Jzlzz2MdQmMGudZxcvZk.png?auto=format&w=1600 1600w"          width="800"   />
+<p>Even better news: <code>gap</code> is coming to flexbox, bringing all the same spacing perks that grid has:</p>
+<ul>
+<li>There's one spacing declaration rather than many.</li>
+<li>There's no need to establish conventions for your project about which child elements should own spacing—the containing element owns the spacing instead.</li>
+<li>The code is more easily understandable than older strategies like the <a href="https://alistapart.com/article/axiomatic-css-and-lobotomized-owls/" rel="noopener">lobotomized owl</a>.</li>
+</ul>
+<p>The following video shows the benefits of using a single <code>gap</code> property for two elements, one with a grid layout and one with a flex layout:</p>
+<p>Right now, only FireFox supports <code>gap</code> in flex layouts, but play around with this demo to see how it works:</p>
+<iframe height="600" style="width: 100%;" scrolling="no" title="Gappy" src="https://codepen.io/argyleink/embed/abbVqEv?height=265&theme-id=dark&default-tab=css,result" frameborder="no" allowtransparency="true" allowfullscreen="true">
+  See the Pen <a href='https://codepen.io/argyleink/pen/abbVqEv'>Gappy</a> by Adam Argyle
+  (<a href='https://codepen.io/argyleink'>@argyleink</a>) on <a href='https://codepen.io'>CodePen</a>.
+</iframe>
+<h2 id="css-houdini">CSS Houdini <a class="w-headline-link" href="#css-houdini">#</a></h2>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/Houdini" rel="noopener">Houdini</a> is a set of low-level APIs for the browser's rendering engine that lets you tell the browser how to interpret custom CSS. In other words, it gives you access to the <a href="https://developer.mozilla.org/en-US/docs/Web/API/CSS_Object_Model" rel="noopener">CSS Object Model</a>, letting you <em>extend</em> CSS via JavaScript. This has several benefits:</p>
+<ul>
+<li>It gives you much more power to create custom CSS features.</li>
+<li>It's easier to separate rendering concerns from application logic.</li>
+<li>It's more performant than the CSS polyfilling we currently do with JavaScript since the browser will no longer have to parse scripts and do a second rendering cycle; Houdini code is parsed in the first rendering cycle.</li>
+</ul>
+<img     alt="Illustration showing how Houdini works compared to traditional JavaScript polyfills."          decoding="async"     height="599"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/Lh9zGq0HWW4amjfHbpRQ.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/Lh9zGq0HWW4amjfHbpRQ.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/Lh9zGq0HWW4amjfHbpRQ.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/Lh9zGq0HWW4amjfHbpRQ.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/Lh9zGq0HWW4amjfHbpRQ.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/Lh9zGq0HWW4amjfHbpRQ.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/Lh9zGq0HWW4amjfHbpRQ.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/Lh9zGq0HWW4amjfHbpRQ.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/Lh9zGq0HWW4amjfHbpRQ.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/Lh9zGq0HWW4amjfHbpRQ.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/Lh9zGq0HWW4amjfHbpRQ.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/Lh9zGq0HWW4amjfHbpRQ.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/Lh9zGq0HWW4amjfHbpRQ.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/Lh9zGq0HWW4amjfHbpRQ.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/Lh9zGq0HWW4amjfHbpRQ.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/Lh9zGq0HWW4amjfHbpRQ.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/Lh9zGq0HWW4amjfHbpRQ.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/Lh9zGq0HWW4amjfHbpRQ.png?auto=format&w=1600 1600w"          width="800"   />
+<p>Houdini is an umbrella name for <a href="https://developer.mozilla.org/en-US/docs/Web/Houdini#The_Houdini_APIs" rel="noopener">several APIs</a>. If you want more information about them and their current status, take a look at <a href="https://ishoudinireadyyet.com/" rel="noopener">Is Houdini Ready Yet?</a> In our talk, we covered the Properties and Values API, the Paint API, and the Animation Worklet because they're currently the most supported. We could easily dedicate a full post to each of these exciting APIs, but, for now, check out our talk for an overview and some cool demos that start to give a sense of what you can do with the APIs.</p>
+<h2 id="overflow">Overflow <a class="w-headline-link" href="#overflow">#</a></h2>
+<p>There are a few more things on the horizon that we wanted to discuss but didn't have time to cover in depth, so we ran through them in a speed round.⚡ If you haven't heard of some of these features yet, be sure to watch <a href="https://youtu.be/-oyeaIirVC0?t=1825" rel="noopener">the last part of the talk</a>!</p>
+<ul>
+<li><code>size</code>: a property that will allow you to set height and width at the same time</li>
+<li><code>aspect-ratio</code>: a property that sets an aspect ratio for elements that don't have one intrinsically</li>
+<li><code>min()</code>, <code>max()</code>, and <code>clamp()</code>: functions that will let you set numeric constraints on any CSS property, not just width and height</li>
+<li><code>list-style-type</code> an existing property, but it will soon support a wider range of values, including emoji and SVGs</li>
+<li><code>display: outer inner</code>: The <code>display</code> property will soon accept two parameters, which will let you explicitly specify its outer and inner layouts rather than using compound keywords like <code>inline-flex</code>.</li>
+<li>CSS regions: will let you fill a specified, non-rectangular area that content can flow into and out of</li>
+<li>CSS modules: JavaScript will be able to request a CSS module and get a rich object back that's easy to perform operations on</li>
+</ul>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/css/">CSS</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/accessibility/">Accessibility</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/houdini/">Houdini</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/layout/">Layout</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/ux/">UX</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Sep 24, 2020</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/next-gen-css-2019/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

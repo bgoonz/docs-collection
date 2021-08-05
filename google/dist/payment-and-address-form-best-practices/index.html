@@ -1,0 +1,1283 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=e7bb692d0e917">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Payment and address form best practices</title>
+<meta name="description" content="Maximize conversions by helping your users complete address and payment forms as quickly and easily as possible." />
+
+<link rel="canonical" href="https://web.dev/payment-and-address-form-best-practices/" />
+
+<meta itemprop="name" content="Payment and address form best practices" />
+<meta itemprop="description" content="Maximize conversions by helping your users complete address and payment forms as quickly and easily as possible." />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/jy8z8lRuLmmnyytD5xwl.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/payment-and-address-form-best-practices/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Payment and address form best practices" />
+<meta property="og:description" content="Maximize conversions by helping your users complete address and payment forms as quickly and easily as possible." />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/jy8z8lRuLmmnyytD5xwl.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="Businessman using a payment card to make a payment on a laptop computer." />
+<meta property="tag" content="forms" />
+<meta property="tag" content="identity" />
+<meta property="tag" content="layout" />
+<meta property="tag" content="mobile" />
+<meta property="tag" content="payments" />
+<meta property="tag" content="security" />
+<meta property="tag" content="ux" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Payment and address form best practices" />
+<meta name="twitter:description" content="Maximize conversions by helping your users complete address and payment forms as quickly and easily as possible." />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/jy8z8lRuLmmnyytD5xwl.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=a2b3b41f6dadd', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=37bcf0e5681ef', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="Businessman using a payment card to make a payment on a laptop computer."     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/dbYeeV2PCRZNY6RRvQd2.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/dbYeeV2PCRZNY6RRvQd2.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/dbYeeV2PCRZNY6RRvQd2.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/dbYeeV2PCRZNY6RRvQd2.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/dbYeeV2PCRZNY6RRvQd2.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/dbYeeV2PCRZNY6RRvQd2.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/dbYeeV2PCRZNY6RRvQd2.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/dbYeeV2PCRZNY6RRvQd2.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/dbYeeV2PCRZNY6RRvQd2.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/dbYeeV2PCRZNY6RRvQd2.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/dbYeeV2PCRZNY6RRvQd2.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/dbYeeV2PCRZNY6RRvQd2.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/dbYeeV2PCRZNY6RRvQd2.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/dbYeeV2PCRZNY6RRvQd2.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/dbYeeV2PCRZNY6RRvQd2.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/dbYeeV2PCRZNY6RRvQd2.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/dbYeeV2PCRZNY6RRvQd2.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/dbYeeV2PCRZNY6RRvQd2.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#payment-and-address-form-best-practices" class="w-toc__header--link">
+        Payment and address form best practices
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#checklist">Checklist</a></li><li><a href="#meaningful-html">Use meaningful HTML</a></li><li><a href="#html-elements">Use HTML elements as intended</a></li><li><a href="#html-attributes">Make the most of HTML attributes</a></li><li><a href="#checkout-forms">Simplify checkout</a></li><li><a href="#m-commerce-gap">Mind the mobile commerce gap!</a></li><li><a href="#guest-checkout">Make guest checkout the default</a></li><li><a href="#checkout-progress">Show checkout progress </a></li><li><a href="#reduce-checkout-exits">Remove distractions</a></li><li><a href="#address-forms">Make it easy to enter name and address</a></li><li><a href="#unneeded-data">Only ask for the data you need</a></li><li><a href="#single-name-input">Use a single name input</a></li><li><a href="#enable-name-autofill">Enable name autofill</a></li><li><a href="#unicode-matching">Allow international names</a></li><li><a href="#address-variety">Allow for a variety of address formats</a></li><li><a href="#general-guidelines">Simplify payment forms</a></li><li><a href="#payment-form-autocomplete">Help users avoid re-entering payment data</a></li><li><a href="#avoid-using-custom-elements-for-payment-card-dates">Avoid using custom elements for payment card dates</a></li><li><a href="#single-number-input">Use a single input for payment card and phone numbers</a></li><li><a href="#validate">Validate carefully</a></li><li><a href="#test-platforms">Test on a range of devices, platforms, browsers and versions</a></li><li><a href="#analytics-rum">Implement analytics and RUM</a></li><li><a href="#resources">Keep learning</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@sw12"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="payment-and-address-form-best-practices" class="w-article-header__headline">Payment and address form best practices</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          Maximize conversions by helping your users complete address and payment forms as quickly and easily as possible.
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Dec 9, 2020</time>
+           <span class="w-author__separator">•</span> Updated <time>Jan 15, 2021</time> 
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/samdutton/"><img     alt="Sam Dutton"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/wPss4TJX9IJ1CJza7iFY.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/wPss4TJX9IJ1CJza7iFY.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/wPss4TJX9IJ1CJza7iFY.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/wPss4TJX9IJ1CJza7iFY.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/wPss4TJX9IJ1CJza7iFY.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/wPss4TJX9IJ1CJza7iFY.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/samdutton/">Sam Dutton</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/sw12"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/samdutton">GitHub</a>
+      </li>
+      
+      
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <div class="youtube">  <lite-youtube    videoid="xfGKmvvyhdM"      >  </lite-youtube></div>
+<p>Well-designed forms help users and increase conversion rates. One small fix can make a big difference!</p>
+<div class="w-aside w-aside--codelab">
+<p><strong>Try it</strong>!
+If you prefer to learn these best practices with a hands-on tutorial, check out the two codelabs
+for this post:</p>
+<ul>
+<li><a href="/codelab-payment-form-best-practices">Payment form best practices codelab</a></li>
+<li><a href="/codelab-address-form-best-practices">Address form best practices codelab</a></li>
+</ul>
+</div>
+<p>Here is an example of a simple payment form that demonstrates all of the best practices:</p>
+<div class="glitch-embed-wrap" style="height: 720px; width: 100%;">
+  <iframe
+    allow="camera; clipboard-read; clipboard-write; encrypted-media; geolocation; microphone; midi"
+    loading="lazy"
+    src="https://glitch.com/embed/#!/embed/payment-form?attributionHidden=true&sidebarCollapsed=true&path=index.html&previewSize=100"
+    style="height: 100%; width: 100%; border: 0;"
+    title="payment-form on Glitch"
+  ></iframe>
+</div>
+<p>Here is an example of a simple address form that demonstrates all of the best practices:</p>
+<div class="glitch-embed-wrap" style="height: 980px; width: 100%;">
+  <iframe
+    allow="camera; clipboard-read; clipboard-write; encrypted-media; geolocation; microphone; midi"
+    loading="lazy"
+    src="https://glitch.com/embed/#!/embed/address-form?attributionHidden=true&sidebarCollapsed=true&path=index.html&previewSize=100"
+    style="height: 100%; width: 100%; border: 0;"
+    title="address-form on Glitch"
+  ></iframe>
+</div>
+<h2 id="checklist">Checklist <a class="w-headline-link" href="#checklist">#</a></h2>
+<ul>
+<li><a href="#meaningful-html">Use meaningful HTML elements</a>: <code>&lt;form&gt;</code>, <code>&lt;input&gt;</code>, <code>&lt;label&gt;</code>, and <code>&lt;button&gt;</code>.</li>
+<li><a href="#html-label">Label each form field with a <code>&lt;label&gt;</code></a>.</li>
+<li>Use HTML element attributes to <a href="#html-attributes">access built-in browser features</a>, in particular
+<a href="#type-attribute"><code>type</code></a> and <a href="#autocomplete-attribute"><code>autocomplete</code></a> with appropriate values.</li>
+<li>Avoid using <code>type=&quot;number&quot;</code> for numbers that aren't meant to be
+incremented, such as payment card numbers. Use <code>type=&quot;text&quot;</code> and <a href="#inputmode-attribute"><code>inputmode=&quot;numeric&quot;</code></a> instead.</li>
+<li>If an <a href="#autocomplete-attribute">appropriate autocomplete value</a> is available for an <code>input</code>,
+<code>select</code>, or <code>textarea</code>, you should use it.</li>
+<li>To help browsers autofill forms, give input <code>name</code> and <code>id</code> attributes <a href="#stable-name-id">stable values</a>
+that don't change between page loads or website deployments.</li>
+<li><a href="#disable-submit">Disable submit buttons</a> once they've been tapped or clicked.</li>
+<li><a href="#validate">Validate</a> data during entry—not just on form submission.</li>
+<li>Make <a href="#guest-checkout">guest checkout</a> the default and make account creation simple once checkout
+is complete.</li>
+<li>Show <a href="#checkout-progress">progress through the checkout process</a> in clear steps with clear calls
+to action.</li>
+<li><a href="#reduce-checkout-exits">Limit potential checkout exit points</a> by removing clutter and distractions.</li>
+<li><a href="#checkout-details">Show full order details</a> at checkout and make order adjustments easy.</li>
+<li><a href="#unneeded-data">Don't ask for data you don't need</a>.</li>
+<li><a href="#single-name-input">Ask for names with a single input</a> unless you have a good reason not to.</li>
+<li><a href="#unicode-matching">Don't enforce Latin-only characters</a> for names and usernames.</li>
+<li><a href="#address-variety">Allow for a variety of address formats</a>.</li>
+<li>Consider using a <a href="#address-textarea">single <code>textarea</code> for address</a>.</li>
+<li>Use <a href="#billing-address">autocomplete for billing address</a>.</li>
+<li><a href="#internationalization-localization">Internationalize and localize</a> where necessary.</li>
+<li>Consider avoiding <a href="#postal-code-address-lookup">postal code address lookup</a>.</li>
+<li>Use <a href="#payment-form-autocomplete">appropriate payment card autocomplete values</a>.</li>
+<li>Use a <a href="#single-number-input">single input for payment card numbers</a>.</li>
+<li><a href="#avoid-custom-elements">Avoid using custom elements</a> if they break the autofill experience.</li>
+<li><a href="#analytics-rum">Test in the field as well as the lab</a>: page analytics, interaction analytics, and
+real-user performance measurement.</li>
+<li><a href="#test-platforms">Test on a range of browsers, devices, and platforms</a>.</li>
+</ul>
+<div class="w-aside w-aside--note">
+<p>This article is about frontend best practices for address and payment forms. It does not explain
+how to implement transactions on your site. To find out more about adding payment functionality to your
+website, see <a href="/payments">Web Payments</a>.</p>
+</div>
+<h2 id="meaningful-html">Use meaningful HTML <a class="w-headline-link" href="#meaningful-html">#</a></h2>
+<p>Use the elements and attributes built for the job:</p>
+<ul>
+<li><code>&lt;form&gt;</code>, <code>&lt;input&gt;</code>, <code>&lt;label&gt;</code>, and <code>&lt;button&gt;</code></li>
+<li><code>type</code>, <code>autocomplete</code>, and <code>inputmode</code></li>
+</ul>
+<p>These enable built-in browser functionality, improve accessibility, and add meaning to your markup.</p>
+<h3 id="html-elements">Use HTML elements as intended <a class="w-headline-link" href="#html-elements">#</a></h3>
+<h4 id="html-form">Put your form in a &lt;form&gt; <a class="w-headline-link" href="#html-form">#</a></h4>
+<p>You might be tempted not to bother wrapping your <code>&lt;input&gt;</code> elements in a <code>&lt;form&gt;</code>, and to handle data
+submission purely with JavaScript.</p>
+<p>Don't do it!</p>
+<p>An HTML <code>&lt;form&gt;</code> gives you access to a powerful set of built-in features across all modern browsers,
+and can help make your site accessible to screen readers and other assistive devices. A <code>&lt;form&gt;</code>
+also makes it simpler to build basic functionality for older browsers with limited JavaScript
+support, and to enable form submission even if there's a glitch with your code—and for the
+small number of users who actually disable JavaScript.</p>
+<p>If you have more than one page component for user input, make sure to put each in its own <code>&lt;form&gt;</code>
+element. For example, if you have search and sign-up on the same page, put each in its own <code>&lt;form&gt;</code>.</p>
+<h4 id="html-label">Use <code>&lt;label&gt;</code> to label elements <a class="w-headline-link" href="#html-label">#</a></h4>
+<p>To label an <code>&lt;input&gt;</code>, <code>&lt;select&gt;</code>, or <code>&lt;textarea&gt;</code>, use a <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/label" rel="noopener"><code>&lt;label&gt;</code></a>.</p>
+<p>Associate a label with an input by giving the label's <code>for</code> attribute the same value as
+the input's <code>id</code>.</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>label</span> <span class="token attr-name">for</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>address-line1<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Address line 1<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>label</span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>address-line1<span class="token punctuation">"</span></span> <span class="token attr-name">…</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><p>Use a single label for a single input: don't try to label multiple inputs with only one label. This
+works best for browsers, and best for screenreaders. A tap or click on a label moves focus to the input
+it's associated with, and screenreaders announce label text when the <em>label</em> or the label's <em>input</em>
+gets focus.</p>
+<div class="w-aside w-aside--caution">
+<p><strong>Caution</strong>:
+Don't use <a href="https://www.smashingmagazine.com/2018/06/placeholder-attribute/" rel="noopener">placeholders</a>
+on their own instead of labels. Once you start entering text in an input, the
+placeholder is hidden, so it can be easy to forget what the input is for. The same is true if
+you use the placeholder to show the correct format for values such as dates. This can be especially
+problematic for users on phones, particularly if they're distracted or feeling stressed!</p>
+</div>
+<h4 id="html-button">Make buttons helpful <a class="w-headline-link" href="#html-button">#</a></h4>
+<p>Use <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button" rel="noopener"><code>&lt;button&gt;</code></a>
+for buttons! You can also use <code>&lt;input type=&quot;submit&quot;&gt;</code>, but don't use a <code>div</code> or some
+other random element acting as a button. Button elements provide accessible behaviour, built-in
+form submission functionality, and can easily be styled.</p>
+<p>Give each form submit button a value that says what it does. For each step towards checkout, use
+a descriptive call-to-action that shows progress and makes the next step obvious. For example, label
+the submit button on your delivery address form <strong>Proceed to Payment</strong> rather than <strong>Continue</strong>
+or <strong>Save</strong>.</p>
+<p id="disable-submit"></p>
+<p>Consider disabling a submit button once the user has tapped or clicked it—especially when the user is
+making a payment or placing an order. Many users click buttons repeatedly, even if they're working fine.
+That can mess up checkout and add to server load.</p>
+<p>On the other hand, don't disable a submit button waiting on complete and valid user input. For
+example, don't just leave a <strong>Save Address</strong> button disabled because something is missing or invalid.
+That doesn't help the user—they may continue to tap or click the button and assume that it's broken.
+Instead, if users attempt to submit a form with invalid data, explain to them what's gone wrong
+and what to do to fix it. This is particularly important on mobile, where data entry is more
+difficult and missing or invalid form data may not be visible on the user's screen by the time they
+attempt to submit a form.</p>
+<h3 id="html-attributes">Make the most of HTML attributes <a class="w-headline-link" href="#html-attributes">#</a></h3>
+<h4 id="make-it-easy-for-users-to-enter-data">Make it easy for users to enter data <a class="w-headline-link" href="#make-it-easy-for-users-to-enter-data">#</a></h4>
+<p id="type-attribute"></p>
+<p>Use the appropriate input <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/email" rel="noopener"><code>type</code> attribute</a>
+to provide the right keyboard on mobile and enable basic built-in validation by the browser.</p>
+<p>For example, use <code>type=&quot;email&quot;</code> for email addresses and <code>type=&quot;tel&quot;</code> for phone numbers.</p>
+<figure class="w-figure">
+  <img     alt="Two screenshots of Android phones, showing a keyboard appropriate for entering an email addresss (using type=email) and for entering a telephone number (with type=tel)."          decoding="async"     height="683"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/bi7J9Z1TLP4IsQLyhbQm.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/bi7J9Z1TLP4IsQLyhbQm.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/bi7J9Z1TLP4IsQLyhbQm.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/bi7J9Z1TLP4IsQLyhbQm.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/bi7J9Z1TLP4IsQLyhbQm.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/bi7J9Z1TLP4IsQLyhbQm.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/bi7J9Z1TLP4IsQLyhbQm.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/bi7J9Z1TLP4IsQLyhbQm.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/bi7J9Z1TLP4IsQLyhbQm.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/bi7J9Z1TLP4IsQLyhbQm.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/bi7J9Z1TLP4IsQLyhbQm.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/bi7J9Z1TLP4IsQLyhbQm.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/bi7J9Z1TLP4IsQLyhbQm.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/bi7J9Z1TLP4IsQLyhbQm.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/bi7J9Z1TLP4IsQLyhbQm.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/bi7J9Z1TLP4IsQLyhbQm.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/bi7J9Z1TLP4IsQLyhbQm.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/bi7J9Z1TLP4IsQLyhbQm.jpg?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">Keyboards appropriate for email and telephone.</figcaption>
+</figure>
+<p id="inputmode-attribute"></p>
+<div class="w-aside w-aside--warning">
+<p><strong>Warning</strong>:
+Using type=&quot;number&quot; adds an up/down arrow to increment numbers, which makes no sense for data such
+as telephone, payment card or account numbers.</p>
+<p>For numbers like these, set <code>type=&quot;text&quot;</code> (or leave off the attribute, since <code>text</code> is the default).
+For telephone numbers, use <code>type=&quot;tel&quot;</code> to get the appropriate keyboard on mobile. For other numbers
+use <code>inputmode=&quot;numeric&quot;</code> to get a numeric keyboard on mobile.</p>
+<p>Some sites still use <code>type=&quot;tel&quot;</code> for payment card numbers to ensure that mobile users get the right
+keyboard. However, <code>inputmode</code> is <a href="https://caniuse.com/input-inputmode" rel="noopener">very widely supported now</a>,
+so you shouldn't have to do that—but do check your users' browsers.</p>
+</div>
+<p id="avoid-custom-elements"></p>
+<p>For dates, try to avoid using custom <code>select</code> elements. They break the autofill experience if not
+properly implemented and don't work on older browsers. For numbers such as birth year, consider
+using an <code>input</code> element rather than a <code>select</code>, since entering digits manually can be easier and less
+error prone than selecting from a long drop-down list—especially on mobile. Use <code>inputmode=&quot;numeric&quot;</code>
+to ensure the right keyboard on mobile and add validation and format hints with text or a
+placeholder to make sure the user enters data in the appropriate format.</p>
+<div class="w-aside w-aside--note">
+<p>The <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/datalist" rel="noopener"><code>datalist</code></a> element enables
+a user to select from a list of available options and provides matching suggestions as the user enters text.
+Try out <code>datalist</code> for <code>text</code>, <code>range</code> and <code>color</code> inputs at <a href="https://simpl.info/datalist" rel="noopener">simpl.info/datalist</a>.
+For birth year input, you can compare a <code>select</code> with an <code>input</code> and <code>datalist</code> at <a href="https://datalist-select.glitch.me" rel="noopener">datalist-select.glitch.me</a>.</p>
+</div>
+<h4 id="autocomplete-attribute">Use autocomplete to improve accessibility and help users avoid re-entering data <a class="w-headline-link" href="#autocomplete-attribute">#</a></h4>
+<p>Using appropriate <code>autocomplete</code> values enables browsers to help users by securely storing data and
+autofilling <code>input</code>, <code>select</code>, and <code>textarea</code> values. This is particularly important on mobile, and
+crucial for avoiding <a href="https://www.zuko.io/blog/8-surprising-insights-from-zukos-benchmarking-data" rel="noopener">high form abandonment rates</a>. Autocomplete also provides <a href="https://www.w3.org/WAI/WCAG21/Understanding/identify-input-purpose.html" rel="noopener">multiple accessibility benefits</a>.</p>
+<p>If an appropriate autocomplete value is available for a form field, you should use it. <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete" rel="noopener">MDN web docs</a> has a full list of values and explanations of how to use
+them correctly.</p>
+<p id="stable-name-id"></p>
+<div class="w-aside w-aside--note">
+<p>As well as using appropriate autocomplete values, help browsers autofill forms by giving form fields
+<code>name</code> and <code>id</code> attributes <a href="#stable-name-id">stable values</a> that don't change between page loads or
+website deployments.</p>
+</div>
+<p id="billing-address"></p>
+<p>By default, set the billing address to be the same as the delivery address. Reduce visual clutter by
+providing a link to edit the billing address (or use <a href="https://simpl.info/details/" rel="noopener"><code>summary</code> and <code>details</code> elements</a>)
+rather than displaying the billing address in a form.</p>
+<figure class="w-figure">
+  <img     alt="Example checkout page showing link to change billing address."          decoding="async"     height="250"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/TIan7TU8goyoOXwLPYyd.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/TIan7TU8goyoOXwLPYyd.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/TIan7TU8goyoOXwLPYyd.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/TIan7TU8goyoOXwLPYyd.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/TIan7TU8goyoOXwLPYyd.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/TIan7TU8goyoOXwLPYyd.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/TIan7TU8goyoOXwLPYyd.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/TIan7TU8goyoOXwLPYyd.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/TIan7TU8goyoOXwLPYyd.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/TIan7TU8goyoOXwLPYyd.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/TIan7TU8goyoOXwLPYyd.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/TIan7TU8goyoOXwLPYyd.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/TIan7TU8goyoOXwLPYyd.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/TIan7TU8goyoOXwLPYyd.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/TIan7TU8goyoOXwLPYyd.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/TIan7TU8goyoOXwLPYyd.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/TIan7TU8goyoOXwLPYyd.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/TIan7TU8goyoOXwLPYyd.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">Add a link to review billing.</figcaption>
+</figure>
+<p>Use appropriate autocomplete values for the billing address, just as you do for shipping address,
+so the user doesn't have to enter data more than once. Add a prefix word to autocomplete
+attributes if you have different values for inputs with the same name in different sections.</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">autocomplete</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>shipping address-line-1<span class="token punctuation">"</span></span> <span class="token attr-name">...</span><span class="token punctuation">></span></span><br>...<br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">autocomplete</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>billing address-line-1<span class="token punctuation">"</span></span> <span class="token attr-name">...</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><h4 id="validation">Help users enter the right data <a class="w-headline-link" href="#validation">#</a></h4>
+<p>Try to avoid &quot;telling off&quot; customers because they &quot;did something wrong&quot;. Instead, help users complete
+forms more quickly and easily by helping them fix problems as they happen. Through the checkout process,
+customers are trying to give your company money for a product or service—your job is to assist them,
+not to punish them!</p>
+<p>You can add <a href="https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/Constraint_validation#Intrinsic_and_basic_constraints" rel="noopener">constraint attributes</a> to form elements to specify acceptable
+values, including <code>min</code>, <code>max</code>, and <code>pattern</code>. The <a href="https://developer.mozilla.org/en-US/docs/Web/API/ValidityState" rel="noopener">validity state</a>
+of the element is set automatically depending on whether the element's value is valid, as are the
+<code>:valid</code> and <code>:invalid</code> CSS pseudo-classes which can be used to style elements with valid or invalid
+values.</p>
+<p>For example, the following HTML specifies input for a birth year between
+1900 and 2020. Using <code>type=&quot;number&quot;</code> constrains input values to numbers only, within the range
+specified by <code>min</code> and <code>max</code>. If you attempt to enter a number outside the range, the input will be
+set to have an invalid state.</p>
+<div class="glitch-embed-wrap" style="height: 170px; width: 100%;">
+  <iframe
+    allow="camera; clipboard-read; clipboard-write; encrypted-media; geolocation; microphone; midi"
+    loading="lazy"
+    src="https://glitch.com/embed/#!/embed/constraints?attributionHidden=true&sidebarCollapsed=true&path=index.html&previewSize=100"
+    style="height: 100%; width: 100%; border: 0;"
+    title="constraints on Glitch"
+  ></iframe>
+</div>
+<p>The following example uses <code>pattern=&quot;[\d ]{10,30}&quot;</code> to ensure a valid payment card number, while
+allowing spaces:</p>
+<div class="glitch-embed-wrap" style="height: 170px; width: 100%;">
+  <iframe
+    allow="camera; clipboard-read; clipboard-write; encrypted-media; geolocation; microphone; midi"
+    loading="lazy"
+    src="https://glitch.com/embed/#!/embed/payment-card-input?attributionHidden=true&sidebarCollapsed=true&path=index.html&previewSize=100"
+    style="height: 100%; width: 100%; border: 0;"
+    title="payment-card-input on Glitch"
+  ></iframe>
+</div>
+<p>Modern browsers also do basic validation for inputs with type <code>email</code> or <code>url</code>.</p>
+<div class="glitch-embed-wrap" style="height: 250px; width: 100%;">
+  <iframe
+    allow="camera; clipboard-read; clipboard-write; encrypted-media; geolocation; microphone; midi"
+    loading="lazy"
+    src="https://glitch.com/embed/#!/embed/type-validation?attributionHidden=true&sidebarCollapsed=true&path=index.html&previewSize=100"
+    style="height: 100%; width: 100%; border: 0;"
+    title="type-validation on Glitch"
+  ></iframe>
+</div>
+<div class="w-aside w-aside--note">
+<p>Add the <code>multiple</code> attribute to an input with <code>type=&quot;email&quot;</code> to enable built-in validation for
+multiple comma-separated email addresses in a single input.</p>
+</div>
+<p>On form submission, browsers automatically set focus on fields with problematic or missing required
+values. No JavaScript required!</p>
+<figure class="w-figure">
+  <img     alt="Screenshot of a sign-in form in Chrome on desktop showing browser prompt and focus for an invalid email value."     class="w-screenshot"     decoding="async"     height="483"          loading="lazy"     sizes="(min-width: 500px) 500px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/mPyN7THWJNRQIiBezq6l.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/mPyN7THWJNRQIiBezq6l.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/mPyN7THWJNRQIiBezq6l.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/mPyN7THWJNRQIiBezq6l.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/mPyN7THWJNRQIiBezq6l.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/mPyN7THWJNRQIiBezq6l.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/mPyN7THWJNRQIiBezq6l.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/mPyN7THWJNRQIiBezq6l.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/mPyN7THWJNRQIiBezq6l.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/mPyN7THWJNRQIiBezq6l.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/mPyN7THWJNRQIiBezq6l.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/mPyN7THWJNRQIiBezq6l.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/mPyN7THWJNRQIiBezq6l.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/mPyN7THWJNRQIiBezq6l.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/mPyN7THWJNRQIiBezq6l.png?auto=format&w=1000 1000w"          width="500"   />
+  <figcaption class="w-figcaption">Basic built-in validation by the browser.</figcaption>
+</figure>
+<p>Validate inline and provide feedback to the user as they enter data, rather than providing a list of
+errors when they click the submit button. If you need to validate data on your server after form
+submission, list all problems that are found and clearly highlight all form fields with invalid
+values, as well as displaying a message inline next to each problematic field explaining what needs
+to be fixed. Check server logs and analytics data for common errors—you may need to redesign your form.</p>
+<p>You should also use JavaScript to do more robust validation while users are entering data and
+on form submission. Use the <a href="https://html.spec.whatwg.org/multipage/forms.html#constraints" rel="noopener">Constraint Validation API</a>
+(which is <a href="https://caniuse.com/#feat=constraint-validation" rel="noopener">widely supported</a>) to add custom
+validation using built-in browser UI to set focus and display prompts.</p>
+<p>Find out more in <a href="https://developers.google.com/web/fundamentals/design-and-ux/input/forms#use_javascript_for_more_complex_real-time_validation" rel="noopener">Use JavaScript for more complex real-time validation</a>.</p>
+<div class="w-aside w-aside--warning">
+<p><strong>Warning</strong>:
+Even with client-side validation and data input constraints, you must still ensure that your
+back-end securely handles input and output of data from users. Never trust user input: it could be
+malicious. Find out more in <a href="https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html" rel="noopener">OWASP Input Validation Cheat Sheet</a>.</p>
+</div>
+<h4 id="required">Help users avoid missing required data <a class="w-headline-link" href="#required">#</a></h4>
+<p>Use the <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/required" rel="noopener"><code>required</code> attribute</a>
+on inputs for mandatory values.</p>
+<p>When a form is submitted <a href="https://caniuse.com/mdn-api_htmlinputelement_required" rel="noopener">modern browsers</a>
+automatically prompt and set focus on <code>required</code> fields with missing data, and you can use the
+<a href="https://caniuse.com/?search=required" rel="noopener"><code>:required</code> pseudo-class</a> to highlight required fields. No
+JavaScript required!</p>
+<p>Add an asterisk to the label for every required field, and add a note at the start of the form to
+explain what the asterisk means.</p>
+<h2 id="checkout-forms">Simplify checkout <a class="w-headline-link" href="#checkout-forms">#</a></h2>
+<h3 id="m-commerce-gap">Mind the mobile commerce gap! <a class="w-headline-link" href="#m-commerce-gap">#</a></h3>
+<p>Imagine that your users have a <em>fatigue budget</em>. Use it up, and your users will leave.</p>
+<p>You need to reduce friction and maintain focus, especially on mobile. Many sites get more <em>traffic</em>
+on mobile but more <em>conversions</em> on desktop—a phenomenon known as the <a href="https://www.comscore.com/Insights/Presentations-and-Whitepapers/2017/Mobiles-Hierarchy-of-Needs" rel="noopener">mobile commerce gap</a>. Customers may simply prefer to
+complete a purchase on desktop, but lower mobile conversion rates are also a result of poor user
+experience. Your job is to <em>minimize</em> lost conversions on mobile and <em>maximize</em> conversions
+on desktop. <a href="https://www.comscore.com/Insights/Presentations-and-Whitepapers/2017/Mobiles-Hierarchy-of-Needs" rel="noopener">Research has shown</a> that there's a huge opportunity to provide a better mobile form experience.</p>
+<p>Most of all, users are more likely to abandon forms that look long, that are complex, and without a sense of
+direction. This is especially true when users are on smaller screens, distracted, or in a rush. Ask for as
+little data as possible.</p>
+<h3 id="guest-checkout">Make guest checkout the default <a class="w-headline-link" href="#guest-checkout">#</a></h3>
+<p>For an online store, the simplest way to reduce form friction is to make guest checkout the default.
+Don't force users to create an account before making a purchase. Not allowing guest checkout is cited
+as a major reason for shopping cart abandonment.</p>
+<figure class="w-figure">
+  <img     alt="Reasons for shopping cart abandonment during checkout."     class="w-screenshot"     decoding="async"     height="503"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/a7OQLnCRb0FZglj07N7z.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/a7OQLnCRb0FZglj07N7z.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/a7OQLnCRb0FZglj07N7z.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/a7OQLnCRb0FZglj07N7z.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/a7OQLnCRb0FZglj07N7z.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/a7OQLnCRb0FZglj07N7z.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/a7OQLnCRb0FZglj07N7z.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/a7OQLnCRb0FZglj07N7z.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/a7OQLnCRb0FZglj07N7z.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/a7OQLnCRb0FZglj07N7z.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/a7OQLnCRb0FZglj07N7z.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/a7OQLnCRb0FZglj07N7z.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/a7OQLnCRb0FZglj07N7z.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/a7OQLnCRb0FZglj07N7z.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/a7OQLnCRb0FZglj07N7z.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/a7OQLnCRb0FZglj07N7z.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/a7OQLnCRb0FZglj07N7z.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/a7OQLnCRb0FZglj07N7z.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">From <a href="https://baymard.com/checkout-usability">baymard.com/checkout-usability</a></figcaption>
+</figure>
+<p>You can offer account sign-up after checkout.  At that point, you already have most of the data you
+need to set up an account, so account creation should be quick and easy for the user.</p>
+<div class="w-aside w-aside--gotchas"><strong>Gotchas!</strong>
+<p>If you do offer sign-up after checkout, make sure that the purchase the user just made is linked to
+their newly created account!</p>
+</div>
+<h3 id="checkout-progress">Show checkout progress  <a class="w-headline-link" href="#checkout-progress">#</a></h3>
+<p>You can make your checkout process feel less complex by showing progress and making it clear what
+needs to be done next. The video below shows how UK retailer <a href="https://www.johnlewis.com" rel="noopener">johnlewis.com</a>
+achieves this.</p>
+<figure class="w-figure">
+  <video      autoplay            class="w-screenshot"      controls                              muted      playsinline      poster="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ViftAUUUHr4TDXNec0Ch.png?auto=format"                >      <source src="https://storage.googleapis.com/web-dev-uploads/video/tcFciHGuF3MxnTr1y5ue01OGLBn2/6gIb1yWrIMZFiv775B2y.mp4" type="video/mp4" />    </video>
+  <figcaption class="w-figcaption">Show checkout progress.</figcaption>
+</figure>
+<p>You need to maintain momentum! For each step towards payment, use page headings and descriptive
+button values that make it clear what needs to be done now, and what checkout step is next.</p>
+<figure class="w-figure">
+   <video controls autoplay loop muted class="w-screenshot">
+     <source src="https://samdutton.com/address-form-save.mp4" type="video/mp4">
+   </video>
+  <figcaption class="w-figcaption">Give form buttons meaningful names that show what's next.</figcaption>
+</figure>
+<p>Use the <code>enterkeyhint</code> attribute on form inputs to set the mobile keyboard enter key label. For
+example, use <code>enterkeyhint=&quot;previous&quot;</code> and <code>enterkeyhint=&quot;next&quot;</code> within a multi-page form,
+<code>enterkeyhint=&quot;done&quot;</code> for the final input in the form, and <code>enterkeyhint=&quot;search&quot;</code> for a search
+input.</p>
+<figure class="w-figure">
+  <img     alt="Two screenshots of an address form on Android showing how the enterkeyhint input attribute changes the enter key button icon."     class="w-screenshot"     decoding="async"     height="684"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/QoY8Oynpw0CqjPACtCdG.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/QoY8Oynpw0CqjPACtCdG.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/QoY8Oynpw0CqjPACtCdG.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/QoY8Oynpw0CqjPACtCdG.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/QoY8Oynpw0CqjPACtCdG.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/QoY8Oynpw0CqjPACtCdG.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/QoY8Oynpw0CqjPACtCdG.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/QoY8Oynpw0CqjPACtCdG.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/QoY8Oynpw0CqjPACtCdG.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/QoY8Oynpw0CqjPACtCdG.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/QoY8Oynpw0CqjPACtCdG.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/QoY8Oynpw0CqjPACtCdG.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/QoY8Oynpw0CqjPACtCdG.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/QoY8Oynpw0CqjPACtCdG.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/QoY8Oynpw0CqjPACtCdG.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/QoY8Oynpw0CqjPACtCdG.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/QoY8Oynpw0CqjPACtCdG.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/QoY8Oynpw0CqjPACtCdG.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">Enter key buttons on Android: 'next' and 'done'.</figcaption>
+</figure>
+<p>The <code>enterkeyhint</code> attribute is <a href="https://caniuse.com/mdn-html_global_attributes_enterkeyhint" rel="noopener">supported on Android and iOS</a>.
+You can find out more from the <a href="https://github.com/dtapuska/enterkeyhint" rel="noopener">enterkeyhint explainer</a>.</p>
+<p id="checkout-details"></p>
+<p>Make it easy for users to go back and forth within the checkout process, to easily adjust
+their order, even when they're at the final payment step. Show full details of the order, not just
+a limited summary. Enable users to easily adjust item quantities from the payment page. Your priority at checkout is to
+avoid interrupting progress towards conversion.</p>
+<h3 id="reduce-checkout-exits">Remove distractions <a class="w-headline-link" href="#reduce-checkout-exits">#</a></h3>
+<p>Limit potential exit points by removing visual clutter and distractions such as product promotions.
+Many successful retailers even remove navigation and search from checkout.</p>
+<figure class="w-figure">
+  <img     alt="Two screenshots on mobile showing progress through johnlewis.com checkout. Search, navigation and other distractions are removed."     class="w-screenshot"     decoding="async"     height="683"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/UR97R2LqJ5MRkL5H4V0U.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/UR97R2LqJ5MRkL5H4V0U.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/UR97R2LqJ5MRkL5H4V0U.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/UR97R2LqJ5MRkL5H4V0U.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/UR97R2LqJ5MRkL5H4V0U.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/UR97R2LqJ5MRkL5H4V0U.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/UR97R2LqJ5MRkL5H4V0U.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/UR97R2LqJ5MRkL5H4V0U.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/UR97R2LqJ5MRkL5H4V0U.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/UR97R2LqJ5MRkL5H4V0U.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/UR97R2LqJ5MRkL5H4V0U.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/UR97R2LqJ5MRkL5H4V0U.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/UR97R2LqJ5MRkL5H4V0U.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/UR97R2LqJ5MRkL5H4V0U.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/UR97R2LqJ5MRkL5H4V0U.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/UR97R2LqJ5MRkL5H4V0U.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/UR97R2LqJ5MRkL5H4V0U.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/UR97R2LqJ5MRkL5H4V0U.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">Search, navigation and other distractions removed for checkout.</figcaption>
+</figure>
+<p>Keep the journey focused. This is not the time to tempt users to do something else!</p>
+<figure class="w-figure">
+  <img     alt="Screenshot of checkout page on mobile showing distracting promotion for FREE STICKERS."     class="w-screenshot"     decoding="async"     height="735"          loading="lazy"     sizes="(min-width: 350px) 350px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/lKJwd5e2smBfDjNxV22N.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/lKJwd5e2smBfDjNxV22N.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/lKJwd5e2smBfDjNxV22N.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/lKJwd5e2smBfDjNxV22N.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/lKJwd5e2smBfDjNxV22N.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/lKJwd5e2smBfDjNxV22N.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/lKJwd5e2smBfDjNxV22N.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/lKJwd5e2smBfDjNxV22N.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/lKJwd5e2smBfDjNxV22N.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/lKJwd5e2smBfDjNxV22N.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/lKJwd5e2smBfDjNxV22N.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/lKJwd5e2smBfDjNxV22N.jpg?auto=format&w=700 700w"          width="350"   />
+  <figcaption class="w-figcaption">Don't distract customers from completing their purchase.</figcaption>
+</figure>
+<p>For returning users you can simplify the checkout flow even more, by hiding data they don't need to
+see. For example: display the delivery address in plain text (not in a form) and allow users to
+change it via a link.</p>
+<figure class="w-figure">
+  <img     alt="Screenshot of &#x27;Review order&#x27; section of checkout page, showing text in plain text, with links to change delivery address, payment method and billing address, which are not displayed."     class="w-screenshot"     decoding="async"     height="219"          loading="lazy"     sizes="(min-width: 450px) 450px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xEAYOeEFYhOZLaB2aeCY.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xEAYOeEFYhOZLaB2aeCY.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xEAYOeEFYhOZLaB2aeCY.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xEAYOeEFYhOZLaB2aeCY.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xEAYOeEFYhOZLaB2aeCY.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xEAYOeEFYhOZLaB2aeCY.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xEAYOeEFYhOZLaB2aeCY.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xEAYOeEFYhOZLaB2aeCY.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xEAYOeEFYhOZLaB2aeCY.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xEAYOeEFYhOZLaB2aeCY.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xEAYOeEFYhOZLaB2aeCY.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xEAYOeEFYhOZLaB2aeCY.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xEAYOeEFYhOZLaB2aeCY.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xEAYOeEFYhOZLaB2aeCY.png?auto=format&w=900 900w"          width="450"   />
+  <figcaption class="w-figcaption">Hide data customers don't need to see.</figcaption>
+</figure>
+<h2 id="address-forms">Make it easy to enter name and address <a class="w-headline-link" href="#address-forms">#</a></h2>
+<h3 id="unneeded-data">Only ask for the data you need <a class="w-headline-link" href="#unneeded-data">#</a></h3>
+<p>Before you start coding your name and address forms, make sure to understand what data is required.
+Don't ask for data you don't need! The simplest way to reduce form complexity is to remove unnecessary
+fields. That's also good for customer privacy and can reduce back-end data cost and liability.</p>
+<h3 id="single-name-input">Use a single name input <a class="w-headline-link" href="#single-name-input">#</a></h3>
+<p>Allow your users to enter their name using a single input, unless you have a good reason for
+separately storing given names, family names, honorifics, or other name parts. Using a single name
+input makes forms less complex, enables cut-and-paste, and makes autofill simpler.</p>
+<p>In particular, unless you have good reason not to, don't bother adding a separate input for a
+prefix or title (like Mrs, Dr or Lord). Users can type that in with their name if they want to. Also,
+<code>honorific-prefix</code> autocomplete currently doesn't work in most browsers, and so adding a field for
+name prefix or title will break the address form autofill experience for most users.</p>
+<h3 id="enable-name-autofill">Enable name autofill <a class="w-headline-link" href="#enable-name-autofill">#</a></h3>
+<p>Use <code>name</code> for a full name:</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">autocomplete</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>name<span class="token punctuation">"</span></span> <span class="token attr-name">...</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><p>If you really do have a good reason to split out name parts, make sure to to use appropriate
+autocomplete values:</p>
+<ul>
+<li><code>honorific-prefix</code></li>
+<li><code>given-name</code></li>
+<li><code>nickname</code></li>
+<li><code>additional-name-initial</code></li>
+<li><code>additional-name</code></li>
+<li><code>family-name</code></li>
+<li><code>honorific-suffix</code></li>
+</ul>
+<h3 id="unicode-matching">Allow international names <a class="w-headline-link" href="#unicode-matching">#</a></h3>
+<p>You might want to validate your name inputs, or restrict the characters allowed for name data. However,
+you need to be as unrestrictive as possible with alphabets. It's rude to be told your name is &quot;invalid&quot;!</p>
+<p>For validation, avoid using regular expressions that only match Latin characters. Latin-only excludes
+users with names or addresses that include characters that aren't in the Latin alphabet. Allow Unicode
+letter matching instead—and ensure your back-end supports Unicode securely as both input and output.
+Unicode in regular expressions is well supported by modern browsers.</p>
+<figure class="w-compare"><p class="w-compare__label w-compare__label--worse">Don't</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token comment">&lt;!-- Names with non-Latin characters (such as Françoise or Jörg) are 'invalid'. --></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">pattern</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>[\w \-]+<span class="token punctuation">"</span></span> <span class="token attr-name">...</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code></figure>
+<figure class="w-compare"><p class="w-compare__label w-compare__label--better">Do</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token comment">&lt;!-- Accepts Unicode letters. --></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">pattern</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>[\p{L} \-]+<span class="token punctuation">"</span></span> <span class="token attr-name">...</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code></figure>
+<figure class="w-figure">
+   <video controls autoplay loop muted class="w-screenshot">
+     <source src="https://samdutton.com/unicode-letter-matching.mp4" type="video/mp4">
+   </video>
+  <figcaption class="w-figcaption">Unicode letter matching compared to Latin-only letter matching.</figcaption>
+</figure>
+<div class="w-aside w-aside--note">
+<p>You can find out more about <a href="#internationalization-localization">internationalization and localization</a>
+below, but make sure your forms work for names in all regions where you have users. For example,
+for Japanese names you should consider having a field for phonetic names. This helps customer
+support staff say the customer's name on the phone.</p>
+</div>
+<h3 id="address-variety">Allow for a variety of address formats <a class="w-headline-link" href="#address-variety">#</a></h3>
+<p>When you're designing an address form, bear in mind the bewildering variety of address formats,
+even within a single country. Be careful not to make assumptions about &quot;normal&quot; addresses. (Take a
+look at <a href="http://www.paulplowman.com/stuff/uk-address-oddities/" rel="noopener">UK Address Oddities!</a> if you're not
+convinced!)</p>
+<h4 id="make-address-forms-flexible">Make address forms flexible <a class="w-headline-link" href="#make-address-forms-flexible">#</a></h4>
+<p>Don't force users to try to squeeze their address into form fields that don't fit.</p>
+<p>For example, don't insist on a house number and street name in separate inputs, since many addresses
+don't use that format, and incomplete data can break browser autofill.</p>
+<p>Be especially careful with <code>required</code> address fields. For example, addresses in large cities in the
+UK do not have a county, but many sites still force users to enter one.</p>
+<p>Using two flexible address lines can work well enough for a variety of address formats.</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">autocomplete</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>address-line-1<span class="token punctuation">"</span></span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>address-line1<span class="token punctuation">"</span></span> <span class="token attr-name">...</span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">autocomplete</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>address-line-2<span class="token punctuation">"</span></span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>address-line2<span class="token punctuation">"</span></span> <span class="token attr-name">...</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><p>Add labels to match:</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><mark class="highlight-line highlight-line-active"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>label</span> <span class="token attr-name">for</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>address-line-1<span class="token punctuation">"</span></span><span class="token punctuation">></span></span></mark><br><mark class="highlight-line highlight-line-active">Address line 1 (or company name)</mark><br><mark class="highlight-line highlight-line-active"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>label</span><span class="token punctuation">></span></span></mark><br><span class="highlight-line"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">autocomplete</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>address-line-1<span class="token punctuation">"</span></span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>address-line1<span class="token punctuation">"</span></span> <span class="token attr-name">...</span><span class="token punctuation">></span></span></span><br><span class="highlight-line"></span><br><mark class="highlight-line highlight-line-active"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>label</span> <span class="token attr-name">for</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>address-line-2<span class="token punctuation">"</span></span><span class="token punctuation">></span></span></mark><br><mark class="highlight-line highlight-line-active">Address line 2 (optional)</mark><br><mark class="highlight-line highlight-line-active"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>label</span><span class="token punctuation">></span></span></mark><br><span class="highlight-line"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">autocomplete</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>address-line-2<span class="token punctuation">"</span></span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>address-line2<span class="token punctuation">"</span></span> <span class="token attr-name">...</span><span class="token punctuation">></span></span></span></code></pre>
+</web-copy-code><p>You can try this out by remixing and editing the demo embedded below.</p>
+<div class="w-aside w-aside--caution">
+<p><strong>Caution</strong>:
+Research shows that <a href="https://baymard.com/blog/address-line-2" rel="noopener"><strong>Address line 2</strong> may be problematic for users</a>.
+Bear this in mind when designing address forms—you should consider alternatives such as using a
+single <code>textarea</code> (see below) or other options.</p>
+</div>
+<h4 id="address-textarea">Consider using a single textarea for address <a class="w-headline-link" href="#address-textarea">#</a></h4>
+<p>The most flexible option for addresses is to provide a single <code>textarea</code>.</p>
+<p>The <code>textarea</code> approach fits any address format, and it's great for cutting and pasting—but bear in
+mind that it may not fit your data requirements, and users may miss out on autofill if they previously
+only used forms with <code>address-line1</code> and <code>address-line2</code>.</p>
+<p>For a textarea, use <code>street-address</code> as the autocomplete value.</p>
+<p>Here is an example of a form that demonstrates the use of a single <code>textarea</code> for address:</p>
+<div class="glitch-embed-wrap" style="height: 980px; width: 100%;">
+  <iframe
+    allow="camera; clipboard-read; clipboard-write; encrypted-media; geolocation; microphone; midi"
+    loading="lazy"
+    src="https://glitch.com/embed/#!/embed/address-form?attributionHidden=true&sidebarCollapsed=true&path=index.html&previewSize=100"
+    style="height: 100%; width: 100%; border: 0;"
+    title="address-form on Glitch"
+  ></iframe>
+</div>
+<h4 id="internationalization-localization">Internationalize and localize your address forms <a class="w-headline-link" href="#internationalization-localization">#</a></h4>
+<p>It's especially important for address forms to consider <a href="https://www.smashingmagazine.com/2020/11/internationalization-localization-static-sites/" rel="noopener">internationalization and localization</a>, depending
+on where your users are located.</p>
+<p>Be aware that the naming of address parts varies as well as address formats, even within the same
+language.</p>
+<web-copy-code><pre class="language-text"><code class="language-text">    ZIP code: US<br> Postal code: Canada<br>    Postcode: UK<br>     Eircode: Ireland<br>         PIN: India</code></pre>
+</web-copy-code><p>It can be irritating or puzzling to be presented with a form that doesn't fit your address or that
+doesn't use the words you expect.</p>
+<p>Customizing address forms <a href="https://www.smashingmagazine.com/2020/11/internationalization-localization-static-sites#determining-user-s-language-and-region" rel="noopener">for multiple locales</a> may be necessary for your site, but using techniques
+to maximize form flexibility (as described above) may be adequate. If you don't localize your address
+forms, make sure to understand the key priorities to cope with a range of address formats:</p>
+<ul>
+<li>Avoid being over-specific about address parts, such as insisting on a street name or house number.</li>
+<li>Where possible avoid making fields <code>required</code>. For example, addresses in many countries don't
+have a postal code, and rural addresses may not have a street or road name.</li>
+<li>Use inclusive naming: 'Country/region' not 'Country'; 'ZIP/postal code' not 'ZIP'.</li>
+</ul>
+<p>Keep it flexible! The <a href="#address-textarea">simple address form example above</a> can be adapted to work
+'well enough' for many locales.</p>
+<h4 id="postal-code-address-lookup">Consider avoiding postal code address lookup <a class="w-headline-link" href="#postal-code-address-lookup">#</a></h4>
+<p>Some websites use a service to look up addresses based on postal code or ZIP. This may be sensible
+for some use cases, but you should be aware of the potential downsides.</p>
+<p>Postal code address suggestion doesn't work for all countries—and in some regions, post codes can
+include a large number of potential addresses.</p>
+<figure class="w-figure">
+   <video controls autoplay loop muted class="w-screenshot">
+     <source src="https://samdutton.com/long-list-of-addresses.mp4" type="video/mp4">
+   </video>
+  <figcaption class="w-figcaption">ZIP or postal codes may include a lot of addresses!</figcaption>
+</figure>
+<p>It's difficult for users to select from a long list of addresses—especially on mobile if they're
+rushed or stressed. It can be easier and less error prone to let users take advantage of autofill,
+and enter their complete address filled with a single tap or click.</p>
+<figure class="w-figure">
+   <video controls autoplay loop muted class="w-screenshot">
+     <source src="https://samdutton.com/full-name-autofill.mp4" type="video/mp4">
+   </video>
+  <figcaption class="w-figcaption">A single name input enables one-tap (one-click) address entry.</figcaption>
+</figure>
+<h2 id="general-guidelines">Simplify payment forms <a class="w-headline-link" href="#general-guidelines">#</a></h2>
+<p>Payment forms are the single most critical part of the checkout process. Poor payment form design is
+a <a href="https://www.comscore.com/Insights/Presentations-and-Whitepapers/2017/Mobiles-Hierarchy-of-Needs" rel="noopener">common cause of shopping cart abandonment</a>. The <a href="https://en.wikipedia.org/wiki/The_devil_is_in_the_detail#cite_note-Titelman-1" rel="noopener">devil's in the details</a>: small
+glitches can tip users towards abandoning a purchase, particularly on mobile. Your job is to design
+forms to make it as easy as possible for users to enter data.</p>
+<h3 id="payment-form-autocomplete">Help users avoid re-entering payment data <a class="w-headline-link" href="#payment-form-autocomplete">#</a></h3>
+<p>Make sure to add appropriate <code>autocomplete</code> values in payment card forms, including the payment card
+number, name on the card, and the expiry month and year:</p>
+<ul>
+<li><code>cc-number</code></li>
+<li><code>cc-name</code></li>
+<li><code>cc-exp-month</code></li>
+<li><code>cc-exp-year</code></li>
+</ul>
+<p>This enables browsers to help users by securely storing payment card details and correctly entering form
+data. Without autocomplete, users may be more likely to keep a physical record of payment card details,
+or store payment card data insecurely on their device.</p>
+<div class="w-aside w-aside--caution">
+<p><strong>Caution</strong>:
+Don't add a selector for payment card type, since this can always be inferred from the payment card
+number.</p>
+</div>
+<h3 id="avoid-using-custom-elements-for-payment-card-dates">Avoid using custom elements for payment card dates <a class="w-headline-link" href="#avoid-using-custom-elements-for-payment-card-dates">#</a></h3>
+<p>If not properly designed, <a href="https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements" rel="noopener">custom elements</a>
+can interrupt payment flow by breaking autofill, and won't work on older browsers. If all other
+payment card details are available from autocomplete but a user is forced to find their physical
+payment card to look up an expiry date because autofill didn't work for a custom element, you're
+likely to lose a sale. Consider using standard HTML elements instead, and style them accordingly.</p>
+<figure class="w-figure">
+  <img     alt="Screenshot of payment form showing custom elements for card expiry date that interrupt autofill."          decoding="async"     height="916"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/1LIQm2Jt5PHxN0I7tni3.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/1LIQm2Jt5PHxN0I7tni3.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/1LIQm2Jt5PHxN0I7tni3.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/1LIQm2Jt5PHxN0I7tni3.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/1LIQm2Jt5PHxN0I7tni3.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/1LIQm2Jt5PHxN0I7tni3.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/1LIQm2Jt5PHxN0I7tni3.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/1LIQm2Jt5PHxN0I7tni3.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/1LIQm2Jt5PHxN0I7tni3.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/1LIQm2Jt5PHxN0I7tni3.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/1LIQm2Jt5PHxN0I7tni3.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/1LIQm2Jt5PHxN0I7tni3.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/1LIQm2Jt5PHxN0I7tni3.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/1LIQm2Jt5PHxN0I7tni3.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/1LIQm2Jt5PHxN0I7tni3.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/1LIQm2Jt5PHxN0I7tni3.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/1LIQm2Jt5PHxN0I7tni3.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/1LIQm2Jt5PHxN0I7tni3.jpg?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">Autocomplete filled all the fields—except the expiry date!</figcaption>
+</figure>
+<h3 id="single-number-input">Use a single input for payment card and phone numbers <a class="w-headline-link" href="#single-number-input">#</a></h3>
+<p>For payment card and phone numbers use a single input: don't split the number into parts. That makes
+it easier for users to enter data, makes validation simpler, and enables browsers to autofill.
+Consider doing the same for other numeric data such as PIN and bank codes.</p>
+<figure class="w-figure">
+  <img     alt="Screenshot of payment form showing a credit card field split into four input elements."          decoding="async"     height="833"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/7cUwamPstwSQTlbmQ4CT.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/7cUwamPstwSQTlbmQ4CT.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/7cUwamPstwSQTlbmQ4CT.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/7cUwamPstwSQTlbmQ4CT.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/7cUwamPstwSQTlbmQ4CT.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/7cUwamPstwSQTlbmQ4CT.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/7cUwamPstwSQTlbmQ4CT.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/7cUwamPstwSQTlbmQ4CT.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/7cUwamPstwSQTlbmQ4CT.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/7cUwamPstwSQTlbmQ4CT.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/7cUwamPstwSQTlbmQ4CT.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/7cUwamPstwSQTlbmQ4CT.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/7cUwamPstwSQTlbmQ4CT.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/7cUwamPstwSQTlbmQ4CT.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/7cUwamPstwSQTlbmQ4CT.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/7cUwamPstwSQTlbmQ4CT.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/7cUwamPstwSQTlbmQ4CT.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/7cUwamPstwSQTlbmQ4CT.jpg?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">Don't use multiple inputs for a credit card number.</figcaption>
+</figure>
+<h3 id="validate">Validate carefully <a class="w-headline-link" href="#validate">#</a></h3>
+<p>You should validate data entry both in realtime and before form submission. One way to do this is by
+adding a <code>pattern</code> attribute to a payment card input. If the user attempts to submit the payment form
+with an invalid value, the browser displays a warning message and sets focus on the input. No
+JavaScript required!</p>
+<div class="glitch-embed-wrap" style="height: 170px; width: 100%;">
+  <iframe
+    allow="camera; clipboard-read; clipboard-write; encrypted-media; geolocation; microphone; midi"
+    loading="lazy"
+    src="https://glitch.com/embed/#!/embed/payment-card-input?attributionHidden=true&sidebarCollapsed=true&path=index.html&previewSize=100"
+    style="height: 100%; width: 100%; border: 0;"
+    title="payment-card-input on Glitch"
+  ></iframe>
+</div>
+<p>However, your <code>pattern</code> regular expression must be flexible enough to handle <a href="https://github.com/jaemok/credit-card-input/blob/master/creditcard.js#L35" rel="noopener">the range of payment card
+number lengths</a>: from 14
+digits (or possibly less) to 20 (or more). You can find out more about payment card number structuring
+from <a href="https://ldapwiki.com/wiki/Bank%20Card%20Number" rel="noopener">LDAPwiki</a>.</p>
+<p>Allow users to include spaces when they're entering a new payment card number, since this is how
+numbers are displayed on physical cards. That's friendlier to the user (you won't have to tell them
+&quot;they did something wrong&quot;), less likely to interrupt conversion flow, and it's straightforward to
+remove spaces in numbers before processing.</p>
+<div class="w-aside w-aside--note">
+<p>You may want to use a one-time passcode for identity or payment verification. However, asking users
+to manually enter a code or copy it from an email or an SMS text is error-prone and a source of friction.
+Learn about better ways to enable one-time passcodes in <a href="/sms-otp-form">SMS OTP form best practices</a>.</p>
+</div>
+<h2 id="test-platforms">Test on a range of devices, platforms, browsers and versions <a class="w-headline-link" href="#test-platforms">#</a></h2>
+<p>It's particularly important to test address and payment forms on the platforms most common for
+your users, since form element functionality and appearance may vary, and differences in viewport
+size can lead to problematic positioning. BrowserStack enables <a href="https://www.browserstack.com/open-source" rel="noopener">free testing for open source projects</a> on a range of devices and browsers.</p>
+<figure class="w-figure">
+  <img     alt="Screenshots of a payment form, payment-form.glitch.me, on iPhone 7 and 11. The Complete Payment button is shown on iPhone 11 but not 7"          decoding="async"     height="707"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Uk7WhpDMuHtvjmWlFnJE.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Uk7WhpDMuHtvjmWlFnJE.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Uk7WhpDMuHtvjmWlFnJE.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Uk7WhpDMuHtvjmWlFnJE.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Uk7WhpDMuHtvjmWlFnJE.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Uk7WhpDMuHtvjmWlFnJE.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Uk7WhpDMuHtvjmWlFnJE.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Uk7WhpDMuHtvjmWlFnJE.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Uk7WhpDMuHtvjmWlFnJE.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Uk7WhpDMuHtvjmWlFnJE.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Uk7WhpDMuHtvjmWlFnJE.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Uk7WhpDMuHtvjmWlFnJE.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Uk7WhpDMuHtvjmWlFnJE.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Uk7WhpDMuHtvjmWlFnJE.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Uk7WhpDMuHtvjmWlFnJE.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Uk7WhpDMuHtvjmWlFnJE.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Uk7WhpDMuHtvjmWlFnJE.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Uk7WhpDMuHtvjmWlFnJE.jpg?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">The same page on iPhone 7 and iPhone 11.<br>Reduce padding for
+    smaller mobile viewports to ensure the <strong>Complete payment</strong> button isn't hidden.</figcaption>
+</figure>
+<h2 id="analytics-rum">Implement analytics and RUM <a class="w-headline-link" href="#analytics-rum">#</a></h2>
+<p>Testing usability and performance locally can be helpful, but you need real-world data to properly
+understand how users experience your payment and address forms.</p>
+<p>For that you need analytics and Real User Monitoring—data for the experience of actual users, such
+as how long checkout pages take to load or how long payment takes to complete:</p>
+<ul>
+<li><strong>Page analytics</strong>: page views, bounce rates and exits for every page with a form.</li>
+<li><strong>Interaction analytics</strong>: <a href="https://support.google.com/analytics/answer/6180923?hl=en" rel="noopener">goal funnels</a>
+and <a href="https://developers.google.com/analytics/devguides/collection/gtagjs/events" rel="noopener">events</a>
+indicate where users abandon your checkout flow and what actions do they take when interacting
+with your forms.</li>
+<li><strong>Website performance</strong>: <a href="/user-centric-performance-metrics">user-centric metrics</a> can tell you if your
+checkout pages are slow to load and, if so—what's the cause.</li>
+</ul>
+<p>Page analytics, interaction analytics, and real user performance measurement become especially
+valuable when combined with server logs, conversion data, and A/B testing, enabling you to answer
+questions such as whether discount codes increase revenue, or whether a change in form layout
+improves conversions.</p>
+<p>That, in turn, gives you a solid basis for prioritizing effort, making changes, and rewarding success.</p>
+<h2 id="resources">Keep learning <a class="w-headline-link" href="#resources">#</a></h2>
+<ul>
+<li><a href="/sign-in-form-best-practices">Sign-in form best practices</a></li>
+<li><a href="/sign-up-form-best-practices">Sign-up form best practices</a></li>
+<li><a href="/web-otp">Verify phone numbers on the web with the WebOTP API</a></li>
+<li><a href="https://developers.google.com/web/fundamentals/design-and-ux/input/forms" rel="noopener">Create Amazing Forms</a></li>
+<li><a href="https://www.smashingmagazine.com/2018/08/best-practices-for-mobile-form-design/" rel="noopener">Best Practices For Mobile Form Design</a></li>
+<li><a href="/more-capable-form-controls">More capable form controls</a></li>
+<li><a href="https://webaim.org/techniques/forms/" rel="noopener">Creating Accessible Forms</a></li>
+<li><a href="https://developers.google.com/web/updates/2016/04/credential-management-api" rel="noopener">Streamlining the Sign-up Flow Using Credential Management API</a></li>
+<li><a href="http://www.columbia.edu/~fdc/postal/" rel="noopener">Frank's Compulsive Guide to Postal Addresses</a> provides
+useful links and extensive guidance for address formats in over 200 countries.</li>
+<li><a href="http://www.countries-list.info/Download-List" rel="noopener">Countries Lists</a> has a tool for downloading country
+codes and names in multiple languages, in multiple formats.</li>
+</ul>
+<p>Photo by <a href="https://unsplash.com/@rupixen" rel="noopener">@rupixen</a> on <a href="https://unsplash.com/photos/Q59HmzK38eQ" rel="noopener">Unsplash</a>.</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/forms/">Forms</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/identity/">Identity</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/layout/">Layout</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/mobile/">Mobile</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/payments/">Payments</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/security/">Security</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/ux/">UX</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Jan 15, 2021</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/payment-and-address-form-best-practices/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+      <div class="w-callout w-callout--2col">
+      <div class="w-callout__header">
+        <h2 class="w-callout__lockup w-callout__lockup--codelab">Codelabs</h2>
+        <div class="w-callout__headline">See it in action</div>
+        <div class="w-callout__blurb">
+          Learn more and put this guide into action.
+        </div>
+      </div>
+      <ul class="w-unstyled-list w-callout__list">
+        <li class="w-callout__listitem">
+  <a
+    class="w-callout__link w-callout__link--codelab"
+    href="/codelab-payment-form-best-practices/"
+  >
+    Payment form best practices codelab
+  </a>
+</li>
+        <li class="w-callout__listitem">
+  <a
+    class="w-callout__link w-callout__link--codelab"
+    href="/codelab-address-form-best-practices/"
+  >
+    Address form best practices codelab
+  </a>
+</li>
+      </ul>
+    </div>
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

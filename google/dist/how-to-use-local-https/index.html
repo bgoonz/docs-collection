@@ -1,0 +1,857 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=5a3ea42534cf1">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>How to use HTTPS for local development</title>
+<meta name="description" content="Our latest news, updates, and stories for developers" />
+
+<link rel="canonical" href="https://web.dev/how-to-use-local-https/" />
+
+<meta itemprop="name" content="How to use HTTPS for local development" />
+<meta itemprop="description" content="Our latest news, updates, and stories for developers" />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/OG8YksgOnzGfnurzncWO.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/how-to-use-local-https/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="How to use HTTPS for local development" />
+<meta property="og:description" content="Our latest news, updates, and stories for developers" />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/OG8YksgOnzGfnurzncWO.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="" />
+<meta property="tag" content="security" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="How to use HTTPS for local development" />
+<meta name="twitter:description" content="Our latest news, updates, and stories for developers" />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/OG8YksgOnzGfnurzncWO.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=c97596c4bf86b', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=e2f4f0e37f172', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="Hero Image"     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/ZvW6VM0GEScldWHBvXJ4.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/ZvW6VM0GEScldWHBvXJ4.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/ZvW6VM0GEScldWHBvXJ4.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/ZvW6VM0GEScldWHBvXJ4.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/ZvW6VM0GEScldWHBvXJ4.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/ZvW6VM0GEScldWHBvXJ4.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/ZvW6VM0GEScldWHBvXJ4.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/ZvW6VM0GEScldWHBvXJ4.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/ZvW6VM0GEScldWHBvXJ4.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/ZvW6VM0GEScldWHBvXJ4.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/ZvW6VM0GEScldWHBvXJ4.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/ZvW6VM0GEScldWHBvXJ4.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/ZvW6VM0GEScldWHBvXJ4.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/ZvW6VM0GEScldWHBvXJ4.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/ZvW6VM0GEScldWHBvXJ4.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/ZvW6VM0GEScldWHBvXJ4.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/ZvW6VM0GEScldWHBvXJ4.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/ZvW6VM0GEScldWHBvXJ4.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#how-to-use-https-for-local-development" class="w-toc__header--link">
+        How to use HTTPS for local development
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#running-your-site-locally-with-https-using-mkcert-(recommended)">Running your site locally with HTTPS using mkcert (recommended)</a></li><li><a href="#caution">Caution</a></li><li><a href="#setup">Setup</a></li><li><a href="#using-mkcert:-cheatsheet">Using mkcert: cheatsheet</a></li><li><a href="#running-your-site-locally-with-https:-other-options">Running your site locally with HTTPS: other options</a></li><li><a href="#self-signed-certificate">Self-signed certificate</a></li><li><a href="#certificate-signed-by-a-regular-certificate-authority">Certificate signed by a regular certificate authority</a></li><li><a href="#reverse-proxy">Reverse proxy</a></li><li><a href="#flag-(not-recommended)">Flag (not recommended)</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@maudnals"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="how-to-use-https-for-local-development" class="w-article-header__headline">How to use HTTPS for local development</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          Sometimes, you need to run your local development site with HTTPS. Tools and tips to do this safely and quickly.
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Jan 25, 2021</time>
+          
+        </div>
+      
+      <div class="w-layout-container--narrow w-post-signpost">
+  <span class="w-post-signpost__title">Appears in:</span>
+  <a
+          class="w-post-signpost__link"
+          href="/secure"
+          >Safe and secure</a
+        >
+</div>
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/maudn/"><img     alt="Maud Nalpas"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/F620GZorjY0JjKas3p3J.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/F620GZorjY0JjKas3p3J.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/F620GZorjY0JjKas3p3J.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/F620GZorjY0JjKas3p3J.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/F620GZorjY0JjKas3p3J.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/F620GZorjY0JjKas3p3J.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/maudn/">Maud Nalpas</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/maudnals"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/maudnals">GitHub</a>
+      </li>
+      
+      
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <div role="banner" class="w-banner w-banner--caution w-banner--body">
+<p>Most of the time, <code>http://localhost</code> does what you need: in browsers, it mostly behaves like HTTPS 🔒. That's why some APIs that won't work on a deployed HTTP site, will work on <code>http://localhost</code>.</p>
+<p>What this means is that you need to use HTTPS locally <strong>only in special cases</strong> (see <a href="/when-to-use-local-https">When to use HTTPS for local development</a>), like custom hostnames or Secure cookies across browsers. Keep reading if that's you!</p>
+</div>
+<p><em>In this post, statements about <code>localhost</code> are valid for <code>127.0.0.1</code> and <code>[::1]</code> as well, since they both describe the local computer address, also called &quot;loopback address&quot;. Also, to keep things simple, the port number isn't specified.</em>
+<em>So when you see <code>http://localhost</code>, read it as <code>http://localhost:{PORT}</code> or <code>http://127.0.0.1:{PORT}</code>.</em></p>
+<p>If your production website uses HTTPS, you want your local development site to behave <strong>like an
+HTTPS site</strong> (if your production website doesn't use HTTPS, <a href="/why-https-matters/">make it a priority to switch to HTTPS</a>).
+Most of the time, you can trust <code>http://localhost</code> to behave <strong>like an HTTPS site</strong>. But <a href="/when-to-use-local-https">in some
+cases</a>, you need to run your site locally with HTTPS. Let's take a look
+at how to do this.</p>
+<p><strong>⏩ Are you looking for quick instructions, or have you been here before?
+Skip to the <a href="#using-mkcert:-cheatsheet">Cheatsheet</a>.</strong></p>
+<h2 id="running-your-site-locally-with-https-using-mkcert-(recommended)">Running your site locally with HTTPS using mkcert (recommended) <a class="w-headline-link" href="#running-your-site-locally-with-https-using-mkcert-(recommended)">#</a></h2>
+<p>To use HTTPS with your local development site and access <code>https://localhost</code> or
+<code>https://mysite.example</code> (custom hostname), you need a <a href="https://en.wikipedia.org/wiki/Public_key_certificate#TLS/SSL_server_certificate" rel="noopener">TLS
+certificate</a>. But
+browsers won't consider just any certificate valid: your certificate needs to be <strong>signed</strong> by an entity that
+is trusted by your browser, called a trusted <strong><a href="https://en.wikipedia.org/wiki/Certificate_authority" rel="noopener">certificate authority (CA)</a></strong>.</p>
+<p>What you need to do is to create a certificate and sign it with a CA that is <strong>trusted locally</strong> by your device
+and browser. <a href="https://github.com/FiloSottile/mkcert" rel="noopener">mkcert</a> is a tool that helps you do this in a few commands. Here's how it works:</p>
+<ul>
+<li>If you open your locally running site in your browser using HTTPS, your browser will
+check the certificate of your local development server.</li>
+<li>Upon seeing that the certificate has been signed by the mkcert-generated certificate
+authority, the browser checks whether it's registered as a trusted certificate authority.</li>
+<li>mkcert is listed as a trusted authority, so your browser trusts the
+certificate and creates an HTTPS connection.</li>
+</ul>
+<figure class="w-figure">
+  <img     alt="A diagram of how mkcert works."          decoding="async"     height="787"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/3kdjci7NORnOw54fMia9.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/3kdjci7NORnOw54fMia9.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/3kdjci7NORnOw54fMia9.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/3kdjci7NORnOw54fMia9.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/3kdjci7NORnOw54fMia9.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/3kdjci7NORnOw54fMia9.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/3kdjci7NORnOw54fMia9.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/3kdjci7NORnOw54fMia9.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/3kdjci7NORnOw54fMia9.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/3kdjci7NORnOw54fMia9.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/3kdjci7NORnOw54fMia9.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/3kdjci7NORnOw54fMia9.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/3kdjci7NORnOw54fMia9.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/3kdjci7NORnOw54fMia9.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/3kdjci7NORnOw54fMia9.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/3kdjci7NORnOw54fMia9.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/3kdjci7NORnOw54fMia9.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/3kdjci7NORnOw54fMia9.jpg?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">A diagram of how mkcert works.</figcaption>
+</figure>
+<p>mkcert (and similar tools) provide several benefits:</p>
+<ul>
+<li>mkcert is specialized in creating certificates that are <strong>compliant with what browsers consider
+valid certificates</strong>. It stays updated to match requirements and best practices. This is why you
+won't have to run mkcert commands with complex configurations or arguments to generate the right
+certificates!</li>
+<li>mkcert is a cross-platform tool. Anyone on your team can use it.</li>
+</ul>
+<p>mkcert is the tool we recommend for creating a TLS certificate for local development. You can check out <a href="#running-your-site-locally-with-https:-other-options">other options</a> too.</p>
+<p>Many operating systems may include libraries to produce certificates, such as <a href="https://www.openssl.org/" rel="noopener">openssl</a>. Unlike mkcert
+and similar tools, such libraries may not consistently produce correct certificates, may require
+complex commands to be run, and are not necessarily cross-platform.</p>
+<div class="w-aside w-aside--gotchas"><strong>Gotchas!</strong>
+<p>The mkcert we're interested in in this post is <a href="https://github.com/FiloSottile/mkcert" rel="noopener">this one</a>, not <a href="https://www.npmjs.com/package/mkcert" rel="noopener">this one</a>.</p>
+</div>
+<h3 id="caution">Caution <a class="w-headline-link" href="#caution">#</a></h3>
+<div role="banner" class="w-banner w-banner--caution w-banner--body">
+<ul>
+<li>Never export or share the file <code>rootCA-key.pem</code> mkcert creates automatically when you run <code>mkcert -install</code>. <strong>An attacker getting hold of this file can create on-path attacks for any site you may be visiting</strong>. They could intercept secure requests from your machine to any site—your bank, healthcare provider, or social networks. If you need to know where <code>rootCA-key.pem</code> is located to make sure it's safe, run <code>mkcert -CAROOT</code>.</li>
+<li>Only use mkcert for <strong>development purposes</strong>—and by extension, never ask end-users to run mkcert commands.</li>
+<li>Development teams: all members of your team should install and run mkcert <strong>separately</strong> (not store and share the CA and certificate).</li>
+</ul>
+</div>
+<h3 id="setup">Setup <a class="w-headline-link" href="#setup">#</a></h3>
+<ol>
+<li>
+<p>Install mkcert (only once).</p>
+<p>Follow the <a href="https://github.com/FiloSottile/mkcert#installation" rel="noopener">instructions</a> for installing mkcert on your operating system.
+For example, on macOS:</p>
+<web-copy-code><pre class="language-bash"><code class="language-bash">brew <span class="token function">install</span> mkcert<br>brew <span class="token function">install</span> nss <span class="token comment"># if you use Firefox</span></code></pre>
+</web-copy-code></li>
+<li>
+<p>Add mkcert to your local root CAs.</p>
+<p>In your terminal, run the following command:</p>
+<web-copy-code><pre class="language-bash"><code class="language-bash">mkcert -install</code></pre>
+</web-copy-code><p>This generates a local certificate authority (CA).
+Your mkcert-generated local CA is only trusted <strong>locally</strong>, on your device.</p>
+</li>
+<li>
+<p>Generate a certificate for your site, signed by mkcert.</p>
+<p>In your terminal, navigate to your site's root directory or whichever directory you'd like the certificates to be located at.</p>
+<p>Then, run:</p>
+<web-copy-code><pre class="language-bash"><code class="language-bash">mkcert localhost</code></pre>
+</web-copy-code><p>If you're using a custom hostname like <code>mysite.example</code>, run:</p>
+<web-copy-code><pre class="language-bash"><code class="language-bash">mkcert mysite.example</code></pre>
+</web-copy-code><p>The command above does two things:</p>
+<ul>
+<li>Generates a certificate for the hostname you've specified</li>
+<li>Lets mkcert (that you've added as a local CA in Step 2) sign this certificate.</li>
+</ul>
+<p>Now, your certificate is ready and signed by a certificate authority your browser trusts locally. You're almost done, but your server doesn't know about your certificate yet!</p>
+</li>
+<li>
+<p>Configure your server.</p>
+<p>You now need to tell your server to use HTTPS (since development servers tend to use HTTP by default) and to use the TLS certificate you've just created.</p>
+<p>How to do this exactly depends on your server. A few examples:</p>
+<p><strong>👩🏻‍💻 With node:</strong></p>
+<p><code>server.js</code> (replace <code>{PATH/TO/CERTIFICATE...}</code> and <code>{PORT}</code>):</p>
+<web-copy-code><pre class="language-javascript"><code class="language-javascript"><span class="token keyword">const</span> https <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'https'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token keyword">const</span> fs <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'fs'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token keyword">const</span> options <span class="token operator">=</span> <span class="token punctuation">{</span><br>  key<span class="token operator">:</span> fs<span class="token punctuation">.</span><span class="token function">readFileSync</span><span class="token punctuation">(</span><span class="token string">'{PATH/TO/CERTIFICATE-KEY-FILENAME}.pem'</span><span class="token punctuation">)</span><span class="token punctuation">,</span><br>  cert<span class="token operator">:</span> fs<span class="token punctuation">.</span><span class="token function">readFileSync</span><span class="token punctuation">(</span><span class="token string">'{PATH/TO/CERTIFICATE-FILENAME}.pem'</span><span class="token punctuation">)</span><span class="token punctuation">,</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span><br>https<br>  <span class="token punctuation">.</span><span class="token function">createServer</span><span class="token punctuation">(</span>options<span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">req<span class="token punctuation">,</span> res</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token comment">// server code</span><br>  <span class="token punctuation">}</span><span class="token punctuation">)</span><br>  <span class="token punctuation">.</span><span class="token function">listen</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token constant">PORT</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p><strong>👩🏻‍💻 With <a href="https://www.npmjs.com/package/http-server" rel="noopener">http-server</a>:</strong></p>
+<p>Start your server as follows (replace <code>{PATH/TO/CERTIFICATE...}</code>):</p>
+<web-copy-code><pre class="language-bash"><code class="language-bash">http-server -S -C <span class="token punctuation">{</span><span class="token environment constant">PATH</span>/TO/CERTIFICATE-FILENAME<span class="token punctuation">}</span>.pem -K <span class="token punctuation">{</span><span class="token environment constant">PATH</span>/TO/CERTIFICATE-KEY-FILENAME<span class="token punctuation">}</span>.pem</code></pre>
+</web-copy-code><p><code>-S</code> runs your server with HTTPS, while <code>-C</code> sets the certificate and <code>-K</code> sets the key.</p>
+<p><strong>👩🏻‍💻 With a React development server:</strong></p>
+<p>Edit your <code>package.json</code> as follows, and replace <code>{PATH/TO/CERTIFICATE...}</code>:</p>
+<web-copy-code><pre class="language-json"><code class="language-json"><span class="token property">"scripts"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br><span class="token property">"start"</span><span class="token operator">:</span> <span class="token string">"HTTPS=true SSL_CRT_FILE={PATH/TO/CERTIFICATE-FILENAME}.pem SSL_KEY_FILE={PATH/TO/CERTIFICATE-KEY-FILENAME}.pem react-scripts start"</span></code></pre>
+</web-copy-code><p>For example, if you've created a certificate for <code>localhost</code> that is located in your site's root directory as follows:</p>
+<web-copy-code><pre class="language-text"><code class="language-text">|-- my-react-app<br>    |-- package.json<br>    |-- localhost.pem<br>    |-- localhost-key.pem<br>    |--...</code></pre>
+</web-copy-code><p>Then your <code>start</code> script should look like this:</p>
+<web-copy-code><pre class="language-json"><code class="language-json"><span class="token property">"scripts"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>    <span class="token property">"start"</span><span class="token operator">:</span> <span class="token string">"HTTPS=true SSL_CRT_FILE=localhost.pem SSL_KEY_FILE=localhost-key.pem react-scripts start"</span></code></pre>
+</web-copy-code><p><strong>👩🏻‍💻 Other examples:</strong></p>
+<ul>
+<li><a href="https://angular.io/cli/serve" rel="noopener">Angular development server</a></li>
+<li><a href="https://blog.anvileight.com/posts/simple-python-http-server/" rel="noopener">Python</a></li>
+</ul>
+</li>
+<li>
+<p>✨ You're done!
+Open <code>https://localhost</code> or <code>https://mysite.example</code> in your browser: you're running your site locally with HTTPS.
+You won't see any browser warnings, because your browser trusts mkcert as a local certificate authority.</p>
+</li>
+</ol>
+<div class="w-aside w-aside--note">
+<p>Your server may use a different port for HTTPS.</p>
+</div>
+<h3 id="using-mkcert:-cheatsheet">Using mkcert: cheatsheet <a class="w-headline-link" href="#using-mkcert:-cheatsheet">#</a></h3>
+<details class="w-details" >
+<summary class="w-details__summary">
+  <h2 class="w-details__header">
+    mkcert in short
+  </h2>
+</summary>
+<p>To run your local development site with HTTPS:</p>
+<ol>
+<li>
+<p>Set up mkcert.</p>
+<p>If you haven't yet, install mkcert, for example on macOS:</p>
+<web-copy-code><pre class="language-bash"><code class="language-bash">brew <span class="token function">install</span> mkcert<br></code></pre>
+</web-copy-code><p>Check <a href="https://github.com/FiloSottile/mkcert#installation" rel="noopener">install mkcert</a> for Windows and Linux instructions.</p>
+<p>Then, create a local certificate authority:</p>
+<web-copy-code><pre class="language-bash"><code class="language-bash">mkcert -install</code></pre>
+</web-copy-code></li>
+<li>
+<p>Create a trusted certificate.</p>
+<web-copy-code><pre class="language-bash"><code class="language-bash">mkcert <span class="token punctuation">{</span>YOUR <span class="token environment constant">HOSTNAME</span> e.g. localhost or mysite.example<span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>This create a valid certificate (that will be signed by <code>mkcert</code> automatically).</p>
+</li>
+<li>
+<p>Configure your development server to use HTTPS and the certificate you've created in Step 2.</p>
+</li>
+<li>
+<p>✨ You're done! You can now access <code>https://{YOUR HOSTNAME}</code> in your browser, without warnings</p>
+</li>
+</ol>
+<div role="banner" class="w-banner w-banner--caution w-banner--body">
+<p>Do this only for <strong>development purposes</strong> and <strong>never export or share</strong> the file <code>rootCA-key.pem</code> (if you need to know where this file is located to make sure it's safe, run <code>mkcert -CAROOT</code>).</p>
+</div>
+</details>
+<h2 id="running-your-site-locally-with-https:-other-options">Running your site locally with HTTPS: other options <a class="w-headline-link" href="#running-your-site-locally-with-https:-other-options">#</a></h2>
+<h3 id="self-signed-certificate">Self-signed certificate <a class="w-headline-link" href="#self-signed-certificate">#</a></h3>
+<p>You may also decide to not use a local certificate authority like mkcert, and instead <strong>sign your certificate yourself</strong>.</p>
+<p>Beware of a few pitfalls with this approach:</p>
+<ul>
+<li>Browsers don't trust you as a certificate authority and they'll show warnings you'll need to bypass manually. In Chrome, you may use the flag <code>#allow-insecure-localhost</code> to bypass this warning automatically on <code>localhost</code>. It feels a bit hacky, because it is.</li>
+<li>This is unsafe if you're working in an insecure network.</li>
+<li>Self-signed certificates won't behave in exactly the same way as trusted certificates.</li>
+<li>It's not necessarily easier or faster than using a local CA like mkcert.</li>
+<li>If you're not using this technique in a browser context, you may need to disable certificate verification for your server. Omitting to re-enable it in production would be dangerous.</li>
+</ul>
+<figure class="w-figure">
+  <img     alt="Screenshots of the warnings browsers show when a self-signed certificate is used."          decoding="async"     height="598"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/KxLz7mcUudiFwWBIdhH8.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/KxLz7mcUudiFwWBIdhH8.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/KxLz7mcUudiFwWBIdhH8.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/KxLz7mcUudiFwWBIdhH8.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/KxLz7mcUudiFwWBIdhH8.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/KxLz7mcUudiFwWBIdhH8.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/KxLz7mcUudiFwWBIdhH8.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/KxLz7mcUudiFwWBIdhH8.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/KxLz7mcUudiFwWBIdhH8.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/KxLz7mcUudiFwWBIdhH8.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/KxLz7mcUudiFwWBIdhH8.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/KxLz7mcUudiFwWBIdhH8.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/KxLz7mcUudiFwWBIdhH8.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/KxLz7mcUudiFwWBIdhH8.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/KxLz7mcUudiFwWBIdhH8.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/KxLz7mcUudiFwWBIdhH8.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/KxLz7mcUudiFwWBIdhH8.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/KxLz7mcUudiFwWBIdhH8.jpg?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">The warnings browsers show when a self-signed certificate is used.</figcaption>
+</figure>
+<div class="w-aside w-aside--note">
+<p>If you don't specify any certificate, <a href="https://create-react-app.dev/docs/using-https-in-development/" rel="noopener">React's</a> and <a href="https://cli.vuejs.org/guide/cli-service.html#vue-cli-service-serve" rel="noopener">Vue's</a> development server HTTPS options create a self-signed certificate under the hood. This is quick, but you'll get browser warnings and encounter other pitfalls related to self-signed certificates that are listed above. Luckily you can use frontend frameworks' built-in HTTPS option <strong>and</strong> specify a locally trusted certificate created via mkcert or similar. See how to do this in the <a href="/#setup:~:text=a%20React%20development%20server">mkcert with React example</a>.</p>
+</div>
+<details class="w-details" >
+<summary class="w-details__summary">
+  <h2 class="w-details__header">
+    Why don't browsers trust self-signed certificates?
+  </h2>
+</summary>
+<p>If you open your locally running site in your browser using HTTPS, your browser will check the certificate of your local development server. When it sees that the certificate has been signed by yourself, it checks whether you're registered as a trusted certificate authority. Because you're not, your browser can't trust the certificate; it displays a warning telling you that your connection is not secure. You may proceed at your own risk—if you do, an HTTPS connection will be created.</p>
+<figure class="w-figure">
+  <img     alt="Why browsers don&#x27;t trust self-signed certificates: a diagram."          decoding="async"     height="833"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/V2SAcIzuofqzUuestOOX.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/V2SAcIzuofqzUuestOOX.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/V2SAcIzuofqzUuestOOX.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/V2SAcIzuofqzUuestOOX.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/V2SAcIzuofqzUuestOOX.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/V2SAcIzuofqzUuestOOX.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/V2SAcIzuofqzUuestOOX.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/V2SAcIzuofqzUuestOOX.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/V2SAcIzuofqzUuestOOX.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/V2SAcIzuofqzUuestOOX.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/V2SAcIzuofqzUuestOOX.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/V2SAcIzuofqzUuestOOX.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/V2SAcIzuofqzUuestOOX.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/V2SAcIzuofqzUuestOOX.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/V2SAcIzuofqzUuestOOX.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/V2SAcIzuofqzUuestOOX.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/V2SAcIzuofqzUuestOOX.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/V2SAcIzuofqzUuestOOX.jpg?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">Why browsers don't trust self-signed certificates.</figcaption>
+</figure>
+</details>
+<h3 id="certificate-signed-by-a-regular-certificate-authority">Certificate signed by a regular certificate authority <a class="w-headline-link" href="#certificate-signed-by-a-regular-certificate-authority">#</a></h3>
+<p>You may also find techniques based on having an actual certificate authority—not a local one—sign your certificate.</p>
+<p>A few things to keep in mind if you're considering using these techniques:</p>
+<ul>
+<li>You'll have more setup work to do than when using a local CA technique like mkcert.</li>
+<li>You need to use a domain name that you control and that is valid. This means that you <strong>can't</strong> use actual certificate authorities for:
+<ul>
+<li><code>localhost</code> and other domain names that are <a href="https://www.iana.org/assignments/special-use-domain-names/special-use-domain-names.xhtml" rel="noopener">reserved</a>, such as <code>example</code> or <code>test</code>.</li>
+<li>Any domain name that you don't control.</li>
+<li>Top-level domains that are not valid. See the <a href="https://www.iana.org/domains/root/db" rel="noopener">list of valid top-level domains</a>.</li>
+</ul>
+</li>
+</ul>
+<h3 id="reverse-proxy">Reverse proxy <a class="w-headline-link" href="#reverse-proxy">#</a></h3>
+<p>Another option to access a locally running site with HTTPS is to use a <a href="https://en.wikipedia.org/wiki/Reverse_proxy" rel="noopener">reverse proxy</a> such as <a href="https://ngrok.com/" rel="noopener">ngrok</a>.</p>
+<p>A few points to consider:</p>
+<ul>
+<li>Anyone can access your local development site once you share with them a URL created with a reverse proxy. This can be very handy when demoing your project to clients! Or this can be a downside, if your project is sensitive.</li>
+<li>You may need to consider pricing.</li>
+<li>New <a href="/cors-rfc1918-feedback/">security measures</a> in browsers may affect the way these tools work.</li>
+</ul>
+<h3 id="flag-(not-recommended)">Flag (not recommended) <a class="w-headline-link" href="#flag-(not-recommended)">#</a></h3>
+<p>If you're using a custom hostname like <code>mysite.example</code>, you can use a flag in Chrome to forcefully consider <code>mysite.example</code> secure. <strong>Avoid doing this</strong>, because:</p>
+<ul>
+<li>You would need to be 100% sure that <code>mysite.example</code> always resolves to a local address, otherwise you could leak production credentials.</li>
+<li>You won't be able to debug across browsers with this trick 🙀.</li>
+</ul>
+<p><em>With many thanks for contributions and feedback to all reviewers and contributors—especially Ryan Sleevi,
+Filippo Valsorda, Milica Mihajlija and Rowan Merewood. 🙌</em></p>
+<p><em>Hero image background by <a href="https://unsplash.com/@anandu" rel="noopener">@anandu</a> on <a href="https://unsplash.com/photos/pbxwxwfI0B4" rel="noopener">Unsplash</a>, edited.</em></p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/security/">Security</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Jan 25, 2021</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/how-to-use-local-https/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

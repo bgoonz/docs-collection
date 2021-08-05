@@ -1,0 +1,924 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=6c5106b7da6da">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Connecting to uncommon HID devices</title>
+<meta name="description" content="The WebHID API allows websites to access alternative auxiliary keyboards and exotic gamepads. " />
+
+<link rel="canonical" href="https://web.dev/hid/" />
+
+<meta itemprop="name" content="Connecting to uncommon HID devices" />
+<meta itemprop="description" content="The WebHID API allows websites to access alternative auxiliary keyboards and exotic gamepads. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/AfLwyZZbL7bh4S4RikYi.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/hid/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Connecting to uncommon HID devices" />
+<meta property="og:description" content="The WebHID API allows websites to access alternative auxiliary keyboards and exotic gamepads. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/AfLwyZZbL7bh4S4RikYi.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="Elgato Stream Deck photo." />
+<meta property="tag" content="capabilities" />
+<meta property="tag" content="devices" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Connecting to uncommon HID devices" />
+<meta name="twitter:description" content="The WebHID API allows websites to access alternative auxiliary keyboards and exotic gamepads. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/AfLwyZZbL7bh4S4RikYi.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=4e7d8c5ae70d8', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=07e9204b8b774', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="Elgato Stream Deck photo."     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/05NRg2Lw0w5Rv6TToabY.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/05NRg2Lw0w5Rv6TToabY.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/05NRg2Lw0w5Rv6TToabY.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/05NRg2Lw0w5Rv6TToabY.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/05NRg2Lw0w5Rv6TToabY.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/05NRg2Lw0w5Rv6TToabY.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/05NRg2Lw0w5Rv6TToabY.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/05NRg2Lw0w5Rv6TToabY.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/05NRg2Lw0w5Rv6TToabY.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/05NRg2Lw0w5Rv6TToabY.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/05NRg2Lw0w5Rv6TToabY.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/05NRg2Lw0w5Rv6TToabY.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/05NRg2Lw0w5Rv6TToabY.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/05NRg2Lw0w5Rv6TToabY.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/05NRg2Lw0w5Rv6TToabY.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/05NRg2Lw0w5Rv6TToabY.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/05NRg2Lw0w5Rv6TToabY.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/05NRg2Lw0w5Rv6TToabY.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#connecting-to-uncommon-hid-devices" class="w-toc__header--link">
+        Connecting to uncommon HID devices
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#use-cases">Suggested use cases</a></li><li><a href="#status">Current status</a></li><li><a href="#terminology">Terminology</a></li><li><a href="#use">Using the WebHID API</a></li><li><a href="#feature-detection">Feature detection</a></li><li><a href="#open">Open a HID connection</a></li><li><a href="#receive-input-reports">Receive input reports</a></li><li><a href="#send-output-reports">Send output reports</a></li><li><a href="#feature-reports">Send and receive feature reports</a></li><li><a href="#connection-disconnection">Listen to connection and disconnection</a></li><li><a href="#dev-tips">Dev Tips</a></li><li><a href="#browser-support">Browser support</a></li><li><a href="#demos">Demos</a></li><li><a href="#security-privacy">Security and privacy</a></li><li><a href="#feedback">Feedback</a></li><li><a href="#tell-us-about-the-api-design">Tell us about the API design</a></li><li><a href="#report-a-problem-with-the-implementation">Report a problem with the implementation</a></li><li><a href="#show-support">Show support</a></li><li><a href="#helpful">Helpful links</a></li><li><a href="#acknowledgements">Acknowledgements</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="i18n.authors.beaufortfrancois.title"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="connecting-to-uncommon-hid-devices" class="w-article-header__headline">Connecting to uncommon HID devices</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          <p>The WebHID API allows websites to access alternative auxiliary keyboards and exotic gamepads.</p>
+
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Sep 15, 2020</time>
+           <span class="w-author__separator">•</span> Updated <time>Feb 27, 2021</time> 
+        </div>
+      
+      <div class="w-layout-container--narrow w-post-signpost">
+  <span class="w-post-signpost__title">Appears in:</span>
+  <a
+          class="w-post-signpost__link"
+          href="/devices"
+          >Devices</a
+        >
+</div>
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/beaufortfrancois/"><img     alt="François Beaufort"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/mXjY3z3JmrispGtu9yn6.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/mXjY3z3JmrispGtu9yn6.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/mXjY3z3JmrispGtu9yn6.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/mXjY3z3JmrispGtu9yn6.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/mXjY3z3JmrispGtu9yn6.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/mXjY3z3JmrispGtu9yn6.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/beaufortfrancois/">François Beaufort</a>
+    </cite>
+    <ul class="w-author__link-list">
+      
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/beaufortfrancois">GitHub</a>
+      </li>
+      
+      
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <div class="w-aside w-aside--success">
+<p><strong>Success</strong>:
+The WebHID API, part of the <a href="/fugu-status/">capabilities project</a>, launched in
+Chrome 89.</p>
+</div>
+<p>There is a long tail of human interface devices (HIDs), such as alternative
+keyboards or exotic gamepads, that are too new, too old, or too uncommon to be
+accessible by systems' device drivers. The WebHID API solves this by providing a
+way to implement device-specific logic in JavaScript.</p>
+<h2 id="use-cases">Suggested use cases <a class="w-headline-link" href="#use-cases">#</a></h2>
+<p>A HID device takes input from or provides output to humans. Examples of devices
+include keyboards, pointing devices (mice, touchscreens, etc.), and gamepads.
+The <a href="https://www.usb.org/hid" rel="noopener">HID protocol</a> makes it possible to access these devices on desktop
+computers using operating system drivers. The web platform supports HID devices
+by relying on these drivers.</p>
+<p>The inability to access uncommon HID devices is particularly painful when it
+comes to alternative auxiliary keyboards (e.g. <a href="https://www.elgato.com/en/gaming/stream-deck" rel="noopener">Elgato Stream Deck</a>, <a href="https://www.jabra.com/business/office-headsets" rel="noopener">Jabra
+headsets</a>, <a href="https://xkeys.com/xkeys.html" rel="noopener">X-keys</a>) and exotic gamepad support. Gamepads designed for desktop
+often use HID for gamepad inputs (buttons, joysticks, triggers) and outputs
+(LEDs, rumble). Unfortunately, gamepad inputs and outputs are not well
+standardized and web browsers often require custom logic for specific devices.
+This is unsustainable and results in poor support for the long tail of older and
+uncommon devices. It also causes the browser to depend on quirks in the behavior
+of specific devices.</p>
+<h2 id="status">Current status <a class="w-headline-link" href="#status">#</a></h2>
+<div class="w-table-wrapper">
+<div class="w-table-wrapper">
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Create explainer</td>
+<td><a href="https://github.com/WICG/webhid/blob/master/EXPLAINER.md" rel="noopener">Complete</a></td>
+</tr>
+<tr>
+<td>2. Create initial draft of specification</td>
+<td><a href="https://wicg.github.io/webhid/" rel="noopener">Complete</a></td>
+</tr>
+<tr>
+<td>3. Gather feedback &amp; iterate on design</td>
+<td><a href="#feedback">Complete</a></td>
+</tr>
+<tr>
+<td>4. Origin trial</td>
+<td><a href="https://developers.chrome.com/origintrials/#/register_trial/1074108511127863297" rel="noopener">Complete</a></td>
+</tr>
+<tr>
+<td><strong>5. Launch</strong></td>
+<td><strong>Complete</strong></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<h2 id="terminology">Terminology <a class="w-headline-link" href="#terminology">#</a></h2>
+<p>HID consists of two fundamental concepts: reports and report descriptors.
+Reports are the data that is exchanged between a device and a software client.
+The report descriptor describes the format and meaning of data that the device
+supports.</p>
+<p>A HID (Human Interface Device) is a type of device that takes input from or
+provides output to humans. It also refers to the HID protocol, a standard for
+bi-directional communication between a host and a device that is designed to
+simplify the installation procedure. The HID protocol was originally developed
+for USB devices, but has since been implemented over many other protocols,
+including Bluetooth.</p>
+<p>Applications and HID devices exchange binary data through three report types:</p>
+<div class="w-table-wrapper">
+  <table>
+    <thead>
+      <tr>
+        <th>Report type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Input&nbsp;report</td>
+        <td>Data that is sent from the device to the application (e.g. a button is pressed.)</td>
+      </tr>
+      <tr>
+        <td>Output&nbsp;report</td>
+        <td>Data that is sent from the application to the device (e.g. a request to turn on the keyboard backlight.)</td>
+      </tr>
+      <tr>
+        <td>Feature&nbsp;report</td>
+        <td>Data that may be sent in either direction. The format is device-specific.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<p>A report descriptor describes the binary format of reports supported by the
+device. Its structure is hierarchical and can group reports together as distinct
+collections within the top-level collection. The <a href="https://gist.github.com/beaufortfrancois/583424dfef66be1ade86231fd1a260c7" rel="noopener">format</a> of the descriptor is
+defined by the HID specification.</p>
+<p>A HID usage is a numeric value referring to a standardized input or output.
+Usage values allow a device to describe the intended use of the device and the
+purpose of each field in its reports. For example, one is defined for the left
+button of a mouse. Usages are also organized into usage pages, which provide an
+indication of the high-level category of the device or report.</p>
+<h2 id="use">Using the WebHID API <a class="w-headline-link" href="#use">#</a></h2>
+<h3 id="feature-detection">Feature detection <a class="w-headline-link" href="#feature-detection">#</a></h3>
+<p>To check if the WebHID API is supported, use:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token string">"hid"</span> <span class="token keyword">in</span> navigator<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token comment">// The WebHID API is supported.</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><h3 id="open">Open a HID connection <a class="w-headline-link" href="#open">#</a></h3>
+<p>The WebHID API is asynchronous by design to prevent the website UI from
+blocking when awaiting input. This is important because HID data can be received
+at any time, requiring a way to listen to it.</p>
+<p>To open a HID connection, first access a <code>HIDDevice</code> object. For this, you can
+either prompt the user to select a device by calling
+<code>navigator.hid.requestDevice()</code>, or pick one from <code>navigator.hid.getDevices()</code>
+which returns a list of devices the website has been granted access to
+previously.</p>
+<p>The <code>navigator.hid.requestDevice()</code> function takes a mandatory object that
+defines filters. Those are used to match any device connected with a USB vendor
+identifier (<code>vendorId</code>), a USB product identifier (<code>productId</code>), a usage page
+value (<code>usagePage</code>), and a usage value (<code>usage</code>). You can get those from <a href="http://www.linux-usb.org/usb-ids.html" rel="noopener">the
+USB ID Repository</a> and the <a href="https://usb.org/document-library/hid-usage-tables-12" rel="noopener">HID usage tables document</a>.</p>
+<p>The multiple <code>HIDDevice</code> objects returned by this function represent multiple
+HID interfaces on the same physical device.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token comment">// Filter on devices with the Nintendo Switch Joy-Con USB Vendor/Product IDs.</span><br><span class="token keyword">const</span> filters <span class="token operator">=</span> <span class="token punctuation">[</span><br>  <span class="token punctuation">{</span><br>    vendorId<span class="token operator">:</span> <span class="token number">0x057e</span><span class="token punctuation">,</span> <span class="token comment">// Nintendo Co., Ltd</span><br>    productId<span class="token operator">:</span> <span class="token number">0x2006</span> <span class="token comment">// Joy-Con Left</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span><br>  <span class="token punctuation">{</span><br>    vendorId<span class="token operator">:</span> <span class="token number">0x057e</span><span class="token punctuation">,</span> <span class="token comment">// Nintendo Co., Ltd</span><br>    productId<span class="token operator">:</span> <span class="token number">0x2007</span> <span class="token comment">// Joy-Con Right</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">]</span><span class="token punctuation">;</span><br><br><span class="token comment">// Prompt user to select a Joy-Con device.</span><br><span class="token keyword">const</span> <span class="token punctuation">[</span>device<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">await</span> navigator<span class="token punctuation">.</span>hid<span class="token punctuation">.</span><span class="token function">requestDevice</span><span class="token punctuation">(</span><span class="token punctuation">{</span> filters <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><web-copy-code><pre class="language-js"><code class="language-js"><span class="token comment">// Get all devices the user has previously granted the website access to.</span><br><span class="token keyword">const</span> devices <span class="token operator">=</span> <span class="token keyword">await</span> navigator<span class="token punctuation">.</span>hid<span class="token punctuation">.</span><span class="token function">getDevices</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><figure class="w-figure">
+  <img     alt="Screenshot of a HID device prompt on a website."     class="w-screenshot"     decoding="async"     height="513"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/gaZo8LxG3Y8eU2VirlZ4.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/gaZo8LxG3Y8eU2VirlZ4.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/gaZo8LxG3Y8eU2VirlZ4.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/gaZo8LxG3Y8eU2VirlZ4.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/gaZo8LxG3Y8eU2VirlZ4.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/gaZo8LxG3Y8eU2VirlZ4.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/gaZo8LxG3Y8eU2VirlZ4.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/gaZo8LxG3Y8eU2VirlZ4.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/gaZo8LxG3Y8eU2VirlZ4.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/gaZo8LxG3Y8eU2VirlZ4.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/gaZo8LxG3Y8eU2VirlZ4.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/gaZo8LxG3Y8eU2VirlZ4.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/gaZo8LxG3Y8eU2VirlZ4.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/gaZo8LxG3Y8eU2VirlZ4.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/gaZo8LxG3Y8eU2VirlZ4.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/gaZo8LxG3Y8eU2VirlZ4.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/gaZo8LxG3Y8eU2VirlZ4.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/gaZo8LxG3Y8eU2VirlZ4.jpg?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">User prompt for selecting a Nintendo Switch Joy-Con.</figcaption>
+</figure>
+<p>A <code>HIDDevice</code> object contains USB vendor and product identifiers for device
+identification. Its <code>collections</code> attribute is initialized with a hierarchical
+description of the device's report formats.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> collection <span class="token keyword">of</span> device<span class="token punctuation">.</span>collections<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token comment">// A HID collection includes usage, usage page, reports, and subcollections.</span><br>  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">Usage: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>collection<span class="token punctuation">.</span>usage<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">Usage page: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>collection<span class="token punctuation">.</span>usagePage<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>  <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> inputReport <span class="token keyword">of</span> collection<span class="token punctuation">.</span>inputReports<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">Input report: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>inputReport<span class="token punctuation">.</span>reportId<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token comment">// Loop through inputReport.items</span><br>  <span class="token punctuation">}</span><br><br>  <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> outputReport <span class="token keyword">of</span> collection<span class="token punctuation">.</span>outputReports<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">Output report: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>outputReport<span class="token punctuation">.</span>reportId<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token comment">// Loop through outputReport.items</span><br>  <span class="token punctuation">}</span><br><br>  <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> featureReport <span class="token keyword">of</span> collection<span class="token punctuation">.</span>featureReports<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">Feature report: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>featureReport<span class="token punctuation">.</span>reportId<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token comment">// Loop through featureReport.items</span><br>  <span class="token punctuation">}</span><br><br>  <span class="token comment">// Loop through subcollections with collection.children</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>The <code>HIDDevice</code> devices are by default returned in a &quot;closed&quot; state and must be
+opened by calling <code>open()</code> before data can be sent or received.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token comment">// Wait for the HID connection to open before sending/receiving data.</span><br><span class="token keyword">await</span> device<span class="token punctuation">.</span><span class="token function">open</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><h3 id="receive-input-reports">Receive input reports <a class="w-headline-link" href="#receive-input-reports">#</a></h3>
+<p>Once the HID connection has been established, you can handle incoming input
+reports by listening to the <code>&quot;inputreport&quot;</code> events from the device. Those events
+contain the HID data as a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView" rel="noopener"><code>DataView</code></a> object (<code>data</code>), the HID device it belongs
+to (<code>device</code>), and the 8-bit report ID associated with the input report
+(<code>reportId</code>).</p>
+<figure class="w-figure">
+  <img     alt="Red and blue nintendo switch photo."     class="w-screenshot"     decoding="async"     height="575"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/Hr4EXZcunl7r2TJwVvQ8.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/Hr4EXZcunl7r2TJwVvQ8.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/Hr4EXZcunl7r2TJwVvQ8.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/Hr4EXZcunl7r2TJwVvQ8.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/Hr4EXZcunl7r2TJwVvQ8.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/Hr4EXZcunl7r2TJwVvQ8.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/Hr4EXZcunl7r2TJwVvQ8.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/Hr4EXZcunl7r2TJwVvQ8.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/Hr4EXZcunl7r2TJwVvQ8.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/Hr4EXZcunl7r2TJwVvQ8.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/Hr4EXZcunl7r2TJwVvQ8.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/Hr4EXZcunl7r2TJwVvQ8.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/Hr4EXZcunl7r2TJwVvQ8.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/Hr4EXZcunl7r2TJwVvQ8.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/Hr4EXZcunl7r2TJwVvQ8.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/Hr4EXZcunl7r2TJwVvQ8.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/Hr4EXZcunl7r2TJwVvQ8.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/Hr4EXZcunl7r2TJwVvQ8.jpg?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">Nintendo Switch Joy-Con devices.</figcaption>
+</figure>
+<p>Continuing with the previous example, the code below shows you how to detect
+which button the user has pressed on a Joy-Con Right device so that you can
+hopefully try it at home.</p>
+<web-copy-code><pre class="language-js"><code class="language-js">device<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">"inputreport"</span><span class="token punctuation">,</span> <span class="token parameter">event</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token keyword">const</span> <span class="token punctuation">{</span> data<span class="token punctuation">,</span> device<span class="token punctuation">,</span> reportId <span class="token punctuation">}</span> <span class="token operator">=</span> event<span class="token punctuation">;</span><br><br>  <span class="token comment">// Handle only the Joy-Con Right device and a specific report ID.</span><br>  <span class="token keyword">if</span> <span class="token punctuation">(</span>device<span class="token punctuation">.</span>productId <span class="token operator">!==</span> <span class="token number">0x2007</span> <span class="token operator">&amp;&amp;</span> reportId <span class="token operator">!==</span> <span class="token number">0x3f</span><span class="token punctuation">)</span> <span class="token keyword">return</span><span class="token punctuation">;</span><br><br>  <span class="token keyword">const</span> value <span class="token operator">=</span> data<span class="token punctuation">.</span><span class="token function">getUint8</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token keyword">if</span> <span class="token punctuation">(</span>value <span class="token operator">===</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token keyword">return</span><span class="token punctuation">;</span><br><br>  <span class="token keyword">const</span> someButtons <span class="token operator">=</span> <span class="token punctuation">{</span> <span class="token number">1</span><span class="token operator">:</span> <span class="token string">"A"</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token operator">:</span> <span class="token string">"X"</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token operator">:</span> <span class="token string">"B"</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token operator">:</span> <span class="token string">"Y"</span> <span class="token punctuation">}</span><span class="token punctuation">;</span><br>  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">User pressed button </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>someButtons<span class="token punctuation">[</span>value<span class="token punctuation">]</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">.</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><div class="glitch-embed-wrap" style="height: 480px; width: 100%;">
+  <iframe
+    allow="camera; clipboard-read; clipboard-write; encrypted-media; geolocation; microphone; midi; hid"
+    loading="lazy"
+    src="https://glitch.com/embed/#!/embed/webhid-joycon-button?attributionHidden=true&sidebarCollapsed=true&path=script.js&previewSize=100"
+    style="height: 100%; width: 100%; border: 0;"
+    title="webhid-joycon-button on Glitch"
+  ></iframe>
+</div>
+<h3 id="send-output-reports">Send output reports <a class="w-headline-link" href="#send-output-reports">#</a></h3>
+<p>To send an output report to a HID device, pass the 8-bit report ID associated
+with the output report (<code>reportId</code>) and bytes as a <a href="https://developer.mozilla.org/en-US/docs/Web/API/BufferSource" rel="noopener"><code>BufferSource</code></a> (<code>data</code>) to
+<code>device.sendReport()</code>. The returned promise resolves once the report has been
+sent. If the HID device does not use report IDs, set <code>reportId</code> to 0.</p>
+<p>The example below applies to a Joy-Con device and shows you how to make it
+rumble with output reports.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token comment">// First, send a command to enable vibration.</span><br><span class="token comment">// Magical bytes come from https://github.com/mzyy94/joycon-toolweb</span><br><span class="token keyword">const</span> enableVibrationData <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">64</span><span class="token punctuation">,</span> <span class="token number">64</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">64</span><span class="token punctuation">,</span> <span class="token number">64</span><span class="token punctuation">,</span> <span class="token number">0x48</span><span class="token punctuation">,</span> <span class="token number">0x01</span><span class="token punctuation">]</span><span class="token punctuation">;</span><br><span class="token keyword">await</span> device<span class="token punctuation">.</span><span class="token function">sendReport</span><span class="token punctuation">(</span><span class="token number">0x01</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Uint8Array</span><span class="token punctuation">(</span>enableVibrationData<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token comment">// Then, send a command to make the Joy-Con device rumble.</span><br><span class="token comment">// Actual bytes are available in the sample below.</span><br><span class="token keyword">const</span> rumbleData <span class="token operator">=</span> <span class="token punctuation">[</span> <span class="token comment">/* ... */</span> <span class="token punctuation">]</span><span class="token punctuation">;</span><br><span class="token keyword">await</span> device<span class="token punctuation">.</span><span class="token function">sendReport</span><span class="token punctuation">(</span><span class="token number">0x10</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Uint8Array</span><span class="token punctuation">(</span>rumbleData<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><div class="glitch-embed-wrap" style="height: 480px; width: 100%;">
+  <iframe
+    allow="camera; clipboard-read; clipboard-write; encrypted-media; geolocation; microphone; midi; hid"
+    loading="lazy"
+    src="https://glitch.com/embed/#!/embed/webhid-joycon-rumble?attributionHidden=true&sidebarCollapsed=true&path=script.js&previewSize=100"
+    style="height: 100%; width: 100%; border: 0;"
+    title="webhid-joycon-rumble on Glitch"
+  ></iframe>
+</div>
+<h3 id="feature-reports">Send and receive feature reports <a class="w-headline-link" href="#feature-reports">#</a></h3>
+<p>Feature reports are the only type of HID data reports that can travel in both
+directions. They allow HID devices and applications to exchange non standardized
+HID data. Unlike input and output reports, feature reports are not received or
+sent by the application on a regular basis.</p>
+<figure class="w-figure">
+  <img     alt="Black and silver laptop computer photo."     class="w-screenshot"     decoding="async"     height="575"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/QJiKwOCVAtUsAWUnqLxi.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/QJiKwOCVAtUsAWUnqLxi.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/QJiKwOCVAtUsAWUnqLxi.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/QJiKwOCVAtUsAWUnqLxi.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/QJiKwOCVAtUsAWUnqLxi.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/QJiKwOCVAtUsAWUnqLxi.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/QJiKwOCVAtUsAWUnqLxi.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/QJiKwOCVAtUsAWUnqLxi.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/QJiKwOCVAtUsAWUnqLxi.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/QJiKwOCVAtUsAWUnqLxi.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/QJiKwOCVAtUsAWUnqLxi.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/QJiKwOCVAtUsAWUnqLxi.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/QJiKwOCVAtUsAWUnqLxi.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/QJiKwOCVAtUsAWUnqLxi.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/QJiKwOCVAtUsAWUnqLxi.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/QJiKwOCVAtUsAWUnqLxi.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/QJiKwOCVAtUsAWUnqLxi.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/QJiKwOCVAtUsAWUnqLxi.jpg?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">Laptop keyboard</figcaption>
+</figure>
+<p>To send a feature report to a HID device, pass the 8-bit report ID associated
+with the feature report (<code>reportId</code>) and bytes as a <a href="https://developer.mozilla.org/en-US/docs/Web/API/BufferSource" rel="noopener"><code>BufferSource</code></a> (<code>data</code>) to
+<code>device.sendFeatureReport()</code>. The returned promise resolves once the report has
+been sent. If the HID device does not use report IDs, set <code>reportId</code> to 0.</p>
+<p>The example below illustrates the use of feature reports by showing you how to
+request an Apple keyboard backlight device, open it, and make it blink.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> <span class="token function-variable function">waitFor</span> <span class="token operator">=</span> <span class="token parameter">duration</span> <span class="token operator">=></span> <span class="token keyword">new</span> <span class="token class-name">Promise</span><span class="token punctuation">(</span><span class="token parameter">r</span> <span class="token operator">=></span> <span class="token function">setTimeout</span><span class="token punctuation">(</span>r<span class="token punctuation">,</span> duration<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token comment">// Prompt user to select an Apple Keyboard Backlight device.</span><br><span class="token keyword">const</span> <span class="token punctuation">[</span>device<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">await</span> navigator<span class="token punctuation">.</span>hid<span class="token punctuation">.</span><span class="token function">requestDevice</span><span class="token punctuation">(</span><span class="token punctuation">{</span><br>  filters<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">{</span> vendorId<span class="token operator">:</span> <span class="token number">0x05ac</span><span class="token punctuation">,</span> usage<span class="token operator">:</span> <span class="token number">0x0f</span><span class="token punctuation">,</span> usagePage<span class="token operator">:</span> <span class="token number">0xff00</span> <span class="token punctuation">}</span><span class="token punctuation">]</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token comment">// Wait for the HID connection to open.</span><br><span class="token keyword">await</span> device<span class="token punctuation">.</span><span class="token function">open</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token comment">// Blink!</span><br><span class="token keyword">const</span> reportId <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span><br><span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">10</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token comment">// Turn off</span><br>  <span class="token keyword">await</span> device<span class="token punctuation">.</span><span class="token function">sendFeatureReport</span><span class="token punctuation">(</span>reportId<span class="token punctuation">,</span> Uint32Array<span class="token punctuation">.</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token keyword">await</span> <span class="token function">waitFor</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token comment">// Turn on</span><br>  <span class="token keyword">await</span> device<span class="token punctuation">.</span><span class="token function">sendFeatureReport</span><span class="token punctuation">(</span>reportId<span class="token punctuation">,</span> Uint32Array<span class="token punctuation">.</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">512</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token keyword">await</span> <span class="token function">waitFor</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><div class="glitch-embed-wrap" style="height: 480px; width: 100%;">
+  <iframe
+    allow="camera; clipboard-read; clipboard-write; encrypted-media; geolocation; microphone; midi; hid"
+    loading="lazy"
+    src="https://glitch.com/embed/#!/embed/webhid-apple-keyboard-backlight?attributionHidden=true&sidebarCollapsed=true&path=script.js&previewSize=100"
+    style="height: 100%; width: 100%; border: 0;"
+    title="webhid-apple-keyboard-backlight on Glitch"
+  ></iframe>
+</div>
+<p>To receive a feature report from a HID device, pass the 8-bit report ID
+associated with the feature report (<code>reportId</code>)  to
+<code>device.receiveFeatureReport()</code>. The returned promise resolves with a
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView" rel="noopener"><code>DataView</code></a> object that contains the contents of the feature report. If the HID
+device does not use report IDs, set <code>reportId</code> to 0.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token comment">// Request feature report.</span><br><span class="token keyword">const</span> dataView <span class="token operator">=</span> <span class="token keyword">await</span> device<span class="token punctuation">.</span><span class="token function">receiveFeatureReport</span><span class="token punctuation">(</span><span class="token comment">/* reportId= */</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token comment">// Read feature report contents with dataView.getInt8(), getUint8(), etc...</span></code></pre>
+</web-copy-code><h3 id="connection-disconnection">Listen to connection and disconnection <a class="w-headline-link" href="#connection-disconnection">#</a></h3>
+<p>When the website has been granted permission to access a HID device, it can
+actively receive connection and disconnection events by listening to <code>&quot;connect&quot;</code>
+and <code>&quot;disconnect&quot;</code> events.</p>
+<web-copy-code><pre class="language-js"><code class="language-js">navigator<span class="token punctuation">.</span>hid<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">"connect"</span><span class="token punctuation">,</span> <span class="token parameter">event</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token comment">// Automatically open event.device or warn user a device is available.</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>navigator<span class="token punctuation">.</span>hid<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">"disconnect"</span><span class="token punctuation">,</span> <span class="token parameter">event</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token comment">// Remove |event.device| from the UI.</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><h2 id="dev-tips">Dev Tips <a class="w-headline-link" href="#dev-tips">#</a></h2>
+<p>Debugging HID in Chrome is easy with the internal page, <code>about://device-log</code>
+where you can see all HID and USB device related events in one single place.</p>
+<figure class="w-figure">
+  <img     alt="Screenshot of the internal page to debug HID."     class="w-screenshot"     decoding="async"     height="575"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/zwpr1W7oDsRw0DKsFQ9D.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/zwpr1W7oDsRw0DKsFQ9D.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/zwpr1W7oDsRw0DKsFQ9D.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/zwpr1W7oDsRw0DKsFQ9D.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/zwpr1W7oDsRw0DKsFQ9D.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/zwpr1W7oDsRw0DKsFQ9D.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/zwpr1W7oDsRw0DKsFQ9D.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/zwpr1W7oDsRw0DKsFQ9D.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/zwpr1W7oDsRw0DKsFQ9D.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/zwpr1W7oDsRw0DKsFQ9D.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/zwpr1W7oDsRw0DKsFQ9D.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/zwpr1W7oDsRw0DKsFQ9D.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/zwpr1W7oDsRw0DKsFQ9D.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/zwpr1W7oDsRw0DKsFQ9D.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/zwpr1W7oDsRw0DKsFQ9D.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/zwpr1W7oDsRw0DKsFQ9D.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/zwpr1W7oDsRw0DKsFQ9D.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/zwpr1W7oDsRw0DKsFQ9D.jpg?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">Internal page in Chrome to debug HID.</figcaption>
+</figure>
+<h2 id="browser-support">Browser support <a class="w-headline-link" href="#browser-support">#</a></h2>
+<p>The WebHID API is available on all desktop platforms (Chrome OS, Linux, macOS,
+and Windows) in Chrome 89.</p>
+<h2 id="demos">Demos <a class="w-headline-link" href="#demos">#</a></h2>
+<p>Some WebHID demos are listed at <a href="/hid-examples/">web.dev/hid-examples</a>. Go have a look!</p>
+<h2 id="security-privacy">Security and privacy <a class="w-headline-link" href="#security-privacy">#</a></h2>
+<p>The spec authors have designed and implemented the WebHID API using the core
+principles defined in <a href="https://chromium.googlesource.com/chromium/src/+/lkgr/docs/security/permissions-for-powerful-web-platform-features.md" rel="noopener">Controlling Access to Powerful Web Platform Features</a>,
+including user control, transparency, and ergonomics. The ability to use this
+API is primarily gated by a permission model that grants access to only a single
+HID device at a time. In response to a user prompt, the user must take active
+steps to select a particular HID device.</p>
+<p>To understand the security tradeoffs, check out the <a href="https://wicg.github.io/webhid/#security-and-privacy" rel="noopener">Security and Privacy
+Considerations</a> section of the WebHID spec.</p>
+<p>On top of this, Chrome inspects the usage of each top-level collection and if a
+top-level collection has a protected usage (e.g. generic keyboard, mouse), then
+a website won't be able to send and receive any reports defined in that
+collection. The full list of protected usages is <a href="https://source.chromium.org/chromium/chromium/src/+/master:services/device/public/cpp/hid/hid_usage_and_page.cc" rel="noopener">publicly available</a>.</p>
+<p>Note that security-sensitive HID devices (such as FIDO HID devices used for
+stronger authentication) are also blocked in Chrome. See the <a href="https://source.chromium.org/chromium/chromium/src/+/master:chrome/browser/usb/usb_blocklist.cc" rel="noopener">USB blocklist</a> and
+<a href="https://source.chromium.org/chromium/chromium/src/+/master:services/device/public/cpp/hid/hid_blocklist.cc" rel="noopener">HID blocklist</a> files.</p>
+<h2 id="feedback">Feedback <a class="w-headline-link" href="#feedback">#</a></h2>
+<p>The Chrome team would love to hear about your thoughts and experiences with the
+WebHID API.</p>
+<h3 id="tell-us-about-the-api-design">Tell us about the API design <a class="w-headline-link" href="#tell-us-about-the-api-design">#</a></h3>
+<p>Is there something about the API that doesn't work as expected? Or are there
+missing methods or properties that you need to implement your idea?</p>
+<p>File a spec issue on the <a href="https://github.com/wicg/webhid/issues" rel="noopener">WebHID API GitHub repo</a> or add your thoughts
+to an existing issue.</p>
+<h3 id="report-a-problem-with-the-implementation">Report a problem with the implementation <a class="w-headline-link" href="#report-a-problem-with-the-implementation">#</a></h3>
+<p>Did you find a bug with Chrome's implementation? Or is the implementation
+different from the spec?</p>
+<p>File a bug at <a href="https://bugs.chromium.org/p/chromium/issues/entry?components=Blink%3EHID" rel="noopener">https://new.crbug.com</a>. Be sure to include as much
+detail as you can, provide simple instructions for reproducing the bug, and have
+<em>Components</em> set to <code>Blink&gt;HID</code>. <a href="https://glitch.com" rel="noopener">Glitch</a> works great for
+sharing quick and easy repros.</p>
+<h3 id="show-support">Show support <a class="w-headline-link" href="#show-support">#</a></h3>
+<p>Are you planning to use the WebHID API? Your public support helps the Chrome
+team prioritize features and shows other browser vendors how critical it is to
+support them.</p>
+<p>Send a tweet to <a href="https://twitter.com/chromiumdev" rel="noopener">@ChromiumDev</a> using the hashtag
+<a href="https://twitter.com/search?q=%23WebHID&amp;src=typed_query&amp;f=live" rel="noopener"><code>#WebHID</code></a> and let us know
+where and how you're using it.</p>
+<h2 id="helpful">Helpful links <a class="w-headline-link" href="#helpful">#</a></h2>
+<ul>
+<li><a href="https://wicg.github.io/webhid/" rel="noopener">Specification</a></li>
+<li><a href="https://crbug.com/890096" rel="noopener">Tracking bug</a></li>
+<li><a href="https://chromestatus.com/feature/5172464636133376" rel="noopener">ChromeStatus.com entry</a></li>
+<li>Blink Component: <a href="https://chromestatus.com/features#component%3ABlink%3EHID" rel="noopener"><code>Blink&gt;HID</code></a></li>
+</ul>
+<h2 id="acknowledgements">Acknowledgements <a class="w-headline-link" href="#acknowledgements">#</a></h2>
+<p>Thanks to <a href="https://github.com/nondebug" rel="noopener">Matt Reynolds</a> and <a href="https://github.com/jpmedley" rel="noopener">Joe Medley</a> for their reviews of this article.
+Red and blue Nintendo Switch photo by <a href="https://unsplash.com/photos/jqpRECmiNEU" rel="noopener">Sara Kurfeß</a>, and black and silver laptop
+computer photo by <a href="https://unsplash.com/photos/ndokCrfQWrI" rel="noopener">Athul Cyriac Ajay</a> on Unsplash.</p>
+
+
+    
+      <div class="w-aside w-aside--note">Have a question about using this feature? You can get help by <a href="https://stackoverflow.com/questions/ask?tags=webhid">asking a question on Stack Overflow</a>, or <a href="https://stackoverflow.com/search?q=%5Bwebhid%5D+is%3Aquestion">browsing a list of questions</a> asked by other developers.</div>
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/capabilities/">Capabilities</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/devices/">Devices</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Feb 27, 2021</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/hid/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions="api"></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

@@ -1,0 +1,897 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=597c4c2ccf7f5">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Building split text animations</title>
+<meta name="description" content="A foundational overview of how to build split letter and word animations." />
+
+<link rel="canonical" href="https://web.dev/building-split-text-animations/" />
+
+<meta itemprop="name" content="Building split text animations" />
+<meta itemprop="description" content="A foundational overview of how to build split letter and word animations." />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/VgfJpMKN2a5p0dKRFxse.png?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/building-split-text-animations/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Building split text animations" />
+<meta property="og:description" content="A foundational overview of how to build split letter and word animations." />
+<meta property="og:image" content="https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/VgfJpMKN2a5p0dKRFxse.png?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="" />
+<meta property="tag" content="css" />
+<meta property="tag" content="dom" />
+<meta property="tag" content="javascript" />
+<meta property="tag" content="animation" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Building split text animations" />
+<meta name="twitter:description" content="A foundational overview of how to build split letter and word animations." />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/VgfJpMKN2a5p0dKRFxse.png?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=cbd1192151221', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=58b40b94322ff', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="Hero Image"     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/XHfyVzz2S49XK7jRl9Xx.png?auto=format"     srcset="https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/XHfyVzz2S49XK7jRl9Xx.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/XHfyVzz2S49XK7jRl9Xx.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/XHfyVzz2S49XK7jRl9Xx.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/XHfyVzz2S49XK7jRl9Xx.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/XHfyVzz2S49XK7jRl9Xx.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/XHfyVzz2S49XK7jRl9Xx.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/XHfyVzz2S49XK7jRl9Xx.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/XHfyVzz2S49XK7jRl9Xx.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/XHfyVzz2S49XK7jRl9Xx.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/XHfyVzz2S49XK7jRl9Xx.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/XHfyVzz2S49XK7jRl9Xx.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/XHfyVzz2S49XK7jRl9Xx.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/XHfyVzz2S49XK7jRl9Xx.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/XHfyVzz2S49XK7jRl9Xx.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/XHfyVzz2S49XK7jRl9Xx.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/XHfyVzz2S49XK7jRl9Xx.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/XHfyVzz2S49XK7jRl9Xx.png?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#building-split-text-animations" class="w-toc__header--link">
+        Building split text animations
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#overview">Overview</a></li><li><a href="#preparing-motion-conditionals">Preparing motion conditionals</a></li><li><a href="#splitting-text">Splitting Text</a></li><li><a href="#splitting-letters-utility-function">Splitting letters utility function</a></li><li><a href="#splitting-words-utility-function">Splitting words utility function</a></li><li><a href="#making-boxes-utility-function">Making boxes utility function</a></li><li><a href="#utilities-conclusion">Utilities conclusion</a></li><li><a href="#split-orchestration">Split orchestration</a></li><li><a href="#finding-elements">Finding Elements</a></li><li><a href="#finding-elements-from-javascript">Finding elements from JavaScript</a></li><li><a href="#finding-elements-from-css">Finding elements from CSS</a></li><li><a href="#splitting-text-in-place">Splitting text in place</a></li><li><a href="#splitting-animations-and-transitions">Splitting animations and transitions</a></li><li><a href="#split-letters">Split letters</a></li><li><a href="#split-words">Split words</a></li><li><a href="#conclusion">Conclusion</a></li><li><a href="#community-remixes">Community remixes</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@argyleink"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="building-split-text-animations" class="w-article-header__headline">Building split text animations</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          A foundational overview of how to build split letter and word animations.
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Apr 20, 2021</time>
+          
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/adamargyle/"><img     alt="Adam Argyle"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/adamargyle/">Adam Argyle</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/argyleink"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/argyleink">GitHub</a>
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://glitch.com/@argyleink"
+          >Glitch</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://nerdy.dev">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>In this post I want to share thinking on ways to solve split text animations and
+interactions for the web that are minimal, accessible, and work across browsers.
+Try the <a href="https://gui-challenges.web.app/split-text/dist/" rel="noopener">demo</a>.</p>
+<figure class="w-figure w-figure--fullbleed">
+  <video      autoplay            class="w-screenshot"                              loop      muted                            >      <source src="https://storage.googleapis.com/web-dev-uploads/video/vS06HQ1YTsbMKSFTIPl2iogUQP73/H9NpmghPMDoJzJLNjk2V.mp4" type="video/mp4" />    </video>
+  <figcaption class="w-figure">
+    <a href="https://gui-challenges.web.app/split-text/dist/">Demo</a>
+  </figcaption>
+</figure>
+<p>If you prefer video, here's a YouTube version of this post:</p>
+<div class="youtube">  <lite-youtube    videoid="3hvN7bkjZBk"      >  </lite-youtube></div>
+<h2 id="overview">Overview <a class="w-headline-link" href="#overview">#</a></h2>
+<p>Split text animations can be amazing. We'll be barely scratching the surface of
+animation potential in this post, but it does provide a foundation to build
+upon. The goal is to animate progressively. The text should be readable by
+default, with the animation built on top. Split text motion effects can
+get extravagant and potentially disruptive, so we will only manipulate HTML, or
+apply motion styles if the user is OK with motion.</p>
+<p>Here's a general overview of the workflow and results:</p>
+<ol>
+<li><a href="#preparing-motion-conditionals">Prepare</a> reduced motion conditional
+variables for CSS and JS.</li>
+<li><a href="#splitting-letters-utility-function">Prepare</a> split text utilities in
+JavaScript.</li>
+<li><a href="#split-orchestration">Orchestrate</a> the conditionals and utilities on page
+load.</li>
+<li><a href="#splitting-animations-and-transitions">Write</a> CSS transitions and animations
+for letters and words (the rad part!).</li>
+</ol>
+<p>Here's a preview of the conditional results we're going for:</p>
+<figure class="w-figure">
+  <img     alt="screenshot of the Chrome devtools with the Elements panel open and reduced motion set to &#x27;reduce&#x27; and the h1 is shown unsplit"     class="w-screenshot"     decoding="async"     height="517"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/TIrcTqDDX0tQiRyIuin1.png?auto=format"     srcset="https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/TIrcTqDDX0tQiRyIuin1.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/TIrcTqDDX0tQiRyIuin1.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/TIrcTqDDX0tQiRyIuin1.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/TIrcTqDDX0tQiRyIuin1.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/TIrcTqDDX0tQiRyIuin1.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/TIrcTqDDX0tQiRyIuin1.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/TIrcTqDDX0tQiRyIuin1.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/TIrcTqDDX0tQiRyIuin1.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/TIrcTqDDX0tQiRyIuin1.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/TIrcTqDDX0tQiRyIuin1.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/TIrcTqDDX0tQiRyIuin1.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/TIrcTqDDX0tQiRyIuin1.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/TIrcTqDDX0tQiRyIuin1.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/TIrcTqDDX0tQiRyIuin1.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/TIrcTqDDX0tQiRyIuin1.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/TIrcTqDDX0tQiRyIuin1.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/TIrcTqDDX0tQiRyIuin1.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">
+    User prefers reduced motion: text is legible / unsplit
+  </figcaption>
+</figure>
+<p>If a user prefers reduced motion, we leave the HTML document alone and do no
+animation. If motion is OK, we go ahead and chop it up into pieces. Here's a
+preview of the HTML after JavaScript has split the text by letter.</p>
+<figure class="w-figure">
+  <img     alt="screenshot of the Chrome devtools with the Elements panel open and reduced motion set to &#x27;reduce&#x27; and the h1 is shown unsplit"     class="w-screenshot"     decoding="async"     height="517"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/prwDis2IMcZxFD39mnWF.png?auto=format"     srcset="https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/prwDis2IMcZxFD39mnWF.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/prwDis2IMcZxFD39mnWF.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/prwDis2IMcZxFD39mnWF.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/prwDis2IMcZxFD39mnWF.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/prwDis2IMcZxFD39mnWF.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/prwDis2IMcZxFD39mnWF.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/prwDis2IMcZxFD39mnWF.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/prwDis2IMcZxFD39mnWF.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/prwDis2IMcZxFD39mnWF.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/prwDis2IMcZxFD39mnWF.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/prwDis2IMcZxFD39mnWF.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/prwDis2IMcZxFD39mnWF.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/prwDis2IMcZxFD39mnWF.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/prwDis2IMcZxFD39mnWF.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/prwDis2IMcZxFD39mnWF.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/prwDis2IMcZxFD39mnWF.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/prwDis2IMcZxFD39mnWF.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">
+    User is OK with motion; text split into multiple <span> elements
+  </figcaption>
+</figure>
+<h3 id="preparing-motion-conditionals">Preparing motion conditionals <a class="w-headline-link" href="#preparing-motion-conditionals">#</a></h3>
+<p>The conveniently <a href="https://caniuse.com/prefers-reduced-motion" rel="noopener">available</a> <code>@media (prefers-reduced-motion: reduce)</code> media query will be used from CSS and
+JavaScript in this project. This media query is our primary conditional for
+deciding to split text or not. The CSS media query will be used to withhold
+transitions and animations, while the JavaScript media query will be used to
+withhold the HTML manipulation.</p>
+<div role="banner" class="w-banner w-banner--neutral ">
+   <strong>Question:</strong> What else should be used to withhold split
+  text animations?
+</div>
+<h4 id="preparing-the-css-conditional">Preparing the CSS conditional <a class="w-headline-link" href="#preparing-the-css-conditional">#</a></h4>
+<p>I used PostCSS to enable the syntax of <a href="https://drafts.csswg.org/mediaqueries-5/" rel="noopener">Media Queries Level 5</a>, where I can store
+a media query boolean into a variable:</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token atrule"><span class="token rule">@custom-media</span> --motionOK <span class="token punctuation">(</span><span class="token property">prefers-reduced-motion</span><span class="token punctuation">:</span> no-preference<span class="token punctuation">)</span><span class="token punctuation">;</span></span></code></pre>
+</web-copy-code><h4 id="preparing-the-js-conditional">Preparing the JS conditional <a class="w-headline-link" href="#preparing-the-js-conditional">#</a></h4>
+<p>In JavaScript, the browser provides a way to check media queries, I used
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment" rel="noopener">destructuring</a>
+to extract and rename the boolean result from the media query check:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> <span class="token punctuation">{</span>matches<span class="token operator">:</span>motionOK<span class="token punctuation">}</span> <span class="token operator">=</span> window<span class="token punctuation">.</span><span class="token function">matchMedia</span><span class="token punctuation">(</span><br>  <span class="token string">'(prefers-reduced-motion: no-preference)'</span><br><span class="token punctuation">)</span></code></pre>
+</web-copy-code><p>I can then test for <code>motionOK</code>, and only change the document if the user has not
+requested to reduce motion.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">if</span> <span class="token punctuation">(</span>motionOK<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token comment">// document split manipulations</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>I can check the same value by using PostCSS to enable the <code>@nest</code> syntax from
+<a href="https://drafts.csswg.org/css-nesting-1/" rel="noopener">Nesting Draft 1</a>. This allows me to
+store all the logic about the animation and it's style requirements for the
+parent and children, in one place:</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">letter-animation</span> <span class="token punctuation">{</span><br>  <span class="token atrule"><span class="token rule">@media</span> <span class="token punctuation">(</span>--motionOK<span class="token punctuation">)</span></span> <span class="token punctuation">{</span><br>    <span class="token comment">/* animation styles */</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>With the PostCSS custom property and a JavaScript boolean, we're ready to
+conditionally upgrade the effect. That rolls us into the next section where I
+break down the JavaScript for transforming strings into elements.</p>
+<h2 id="splitting-text">Splitting Text <a class="w-headline-link" href="#splitting-text">#</a></h2>
+<p>Text letters, words, lines, etc., cannot be individually animated with CSS or JS.
+To achieve the effect, we need boxes. If we want to animate each letter, then
+each letter needs to be an element. If we want to animate each word, then each
+word needs to be an element.</p>
+<ol>
+<li>Create JavaScript utility functions for splitting strings into elements</li>
+<li>Orchestrate the usage of these utilities</li>
+</ol>
+<div class="w-aside w-aside--note">
+<p>In this demo I'll be splitting the text from JavaScript on the DOM
+of the page. If you're in a framework or on the server, you could split the text
+into elements from there, but do so respectfully.</div></p>
+<h3 id="splitting-letters-utility-function">Splitting letters utility function <a class="w-headline-link" href="#splitting-letters-utility-function">#</a></h3>
+<p>A fun place to start is with a function which takes a string and returns each
+letter in an array.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">export</span> <span class="token keyword">const</span> <span class="token function-variable function">byLetter</span> <span class="token operator">=</span> <span class="token parameter">text</span> <span class="token operator">=></span><br>  <span class="token punctuation">[</span><span class="token operator">...</span>text<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>span<span class="token punctuation">)</span></code></pre>
+</web-copy-code><p>The
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax" rel="noopener">spread</a>
+syntax from ES6 really helped make that a swift task.</p>
+<h3 id="splitting-words-utility-function">Splitting words utility function <a class="w-headline-link" href="#splitting-words-utility-function">#</a></h3>
+<p>Similar to splitting letters, this function takes a string and returns each word
+in an array.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">export</span> <span class="token keyword">const</span> <span class="token function-variable function">byWord</span> <span class="token operator">=</span> <span class="token parameter">text</span> <span class="token operator">=></span><br>  text<span class="token punctuation">.</span><span class="token function">split</span><span class="token punctuation">(</span><span class="token string">' '</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>span<span class="token punctuation">)</span></code></pre>
+</web-copy-code><p>The
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/split" rel="noopener"><code>split()</code></a>
+method on JavaScript strings allows us to specify which characters to slice at.
+I passed an empty space, indicating a split between words.</p>
+<h3 id="making-boxes-utility-function">Making boxes utility function <a class="w-headline-link" href="#making-boxes-utility-function">#</a></h3>
+<p>The effect requires boxes for each letter, and we see in those functions, that
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map" rel="noopener"><code>map()</code></a>
+is being called with a <code>span()</code> function. Here is the <code>span()</code> function.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> <span class="token function-variable function">span</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">text<span class="token punctuation">,</span> index</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token keyword">const</span> node <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">createElement</span><span class="token punctuation">(</span><span class="token string">'span'</span><span class="token punctuation">)</span><br><br>  node<span class="token punctuation">.</span>textContent <span class="token operator">=</span> text<br>  node<span class="token punctuation">.</span>style<span class="token punctuation">.</span><span class="token function">setProperty</span><span class="token punctuation">(</span><span class="token string">'--index'</span><span class="token punctuation">,</span> index<span class="token punctuation">)</span><br><br>  <span class="token keyword">return</span> node<br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>It's crucial to note that a custom property called <code>--index</code> is being set with
+the array position. Having the boxes for the letter animations is great, but
+having an index to use in CSS is a seemingly small addition with a large impact.
+Most notable in this large impact is
+<a href="https://css-tricks.com/different-approaches-for-creating-a-staggered-animation/" rel="noopener">staggering</a>.
+We'll be able to use <code>--index</code> as a way of offsetting animations for a staggered
+look.</p>
+<h3 id="utilities-conclusion">Utilities conclusion <a class="w-headline-link" href="#utilities-conclusion">#</a></h3>
+<p>The <code>splitting.js</code> module in completion:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> <span class="token function-variable function">span</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">text<span class="token punctuation">,</span> index</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token keyword">const</span> node <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">createElement</span><span class="token punctuation">(</span><span class="token string">'span'</span><span class="token punctuation">)</span><br><br>  node<span class="token punctuation">.</span>textContent <span class="token operator">=</span> text<br>  node<span class="token punctuation">.</span>style<span class="token punctuation">.</span><span class="token function">setProperty</span><span class="token punctuation">(</span><span class="token string">'--index'</span><span class="token punctuation">,</span> index<span class="token punctuation">)</span><br><br>  <span class="token keyword">return</span> node<br><span class="token punctuation">}</span><br><br><span class="token keyword">export</span> <span class="token keyword">const</span> <span class="token function-variable function">byLetter</span> <span class="token operator">=</span> <span class="token parameter">text</span> <span class="token operator">=></span><br>  <span class="token punctuation">[</span><span class="token operator">...</span>text<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>span<span class="token punctuation">)</span><br><br><span class="token keyword">export</span> <span class="token keyword">const</span> <span class="token function-variable function">byWord</span> <span class="token operator">=</span> <span class="token parameter">text</span> <span class="token operator">=></span><br>  text<span class="token punctuation">.</span><span class="token function">split</span><span class="token punctuation">(</span><span class="token string">' '</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>span<span class="token punctuation">)</span></code></pre>
+</web-copy-code><p>Next is importing and using these <code>byLetter()</code> and <code>byWord()</code> functions.</p>
+<h2 id="split-orchestration">Split orchestration <a class="w-headline-link" href="#split-orchestration">#</a></h2>
+<p>With the splitting utilities ready to use, putting it all together means:</p>
+<ol>
+<li><strong>Finding</strong> which elements to split</li>
+<li><strong>Splitting</strong> them and <strong>replacing</strong> text with HTML</li>
+</ol>
+<p>After that, CSS takes over and will animate the elements / boxes.</p>
+<h3 id="finding-elements">Finding Elements <a class="w-headline-link" href="#finding-elements">#</a></h3>
+<p>I chose to use attributes and values to store information about the desired
+animation and how to split the text. I liked putting these declarative options
+into the HTML. The attribute <code>split-by</code> is used from JavaScript, to find
+elements and create boxes for either letters or words. The attribute
+<code>letter-animation</code> or <code>word-animation</code> is used from CSS, to target element
+children and apply transforms and animations.</p>
+<p>Here's a sample of HTML that demonstrates the two attributes:</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h1</span> <span class="token attr-name">split-by</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>letter<span class="token punctuation">"</span></span> <span class="token attr-name">letter-animation</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>breath<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>animated letters<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h1</span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h1</span> <span class="token attr-name">split-by</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>word<span class="token punctuation">"</span></span> <span class="token attr-name">word-animation</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>trampoline<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>hover the words<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h1</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><h3 id="finding-elements-from-javascript">Finding elements from JavaScript <a class="w-headline-link" href="#finding-elements-from-javascript">#</a></h3>
+<p>I used the CSS selector syntax for attribute presence to gather the list of
+elements which want their text split:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> splitTargets <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">querySelectorAll</span><span class="token punctuation">(</span><span class="token string">'[split-by]'</span><span class="token punctuation">)</span></code></pre>
+</web-copy-code><h3 id="finding-elements-from-css">Finding elements from CSS <a class="w-headline-link" href="#finding-elements-from-css">#</a></h3>
+<p>I also used the attribute presence selector in CSS to give all letter animations
+the same base styles. Later, we'll use the attribute value to add more specific
+styles to achieve an effect.</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">letter-animation</span> <span class="token punctuation">{</span><br>  <span class="token atrule"><span class="token rule">@media</span> <span class="token punctuation">(</span>--motionOK<span class="token punctuation">)</span></span> <span class="token punctuation">{</span><br>    <span class="token comment">/* animation styles */</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><h3 id="splitting-text-in-place">Splitting text in place <a class="w-headline-link" href="#splitting-text-in-place">#</a></h3>
+<p>For each of the split targets we find in JavaScript, we'll split their text
+based on the value of the attribute and map each string to a <code>&lt;span&gt;</code>. We can
+then replace the text of the element with the boxes we made:</p>
+<web-copy-code><pre class="language-js"><code class="language-js">splitTargets<span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token parameter">node</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token keyword">const</span> type <span class="token operator">=</span> node<span class="token punctuation">.</span><span class="token function">getAttribute</span><span class="token punctuation">(</span><span class="token string">'split-by'</span><span class="token punctuation">)</span><br>  <span class="token keyword">let</span> nodes <span class="token operator">=</span> <span class="token keyword">null</span><br><br>  <span class="token keyword">if</span> <span class="token punctuation">(</span>type <span class="token operator">===</span> <span class="token string">'letter'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    nodes <span class="token operator">=</span> <span class="token function">byLetter</span><span class="token punctuation">(</span>node<span class="token punctuation">.</span>innerText<span class="token punctuation">)</span><br>  <span class="token punctuation">}</span><br>  <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>type <span class="token operator">===</span> <span class="token string">'word'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    nodes <span class="token operator">=</span> <span class="token function">byWord</span><span class="token punctuation">(</span>node<span class="token punctuation">.</span>innerText<span class="token punctuation">)</span><br>  <span class="token punctuation">}</span><br><br>  <span class="token keyword">if</span> <span class="token punctuation">(</span>nodes<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    node<span class="token punctuation">.</span>firstChild<span class="token punctuation">.</span><span class="token function">replaceWith</span><span class="token punctuation">(</span><span class="token operator">...</span>nodes<span class="token punctuation">)</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span></code></pre>
+</web-copy-code><h4 id="orchestration-conclusion">Orchestration conclusion <a class="w-headline-link" href="#orchestration-conclusion">#</a></h4>
+<p><code>index.js</code> in completion:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">import</span> <span class="token punctuation">{</span>byLetter<span class="token punctuation">,</span> byWord<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'./splitting.js'</span><br><br><span class="token keyword">const</span> <span class="token punctuation">{</span>matches<span class="token operator">:</span>motionOK<span class="token punctuation">}</span> <span class="token operator">=</span> window<span class="token punctuation">.</span><span class="token function">matchMedia</span><span class="token punctuation">(</span><br>  <span class="token string">'(prefers-reduced-motion: no-preference)'</span><br><span class="token punctuation">)</span><br><br><span class="token keyword">if</span> <span class="token punctuation">(</span>motionOK<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token keyword">const</span> splitTargets <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">querySelectorAll</span><span class="token punctuation">(</span><span class="token string">'[split-by]'</span><span class="token punctuation">)</span><br><br>  splitTargets<span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token parameter">node</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>    <span class="token keyword">const</span> type <span class="token operator">=</span> node<span class="token punctuation">.</span><span class="token function">getAttribute</span><span class="token punctuation">(</span><span class="token string">'split-by'</span><span class="token punctuation">)</span><br>    <span class="token keyword">let</span> nodes <span class="token operator">=</span> <span class="token keyword">null</span><br><br>    <span class="token keyword">if</span> <span class="token punctuation">(</span>type <span class="token operator">===</span> <span class="token string">'letter'</span><span class="token punctuation">)</span><br>      nodes <span class="token operator">=</span> <span class="token function">byLetter</span><span class="token punctuation">(</span>node<span class="token punctuation">.</span>innerText<span class="token punctuation">)</span><br>    <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>type <span class="token operator">===</span> <span class="token string">'word'</span><span class="token punctuation">)</span><br>      nodes <span class="token operator">=</span> <span class="token function">byWord</span><span class="token punctuation">(</span>node<span class="token punctuation">.</span>innerText<span class="token punctuation">)</span><br><br>    <span class="token keyword">if</span> <span class="token punctuation">(</span>nodes<span class="token punctuation">)</span><br>      node<span class="token punctuation">.</span>firstChild<span class="token punctuation">.</span><span class="token function">replaceWith</span><span class="token punctuation">(</span><span class="token operator">...</span>nodes<span class="token punctuation">)</span><br>  <span class="token punctuation">}</span><span class="token punctuation">)</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>The JavaScript could be read in the following English:</p>
+<ol>
+<li>Import some helper utility functions.</li>
+<li>Check if motion is ok for this user, if not do nothing.</li>
+<li>For each element that wants to be split.
+<ol>
+<li>Split them based on how they want to be split.</li>
+<li>Replace text with elements.</li>
+</ol>
+</li>
+</ol>
+<h2 id="splitting-animations-and-transitions">Splitting animations and transitions <a class="w-headline-link" href="#splitting-animations-and-transitions">#</a></h2>
+<p>The above splitting document manipulation has just unlocked a multitude of
+potential animations and effects with CSS or JavaScript. There are a few links
+at the bottom of this article to help inspire your splitting potential.</p>
+<p>Time to show what you can do with this! I'll share 4 CSS driven animations and
+transitions. 🤓</p>
+<h3 id="split-letters">Split letters <a class="w-headline-link" href="#split-letters">#</a></h3>
+<p>As a foundation for the split letter effects, I found the following CSS to be
+helpful. I put all transitions and animations behind the motion media query and
+then give each new child letter <code>span</code> a display property plus a style for what
+to do with white spaces:</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">[letter-animation] > span</span> <span class="token punctuation">{</span><br>  <span class="token property">display</span><span class="token punctuation">:</span> inline-block<span class="token punctuation">;</span><br>  <span class="token property">white-space</span><span class="token punctuation">:</span> break-spaces<span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>The white spaces style is important so that the spans which are only a space,
+aren't collapsed by the layout engine. Now onto the stateful fun stuff.</p>
+<h4 id="transition-split-letters-example">Transition split letters example <a class="w-headline-link" href="#transition-split-letters-example">#</a></h4>
+<p>This example uses CSS transitions to the split text effect. With transitions we
+need states for the engine to animate between, and I chose three states: no
+hover, hover in sentence, hover on a letter.</p>
+<p>When the user hovers the sentence, aka the container, I scale back all the
+children as if the user pushed them further away. Then, as the user hovers a
+letter, I bring it forward.</p>
+<p><video      autoplay            class="w-screenshot"                              loop      muted                            >      <source src="https://storage.googleapis.com/web-dev-uploads/video/vS06HQ1YTsbMKSFTIPl2iogUQP73/TTG7vmfEJRAlRISqqIIA.mp4" type="video/mp4" />    </video></p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token atrule"><span class="token rule">@media</span> <span class="token punctuation">(</span>--motionOK<span class="token punctuation">)</span></span> <span class="token punctuation">{</span><br>  <span class="token selector">[letter-animation="hover"]</span> <span class="token punctuation">{</span><br>    <span class="token selector">&amp;:hover > span</span> <span class="token punctuation">{</span><br>      <span class="token property">transform</span><span class="token punctuation">:</span> <span class="token function">scale</span><span class="token punctuation">(</span>.75<span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token punctuation">}</span><br><br>    <span class="token selector">&amp; > span</span> <span class="token punctuation">{</span><br>      <span class="token property">transition</span><span class="token punctuation">:</span> transform .3s ease<span class="token punctuation">;</span><br>      <span class="token property">cursor</span><span class="token punctuation">:</span> pointer<span class="token punctuation">;</span><br><br>      <span class="token selector">&amp;:hover</span> <span class="token punctuation">{</span><br>        <span class="token property">transform</span><span class="token punctuation">:</span> <span class="token function">scale</span><span class="token punctuation">(</span>1.25<span class="token punctuation">)</span><span class="token punctuation">;</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><h4 id="animate-split-letters-example">Animate split letters example <a class="w-headline-link" href="#animate-split-letters-example">#</a></h4>
+<p>This example uses a predefined <code>@keyframe</code> animation to infinitely animated each
+letter, and leverages the inline custom property index to create a stagger
+effect.</p>
+<p><video      autoplay            class="w-screenshot"                              loop      muted                            >      <source src="https://storage.googleapis.com/web-dev-uploads/video/vS06HQ1YTsbMKSFTIPl2iogUQP73/Y9wcyj9AMwjn2XDASL2u.mp4" type="video/mp4" />    </video></p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token atrule"><span class="token rule">@media</span> <span class="token punctuation">(</span>--motionOK<span class="token punctuation">)</span></span> <span class="token punctuation">{</span><br>  <span class="token selector">[letter-animation="breath"] > span</span> <span class="token punctuation">{</span><br>    <span class="token property">animation</span><span class="token punctuation">:</span><br>      breath 1200ms ease<br>      <span class="token function">calc</span><span class="token punctuation">(</span><span class="token function">var</span><span class="token punctuation">(</span>--index<span class="token punctuation">)</span> * 100 * 1ms<span class="token punctuation">)</span><br>      infinite alternate<span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span><br><br><span class="token atrule"><span class="token rule">@keyframes</span> breath</span> <span class="token punctuation">{</span><br>  <span class="token selector">from</span> <span class="token punctuation">{</span><br>    <span class="token property">animation-timing-function</span><span class="token punctuation">:</span> ease-out<span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br>  <span class="token selector">to</span> <span class="token punctuation">{</span><br>    <span class="token property">transform</span><span class="token punctuation">:</span> <span class="token function">translateY</span><span class="token punctuation">(</span>-5px<span class="token punctuation">)</span> <span class="token function">scale</span><span class="token punctuation">(</span>1.25<span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token property">text-shadow</span><span class="token punctuation">:</span> 0 0 25px <span class="token function">var</span><span class="token punctuation">(</span>--glow-color<span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token property">animation-timing-function</span><span class="token punctuation">:</span> ease-in-out<span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><div class="w-aside w-aside--objective">
+<p><strong>Objective</strong>:  CSS <code>calc()</code> will use the unit type from the last item
+in the calculation. In the above case, that's 1ms. It's used strategically to
+convert the otherwise unitless number, into a value of <code>&lt;time&gt;</code> for the
+animation. </div></p>
+<h3 id="split-words">Split words <a class="w-headline-link" href="#split-words">#</a></h3>
+<p>Flexbox worked as a container type for me here in these examples, nicely
+leveraging the <code>ch</code> unit as a healthy gap length.</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">word-animation</span> <span class="token punctuation">{</span><br>  <span class="token property">display</span><span class="token punctuation">:</span> inline-flex<span class="token punctuation">;</span><br>  <span class="token property">flex-wrap</span><span class="token punctuation">:</span> wrap<span class="token punctuation">;</span><br>  <span class="token property">gap</span><span class="token punctuation">:</span> 1ch<span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><figure class="w-figure">
+  <video      autoplay            class="w-screenshot"                              loop      muted                            >      <source src="https://storage.googleapis.com/web-dev-uploads/video/vS06HQ1YTsbMKSFTIPl2iogUQP73/qgTmqbho48bH9VE35HYj.mp4" type="video/mp4" />    </video>
+  <figcaption class="w-figure">
+    Flexbox devtools showing the gap between words
+  </figcaption>
+</figure>
+<h4 id="transition-split-words-example">Transition split words example <a class="w-headline-link" href="#transition-split-words-example">#</a></h4>
+<p>In this transition example I use hover again. As the effect initially hides the
+content until hover, I ensured that the interaction and styles were only applied
+if the device had the capability to hover.</p>
+<p><video      autoplay            class="w-screenshot"                              loop      muted                            >      <source src="https://storage.googleapis.com/web-dev-uploads/video/vS06HQ1YTsbMKSFTIPl2iogUQP73/2oIFqmTm8QIoNAhRiJQl.mp4" type="video/mp4" />    </video></p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token atrule"><span class="token rule">@media</span> <span class="token punctuation">(</span>hover<span class="token punctuation">)</span></span> <span class="token punctuation">{</span><br>  <span class="token selector">[word-animation="hover"]</span> <span class="token punctuation">{</span><br>    <span class="token property">overflow</span><span class="token punctuation">:</span> hidden<span class="token punctuation">;</span><br>    <span class="token property">overflow</span><span class="token punctuation">:</span> clip<span class="token punctuation">;</span><br><br>    <span class="token selector">&amp; > span</span> <span class="token punctuation">{</span><br>      <span class="token property">transition</span><span class="token punctuation">:</span> transform .3s ease<span class="token punctuation">;</span><br>      <span class="token property">cursor</span><span class="token punctuation">:</span> pointer<span class="token punctuation">;</span><br><br>      <span class="token selector">&amp;:not(:hover)</span> <span class="token punctuation">{</span><br>        <span class="token property">transform</span><span class="token punctuation">:</span> <span class="token function">translateY</span><span class="token punctuation">(</span>50%<span class="token punctuation">)</span><span class="token punctuation">;</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><h4 id="animate-split-words-example">Animate split words example <a class="w-headline-link" href="#animate-split-words-example">#</a></h4>
+<p>In this animation example I use CSS <code>@keyframes</code> again to create a staggered
+infinite animation on a regular paragraph of text.</p>
+<p><video      autoplay            class="w-screenshot"                              loop      muted                            >      <source src="https://storage.googleapis.com/web-dev-uploads/video/vS06HQ1YTsbMKSFTIPl2iogUQP73/fXANvKVQB8wiIYfaSp56.mp4" type="video/mp4" />    </video></p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">[word-animation="trampoline"] > span</span> <span class="token punctuation">{</span><br>  <span class="token property">display</span><span class="token punctuation">:</span> inline-block<span class="token punctuation">;</span><br>  <span class="token property">transform</span><span class="token punctuation">:</span> <span class="token function">translateY</span><span class="token punctuation">(</span>100%<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token property">animation</span><span class="token punctuation">:</span><br>    trampoline 3s ease<br>    <span class="token function">calc</span><span class="token punctuation">(</span><span class="token function">var</span><span class="token punctuation">(</span>--index<span class="token punctuation">)</span> * 150 * 1ms<span class="token punctuation">)</span><br>    infinite alternate<span class="token punctuation">;</span><br><span class="token punctuation">}</span><br><br><span class="token atrule"><span class="token rule">@keyframes</span> trampoline</span> <span class="token punctuation">{</span><br>  <span class="token selector">0%</span> <span class="token punctuation">{</span><br>    <span class="token property">transform</span><span class="token punctuation">:</span> <span class="token function">translateY</span><span class="token punctuation">(</span>100%<span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token property">animation-timing-function</span><span class="token punctuation">:</span> ease-out<span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br>  <span class="token selector">50%</span> <span class="token punctuation">{</span><br>    <span class="token property">transform</span><span class="token punctuation">:</span> <span class="token function">translateY</span><span class="token punctuation">(</span>0<span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token property">animation-timing-function</span><span class="token punctuation">:</span> ease-in<span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><h2 id="conclusion">Conclusion <a class="w-headline-link" href="#conclusion">#</a></h2>
+<p>Now that you know how I did it, how would you?! 🙂</p>
+<p>Let's diversify our approaches and learn all the ways to build on the web.
+Create a Codepen or host your own demo, tweet me with it, and I'll add it to the
+Community remixes section below.</p>
+<p>Source</p>
+<ul>
+<li><a href="https://github.com/argyleink/gui-challenges" rel="noopener">GUI Challenges source on GitHub</a></li>
+<li><a href="https://codepen.io/argyleink/pen/poRLyOM" rel="noopener">Splitting text Codepen starter</a></li>
+</ul>
+<p>More demos and inspiration</p>
+<ul>
+<li><a href="https://codepen.io/collection/XpROaV/" rel="noopener">Splitting text Codepen collection</a></li>
+<li><a href="https://splitting.js.org/" rel="noopener">Splitting.js</a></li>
+</ul>
+<h2 id="community-remixes">Community remixes <a class="w-headline-link" href="#community-remixes">#</a></h2>
+<ul>
+<li><code>&lt;text-hover&gt;</code> web component by <a href="https://twitter.com/gnehcwu" rel="noopener">gnehcwu</a> on <a href="https://codesandbox.io/s/texthover-webcomponent-gkpm2" rel="noopener">CodeSandbox</a></li>
+</ul>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/css/">CSS</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/dom/">DOM</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/javascript/">JavaScript</a>
+      
+    
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Apr 20, 2021</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/building-split-text-animations/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

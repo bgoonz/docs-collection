@@ -1,0 +1,825 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=d427cf3339186">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Wake Lock API case study: 300% increase in purchase intent indicators on BettyCrocker.com </title>
+<meta name="description" content="Case study of cooking site BettyCrocker.com's experiences with implementing the Wake Lock API. " />
+
+<link rel="canonical" href="https://web.dev/betty-crocker/" />
+
+<meta itemprop="name" content="Wake Lock API case study: 300% increase in purchase intent indicators on BettyCrocker.com " />
+<meta itemprop="description" content="Case study of cooking site BettyCrocker.com's experiences with implementing the Wake Lock API. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/uWpEHKUQjInjnw4h1YIC.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/betty-crocker/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Wake Lock API case study: 300% increase in purchase intent indicators on BettyCrocker.com " />
+<meta property="og:description" content="Case study of cooking site BettyCrocker.com's experiences with implementing the Wake Lock API. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/uWpEHKUQjInjnw4h1YIC.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="Betty Crocker Cake Mix—Coffee Cinnamon." />
+<meta property="tag" content="case-study" />
+<meta property="tag" content="wake-lock" />
+<meta property="tag" content="capabilities" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Wake Lock API case study: 300% increase in purchase intent indicators on BettyCrocker.com " />
+<meta name="twitter:description" content="Case study of cooking site BettyCrocker.com's experiences with implementing the Wake Lock API. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/uWpEHKUQjInjnw4h1YIC.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=34eabbad9bd99', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=fd274e3bd4959', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="Betty Crocker Cake Mix—Coffee Cinnamon."     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/uWpEHKUQjInjnw4h1YIC.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/uWpEHKUQjInjnw4h1YIC.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/uWpEHKUQjInjnw4h1YIC.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/uWpEHKUQjInjnw4h1YIC.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/uWpEHKUQjInjnw4h1YIC.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/uWpEHKUQjInjnw4h1YIC.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/uWpEHKUQjInjnw4h1YIC.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/uWpEHKUQjInjnw4h1YIC.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/uWpEHKUQjInjnw4h1YIC.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/uWpEHKUQjInjnw4h1YIC.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/uWpEHKUQjInjnw4h1YIC.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/uWpEHKUQjInjnw4h1YIC.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/uWpEHKUQjInjnw4h1YIC.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/uWpEHKUQjInjnw4h1YIC.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/uWpEHKUQjInjnw4h1YIC.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/uWpEHKUQjInjnw4h1YIC.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/uWpEHKUQjInjnw4h1YIC.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/uWpEHKUQjInjnw4h1YIC.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#wake-lock-api-case-study:-300percent-increase-in-purchase-intent-indicators-on-bettycrocker.com" class="w-toc__header--link">
+        Wake Lock API case study: 300% increase in purchase intent indicators on BettyCrocker.com
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#the-retired-ios-and-android-apps">The retired iOS and Android apps</a></li><li><a href="#bringing-the-killer-feature-to-the-web-with-the-wake-lock-api">Bringing the killer feature to the web with the Wake Lock API</a></li><li><a href="#requesting-a-wake-lock">Requesting a wake lock</a></li><li><a href="#releasing-a-wake-lock">Releasing a wake lock</a></li><li><a href="#the-implementation">The implementation</a></li><li><a href="#the-wake-lock-container">The wake lock container</a></li><li><a href="#the-wake-lock-component">The wake lock component</a></li><li><a href="#results">Results</a></li><li><a href="#conclusions">Conclusions</a></li><li><a href="#acknowledgements">Acknowledgements</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@tomayac | i18n.authors.phillipkriegel.title"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="wake-lock-api-case-study:-300percent-increase-in-purchase-intent-indicators-on-bettycrocker.com" class="w-article-header__headline">Wake Lock API case study: 300% increase in purchase intent indicators on BettyCrocker.com</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          <p>Nothing is worse when cooking with a mobile device than its screen turning off
+in the middle of a recipe step.
+Learn how cooking site BettyCrocker.com used the Wake Lock API to prevent this from happening.</p>
+
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>May 19, 2020</time>
+           <span class="w-author__separator">•</span> Updated <time>May 19, 2020</time> 
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/thomassteiner/"><img     alt="Thomas Steiner"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/thomassteiner/">Thomas Steiner</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/tomayac"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/tomayac">GitHub</a>
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://glitch.com/@tomayac"
+          >Glitch</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://blog.tomayac.com/">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+            <div class="w-author">
+  <a href="/authors/phillipkriegel/"><img     alt="Phillip Kriegel"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"          src="https://web-dev.imgix.net/image/admin/1v5F1SOBl46ZghbHQMle.svg"               width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/phillipkriegel/">Phillip Kriegel</a>
+    </cite>
+    <ul class="w-author__link-list">
+      
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/philkrie">GitHub</a>
+      </li>
+      
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://www.philkrie.me/">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>For nearly a century, Betty Crocker has been America's source for modern cooking instruction
+and trusted recipe development.
+Launched in 1997, their site <a href="https://www.bettycrocker.com/" rel="noopener">BettyCrocker.com</a>
+today receives more than 12 million visitors per month.
+After they <strong>implemented the Wake Lock API</strong>, their
+<strong>indicators of
+<a href="https://www.igi-global.com/dictionary/technology-and-sharing-economy-based-business-models-for-marketing-to-connected-consumers/24144" rel="noopener">purchase intent</a>
+were about 300% higher</strong> for wake lock users compared to all users.</p>
+<h2 id="the-retired-ios-and-android-apps">The retired iOS and Android apps <a class="w-headline-link" href="#the-retired-ios-and-android-apps">#</a></h2>
+<p>Released to <a href="https://consumergoods.com/betty-crocker-launches-cookbook-app" rel="noopener">much fanfare</a> in 2014,
+Betty Crocker recently took their apps out of the Apple App Store and the Google Play Store
+after they had been deprioritized.
+For a long time, the Betty Crocker team has preferred adding new features to the mobile site
+instead of the iOS/Android apps.
+The technical platform the iOS/Android apps were created on was outdated,
+and the business did not have the resources
+to support updating and maintaining the apps moving forward.
+The web app also was objectively way bigger traffic-wise,
+more modern, and easier to enhance.</p>
+<p>The iOS/Android apps did have one <em>killer feature</em>, though, that their users loved:</p>
+<blockquote>
+<p>Millennial cooking pro tip: the <a href="https://twitter.com/BettyCrocker" rel="noopener">@BettyCrocker</a> mobile app
+doesn't dim or lock when you're following a recipe.
+—<a href="https://twitter.com/AvaBeilke/status/996746473168670720" rel="noopener">@AvaBeilke</a></p>
+</blockquote>
+<blockquote>
+<p>80% of people cook with a device in the kitchen, but screen dimming and locking is a problem.
+What did <a href="https://twitter.com/BettyCrocker" rel="noopener">@BettyCrocker</a> do?
+Updated their app to NOT dim when users are in a recipe.
+—<a href="https://twitter.com/Katie_Tweedy_/status/996746567762763776" rel="noopener">@Katie_Tweedy_</a></p>
+</blockquote>
+<h2 id="bringing-the-killer-feature-to-the-web-with-the-wake-lock-api">Bringing the killer feature to the web with the Wake Lock API <a class="w-headline-link" href="#bringing-the-killer-feature-to-the-web-with-the-wake-lock-api">#</a></h2>
+<p>When cooking with a device, there is nothing more frustrating
+than having to touch the screen with messy hands or even your nose when the screen turns off.
+Betty Crocker asked themselves how they could port the killer feature of their iOS/Android apps
+over to the web app.
+This is when they learned about
+<a href="https://developers.google.com/web/updates/capabilities" rel="noopener">Project Fugu</a> and the
+<a href="/wakelock/">Wake Lock API</a>.</p>
+<img     alt="A person kneading dough on a kitchen table covered in flour"          decoding="async"     height="533"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/Yoj65m20XpoPdaL8ejAv.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/Yoj65m20XpoPdaL8ejAv.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/Yoj65m20XpoPdaL8ejAv.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/Yoj65m20XpoPdaL8ejAv.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/Yoj65m20XpoPdaL8ejAv.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/Yoj65m20XpoPdaL8ejAv.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/Yoj65m20XpoPdaL8ejAv.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/Yoj65m20XpoPdaL8ejAv.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/Yoj65m20XpoPdaL8ejAv.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/Yoj65m20XpoPdaL8ejAv.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/Yoj65m20XpoPdaL8ejAv.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/Yoj65m20XpoPdaL8ejAv.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/Yoj65m20XpoPdaL8ejAv.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/Yoj65m20XpoPdaL8ejAv.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/Yoj65m20XpoPdaL8ejAv.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/Yoj65m20XpoPdaL8ejAv.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/Yoj65m20XpoPdaL8ejAv.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/Yoj65m20XpoPdaL8ejAv.jpg?auto=format&w=1600 1600w"          width="800"   />
+<p>The Wake Lock API provides a way to prevent the device
+from dimming or locking the screen.
+This capability enables new experiences that, until now, required an iOS/Android app.
+The Wake Lock API reduces the need for hacky and potentially power-hungry workarounds.</p>
+<h3 id="requesting-a-wake-lock">Requesting a wake lock <a class="w-headline-link" href="#requesting-a-wake-lock">#</a></h3>
+<p>To request a wake lock, you need to call the <code>navigator.wakeLock.request()</code> method
+that returns a <code>WakeLockSentinel</code> object. You will use this object as a
+<a href="https://en.wikipedia.org/wiki/Sentinel_value" rel="noopener">sentinel value</a>.
+The browser can refuse the request for various reasons
+(for example, because the battery is too low),
+so it is a good practice to wrap the call in a <code>try…catch</code> statement.</p>
+<h3 id="releasing-a-wake-lock">Releasing a wake lock <a class="w-headline-link" href="#releasing-a-wake-lock">#</a></h3>
+<p>You also need a way to release a wake lock,
+which is achieved by calling the <code>release()</code> method of the <code>WakeLockSentinel</code> object.
+If you want to automatically release the wake lock after a certain period of time has passed,
+you can use <code>window.setTimeout()</code> to call <code>release()</code>, as shown in the example below.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token comment">// The wake lock sentinel.</span><br><span class="token keyword">let</span> wakeLock <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span><br><br><span class="token comment">// Function that attempts to request a wake lock.</span><br><span class="token keyword">const</span> <span class="token function-variable function">requestWakeLock</span> <span class="token operator">=</span> <span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token keyword">try</span> <span class="token punctuation">{</span><br>    wakeLock <span class="token operator">=</span> <span class="token keyword">await</span> navigator<span class="token punctuation">.</span>wakeLock<span class="token punctuation">.</span><span class="token function">request</span><span class="token punctuation">(</span><span class="token string">'screen'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    wakeLock<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'release'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'Wake Lock was released'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'Wake Lock is active'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span>err<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    console<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>err<span class="token punctuation">.</span>name<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">, </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>err<span class="token punctuation">.</span>message<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span><br><br><span class="token comment">// Request a wake lock…</span><br><span class="token keyword">await</span> <span class="token function">requestWakeLock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token comment">// …and release it again after 5s.</span><br>window<span class="token punctuation">.</span><span class="token function">setTimeout</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  wakeLock<span class="token punctuation">.</span><span class="token function">release</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  wakeLock <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token number">5000</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><h2 id="the-implementation">The implementation <a class="w-headline-link" href="#the-implementation">#</a></h2>
+<p>With the new web app, users should be enabled to easily navigate through a recipe,
+complete steps, and even walk away without the screen locking.
+To achieve this goal, the team first built a quick front-end prototype
+as a proof of concept and to gather UX input.</p>
+<p>After the prototype proved useful, they designed a
+<a href="https://vuejs.org/v2/guide/components.html" rel="noopener">Vue.js component</a>
+that could be shared across all their brands (<a href="https://www.bettycrocker.com/" rel="noopener">BettyCrocker</a>,
+<a href="https://www.pillsbury.com/" rel="noopener">Pillsbury</a>, and <a href="https://www.tablespoon.com/" rel="noopener">Tablespoon</a>).
+Even though only Betty Crocker had iOS and Android apps,
+the three sites do have a shared code base,
+so they were able to implement the component once, and deploy it everywhere,
+as shown in the screenshots below.</p>
+<figure class="w-figure">
+  <img     alt="BettyCrocker.com wake lock toggle"     class="w-screenshot"     decoding="async"     height="170"          loading="lazy"     sizes="(min-width: 600px) 600px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/I9y4AIPEK9P4V0JFn4y1.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/I9y4AIPEK9P4V0JFn4y1.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/I9y4AIPEK9P4V0JFn4y1.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/I9y4AIPEK9P4V0JFn4y1.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/I9y4AIPEK9P4V0JFn4y1.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/I9y4AIPEK9P4V0JFn4y1.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/I9y4AIPEK9P4V0JFn4y1.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/I9y4AIPEK9P4V0JFn4y1.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/I9y4AIPEK9P4V0JFn4y1.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/I9y4AIPEK9P4V0JFn4y1.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/I9y4AIPEK9P4V0JFn4y1.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/I9y4AIPEK9P4V0JFn4y1.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/I9y4AIPEK9P4V0JFn4y1.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/I9y4AIPEK9P4V0JFn4y1.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/I9y4AIPEK9P4V0JFn4y1.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/I9y4AIPEK9P4V0JFn4y1.png?auto=format&w=1200 1200w"          width="600"   />
+  <figcaption class="w-figcaption">BettyCrocker.com wake lock toggle.</figcaption>
+</figure>
+<figure class="w-figure">
+  <img     alt="Pillsbury.com wake lock toggle"     class="w-screenshot"     decoding="async"     height="152"          loading="lazy"     sizes="(min-width: 600px) 600px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/PXS7bnWxYiLKtmLekulr.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/PXS7bnWxYiLKtmLekulr.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/PXS7bnWxYiLKtmLekulr.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/PXS7bnWxYiLKtmLekulr.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/PXS7bnWxYiLKtmLekulr.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/PXS7bnWxYiLKtmLekulr.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/PXS7bnWxYiLKtmLekulr.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/PXS7bnWxYiLKtmLekulr.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/PXS7bnWxYiLKtmLekulr.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/PXS7bnWxYiLKtmLekulr.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/PXS7bnWxYiLKtmLekulr.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/PXS7bnWxYiLKtmLekulr.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/PXS7bnWxYiLKtmLekulr.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/PXS7bnWxYiLKtmLekulr.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/PXS7bnWxYiLKtmLekulr.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/PXS7bnWxYiLKtmLekulr.png?auto=format&w=1200 1200w"          width="600"   />
+  <figcaption class="w-figcaption">Pillsbury.com wake lock toggle.</figcaption>
+</figure>
+<figure class="w-figure">
+  <img     alt="Tablespoon.com wake lock toggle"     class="w-screenshot"     decoding="async"     height="152"          loading="lazy"     sizes="(min-width: 600px) 600px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/S5NQabO9qJTwlidx2eZo.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/S5NQabO9qJTwlidx2eZo.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/S5NQabO9qJTwlidx2eZo.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/S5NQabO9qJTwlidx2eZo.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/S5NQabO9qJTwlidx2eZo.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/S5NQabO9qJTwlidx2eZo.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/S5NQabO9qJTwlidx2eZo.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/S5NQabO9qJTwlidx2eZo.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/S5NQabO9qJTwlidx2eZo.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/S5NQabO9qJTwlidx2eZo.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/S5NQabO9qJTwlidx2eZo.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/S5NQabO9qJTwlidx2eZo.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/S5NQabO9qJTwlidx2eZo.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/S5NQabO9qJTwlidx2eZo.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/S5NQabO9qJTwlidx2eZo.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/S5NQabO9qJTwlidx2eZo.png?auto=format&w=1200 1200w"          width="600"   />
+  <figcaption class="w-figcaption">Tablespoon.com wake lock toggle.</figcaption>
+</figure>
+<p>When developing the component based on the new site's modernized framework,
+there was a strong focus on the
+<a href="https://012.vuejs.org/guide/" rel="noopener"><code>ViewModel</code> layer of the MVVM pattern</a>.
+The team also programmed with interoperability in mind
+to enable functionality on legacy and new frameworks of the site.</p>
+<p>To keep track of viewability and usability, Betty Crocker integrated analytics tracking
+for core events in the wake lock lifecycle.
+The team utilized feature management to deploy the wake lock component
+to a single site for initial production rollout,
+and then deployed the feature to the rest of the sites after monitoring usage and page health.
+They continue to monitor analytics data based on the usage of this component.</p>
+<p>As a failsafe for users, the team created a forced timeout
+to disable the wake lock after one hour of inactivity.
+The final implementation they settled on
+was in the short-term a toggle switch on all recipe pages across their sites.
+In the long-term, they envision a revamped recipe page view.</p>
+<h3 id="the-wake-lock-container">The wake lock container <a class="w-headline-link" href="#the-wake-lock-container">#</a></h3>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">var</span> <span class="token function-variable function">wakeLockControl</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token keyword">return</span> <span class="token keyword">import</span><span class="token punctuation">(</span><span class="token comment">/* webpackChunkName: 'wakeLock' */</span> <span class="token string">'./wakeLock'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span><br><br><span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span><br>  components<span class="token operator">:</span> <span class="token punctuation">{</span><br>    wakeLockControl<span class="token operator">:</span> wakeLockControl<span class="token punctuation">,</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span><br>  <span class="token function">data</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token keyword">return</span> <span class="token punctuation">{</span><br>      config<span class="token operator">:</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span><br>      wakeLockComponent<span class="token operator">:</span> <span class="token string">''</span><span class="token punctuation">,</span><br>    <span class="token punctuation">}</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span><br>  methods<span class="token operator">:</span> <span class="token punctuation">{</span><br>    <span class="token function-variable function">init</span><span class="token operator">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">config</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>      <span class="token keyword">this</span><span class="token punctuation">.</span>config <span class="token operator">=</span> config <span class="token operator">||</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">;</span><br>      <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token string">'wakeLock'</span> <span class="token keyword">in</span> navigator <span class="token operator">&amp;&amp;</span> <span class="token string">'request'</span> <span class="token keyword">in</span> navigator<span class="token punctuation">.</span>wakeLock<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>        <span class="token keyword">this</span><span class="token punctuation">.</span>wakeLockComponent <span class="token operator">=</span> <span class="token string">'wakeLockControl'</span><span class="token punctuation">;</span><br>      <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span><br>        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'Browser not supported'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">}</span><span class="token punctuation">,</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><h3 id="the-wake-lock-component">The wake lock component <a class="w-headline-link" href="#the-wake-lock-component">#</a></h3>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>wakeLock<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><br>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>textAbove<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span><br>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>label</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>switch<span class="token punctuation">"</span></span> <span class="token attr-name">:aria-label</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>settingsInternal.textAbove<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><br>      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>checkbox<span class="token punctuation">"</span></span> <span class="token attr-name">@change</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>onChange()<span class="token punctuation">"</span></span> <span class="token attr-name">v-model</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>isChecked<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><br>      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>span</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>slider round<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>span</span><span class="token punctuation">></span></span><br>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>label</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span><br><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>text/javascript<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token script"><span class="token language-javascript"><br>  <span class="token keyword">import</span> debounce <span class="token keyword">from</span> <span class="token string">'lodash.debounce'</span><span class="token punctuation">;</span><br><br>  <span class="token keyword">const</span> scrollDebounceMs <span class="token operator">=</span> <span class="token number">1000</span><span class="token punctuation">;</span><br><br>  <span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span><br>    props<span class="token operator">:</span> <span class="token punctuation">{</span><br>      settings<span class="token operator">:</span> <span class="token punctuation">{</span> type<span class="token operator">:</span> Object <span class="token punctuation">}</span><span class="token punctuation">,</span><br>    <span class="token punctuation">}</span><span class="token punctuation">,</span><br>    <span class="token function">data</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>      <span class="token keyword">return</span> <span class="token punctuation">{</span><br>        settingsInternal<span class="token operator">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span>settings <span class="token operator">||</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span><br>        isChecked<span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span><br>        wakeLock<span class="token operator">:</span> <span class="token keyword">null</span><span class="token punctuation">,</span><br>        timerId<span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span><br>      <span class="token punctuation">}</span><span class="token punctuation">;</span><br>    <span class="token punctuation">}</span><span class="token punctuation">,</span><br>    <span class="token function">created</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>      <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">$_raiseAnalyticsEvent</span><span class="token punctuation">(</span><span class="token string">'Wake Lock Toggle Available'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token punctuation">}</span><span class="token punctuation">,</span><br>    methods<span class="token operator">:</span> <span class="token punctuation">{</span><br>      <span class="token function-variable function">onChange</span><span class="token operator">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>isChecked<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>          <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">$_requestWakeLock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span><br>          <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">$_releaseWakeLock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>        <span class="token punctuation">}</span><br>      <span class="token punctuation">}</span><span class="token punctuation">,</span><br>      <span class="token function-variable function">$_requestWakeLock</span><span class="token operator">:</span> <span class="token keyword">async</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>        <span class="token keyword">try</span> <span class="token punctuation">{</span><br>          <span class="token keyword">this</span><span class="token punctuation">.</span>wakeLock <span class="token operator">=</span> <span class="token keyword">await</span> navigator<span class="token punctuation">.</span>wakeLock<span class="token punctuation">.</span><span class="token function">request</span><span class="token punctuation">(</span><span class="token string">'screen'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>          <span class="token comment">//Start new timer</span><br>          <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">$_handleAbortTimer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>          <span class="token comment">//Only add event listeners after wake lock is successfully enabled</span><br>          document<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><br>            <span class="token string">'visibilitychange'</span><span class="token punctuation">,</span><br>            <span class="token keyword">this</span><span class="token punctuation">.</span>$_handleVisibilityChange<span class="token punctuation">,</span><br>          <span class="token punctuation">)</span><span class="token punctuation">;</span><br>          window<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><br>            <span class="token string">'scroll'</span><span class="token punctuation">,</span><br>            <span class="token function">debounce</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>$_handleAbortTimer<span class="token punctuation">,</span> scrollDebounceMs<span class="token punctuation">)</span><span class="token punctuation">,</span><br>          <span class="token punctuation">)</span><span class="token punctuation">;</span><br>          <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">$_raiseAnalyticsEvent</span><span class="token punctuation">(</span><span class="token string">'Wake Lock Toggle Enabled'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span>e<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>          <span class="token keyword">this</span><span class="token punctuation">.</span>isChecked <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span><br>        <span class="token punctuation">}</span><br>      <span class="token punctuation">}</span><span class="token punctuation">,</span><br>      <span class="token function-variable function">$_releaseWakeLock</span><span class="token operator">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>        <span class="token keyword">try</span> <span class="token punctuation">{</span><br>          <span class="token keyword">this</span><span class="token punctuation">.</span>wakeLock<span class="token punctuation">.</span><span class="token function">release</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>          <span class="token keyword">this</span><span class="token punctuation">.</span>wakeLock <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span><br>          <span class="token comment">//Clear timer</span><br>          <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">$_handleAbortTimer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>          <span class="token comment">//Clean up event listeners</span><br>          document<span class="token punctuation">.</span><span class="token function">removeEventListener</span><span class="token punctuation">(</span><br>            <span class="token string">'visibilitychange'</span><span class="token punctuation">,</span><br>            <span class="token keyword">this</span><span class="token punctuation">.</span>$_handleVisibilityChange<span class="token punctuation">,</span><br>          <span class="token punctuation">)</span><span class="token punctuation">;</span><br>          window<span class="token punctuation">.</span><span class="token function">removeEventListener</span><span class="token punctuation">(</span><br>            <span class="token string">'scroll'</span><span class="token punctuation">,</span><br>            <span class="token function">debounce</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>$_handleAbortTimer<span class="token punctuation">,</span> scrollDebounceMs<span class="token punctuation">)</span><span class="token punctuation">,</span><br>          <span class="token punctuation">)</span><span class="token punctuation">;</span><br>        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span>e<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>          console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">Wake Lock Release Error: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>e<span class="token punctuation">.</span>name<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">, </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>e<span class="token punctuation">.</span>message<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>        <span class="token punctuation">}</span><br>      <span class="token punctuation">}</span><span class="token punctuation">,</span><br>      <span class="token function-variable function">$_handleAbortTimer</span><span class="token operator">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>        <span class="token comment">//If there is an existing timer then clear it and set to zero</span><br>        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>timerId <span class="token operator">!==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>          <span class="token function">clearTimeout</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>timerId<span class="token punctuation">)</span><span class="token punctuation">;</span><br>          <span class="token keyword">this</span><span class="token punctuation">.</span>timerId <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span><br>        <span class="token punctuation">}</span><br>        <span class="token comment">//Start new timer; Will be triggered from toggle enabled or scroll event</span><br>        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>isChecked<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>          <span class="token keyword">this</span><span class="token punctuation">.</span>timerId <span class="token operator">=</span> <span class="token function">setTimeout</span><span class="token punctuation">(</span><br>            <span class="token keyword">this</span><span class="token punctuation">.</span>$_releaseWakeLock<span class="token punctuation">,</span><br>            <span class="token keyword">this</span><span class="token punctuation">.</span>settingsInternal<span class="token punctuation">.</span>timeoutDurationMs<span class="token punctuation">,</span><br>          <span class="token punctuation">)</span><span class="token punctuation">;</span><br>        <span class="token punctuation">}</span><br>      <span class="token punctuation">}</span><span class="token punctuation">,</span><br>      <span class="token function-variable function">$_handleVisibilityChange</span><span class="token operator">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>        <span class="token comment">//Handle navigating away from page/tab</span><br>        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>isChecked<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>          <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">$_releaseWakeLock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>          <span class="token keyword">this</span><span class="token punctuation">.</span>isChecked <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span><br>        <span class="token punctuation">}</span><br>      <span class="token punctuation">}</span><span class="token punctuation">,</span><br>      <span class="token function-variable function">$_raiseAnalyticsEvent</span><span class="token operator">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">eventType</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>        <span class="token keyword">let</span> eventParams <span class="token operator">=</span> <span class="token punctuation">{</span><br>          EventType<span class="token operator">:</span> eventType<span class="token punctuation">,</span><br>          Position<span class="token operator">:</span> window<span class="token punctuation">.</span>location<span class="token punctuation">.</span>pathname <span class="token operator">||</span> <span class="token string">''</span><span class="token punctuation">,</span><br>        <span class="token punctuation">}</span><span class="token punctuation">;</span><br>        Analytics<span class="token punctuation">.</span><span class="token function">raiseEvent</span><span class="token punctuation">(</span>eventParams<span class="token punctuation">)</span><span class="token punctuation">;</span><br>      <span class="token punctuation">}</span><span class="token punctuation">,</span><br>    <span class="token punctuation">}</span><span class="token punctuation">,</span><br>  <span class="token punctuation">}</span><span class="token punctuation">;</span><br></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><h3 id="results">Results <a class="w-headline-link" href="#results">#</a></h3>
+<p>The Vue.js component has been deployed on all three sites and delivered great results.
+During the period from December 10th, 2019 to January 10th, 2020,
+BettyCrocker.com reported the following metrics:</p>
+<ul>
+<li>Of all Betty Crocker users with a browser compatible with the Wake Lock API,
+3.5% of them enabled the feature immediately, making it a top-5 action.</li>
+<li>The session duration for users who enabled the wake lock was 3.1× longer
+than for users who did not.</li>
+<li>The bounce rate for users who enabled the wake lock was 50% lower
+than for those not using the wake lock feature.</li>
+<li>Indicators of purchase intent were about 300% higher for wake lock users compared to all users.</li>
+</ul>
+<div class="w-stats">
+  <div class="w-stat">
+    <p class="w-stat__figure">3.1<sub class="w-stat__sub">×</sub></p>
+    <p class="w-stat__desc">Longer session duration</p>
+  </div>
+  <div class="w-stat">
+    <p class="w-stat__figure">50<sub class="w-stat__sub">%</sub></p>
+    <p class="w-stat__desc">Lower bounce rate</p>
+  </div>
+  <div class="w-stat">
+    <p class="w-stat__figure">300<sub class="w-stat__sub">%</sub></p>
+    <p class="w-stat__desc">Higher purchase intent indicators</p>
+  </div>
+</div>
+<h2 id="conclusions">Conclusions <a class="w-headline-link" href="#conclusions">#</a></h2>
+<p>Betty Crocker has seen fantastic results using the Wake Lock API.
+You can test the feature yourself by searching for your favorite recipe on any of their sites
+(<a href="https://www.bettycrocker.com/" rel="noopener">BettyCrocker</a>,
+<a href="https://www.pillsbury.com/" rel="noopener">Pillsbury</a>, or <a href="https://www.tablespoon.com/" rel="noopener">Tablespoon</a>)
+and enabling the <strong>Prevent your screen from going dark while you cook</strong> toggle.</p>
+<p>Use cases for wake locks do not stop at recipe sites.
+Other examples are boarding pass or ticket apps that need to keep the screen on
+until the barcode has been scanned, kiosk-style apps that keep the screen on continuously,
+or web-based presentation apps that prevent the screen from sleeping during a presentation.</p>
+<p>We have compiled <a href="/wakelock/">everything you need to know about the Wake Lock API</a>
+in a comprehensive article on this very site.
+Happy reading, and happy cooking!</p>
+<h2 id="acknowledgements">Acknowledgements <a class="w-headline-link" href="#acknowledgements">#</a></h2>
+<p>The <em>person kneading dough</em> photo courtesy of
+<a href="https://unsplash.com/@julianhochgesang" rel="noopener">Julian Hochgesang</a>
+on <a href="https://unsplash.com/photos/huepD-06_pQ" rel="noopener">Unsplash</a>.</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/case-study/">Case Study</a>
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/capabilities/">Capabilities</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>May 19, 2020</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/betty-crocker/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="/css/main.css?v=d9463ba5d834f" />
+
+    <link
+      rel="preload"
+      as="font"
+      crossorigin
+      href="/fonts/material-icons/regular.woff2"
+    />
+
+    <link
+      rel="preload"
+      as="font"
+      crossorigin
+      href="/fonts/google-sans/regular/latin.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      crossorigin
+      href="/fonts/google-sans/bold/latin.woff2"
+    />
+
+    <meta name="theme-color" content="#fff" />
+
+    <title>Web Vitals</title>
+    <meta name="description" content="Essential metrics for a healthy site" />
+
+    <link rel="canonical" href="https://web.dev/vitals/" />
+    <link
+      rel="alternate"
+      hreflang="es"
+      href="https://web.dev/i18n/es/vitals/"
+    />
+    <link rel="alternate" hreflang="en" href="https://web.dev/vitals/" />
+    <meta itemprop="name" content="Web Vitals" />
+    <meta
+      itemprop="description"
+      content="Essential metrics for a healthy site"
+    />
+    <meta
+      itemprop="image"
+      content="https://web-dev.imgix.net/image/admin/BHaoqqR73jDWe6FL2kfw.png?auto=format&fit=max&w=1200&fm=auto"
+    />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://web.dev/vitals/" />
+    <meta property="og:site_name" content="web.dev" />
+    <meta property="og:title" content="Web Vitals" />
+    <meta
+      property="og:description"
+      content="Essential metrics for a healthy site"
+    />
+    <meta
+      property="og:image"
+      content="https://web-dev.imgix.net/image/admin/BHaoqqR73jDWe6FL2kfw.png?auto=format&fit=max&w=1200&fm=auto"
+    />
+    <meta property="og:image:alt" content="" />
+    <meta property="tag" content="metrics" />
+    <meta property="tag" content="performance" />
+    <meta property="tag" content="web-vitals" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Web Vitals" />
+    <meta
+      name="twitter:description"
+      content="Essential metrics for a healthy site"
+    />
+    <meta
+      name="twitter:image"
+      content="https://web-dev.imgix.net/image/admin/BHaoqqR73jDWe6FL2kfw.png?auto=format&fit=max&w=1200&fm=auto"
+    />
+    <link
+      rel="alternate"
+      href="/feed.xml"
+      type="application/atom+xml"
+      data-title="web.dev feed"
+    />
+
+    <link rel="manifest" href="/manifest.webmanifest" />
+
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/images/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/images/favicon-16x16.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/images/apple-touch-icon.png"
+    />
+    <link
+      rel="mask-icon"
+      color="#0054ff"
+      href="/images/safari-pinned-tab.svg"
+    />
+
+    <script>
+      window.ga =
+        window.ga ||
+        function () {
+          (ga.q = ga.q || []).push(arguments);
+        };
+      ga.l = +new Date();
+      ga("create", "UA-126406676-2");
+      ga("set", "transport", "beacon");
+      ga("set", "anonymizeIp", true);
+      ga("set", "page", window.location.pathname);
+      ga("set", "dimension5", "4");
+      ga("send", "pageview");
+    </script>
+
+    <script>
+      function loadScript(url, type) {
+        const s = document.createElement("script");
+        s.src = url;
+        if (type) {
+          s.type = type;
+        }
+        if (type === "module") {
+          s.async = false; // Preserve load order.
+          const pre = document.createElement("link");
+          pre.rel = "modulepreload";
+          pre.href = url;
+          document.head.append(pre);
+          // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+          window.addEventListener("DOMContentLoaded", () => {
+            document.head.append(s);
+          });
+        } else {
+          document.head.append(s);
+        }
+      }
+      loadScript("/js/app.js?v=4c4a24c0213fb", "module");
+
+      loadScript("/js/content.js?v=ea53e8febf7a1", "module");
+
+      loadScript("https://www.google-analytics.com/analytics.js", null);
+    </script>
+  </head>
+  <body class="unresolved">
+    <web-snackbar-container></web-snackbar-container>
+
+    <web-header class="header-default" role="navigation">
+      <button
+        data-open-drawer-button
+        class="w-button--svg w-button--round"
+        aria-label="Open menu"
+      >
+        <svg
+          class="icon"
+          role="img"
+          aria-label="menu"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          height="24"
+          width="24"
+        >
+          <path d="M0 0h24v24H0z" fill="none" />
+          <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
+        </svg>
+
+        <span class="w-tooltip w-tooltip--left">Open menu</span>
+      </button>
+
+      <a
+        href="/"
+        class="header-default__logo-link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Site logo"
+      >
+        <img
+          class="header-default__logo"
+          width="125"
+          height="30"
+          src="/images/lockup.svg"
+          alt="web.dev"
+        />
+      </a>
+
+      <div class="header-default__middle">
+        <div class="header-default__links">
+          <a
+            href="/learn/"
+            class="header-default__link gc-analytics-event"
+            data-category="Site-Wide Custom Events"
+            data-label="Tab: Learn"
+          >
+            Learn
+          </a>
+
+          <a
+            href="/measure/"
+            class="header-default__link gc-analytics-event"
+            data-category="Site-Wide Custom Events"
+            data-label="Tab: Measure"
+          >
+            Measure
+          </a>
+
+          <a
+            href="/blog/"
+            class="header-default__link gc-analytics-event"
+            data-category="Site-Wide Custom Events"
+            data-label="Tab: Blog"
+          >
+            Blog
+          </a>
+
+          <a
+            href="/about/"
+            class="header-default__link gc-analytics-event"
+            data-category="Site-Wide Custom Events"
+            data-label="Tab: About"
+          >
+            About
+          </a>
+        </div>
+        <web-search results-id="search-main-results"></web-search>
+        <web-search-results id="search-main-results"></web-search-results>
+      </div>
+
+      <web-profile-switcher-container></web-profile-switcher-container>
+    </web-header>
+
+    <web-navigation-drawer class="drawer-default" type="modal">
+      <nav data-drawer-container>
+        <div class="drawer-default__contents">
+          <div class="drawer-default__header">
+            <button
+              data-drawer-close-button
+              class="drawer-default__hide w-button--svg w-button--round"
+              aria-label="Close"
+            >
+              <svg
+                class="icon"
+                role="img"
+                aria-label="close"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                height="24"
+                width="24"
+              >
+                <path d="M0 0h24v24H0z" fill="none" />
+                <path
+                  d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+                />
+              </svg>
+
+              <span class="w-tooltip">Close</span>
+            </button>
+            <a
+              href="/"
+              class="gc-analytics-event"
+              data-category="Site-Wide Custom Events"
+              data-label="Site logo"
+            >
+              <img
+                width="125"
+                height="30"
+                class="drawer-default__logo"
+                src="/images/lockup.svg"
+                alt="web.dev"
+              />
+            </a>
+          </div>
+          <a
+            href="/learn/"
+            class="drawer-default__link gc-analytics-event"
+            data-category="Site-Wide Custom Events"
+            data-label="SideNav: Learn"
+          >
+            Learn
+          </a>
+          <a
+            href="/measure/"
+            class="drawer-default__link gc-analytics-event"
+            data-category="Site-Wide Custom Events"
+            data-label="SideNav: Measure"
+          >
+            Measure
+          </a>
+          <a
+            href="/blog/"
+            class="drawer-default__link gc-analytics-event"
+            data-category="Site-Wide Custom Events"
+            data-label="SideNav: Blog"
+          >
+            Blog
+          </a>
+          <a
+            href="/about/"
+            class="drawer-default__link gc-analytics-event"
+            data-category="Site-Wide Custom Events"
+            data-label="SideNav: About"
+          >
+            About
+          </a>
+        </div>
+      </nav>
+    </web-navigation-drawer>
+
+    <main>
+      <div id="content">
+        <div class="guide-landing-page">
+          <img
+            alt="Hero Image"
+            class="w-hero w-hero--cover"
+            decoding="auto"
+            height="480"
+            sizes="100vw"
+            src="https://web-dev.imgix.net/image/admin/BHaoqqR73jDWe6FL2kfw.png?auto=format"
+            srcset="
+              https://web-dev.imgix.net/image/admin/BHaoqqR73jDWe6FL2kfw.png?auto=format&w=200   200w,
+              https://web-dev.imgix.net/image/admin/BHaoqqR73jDWe6FL2kfw.png?auto=format&w=228   228w,
+              https://web-dev.imgix.net/image/admin/BHaoqqR73jDWe6FL2kfw.png?auto=format&w=260   260w,
+              https://web-dev.imgix.net/image/admin/BHaoqqR73jDWe6FL2kfw.png?auto=format&w=296   296w,
+              https://web-dev.imgix.net/image/admin/BHaoqqR73jDWe6FL2kfw.png?auto=format&w=338   338w,
+              https://web-dev.imgix.net/image/admin/BHaoqqR73jDWe6FL2kfw.png?auto=format&w=385   385w,
+              https://web-dev.imgix.net/image/admin/BHaoqqR73jDWe6FL2kfw.png?auto=format&w=439   439w,
+              https://web-dev.imgix.net/image/admin/BHaoqqR73jDWe6FL2kfw.png?auto=format&w=500   500w,
+              https://web-dev.imgix.net/image/admin/BHaoqqR73jDWe6FL2kfw.png?auto=format&w=571   571w,
+              https://web-dev.imgix.net/image/admin/BHaoqqR73jDWe6FL2kfw.png?auto=format&w=650   650w,
+              https://web-dev.imgix.net/image/admin/BHaoqqR73jDWe6FL2kfw.png?auto=format&w=741   741w,
+              https://web-dev.imgix.net/image/admin/BHaoqqR73jDWe6FL2kfw.png?auto=format&w=845   845w,
+              https://web-dev.imgix.net/image/admin/BHaoqqR73jDWe6FL2kfw.png?auto=format&w=964   964w,
+              https://web-dev.imgix.net/image/admin/BHaoqqR73jDWe6FL2kfw.png?auto=format&w=1098 1098w,
+              https://web-dev.imgix.net/image/admin/BHaoqqR73jDWe6FL2kfw.png?auto=format&w=1252 1252w,
+              https://web-dev.imgix.net/image/admin/BHaoqqR73jDWe6FL2kfw.png?auto=format&w=1428 1428w,
+              https://web-dev.imgix.net/image/admin/BHaoqqR73jDWe6FL2kfw.png?auto=format&w=1600 1600w
+            "
+            width="1600"
+          />
+
+          <web-table-of-contents>
+            <h2 class="w-toc__header">
+              <a href="#web-vitals" class="w-toc__header--link"> Web Vitals </a>
+            </h2>
+            <div class="w-toc__list">
+              <ul>
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#core-web-vitals">Core Web Vitals</a></li>
+                <li>
+                  <a href="#tools-to-measure-and-report-core-web-vitals"
+                    >Tools to measure and report Core Web Vitals</a
+                  >
+                </li>
+                <li>
+                  <a href="#recommendations-for-improving-your-scores"
+                    >Recommendations for improving your scores</a
+                  >
+                </li>
+                <li><a href="#other-web-vitals">Other Web Vitals</a></li>
+                <li><a href="#evolving-web-vitals">Evolving Web Vitals</a></li>
+              </ul>
+            </div>
+          </web-table-of-contents>
+          <web-table-of-contents-button></web-table-of-contents-button>
+
+          <div class="w-actions">
+            <share-action
+              authors="@philwalton"
+              class="gc-analytics-event w-actions__fab w-actions__fab--share"
+              data-category="web.dev"
+              data-label="share"
+              data-action="click"
+              data-icon="share"
+              tabindex="0"
+              role="button"
+            >
+              <span>Share</span>
+            </share-action>
+            <a
+              class="
+                w-actions__fab w-actions__fab--subscribe
+                gc-analytics-event
+              "
+              data-category="web.dev"
+              data-label="view-subscribe"
+              data-action="click"
+              href="/newsletter/"
+            >
+              <span>subscribe</span>
+            </a>
+          </div>
+
+          <div class="w-layout-container--narrow w-post-content">
+            <header class="w-article-header">
+              <h1 id="web-vitals" class="w-article-header__headline">
+                Web Vitals
+              </h1>
+
+              <div class="w-author__published">
+                <time>Apr 30, 2020</time>
+                <span class="w-author__separator">•</span> Updated
+                <time>Jul 21, 2020</time>
+              </div>
+
+              <div class="w-layout-container--narrow w-post-signpost">
+                <span class="w-post-signpost__title">Appears in:</span>
+                <a class="w-post-signpost__link" href="/learn-web-vitals"
+                  >Web Vitals</a
+                >
+              </div>
+
+              <div class="w-authors w-mt--xl w-pt--sm">
+                <div class="w-author">
+                  <a href="/authors/philipwalton/"
+                    ><img
+                      alt="Philip Walton"
+                      class="w-author__image"
+                      decoding="async"
+                      height="64"
+                      loading="lazy"
+                      sizes="(min-width: 64px) 64px, calc(100vw - 48px)"
+                      src="https://web-dev.imgix.net/image/admin/ovBM8MF9rYDxVVHUVlcG.jpg?auto=format&fit=crop&h=64&w=64"
+                      srcset="
+                        https://web-dev.imgix.net/image/admin/ovBM8MF9rYDxVVHUVlcG.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,
+                        https://web-dev.imgix.net/image/admin/ovBM8MF9rYDxVVHUVlcG.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,
+                        https://web-dev.imgix.net/image/admin/ovBM8MF9rYDxVVHUVlcG.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,
+                        https://web-dev.imgix.net/image/admin/ovBM8MF9rYDxVVHUVlcG.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,
+                        https://web-dev.imgix.net/image/admin/ovBM8MF9rYDxVVHUVlcG.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x
+                      "
+                      width="64"
+                  /></a>
+                  <div
+                    class="w-author__info"
+                    style="
+                      display: flex;
+                      flex-direction: column;
+                      justify-content: center;
+                    "
+                  >
+                    <cite class="w-author__name">
+                      <a
+                        class="w-author__name-link"
+                        href="/authors/philipwalton/"
+                        >Philip Walton</a
+                      >
+                    </cite>
+                    <ul class="w-author__link-list">
+                      <li class="w-author__link-listitem">
+                        <a
+                          class="w-author__link"
+                          href="https://twitter.com/philwalton"
+                          >Twitter</a
+                        >
+                      </li>
+                      <li class="w-author__link-listitem">
+                        <a
+                          class="w-author__link"
+                          href="https://github.com/philipwalton"
+                          >GitHub</a
+                        >
+                      </li>
+
+                      <li class="w-author__link-listitem">
+                        <a
+                          class="w-author__link"
+                          href="https://philipwalton.com"
+                          >Blog</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </header>
+
+            <p>
+              Optimizing for quality of user experience is key to the long-term
+              success of any site on the web. Whether you're a business owner,
+              marketer, or developer, Web Vitals can help you quantify the
+              experience of your site and identify opportunities to improve.
+            </p>
+            <h2 id="overview">
+              Overview <a class="w-headline-link" href="#overview">#</a>
+            </h2>
+            <p>
+              Web Vitals is an initiative by Google to provide unified guidance
+              for quality signals that are essential to delivering a great user
+              experience on the web.
+            </p>
+            <p>
+              Google has provided a number of tools over the years to measure
+              and report on performance. Some developers are experts at using
+              these tools, while others have found the abundance of both tools
+              and metrics challenging to keep up with.
+            </p>
+            <p>
+              Site owners should not have to be performance gurus in order to
+              understand the quality of experience they are delivering to their
+              users. The Web Vitals initiative aims to simplify the landscape,
+              and help sites focus on the metrics that matter most, the
+              <strong>Core Web Vitals</strong>.
+            </p>
+            <h2 id="core-web-vitals">
+              Core Web Vitals
+              <a class="w-headline-link" href="#core-web-vitals">#</a>
+            </h2>
+            <p>
+              Core Web Vitals are the subset of Web Vitals that apply to all web
+              pages, should be measured by all site owners, and will be surfaced
+              across all Google tools. Each of the Core Web Vitals represents a
+              distinct facet of the user experience, is measurable
+              <a
+                href="/user-centric-performance-metrics/#how-metrics-are-measured"
+                >in the field</a
+              >, and reflects the real-world experience of a critical
+              <a
+                href="/user-centric-performance-metrics/#how-metrics-are-measured"
+                >user-centric</a
+              >
+              outcome.
+            </p>
+            <p>
+              The metrics that make up Core Web Vitals will
+              <a href="#evolving-web-vitals">evolve</a> over time. The current
+              set for 2020 focuses on three aspects of the user
+              experience—<em>loading</em>, <em>interactivity</em>, and
+              <em>visual stability</em>—and includes the following metrics (and
+              their respective thresholds):
+            </p>
+            <div class="w-stack w-stack--center w-stack--md">
+              <img
+                alt="Largest Contentful Paint threshold recommendations"
+                decoding="async"
+                height="350"
+                loading="lazy"
+                src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ZZU8Z7TMKXmzZT2mCjJU.svg"
+                width="400"
+              />
+              <img
+                alt="First Input Delay threshold recommendations"
+                decoding="async"
+                height="350"
+                loading="lazy"
+                src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/iHYrrXKe4QRcb2uu8eV8.svg"
+                width="400"
+              />
+              <img
+                alt="Cumulative Layout Shift threshold recommendations"
+                decoding="async"
+                height="350"
+                loading="lazy"
+                src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/dgpDFckbHwwOKdIGDa3N.svg"
+                width="400"
+              />
+            </div>
+            <ul>
+              <li>
+                <strong
+                  ><a href="/lcp/">Largest Contentful Paint (LCP)</a></strong
+                >: measures <em>loading</em> performance. To provide a good user
+                experience, LCP should occur within
+                <strong>2.5 seconds</strong> of when the page first starts
+                loading.
+              </li>
+              <li>
+                <strong><a href="/fid/">First Input Delay (FID)</a></strong
+                >: measures <em>interactivity</em>. To provide a good user
+                experience, pages should have a FID of
+                <strong>100 milliseconds</strong> or less.
+              </li>
+              <li>
+                <strong
+                  ><a href="/cls/">Cumulative Layout Shift (CLS)</a></strong
+                >: measures <em>visual stability</em>. To provide a good user
+                experience, pages should maintain a CLS of
+                <strong>0.1.</strong> or less.
+              </li>
+            </ul>
+            <p>
+              For each of the above metrics, to ensure you're hitting the
+              recommended target for most of your users, a good threshold to
+              measure is the <strong>75th percentile</strong> of page loads,
+              segmented across mobile and desktop devices.
+            </p>
+            <p>
+              Tools that assess Core Web Vitals compliance should consider a
+              page passing if it meets the recommended targets at the 75th
+              percentile for all of the above three metrics.
+            </p>
+            <div class="w-aside w-aside--note">
+              <p>
+                To learn more about the research and methodology behind these
+                recommendations, see:
+                <a href="/defining-core-web-vitals-thresholds/"
+                  >Defining the Core Web Vitals metrics thresholds</a
+                >
+              </p>
+            </div>
+            <h3 id="tools-to-measure-and-report-core-web-vitals">
+              Tools to measure and report Core Web Vitals
+              <a
+                class="w-headline-link"
+                href="#tools-to-measure-and-report-core-web-vitals"
+                >#</a
+              >
+            </h3>
+            <p>
+              Google believes that the Core Web Vitals are critical to all web
+              experiences. As a result, it is committed to surfacing these
+              metrics <a href="/vitals-tools/">in all of its popular tools</a>.
+              The following sections details which tools support the Core Web
+              Vitals.
+            </p>
+            <h4 id="field-tools-to-measure-core-web-vitals">
+              Field tools to measure Core Web Vitals
+              <a
+                class="w-headline-link"
+                href="#field-tools-to-measure-core-web-vitals"
+                >#</a
+              >
+            </h4>
+            <p>
+              The
+              <a
+                href="https://developers.google.com/web/tools/chrome-user-experience-report"
+                rel="noopener"
+                >Chrome User Experience Report</a
+              >
+              collects anonymized, real user measurement data for each Core Web
+              Vital. This data enables site owners to quickly assess their
+              performance without requiring them to manually instrument
+              analytics on their pages, and powers tools like
+              <a
+                href="https://developers.google.com/speed/pagespeed/insights/"
+                rel="noopener"
+                >PageSpeed Insights</a
+              >, and Search Console's
+              <a
+                href="https://support.google.com/webmasters/answer/9205520"
+                rel="noopener"
+                >Core Web Vitals report</a
+              >.
+            </p>
+            <div class="w-table-wrapper">
+              <table>
+                <tr>
+                  <td>&nbsp;</td>
+                  <td>LCP</td>
+                  <td>FID</td>
+                  <td>CLS</td>
+                </tr>
+                <tr>
+                  <td>
+                    <a
+                      href="https://developers.google.com/web/tools/chrome-user-experience-report"
+                    >
+                      Chrome User Experience Report</a
+                    >
+                  </td>
+                  <td>✔</td>
+                  <td>✔</td>
+                  <td>✔</td>
+                </tr>
+                <tr>
+                  <td>
+                    <a
+                      href="https://developers.google.com/speed/pagespeed/insights/"
+                    >
+                      PageSpeed Insights</a
+                    >
+                  </td>
+                  <td>✔</td>
+                  <td>✔</td>
+                  <td>✔</td>
+                </tr>
+                <tr>
+                  <td>
+                    <a
+                      href="https://support.google.com/webmasters/answer/9205520"
+                    >
+                      Search Console (Core Web Vitals report)</a
+                    >
+                  </td>
+                  <td>✔</td>
+                  <td>✔</td>
+                  <td>✔</td>
+                </tr>
+              </table>
+            </div>
+            <div class="w-aside w-aside--note">
+              <p>
+                For guidance on how to use these tools, and which tool is right
+                for your use case, see:
+                <a href="/vitals-measurement-getting-started/"
+                  >Getting started with measuring Web Vitals</a
+                >
+              </p>
+            </div>
+            <p>
+              The data provided by Chrome User Experience Report offers a quick
+              way to assess the performance of sites, but it does not provide
+              the detailed, per-pageview telemetry that is often necessary to
+              accurately diagnose, monitor, and quickly react to regressions. As
+              a result, we strongly recommend that sites set up their own
+              real-user monitoring.
+            </p>
+            <h4 id="measure-core-web-vitals-in-javascript">
+              Measure Core Web Vitals in JavaScript
+              <a
+                class="w-headline-link"
+                href="#measure-core-web-vitals-in-javascript"
+                >#</a
+              >
+            </h4>
+            <p>
+              Each of the Core Web Vitals can be measured in JavaScript using
+              standard web APIs.
+            </p>
+            <p>
+              The easiest way to measure all the Core Web Vitals is to use the
+              <a
+                href="https://github.com/GoogleChrome/web-vitals"
+                rel="noopener"
+                >web-vitals</a
+              >
+              JavaScript library, a small, production-ready wrapper around the
+              underlying web APIs that measures each metric in a way that
+              accurately matches how they're reported by all the Google tools
+              listed above.
+            </p>
+            <p>
+              With the
+              <a
+                href="https://github.com/GoogleChrome/web-vitals"
+                rel="noopener"
+                >web-vitals</a
+              >
+              library, measuring each metric is as simple as calling a single
+              function (see the documentation for complete
+              <a
+                href="https://github.com/GoogleChrome/web-vitals#usage"
+                rel="noopener"
+                >usage</a
+              >
+              and
+              <a
+                href="https://github.com/GoogleChrome/web-vitals#api"
+                rel="noopener"
+                >API</a
+              >
+              details):
+            </p>
+            <web-copy-code>
+              <pre
+                class="language-js"
+              ><code class="language-js"><span class="token keyword">import</span> <span class="token punctuation">{</span>getCLS<span class="token punctuation">,</span> getFID<span class="token punctuation">,</span> getLCP<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'web-vitals'</span><span class="token punctuation">;</span><br><br><span class="token keyword">function</span> <span class="token function">sendToAnalytics</span><span class="token punctuation">(</span><span class="token parameter">metric</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token keyword">const</span> body <span class="token operator">=</span> <span class="token constant">JSON</span><span class="token punctuation">.</span><span class="token function">stringify</span><span class="token punctuation">(</span>metric<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token comment">// Use `navigator.sendBeacon()` if available, falling back to `fetch()`.</span><br>  <span class="token punctuation">(</span>navigator<span class="token punctuation">.</span>sendBeacon <span class="token operator">&amp;&amp;</span> navigator<span class="token punctuation">.</span><span class="token function">sendBeacon</span><span class="token punctuation">(</span><span class="token string">'/analytics'</span><span class="token punctuation">,</span> body<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">||</span><br>      <span class="token function">fetch</span><span class="token punctuation">(</span><span class="token string">'/analytics'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>body<span class="token punctuation">,</span> method<span class="token operator">:</span> <span class="token string">'POST'</span><span class="token punctuation">,</span> keepalive<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><br><br><span class="token function">getCLS</span><span class="token punctuation">(</span>sendToAnalytics<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token function">getFID</span><span class="token punctuation">(</span>sendToAnalytics<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token function">getLCP</span><span class="token punctuation">(</span>sendToAnalytics<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+            </web-copy-code>
+            <p>
+              Once you've configured your site to use the
+              <a
+                href="https://github.com/GoogleChrome/web-vitals"
+                rel="noopener"
+                >web-vitals</a
+              >
+              library to measure and send your Core Web Vitals data to an
+              analytics endpoint, the next step is to aggregate and report on
+              that data to see if your pages are meeting the recommended
+              thresholds for at least 75% of page visits.
+            </p>
+            <p>
+              While some analytics providers have built-in support for Core Web
+              Vitals metrics, even those that don't should include basic custom
+              metric features that allow you to measure Core Web Vitals in their
+              tool.
+            </p>
+            <p>
+              One example of this is the
+              <a
+                href="https://github.com/GoogleChromeLabs/web-vitals-report"
+                rel="noopener"
+                >Web Vitals Report</a
+              >, which allows site owners to measure their Core Web Vitals using
+              Google Analytics. For guidance on measuring Core Web Vitals using
+              other analytics tools, see
+              <a href="/vitals-field-measurement-best-practices/"
+                >Best practices for measuring Web Vitals in the field</a
+              >.
+            </p>
+            <p>
+              You can also report on each of the Core Web Vitals without writing
+              any code using the
+              <a
+                href="https://github.com/GoogleChrome/web-vitals-extension"
+                rel="noopener"
+                >Web Vitals Chrome Extension</a
+              >. This extension uses the
+              <a
+                href="https://github.com/GoogleChrome/web-vitals"
+                rel="noopener"
+                >web-vitals</a
+              >
+              library to measure each of these metrics and display them to users
+              as they browse the web.
+            </p>
+            <p>
+              This extension can be helpful in understanding the performance of
+              your own sites, your competitor's sites, and the web at large.
+            </p>
+            <div class="w-table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>&nbsp;</th>
+                    <th>LCP</th>
+                    <th>FID</th>
+                    <th>CLS</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <a href="https://github.com/GoogleChrome/web-vitals"
+                        >web-vitals</a
+                      >
+                    </td>
+                    <td>✔</td>
+                    <td>✔</td>
+                    <td>✔</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <a
+                        href="https://github.com/GoogleChrome/web-vitals-extension"
+                      >
+                        Web Vitals Extension</a
+                      >
+                    </td>
+                    <td>✔</td>
+                    <td>✔</td>
+                    <td>✔</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p>
+              Alternatively, developers who prefer to measure these metrics
+              directly via the underlying web APIs can refer to these metric
+              guides for implementation details:
+            </p>
+            <ul>
+              <li>
+                <a href="/lcp/#measure-lcp-in-javascript"
+                  >Measure LCP in JavaScript</a
+                >
+              </li>
+              <li>
+                <a href="/fid/#measure-fid-in-javascript"
+                  >Measure FID in JavaScript</a
+                >
+              </li>
+              <li>
+                <a href="/cls/#measure-cls-in-javascript"
+                  >Measure CLS in JavaScript</a
+                >
+              </li>
+            </ul>
+            <div class="w-aside w-aside--note">
+              <p>
+                For additional guidance on how to measure these metrics using
+                popular analytics services (or your own in-house analytics
+                tools), see:
+                <a href="/vitals-field-measurement-best-practices/"
+                  >Best practices for measuring Web Vitals in the field</a
+                >
+              </p>
+            </div>
+            <h4 id="lab-tools-to-measure-core-web-vitals">
+              Lab tools to measure Core Web Vitals
+              <a
+                class="w-headline-link"
+                href="#lab-tools-to-measure-core-web-vitals"
+                >#</a
+              >
+            </h4>
+            <p>
+              While all of the Core Web Vitals are, first and foremost, field
+              metrics, many of them are also measurable in the lab.
+            </p>
+            <p>
+              Lab measurement is the best way to test the performance of
+              features during development—before they've been released to users.
+              It's also the best way to catch performance regressions before
+              they happen.
+            </p>
+            <p>
+              The following tools can be used to measure the Core Web Vitals in
+              a lab environment:
+            </p>
+            <div class="w-table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>&nbsp;</th>
+                    <th>LCP</th>
+                    <th>FID</th>
+                    <th>CLS</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <a
+                        href="https://developers.google.com/web/tools/chrome-devtools"
+                      >
+                        Chrome DevTools</a
+                      >
+                    </td>
+                    <td>✔</td>
+                    <td>✘ (use <a href="/tbt/">TBT</a> instead)</td>
+                    <td>✔</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <a
+                        href="https://developers.google.com/web/tools/lighthouse"
+                      >
+                        Lighthouse</a
+                      >
+                    </td>
+                    <td>✔</td>
+                    <td>✘ (use <a href="/tbt/">TBT</a> instead)</td>
+                    <td>✔</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="w-aside w-aside--note">
+              <p>
+                Tools like Lighthouse that load pages in a simulated environment
+                without a user cannot measure FID (there is no user input).
+                However, the Total Blocking Time (TBT) metric is lab-measurable
+                and is an excellent proxy for FID. Performance optimizations
+                that improve TBT in the lab should improve FID in the field (see
+                performance recommendations below).
+              </p>
+            </div>
+            <p>
+              While lab measurement is an essential part of delivering great
+              experiences, it is not a substitute for field measurement.
+            </p>
+            <p>
+              The performance of a site can vary dramatically based on a user's
+              device capabilities, their network conditions, what other
+              processes may be running on the device, and how they're
+              interacting with the page. In fact, each of the Core Web Vitals
+              metrics can have its score affected by user interaction. Only
+              field measurement can accurately capture the complete picture.
+            </p>
+            <h3 id="recommendations-for-improving-your-scores">
+              Recommendations for improving your scores
+              <a
+                class="w-headline-link"
+                href="#recommendations-for-improving-your-scores"
+                >#</a
+              >
+            </h3>
+            <p>
+              Once you've measured the Core Web Vitals and identified areas for
+              improvement, the next step is to optimize. The following guides
+              offer specific recommendations for how to optimize your pages for
+              each of the Core Web Vitals:
+            </p>
+            <ul>
+              <li><a href="/optimize-lcp/">Optimize LCP</a></li>
+              <li><a href="/optimize-fid/">Optimize FID</a></li>
+              <li><a href="/optimize-cls/">Optimize CLS</a></li>
+            </ul>
+            <h2 id="other-web-vitals">
+              Other Web Vitals
+              <a class="w-headline-link" href="#other-web-vitals">#</a>
+            </h2>
+            <p>
+              While the Core Web Vitals are the critical metrics for
+              understanding and delivering a great user experience, there are
+              other vital metrics as well.
+            </p>
+            <p>
+              These other Web Vitals often serve as proxy or supplemental
+              metrics for the Core Web Vitals, to help capture a larger part of
+              the experience or to aid in diagnosing a specific issue.
+            </p>
+            <p>
+              For example, the metrics
+              <a href="/time-to-first-byte/">Time to First Byte (TTFB)</a> and
+              <a href="/fcp/">First Contentful Paint (FCP)</a> are both vital
+              aspects of the <em>loading</em> experience, and are both useful in
+              diagnosing issues with LCP (slow
+              <a href="/overloaded-server/">server response times</a> or
+              <a href="/render-blocking-resources/">render-blocking resources</a
+              >, respectively).
+            </p>
+            <p>
+              Similarly, metrics like
+              <a href="/tbt/">Total Blocking Time (TBT)</a> and
+              <a href="/tti/">Time to Interactive (TTI)</a> are lab metrics that
+              are vital in catching and diagnosing potential
+              <em>interactivity</em> issues that will impact FID. However, they
+              are not part of the Core Web Vitals set because they are not
+              field-measurable, nor do they reflect a
+              <a
+                href="/user-centric-performance-metrics/#how-metrics-are-measured"
+                >user-centric</a
+              >
+              outcome.
+            </p>
+            <h2 id="evolving-web-vitals">
+              Evolving Web Vitals
+              <a class="w-headline-link" href="#evolving-web-vitals">#</a>
+            </h2>
+            <p>
+              Web Vitals and Core Web Vitals represent the best available
+              signals developers have today to measure quality of experience
+              across the web, but these signals are not perfect and future
+              improvements or additions should be expected.
+            </p>
+            <p>
+              The <strong>Core Web Vitals</strong> are relevant to all web pages
+              and featured across relevant Google tools. Changes to these
+              metrics will have wide-reaching impact; as such, developers should
+              expect the definitions and thresholds of the Core Web Vitals to be
+              stable, and updates to have prior notice and a predictable, annual
+              cadence.
+            </p>
+            <p>
+              The other Web Vitals are often context or tool specific, and may
+              be more experimental than the Core Web Vitals. As such, their
+              definitions and thresholds may change with greater frequency.
+            </p>
+            <p>
+              For all Web Vitals, changes will be clearly documented in this
+              public
+              <a
+                href="http://bit.ly/chrome-speed-metrics-changelog"
+                rel="noopener"
+                >CHANGELOG</a
+              >.
+            </p>
+
+            <div class="w-chips">
+              <a class="w-chip" href="/tags/metrics/">Metrics</a>
+
+              <a class="w-chip" href="/tags/performance/">Performance</a>
+
+              <a class="w-chip" href="/tags/web-vitals/">Web Vitals</a>
+            </div>
+
+            <div class="w-post-github-link w-mt--l w-mb--l">
+              <span class="w-mr--sm">
+                Last updated: <time>Jul 21, 2020</time>
+              </span>
+              <a
+                href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/vitals/index.md"
+              >
+                Improve article
+              </a>
+            </div>
+
+            <web-feedback additional-questions=""></web-feedback>
+          </div>
+
+          <nav class="w-article-navigation">
+            <a
+              class="
+                w-article-navigation__link
+                w-article-navigation__link--back
+                w-article-navigation__link--single
+                gc-analytics-event
+              "
+              data-category="web.dev"
+              data-label="navigation, go back"
+              data-action="click"
+              href="/learn-web-vitals"
+            >
+              Return to all articles
+            </a>
+          </nav>
+        </div>
+      </div>
+    </main>
+    <footer class="w-footer">
+      <nav class="w-footer__linkboxes">
+        <ul class="w-footer__linkboxes-list">
+          <li class="w-footer__linkbox">
+            <h3 class="w-footer__linkbox-heading">Contribute</h3>
+            <ul class="w-footer__linkbox-list">
+              <li class="w-footer__linkbox-item">
+                <a
+                  href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+                  class="w-footer__linkbox-link"
+                  data-category="Site-Wide Custom Events"
+                  data-label="Footer Link (index 1)"
+                >
+                  File a bug
+                </a>
+              </li>
+              <li class="w-footer__linkbox-item">
+                <a
+                  href="https://github.com/googlechrome/web.dev"
+                  class="w-footer__linkbox-link"
+                  data-category="Site-Wide Custom Events"
+                  data-label="Footer Link (index 2)"
+                >
+                  View source
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="w-footer__linkbox">
+            <h3 class="w-footer__linkbox-heading">Related content</h3>
+            <ul class="w-footer__linkbox-list">
+              <li class="w-footer__linkbox-item">
+                <a
+                  href="https://blog.chromium.org/"
+                  class="w-footer__linkbox-link"
+                  data-category="Site-Wide Custom Events"
+                  data-label="Footer Link (index 1)"
+                >
+                  Chrome updates
+                </a>
+              </li>
+              <li class="w-footer__linkbox-item">
+                <a
+                  href="https://developers.google.com/web/"
+                  class="w-footer__linkbox-link"
+                  data-category="Site-Wide Custom Events"
+                  data-label="Footer Link (index 2)"
+                >
+                  Web Fundamentals
+                </a>
+              </li>
+              <li class="w-footer__linkbox-item">
+                <a
+                  href="https://developers.google.com/web/showcase/"
+                  class="w-footer__linkbox-link"
+                  data-category="Site-Wide Custom Events"
+                  data-label="Footer Link (index 3)"
+                >
+                  Case studies
+                </a>
+              </li>
+              <li class="w-footer__linkbox-item">
+                <a
+                  href="https://devwebfeed.appspot.com/"
+                  class="w-footer__linkbox-link"
+                  data-category="Site-Wide Custom Events"
+                  data-label="Footer Link (index 4)"
+                >
+                  DevWeb Content Firehose
+                </a>
+              </li>
+              <li class="w-footer__linkbox-item">
+                <a
+                  href="/podcasts/"
+                  class="w-footer__linkbox-link"
+                  data-category="Podcasts"
+                  data-label="Footer Link (index 5)"
+                >
+                  Podcasts
+                </a>
+              </li>
+              <li class="w-footer__linkbox-item">
+                <a
+                  href="/shows/"
+                  class="w-footer__linkbox-link"
+                  data-category="Shows"
+                  data-label="Footer Link (index 6)"
+                >
+                  Shows
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="w-footer__linkbox">
+            <h3 class="w-footer__linkbox-heading">Connect</h3>
+            <ul class="w-footer__linkbox-list">
+              <li class="w-footer__linkbox-item">
+                <a
+                  href="https://www.twitter.com/@ChromiumDev"
+                  class="w-footer__linkbox-link"
+                  data-category="Site-Wide Custom Events"
+                  data-label="Footer Link (index 1)"
+                >
+                  Twitter
+                </a>
+              </li>
+              <li class="w-footer__linkbox-item">
+                <a
+                  href="https://www.youtube.com/user/ChromeDevelopers"
+                  class="w-footer__linkbox-link"
+                  data-category="Site-Wide Custom Events"
+                  data-label="Footer Link (index 2)"
+                >
+                  YouTube
+                </a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="w-footer__utility">
+        <nav class="w-footer__utility-nav">
+          <a
+            href="https://developers.google.com/"
+            class="w-footer__utility-logo-link"
+            data-category="Site-Wide Custom Events"
+            data-label="Footer Google Developers Link"
+          >
+            <img
+              loading="lazy"
+              width="185"
+              height="33"
+              class="w-footer__utility-logo"
+              src="/images/lockup-color.png"
+              alt="Google Developers"
+            />
+          </a>
+          <ul class="w-footer__utility-list">
+            <li class="w-footer__utility-item">
+              <a
+                class="w-footer__utility-link"
+                href="https://developer.chrome.com/home"
+                data-category="Site-Wide Custom Events"
+                data-label="Footer Chrome Link"
+              >
+                Chrome
+              </a>
+            </li>
+            <li class="w-footer__utility-item">
+              <a
+                class="w-footer__utility-link"
+                href="https://firebase.google.com/"
+                data-category="Site-Wide Custom Events"
+                data-label="Footer Firebase Link"
+              >
+                Firebase
+              </a>
+            </li>
+            <li class="w-footer__utility-item">
+              <a
+                class="w-footer__utility-link"
+                href="https://cloud.google.com/"
+                data-category="Site-Wide Custom Events"
+                data-label="Footer Google Cloud Platform Link"
+              >
+                Google Cloud Platform
+              </a>
+            </li>
+            <li class="w-footer__utility-item">
+              <a
+                class="w-footer__utility-link"
+                href="https://developers.google.com/products"
+                data-category="Site-Wide Custom Events"
+                data-label="Footer All products Link"
+              >
+                All products
+              </a>
+            </li>
+          </ul>
+          <web-language-select current="en"></web-language-select>
+        </nav>
+        <nav class="w-footer__utility-nav">
+          <ul class="w-footer__utility-list">
+            <li class="w-footer__utility-item">
+              <a
+                class="w-footer__utility-link"
+                href="https://policies.google.com/"
+                data-category="Site-Wide Custom Events"
+                data-label="Footer Terms and Privacy link"
+              >
+                Terms &amp; Privacy
+              </a>
+            </li>
+            <li class="w-footer__utility-item">
+              <a
+                class="w-footer__utility-link"
+                href="/community-guidelines/"
+                data-category="Site-Wide Custom Events"
+                data-label="Footer Community Guidelines link"
+              >
+                Community Guidelines
+              </a>
+            </li>
+          </ul>
+          <div class="w-footer__license">
+            <p>
+              Except as otherwise noted, the content of this page is licensed
+              under the
+              <a href="https://creativecommons.org/licenses/by/4.0/">
+                Creative Commons Attribution 4.0 License</a
+              >, and code samples are licensed under the
+              <a href="https://www.apache.org/licenses/LICENSE-2.0">
+                Apache 2.0 License</a
+              >. For details, see the
+              <a href="https://developers.google.com/site-policies">
+                Google Developers Site Policies</a
+              >.
+            </p>
+          </div>
+        </nav>
+      </div>
+    </footer>
+  </body>
+</html>

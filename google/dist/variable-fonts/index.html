@@ -1,0 +1,1194 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=2ff2025a5f3b1">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Introduction to variable fonts on the web</title>
+<meta name="description" content="How variable fonts work, how typographers implement variable fonts, and how to work with variable fonts in CSS. " />
+
+<link rel="canonical" href="https://web.dev/variable-fonts/" />
+
+<meta itemprop="name" content="Introduction to variable fonts on the web" />
+<meta itemprop="description" content="How variable fonts work, how typographers implement variable fonts, and how to work with variable fonts in CSS. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/SHy7jOlEVPU1lsyfgvlG.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/variable-fonts/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Introduction to variable fonts on the web" />
+<meta property="og:description" content="How variable fonts work, how typographers implement variable fonts, and how to work with variable fonts in CSS. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/SHy7jOlEVPU1lsyfgvlG.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="" />
+<meta property="tag" content="fonts" />
+<meta property="tag" content="performance" />
+<meta property="tag" content="ux" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Introduction to variable fonts on the web" />
+<meta name="twitter:description" content="How variable fonts work, how typographers implement variable fonts, and how to work with variable fonts in CSS. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/SHy7jOlEVPU1lsyfgvlG.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=5ae0775f9d2cd', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=7410ec0205473', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="Hero Image"     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/SHy7jOlEVPU1lsyfgvlG.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/SHy7jOlEVPU1lsyfgvlG.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/SHy7jOlEVPU1lsyfgvlG.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/SHy7jOlEVPU1lsyfgvlG.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/SHy7jOlEVPU1lsyfgvlG.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/SHy7jOlEVPU1lsyfgvlG.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/SHy7jOlEVPU1lsyfgvlG.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/SHy7jOlEVPU1lsyfgvlG.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/SHy7jOlEVPU1lsyfgvlG.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/SHy7jOlEVPU1lsyfgvlG.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/SHy7jOlEVPU1lsyfgvlG.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/SHy7jOlEVPU1lsyfgvlG.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/SHy7jOlEVPU1lsyfgvlG.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/SHy7jOlEVPU1lsyfgvlG.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/SHy7jOlEVPU1lsyfgvlG.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/SHy7jOlEVPU1lsyfgvlG.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/SHy7jOlEVPU1lsyfgvlG.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/SHy7jOlEVPU1lsyfgvlG.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#introduction-to-variable-fonts-on-the-web" class="w-toc__header--link">
+        Introduction to variable fonts on the web
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#browser-compatibility">Browser compatibility</a></li><li><a href="#introduction">Introduction</a></li><li><a href="#challenges-for-the-designer-and-developer">Challenges for the designer and developer</a></li><li><a href="#anatomy-of-a-variable-font">Anatomy of a variable font</a></li><li><a href="#italics">Italics</a></li><li><a href="#axes-definitions">Axes definitions</a></li><li><a href="#use-cases-and-benefits">Use cases and benefits</a></li><li><a href="#exciting-expression">Exciting expression</a></li><li><a href="#animation">Animation</a></li><li><a href="#finesse">Finesse</a></li><li><a href="#variable-fonts-in-css">Variable fonts in CSS</a></li><li><a href="#loading-variable-font-files">Loading variable font files</a></li><li><a href="#using-weights-and-widths">Using weights and widths</a></li><li><a href="#using-italics-and-obliques">Using italics and obliques</a></li><li><a href="#using-optical-sizes">Using optical sizes</a></li><li><a href="#using-custom-axes">Using custom axes</a></li><li><a href="#variable-fonts-on-google-fonts">Variable fonts on Google Fonts</a></li><li><a href="#font-variation-settings-inheritance">Font-variation-settings inheritance</a></li><li><a href="#performance-gains">Performance gains</a></li><li><a href="#fallbacks">Fallbacks and browser support</a></li><li><a href="#thanks">Thanks</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@mustafa_x | @tomayac | @davelab6 | @pixelambacht"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="introduction-to-variable-fonts-on-the-web" class="w-article-header__headline">Introduction to variable fonts on the web</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          A new font specification that can significantly reduce font file sizes
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Feb 19, 2018</time>
+           <span class="w-author__separator">•</span> Updated <time>Aug 17, 2020</time> 
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/mustafakurtuldu/"><img     alt="Mustafa Kurtuldu"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/0MyqDvMQmaxVodxo5kr9.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/0MyqDvMQmaxVodxo5kr9.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/0MyqDvMQmaxVodxo5kr9.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/0MyqDvMQmaxVodxo5kr9.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/0MyqDvMQmaxVodxo5kr9.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/0MyqDvMQmaxVodxo5kr9.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/mustafakurtuldu/">Mustafa Kurtuldu</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/mustafa_x"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/mustafa-x">GitHub</a>
+      </li>
+      
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://www.designtoday.info/">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+            <div class="w-author">
+  <a href="/authors/thomassteiner/"><img     alt="Thomas Steiner"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/thomassteiner/">Thomas Steiner</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/tomayac"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/tomayac">GitHub</a>
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://glitch.com/@tomayac"
+          >Glitch</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://blog.tomayac.com/">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+            <div class="w-author">
+  <a href="/authors/dcrossland/"><img     alt="Dave Crossland"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/Yw6cuEYfVm8eOqiRFtml.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/Yw6cuEYfVm8eOqiRFtml.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/Yw6cuEYfVm8eOqiRFtml.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/Yw6cuEYfVm8eOqiRFtml.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/Yw6cuEYfVm8eOqiRFtml.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/Yw6cuEYfVm8eOqiRFtml.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/dcrossland/">Dave Crossland</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/davelab6"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/davelab6">GitHub</a>
+      </li>
+      
+      
+    </ul>
+  </div>
+</div>
+          
+            <div class="w-author">
+  <a href="/authors/roeln/"><img     alt="Roel Nieskens"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/sJXQNtqZbfnddKBtKZo1.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/sJXQNtqZbfnddKBtKZo1.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/sJXQNtqZbfnddKBtKZo1.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/sJXQNtqZbfnddKBtKZo1.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/sJXQNtqZbfnddKBtKZo1.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/sJXQNtqZbfnddKBtKZo1.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/roeln/">Roel Nieskens</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/pixelambacht"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/roeln">GitHub</a>
+      </li>
+      
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://pixelambacht.nl/">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>In this article, we will look at what variable fonts are, the benefits they
+offer, and how we can use them in our work. First, let's review how typography
+works on the web, and what innovations variable fonts bring.</p>
+<h2 id="browser-compatibility">Browser compatibility <a class="w-headline-link" href="#browser-compatibility">#</a></h2>
+<p>As of May 2020 variable fonts are supported in most browsers. See
+<a href="https://caniuse.com/#feat=variable-fonts" rel="noopener">Can I use variable fonts?</a>
+and <a href="#fallbacks">Fallbacks</a>.</p>
+<h2 id="introduction">Introduction <a class="w-headline-link" href="#introduction">#</a></h2>
+<p>The terms font and typeface are often used interchangeably by developers.
+However there is a difference: A typeface is the underlying visual design that
+can exist in many different typesetting technologies, and a font is one of these
+implementations, in a digital file format. In other words, a typeface is what
+you <em>see</em>, and the font is what you <em>use</em>.</p>
+<p>Another concept that is often overlooked is the distinction between a style, and
+a family. A style is a single and specific typeface, such as Bold Italic, and a
+family is the complete set of styles.</p>
+<p>Before variable fonts, each style was implemented as a separate font file. With
+variable fonts, all styles can be contained in a single file.</p>
+<figure class="w-figure">
+  <img     alt="A specimen composition and list of different styles of the Roboto family"          decoding="async"     height="600"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/RbhgXwS81Y9PVRJnTjPX.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/RbhgXwS81Y9PVRJnTjPX.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/RbhgXwS81Y9PVRJnTjPX.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/RbhgXwS81Y9PVRJnTjPX.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/RbhgXwS81Y9PVRJnTjPX.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/RbhgXwS81Y9PVRJnTjPX.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/RbhgXwS81Y9PVRJnTjPX.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/RbhgXwS81Y9PVRJnTjPX.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/RbhgXwS81Y9PVRJnTjPX.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/RbhgXwS81Y9PVRJnTjPX.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/RbhgXwS81Y9PVRJnTjPX.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/RbhgXwS81Y9PVRJnTjPX.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/RbhgXwS81Y9PVRJnTjPX.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/RbhgXwS81Y9PVRJnTjPX.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/RbhgXwS81Y9PVRJnTjPX.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/RbhgXwS81Y9PVRJnTjPX.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/RbhgXwS81Y9PVRJnTjPX.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/RbhgXwS81Y9PVRJnTjPX.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption w-figcaption--fullbleed">
+    Left: a specimen of the Roboto typeface family. Right: named styles within the family.
+  </figcaption>
+</figure>
+<h2 id="challenges-for-the-designer-and-developer">Challenges for the designer and developer <a class="w-headline-link" href="#challenges-for-the-designer-and-developer">#</a></h2>
+<p>When a designer creates a print project they face some constraints, such as the
+physical size of the page layout, the number of colors they can use (which is
+determined by the kind of printing press that will be used), and so on. But they
+can use as many typeface styles as they like. This means that the typography of
+print media is often rich and sophisticated, so that the reading experience is
+truly delightful. Think of the last time you enjoyed browsing an excellent
+magazine.</p>
+<p>Web designers and developers have different constraints than print designers,
+and an important one is the associated bandwidth costs of our designs. This
+has been a sticking point for richer typographic experiences, as they come at
+a cost. With traditional web fonts, each style used in our designs requires
+users to download a separate font file, which increases latency and page
+rendering time. Only including the Regular and Bold styles, plus their italic
+counterparts, can amount to 500 KB or more of font data. This is even before
+we have dealt with how the fonts are rendered, the fallback patterns we need
+to use, or undesirable side-effects such as <a href="https://www.zachleat.com/web/fout-vs-foit/" rel="noopener">FOIT and
+FOUT</a>.</p>
+<p>Many font families offer a much wider range of styles, from Thin to Black
+weights, narrow and wide widths, a variety of stylistic details, and even
+size-specific designs (optimized for large or small text sizes.) Since you'd
+have to load a new font file for every style (or combinations of styles), many
+web developers choose not to use these capabilities, reducing the reading
+experience of their users.</p>
+<h2 id="anatomy-of-a-variable-font">Anatomy of a variable font <a class="w-headline-link" href="#anatomy-of-a-variable-font">#</a></h2>
+<p>Variable fonts address these challenges, by packing styles into a single file.</p>
+<p>This works by starting with a central or 'default' style, usually the
+'Regular'–an upright roman design with the most typical weight and width that
+is most suitable for plain text. This is then connected to other styles in a
+continuous range, called an 'axis.' The most common axis is <strong>Weight</strong>, which
+can connect the default style through to a Bold style. Any individual style
+can be located along an axis, and is called an 'instance' of the variable
+font. Some instances are named by the font developer, for example Weight axis
+location 600 is called SemiBold.</p>
+<p>The variable font <a href="https://github.com/TypeNetwork/Roboto-Flex" rel="noopener">Roboto Flex</a>
+has three styles for its <strong>Weight</strong> axis. The Regular style is at the center,
+and there are two styles at the opposite ends of the axis, one lighter and
+the other heavier. Between these, you can choose from 900 instances:</p>
+<figure class="w-figure">
+  <img     alt="The letter &#x27;A&#x27; shown in different weights"          decoding="async"     height="218"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Ecr5godvTKunVXP7W8aU.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Ecr5godvTKunVXP7W8aU.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Ecr5godvTKunVXP7W8aU.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Ecr5godvTKunVXP7W8aU.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Ecr5godvTKunVXP7W8aU.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Ecr5godvTKunVXP7W8aU.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Ecr5godvTKunVXP7W8aU.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Ecr5godvTKunVXP7W8aU.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Ecr5godvTKunVXP7W8aU.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Ecr5godvTKunVXP7W8aU.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Ecr5godvTKunVXP7W8aU.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Ecr5godvTKunVXP7W8aU.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Ecr5godvTKunVXP7W8aU.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Ecr5godvTKunVXP7W8aU.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Ecr5godvTKunVXP7W8aU.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Ecr5godvTKunVXP7W8aU.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Ecr5godvTKunVXP7W8aU.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Ecr5godvTKunVXP7W8aU.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption w-figcaption--fullbleed">
+    Above: Illustrated anatomy of the Weight axis for the typeface Roboto.
+  </figcaption>
+</figure>
+<p>The font developer can offer a set of different axes. You can combine them
+because they all share the same default styles. Roboto has three styles in a
+Width axis: the Regular is at the center of the axis, and two styles, narrower
+and wider, are at each end. These provide all the widths of the Regular style,
+and combine with the Weight axis to provide all the widths for every weight.</p>
+<figure class="w-figure">
+  <video controls autoplay loop muted class="w-screenshot">
+    <source src="https://storage.googleapis.com/web-dev-assets/variable-fonts/roboto-dance.mp4" type="video/mp4">
+  </video>
+  <figcaption>
+    Roboto Flex in random combinations of Width and Weight
+  </figcaption>
+</figure>
+<p>This means there are thousands of styles! This may seem like massive overkill,
+but the quality of the reading experience can be remarkably enhanced by this
+diversity of type styles. And, if it is without performance penalty, web
+developers can use a few or as many styles as they wish–it's up to their design.</p>
+<h3 id="italics">Italics <a class="w-headline-link" href="#italics">#</a></h3>
+<p>The way that Italics are handled in variable fonts is interesting, as there are
+two difference approaches. Typefaces like Helvetica or Roboto have interpolation
+compatible contours, so their Roman and Italic styles can be interpolated
+between and the <strong>Slant</strong> axis can be used to get from Roman to Italic.</p>
+<p>Other typefaces (such as Garamond, Baskerville, or Bodoni) have Roman and Italic
+glyph contours that are not interpolation compatible. For example, the contours
+that typically define a Roman lowercase &quot;n&quot; do not match the contours used to
+define an Italic lowercase &quot;n&quot;. Instead of interpolating one contour to the
+other, the <strong>Italic</strong> axis toggles from Roman to Italic contours.</p>
+<figure class="w-figure">
+  <img     alt="Example of the Weight Axes for the typeface Amstelvar"          decoding="async"     height="520"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/EySl1LIfX1QIrGq654PO.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/EySl1LIfX1QIrGq654PO.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/EySl1LIfX1QIrGq654PO.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/EySl1LIfX1QIrGq654PO.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/EySl1LIfX1QIrGq654PO.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/EySl1LIfX1QIrGq654PO.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/EySl1LIfX1QIrGq654PO.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/EySl1LIfX1QIrGq654PO.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/EySl1LIfX1QIrGq654PO.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/EySl1LIfX1QIrGq654PO.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/EySl1LIfX1QIrGq654PO.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/EySl1LIfX1QIrGq654PO.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/EySl1LIfX1QIrGq654PO.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/EySl1LIfX1QIrGq654PO.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/EySl1LIfX1QIrGq654PO.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/EySl1LIfX1QIrGq654PO.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/EySl1LIfX1QIrGq654PO.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/EySl1LIfX1QIrGq654PO.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">
+    Amstelvar's "n" contours in Italic (12 point, regular weight, normal width),
+    and in Roman. Image supplied by David Berlow, type designer and typographer
+    at Font Bureau.
+  </figcaption>
+</figure>
+<p>After the switch to Italic, the axes available to the user should be the same as
+those for the Roman, just as the character set should be the same.</p>
+<p>A glyph substitution capability can also be seen for individual glyphs, and used
+anywhere in the design space of a variable font. For example, a dollar sign
+design with two vertical bars works best at larger point sizes, but at smaller
+point sizes a design with only one bar is better. When we have fewer pixels for
+rendering the glyph, a two bar design can become illegible. To combat this, much
+like the Italic axis, a glyph substitution of one glyph for another can occur
+along the <strong>Optical Size</strong> axis at a point decided by the type designer.</p>
+<p>In summary, where the contours allow for it, type designers can create fonts
+that interpolate between various styles in a multi-dimensional design space.
+This gives you granular control over your typography, and a great deal of power.</p>
+<h2 id="axes-definitions">Axes definitions <a class="w-headline-link" href="#axes-definitions">#</a></h2>
+<p>There are five <a href="https://docs.microsoft.com/en-us/typography/opentype/spec/dvaraxisreg#registered-axis-tags" rel="noopener">registered
+axes</a>,
+which control known, predictable features of the font: weight, width, optical
+size, slant and italics. Besides those, a font can contain custom axes. These
+can control any design aspect of the font the type designer wishes: the size of
+serifs, the length of swashes, the height of ascenders or the size of the dot on
+the i.</p>
+<p>Even though axes can control the same feature, they might use different values.
+For example, in the Oswald and Hepta Slab variable fonts there is only one axis
+available, Weight, but the ranges are different–Oswald has the same range as
+before it was upgraded to be variable, 200 to 700, but Hepta Slab has an extreme
+hairline weight at 1 that goes all the up to 900.</p>
+<p>The five registered axes have 4-character lowercase tags that are used to
+set their values in CSS:</p>
+<table class="responsive">
+	<tbody>
+		<tr>
+			<th colspan="2">Axis names and CSS values</th>
+		</tr>
+		<tr>
+			<td>
+				Weight
+			</td>
+			<td>
+				<code>wght</code>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Width
+			</td>
+			<td>
+				<code>wdth</code>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Slant
+			</td>
+			<td>
+				<code>slnt</code>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Optical Size
+			</td>
+			<td>
+				<code>opsz</code>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Italics
+			</td>
+			<td>
+				<code>ital</code>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<p>Since the font developer defines which axes are available in a variable font,
+and which values they can have, it is essential to find out what each font
+offers. The font's documentation should provide this, or you can inspect the
+font using a tool like <a href="https://wakamaifondue.com" rel="noopener">Wakamai Fondue</a>.</p>
+<h2 id="use-cases-and-benefits">Use cases and benefits <a class="w-headline-link" href="#use-cases-and-benefits">#</a></h2>
+<p>Setting the axes values comes down to personal taste and applying typographic
+best practices. The danger with any new technology is possible misuse, and
+settings that are overly artistic or exploratory could also decrease legibility
+of the actual text. For titles, exploring different axes to create great
+artistic designs are exciting, but for body copy this risks making the text
+illegible.</p>
+<h3 id="exciting-expression">Exciting expression <a class="w-headline-link" href="#exciting-expression">#</a></h3>
+<figure class="w-figure">
+  <img     alt="Grass example by Mandy Michael"          decoding="async"     height="174"          loading="lazy"     sizes="(min-width: 495px) 495px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Rh7wLaBLauEF02D2dqMC.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Rh7wLaBLauEF02D2dqMC.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Rh7wLaBLauEF02D2dqMC.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Rh7wLaBLauEF02D2dqMC.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Rh7wLaBLauEF02D2dqMC.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Rh7wLaBLauEF02D2dqMC.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Rh7wLaBLauEF02D2dqMC.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Rh7wLaBLauEF02D2dqMC.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Rh7wLaBLauEF02D2dqMC.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Rh7wLaBLauEF02D2dqMC.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Rh7wLaBLauEF02D2dqMC.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Rh7wLaBLauEF02D2dqMC.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Rh7wLaBLauEF02D2dqMC.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Rh7wLaBLauEF02D2dqMC.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Rh7wLaBLauEF02D2dqMC.png?auto=format&w=990 990w"          width="495"   />
+</figure>
+<p>One great example of artistic expression is shown above, an exploration of the
+typeface
+<a href="https://www.typenetwork.com/brochure/decovar-a-decorative-variable-font-by-david-berlow" rel="noopener">Decovar</a>
+by Mandy Michael.</p>
+<p>You can view the working example and source code for the above sample
+<a href="https://codepen.io/mandymichael/pen/YYaWop" rel="noopener">here</a>.</p>
+<h3 id="animation">Animation <a class="w-headline-link" href="#animation">#</a></h3>
+<figure class="w-figure">
+  <video      autoplay            class="w-screenshot"                              loop      muted      playsinline                      >      <source src="https://storage.googleapis.com/web-dev-uploads/video/vgdbNJBYHma2o62ZqYmcnkq3j0o1/2Du2L0Ii5nUqz8n6S3Vz.mp4" type="video/mp4" />    </video>
+  <figcaption class="w-figcaption">
+    Typeface Zycon, designed for animation by David Berlow, type designer and
+    typographer at Font Bureau.
+  </figcaption>
+</figure>
+<p>There is also a possibility to explore animating characters with variable fonts.
+Above is an example of different axes being used with the typeface Zycon. See
+the live <a href="https://www.axis-praxis.org/specimens/zycon" rel="noopener">animation example on Axis
+Praxis</a>.</p>
+<p><a href="https://typogram.github.io/Anicons" rel="noopener">Anicons</a> is the world's first animated
+color icon font, based on Material Design Icons. Anicons is an experiment that
+combines two cutting edge font technologies: variable fonts and color fonts.</p>
+<figure class="w-figure">
+  <video controls autoplay loop muted class="w-screenshot">
+    <source src="https://storage.googleapis.com/web-dev-assets/variable-fonts/anicons-animation.mp4" type="video/mp4">
+  </video>
+  <figcaption class="w-figcaption">
+    A few examples of hover animations from Anicon's color icon font
+  </figcaption>
+</figure>
+<h3 id="finesse">Finesse <a class="w-headline-link" href="#finesse">#</a></h3>
+<figure class="w-figure">
+  <video controls autoplay loop muted class="w-screenshot">
+    <source src="https://storage.googleapis.com/web-dev-assets/variable-fonts/larger-widths.mp4" type="video/mp4">
+  </video>
+  <figcaption class="w-figcaption">
+    Amstelvar using little bits of XTRA in opposite directions so the words' widths are evened out
+  </figcaption>
+</figure>
+<p><a href="https://github.com/TypeNetwork/Roboto-Flex" rel="noopener">Roboto Flex</a> and
+<a href="https://github.com/TypeNetwork/Amstelvar" rel="noopener">Amstelvar</a> offer a set of
+&quot;Parametric Axes.&quot; In these axes, the letters are deconstructed into 4
+fundamental aspects of form: black or positive shapes, white or negative
+shapes, and the x and y dimensions. In the same way that primary colors can be
+blended with any other color to adjust it, these 4 aspects can be used to fine
+tune any other axis.</p>
+<p>The XTRA axis in Amstelvar allows you to adjust the &quot;white&quot; per mille value,
+as shown above. Using little bits of XTRA in opposite directions, the words'
+widths are evened out.</p>
+<h2 id="variable-fonts-in-css">Variable fonts in CSS <a class="w-headline-link" href="#variable-fonts-in-css">#</a></h2>
+<h3 id="loading-variable-font-files">Loading variable font files <a class="w-headline-link" href="#loading-variable-font-files">#</a></h3>
+<p>Variable fonts are loaded though the same <code>@font-face</code> mechanism as traditional
+static web fonts, but with two new enhancements:</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token atrule"><span class="token rule">@font-face</span></span> <span class="token punctuation">{</span><br>	<span class="token property">font-family</span><span class="token punctuation">:</span> <span class="token string">'Roboto Flex'</span><span class="token punctuation">;</span><br>	<span class="token property">src</span><span class="token punctuation">:</span> <span class="token url"><span class="token function">url</span><span class="token punctuation">(</span><span class="token string url">'RobotoFlex-VF.woff2'</span><span class="token punctuation">)</span></span> <span class="token function">format</span><span class="token punctuation">(</span><span class="token string">'woff2 supports variations'</span><span class="token punctuation">)</span><span class="token punctuation">,</span><br>       <span class="token url"><span class="token function">url</span><span class="token punctuation">(</span><span class="token string url">'RobotoFlex-VF.woff2'</span><span class="token punctuation">)</span></span> <span class="token function">format</span><span class="token punctuation">(</span><span class="token string">'woff2-variations'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>	<span class="token property">font-weight</span><span class="token punctuation">:</span> 100 1000<span class="token punctuation">;</span><br>	<span class="token property">font-stretch</span><span class="token punctuation">:</span> 25% 151%<span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p><strong>1. Source Formats:</strong> We don't want the browser to download the font if it
+doesn't support variable fonts, so we add a <code>format</code> description: once in the
+<a href="https://www.w3.org/TR/css-fonts-4/#font-face-src-requirement-types" rel="noopener">future
+format</a>
+(<code>woff2 supports variations</code>), once in the current but soon to be deprecated
+format (<code>woff2-variations</code>). If the browser supports variable fonts and supports
+the upcoming syntax, it will use the first declaration. If it supports variable
+fonts and the current syntax, it will use the second declaration. They both
+point to the same font file.</p>
+<!-- TODO 2021 Q1 revisit this, based on progress in
+     https://www.w3.org/TR/css-fonts-4/#font-face-src-requirement-types
+     to allow removing the 2nd src -->
+<p><strong>2. Style Ranges:</strong> You'll notice we're supplying two values for <code>font-weight</code>
+and <code>font-stretch</code>. Instead of telling the browser which specific weight this
+font provides (for example <code>font-weight: 500;</code>), we now give it the <strong>range</strong> of
+weights supported by the font. For Roboto Flex, the Weight axis ranges from 100
+to 1000, and CSS directly maps the axis range to the <code>font-weight</code> style
+property. By specifying the range in <code>@font-face</code>, any value outside this range
+will be &quot;capped&quot; to the nearest valid value. The Width axis range is mapped in
+the same way to the <code>font-stretch</code> property.</p>
+<p>If you're using the Google Fonts API, this will all be taken care of. Not only
+will the CSS contain the proper source formats and ranges, Google Fonts will
+also send static fallback fonts in case variable fonts aren't supported.</p>
+<h3 id="using-weights-and-widths">Using weights and widths <a class="w-headline-link" href="#using-weights-and-widths">#</a></h3>
+<p>Currently, the axes you can reliably set from CSS are the <code>wght</code> axis through
+<code>font-weight</code>, and the <code>wdth</code> axis through <code>font-stretch</code>.</p>
+<p>Traditionally, you would set <code>font-weight</code> as a keyword (<code>light</code>, <code>bold</code>) or as
+a numerical value between 100 and 900, in steps of 100. With variable fonts, you
+can set any value within the font's Width range:</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">.kinda-light</span> <span class="token punctuation">{</span><br>  <span class="token property">font-weight</span><span class="token punctuation">:</span> 125<span class="token punctuation">;</span><br><span class="token punctuation">}</span><br><br><span class="token selector">.super-heavy</span> <span class="token punctuation">{</span><br>  <span class="token property">font-weight</span><span class="token punctuation">:</span> 1000<span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><figure class="w-figure">
+  <video controls autoplay loop muted class="w-screenshot">
+    <source src="https://storage.googleapis.com/web-dev-assets/variable-fonts/roboto-flex-weight.mp4" type="video/mp4">
+  </video>
+  <figcaption class="w-figcaption">
+    Roboto Flex' Weight axis being changed from its minimum to its maximum.
+  </figcaption>
+</figure>
+<p>Likewise, we can set <code>font-stretch</code> with keywords (<code>condensed</code>,
+<code>ultra-expanded</code>) or with percentage values:</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">.kinda-narrow</span> <span class="token punctuation">{</span><br>  <span class="token property">font-stretch</span><span class="token punctuation">:</span> 33.3%<span class="token punctuation">;</span><br><span class="token punctuation">}</span><br><br><span class="token selector">.super-wide</span> <span class="token punctuation">{</span><br>  <span class="token property">font-stretch</span><span class="token punctuation">:</span> 151%<span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><figure class="w-figure">
+  <video controls autoplay loop muted class="w-screenshot">
+    <source src="https://storage.googleapis.com/web-dev-assets/variable-fonts/roboto-flex-width.mp4" type="video/mp4">
+  </video>
+  <figcaption class="w-figcaption">
+    Roboto Flex' Width axis being changed from its minimum to its maximum.
+  </figcaption>
+</figure>
+<h3 id="using-italics-and-obliques">Using italics and obliques <a class="w-headline-link" href="#using-italics-and-obliques">#</a></h3>
+<p>The <code>ital</code> axis is intended for fonts that contain both a regular style, and an
+italic style. The axis is meant to be an on/off switch: value <code>0</code> is off and
+will show the regular style, value <code>1</code> will show the italics. Unlike other axes,
+there's no transition. A value of <code>0.5</code> won't give you &quot;half italics&quot;.</p>
+<p>The <code>slnt</code> axis is different from italics in that it's not a new <em>style</em>, but
+just slants the regular style. By default its value is <code>0</code>, which means the
+default upright letter shapes. Roboto Flex has a maximum slant of -10 degrees,
+meaning the letters will lean to the right when going from 0 to -10.</p>
+<p>It would be intuitive to set these axis through the <code>font-style</code> property, but
+as of April 2020, how to exactly do this is <a href="https://github.com/w3c/csswg-drafts/issues/3125" rel="noopener">still being worked
+out</a>. So for now, you should
+treat these as custom axes, and set them through <code>font-variation-settings</code>:</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">i, em, .italic</span> <span class="token punctuation">{</span><br>	<span class="token comment">/* Should be font-style: italic; */</span><br>	<span class="token property">font-variation-settings</span><span class="token punctuation">:</span> <span class="token string">'ital'</span> 1<span class="token punctuation">;</span><br><span class="token punctuation">}</span><br><br><span class="token selector">.slanted</span> <span class="token punctuation">{</span><br>	<span class="token comment">/* Should be font-style: oblique 10deg; */</span><br>	<span class="token property">font-variation-settings</span><span class="token punctuation">:</span> <span class="token string">'slnt'</span> 10<span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><figure class="w-figure">
+  <video controls autoplay loop muted class="w-screenshot">
+    <source src="https://storage.googleapis.com/web-dev-assets/variable-fonts/roboto-flex-slant.mp4" type="video/mp4">
+  </video>
+  <figcaption class="w-figcaption">
+    Roboto Flex' Slant axis being changed from its minimum to its maximum.
+  </figcaption>
+</figure>
+<h3 id="using-optical-sizes">Using optical sizes <a class="w-headline-link" href="#using-optical-sizes">#</a></h3>
+<p>A typeface can be rendered very small (a 12px footnote) or very large (a 80px
+headline). Fonts can respond to these size changes by changing its letter shapes
+to better suit its size. A small size might be better off without fine details,
+while a large size might benefit from more details and thinner strokes.</p>
+<figure class="w-figure">
+  <img     alt="The letter &#x27;a&#x27; shown at different optical sizes"          decoding="async"     height="147"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/wrVCGSQNaGWhNp97BoRS.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/wrVCGSQNaGWhNp97BoRS.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/wrVCGSQNaGWhNp97BoRS.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/wrVCGSQNaGWhNp97BoRS.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/wrVCGSQNaGWhNp97BoRS.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/wrVCGSQNaGWhNp97BoRS.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/wrVCGSQNaGWhNp97BoRS.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/wrVCGSQNaGWhNp97BoRS.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/wrVCGSQNaGWhNp97BoRS.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/wrVCGSQNaGWhNp97BoRS.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/wrVCGSQNaGWhNp97BoRS.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/wrVCGSQNaGWhNp97BoRS.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/wrVCGSQNaGWhNp97BoRS.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/wrVCGSQNaGWhNp97BoRS.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/wrVCGSQNaGWhNp97BoRS.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/wrVCGSQNaGWhNp97BoRS.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/wrVCGSQNaGWhNp97BoRS.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/wrVCGSQNaGWhNp97BoRS.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">
+    The letter 'a' in Roboto Flex at different pixel sizes, then scaled to be the same size,
+    shows the differences in design.
+    <a href="https://codepen.io/RoelN/pen/PoPvdeV">Try it yourself on Codepen</a>
+  </figcaption>
+</figure>
+<p>A new CSS property has been introduced for this axis: <code>font-optical-sizing</code>. By
+default it's set to <code>auto</code>, which makes the browser set the axis value based on
+the <code>font-size</code>. This means the browser will pick the best optical size
+automatically, but if you wish to turn this off you can set
+<code>font-optical-sizing</code> to <code>none</code>.</p>
+<p>You can also set a custom value for the <code>opsz</code> axis, if you deliberately want an
+optical size that doesn't match the font size. The following CSS would cause
+text to be displayed at a large size, but at an optical size as if it were
+printed in <code>8pt</code>:</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">.small-yet-large</span> <span class="token punctuation">{</span><br>  <span class="token property">font-size</span><span class="token punctuation">:</span> 100px<span class="token punctuation">;</span><br>  <span class="token property">font-variation-settings</span><span class="token punctuation">:</span> <span class="token string">'opsz'</span> 8<span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><h3 id="using-custom-axes">Using custom axes <a class="w-headline-link" href="#using-custom-axes">#</a></h3>
+<p>Unlike registered axes, custom axes will not be mapped to an existing CSS
+property, so you will always have to set them through <code>font-variation-settings</code>.
+Tags for custom axes are always in uppercase, to distinguish them from
+registered axes.</p>
+<p>Roboto Flex offers a few custom axes, and the most important is Grade (<code>GRAD</code>).
+A Grade axis is interesting as it changes the weight of the font without
+changing the widths, so line breaks do not change. By playing with a Grade axis,
+you can avoid being forced to fiddle with changes to Weight axis that affects
+the overall width, and then changes to the Width axis that affect the overall
+weight.</p>
+<figure class="w-figure">
+  <video controls autoplay loop muted class="w-screenshot">
+    <source src="https://storage.googleapis.com/web-dev-assets/variable-fonts/roboto-flex-grade.mp4" type="video/mp4">
+  </video>
+  <figcaption class="w-figcaption">
+    Roboto Flex' Grade axis being changed from its minimum to its maximum.
+  </figcaption>
+</figure>
+<p>As <code>GRAD</code> is a custom axis, with a range of -1 to 1, we need to address it with
+<code>font-variation-settings</code>:</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">.grade-light</span> <span class="token punctuation">{</span><br>	<span class="token property">font-variation-settings</span><span class="token punctuation">:</span> `GRAD` -1<span class="token punctuation">;</span><br><span class="token punctuation">}</span><br><br><span class="token selector">.grade-normal</span> <span class="token punctuation">{</span><br>	<span class="token property">font-variation-settings</span><span class="token punctuation">:</span> `GRAD` 0<span class="token punctuation">;</span><br><span class="token punctuation">}</span><br><br><span class="token selector">.grade-heavy</span> <span class="token punctuation">{</span><br>	<span class="token property">font-variation-settings</span><span class="token punctuation">:</span> `GRAD` 1<span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><h3 id="variable-fonts-on-google-fonts">Variable fonts on Google Fonts <a class="w-headline-link" href="#variable-fonts-on-google-fonts">#</a></h3>
+<p>Google Fonts has expanded their catalog with <a href="https://fonts.google.com/?vfonly=true" rel="noopener">variable
+fonts</a>, and adding new ones regularly.
+The interface is currently aimed at picking single instances from the font:
+you select the variation you want, click &quot;Select this style&quot;, and it will be
+added to the <code>&lt;link&gt;</code> element that fetches the CSS and fonts from Google Fonts.</p>
+<p>To use all the available axes, or ranges of values, you will have to <a href="https://developers.google.com/fonts/docs/css2" rel="noopener">manually
+compose</a> the URL to the Google
+Fonts API. The <a href="https://fonts.google.com/variablefonts" rel="noopener">variable fonts overview</a> lists all axes and values.</p>
+<p>The <a href="https://github.com/RoelN/google-variable-fonts-links" rel="noopener">Google Variable Fonts Links</a>
+tool can also give you the latest URLs for the full variable fonts.</p>
+<h2 id="font-variation-settings-inheritance">Font-variation-settings inheritance <a class="w-headline-link" href="#font-variation-settings-inheritance">#</a></h2>
+<p>While all registered axes will soon be supported through existing CSS
+properties, for the time being you might need to rely on
+<code>font-variation-settings</code> as a fallback. And if your font has custom axes,
+you'll need <code>font-variation-settings</code> too.</p>
+<p>However, here's a little gotcha with <code>font-variation-settings</code>. Every property
+you <em>don't explicitly set</em> will automatically be reset to its default.
+Previously set values aren't inherited! This means the following will not work
+as expected:</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>span</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>slanted grade-light<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><br>	I should be slanted and have a light grade<br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>span</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><p>First the browser will apply <code>font-variation-settings: 'slnt' 10</code> from the
+<code>.slanted</code> class. Then it will apply <code>font-variation-settings: 'GRAD' -1</code> from
+the <code>.grade-light</code> class. But this will reset the <code>slnt</code> back to its default of
+0! The result will be text in a light grade, but not slanted.</p>
+<p>Luckily, we can work around this by using CSS variables:</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token comment">/* Set the default values */</span><br><span class="token selector">:root</span> <span class="token punctuation">{</span><br>	<span class="token property">--slnt</span><span class="token punctuation">:</span> 0<span class="token punctuation">;</span><br>	<span class="token property">--GRAD</span><span class="token punctuation">:</span> 0<span class="token punctuation">;</span><br><span class="token punctuation">}</span><br><br><span class="token comment">/* Change value for these elements and their children */</span><br><span class="token selector">.slanted</span> <span class="token punctuation">{</span><br>	<span class="token property">--slnt</span><span class="token punctuation">:</span> 10<span class="token punctuation">;</span><br><span class="token punctuation">}</span><br><br><span class="token selector">.grade-light</span> <span class="token punctuation">{</span><br>	<span class="token property">--grad</span><span class="token punctuation">:</span> -1<span class="token punctuation">;</span><br><span class="token punctuation">}</span><br><br><span class="token selector">.grade-normal</span> <span class="token punctuation">{</span><br>	<span class="token property">--grad</span><span class="token punctuation">:</span> 0<span class="token punctuation">;</span><br><span class="token punctuation">}</span><br><br><span class="token selector">.grade-heavy</span> <span class="token punctuation">{</span><br>	<span class="token property">--grad</span><span class="token punctuation">:</span> 1<span class="token punctuation">;</span><br><span class="token punctuation">}</span><br><br><span class="token comment">/* Apply whatever value is kept in the CSS variables */</span><br><span class="token selector">.slanted,<br>.grade-light,<br>.grade-normal,<br>.grade-heavy</span> <span class="token punctuation">{</span><br>	<span class="token property">font-variation-settings</span><span class="token punctuation">:</span> <span class="token string">'slnt'</span> <span class="token function">var</span><span class="token punctuation">(</span>--slnt<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">'GRAD'</span> <span class="token function">var</span><span class="token punctuation">(</span>--GRAD<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>CSS variables will cascade, so if an element (or one of its parents) will have
+set the <code>slnt</code> to <code>10</code>, it will keep that value, even if you set <code>GRAD</code> to
+something else. See
+<a href="https://pixelambacht.nl/2019/fixing-variable-font-inheritance/" rel="noopener">Fixing variable font inheritance</a>
+for an in-depth explanation of this technique.</p>
+<p>Note that animating CSS variables doesn't work (by design), so something like
+this doesn't work:</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token atrule"><span class="token rule">@keyframes</span> width-animation</span> <span class="token punctuation">{</span><br>   <span class="token selector">from</span> <span class="token punctuation">{</span> <span class="token property">--wdth</span><span class="token punctuation">:</span> 25<span class="token punctuation">;</span> <span class="token punctuation">}</span><br>   <span class="token selector">to</span>   <span class="token punctuation">{</span> <span class="token property">--wdth</span><span class="token punctuation">:</span> 151<span class="token punctuation">;</span> <span class="token punctuation">}</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>These animations will have to happen directly on <code>font-variation-settings</code>.</p>
+<h2 id="performance-gains">Performance gains <a class="w-headline-link" href="#performance-gains">#</a></h2>
+<p>OpenType variable fonts allow us to store multiple variations of a type family
+into a single font file.
+<a href="https://medium.com/@monotype/part-2-from-truetype-gx-to-variable-fonts-4c28b16997c3" rel="noopener">Monotype</a>
+ran an experiment by combining 12 input fonts to generate eight weights,
+across three widths, across both the Italic and Roman styles. Storing 48
+individual fonts in a single variable font file meant a <em>88% reduction in file
+size</em>.</p>
+<p>However, if you are using a single font such as Roboto Regular and nothing
+else, you might not see a net gain in font size if you were to switch to a
+variable font with many axes. As always, it depends on your use-case.</p>
+<p>On the flip side, animating the font between settings may cause performance
+issues. Although this will improve once variable font support in browsers gets
+more mature, the problem can be reduced somewhat by only animating fonts that are
+currently on screen. This handy snippet by
+<a href="https://abcdinamo.com/news/using-variable-fonts-on-the-web" rel="noopener">Dinamo</a> pauses
+animations in elements with the class <code>vf-animation</code>, when they're not on
+screen:</p>
+<web-copy-code><pre class="language-javascript"><code class="language-javascript"><span class="token keyword">var</span> observer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">IntersectionObserver</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">entries<span class="token punctuation">,</span> observer</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  entries<span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">entry</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token comment">// Pause/Play the animation</span><br>    <span class="token keyword">if</span> <span class="token punctuation">(</span>entry<span class="token punctuation">.</span>isIntersecting<span class="token punctuation">)</span> entry<span class="token punctuation">.</span>target<span class="token punctuation">.</span>style<span class="token punctuation">.</span>animationPlayState <span class="token operator">=</span> <span class="token string">"running"</span><br>    <span class="token keyword">else</span> entry<span class="token punctuation">.</span>target<span class="token punctuation">.</span>style<span class="token punctuation">.</span>animationPlayState <span class="token operator">=</span> <span class="token string">"paused"</span><br>  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token keyword">var</span> variableTexts <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">querySelectorAll</span><span class="token punctuation">(</span><span class="token string">".vf-animation"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>variableTexts<span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">el</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> observer<span class="token punctuation">.</span><span class="token function">observe</span><span class="token punctuation">(</span>el<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>If your font responds to user interaction, it's a good idea to <a href="https://css-tricks.com/debouncing-throttling-explained-examples/" rel="noopener">throttle or
+debounce</a>
+input events. This will prevent the browser from rendering instances of the
+variable font that changed so little from the previous instance the human eye
+wouldn't see the difference.</p>
+<p>If you're using Google Fonts, it's a good idea to
+<a href="/preconnect-and-dns-prefetch/">preconnect</a> to <code>https://fonts.gstatic.com</code>,
+the domain where Google's fonts are hosted. This will make sure the browser
+knows early on where to get the fonts when it comes across them in the CSS:</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>link</span> <span class="token attr-name">rel</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>preconnect<span class="token punctuation">"</span></span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>https://fonts.gstatic.com<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span></code></pre>
+</web-copy-code><p>This tip works for other CDNs as well: the sooner you let the browser set up a
+network connection, the sooner it can download your fonts.</p>
+<p>Find more performance tips for loading Google Fonts in <a href="https://csswizardry.com/2020/05/the-fastest-google-fonts/" rel="noopener">The Fastest
+Google Fonts</a>.</p>
+<h2 id="fallbacks">Fallbacks and browser support <a class="w-headline-link" href="#fallbacks">#</a></h2>
+<p>All modern browsers <a href="https://caniuse.com/#feat=variable-fonts" rel="noopener">support variable
+fonts</a>. In case you need to support
+older browsers, you can choose to build your site with static fonts, and use
+variable fonts as progressive enhancement:</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token comment">/* Set up Roboto for old browsers, only regular + bold */</span><br><span class="token atrule"><span class="token rule">@font-face</span></span> <span class="token punctuation">{</span><br>  <span class="token property">font-family</span><span class="token punctuation">:</span> Roboto<span class="token punctuation">;</span><br>  <span class="token property">src</span><span class="token punctuation">:</span> <span class="token url"><span class="token function">url</span><span class="token punctuation">(</span><span class="token string url">'Roboto-Regular.woff2'</span><span class="token punctuation">)</span></span><span class="token punctuation">;</span><br>  <span class="token property">font-weight</span><span class="token punctuation">:</span> normal<span class="token punctuation">;</span><br><span class="token punctuation">}</span><br><br><span class="token atrule"><span class="token rule">@font-face</span></span> <span class="token punctuation">{</span><br>  <span class="token property">font-family</span><span class="token punctuation">:</span> Roboto<span class="token punctuation">;</span><br>  <span class="token property">src</span><span class="token punctuation">:</span> <span class="token url"><span class="token function">url</span><span class="token punctuation">(</span><span class="token string url">'Roboto-Bold.woff2'</span><span class="token punctuation">)</span></span><span class="token punctuation">;</span><br>  <span class="token property">font-weight</span><span class="token punctuation">:</span> bold<span class="token punctuation">;</span><br><span class="token punctuation">}</span><br><br><span class="token selector">body</span> <span class="token punctuation">{</span><br>  <span class="token property">font-family</span><span class="token punctuation">:</span> Roboto<span class="token punctuation">;</span><br><span class="token punctuation">}</span><br><br><span class="token selector">.super-bold</span> <span class="token punctuation">{</span><br>  <span class="token property">font-weight</span><span class="token punctuation">:</span> bold<span class="token punctuation">;</span><br><span class="token punctuation">}</span><br><br><span class="token comment">/* Set up Roboto for modern browsers, all weights */</span><br><span class="token atrule"><span class="token rule">@supports</span> <span class="token punctuation">(</span><span class="token property">font-variation-settings</span><span class="token punctuation">:</span> normal<span class="token punctuation">)</span></span> <span class="token punctuation">{</span><br>  <span class="token atrule"><span class="token rule">@font-face</span></span> <span class="token punctuation">{</span><br>    <span class="token property">font-family</span><span class="token punctuation">:</span> <span class="token string">'Roboto'</span><span class="token punctuation">;</span><br>    <span class="token property">src</span><span class="token punctuation">:</span> <span class="token url"><span class="token function">url</span><span class="token punctuation">(</span><span class="token string url">'RobotoFlex-VF.woff2'</span><span class="token punctuation">)</span></span> <span class="token function">format</span><span class="token punctuation">(</span><span class="token string">'woff2 supports variations'</span><span class="token punctuation">)</span><span class="token punctuation">,</span><br>         <span class="token url"><span class="token function">url</span><span class="token punctuation">(</span><span class="token string url">'RobotoFlex-VF.woff2'</span><span class="token punctuation">)</span></span> <span class="token function">format</span><span class="token punctuation">(</span><span class="token string">'woff2-variations'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token property">font-weight</span><span class="token punctuation">:</span> 100 1000<span class="token punctuation">;</span><br>    <span class="token property">font-stretch</span><span class="token punctuation">:</span> 25% 151%<span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><br>  <span class="token selector">.super-bold</span> <span class="token punctuation">{</span><br>    <span class="token property">font-weight</span><span class="token punctuation">:</span> 1000<span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>For older browsers, text with the class <code>.super-bold</code> will get rendered in the
+normal bold, as that's the only bold font we have available. When variable fonts
+are supported, we can actually use the heaviest weight of 1000.</p>
+<p>If you are using the Google Fonts API, it will take care of loading the proper
+fonts for your visitor's browsers. Say you request the font Oswald in weight
+range 200 to 700, like so:</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>link</span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&amp;display=swap<span class="token punctuation">"</span></span> <span class="token attr-name">rel</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>stylesheet<span class="token punctuation">"</span></span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><p>Modern browsers that can handle variable fonts will get the variable font, and
+will have every weight between 200 and 700 available. Older browsers will get
+served individual static fonts for every weight. In this case, this means
+they'll download 6 font files: one for weight 200, one for weight 300, and so
+on.</p>
+<h2 id="thanks">Thanks <a class="w-headline-link" href="#thanks">#</a></h2>
+<p>This article would have only been made possible with the help of the following
+people:</p>
+<ul>
+<li><a href="https://twitter.com/mustafa_x" rel="noopener">Mustafa Kurtuldu</a>, UX designer and design advocate at Google</li>
+<li><a href="https://twitter.com/PixelAmbacht" rel="noopener">Roel Nieskens</a>, UX designer/developer and typography expert at <a href="https://kabisa.nl" rel="noopener">Kabisa</a></li>
+<li><a href="https://twitter.com/davelab6" rel="noopener">Dave Crossland</a>, Program Manager, Google Fonts</li>
+<li><a href="https://twitter.com/dberlow" rel="noopener">David Berlow</a>, type designer and typographer at
+<a href="https://fontbureau.typenetwork.com/" rel="noopener">Font Bureau</a></li>
+<li><a href="https://twitter.com/lorp" rel="noopener">Laurence Penney</a>, developer of <a href="https://axis-praxis.org" rel="noopener">axis-praxis.org</a></li>
+<li><a href="https://twitter.com/Mandy_Kerr" rel="noopener">Mandy Michael</a>, developer of <a href="https://variablefonts.dev" rel="noopener">variablefonts.dev</a></li>
+</ul>
+<p>Hero image by <a href="https://unsplash.com/@brunus" rel="noopener">Bruno Martins</a> on <a href="https://unsplash.com/photos/OhJmwB4XWLE" rel="noopener">Unsplash</a>.</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/fonts/">Fonts</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/performance/">Performance</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/ux/">UX</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Aug 17, 2020</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/variable-fonts/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions="api"></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

@@ -1,0 +1,996 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=c502b6c7f5da1">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Sign-up form best practices</title>
+<meta name="description" content="Help your users sign up, log in and manage their account details with a minimum of fuss." />
+
+<link rel="canonical" href="https://web.dev/sign-up-form-best-practices/" />
+
+<meta itemprop="name" content="Sign-up form best practices" />
+<meta itemprop="description" content="Help your users sign up, log in and manage their account details with a minimum of fuss." />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/7bDPvFWBMFIMynoqDpMc.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/sign-up-form-best-practices/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Sign-up form best practices" />
+<meta property="og:description" content="Help your users sign up, log in and manage their account details with a minimum of fuss." />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/7bDPvFWBMFIMynoqDpMc.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="Clipboard with handwritten page showing list of vegetables sown." />
+<meta property="tag" content="forms" />
+<meta property="tag" content="identity" />
+<meta property="tag" content="layout" />
+<meta property="tag" content="mobile" />
+<meta property="tag" content="security" />
+<meta property="tag" content="ux" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Sign-up form best practices" />
+<meta name="twitter:description" content="Help your users sign up, log in and manage their account details with a minimum of fuss." />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/7bDPvFWBMFIMynoqDpMc.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=9c3004798044f', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=a2b5d1f70e9fe', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="Clipboard with handwritten page showing list of vegetables sown."     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/YfAltWqxvie1SP19BxBj.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/YfAltWqxvie1SP19BxBj.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/YfAltWqxvie1SP19BxBj.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/YfAltWqxvie1SP19BxBj.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/YfAltWqxvie1SP19BxBj.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/YfAltWqxvie1SP19BxBj.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/YfAltWqxvie1SP19BxBj.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/YfAltWqxvie1SP19BxBj.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/YfAltWqxvie1SP19BxBj.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/YfAltWqxvie1SP19BxBj.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/YfAltWqxvie1SP19BxBj.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/YfAltWqxvie1SP19BxBj.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/YfAltWqxvie1SP19BxBj.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/YfAltWqxvie1SP19BxBj.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/YfAltWqxvie1SP19BxBj.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/YfAltWqxvie1SP19BxBj.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/YfAltWqxvie1SP19BxBj.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/YfAltWqxvie1SP19BxBj.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#sign-up-form-best-practices" class="w-toc__header--link">
+        Sign-up form best practices
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#checklist">Checklist</a></li><li><a href="#no-forced-sign-in">Avoid sign-in if you can</a></li><li><a href="#obvious-account-creation">Make sign-in obvious</a></li><li><a href="#cut-clutter">Cut form clutter</a></li><li><a href="#session-length">Consider session length</a></li><li><a href="#help-password-managers">Help password managers securely suggest and store passwords</a></li><li><a href="#secure-passwords">Ensure users enter secure passwords</a></li><li><a href="#no-compromised-passwords">Don't allow compromised passwords</a></li><li><a href="#allow-password-pasting">Don't prohibit password pasting</a></li><li><a href="#salt-and-hash">Never store or transmit passwords in plain text</a></li><li><a href="#no-forced-password-updates">Don't force password updates</a></li><li><a href="#password-change">Make it simple to change or reset passwords</a></li><li><a href="#federated-login">Offer login via third-party identity providers</a></li><li><a href="#account-switching">Make account switching simple</a></li><li><a href="#multi-factor-authentication">Consider offering multi-factor authentication</a></li><li><a href="#username">Take care with usernames</a></li><li><a href="#test-platforms">Test on a range of devices, platforms, browsers and versions</a></li><li><a href="#analytics-rum">Implement analytics and Real User Monitoring</a></li><li><a href="#resources">Keep learning</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@sw12"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="sign-up-form-best-practices" class="w-article-header__headline">Sign-up form best practices</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          Help your users sign up, log in and manage their account details with a minimum of fuss.
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Dec 9, 2020</time>
+           <span class="w-author__separator">•</span> Updated <time>Dec 11, 2020</time> 
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/samdutton/"><img     alt="Sam Dutton"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/wPss4TJX9IJ1CJza7iFY.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/wPss4TJX9IJ1CJza7iFY.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/wPss4TJX9IJ1CJza7iFY.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/wPss4TJX9IJ1CJza7iFY.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/wPss4TJX9IJ1CJza7iFY.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/wPss4TJX9IJ1CJza7iFY.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/samdutton/">Sam Dutton</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/sw12"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/samdutton">GitHub</a>
+      </li>
+      
+      
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <div class="youtube">  <lite-youtube    videoid="Ev2mCzJZLtY"      >  </lite-youtube></div>
+<p>If users ever need to log in to your site, then good sign-up form design is
+critical. This is especially true for people on poor connections, on mobile, in
+a hurry, or under stress. Poorly designed sign-up forms get high bounce rates.
+Each bounce could mean a lost and disgruntled user—not just a missed sign-up
+opportunity.</p>
+<div class="w-aside w-aside--codelab">
+<p><strong>Try it</strong>!
+If you would prefer to learn these best practices with a hands-on tutorial,
+check out the <a href="/codelab-sign-up-form-best-practices">Sign-up form best practices codelab</a>.</p>
+</div>
+<p>Here is an example of a very simple sign-up form that demonstrates all of the best practices:</p>
+<div class="glitch-embed-wrap" style="height: 700px; width: 100%;">
+  <iframe
+    allow="camera; clipboard-read; clipboard-write; encrypted-media; geolocation; microphone; midi"
+    loading="lazy"
+    src="https://glitch.com/embed/#!/embed/signup-form?attributionHidden=true&sidebarCollapsed=true&path=index.html&previewSize=100"
+    style="height: 100%; width: 100%; border: 0;"
+    title="signup-form on Glitch"
+  ></iframe>
+</div>
+<div class="w-aside w-aside--caution">
+<p><strong>Caution</strong>:
+This post is about form best practices.</p>
+<p>It does not explain how to implement sign-up via a third-party identity provider (federated login)
+or show how to build backend services to authenticate users, store credentials, and manage accounts.</p>
+<p><a href="https://developers.google.com/identity/sign-in/web/sign-in" rel="noopener">Integrating Google Sign-In into your web app</a>
+explains how to add federated login to your sign-up options.</p>
+<p><a href="https://cloud.google.com/blog/products/gcp/12-best-practices-for-user-account" rel="noopener">12 best practices for user
+account, authorization and password management</a> outlines core back-end principles for managing user accounts.</p>
+</div>
+<h2 id="checklist">Checklist <a class="w-headline-link" href="#checklist">#</a></h2>
+<ul>
+<li><a href="#no-forced-sign-in">Avoid sign-in if you can</a>.</li>
+<li><a href="#obvious-account-creation">Make it obvious how to create an account</a>.</li>
+<li><a href="#obvious-account-details">Make it obvious how to access account details</a>.</li>
+<li><a href="#cut-clutter">Cut form clutter</a>.</li>
+<li><a href="#session-length">Consider session length</a>.</li>
+<li><a href="#help-password-managers">Help password managers securely suggest and store passwords</a>.</li>
+<li><a href="#no-compromised-passwords">Don't allow compromised passwords</a>.</li>
+<li><a href="#allow-password-pasting">Do allow password pasting</a>.</li>
+<li><a href="#salt-and-hash">Never store or transmit passwords in plain text</a>.</li>
+<li><a href="#no-forced-password-updates">Don't force password updates</a>.</li>
+<li><a href="#password-change">Make it simple to change or reset passwords</a>.</li>
+<li><a href="#federated-login">Enable federated login</a>.</li>
+<li><a href="#account-switching">Make account switching simple</a>.</li>
+<li><a href="#multi-factor-authentication">Consider offering multi-factor authentication</a>.</li>
+<li><a href="#username">Take care with usernames</a>.</li>
+<li><a href="#analytics-rum">Test in the field as well as the lab</a>.</li>
+<li><a href="#test-platforms">Test on a range of browsers, devices and platforms</a>.</li>
+</ul>
+<h2 id="no-forced-sign-in">Avoid sign-in if you can <a class="w-headline-link" href="#no-forced-sign-in">#</a></h2>
+<p>Before you implement a sign-up form and ask users to create an account on your site, consider
+whether you really need to. Wherever possible you should avoid gating features behind login.</p>
+<p>The best sign-up form is no sign-up form!</p>
+<p>By asking a user to create an account, you come between them and what they're trying to achieve.
+You're asking a favor, and asking the user to trust you with personal data. Every password and item
+of data you store carries privacy and security &quot;data debt&quot;, becoming a cost and liability for
+your site.</p>
+<p>If the main reason you ask users to create an account is to save information between navigations or
+browsing sessions, <a href="/storage-for-the-web">consider using client-side storage</a> instead. For shopping
+sites, forcing users to create an account to make a purchase is cited as a major reason for shopping
+cart abandonment. You should <a href="/payment-and-address-form-best-practices#guest-checkout">make guest checkout the default</a>.</p>
+<h2 id="obvious-account-creation">Make sign-in obvious <a class="w-headline-link" href="#obvious-account-creation">#</a></h2>
+<p>Make it obvious how to create an account on your site, for example with a <strong>Login</strong> or <strong>Sign in</strong>
+button at the top right of the page. Avoid using an ambiguous icon or vague wording (&quot;Get on board!&quot;,
+&quot;Join us&quot;) and don't hide login in a navigational menu. The usability expert Steve Krug summed up
+this approach to website usability: <a href="https://uxplanet.org/dont-make-me-think-20-wise-thoughts-about-usability-from-steve-krug-876b563f1d63" rel="noopener">Don't make me think!</a> If you need to
+convince others on your web team, use <a href="#analytics-rum">analytics</a> to show the impact of different
+options.</p>
+<figure class="w-figure">
+  <img     alt="Two screenshots of a mockup ecommerce website viewed on an Android phone. The one on the left uses an icon for the sign-in link that&#x27;s somewhat ambiguous; the one on the right simply says &#x27;Sign in&#x27;"          decoding="async"     height="737"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/KeztoU8KgAqrQ5CKBSWw.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/KeztoU8KgAqrQ5CKBSWw.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/KeztoU8KgAqrQ5CKBSWw.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/KeztoU8KgAqrQ5CKBSWw.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/KeztoU8KgAqrQ5CKBSWw.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/KeztoU8KgAqrQ5CKBSWw.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/KeztoU8KgAqrQ5CKBSWw.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/KeztoU8KgAqrQ5CKBSWw.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/KeztoU8KgAqrQ5CKBSWw.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/KeztoU8KgAqrQ5CKBSWw.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/KeztoU8KgAqrQ5CKBSWw.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/KeztoU8KgAqrQ5CKBSWw.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/KeztoU8KgAqrQ5CKBSWw.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/KeztoU8KgAqrQ5CKBSWw.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/KeztoU8KgAqrQ5CKBSWw.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/KeztoU8KgAqrQ5CKBSWw.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/KeztoU8KgAqrQ5CKBSWw.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/KeztoU8KgAqrQ5CKBSWw.jpg?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">Make sign-in obvious. An icon may be ambiguous, but a <b>Sign
+  in</b> button or link is obvious.</figcaption>
+</figure>
+<div class="w-aside w-aside--note">
+<p>You may be wondering whether to add a button (or link) to create an account and another one for
+existing users to sign in. Many popular sites now simply display a single <strong>Sign in</strong> button. When
+the user taps or clicks on that, they also get a link to create an account if necessary. That's a
+common pattern now, and your users are likely to understand it, but you can use
+<a href="#analytics-rum">interaction analytics</a> to monitor whether or not a single button works best.</p>
+</div>
+<figure class="w-figure">
+  <img     alt="Screenshots of sign-in for Gmail: one page, showing Sign in button, when clicked leads to form that also has a Create account link."          decoding="async"     height="545"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/WUgCNqhEgvoWEVwGjfrA.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/WUgCNqhEgvoWEVwGjfrA.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/WUgCNqhEgvoWEVwGjfrA.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/WUgCNqhEgvoWEVwGjfrA.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/WUgCNqhEgvoWEVwGjfrA.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/WUgCNqhEgvoWEVwGjfrA.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/WUgCNqhEgvoWEVwGjfrA.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/WUgCNqhEgvoWEVwGjfrA.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/WUgCNqhEgvoWEVwGjfrA.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/WUgCNqhEgvoWEVwGjfrA.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/WUgCNqhEgvoWEVwGjfrA.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/WUgCNqhEgvoWEVwGjfrA.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/WUgCNqhEgvoWEVwGjfrA.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/WUgCNqhEgvoWEVwGjfrA.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/WUgCNqhEgvoWEVwGjfrA.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/WUgCNqhEgvoWEVwGjfrA.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/WUgCNqhEgvoWEVwGjfrA.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/WUgCNqhEgvoWEVwGjfrA.jpg?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">The Gmail sign-in page has a link to create an account.<br>
+    At window sizes larger than shown here, Gmail displays a <b>Sign in</b> link and a <b>Create an
+  account</b> button.</figcaption>
+</figure>
+<p>Make sure to link accounts for users who sign up via an identity provider such as Google and who
+also sign up using email and password. That's easy to do if you can access a user's email address
+from the profile data from the identity provider, and match the two accounts. The code below shows
+how to access email data for a Google Sign-in user.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token comment">// auth2 is initialized with gapi.auth2.init()</span><br><span class="token keyword">if</span> <span class="token punctuation">(</span>auth2<span class="token punctuation">.</span>isSignedIn<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token keyword">var</span> profile <span class="token operator">=</span> auth2<span class="token punctuation">.</span>currentUser<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getBasicProfile</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">Email: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>profile<span class="token punctuation">.</span><span class="token function">getEmail</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p id="obvious-account-details"></p>
+<p>Once a user has signed in, make it clear how to access account details. In particular, make it
+obvious how to <a href="#password-change">change or reset passwords</a>.</p>
+<h2 id="cut-clutter">Cut form clutter <a class="w-headline-link" href="#cut-clutter">#</a></h2>
+<p>In the sign-up flow, your job is to minimize complexity and keep the user focused. Cut the clutter.
+This is not the time for distractions and temptations!</p>
+<figure class="w-figure">
+   <video controls autoplay loop muted class="w-screenshot">
+     <source src="https://samdutton.com/avoid-distractions.mp4" type="video/mp4">
+   </video>
+  <figcaption class="w-figcaption">Don't distract users from completing sign-up.</figcaption>
+</figure>
+<p>On sign-up, ask for as little as possible. Collect additional user data (such as name and address)
+only when you need to, and when the user sees a clear benefit from providing that data. Bear in mind
+that every item of data you communicate and store incurs cost and liability.</p>
+<p>Don't double up your inputs just to make sure users get their contact details right. That slows down
+form completion and doesn't make sense if form fields are autofilled. Instead, send a confirmation
+code to the user once they've entered their contact details, then continue with account creation
+once they respond. This is a common sign-up pattern: users are used to it.</p>
+<p>You may want to consider password-free sign-in by sending users a code every time they sign in on
+a new device or browser. Sites such as Slack and Medium use a version of this.</p>
+<figure class="w-figure">
+   <video controls autoplay loop muted class="w-screenshot">
+     <source src="https://samdutton.com/medium-sign-in.mp4" type="video/mp4">
+   </video>
+  <figcaption class="w-figcaption">Password-free sign-in on medium.com.</figcaption>
+</figure>
+<p>As with federated login, this has the added benefit that you don't have to manage user passwords.</p>
+<h2 id="session-length">Consider session length <a class="w-headline-link" href="#session-length">#</a></h2>
+<p>Whatever approach you take to user identity, you'll need to make a careful decision about session
+length: how long the user remains logged in, and what might cause you to log them out.</p>
+<p>Consider whether your users are on mobile or desktop, and whether
+they are sharing on desktop, or sharing devices.</p>
+<div class="w-aside w-aside--note">
+<p>You can get around some of the issues of shared devices by enforcing re-authentication for sensitive
+features, for example when a purchase is made or an account updated. You can find out more about
+ways to implement re-authentication from the codelab <a href="https://codelabs.developers.google.com/codelabs/webauthn-reauth/#0" rel="noopener">Your First WebAuthn App</a>.</p>
+</div>
+<h2 id="help-password-managers">Help password managers securely suggest and store passwords <a class="w-headline-link" href="#help-password-managers">#</a></h2>
+<p>You can help third party and built-in browser password managers suggest and store passwords, so that
+users don't need to choose, remember or type passwords themselves. Password managers work well in
+modern browsers, synchronizing accounts across devices, across platform-specific and web apps—and
+for new devices.</p>
+<p>This makes it extremely important to code sign-up forms correctly, in particular to use the correct
+autocomplete values. For sign-up forms use <code>autocomplete=&quot;new-password&quot;</code> for new passwords, and add
+correct autocomplete values to other form fields wherever possible, such as <code>autocomplete=&quot;email&quot;</code>
+and <code>autocomplete=&quot;tel&quot;</code>. You can also help password managers by using different <code>name</code> and <code>id</code>
+values in sign-up and sign-in forms, for the <code>form</code> element itself, as well as any <code>input</code>, <code>select</code>
+and <code>textarea</code> elements.</p>
+<p>You should also use the appropriate <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/email" rel="noopener"><code>type</code> attribute</a>
+to provide the right keyboard on mobile and enable basic built-in validation by the browser.
+You can find out more from <a href="/payment-and-address-form-best-practices#type">Payment and address form best practices</a>.</p>
+<div class="w-aside w-aside--note">
+<p><a href="/sign-in-form-best-practices">Sign-in form best practices</a> has lots more tips on how to improve
+form design, layout and accessibility, and how to code forms correctly in order to take advantage
+of built-in browser features.</p>
+</div>
+<h2 id="secure-passwords">Ensure users enter secure passwords <a class="w-headline-link" href="#secure-passwords">#</a></h2>
+<p>Enabling password managers to suggest passwords is the best option, and you should encourage
+users to accept the strong passwords suggested by browsers and third-party browser managers.</p>
+<p>However, many users want to enter their own passwords, so you need to implement rules for password
+strength. The US National Institute of Standards and Technology explains
+<a href="https://pages.nist.gov/800-63-3/sp800-63b.html#5-authenticator-and-verifier-requirements" rel="noopener">how to avoid insecure passwords</a>.</p>
+<div class="w-aside w-aside--warning">
+<p><strong>Warning</strong>:
+Sign-up forms on some sites have password validation rules that don't allow the strong passwords
+generated by browser and third-party password managers. Make sure your site doesn't do this,
+since it interrupts form completion, annoys users, and requires users to make up their own
+passwords, which may be less secure than those generated by password managers.</p>
+</div>
+<h2 id="no-compromised-passwords">Don't allow compromised passwords <a class="w-headline-link" href="#no-compromised-passwords">#</a></h2>
+<p>Whatever rules you choose for passwords, you should never allow passwords that have been <a href="https://haveibeenpwned.com/PwnedWebsites" rel="noopener">exposed in
+security breaches</a>.</p>
+<p>Once a user has entered a password, you need to check that it's not a password that's already been
+compromised. The site <a href="https://haveibeenpwned.com/Passwords" rel="noopener">Have I Been Pwned</a> provides an API for password
+checking, or you can run this as a service yourself.</p>
+<p>Google's Password Manager also allows you to <a href="https://passwords.google.com/checkup" rel="noopener">check if any of your existing passwords have been
+compromised</a>.</p>
+<p>If you do reject the password that a user proposes, tell them specifically why it was rejected.
+<a href="https://baymard.com/blog/inline-form-validation" rel="noopener">Show problems inline and explain how to fix them</a>,
+as soon as the user has entered a value—not after they've submitted the sign-up form and had to
+wait for a response from your server.</p>
+<figure class="w-figure">
+   <video controls autoplay loop muted class="w-screenshot">
+     <source src="https://samdutton.com/password-validation.mp4" type="video/mp4">
+   </video>
+  <figcaption class="w-figcaption">Be clear why a password is rejected.</figcaption>
+</figure>
+<h2 id="allow-password-pasting">Don't prohibit password pasting <a class="w-headline-link" href="#allow-password-pasting">#</a></h2>
+<p>Some sites don't allow text to be pasted into password inputs.</p>
+<p>Disallowing password pasting annoys users, encourages passwords that are memorable (and therefore
+may be easier to compromise) and, according to organizations such as the UK National
+Cyber Security Centre, may actually <a href="https://www.ncsc.gov.uk/blog-post/let-them-paste-passwords" rel="noopener">reduce security</a>.
+Users only become aware that pasting is disallowed <em>after</em> they try to paste their password, so
+<a href="https://github.com/OWASP/owasp-masvs/issues/106" rel="noopener">disallowing password pasting doesn't avoid clipboard vulnerabilities</a>.</p>
+<h2 id="salt-and-hash">Never store or transmit passwords in plain text <a class="w-headline-link" href="#salt-and-hash">#</a></h2>
+<p>Make sure to <a href="https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html#Use_a_cryptographically_strong_credential-specific_salt" rel="noopener">salt and hash</a> passwords—and <a href="https://www.schneier.com/blog/archives/2011/04/schneiers_law.html" rel="noopener">don't try to invent your own hashing algorithm</a>!</p>
+<h2 id="no-forced-password-updates">Don't force password updates <a class="w-headline-link" href="#no-forced-password-updates">#</a></h2>
+<p><a href="https://pages.nist.gov/800-63-3/sp800-63b.html#-5112-memorized-secret-verifiers:~:text=Verifiers%20SHOULD%20NOT%20require%20memorized%20secrets%20to%20be%20changed%20arbitrarily%20(e.g.%2C%20periodically)." rel="noopener">Don't force users to update their passwords arbitrarily.</a></p>
+<p>Forcing password updates can be costly for IT departments, annoying to users, and <a href="https://pages.nist.gov/800-63-FAQ/#q-b05" rel="noopener">doesn't have much
+impact on security</a>. It's also likely to encourage people
+to use insecure memorable passwords, or to keep a physical record of passwords.</p>
+<p>Rather than force password updates, you should monitor for unusual account activity and warn users.
+If possible you should also monitor for passwords that become compromised because of data breaches.</p>
+<p>You should also provide your users with access to their account login history, showing them where
+and when a login happened.</p>
+<figure class="w-figure">
+  <img     alt="Gmail account activity page"          decoding="async"     height="469"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/zZXmhWc9bZ1GtvrE5Ooq.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/zZXmhWc9bZ1GtvrE5Ooq.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/zZXmhWc9bZ1GtvrE5Ooq.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/zZXmhWc9bZ1GtvrE5Ooq.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/zZXmhWc9bZ1GtvrE5Ooq.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/zZXmhWc9bZ1GtvrE5Ooq.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/zZXmhWc9bZ1GtvrE5Ooq.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/zZXmhWc9bZ1GtvrE5Ooq.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/zZXmhWc9bZ1GtvrE5Ooq.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/zZXmhWc9bZ1GtvrE5Ooq.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/zZXmhWc9bZ1GtvrE5Ooq.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/zZXmhWc9bZ1GtvrE5Ooq.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/zZXmhWc9bZ1GtvrE5Ooq.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/zZXmhWc9bZ1GtvrE5Ooq.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/zZXmhWc9bZ1GtvrE5Ooq.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/zZXmhWc9bZ1GtvrE5Ooq.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/zZXmhWc9bZ1GtvrE5Ooq.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/zZXmhWc9bZ1GtvrE5Ooq.jpg?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption"><a href="https://support.google.com/mail/answer/45938?hl=en-GB"
+    title="Find out how to view Gmail account activity.">Gmail account activity page</a>.</figcaption>
+</figure>
+<h2 id="password-change">Make it simple to change or reset passwords <a class="w-headline-link" href="#password-change">#</a></h2>
+<p>Make it obvious to users where and how to <strong>update</strong> their account password. On some sites, it's
+surprisingly difficult.</p>
+<p>You should, of course, also make it simple for users to <strong>reset</strong> their password if they forget it.
+The Open Web Application Security Project provides detailed guidance on <a href="https://cheatsheetseries.owasp.org/cheatsheets/Forgot_Password_Cheat_Sheet.html" rel="noopener">how to handle lost
+passwords</a>.</p>
+<p>To keep your business and your users safe, it's especially important to help users change their
+password if they discover that it's been compromised. To make this easier, you should add a
+<a href="https://w3c.github.io/webappsec-change-password-url/" rel="noopener"><code>/.well-known/change-password</code></a> URL to your
+site that redirects to your password management page. This enables password managers to navigate
+your users directly to the page where they can change their password for your site. This feature is
+now implemented in Safari, Chrome, and is coming to other browsers. <a href="/change-password-url">Help users change passwords
+easily by adding a well-known URL for changing passwords</a> explains how to
+implement this.</p>
+<p>You should also make it simple for users to delete their account if that's what they want.</p>
+<h2 id="federated-login">Offer login via third-party identity providers <a class="w-headline-link" href="#federated-login">#</a></h2>
+<p>Many users prefer to log in to websites using an email address and password sign-up form.
+However, you should also enable users to log in via a third party identity provider, also known as
+federated login.</p>
+<figure class="w-figure">
+  <img     alt="WordPress login page"          decoding="async"     height="513"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/jubgwX1shLB7qAIiioTU.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/jubgwX1shLB7qAIiioTU.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/jubgwX1shLB7qAIiioTU.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/jubgwX1shLB7qAIiioTU.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/jubgwX1shLB7qAIiioTU.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/jubgwX1shLB7qAIiioTU.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/jubgwX1shLB7qAIiioTU.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/jubgwX1shLB7qAIiioTU.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/jubgwX1shLB7qAIiioTU.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/jubgwX1shLB7qAIiioTU.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/jubgwX1shLB7qAIiioTU.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/jubgwX1shLB7qAIiioTU.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/jubgwX1shLB7qAIiioTU.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/jubgwX1shLB7qAIiioTU.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/jubgwX1shLB7qAIiioTU.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/jubgwX1shLB7qAIiioTU.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/jubgwX1shLB7qAIiioTU.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/jubgwX1shLB7qAIiioTU.jpg?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">WordPress login page, with Google and Apple login options.</figcaption>
+</figure>
+<p>This approach has several advantages. For users who create an account using federated login, you
+don't need to ask for, communicate, or store passwords.</p>
+<p>You may also be able to access additional verified profile information from federated login, such
+as an email address—which means the user doesn't have to enter that data and you don't need to do
+the verification yourself. Federated login can also make it much easier for users when they get a
+new device.</p>
+<p><a href="https://developers.google.com/identity/sign-in/web/sign-in" rel="noopener">Integrating Google Sign-In into your web app</a>
+explains how to add federated login to your sign-up options. <a href="https://en.wikipedia.org/wiki/Federated_identity#Examples" rel="noopener">Many other</a> identity platforms are available.</p>
+<div class="w-aside w-aside--note">
+<p>&quot;First day experience&quot; when you get a new device is increasingly important. Users expect to log in from
+multiple devices including their phone, laptop, desktop, tablet, TV, or from a car. If your sign-up
+and sign-in forms aren't seamless, this is a moment where you risk losing users, or at least losing
+contact with them until they get set up again. You need to make it as quick and easy as possible for
+users on new devices to get up and running on your site. This is another area where federated login
+can help.</p>
+</div>
+<h2 id="account-switching">Make account switching simple <a class="w-headline-link" href="#account-switching">#</a></h2>
+<p>Many users share devices and swap between accounts using the same browser. Whether users access
+federated login or not, you should make account switching simple.</p>
+<figure class="w-figure">
+  <img     alt="Gmail, showing account switching"          decoding="async"     height="494"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/sPDZJIY5Vo2ijqyuofCy.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/sPDZJIY5Vo2ijqyuofCy.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/sPDZJIY5Vo2ijqyuofCy.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/sPDZJIY5Vo2ijqyuofCy.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/sPDZJIY5Vo2ijqyuofCy.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/sPDZJIY5Vo2ijqyuofCy.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/sPDZJIY5Vo2ijqyuofCy.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/sPDZJIY5Vo2ijqyuofCy.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/sPDZJIY5Vo2ijqyuofCy.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/sPDZJIY5Vo2ijqyuofCy.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/sPDZJIY5Vo2ijqyuofCy.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/sPDZJIY5Vo2ijqyuofCy.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/sPDZJIY5Vo2ijqyuofCy.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/sPDZJIY5Vo2ijqyuofCy.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/sPDZJIY5Vo2ijqyuofCy.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/sPDZJIY5Vo2ijqyuofCy.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/sPDZJIY5Vo2ijqyuofCy.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/sPDZJIY5Vo2ijqyuofCy.jpg?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">Account switching on Gmail.</figcaption>
+</figure>
+<h2 id="multi-factor-authentication">Consider offering multi-factor authentication <a class="w-headline-link" href="#multi-factor-authentication">#</a></h2>
+<p>Multi-factor authentication means ensuring that users provide authentication in more than one way.
+For example, as well as requiring the user to set a password, you might also enforce verification
+using a one-time-passcode sent by email or an SMS text message, or by using an app-based one-time
+code, security key or fingerprint sensor. <a href="/sms-otp-form">SMS OTP best practices</a> and
+<a href="https://developers.google.com/web/updates/2018/05/webauthn" rel="noopener">Enabling Strong Authentication with WebAuthn</a>
+explain how to implement multi-factor authentication.</p>
+<p>You should certainly offer (or enforce) multi-factor authentication if your site handles personal or
+sensitive information.</p>
+<h2 id="username">Take care with usernames <a class="w-headline-link" href="#username">#</a></h2>
+<p>Don't insist on a username unless (or until) you need one. Enable users to sign up and sign in with
+only an email address (or telephone number) and password—or <a href="#federated-login">federated login</a>
+if they prefer. Don't force them to choose and remember a username.</p>
+<p>If your site does require usernames, don't impose unreasonable rules on them, and don't stop users
+from updating their username. On your backend you should generate a unique ID for every user account,
+not an identifier based on personal data such as username.</p>
+<p>Also make sure to use <code>autocomplete=&quot;username&quot;</code> for usernames.</p>
+<div class="w-aside w-aside--caution">
+<p><strong>Caution</strong>:
+As with personal names, ensure that usernames aren't restricted to characters from the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions/Character_Classes#Types:~:text=Latin%20alphabet" rel="noopener">Latin
+alphabet</a>. <a href="/payment-and-address-form-best-practices#unicode-matching">Payment and address form best practices</a>
+explains how and why to validate using Unicode letter matching.</p>
+</div>
+<h2 id="test-platforms">Test on a range of devices, platforms, browsers and versions <a class="w-headline-link" href="#test-platforms">#</a></h2>
+<p>Test sign-up forms on the platforms most common for your users. Form element functionality may vary,
+and differences in viewport size can cause layout problems. BrowserStack enables <a href="https://www.browserstack.com/open-source" rel="noopener">free testing for
+open source projects</a> on a range of devices and browsers.</p>
+<h2 id="analytics-rum">Implement analytics and Real User Monitoring <a class="w-headline-link" href="#analytics-rum">#</a></h2>
+<p>You need <a href="/how-to-measure-speed/#lab-data-vs-field-data">field data as well as lab data</a>
+to understand how users experience your sign-up forms. Analytics and <a href="https://developer.mozilla.org/en-US/docs/Web/Performance/Rum-vs-Synthetic#Real_User_Monitoring" rel="noopener">Real User Monitoring</a>
+(RUM) provide data for the actual experience of your users, such as how long sign-up pages take to
+load, which UI components users interact with (or not) and how long it takes users to complete
+sign-up.</p>
+<ul>
+<li><strong>Page analytics</strong>: <a href="https://analytics.google.com/analytics/academy/course/6" rel="noopener">page views, bounce rates and exits</a> for every page in your sign-up flow.</li>
+<li><strong>Interaction analytics</strong>: <a href="https://support.google.com/analytics/answer/6180923?hl=en" rel="noopener">goal funnels</a>
+and <a href="https://developers.google.com/analytics/devguides/collection/gtagjs/events" rel="noopener">events</a>
+indicate where users abandon the sign-up flow and what proportion of users click buttons,
+links, and other components of your sign-up pages.</li>
+<li><strong>Website performance</strong>: <a href="/user-centric-performance-metrics">user-centric metrics</a>
+can tell you if your sign-up flow is slow to load or <a href="/cls">visually unstable</a>.</li>
+</ul>
+<p>Small changes can make a big difference to completion rates for sign-up forms. Analytics and RUM
+enable you to optimize and prioritize changes, and monitor your site for problems that aren't
+exposed by local testing.</p>
+<h2 id="resources">Keep learning <a class="w-headline-link" href="#resources">#</a></h2>
+<ul>
+<li><a href="/sign-in-form-best-practices">Sign-in form best practices</a></li>
+<li><a href="/payment-and-address-form-best-practices">Payment and address form best practices</a></li>
+<li><a href="https://developers.google.com/web/fundamentals/design-and-ux/input/forms" rel="noopener">Create Amazing Forms</a></li>
+<li><a href="https://www.smashingmagazine.com/2018/08/best-practices-for-mobile-form-design/" rel="noopener">Best Practices For Mobile Form Design</a></li>
+<li><a href="/more-capable-form-controls">More capable form controls</a></li>
+<li><a href="https://webaim.org/techniques/forms/" rel="noopener">Creating Accessible Forms</a></li>
+<li><a href="https://developers.google.com/web/updates/2016/04/credential-management-api" rel="noopener">Streamlining the Sign-up Flow Using Credential Management API</a></li>
+<li><a href="/web-otp">Verify phone numbers on the web with the WebOTP API</a></li>
+</ul>
+<p>Photo by <a href="https://unsplash.com/@ecowarriorprincess" rel="noopener">@ecowarriorprincess</a> on <a href="https://unsplash.com/photos/lUShu7PHIGA" rel="noopener">Unsplash</a>.</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/forms/">Forms</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/identity/">Identity</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/layout/">Layout</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/mobile/">Mobile</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/security/">Security</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/ux/">UX</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Dec 11, 2020</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/sign-up-form-best-practices/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+      <div class="w-callout w-callout--2col">
+      <div class="w-callout__header">
+        <h2 class="w-callout__lockup w-callout__lockup--codelab">Codelabs</h2>
+        <div class="w-callout__headline">See it in action</div>
+        <div class="w-callout__blurb">
+          Learn more and put this guide into action.
+        </div>
+      </div>
+      <ul class="w-unstyled-list w-callout__list">
+        <li class="w-callout__listitem">
+  <a
+    class="w-callout__link w-callout__link--codelab"
+    href="/codelab-sign-up-form-best-practices/"
+  >
+    Sign-up form best practices codelab
+  </a>
+</li>
+      </ul>
+    </div>
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

@@ -1,0 +1,690 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=1ef0bb4849f3a">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Choose the best build tool for your project with tooling.report</title>
+<meta name="description" content="Select and configure build tools based on best practices. " />
+
+<link rel="canonical" href="https://web.dev/introducing-tooling-report/" />
+
+<meta itemprop="name" content="Choose the best build tool for your project with tooling.report" />
+<meta itemprop="description" content="Select and configure build tools based on best practices. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/y3f0yAb97pLOpTQrhUNA.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/introducing-tooling-report/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Choose the best build tool for your project with tooling.report" />
+<meta property="og:description" content="Select and configure build tools based on best practices. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/y3f0yAb97pLOpTQrhUNA.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="A grid of cards showing test names and test results from across tooling.report." />
+<meta property="tag" content="tools" />
+<meta property="tag" content="javascript" />
+<meta property="tag" content="css" />
+<meta property="tag" content="html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Choose the best build tool for your project with tooling.report" />
+<meta name="twitter:description" content="Select and configure build tools based on best practices. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/y3f0yAb97pLOpTQrhUNA.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=ee0d4c258c5bd', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=a85d38b1416f3', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="A grid of cards showing test names and test results from across tooling.report."     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/y3f0yAb97pLOpTQrhUNA.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/y3f0yAb97pLOpTQrhUNA.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/y3f0yAb97pLOpTQrhUNA.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/y3f0yAb97pLOpTQrhUNA.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/y3f0yAb97pLOpTQrhUNA.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/y3f0yAb97pLOpTQrhUNA.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/y3f0yAb97pLOpTQrhUNA.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/y3f0yAb97pLOpTQrhUNA.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/y3f0yAb97pLOpTQrhUNA.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/y3f0yAb97pLOpTQrhUNA.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/y3f0yAb97pLOpTQrhUNA.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/y3f0yAb97pLOpTQrhUNA.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/y3f0yAb97pLOpTQrhUNA.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/y3f0yAb97pLOpTQrhUNA.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/y3f0yAb97pLOpTQrhUNA.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/y3f0yAb97pLOpTQrhUNA.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/y3f0yAb97pLOpTQrhUNA.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/y3f0yAb97pLOpTQrhUNA.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#choose-the-best-build-tool-for-your-project-with-tooling.report" class="w-toc__header--link">
+        Choose the best build tool for your project with tooling.report
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#build-tools-often-get-in-our-way">Build tools often get in our way</a></li><li><a href="#our-approach">Our approach</a></li><li><a href="#we-only-use-dollartool_name-should-i-still-care">We only use ${tool_name}, should I still care?</a></li><li><a href="#can-i-contribute-to-the-site">Can I contribute to the site?</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors=""
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="choose-the-best-build-tool-for-your-project-with-tooling.report" class="w-article-header__headline">Choose the best build tool for your project with tooling.report</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          Select and configure build tools based on best practices.
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Jun 29, 2020</time>
+           <span class="w-author__separator">•</span> Updated <time>Aug 20, 2020</time> 
+        </div>
+      
+      
+
+      
+    </header>
+
+    
+
+    <div class="youtube">  <lite-youtube    videoid="vsMJiNtQWvw"      >  </lite-youtube></div>
+<p>Today web.dev is launching a new initiative called <a href="https://tooling.report" rel="noopener">tooling.report</a>. It's a
+website that gives web developers an overview of the features supported across a selection of
+popular build tools. We built this site to help you choose the right build tool for your next
+project, decide if migrating from one tool to another is worth it, or figure out how to incorporate
+best practices into your tooling configuration and code base. Tools have different focus areas and
+cater to a different set of needs, which means selecting and configuring tools involves making
+tradeoffs. With tooling.report, we aim to explain these tradeoffs and document how to follow best
+practices with any given build tool.</p>
+<p>Sounds exciting? Visit tooling.report to start exploring, or read on to learn more about why and how
+we developed this site.</p>
+<h2 id="build-tools-often-get-in-our-way">Build tools often get in our way <a class="w-headline-link" href="#build-tools-often-get-in-our-way">#</a></h2>
+<p>Over at <a href="https://github.com/GoogleChromeLabs" rel="noopener">GoogleChromeLabs</a>, we've built web apps like
+<a href="https://squoosh.app/" rel="noopener">Squoosh</a> and <a href="https://proxx.app/" rel="noopener">Proxx</a>, as well as websites like the one
+for <a href="https://developer.chrome.com/devsummit/" rel="noopener">Chrome Dev Summit 2019</a>. As with any web development
+project, we generally start by discussing project infrastructure like the hosting environment,
+frameworks, and our build tool setup.  That infrastructure is updated as the project progresses: new
+plugins are added in order to accommodate frameworks or techniques we adopt, or the way we write
+code is changed so that our build tools better understand what we are trying to achieve. Throughout
+this process, we have often found that the tools we select end up getting in our way.</p>
+<p>Our team is focused on providing the best web experience to users, which often results in
+fine-tuning how our frontend assets are assembled and delivered. For example, if a main thread
+script and web worker script have shared dependencies, we would like to download the dependencies
+once instead of bundling it twice for each script. Some tools support this out of the box, some need
+significant customization effort to change default behaviors, and for others it's outright
+impossible.</p>
+<p>This experience led us to investigate what different build tools can and cannot do. Our hope was to
+create a checklist for features so that next time we start a new project, we can evaluate and choose
+which tool is best suited for our project.</p>
+<h2 id="our-approach">Our approach <a class="w-headline-link" href="#our-approach">#</a></h2>
+<p>How can we evaluate and compare different build tools in one place? We approached it by writing test
+cases.</p>
+<p>Our team discussed and designed test criteria that we believe represent best practices for web
+development. We specifically focused on how to deliver fast, responsive, and smooth user
+experiences, intentionally excluding tests related to developer experience in order to avoid
+measuring two incomparable outcomes.</p>
+<p>Once the test list was created, we went ahead and wrote a build script for each tool to check if the
+tool can fulfil the test's success criteria. As an initial set, we decided to investigate webpack
+v4, Rollup v2, and Parcel v2. We also tested Browserify + Gulp since a large number of projects
+still use this setup. For a test to pass, only publicly documented features of the tool or a plugin
+for the tool can be used. After the initial set of tests were written, we worked with the build tool
+authors to make sure we used their tools correctly and represented them fairly.</p>
+<figure class="w-figure">
+  <img     alt="A screenshot of tooling.report."     class="w-screenshot w-screenshot--filled"     decoding="async"     height="394"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/0OauqO2tSeOTDpDGutmk.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/0OauqO2tSeOTDpDGutmk.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/0OauqO2tSeOTDpDGutmk.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/0OauqO2tSeOTDpDGutmk.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/0OauqO2tSeOTDpDGutmk.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/0OauqO2tSeOTDpDGutmk.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/0OauqO2tSeOTDpDGutmk.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/0OauqO2tSeOTDpDGutmk.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/0OauqO2tSeOTDpDGutmk.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/0OauqO2tSeOTDpDGutmk.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/0OauqO2tSeOTDpDGutmk.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/0OauqO2tSeOTDpDGutmk.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/0OauqO2tSeOTDpDGutmk.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/0OauqO2tSeOTDpDGutmk.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/0OauqO2tSeOTDpDGutmk.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/0OauqO2tSeOTDpDGutmk.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/0OauqO2tSeOTDpDGutmk.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/0OauqO2tSeOTDpDGutmk.jpg?auto=format&w=1600 1600w"          width="800"   />
+</figure>
+<h2 id="we-only-use-dollartool_name-should-i-still-care">We only use ${tool_name}, should I still care? <a class="w-headline-link" href="#we-only-use-dollartool_name-should-i-still-care">#</a></h2>
+<p>In many teams, there are people dedicated to maintaining the build infrastructure, and other members
+of the team might never get to make a choice when it comes to build tools. We hope this site is
+still useful for you too, as a way to set expectations for the tools you rely on. For each test,
+we've included an explanation of why the test is important along with additional resources. And if
+you want to adopt a best practice with the tool of your choice, the test setup in our repository
+contains the configuration files necessary to do so.</p>
+<h2 id="can-i-contribute-to-the-site">Can I contribute to the site? <a class="w-headline-link" href="#can-i-contribute-to-the-site">#</a></h2>
+<p>If you think a certain feature should be tested that is currently missing, please <a href="https://github.com/GoogleChromeLabs/tooling.report/issues/new" rel="noopener">propose it in a
+GitHub issue</a> to start the
+discussion. We aim to encapsulate real-world use cases, and any additional tests that better assess
+these outcomes are welcome.</p>
+<p>If you want to write tests for tools we did not include in the initial set, we welcome that too!
+Please see
+<a href="https://github.com/GoogleChromeLabs/tooling.report/blob/dev/CONTRIBUTING.md" rel="noopener">CONTRIBUTING.md</a> for
+more information.</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/tools/">Tools</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/javascript/">JavaScript</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/css/">CSS</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/html/">HTML</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Aug 20, 2020</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/introducing-tooling-report/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

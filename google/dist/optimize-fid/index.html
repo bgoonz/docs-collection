@@ -1,0 +1,883 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=03be472c948ab">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Optimize First Input Delay</title>
+<meta name="description" content="First Input Delay (FID) measures the time from when a user first interacts with your site to the time when the browser is actually able to respond to that interaction. Learn how to optimize FID by minimizing unused JavaScript, breaking up Long Tasks, and improving interaction readiness. " />
+
+<link rel="canonical" href="https://web.dev/optimize-fid/" />
+
+<meta itemprop="name" content="Optimize First Input Delay" />
+<meta itemprop="description" content="First Input Delay (FID) measures the time from when a user first interacts with your site to the time when the browser is actually able to respond to that interaction. Learn how to optimize FID by minimizing unused JavaScript, breaking up Long Tasks, and improving interaction readiness. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/WH0KlcJXJlxvsxU9ow2i.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/optimize-fid/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Optimize First Input Delay" />
+<meta property="og:description" content="First Input Delay (FID) measures the time from when a user first interacts with your site to the time when the browser is actually able to respond to that interaction. Learn how to optimize FID by minimizing unused JavaScript, breaking up Long Tasks, and improving interaction readiness. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/WH0KlcJXJlxvsxU9ow2i.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="A hand touching a smartphone screen" />
+<meta property="tag" content="performance" />
+<meta property="tag" content="web-vitals" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Optimize First Input Delay" />
+<meta name="twitter:description" content="First Input Delay (FID) measures the time from when a user first interacts with your site to the time when the browser is actually able to respond to that interaction. Learn how to optimize FID by minimizing unused JavaScript, breaking up Long Tasks, and improving interaction readiness. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/WH0KlcJXJlxvsxU9ow2i.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=b19771def89f5', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=67f8b9aba3acc', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="A hand touching a smartphone screen"     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/WH0KlcJXJlxvsxU9ow2i.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/WH0KlcJXJlxvsxU9ow2i.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/WH0KlcJXJlxvsxU9ow2i.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/WH0KlcJXJlxvsxU9ow2i.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/WH0KlcJXJlxvsxU9ow2i.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/WH0KlcJXJlxvsxU9ow2i.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/WH0KlcJXJlxvsxU9ow2i.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/WH0KlcJXJlxvsxU9ow2i.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/WH0KlcJXJlxvsxU9ow2i.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/WH0KlcJXJlxvsxU9ow2i.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/WH0KlcJXJlxvsxU9ow2i.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/WH0KlcJXJlxvsxU9ow2i.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/WH0KlcJXJlxvsxU9ow2i.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/WH0KlcJXJlxvsxU9ow2i.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/WH0KlcJXJlxvsxU9ow2i.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/WH0KlcJXJlxvsxU9ow2i.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/WH0KlcJXJlxvsxU9ow2i.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/WH0KlcJXJlxvsxU9ow2i.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#optimize-first-input-delay" class="w-toc__header--link">
+        Optimize First Input Delay
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#heavy-javascript-execution">Heavy JavaScript execution</a></li><li><a href="#long-tasks">Break up Long Tasks</a></li><li><a href="#optimize-your-page-for-interaction-readiness">Optimize your page for interaction readiness</a></li><li><a href="#first-party-script-execution-can-delay-interaction-readiness">First-party script execution can delay interaction readiness</a></li><li><a href="#data-fetching-can-impact-many-aspects-of-interaction-readiness">Data-fetching can impact many aspects of interaction readiness</a></li><li><a href="#third-party-script-execution-can-delay-interaction-latency-too">Third-party script execution can delay interaction latency too</a></li><li><a href="#use-a-web-worker">Use a web worker</a></li><li><a href="#reduce-javascript-execution">Reduce JavaScript execution time</a></li><li><a href="#developer-tools">Developer tools</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@hdjirdeh | @addyosmani"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="optimize-first-input-delay" class="w-article-header__headline">Optimize First Input Delay</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          How to respond faster to user interactions.
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>May 5, 2020</time>
+          
+        </div>
+      
+      <div class="w-layout-container--narrow w-post-signpost">
+  <span class="w-post-signpost__title">Appears in:</span>
+  <a
+          class="w-post-signpost__link"
+          href="/learn-web-vitals"
+          >Web Vitals</a
+        >
+</div>
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/houssein/"><img     alt="Houssein Djirdeh"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/BibySYHD7JweNcHZCCOe.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/BibySYHD7JweNcHZCCOe.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/BibySYHD7JweNcHZCCOe.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/BibySYHD7JweNcHZCCOe.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/BibySYHD7JweNcHZCCOe.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/BibySYHD7JweNcHZCCOe.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/houssein/">Houssein Djirdeh</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/hdjirdeh"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/housseindjirdeh">GitHub</a>
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://glitch.com/@housseindjirdeh"
+          >Glitch</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://houssein.me/">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+            <div class="w-author">
+  <a href="/authors/addyosmani/"><img     alt="Addy Osmani"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LJyNTOzyWbowv2mrlzPS.jpeg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LJyNTOzyWbowv2mrlzPS.jpeg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LJyNTOzyWbowv2mrlzPS.jpeg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LJyNTOzyWbowv2mrlzPS.jpeg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LJyNTOzyWbowv2mrlzPS.jpeg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LJyNTOzyWbowv2mrlzPS.jpeg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/addyosmani/">Addy Osmani</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/addyosmani"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/addyosmani">GitHub</a>
+      </li>
+      
+      
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <blockquote>
+  <p>
+    I clicked but nothing happened! Why can't I interact with this page? 😢
+  </p>
+</blockquote>
+<p><a href="/fcp/">First Contentful Paint</a> (FCP) and <a href="/lcp/">Largest Contentful
+Paint</a> (LCP) are both metrics that measure the time it takes for content to
+visually render (paint) on a page. Although important, paint times do not capture <em>load
+responsiveness</em>: or how quickly a page responds to user interaction.</p>
+<p><a href="/fid/">First Input Delay</a> (FID) is a <a href="/vitals/">Core Web Vitals</a> metric that captures a user's
+first impression of a site's interactivity and responsiveness. It measures the time from when a user
+first interacts with a page to the time when the browser is actually able to respond to that
+interaction. FID is a <a href="/user-centric-performance-metrics/#in-the-field">field metric</a> and cannot be
+simulated in a lab environment. <strong>A real user interaction</strong> is required in order to measure the
+response delay.</p>
+<picture>
+  <source srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/eXyvkqRHQZ5iG38Axh1Z.svg" media="(min-width: 640px)">
+  <img     alt="Good fid values are 2.5 seconds, poor values are greater than 4.0 seconds and anything in between needs improvement"     class="w-screenshot w-screenshot--filled width-full"     decoding="async"     height="96"          loading="lazy"          src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Se4TiXIdp8jtLJVScWed.svg"               width="384"   />
+</picture>
+<p>To help predict FID in the <a href="/how-to-measure-speed/#lab-data-vs-field-data">lab</a>, we
+recommend <a href="/tbt/">Total Blocking Time (TBT)</a>. They measure different things, but
+improvements in TBT usually correspond to improvements in FID.</p>
+<p>The main cause of a poor FID is <strong>heavy JavaScript execution</strong>. Optimizing how JavaScript parses,
+compiles, and executes on your web page will directly reduce FID.</p>
+<h2 id="heavy-javascript-execution">Heavy JavaScript execution <a class="w-headline-link" href="#heavy-javascript-execution">#</a></h2>
+<p>The browser cannot respond to most user input while it's executing JavaScript on the main thread. In other words, the
+browser can't respond to user interactions while the main thread is busy. To improve this:</p>
+<ul>
+<li><a href="#long-tasks">Break up Long Tasks</a></li>
+<li><a href="#optimize-interaction-readiness">Optimize your page for interaction readiness</a></li>
+<li><a href="#use-a-web-worker">Use a web worker</a></li>
+<li><a href="#reduce-javascript-execution">Reduce JavaScript execution time</a></li>
+</ul>
+<h2 id="long-tasks">Break up Long Tasks <a class="w-headline-link" href="#long-tasks">#</a></h2>
+<p>If you've already attempted to reduce the amount of JavaScript that loads on a single page, it can
+be useful to break down long-running code into <strong>smaller, asynchronous tasks</strong>.</p>
+<p><a href="/custom-metrics/#long-tasks-api"><strong>Long Tasks</strong></a> are JavaScript execution periods where users may
+find your UI unresponsive. Any piece of code that blocks the main thread for 50 ms or more can be
+characterized as a Long Task. Long Tasks are a sign of
+potential JavaScript bloat (loading and executing more than a user may need right now).
+Splitting up long tasks can reduce input delay on your site.</p>
+<figure class="w-figure">
+  <img     alt="Long Tasks in Chrome DevTools"     class="w-screenshot"     decoding="async"     height="132"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/THLKu0sOPhSghNr0XkP1.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/THLKu0sOPhSghNr0XkP1.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/THLKu0sOPhSghNr0XkP1.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/THLKu0sOPhSghNr0XkP1.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/THLKu0sOPhSghNr0XkP1.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/THLKu0sOPhSghNr0XkP1.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/THLKu0sOPhSghNr0XkP1.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/THLKu0sOPhSghNr0XkP1.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/THLKu0sOPhSghNr0XkP1.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/THLKu0sOPhSghNr0XkP1.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/THLKu0sOPhSghNr0XkP1.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/THLKu0sOPhSghNr0XkP1.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/THLKu0sOPhSghNr0XkP1.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/THLKu0sOPhSghNr0XkP1.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/THLKu0sOPhSghNr0XkP1.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/THLKu0sOPhSghNr0XkP1.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/THLKu0sOPhSghNr0XkP1.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/THLKu0sOPhSghNr0XkP1.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">Chrome DevTools <a href="https://developers.google.com/web/updates/2020/03/devtools#long-tasks">visualizes Long Tasks</a> in the Performance Panel</figcaption>
+</figure>
+<p>FID should improve noticeably as you adopt best practices like code-splitting and breaking up your
+Long Tasks. While TBT is not a field metric, it's useful for checking progress towards ultimately
+improving both Time To Interactive (TTI) and FID.</p>
+<div class="w-aside w-aside--note">
+<p>For more information, take a look at <a href="/long-tasks-devtools/">Are long JavaScript tasks delaying your Time to
+Interactive?</a>.</p>
+</div>
+<h2 id="optimize-your-page-for-interaction-readiness">Optimize your page for interaction readiness <a class="w-headline-link" href="#optimize-your-page-for-interaction-readiness">#</a></h2>
+<p>There are a number of common causes for poor FID and TBT scores in web apps that rely heavily on
+JavaScript:</p>
+<h3 id="first-party-script-execution-can-delay-interaction-readiness">First-party script execution can delay interaction readiness <a class="w-headline-link" href="#first-party-script-execution-can-delay-interaction-readiness">#</a></h3>
+<ul>
+<li>JavaScript size bloat, heavy execution times and inefficient chunking can slow down how soon a
+page can respond to user input and impact FID, TBT, and TTI. Progressive loading of code and
+features can help spread this work out and improve interaction readiness.</li>
+<li>Server-side rendered apps may look like they're getting pixels painted on the screen
+quickly, but beware of user interactions being blocked by large script executions (e.g.
+re-hydration to wire up event listeners). This can take several hundred milliseconds, sometimes
+even seconds, if route-based code splitting is being used. Consider shifting more logic
+server-side or generating more content statically during build time.</li>
+</ul>
+<p>Below are the TBT scores before and after optimizing first-party script loading for an
+application. By moving costly script loading (and execution) for a non-essential component off the
+critical path, users were able to interact with the page much sooner.</p>
+<img     alt="Improvements in TBT score in Lighthouse after optimizing the first-party script."     class="w-screenshot"     decoding="async"     height="148"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/TEIbBnIAyfzIoQtvXvMk.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/TEIbBnIAyfzIoQtvXvMk.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/TEIbBnIAyfzIoQtvXvMk.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/TEIbBnIAyfzIoQtvXvMk.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/TEIbBnIAyfzIoQtvXvMk.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/TEIbBnIAyfzIoQtvXvMk.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/TEIbBnIAyfzIoQtvXvMk.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/TEIbBnIAyfzIoQtvXvMk.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/TEIbBnIAyfzIoQtvXvMk.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/TEIbBnIAyfzIoQtvXvMk.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/TEIbBnIAyfzIoQtvXvMk.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/TEIbBnIAyfzIoQtvXvMk.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/TEIbBnIAyfzIoQtvXvMk.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/TEIbBnIAyfzIoQtvXvMk.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/TEIbBnIAyfzIoQtvXvMk.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/TEIbBnIAyfzIoQtvXvMk.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/TEIbBnIAyfzIoQtvXvMk.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/TEIbBnIAyfzIoQtvXvMk.png?auto=format&w=1600 1600w"          width="800"   />
+<h3 id="data-fetching-can-impact-many-aspects-of-interaction-readiness">Data-fetching can impact many aspects of interaction readiness <a class="w-headline-link" href="#data-fetching-can-impact-many-aspects-of-interaction-readiness">#</a></h3>
+<ul>
+<li>Waiting on a waterfall of cascading fetches (e.g. JavaScript and data fetches for components) can
+impact interaction latency. Aim to minimize a reliance on cascading data fetches.</li>
+<li>Large inline datastores can push out HTML parsing time and impact both paint and interaction
+metrics. Aim to minimize how much data needs to be post-processed on the client-side.</li>
+</ul>
+<h3 id="third-party-script-execution-can-delay-interaction-latency-too">Third-party script execution can delay interaction latency too <a class="w-headline-link" href="#third-party-script-execution-can-delay-interaction-latency-too">#</a></h3>
+<ul>
+<li>Many sites include third-party tags and analytics which can keep the network busy and
+make the main thread periodically unresponsive, impacting interaction latency. Explore
+on-demand loading of third-party code (e.g. maybe don't load those below-the-fold ads until
+they're scrolled closer to the viewport).</li>
+<li>In some cases, third-party scripts can pre-empt first-party ones in terms of priority and
+bandwidth on the main thread, also delaying how soon a page is interaction-ready. Attempt to
+prioritize loading what you believe offers the greatest value to users first.</li>
+</ul>
+<h2 id="use-a-web-worker">Use a web worker <a class="w-headline-link" href="#use-a-web-worker">#</a></h2>
+<p>A blocked main thread is one of the main causes of input delay. <a href="https://developer.mozilla.org/en-US/docs/Web/API/Worker" rel="noopener">Web
+workers</a> make it possible to run JavaScript
+on a background thread. Moving non-UI operations to a separate worker thread can cut down main
+thread blocking time and consequently improve FID.</p>
+<p>Consider using the following libraries to make it easier to use web workers on your site:</p>
+<ul>
+<li><a href="https://github.com/GoogleChromeLabs/comlink" rel="noopener">Comlink</a>: A helper library that abstracts
+<code>postMessage</code> and makes it easier to use</li>
+<li><a href="https://github.com/WebReflection/workway" rel="noopener">Workway</a>: A general purpose web worker exporter</li>
+<li><a href="https://github.com/developit/workerize" rel="noopener">Workerize</a>: Move a module into a web worker</li>
+</ul>
+<div class="w-aside w-aside--note">
+<p>To learn more about how web workers can execute code off the main thread, refer to <a href="/off-main-thread/">Use Web Workers
+to run JavaScript off the browser's main thread</a>.</p>
+</div>
+<h3 id="reduce-javascript-execution">Reduce JavaScript execution time <a class="w-headline-link" href="#reduce-javascript-execution">#</a></h3>
+<p>Limiting the amount of JavaScript on your page reduces the amount of time that the browser needs to
+spend executing JavaScript code. This speeds up how fast the browser can begin to respond to any
+user interactions.</p>
+<p>To reduce the amount of JavaScript executed on your page:</p>
+<ul>
+<li>Defer unused JavaScript</li>
+<li>Minimize unused polyfills</li>
+</ul>
+<h4 id="defer-unused-javascript">Defer unused JavaScript <a class="w-headline-link" href="#defer-unused-javascript">#</a></h4>
+<p>By default all JavaScript is render-blocking. When the browser encounters a script tag that links to
+an external JavaScript file, it must pause what it's doing and download, parse, compile, and execute
+that JavaScript. Therefore you should only load the code that's needed for the page or
+responding to user input.</p>
+<p>The <a href="https://developers.google.com/web/tools/chrome-devtools/coverage" rel="noopener">Coverage</a> tab in Chrome
+DevTools can tell you how much JavaScript is not being used on your web page.</p>
+<img     alt="The Coverage tab."     class="w-screenshot w-screenshot--filled"     decoding="async"     height="559"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/UNEigFiwsGu48rtXMZM4.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/UNEigFiwsGu48rtXMZM4.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/UNEigFiwsGu48rtXMZM4.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/UNEigFiwsGu48rtXMZM4.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/UNEigFiwsGu48rtXMZM4.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/UNEigFiwsGu48rtXMZM4.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/UNEigFiwsGu48rtXMZM4.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/UNEigFiwsGu48rtXMZM4.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/UNEigFiwsGu48rtXMZM4.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/UNEigFiwsGu48rtXMZM4.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/UNEigFiwsGu48rtXMZM4.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/UNEigFiwsGu48rtXMZM4.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/UNEigFiwsGu48rtXMZM4.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/UNEigFiwsGu48rtXMZM4.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/UNEigFiwsGu48rtXMZM4.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/UNEigFiwsGu48rtXMZM4.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/UNEigFiwsGu48rtXMZM4.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/UNEigFiwsGu48rtXMZM4.png?auto=format&w=1600 1600w"          width="800"   />
+<p>To cut down on unused JavaScript:</p>
+<ul>
+<li>Code-split your bundle into multiple chunks</li>
+<li>Defer any non-critical JavaScript, including third-party scripts, using <code>async</code> or <code>defer</code></li>
+</ul>
+<p><strong>Code-splitting</strong> is the concept of splitting a single large JavaScript bundle into smaller chunks
+that can be conditionally loaded (also known as lazy-loading).
+<a href="https://caniuse.com/#feat=es6-module-dynamic-import" rel="noopener">Most newer browsers support dynamic import syntax</a>,
+which allows for module fetching on demand:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">import</span><span class="token punctuation">(</span><span class="token string">'module.js'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">module</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token comment">// Do something with the module.</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>Dynamically importing JavaScript on certain user interactions (such as changing a route or
+displaying a modal) will make sure that code not used for the initial page load is only fetched when
+needed.</p>
+<p>Aside from general browser support, dynamic import syntax can be used in many different build
+systems.</p>
+<ul>
+<li>If you use <a href="https://webpack.js.org/guides/code-splitting/" rel="noopener">webpack</a>,
+<a href="https://medium.com/rollup/rollup-now-has-code-splitting-and-we-need-your-help-46defd901c82" rel="noopener">Rollup</a>,
+or <a href="https://parceljs.org/code_splitting.html" rel="noopener">Parcel</a> as a module bundler, take advantage of
+their dynamic import support.</li>
+<li>Client-side frameworks, like
+<a href="https://reactjs.org/docs/code-splitting.html#reactlazy" rel="noopener">React</a>,
+<a href="https://angular.io/guide/lazy-loading-ngmodules" rel="noopener">Angular</a>, and
+<a href="https://vuejs.org/v2/guide/components-dynamic-async.html#Async-Components" rel="noopener">Vue</a> provide
+abstractions to make it easier to lazy-load at the component-level.</li>
+</ul>
+<div class="w-aside w-aside--note">
+<p>Take a look at <a href="/reduce-javascript-payloads-with-code-splitting/">Reduce JavaScript payloads with code
+splitting</a> to learn more about code-splitting.</p>
+</div>
+<p>Aside from code-splitting, always use <a href="https://javascript.info/script-async-defer" rel="noopener">async or
+defer</a> for scripts that are not necessary for
+critical-path or above-the-fold content.</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">defer</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>…<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token script"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">async</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>…<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token script"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><p>Unless there is a specific reason not to, all third-party scripts should be loaded with either <code>defer</code>
+or <code>async</code> by default.</p>
+<h4 id="minimize-unused-polyfills">Minimize unused polyfills <a class="w-headline-link" href="#minimize-unused-polyfills">#</a></h4>
+<p>If you author your code using modern JavaScript syntax and reference modern browsers APIs, you will
+need to transpile it and include polyfills in order for it to work in older browsers.</p>
+<p>One of the main performance concerns of including polyfills and transpiled code in your site is that
+newer browsers shouldn't have to download it if they do not need it. To cut down on the JavaScript
+size of your application, minimize unused polyfills as much as possible and restrict their usage to
+environments where they're needed.</p>
+<p>To optimize polyfill usage on your site:</p>
+<ul>
+<li>
+<p>If you use <a href="https://babeljs.io/docs/en/index.html" rel="noopener">Babel</a> as a transpiler, use
+<a href="https://babeljs.io/docs/en/babel-preset-env" rel="noopener"><code>@babel/preset-env</code></a> to only include the polyfills
+needed for the browsers you plan on targeting. For Babel 7.9, enable the
+<a href="https://babeljs.io/docs/en/babel-preset-env#bugfixes" rel="noopener"><code>bugfixes</code></a> option to further cut down
+on any unneeded polyfills</p>
+</li>
+<li>
+<p>Use the module/nomodule pattern to deliver two separate bundles (<code>@babel/preset-env</code> also
+supports this via <a href="https://babeljs.io/docs/en/babel-preset-env#targetsesmodules" rel="noopener"><code>target.esmodules</code></a>)</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>module<span class="token punctuation">"</span></span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>modern.js<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token script"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">nomodule</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>legacy.js<span class="token punctuation">"</span></span> <span class="token attr-name">defer</span><span class="token punctuation">></span></span><span class="token script"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><p>Many newer ECMAScript features compiled with Babel are already supported in environments
+that support JavaScript modules. So by doing this, you simplify the process of making sure that
+only transpiled code is used for browsers that actually need it.</p>
+</li>
+</ul>
+<div class="w-aside w-aside--note">
+<p>The <a href="/serve-modern-code-to-modern-browsers/">Serve modern code to modern browsers for faster page
+loads</a> guide goes into more detail about this topic.</p>
+</div>
+<h2 id="developer-tools">Developer tools <a class="w-headline-link" href="#developer-tools">#</a></h2>
+<p>A number of tools are available to measure and debug FID:</p>
+<ul>
+<li>
+<p><a href="https://developers.google.com/web/tools/lighthouse" rel="noopener">Lighthouse 6.0</a> does not include
+support for FID since it is a field metric. However, <a href="/tbt/">Total Blocking
+Time</a> (TBT) can be used as a proxy. Optimizations that improve TBT should
+also improve FID in the field.</p>
+<img     alt="Lighthouse 6.0."     class="w-screenshot"     decoding="async"     height="309"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/FRM9kHWmsDv9dddGMgwu.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/FRM9kHWmsDv9dddGMgwu.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/FRM9kHWmsDv9dddGMgwu.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/FRM9kHWmsDv9dddGMgwu.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/FRM9kHWmsDv9dddGMgwu.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/FRM9kHWmsDv9dddGMgwu.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/FRM9kHWmsDv9dddGMgwu.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/FRM9kHWmsDv9dddGMgwu.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/FRM9kHWmsDv9dddGMgwu.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/FRM9kHWmsDv9dddGMgwu.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/FRM9kHWmsDv9dddGMgwu.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/FRM9kHWmsDv9dddGMgwu.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/FRM9kHWmsDv9dddGMgwu.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/FRM9kHWmsDv9dddGMgwu.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/FRM9kHWmsDv9dddGMgwu.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/FRM9kHWmsDv9dddGMgwu.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/FRM9kHWmsDv9dddGMgwu.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/FRM9kHWmsDv9dddGMgwu.jpg?auto=format&w=1600 1600w"          width="800"   />
+</li>
+<li>
+<p><a href="https://developers.google.com/web/tools/chrome-user-experience-report" rel="noopener">Chrome User Experience Report</a>
+provides real-world FID values aggregated at the origin-level</p>
+</li>
+</ul>
+<p><em>With thanks to Philip Walton, Kayce Basques, Ilya Grigorik, and Annie Sullivan for their reviews.</em></p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/performance/">Performance</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/web-vitals/">Web Vitals</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>May 5, 2020</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/optimize-fid/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

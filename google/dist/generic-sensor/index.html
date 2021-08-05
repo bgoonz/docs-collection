@@ -1,0 +1,981 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=409966780a7e3">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Sensors for the web</title>
+<meta name="description" content="Sensors are used in many applications to enable advanced features like games that take the orientation or the acceleration of the device they run on into account. The Generic Sensor API provides a generic interface for accessing such sensor data on the web. " />
+
+<link rel="canonical" href="https://web.dev/generic-sensor/" />
+
+<meta itemprop="name" content="Sensors for the web" />
+<meta itemprop="description" content="Sensors are used in many applications to enable advanced features like games that take the orientation or the acceleration of the device they run on into account. The Generic Sensor API provides a generic interface for accessing such sensor data on the web. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/2AGc7aV66zc69fiqNJBZ.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/generic-sensor/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Sensors for the web" />
+<meta property="og:description" content="Sensors are used in many applications to enable advanced features like games that take the orientation or the acceleration of the device they run on into account. The Generic Sensor API provides a generic interface for accessing such sensor data on the web. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/2AGc7aV66zc69fiqNJBZ.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="A simple gyroscope." />
+<meta property="tag" content="sensors" />
+<meta property="tag" content="devices" />
+<meta property="tag" content="capabilities" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Sensors for the web" />
+<meta name="twitter:description" content="Sensors are used in many applications to enable advanced features like games that take the orientation or the acceleration of the device they run on into account. The Generic Sensor API provides a generic interface for accessing such sensor data on the web. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/2AGc7aV66zc69fiqNJBZ.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=3cb618fccd396', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=e3c6c73fd30f4', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="A simple gyroscope."     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/2AGc7aV66zc69fiqNJBZ.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/2AGc7aV66zc69fiqNJBZ.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/2AGc7aV66zc69fiqNJBZ.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/2AGc7aV66zc69fiqNJBZ.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/2AGc7aV66zc69fiqNJBZ.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/2AGc7aV66zc69fiqNJBZ.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/2AGc7aV66zc69fiqNJBZ.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/2AGc7aV66zc69fiqNJBZ.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/2AGc7aV66zc69fiqNJBZ.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/2AGc7aV66zc69fiqNJBZ.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/2AGc7aV66zc69fiqNJBZ.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/2AGc7aV66zc69fiqNJBZ.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/2AGc7aV66zc69fiqNJBZ.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/2AGc7aV66zc69fiqNJBZ.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/2AGc7aV66zc69fiqNJBZ.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/2AGc7aV66zc69fiqNJBZ.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/2AGc7aV66zc69fiqNJBZ.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/2AGc7aV66zc69fiqNJBZ.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#sensors-for-the-web" class="w-toc__header--link">
+        Sensors for the web
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#what-is-generic-sensor-api">What is the Generic Sensor API?</a></li><li><a href="#browser-compatibility">Browser compatibility</a></li><li><a href="#available-generic-sensor-apis">Available generic sensor APIs</a></li><li><a href="#feature-detection">Feature detection</a></li><li><a href="#polyfill">Polyfill</a></li><li><a href="#what-are-sensors-how-to-use-them">What are all these sensors? How can I use them?</a></li><li><a href="#acceleration-and-linear-accelerometer-sensor">Accelerometer and linear acceleration sensor</a></li><li><a href="#gravity-sensor">Gravity sensor</a></li><li><a href="#gyroscope-sensor">Gyroscope</a></li><li><a href="#orientation-sensors">Orientation sensors</a></li><li><a href="#synchronization-with-screen-coordinates">Synchronization with screen coordinates</a></li><li><a href="#lets-code">Let's code!</a></li><li><a href="#development-environment">Development environment</a></li><li><a href="#3d-model-rotation">3D model rotation</a></li><li><a href="#punchmeter">Punchmeter</a></li><li><a href="#debugging-and-sensor-overriding-with-chrome-devtools">Debugging and sensor overriding with Chrome DevTools</a></li><li><a href="#privacy-and-security">Privacy and security</a></li><li><a href="#only-https">Only HTTPS</a></li><li><a href="#permissions-policy-integration">Permissions Policy integration</a></li><li><a href="#sensor-readings-delivery-can-be-suspended">Sensor readings delivery can be suspended</a></li><li><a href="#whats-next">What's next?</a></li><li><a href="#you-can-help!">You can help!</a></li><li><a href="#resources">Resources</a></li><li><a href="#acknowledgements">Acknowledgements</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="i18n.authors.alexshalamov.title | i18n.authors.pozdnyakov.title | @tomayac"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="sensors-for-the-web" class="w-article-header__headline">Sensors for the web</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          <p>Use the Generic Sensor API to get access to on-device sensors like accelerometers,
+gyroscopes, and magentometers.</p>
+
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Sep 18, 2017</time>
+           <span class="w-author__separator">•</span> Updated <time>Feb 17, 2021</time> 
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/alexshalamov/"><img     alt="Alex Shalamov"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"          src="https://web-dev.imgix.net/image/admin/1v5F1SOBl46ZghbHQMle.svg"               width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/alexshalamov/">Alex Shalamov</a>
+    </cite>
+    
+  </div>
+</div>
+          
+            <div class="w-author">
+  <a href="/authors/pozdnyakov/"><img     alt="Mikhail Pozdnyakov"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/l2RwV8N49BBwJax77Op4.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/l2RwV8N49BBwJax77Op4.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/l2RwV8N49BBwJax77Op4.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/l2RwV8N49BBwJax77Op4.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/l2RwV8N49BBwJax77Op4.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/l2RwV8N49BBwJax77Op4.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/pozdnyakov/">Mikhail Pozdnyakov</a>
+    </cite>
+    
+  </div>
+</div>
+          
+            <div class="w-author">
+  <a href="/authors/thomassteiner/"><img     alt="Thomas Steiner"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/thomassteiner/">Thomas Steiner</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/tomayac"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/tomayac">GitHub</a>
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://glitch.com/@tomayac"
+          >Glitch</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://blog.tomayac.com/">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>Today, sensor data is used in many platform-specific applications to enable use cases such as
+immersive gaming, fitness tracking, and augmented or virtual reality. Wouldn't it be cool to bridge
+the gap between platform-specific and web applications? Enter the
+<a href="https://www.w3.org/TR/generic-sensor/" rel="noopener">Generic Sensor API</a>, for the web!</p>
+<h2 id="what-is-generic-sensor-api">What is the Generic Sensor API? <a class="w-headline-link" href="#what-is-generic-sensor-api">#</a></h2>
+<p>The <a href="https://www.w3.org/TR/generic-sensor/" rel="noopener">Generic Sensor API</a> is a set of interfaces which expose
+sensor devices to the web platform. The API consists of the base
+<a href="https://w3c.github.io/sensors/#the-sensor-interface" rel="noopener"><code>Sensor</code></a> interface and a set of concrete
+sensor classes built on top. Having a base interface simplifies the implementation and specification
+process for the concrete sensor classes. For instance, take a look at the
+<a href="https://w3c.github.io/gyroscope/#gyroscope-interface" rel="noopener"><code>Gyroscope</code></a> class. It is super tiny! The
+core functionality is specified by the base interface, and <code>Gyroscope</code> merely extends it with three
+attributes representing angular velocity.</p>
+<p>Some sensor classes interface to actual hardware sensors such as, for example, the accelerometer or
+gyroscope classes. These are referred to as low-level sensors. Other sensors, referred to as
+<a href="https://w3c.github.io/sensors/#sensor-fusion" rel="noopener">fusion sensors</a>, merge data from several low level
+sensors to expose information a script would otherwise need to calculate. For example, the
+<a href="https://www.w3.org/TR/orientation-sensor/#absoluteorientationsensor" rel="noopener"><code>AbsoluteOrientation</code></a> sensor
+provides a ready-to-use four-by-four rotation matrix based on the data obtained from the
+accelerometer, gyroscope, and magnetometer.</p>
+<p>You might think that the web platform already provides sensor data and you are absolutely right! For
+instance, <a href="https://developer.mozilla.org/en-US/docs/Web/API/DeviceMotionEvent" rel="noopener"><code>DeviceMotion</code></a> and
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/DeviceOrientationEvent" rel="noopener"><code>DeviceOrientation</code></a>
+events expose motion sensor data. So why do we need a new API?</p>
+<p>Comparing to the existing interfaces, Generic Sensor API provides a great number of advantages:</p>
+<ul>
+<li>Generic Sensor API is a sensor framework that can be easily extended with new sensor classes and
+each of these classes will keep the generic interface. The client code written for one sensor type
+can be reused for another one with very few modifications!</li>
+<li>You can configure the sensor. For example, you can set the sampling frequency suitable for your
+application needs.</li>
+<li>You can detect whether a sensor is available on the platform.</li>
+<li>Sensor readings have high precision timestamps, enabling better synchronization with other
+activities in your application.</li>
+<li>Sensor data models and coordinate systems are clearly defined, allowing browser vendors to
+implement interoperable solutions.</li>
+<li>The Generic Sensor based interfaces are not bound to the DOM (meaning they are neither <code>navigator</code>
+nor <code>window</code> objects), and this opens up future opportunities for using the API within service
+workers or implementing it in headless JavaScript runtimes, such as embedded
+devices.</li>
+<li><a href="#privacy-and-security">Security and privacy</a> aspects are the top priority for the Generic Sensor
+API and provide much better security as compared to older sensor APIs. There is integration with
+the Permissions API.</li>
+<li>Automatic <a href="#synchronization-with-screen-coordinates">synchronization with screen coordinates</a> is
+available for <code>Accelerometer</code>, <code>Gyroscope</code>, <code>LinearAccelerationSensor</code>,
+<code>AbsoluteOrientationSensor</code>, <code>RelativeOrientationSensor</code> and <code>Magnetometer</code>.</li>
+</ul>
+<h2 id="browser-compatibility">Browser compatibility <a class="w-headline-link" href="#browser-compatibility">#</a></h2>
+<p>The Generic Sensor API is supported by Google Chrome as of version 67. Most Chromium-derived
+browsers like Microsoft Edge, Opera, or Samsung Internet support this API as well. For other
+browsers, see <a href="https://caniuse.com/mdn-api_sensor" rel="noopener">Can I use</a>. Note that the Generic Sensor API can
+be <a href="#polyfill">polyfilled</a>.</p>
+<h2 id="available-generic-sensor-apis">Available generic sensor APIs <a class="w-headline-link" href="#available-generic-sensor-apis">#</a></h2>
+<p>At the time of writing, there are several sensors that you can experiment with.</p>
+<p><strong>Motion sensors:</strong></p>
+<ul>
+<li><code>Accelerometer</code></li>
+<li><code>Gyroscope</code></li>
+<li><code>LinearAccelerationSensor</code></li>
+<li><code>AbsoluteOrientationSensor</code></li>
+<li><code>RelativeOrientationSensor</code></li>
+<li><code>GravitySensor</code></li>
+</ul>
+<p><strong>Environmental sensors:</strong></p>
+<ul>
+<li><code>AmbientLightSensor</code> (Behind the <code>#enable-generic-sensor-extra-classes</code> flag in Chromium.)</li>
+<li><code>Magnetometer</code> (Behind the <code>#enable-generic-sensor-extra-classes</code> flag in Chromium.)</li>
+</ul>
+<h2 id="feature-detection">Feature detection <a class="w-headline-link" href="#feature-detection">#</a></h2>
+<p>Feature detection of hardware APIs is tricky, since you need to detect both whether the browser
+supports the interface in question, <em>and</em> whether the device has the corresponding sensor. Checking
+whether the browser supports an interface is straightforward. (Replace <code>Accelerometer</code> with any of
+the other interfaces mentioned <a href="#available-generic-sensor-apis">above</a>.)</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token string">'Accelerometer'</span> <span class="token keyword">in</span> window<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token comment">// The `Accelerometer` interface is supported by the browser.</span><br>  <span class="token comment">// Does the device have an accelerometer, though?</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>For an actually meaningful feature detection result, you need to try to connect to the sensor, too.
+This example illustrates how to do that.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">let</span> accelerometer <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span><br><span class="token keyword">try</span> <span class="token punctuation">{</span><br>  accelerometer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Accelerometer</span><span class="token punctuation">(</span><span class="token punctuation">{</span> frequency<span class="token operator">:</span> <span class="token number">10</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  accelerometer<span class="token punctuation">.</span><span class="token function-variable function">onerror</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">event</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>    <span class="token comment">// Handle runtime errors.</span><br>    <span class="token keyword">if</span> <span class="token punctuation">(</span>event<span class="token punctuation">.</span>error<span class="token punctuation">.</span>name <span class="token operator">===</span> <span class="token string">'NotAllowedError'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'Permission to access sensor was denied.'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>event<span class="token punctuation">.</span>error<span class="token punctuation">.</span>name <span class="token operator">===</span> <span class="token string">'NotReadableError'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'Cannot connect to the sensor.'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">}</span><span class="token punctuation">;</span><br>  accelerometer<span class="token punctuation">.</span><span class="token function-variable function">onreading</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">e</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><span class="token punctuation">;</span><br>  accelerometer<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span>error<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token comment">// Handle construction errors.</span><br>  <span class="token keyword">if</span> <span class="token punctuation">(</span>error<span class="token punctuation">.</span>name <span class="token operator">===</span> <span class="token string">'SecurityError'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'Sensor construction was blocked by the Permissions Policy.'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>error<span class="token punctuation">.</span>name <span class="token operator">===</span> <span class="token string">'ReferenceError'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'Sensor is not supported by the User Agent.'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span><br>    <span class="token keyword">throw</span> error<span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><h2 id="polyfill">Polyfill <a class="w-headline-link" href="#polyfill">#</a></h2>
+<p>For browsers that do not support the Generic Sensor API, a
+<a href="https://github.com/kenchris/sensor-polyfills" rel="noopener">polyfill</a> is available. The polyfill allows you to
+load only the relevant sensors' implementations.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token comment">// Import the objects you need.</span><br><span class="token keyword">import</span> <span class="token punctuation">{</span> Gyroscope<span class="token punctuation">,</span> AbsoluteOrientationSensor <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'./src/motion-sensors.js'</span><span class="token punctuation">;</span><br><br><span class="token comment">// And they're ready for use!</span><br><span class="token keyword">const</span> gyroscope <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Gyroscope</span><span class="token punctuation">(</span><span class="token punctuation">{</span> frequency<span class="token operator">:</span> <span class="token number">15</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token keyword">const</span> orientation <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">AbsoluteOrientationSensor</span><span class="token punctuation">(</span><span class="token punctuation">{</span> frequency<span class="token operator">:</span> <span class="token number">60</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><h2 id="what-are-sensors-how-to-use-them">What are all these sensors? How can I use them? <a class="w-headline-link" href="#what-are-sensors-how-to-use-them">#</a></h2>
+<p>Sensors is an area that might need a brief introduction. If you are familiar with sensors, you can
+jump right to the <a href="#lets-code">hands-on coding section</a>. Otherwise, let's look at each supported
+sensor in detail.</p>
+<h3 id="acceleration-and-linear-accelerometer-sensor">Accelerometer and linear acceleration sensor <a class="w-headline-link" href="#acceleration-and-linear-accelerometer-sensor">#</a></h3>
+ <figure class="w-figure">
+ <video      autoplay                                          loop      muted                        width="800"    >      <source src="https://storage.googleapis.com/web-dev-uploads/video/8WbTDNrhLsU0El80frMBGE4eMCD3/FCf9iuCaNASEB3V0x8Ld.mp4" type="video/mp4" />    </video>
+  <figcaption class="w-figcaption">
+    Accelerometer sensor measurements
+  </figcaption>
+</figure>
+<p>The <a href="https://developer.mozilla.org/en-US/docs/Web/API/Accelerometer" rel="noopener"><code>Accelerometer</code></a> sensor
+measures acceleration of a device hosting the sensor on three axes (X, Y, and Z). This sensor is an
+inertial sensor, meaning that when the device is in linear free fall, the total measured
+acceleration would be 0 m/s<sup>2</sup>, and when a device lying flat on a table, the acceleration
+in upwards direction (Z axis) will be equal to the Earth's gravity, i.e. g ≈ +9.8 m/s<sup>2</sup> as
+it is measuring the force of the table pushing the device upwards. If you push the device to the
+right, acceleration on the X axis would be positive, or negative if the device is accelerated from
+the right toward the left.</p>
+<p>Accelerometers can be used for things like: step counting, motion sensing, or simple device
+orientation. Quite often, accelerometer measurements are combined with data from other sources to
+create fusion sensors, such as, orientation sensors.</p>
+<p>The
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/LinearAccelerationSensor" rel="noopener"><code>LinearAccelerationSensor</code></a>
+measures acceleration that is applied to the device hosting the sensor, excluding the contribution
+of gravity. When a device is at rest, for instance lying flat on the table, the sensor would measure
+≈ 0 m/s<sup>2</sup> acceleration on three axes.</p>
+<h3 id="gravity-sensor">Gravity sensor <a class="w-headline-link" href="#gravity-sensor">#</a></h3>
+<p>It is already possible for users to manually derive readings close to those of a gravity sensor by
+manually inspecting <code>Accelerometer</code> and <code>LinearAccelerometer</code> readings, but this can be cumbersome
+and depend on the accuracy of the values provided by those sensors. Platforms such as Android can
+provide gravity readings as part of the operating system, which should be cheaper in terms of
+computation, provide more accurate values depending on the user's hardware, and be easier to use in
+terms of API ergonomics. The
+<a href="https://w3c.github.io/accelerometer/#gravitysensor-interface" rel="noopener"><code>GravitySensor</code></a> returns the effect
+of acceleration along the device's X, Y, and Z axis due to gravity.</p>
+<h3 id="gyroscope-sensor">Gyroscope <a class="w-headline-link" href="#gyroscope-sensor">#</a></h3>
+ <figure class="w-figure">
+  <video      autoplay                                          loop      muted                        width="800"    >      <source src="https://storage.googleapis.com/web-dev-uploads/video/8WbTDNrhLsU0El80frMBGE4eMCD3/7VItzZMC9Rb2QglsE3s5.mp4" type="video/mp4" />    </video>
+  <figcaption class="w-figcaption">
+    Gyroscope sensor measurements
+  </figcaption>
+</figure>
+<p>The <a href="https://developer.mozilla.org/en-US/docs/Web/API/Gyroscope" rel="noopener"><code>Gyroscope</code></a> sensor measures
+angular velocity in radians per second around the device's local X, Y, and Z axis. Most consumer
+devices have mechanical (<a href="https://en.wikipedia.org/wiki/Microelectromechanical_systems" rel="noopener">MEMS</a>)
+gyroscopes, which are inertial sensors that measure rotation rate based on
+<a href="https://en.wikipedia.org/wiki/Coriolis_force" rel="noopener">inertial Coriolis force</a>. MEMS gyroscopes are prone
+to drift that is caused by the sensor's gravitational sensitivity which deforms the sensor's
+internal mechanical system. Gyroscopes oscillate at relative high frequencies, e.g., 10s of kHz, and
+therefore, might consume more power compared to other sensors.</p>
+<h3 id="orientation-sensors">Orientation sensors <a class="w-headline-link" href="#orientation-sensors">#</a></h3>
+<figure class="w-figure">
+<video      autoplay                                          loop      muted                        width="800"    >      <source src="https://storage.googleapis.com/web-dev-uploads/video/8WbTDNrhLsU0El80frMBGE4eMCD3/rhpW784mCvR78nwg6rd1.mp4" type="video/mp4" />    </video>
+  <figcaption class="w-figcaption">
+    Absolute orientation sensor measurements
+  </figcaption>
+</figure>
+<p>The
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/AbsoluteOrientationSensor" rel="noopener"><code>AbsoluteOrientationSensor</code></a>
+is a fusion sensor that measures rotation of a device in relation to the Earth's coordinate system,
+while the
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/RelativeOrientationSensor" rel="noopener"><code>RelativeOrientationSensor</code></a>
+provides data representing rotation of a device hosting motion sensors in relation to a stationary
+reference coordinate system.</p>
+<p>All modern 3D JavaScript frameworks support <a href="https://en.wikipedia.org/wiki/Quaternion" rel="noopener">quaternions</a>
+and <a href="https://en.wikipedia.org/wiki/Rotation_matrix" rel="noopener">rotation matrices</a> to represent rotation;
+however, if you use WebGL directly, the <code>OrientationSensor</code> conveniently has both a
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/OrientationSensor/quaternion" rel="noopener"><code>quaternion</code> property</a>
+and a
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/OrientationSensor/populateMatrix" rel="noopener"><code>populateMatrix()</code> method</a>.
+Here are few snippets:</p>
+<p><strong><a href="https://threejs.org/docs/index.html#api/core/Object3D.quaternion" rel="noopener">three.js</a></strong></p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">let</span> torusGeometry <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">THREE<span class="token punctuation">.</span>TorusGeometry</span><span class="token punctuation">(</span><span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">1.6</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">6.3</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token keyword">let</span> material <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">THREE<span class="token punctuation">.</span>MeshBasicMaterial</span><span class="token punctuation">(</span><span class="token punctuation">{</span> color<span class="token operator">:</span> <span class="token number">0x0071c5</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token keyword">let</span> torus <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">THREE<span class="token punctuation">.</span>Mesh</span><span class="token punctuation">(</span>torusGeometry<span class="token punctuation">,</span> material<span class="token punctuation">)</span><span class="token punctuation">;</span><br>scene<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>torus<span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token comment">// Update mesh rotation using quaternion.</span><br><span class="token keyword">const</span> sensorAbs <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">AbsoluteOrientationSensor</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>sensorAbs<span class="token punctuation">.</span><span class="token function-variable function">onreading</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> torus<span class="token punctuation">.</span>quaternion<span class="token punctuation">.</span><span class="token function">fromArray</span><span class="token punctuation">(</span>sensorAbs<span class="token punctuation">.</span>quaternion<span class="token punctuation">)</span><span class="token punctuation">;</span><br>sensorAbs<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token comment">// Update mesh rotation using rotation matrix.</span><br><span class="token keyword">const</span> sensorRel <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">RelativeOrientationSensor</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token keyword">let</span> rotationMatrix <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Float32Array</span><span class="token punctuation">(</span><span class="token number">16</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>sensor_rel<span class="token punctuation">.</span><span class="token function-variable function">onreading</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  sensorRel<span class="token punctuation">.</span><span class="token function">populateMatrix</span><span class="token punctuation">(</span>rotationMatrix<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  torus<span class="token punctuation">.</span>matrix<span class="token punctuation">.</span><span class="token function">fromArray</span><span class="token punctuation">(</span>rotationMatrix<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span><br>sensorRel<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p><strong><a href="http://doc.babylonjs.com/classes/3.0/abstractmesh#rotationquaternion-quaternion-classes-3-0-quaternion-" rel="noopener">BABYLON</a></strong></p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> mesh <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">BABYLON<span class="token punctuation">.</span>Mesh<span class="token punctuation">.</span>CreateCylinder</span><span class="token punctuation">(</span><span class="token string">'mesh'</span><span class="token punctuation">,</span> <span class="token number">0.9</span><span class="token punctuation">,</span> <span class="token number">0.3</span><span class="token punctuation">,</span> <span class="token number">0.6</span><span class="token punctuation">,</span> <span class="token number">9</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> scene<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token keyword">const</span> sensorRel <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">RelativeOrientationSensor</span><span class="token punctuation">(</span><span class="token punctuation">{</span> frequency<span class="token operator">:</span> <span class="token number">30</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>sensorRel<span class="token punctuation">.</span><span class="token function-variable function">onreading</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> mesh<span class="token punctuation">.</span>rotationQuaternion<span class="token punctuation">.</span><span class="token function">FromArray</span><span class="token punctuation">(</span>sensorRel<span class="token punctuation">.</span>quaternion<span class="token punctuation">)</span><span class="token punctuation">;</span><br>sensorRel<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p><strong><a href="https://www.khronos.org/registry/webgl/specs/latest/2.0/" rel="noopener">WebGL</a></strong></p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token comment">// Initialize sensor and update model matrix when new reading is available.</span><br><span class="token keyword">let</span> modMatrix <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Float32Array</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token keyword">const</span> sensorAbs <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">AbsoluteOrientationSensor</span><span class="token punctuation">(</span><span class="token punctuation">{</span> frequency<span class="token operator">:</span> <span class="token number">60</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>sensorAbs<span class="token punctuation">.</span><span class="token function-variable function">onreading</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> sensorAbs<span class="token punctuation">.</span><span class="token function">populateMatrix</span><span class="token punctuation">(</span>modMatrix<span class="token punctuation">)</span><span class="token punctuation">;</span><br>sensorAbs<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token comment">// Somewhere in rendering code, update vertex shader attribute for the model</span><br>gl<span class="token punctuation">.</span><span class="token function">uniformMatrix4fv</span><span class="token punctuation">(</span>modMatrixAttr<span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">,</span> modMatrix<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>Orientation sensors enable various use cases, such as immersive gaming, augmented and virtual
+reality.</p>
+<p>For more information about motion sensors, advanced use cases, and requirements, check out the
+<a href="https://w3c.github.io/motion-sensors/" rel="noopener">motion sensors explainer</a> document.</p>
+<h2 id="synchronization-with-screen-coordinates">Synchronization with screen coordinates <a class="w-headline-link" href="#synchronization-with-screen-coordinates">#</a></h2>
+<p>By default, <a href="https://w3c.github.io/sensors/#spatial-sensor" rel="noopener">spatial sensors'</a> readings are resolved
+in a local coordinate system that is bound to the device and does not take screen orientation into
+account.</p>
+<figure class="w-figure">
+  <img     alt="Device coordinate system"          decoding="async"     height="520"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/xI2V6To5gx5WbXunpOBh.png?auto=format"     srcset="https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/xI2V6To5gx5WbXunpOBh.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/xI2V6To5gx5WbXunpOBh.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/xI2V6To5gx5WbXunpOBh.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/xI2V6To5gx5WbXunpOBh.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/xI2V6To5gx5WbXunpOBh.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/xI2V6To5gx5WbXunpOBh.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/xI2V6To5gx5WbXunpOBh.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/xI2V6To5gx5WbXunpOBh.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/xI2V6To5gx5WbXunpOBh.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/xI2V6To5gx5WbXunpOBh.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/xI2V6To5gx5WbXunpOBh.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/xI2V6To5gx5WbXunpOBh.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/xI2V6To5gx5WbXunpOBh.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/xI2V6To5gx5WbXunpOBh.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/xI2V6To5gx5WbXunpOBh.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/xI2V6To5gx5WbXunpOBh.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/xI2V6To5gx5WbXunpOBh.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">Device coordinate system</figcaption>
+</figure>
+<p>However, many use cases like games or augmented and virtual reality require sensor readings to be
+resolved in a coordinate system that is instead bound to the screen orientation.</p>
+<figure class="w-figure">
+  <img     alt="Screen coordinate system"          decoding="async"     height="520"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/x1PUlYnAXb9QkqwLV04g.png?auto=format"     srcset="https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/x1PUlYnAXb9QkqwLV04g.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/x1PUlYnAXb9QkqwLV04g.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/x1PUlYnAXb9QkqwLV04g.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/x1PUlYnAXb9QkqwLV04g.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/x1PUlYnAXb9QkqwLV04g.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/x1PUlYnAXb9QkqwLV04g.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/x1PUlYnAXb9QkqwLV04g.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/x1PUlYnAXb9QkqwLV04g.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/x1PUlYnAXb9QkqwLV04g.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/x1PUlYnAXb9QkqwLV04g.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/x1PUlYnAXb9QkqwLV04g.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/x1PUlYnAXb9QkqwLV04g.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/x1PUlYnAXb9QkqwLV04g.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/x1PUlYnAXb9QkqwLV04g.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/x1PUlYnAXb9QkqwLV04g.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/x1PUlYnAXb9QkqwLV04g.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/x1PUlYnAXb9QkqwLV04g.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">Screen coordinate system</figcaption>
+</figure>
+<p>Previously, remapping of sensor readings to screen coordinates had to be implemented in JavaScript.
+This approach is inefficient and it also quite significantly increases the complexity of the web
+application code; the web application must watch screen orientation changes and perform coordinates
+transformations for sensor readings, which is not a trivial thing to do for Euler angles or
+quaternions.</p>
+<p>The Generic Sensor API provides a much simpler and reliable solution! The local coordinate system is
+configurable for all defined spatial sensor classes: <code>Accelerometer</code>, <code>Gyroscope</code>,
+<code>LinearAccelerationSensor</code>, <code>AbsoluteOrientationSensor</code>, <code>RelativeOrientationSensor</code>, and
+<code>Magnetometer</code>. By passing the <code>referenceFrame</code> option to the sensor object constructor, the user
+defines whether the returned readings will be resolved in
+<a href="https://w3c.github.io/accelerometer/#device-coordinate-system" rel="noopener">device</a> or
+<a href="https://w3c.github.io/accelerometer/#screen-coordinate-system" rel="noopener">screen</a> coordinates.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token comment">// Sensor readings are resolved in the Device coordinate system by default.</span><br><span class="token comment">// Alternatively, could be RelativeOrientationSensor({referenceFrame: "device"}).</span><br><span class="token keyword">const</span> sensorRelDevice <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">RelativeOrientationSensor</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token comment">// Sensor readings are resolved in the Screen coordinate system. No manual remapping is required!</span><br><span class="token keyword">const</span> sensorRelScreen <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">RelativeOrientationSensor</span><span class="token punctuation">(</span><span class="token punctuation">{</span> referenceFrame<span class="token operator">:</span> <span class="token string">'screen'</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><h2 id="lets-code">Let's code! <a class="w-headline-link" href="#lets-code">#</a></h2>
+<p>The Generic Sensor API is very simple and easy-to-use! The Sensor interface has
+<a href="https://w3c.github.io/sensors/#sensor-start" rel="noopener"><code>start()</code></a> and
+<a href="https://w3c.github.io/sensors/#sensor-stop" rel="noopener"><code>stop()</code></a> methods to control sensor state and several
+event handlers for receiving notifications about sensor activation, errors and newly available
+readings. The concrete sensor classes usually add their specific reading attributes to the base
+class.</p>
+<h3 id="development-environment">Development environment <a class="w-headline-link" href="#development-environment">#</a></h3>
+<p>During development you'll be able to use sensors through <code>localhost</code>. If you are developing for
+mobile devices, set up
+<a href="https://developers.google.com/web/tools/chrome-devtools/remote-debugging/local-server" rel="noopener">port forwarding</a>
+for your local server, and you are ready to rock!</p>
+<p>When your code is ready, deploy it on a server that supports HTTPS.
+<a href="https://pages.github.com/" rel="noopener">GitHub Pages</a> are served over HTTPS, making it a great place to share
+your demos.</p>
+<h3 id="3d-model-rotation">3D model rotation <a class="w-headline-link" href="#3d-model-rotation">#</a></h3>
+<p>In this simple example, we use the data from an absolute orientation sensor to modify the rotation
+quaternion of a 3D model. The <code>model</code> is a three.js
+<a href="https://threejs.org/docs/index.html#api/core/Object3D" rel="noopener"><code>Object3D</code></a> class instance that has a
+<a href="https://threejs.org/docs/index.html#api/core/Object3D.quaternion" rel="noopener"><code>quaternion</code></a> property. The
+following code snippet from the
+<a href="https://github.com/intel/generic-sensor-demos/tree/master/orientation-phone" rel="noopener">orientation phone</a>
+demo, illustrates how the absolute orientation sensor can be used to rotate a 3D model.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">initSensor</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  sensor <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">AbsoluteOrientationSensor</span><span class="token punctuation">(</span><span class="token punctuation">{</span> frequency<span class="token operator">:</span> <span class="token number">60</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  sensor<span class="token punctuation">.</span><span class="token function-variable function">onreading</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> model<span class="token punctuation">.</span>quaternion<span class="token punctuation">.</span><span class="token function">fromArray</span><span class="token punctuation">(</span>sensor<span class="token punctuation">.</span>quaternion<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  sensor<span class="token punctuation">.</span><span class="token function-variable function">onerror</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">event</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>    <span class="token keyword">if</span> <span class="token punctuation">(</span>event<span class="token punctuation">.</span>error<span class="token punctuation">.</span>name <span class="token operator">==</span> <span class="token string">'NotReadableError'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'Sensor is not available.'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">}</span><span class="token punctuation">;</span><br>  sensor<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>The device's orientation will be reflected in 3D <code>model</code> rotation within the WebGL scene.</p>
+<figure class="w-figure">
+  <img     alt="Sensor updates 3D model&#x27;s orientation"          decoding="async"     height="368"          loading="lazy"     sizes="(min-width: 338px) 338px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/CdYXzmhv0ZNBvETuC6SX.png?auto=format"     srcset="https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/CdYXzmhv0ZNBvETuC6SX.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/CdYXzmhv0ZNBvETuC6SX.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/CdYXzmhv0ZNBvETuC6SX.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/CdYXzmhv0ZNBvETuC6SX.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/CdYXzmhv0ZNBvETuC6SX.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/CdYXzmhv0ZNBvETuC6SX.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/CdYXzmhv0ZNBvETuC6SX.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/CdYXzmhv0ZNBvETuC6SX.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/CdYXzmhv0ZNBvETuC6SX.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/CdYXzmhv0ZNBvETuC6SX.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/CdYXzmhv0ZNBvETuC6SX.png?auto=format&w=676 676w"          width="338"   />
+  <figcaption class="w-figcaption">Sensor updates orientation of a 3D model</figcaption>
+</figure>
+<h3 id="punchmeter">Punchmeter <a class="w-headline-link" href="#punchmeter">#</a></h3>
+<p>The following code snippet is extracted from the
+<a href="https://github.com/intel/generic-sensor-demos/tree/master/punchmeter" rel="noopener">punchmeter demo</a>,
+illustrating how the linear acceleration sensor can be used to calculate the maximum velocity of a
+device under the assumption that it is initially laying still.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">this</span><span class="token punctuation">.</span>maxSpeed <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span><br><span class="token keyword">this</span><span class="token punctuation">.</span>vx <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span><br><span class="token keyword">this</span><span class="token punctuation">.</span>ax <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span><br><span class="token keyword">this</span><span class="token punctuation">.</span>t <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span><br><br><span class="token comment">/* … */</span><br><br><span class="token keyword">this</span><span class="token punctuation">.</span>accel<span class="token punctuation">.</span><span class="token function-variable function">onreading</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token keyword">let</span> dt <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>accel<span class="token punctuation">.</span>timestamp <span class="token operator">-</span> <span class="token keyword">this</span><span class="token punctuation">.</span>t<span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">0.001</span><span class="token punctuation">;</span> <span class="token comment">// In seconds.</span><br>  <span class="token keyword">this</span><span class="token punctuation">.</span>vx <span class="token operator">+=</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>accel<span class="token punctuation">.</span>x <span class="token operator">+</span> <span class="token keyword">this</span><span class="token punctuation">.</span>ax<span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">)</span> <span class="token operator">*</span> dt<span class="token punctuation">;</span><br><br>  <span class="token keyword">let</span> speed <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">abs</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>vx<span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>maxSpeed <span class="token operator">&lt;</span> speed<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token keyword">this</span><span class="token punctuation">.</span>maxSpeed <span class="token operator">=</span> speed<span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><br>  <span class="token keyword">this</span><span class="token punctuation">.</span>t <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>accel<span class="token punctuation">.</span>timestamp<span class="token punctuation">;</span><br>  <span class="token keyword">this</span><span class="token punctuation">.</span>ax <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>accel<span class="token punctuation">.</span>x<span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>The current velocity is calculated as an approximation to the integral of the acceleration function.</p>
+<figure class="w-figure">
+  <img     alt="Demo web application for punch speed measurement"          decoding="async"     height="347"          loading="lazy"     sizes="(min-width: 338px) 338px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/37a9DYv1huOcraAMfXpO.png?auto=format"     srcset="https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/37a9DYv1huOcraAMfXpO.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/37a9DYv1huOcraAMfXpO.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/37a9DYv1huOcraAMfXpO.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/37a9DYv1huOcraAMfXpO.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/37a9DYv1huOcraAMfXpO.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/37a9DYv1huOcraAMfXpO.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/37a9DYv1huOcraAMfXpO.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/37a9DYv1huOcraAMfXpO.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/37a9DYv1huOcraAMfXpO.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/37a9DYv1huOcraAMfXpO.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/37a9DYv1huOcraAMfXpO.png?auto=format&w=676 676w"          width="338"   />
+  <figcaption class="w-figcaption">Measurement of a punch speed</figcaption>
+</figure>
+<h2 id="debugging-and-sensor-overriding-with-chrome-devtools">Debugging and sensor overriding with Chrome DevTools <a class="w-headline-link" href="#debugging-and-sensor-overriding-with-chrome-devtools">#</a></h2>
+<p>In some cases you don't need a physical device to play with the Generic Sensor API. Chrome DevTools
+has great support for
+<a href="https://developers.google.com/web/tools/chrome-devtools/device-mode/orientation" rel="noopener">simulating device orientation</a>.</p>
+<figure class="w-figure">
+  <img     alt="Chrome DevTools used to override the custom orientation data of a virtual phone"          decoding="async"     height="648"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/OWhCoZXMZllhI7fN7BMR.png?auto=format"     srcset="https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/OWhCoZXMZllhI7fN7BMR.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/OWhCoZXMZllhI7fN7BMR.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/OWhCoZXMZllhI7fN7BMR.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/OWhCoZXMZllhI7fN7BMR.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/OWhCoZXMZllhI7fN7BMR.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/OWhCoZXMZllhI7fN7BMR.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/OWhCoZXMZllhI7fN7BMR.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/OWhCoZXMZllhI7fN7BMR.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/OWhCoZXMZllhI7fN7BMR.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/OWhCoZXMZllhI7fN7BMR.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/OWhCoZXMZllhI7fN7BMR.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/OWhCoZXMZllhI7fN7BMR.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/OWhCoZXMZllhI7fN7BMR.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/OWhCoZXMZllhI7fN7BMR.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/OWhCoZXMZllhI7fN7BMR.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/OWhCoZXMZllhI7fN7BMR.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/OWhCoZXMZllhI7fN7BMR.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">Simulating device orientation with Chrome DevTools</figcaption>
+</figure>
+<h2 id="privacy-and-security">Privacy and security <a class="w-headline-link" href="#privacy-and-security">#</a></h2>
+<p>Sensor readings are sensitive data which can be subject to various attacks from malicious web pages.
+Implementations of Generic Sensor APIs enforce a few limitations to mitigate the possible security
+and privacy risks. These limitations must be taken into account by developers who intend to use the
+API, so let's briefly list them.</p>
+<h3 id="only-https">Only HTTPS <a class="w-headline-link" href="#only-https">#</a></h3>
+<p>Because Generic Sensor API is a powerful feature, the browser only allows it on secure contexts. In
+practice it means that to use Generic Sensor API you'll need to access your page through HTTPS.
+During development you can do so via <a href="http://localhost" rel="noopener">http://localhost</a> but for production you'll
+need to have HTTPS on your server. See the <a href="/secure/">Safe and secure</a> collection for best practices
+and guidelines.</p>
+<h3 id="permissions-policy-integration">Permissions Policy integration <a class="w-headline-link" href="#permissions-policy-integration">#</a></h3>
+<p>The <a href="https://w3c.github.io/webappsec-permissions-policy/" rel="noopener">Permissions Policy integration</a> in Generic
+Sensor API controls access to sensors data for a frame.</p>
+<p>By default the <code>Sensor</code> objects can be created only within a main frame or same-origin subframes,
+thus preventing cross-origin iframes from unsanctioned reading of sensor data. This default behavior
+can be modified by explicitly enabling or disabling of the corresponding
+<a href="https://w3c.github.io/webappsec-permissions-policy/#features" rel="noopener">policy-controlled features</a>.</p>
+<p>The snippet below illustrates granting accelerometer data access to a cross-origin iframe, meaning
+that now <code>Accelerometer</code> or <code>LinearAccelerationSensor</code> objects can be created there.</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>iframe</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>https://third-party.com<span class="token punctuation">"</span></span> <span class="token attr-name">allow</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>accelerometer<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span></code></pre>
+</web-copy-code><h3 id="sensor-readings-delivery-can-be-suspended">Sensor readings delivery can be suspended <a class="w-headline-link" href="#sensor-readings-delivery-can-be-suspended">#</a></h3>
+<p>Sensor readings are only accessible by a visible web page, i.e., when the user is actually
+interacting with it. Moreover, sensor data would not be provided to the parent frame if the user
+focus changes to a cross-origin subframe. This prevents the parent frame infering user input.</p>
+<h2 id="whats-next">What's next? <a class="w-headline-link" href="#whats-next">#</a></h2>
+<p>There is a set of already specified sensor classes to be implemented in the near future such as
+<a href="https://w3c.github.io/ambient-light/" rel="noopener">Ambient Light Sensor</a> or
+<a href="https://w3c.github.io/proximity/" rel="noopener">Proximity Sensor</a>; however, thanks to the great extensibility of
+Generic Sensor framework we can anticipate appearance of even more new classes representing various
+sensor types.</p>
+<p>Another important area for future work is improving the Generic Sensor API itself, the Generic
+Sensor specification is currently a Candidate Recommendation, which means that there is still time
+to make fixes and bring new functionality that developers need.</p>
+<h2 id="you-can-help!">You can help! <a class="w-headline-link" href="#you-can-help!">#</a></h2>
+<p>The sensor specifications reached
+<a href="https://www.w3.org/Consortium/Process/Process-19991111/tr.html#RecsCR" rel="noopener">Candidate Recommendation</a>
+maturity level, hence, the feedback from web and browser developers is highly appreciated. Let us
+know what features would be great to add or if there is something you would like to modify in the
+current API.</p>
+<p>Please feel free to file <a href="https://github.com/w3c/sensors/issues/new" rel="noopener">specification issues</a> as well
+as <a href="https://bugs.chromium.org/p/chromium/issues/entry" rel="noopener">bugs</a> for the Chrome implementation.</p>
+<h2 id="resources">Resources <a class="w-headline-link" href="#resources">#</a></h2>
+<ul>
+<li>Demo projects:
+<a href="https://intel.github.io/generic-sensor-demos/" rel="noopener">https://intel.github.io/generic-sensor-demos/</a></li>
+<li>Generic Sensor API specification: <a href="https://w3c.github.io/sensors/" rel="noopener">https://w3c.github.io/sensors/</a></li>
+<li>Specification issues:
+<a href="https://github.com/w3c/sensors/issues" rel="noopener">https://github.com/w3c/sensors/issues</a></li>
+<li>W3C working group mailing list: <a href="mailto:public-device-apis@w3.org" rel="noopener">public-device-apis@w3.org</a></li>
+<li>Chrome Feature Status:
+<a href="https://www.chromestatus.com/feature/5698781827825664" rel="noopener">https://www.chromestatus.com/feature/5698781827825664</a></li>
+<li>Implementation bugs:
+<a href="http://crbug.com?q=component:Blink%3ESensor" rel="noopener">http://crbug.com?q=component:Blink&gt;Sensor</a></li>
+</ul>
+<h2 id="acknowledgements">Acknowledgements <a class="w-headline-link" href="#acknowledgements">#</a></h2>
+<p>This article was reviewed by <a href="https://github.com/jpmedley" rel="noopener">Joe Medley</a> and
+<a href="https://github.com/kaycebasques" rel="noopener">Kayce Basques</a>. Hero image by
+<a href="https://www.flickr.com/photos/msk13/" rel="noopener">Misko</a> via
+<a href="https://commons.wikimedia.org/wiki/File:Simple_Gyroscope.jpg" rel="noopener">Wikimedia Commons</a>.</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/devices/">Devices</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/capabilities/">Capabilities</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Feb 17, 2021</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/generic-sensor/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

@@ -1,0 +1,857 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=eec000d042742">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Read files in JavaScript</title>
+<meta name="description" content="How to select files, read file metadata and content, and monitor read progress. " />
+
+<link rel="canonical" href="https://web.dev/read-files/" />
+
+<meta itemprop="name" content="Read files in JavaScript" />
+<meta itemprop="description" content="How to select files, read file metadata and content, and monitor read progress. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vU99HKzIf5EUPnzGVPf1.png?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/read-files/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Read files in JavaScript" />
+<meta property="og:description" content="How to select files, read file metadata and content, and monitor read progress. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vU99HKzIf5EUPnzGVPf1.png?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="" />
+<meta property="tag" content="storage" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Read files in JavaScript" />
+<meta name="twitter:description" content="How to select files, read file metadata and content, and monitor read progress. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vU99HKzIf5EUPnzGVPf1.png?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=aba1a475ce4b6', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=387ba2fa34498', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#read-files-in-javascript" class="w-toc__header--link">
+        Read files in JavaScript
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#the-modern-file-system-access-api">The modern File System Access API</a></li><li><a href="#working-with-files-the-classic-way">Working with files, the classic way</a></li><li><a href="#select">Select files</a></li><li><a href="#select-input">HTML input element</a></li><li><a href="#select-dnd">Custom drag-and-drop</a></li><li><a href="#directories">What about directories?</a></li><li><a href="#read-metadata">Read file metadata</a></li><li><a href="#read-content">Read a file's content</a></li><li><a href="#monitor-progress">Monitor the progress of a file read</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@kaycebasques | @petele | @tomayac"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="read-files-in-javascript" class="w-article-header__headline">Read files in JavaScript</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          How to select files, read file metadata and content, and monitor read progress.
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Jun 18, 2010</time>
+           <span class="w-author__separator">•</span> Updated <time>Mar 29, 2021</time> 
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/kaycebasques/"><img     alt="Kayce Basques"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/7GdPR4YDRHSS6llepBOd.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/7GdPR4YDRHSS6llepBOd.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/7GdPR4YDRHSS6llepBOd.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/7GdPR4YDRHSS6llepBOd.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/7GdPR4YDRHSS6llepBOd.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/7GdPR4YDRHSS6llepBOd.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/kaycebasques/">Kayce Basques</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/kaycebasques"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/kaycebasques">GitHub</a>
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://glitch.com/@kaycebasques"
+          >Glitch</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://kayce.basqu.es/">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+            <div class="w-author">
+  <a href="/authors/petelepage/"><img     alt="Pete LePage"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/0g2WvpbGRGdVs0aAPc6ObG7gkud2/3rFbsLsMMk1VveHfBRSu.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/0g2WvpbGRGdVs0aAPc6ObG7gkud2/3rFbsLsMMk1VveHfBRSu.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/0g2WvpbGRGdVs0aAPc6ObG7gkud2/3rFbsLsMMk1VveHfBRSu.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/0g2WvpbGRGdVs0aAPc6ObG7gkud2/3rFbsLsMMk1VveHfBRSu.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/0g2WvpbGRGdVs0aAPc6ObG7gkud2/3rFbsLsMMk1VveHfBRSu.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/0g2WvpbGRGdVs0aAPc6ObG7gkud2/3rFbsLsMMk1VveHfBRSu.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/petelepage/">Pete LePage</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/petele"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/petele">GitHub</a>
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://glitch.com/@petele"
+          >Glitch</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://petelepage.com">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+            <div class="w-author">
+  <a href="/authors/thomassteiner/"><img     alt="Thomas Steiner"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/thomassteiner/">Thomas Steiner</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/tomayac"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/tomayac">GitHub</a>
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://glitch.com/@tomayac"
+          >Glitch</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://blog.tomayac.com/">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>Being able to select and interact with files on the user's local device is
+one of the most commonly used features of the web. It allows users to select
+files and upload them to a server, for example, uploading photos, or
+submitting tax documents, etc. But, it also allows sites to read and
+manipulate them without ever having to transfer the data across the network.</p>
+<h2 id="the-modern-file-system-access-api">The modern File System Access API <a class="w-headline-link" href="#the-modern-file-system-access-api">#</a></h2>
+<p>The File System Access API provides an easy way to both read
+and write to files and directories on the user's local system. It's currently
+available in most Chromium-derived browsers like Chrome or Edge. To learn
+more about it, see the <a href="/file-system-access/">File System Access API</a> article.</p>
+<p>Since the File System Access API is not compatible with all browsers yet,
+check out <a href="https://github.com/GoogleChromeLabs/browser-fs-access" rel="noopener">browser-fs-access</a>,
+a helper library that uses the new API wherever it is available, but falls
+back to legacy approaches when it is not.</p>
+<h2 id="working-with-files-the-classic-way">Working with files, the classic way <a class="w-headline-link" href="#working-with-files-the-classic-way">#</a></h2>
+<p>This guide shows you how to:</p>
+<ul>
+<li>Select files
+<ul>
+<li><a href="#select-input">Using the HTML input element</a></li>
+<li><a href="#select-dnd">Using a drag-and-drop zone</a></li>
+</ul>
+</li>
+<li><a href="#read-metadata">Read file metadata</a></li>
+<li><a href="#read-content">Read a file's content</a></li>
+</ul>
+<h2 id="select">Select files <a class="w-headline-link" href="#select">#</a></h2>
+<h3 id="select-input">HTML input element <a class="w-headline-link" href="#select-input">#</a></h3>
+<p>The easiest way to allow users to select files is using the
+<a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file" rel="noopener"><code>&lt;input type=&quot;file&quot;&gt;</code></a> element, which is supported in every
+major browser. When clicked, it lets a user select a file, or multiple files
+if the <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#Additional_attributes" rel="noopener"><code>multiple</code></a> attribute is included, using
+their operating system's built-in file selection UI. When the user finishes
+selecting a file or files, the element's <code>change</code> event is fired. You can
+access the list of files from <code>event.target.files</code>, which is a
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/FileList" rel="noopener"><code>FileList</code></a> object. Each item in the <code>FileList</code> is a
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/File" rel="noopener"><code>File</code></a> object.</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token comment">&lt;!-- The `multiple` attribute lets users select multiple files. --></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>file<span class="token punctuation">"</span></span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>file-selector<span class="token punctuation">"</span></span> <span class="token attr-name">multiple</span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script"><span class="token language-javascript"><br>  <span class="token keyword">const</span> fileSelector <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">'file-selector'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  fileSelector<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'change'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token parameter">event</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>    <span class="token keyword">const</span> fileList <span class="token operator">=</span> event<span class="token punctuation">.</span>target<span class="token punctuation">.</span>files<span class="token punctuation">;</span><br>    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>fileList<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><div class="w-aside w-aside--note">
+<p>Check if the <a href="/file-system-access/#ask-the-user-to-pick-a-file-to-read"><code>window.showOpenFilePicker()</code></a>
+method is a viable alternative for your use case,
+since it also gives you a file handle so you can possibly write back to the file, apart from reading.
+This method can be <a href="https://github.com/GoogleChromeLabs/browser-fs-access#opening-files" rel="noopener">polyfilled</a>.</p>
+</div>
+<p>This example lets a user select multiple files using their operating system's
+built-in file selection UI and then logs each selected file to the console.</p>
+<div class="glitch-embed-wrap" style="height: 480px; width: 100%;">
+  <iframe
+    allow="camera; clipboard-read; clipboard-write; encrypted-media; geolocation; microphone; midi"
+    loading="lazy"
+    src="https://glitch.com/embed/#!/embed/input-type-file?attributionHidden=true&sidebarCollapsed=true&previewSize=100"
+    style="height: 100%; width: 100%; border: 0;"
+    title="input-type-file on Glitch"
+  ></iframe>
+</div>
+<h4 id="accept">Limit the types of files user can select <a class="w-headline-link" href="#accept">#</a></h4>
+<p>In some cases, you may want to limit the types of files users can select.
+For example, an image editing app should only accept images, not text files.
+To do that, you can add an <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#Additional_attributes" rel="noopener"><code>accept</code></a> attribute to
+the input element to specify which files are accepted.</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>file<span class="token punctuation">"</span></span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>file-selector<span class="token punctuation">"</span></span> <span class="token attr-name">accept</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>.jpg, .jpeg, .png<span class="token punctuation">"</span></span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><h3 id="select-dnd">Custom drag-and-drop <a class="w-headline-link" href="#select-dnd">#</a></h3>
+<p>In some browsers, the <code>&lt;input type=&quot;file&quot;&gt;</code> element is also a drop target,
+allowing users to drag-and-drop files into your app. But, the drop target is
+small, and can be hard to use. Instead, once you've provided the core
+functionality using an <code>&lt;input type=&quot;file&quot;&gt;</code> element, you can provide a
+large, custom drag-and-drop surface.</p>
+<div class="w-aside w-aside--note">
+<p>Check if the <a href="/file-system-access/#drag-and-drop-integration"><code>DataTransferItem.getAsFileSystemHandle()</code></a>
+method is a viable alternative for your use case,
+since it also gives you a file handle so you can possibly write back to the file, apart from reading.</p>
+</div>
+<h4 id="choose-drop-zone">Choose your drop zone <a class="w-headline-link" href="#choose-drop-zone">#</a></h4>
+<p>Your drop surface will depend on the design of your application. You may
+only want part of the window to be a drop surface, or potentially the entire
+window.</p>
+<figure class="w-figure">
+  <img     alt="A screenshot of Squoosh, an image compression web app."     class="w-screenshot w-screenshot--filled"     decoding="async"     height="589"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xX8UXdqkLmZXu3Ad1Z2q.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xX8UXdqkLmZXu3Ad1Z2q.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xX8UXdqkLmZXu3Ad1Z2q.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xX8UXdqkLmZXu3Ad1Z2q.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xX8UXdqkLmZXu3Ad1Z2q.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xX8UXdqkLmZXu3Ad1Z2q.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xX8UXdqkLmZXu3Ad1Z2q.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xX8UXdqkLmZXu3Ad1Z2q.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xX8UXdqkLmZXu3Ad1Z2q.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xX8UXdqkLmZXu3Ad1Z2q.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xX8UXdqkLmZXu3Ad1Z2q.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xX8UXdqkLmZXu3Ad1Z2q.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xX8UXdqkLmZXu3Ad1Z2q.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xX8UXdqkLmZXu3Ad1Z2q.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xX8UXdqkLmZXu3Ad1Z2q.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xX8UXdqkLmZXu3Ad1Z2q.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xX8UXdqkLmZXu3Ad1Z2q.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xX8UXdqkLmZXu3Ad1Z2q.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">
+    Squoosh makes the entire window a drop zone.
+  </figcaption>
+</figure>
+<p>Squoosh allows the user to drag-and-drop an image anywhere into the window,
+and clicking <strong>select an image</strong> invokes the <code>&lt;input type=&quot;file&quot;&gt;</code> element.
+Whatever you choose as your drop zone, make sure it's clear to the user that
+they can drag-and-drop files onto that surface.</p>
+<h4 id="define-drop-zone">Define the drop zone <a class="w-headline-link" href="#define-drop-zone">#</a></h4>
+<p>To enable an element to be a drag-and-drop zone, you'll need to listen for
+two events, <a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/dragover_event" rel="noopener"><code>dragover</code></a> and <a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/drop_event" rel="noopener"><code>drop</code></a>. The <code>dragover</code>
+event updates the browser UI to visually indicate that the drag-and-drop
+action is creating a copy of the file. The <code>drop</code> event is fired after the
+user has dropped the files onto the surface. Similar to the input element,
+you can access the list of files from <code>event.dataTransfer.files</code>, which is
+a <a href="https://developer.mozilla.org/en-US/docs/Web/API/FileList" rel="noopener"><code>FileList</code></a> object. Each item in the <code>FileList</code> is a
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/File" rel="noopener"><code>File</code></a> object.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> dropArea <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">'drop-area'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>dropArea<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'dragover'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token parameter">event</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  event<span class="token punctuation">.</span><span class="token function">stopPropagation</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  event<span class="token punctuation">.</span><span class="token function">preventDefault</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token comment">// Style the drag-and-drop as a "copy file" operation.</span><br>  event<span class="token punctuation">.</span>dataTransfer<span class="token punctuation">.</span>dropEffect <span class="token operator">=</span> <span class="token string">'copy'</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>dropArea<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'drop'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token parameter">event</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  event<span class="token punctuation">.</span><span class="token function">stopPropagation</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  event<span class="token punctuation">.</span><span class="token function">preventDefault</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token keyword">const</span> fileList <span class="token operator">=</span> event<span class="token punctuation">.</span>dataTransfer<span class="token punctuation">.</span>files<span class="token punctuation">;</span><br>  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>fileList<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Event/stopPropagation" rel="noopener"><code>event.stopPropagation()</code></a> and
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/Event/preventDefault" rel="noopener"><code>event.preventDefault()</code></a> stop the browser's default
+behavior from happening, and allow your code to run instead. Without them,
+the browser would otherwise navigate away from your page and open the files
+the user dropped into the browser window.</p>
+<p>Check out <a href="https://custom-drag-and-drop.glitch.me/" rel="noopener">Custom drag-and-drop</a> for a live demonstration.</p>
+<h3 id="directories">What about directories? <a class="w-headline-link" href="#directories">#</a></h3>
+<p>Unfortunately, today there isn't a good way to get access to a directory.</p>
+<p>The <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/webkitdirectory" rel="noopener"><code>webkitdirectory</code></a> attribute on the
+<code>&lt;input type=&quot;file&quot;&gt;</code> element allows the user to choose a directory or
+directories. It is supported in some Chromium-based browsers, and possibly
+desktop Safari, but has <a href="https://caniuse.com/#search=webkitdirectory" rel="noopener">conflicting</a> reports of
+browser compatibility.</p>
+<div class="w-aside w-aside--note">
+<p>Check if the <a href="/file-system-access/#opening-a-directory-and-enumerating-its-contents"><code>window.showDirectoryPicker()</code></a>
+method is a viable alternative for your use case,
+since it also gives you a directory handle so you can possibly write back to the directory, apart from reading.
+This method can be <a href="https://github.com/GoogleChromeLabs/browser-fs-access#opening-directories" rel="noopener">polyfilled</a>.</p>
+</div>
+<p>If drag-and-drop is enabled, a user may try to drag a directory into the
+drop zone. When the drop event is fired, it will include a <code>File</code> object for
+the directory, but will be unable to access any of the files within the
+directory.</p>
+<h2 id="read-metadata">Read file metadata <a class="w-headline-link" href="#read-metadata">#</a></h2>
+<p>The <a href="https://developer.mozilla.org/en-US/docs/Web/API/File" rel="noopener"><code>File</code></a> object contains a number of metadata properties about
+the file. Most browsers provide the file name, the size of the file, and the
+MIME type, though depending on the platform, different browsers may provide
+different, or additional information.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">getMetadataForFileList</span><span class="token punctuation">(</span><span class="token parameter">fileList</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">const</span> file <span class="token keyword">of</span> fileList<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token comment">// Not supported in Safari for iOS.</span><br>    <span class="token keyword">const</span> name <span class="token operator">=</span> file<span class="token punctuation">.</span>name <span class="token operator">?</span> file<span class="token punctuation">.</span>name <span class="token operator">:</span> <span class="token string">'NOT SUPPORTED'</span><span class="token punctuation">;</span><br>    <span class="token comment">// Not supported in Firefox for Android or Opera for Android.</span><br>    <span class="token keyword">const</span> type <span class="token operator">=</span> file<span class="token punctuation">.</span>type <span class="token operator">?</span> file<span class="token punctuation">.</span>type <span class="token operator">:</span> <span class="token string">'NOT SUPPORTED'</span><span class="token punctuation">;</span><br>    <span class="token comment">// Unknown cross-browser support.</span><br>    <span class="token keyword">const</span> size <span class="token operator">=</span> file<span class="token punctuation">.</span>size <span class="token operator">?</span> file<span class="token punctuation">.</span>size <span class="token operator">:</span> <span class="token string">'NOT SUPPORTED'</span><span class="token punctuation">;</span><br>    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token punctuation">{</span>file<span class="token punctuation">,</span> name<span class="token punctuation">,</span> type<span class="token punctuation">,</span> size<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>You can see this in action in the <a href="https://input-type-file.glitch.me/" rel="noopener"><code>input-type-file</code></a>
+Glitch demo.</p>
+<h2 id="read-content">Read a file's content <a class="w-headline-link" href="#read-content">#</a></h2>
+<p>To read a file, use <a href="https://developer.mozilla.org/en-US/docs/Web/API/FileReader" rel="noopener"><code>FileReader</code></a>, which enables you to read
+the content of a <code>File</code> object into memory. You can instruct <code>FileReader</code>
+to read a file as an <a href="https://developer.mozilla.org/docs/Web/API/FileReader/readAsArrayBuffer" rel="noopener">array buffer</a>, a
+<a href="https://developer.mozilla.org/docs/Web/API/FileReader/readAsDataURL" rel="noopener">data URL</a>, or <a href="https://developer.mozilla.org/docs/Web/API/FileReader/readAsText" rel="noopener">text</a>.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">readImage</span><span class="token punctuation">(</span><span class="token parameter">file</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token comment">// Check if the file is an image.</span><br>  <span class="token keyword">if</span> <span class="token punctuation">(</span>file<span class="token punctuation">.</span>type <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span>file<span class="token punctuation">.</span>type<span class="token punctuation">.</span><span class="token function">startsWith</span><span class="token punctuation">(</span><span class="token string">'image/'</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'File is not an image.'</span><span class="token punctuation">,</span> file<span class="token punctuation">.</span>type<span class="token punctuation">,</span> file<span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token keyword">return</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><br>  <span class="token keyword">const</span> reader <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FileReader</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  reader<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'load'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token parameter">event</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>    img<span class="token punctuation">.</span>src <span class="token operator">=</span> event<span class="token punctuation">.</span>target<span class="token punctuation">.</span>result<span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  reader<span class="token punctuation">.</span><span class="token function">readAsDataURL</span><span class="token punctuation">(</span>file<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>The example above reads a <code>File</code> provided by the user, then converts it to a
+data URL, and uses that data URL to display the image in an <code>img</code> element.
+Check out the <a href="https://read-image-file.glitch.me/" rel="noopener"><code>read-image-file</code></a> Glitch to see how to
+verify that the user has selected an image file.</p>
+<div class="glitch-embed-wrap" style="height: 480px; width: 100%;">
+  <iframe
+    allow="camera; clipboard-read; clipboard-write; encrypted-media; geolocation; microphone; midi"
+    loading="lazy"
+    src="https://glitch.com/embed/#!/embed/read-image-file?attributionHidden=true&sidebarCollapsed=true&previewSize=100"
+    style="height: 100%; width: 100%; border: 0;"
+    title="read-image-file on Glitch"
+  ></iframe>
+</div>
+<h3 id="monitor-progress">Monitor the progress of a file read <a class="w-headline-link" href="#monitor-progress">#</a></h3>
+<p>When reading large files, it may be helpful to provide some UX to indicate
+how far the read has progressed. For that, use the
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/FileReader/progress_event" rel="noopener"><code>progress</code></a> event provided by <code>FileReader</code>. The
+<code>progress</code> event provides two properties, <code>loaded</code>, the amount read, and
+<code>total</code>, the total amount to read.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="highlight-line"><span class="token keyword">function</span> <span class="token function">readFile</span><span class="token punctuation">(</span><span class="token parameter">file</span><span class="token punctuation">)</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">  <span class="token keyword">const</span> reader <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FileReader</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line">  reader<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'load'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token parameter">event</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span></span><br><span class="highlight-line">    <span class="token keyword">const</span> result <span class="token operator">=</span> event<span class="token punctuation">.</span>target<span class="token punctuation">.</span>result<span class="token punctuation">;</span></span><br><span class="highlight-line">    <span class="token comment">// Do something with result</span></span><br><span class="highlight-line">  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line"></span><br><mark class="highlight-line highlight-line-active">  reader<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'progress'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token parameter">event</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span></mark><br><mark class="highlight-line highlight-line-active">    <span class="token keyword">if</span> <span class="token punctuation">(</span>event<span class="token punctuation">.</span>loaded <span class="token operator">&amp;&amp;</span> event<span class="token punctuation">.</span>total<span class="token punctuation">)</span> <span class="token punctuation">{</span></mark><br><mark class="highlight-line highlight-line-active">      <span class="token keyword">const</span> percent <span class="token operator">=</span> <span class="token punctuation">(</span>event<span class="token punctuation">.</span>loaded <span class="token operator">/</span> event<span class="token punctuation">.</span>total<span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">100</span><span class="token punctuation">;</span></mark><br><mark class="highlight-line highlight-line-active">      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">Progress: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>Math<span class="token punctuation">.</span><span class="token function">round</span><span class="token punctuation">(</span>percent<span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span></mark><br><mark class="highlight-line highlight-line-active">    <span class="token punctuation">}</span></mark><br><mark class="highlight-line highlight-line-active">  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></mark><br><span class="highlight-line">  reader<span class="token punctuation">.</span><span class="token function">readAsDataURL</span><span class="token punctuation">(</span>file<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line"><span class="token punctuation">}</span></span></code></pre>
+</web-copy-code><p>Hero image by Vincent Botta from <a href="https://unsplash.com/photos/bv_rJXpNU9I" rel="noopener">Unsplash</a></p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/storage/">Storage</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Mar 29, 2021</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/read-files/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

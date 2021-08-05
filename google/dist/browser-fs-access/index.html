@@ -1,0 +1,832 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=3c152bb0e4ab2">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Reading and writing files and directories with the browser-fs-access library</title>
+<meta name="description" content="All modern browsers can read local files and directories; however, true write access, that is, more than just downloading files, is limited to browsers that implement the File System Access API. This post introduces a support library called browser-fs-access that acts as an abstraction layer on top of the File System Access API and that transparently falls back to legacy approaches for dealing with files. " />
+
+<link rel="canonical" href="https://web.dev/browser-fs-access/" />
+
+<meta itemprop="name" content="Reading and writing files and directories with the browser-fs-access library" />
+<meta itemprop="description" content="All modern browsers can read local files and directories; however, true write access, that is, more than just downloading files, is limited to browsers that implement the File System Access API. This post introduces a support library called browser-fs-access that acts as an abstraction layer on top of the File System Access API and that transparently falls back to legacy approaches for dealing with files. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/Y4wGmGP8P0Dc99c3eKkT.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/browser-fs-access/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Reading and writing files and directories with the browser-fs-access library" />
+<meta property="og:description" content="All modern browsers can read local files and directories; however, true write access, that is, more than just downloading files, is limited to browsers that implement the File System Access API. This post introduces a support library called browser-fs-access that acts as an abstraction layer on top of the File System Access API and that transparently falls back to legacy approaches for dealing with files. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/Y4wGmGP8P0Dc99c3eKkT.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="" />
+<meta property="tag" content="progressive-web-apps" />
+<meta property="tag" content="capabilities" />
+<meta property="tag" content="file-system" />
+<meta property="tag" content="file-system-access" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Reading and writing files and directories with the browser-fs-access library" />
+<meta name="twitter:description" content="All modern browsers can read local files and directories; however, true write access, that is, more than just downloading files, is limited to browsers that implement the File System Access API. This post introduces a support library called browser-fs-access that acts as an abstraction layer on top of the File System Access API and that transparently falls back to legacy approaches for dealing with files. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/Y4wGmGP8P0Dc99c3eKkT.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=5485aaa2b264b', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=6742741fa582a', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="Hero Image"     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/Y4wGmGP8P0Dc99c3eKkT.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/Y4wGmGP8P0Dc99c3eKkT.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/Y4wGmGP8P0Dc99c3eKkT.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/Y4wGmGP8P0Dc99c3eKkT.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/Y4wGmGP8P0Dc99c3eKkT.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/Y4wGmGP8P0Dc99c3eKkT.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/Y4wGmGP8P0Dc99c3eKkT.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/Y4wGmGP8P0Dc99c3eKkT.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/Y4wGmGP8P0Dc99c3eKkT.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/Y4wGmGP8P0Dc99c3eKkT.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/Y4wGmGP8P0Dc99c3eKkT.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/Y4wGmGP8P0Dc99c3eKkT.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/Y4wGmGP8P0Dc99c3eKkT.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/Y4wGmGP8P0Dc99c3eKkT.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/Y4wGmGP8P0Dc99c3eKkT.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/Y4wGmGP8P0Dc99c3eKkT.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/Y4wGmGP8P0Dc99c3eKkT.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/Y4wGmGP8P0Dc99c3eKkT.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#reading-and-writing-files-and-directories-with-the-browser-fs-access-library" class="w-toc__header--link">
+        Reading and writing files and directories with the browser-fs-access library
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#the-traditional-way-of-dealing-with-files">The traditional way of dealing with files</a></li><li><a href="#opening-files">Opening files</a></li><li><a href="#opening-directories">Opening directories</a></li><li><a href="#saving-(rather:-downloading)-files">Saving (rather: downloading) files</a></li><li><a href="#the-problem">The problem</a></li><li><a href="#the-file-system-access-api">The File System Access API</a></li><li><a href="#opening-files-2">Opening files</a></li><li><a href="#opening-directories-2">Opening directories</a></li><li><a href="#saving-files">Saving files</a></li><li><a href="#introducing-browser-fs-access">Introducing browser-fs-access</a></li><li><a href="#design-philosophy">Design philosophy</a></li><li><a href="#using-the-browser-fs-access-library">Using the browser-fs-access library</a></li><li><a href="#demo">Demo</a></li><li><a href="#the-browser-fs-access-library-in-the-wild">The browser-fs-access library in the wild</a></li><li><a href="#real-life-code-sample">Real life code sample</a></li><li><a href="#ui-considerations">UI considerations</a></li><li><a href="#conclusions">Conclusions</a></li><li><a href="#acknowledgements">Acknowledgements</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@tomayac"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="reading-and-writing-files-and-directories-with-the-browser-fs-access-library" class="w-article-header__headline">Reading and writing files and directories with the browser-fs-access library</h1>
+      
+
+      
+        <div class="w-author__published">
+          <time>Jul 27, 2020</time>
+           <span class="w-author__separator">•</span> Updated <time>Jan 27, 2021</time> 
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/thomassteiner/"><img     alt="Thomas Steiner"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/thomassteiner/">Thomas Steiner</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/tomayac"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/tomayac">GitHub</a>
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://glitch.com/@tomayac"
+          >Glitch</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://blog.tomayac.com/">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>Browsers have been able to deal with files and directories for a long time.
+The <a href="https://w3c.github.io/FileAPI/" rel="noopener">File API</a>
+provides features for representing file objects in web applications,
+as well as programmatically selecting them and accessing their data.
+The moment you look closer, though, all that glitters is not gold.</p>
+<h2 id="the-traditional-way-of-dealing-with-files">The traditional way of dealing with files <a class="w-headline-link" href="#the-traditional-way-of-dealing-with-files">#</a></h2>
+<div class="w-aside w-aside--note">
+<p>If you know how it used to work the old way, you can
+<a href="#the-file-system-access-api">jump down straight to the new way</a>.</p>
+</div>
+<h3 id="opening-files">Opening files <a class="w-headline-link" href="#opening-files">#</a></h3>
+<p>As a developer, you can open and read files via the
+<a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file" rel="noopener"><code>&lt;input type=&quot;file&quot;&gt;</code></a>
+element.
+In its simplest form, opening a file can look something like the code sample below.
+The <code>input</code> object gives you a <a href="https://developer.mozilla.org/en-US/docs/Web/API/FileList" rel="noopener"><code>FileList</code></a>,
+which in the case below consists of just one
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/File" rel="noopener"><code>File</code></a>.
+A <code>File</code> is a specific kind of <a href="https://developer.mozilla.org/en-US/docs/Web/API/Blob" rel="noopener"><code>Blob</code></a>,
+and can be used in any context that a Blob can.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> <span class="token function-variable function">openFile</span> <span class="token operator">=</span> <span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Promise</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">resolve</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>    <span class="token keyword">const</span> input <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">createElement</span><span class="token punctuation">(</span><span class="token string">'input'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    input<span class="token punctuation">.</span>type <span class="token operator">=</span> <span class="token string">'file'</span><span class="token punctuation">;</span><br>    input<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'change'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>      <span class="token function">resolve</span><span class="token punctuation">(</span>input<span class="token punctuation">.</span>files<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    input<span class="token punctuation">.</span><span class="token function">click</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><h3 id="opening-directories">Opening directories <a class="w-headline-link" href="#opening-directories">#</a></h3>
+<p>For opening folders (or directories), you can set the
+<a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-webkitdirectory" rel="noopener"><code>&lt;input webkitdirectory&gt;</code></a>
+attribute.
+Apart from that, everything else works the same as above.
+Despite its vendor-prefixed name,
+<code>webkitdirectory</code> is not only usable in Chromium and WebKit browsers, but also in the legacy EdgeHTML-based Edge as well as in Firefox.</p>
+<h3 id="saving-(rather:-downloading)-files">Saving (rather: downloading) files <a class="w-headline-link" href="#saving-(rather:-downloading)-files">#</a></h3>
+<p>For saving a file, traditionally, you are limited to <em>downloading</em> a file,
+which works thanks to the
+<a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#attr-download:~:text=download" rel="noopener"><code>&lt;a download&gt;</code></a>
+attribute.
+Given a Blob, you can set the anchor's <code>href</code> attribute to a <code>blob:</code> URL that you can get from the
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL" rel="noopener"><code>URL.createObjectURL()</code></a>
+method.</p>
+<div class="w-aside w-aside--caution">
+<p><strong>Caution</strong>:
+To prevent memory leaks, always revoke the URL after the download.</p>
+</div>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> <span class="token function-variable function">saveFile</span> <span class="token operator">=</span> <span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token parameter">blob</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token keyword">const</span> a <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">createElement</span><span class="token punctuation">(</span><span class="token string">'a'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  a<span class="token punctuation">.</span>download <span class="token operator">=</span> <span class="token string">'my-file.txt'</span><span class="token punctuation">;</span><br>  a<span class="token punctuation">.</span>href <span class="token operator">=</span> <span class="token constant">URL</span><span class="token punctuation">.</span><span class="token function">createObjectURL</span><span class="token punctuation">(</span>blob<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  a<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'click'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token parameter">e</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>    <span class="token function">setTimeout</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token constant">URL</span><span class="token punctuation">.</span><span class="token function">revokeObjectURL</span><span class="token punctuation">(</span>a<span class="token punctuation">.</span>href<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">30</span> <span class="token operator">*</span> <span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  a<span class="token punctuation">.</span><span class="token function">click</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><h3 id="the-problem">The problem <a class="w-headline-link" href="#the-problem">#</a></h3>
+<p>A massive downside of the <em>download</em> approach is that there is no way to make a classic
+open→edit→save flow happen, that is, there is no way to <em>overwrite</em> the original file.
+Instead, you end up with a new <em>copy</em> of the original file
+in the operating system's default Downloads folder whenever you &quot;save&quot;.</p>
+<h2 id="the-file-system-access-api">The File System Access API <a class="w-headline-link" href="#the-file-system-access-api">#</a></h2>
+<p>The File System Access API makes both operations, opening and saving, a lot simpler.
+It also enables <em>true saving</em>, that is, you can not only choose where to save a file,
+but also overwrite an existing file.</p>
+<div class="w-aside w-aside--note">
+<p>For a more thorough introduction to the File System Access API, see the article
+<a href="/file-system-access/">The File System Access API: simplifying access to local files</a>.</p>
+</div>
+<h3 id="opening-files-2">Opening files <a class="w-headline-link" href="#opening-files-2">#</a></h3>
+<p>With the <a href="https://wicg.github.io/file-system-access/" rel="noopener">File System Access API</a>,
+opening a file is a matter of one call to the <code>window.showOpenFilePicker()</code> method.
+This call returns a file handle, from which you can get the actual <code>File</code> via the <code>getFile()</code> method.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> <span class="token function-variable function">openFile</span> <span class="token operator">=</span> <span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token keyword">try</span> <span class="token punctuation">{</span><br>    <span class="token comment">// Always returns an array.</span><br>    <span class="token keyword">const</span> <span class="token punctuation">[</span>handle<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">await</span> window<span class="token punctuation">.</span><span class="token function">showOpenFilePicker</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token keyword">return</span> handle<span class="token punctuation">.</span><span class="token function">getFile</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span>err<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    console<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span>err<span class="token punctuation">.</span>name<span class="token punctuation">,</span> err<span class="token punctuation">.</span>message<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><h3 id="opening-directories-2">Opening directories <a class="w-headline-link" href="#opening-directories-2">#</a></h3>
+<p>Open a directory by calling
+<code>window.showDirectoryPicker()</code> that makes directories selectable in the file dialog box.</p>
+<h3 id="saving-files">Saving files <a class="w-headline-link" href="#saving-files">#</a></h3>
+<p>Saving files is similarly straightforward.
+From a file handle, you create a writable stream via <code>createWritable()</code>,
+then you write the Blob data by calling the stream's <code>write()</code> method,
+and finally you close the stream by calling its <code>close()</code> method.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> <span class="token function-variable function">saveFile</span> <span class="token operator">=</span> <span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token parameter">blob</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token keyword">try</span> <span class="token punctuation">{</span><br>    <span class="token keyword">const</span> handle <span class="token operator">=</span> <span class="token keyword">await</span> window<span class="token punctuation">.</span><span class="token function">showSaveFilePicker</span><span class="token punctuation">(</span><span class="token punctuation">{</span><br>      types<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">{</span><br>        accept<span class="token operator">:</span> <span class="token punctuation">{</span><br>          <span class="token comment">// Omitted</span><br>        <span class="token punctuation">}</span><span class="token punctuation">,</span><br>      <span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">,</span><br>    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token keyword">const</span> writable <span class="token operator">=</span> <span class="token keyword">await</span> handle<span class="token punctuation">.</span><span class="token function">createWritable</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token keyword">await</span> writable<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span>blob<span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token keyword">await</span> writable<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token keyword">return</span> handle<span class="token punctuation">;</span><br>  <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span>err<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    console<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span>err<span class="token punctuation">.</span>name<span class="token punctuation">,</span> err<span class="token punctuation">.</span>message<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><h2 id="introducing-browser-fs-access">Introducing browser-fs-access <a class="w-headline-link" href="#introducing-browser-fs-access">#</a></h2>
+<p>As perfectly fine as the File System Access API is,
+it's <a href="https://caniuse.com/native-filesystem-api" rel="noopener">not yet  widely available</a>.</p>
+<figure class="w-figure">
+  <img     alt="Browser support table for the File System Access API. All browsers are marked as &#x27;no support&#x27; or &#x27;behind a flag&#x27;."     class="w-screenshot"     decoding="async"     height="224"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/G1jsSjCBR871W1uKQWeN.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/G1jsSjCBR871W1uKQWeN.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/G1jsSjCBR871W1uKQWeN.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/G1jsSjCBR871W1uKQWeN.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/G1jsSjCBR871W1uKQWeN.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/G1jsSjCBR871W1uKQWeN.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/G1jsSjCBR871W1uKQWeN.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/G1jsSjCBR871W1uKQWeN.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/G1jsSjCBR871W1uKQWeN.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/G1jsSjCBR871W1uKQWeN.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/G1jsSjCBR871W1uKQWeN.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/G1jsSjCBR871W1uKQWeN.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/G1jsSjCBR871W1uKQWeN.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/G1jsSjCBR871W1uKQWeN.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/G1jsSjCBR871W1uKQWeN.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/G1jsSjCBR871W1uKQWeN.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/G1jsSjCBR871W1uKQWeN.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/G1jsSjCBR871W1uKQWeN.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">
+    Browser support table for the File System Access API.
+    (<a href="https://caniuse.com/native-filesystem-api">Source</a>)
+  </figcaption>
+</figure>
+<p>This is why I see the File System Access API as a <a href="/progressively-enhance-your-pwa">progressive enhancement</a>.
+As such, I want to use it when the browser supports it,
+and use the traditional approach if not;
+all while never punishing the user with unnecessary downloads of unsupported JavaScript code.
+The <a href="https://github.com/GoogleChromeLabs/browser-fs-access" rel="noopener">browser-fs-access</a>
+library is my answer to this challenge.</p>
+<h3 id="design-philosophy">Design philosophy <a class="w-headline-link" href="#design-philosophy">#</a></h3>
+<p>Since the File System Access API is still likely to change in the future,
+the browser-fs-access API is not modeled after it.
+That is, the library is not a <a href="https://developer.mozilla.org/en-US/docs/Glossary/Polyfill" rel="noopener">polyfill</a>,
+but rather a <a href="https://github.com/sindresorhus/ponyfill" rel="noopener">ponyfill</a>.
+You can (statically or dynamically) exclusively import whatever functionality you need to keep your app as small as possible.
+The available methods are the aptly named
+<a href="https://github.com/GoogleChromeLabs/browser-fs-access#opening-files" rel="noopener"><code>fileOpen()</code></a>,
+<a href="https://github.com/GoogleChromeLabs/browser-fs-access#opening-directories" rel="noopener"><code>directoryOpen()</code></a>, and
+<a href="https://github.com/GoogleChromeLabs/browser-fs-access#saving-files" rel="noopener"><code>fileSave()</code></a>.
+Internally, the library feature-detects if the File System Access API is supported,
+and then imports the corresponding code path.</p>
+<h3 id="using-the-browser-fs-access-library">Using the browser-fs-access library <a class="w-headline-link" href="#using-the-browser-fs-access-library">#</a></h3>
+<p>The three methods are intuitive to use.
+You can specify your app's accepted <code>mimeTypes</code> or file <code>extensions</code>, and set a <code>multiple</code> flag
+to allow or disallow selection of multiple files or directories.
+For full details, see the
+<a href="https://github.com/GoogleChromeLabs/browser-fs-access#api-documentation" rel="noopener">browser-fs-access API documentation</a>.
+The code sample below shows how you can open and save image files.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token comment">// The imported methods will use the File</span><br><span class="token comment">// System Access API or a fallback implementation.</span><br><span class="token keyword">import</span> <span class="token punctuation">{</span><br>  fileOpen<span class="token punctuation">,</span><br>  directoryOpen<span class="token punctuation">,</span><br>  fileSave<span class="token punctuation">,</span><br><span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'https://unpkg.com/browser-fs-access'</span><span class="token punctuation">;</span><br><br><span class="token punctuation">(</span><span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token comment">// Open an image file.</span><br>  <span class="token keyword">const</span> blob <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">fileOpen</span><span class="token punctuation">(</span><span class="token punctuation">{</span><br>    mimeTypes<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">'image/*'</span><span class="token punctuation">]</span><span class="token punctuation">,</span><br>  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>  <span class="token comment">// Open multiple image files.</span><br>  <span class="token keyword">const</span> blobs <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">fileOpen</span><span class="token punctuation">(</span><span class="token punctuation">{</span><br>    mimeTypes<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">'image/*'</span><span class="token punctuation">]</span><span class="token punctuation">,</span><br>    multiple<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>  <span class="token comment">// Open all files in a directory,</span><br>  <span class="token comment">// recursively including subdirectories.</span><br>  <span class="token keyword">const</span> blobsInDirectory <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">directoryOpen</span><span class="token punctuation">(</span><span class="token punctuation">{</span><br>    recursive<span class="token operator">:</span> <span class="token boolean">true</span><br>  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>  <span class="token comment">// Save a file.</span><br>  <span class="token keyword">await</span> <span class="token function">fileSave</span><span class="token punctuation">(</span>blob<span class="token punctuation">,</span> <span class="token punctuation">{</span><br>    fileName<span class="token operator">:</span> <span class="token string">'Untitled.png'</span><span class="token punctuation">,</span><br>  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><h3 id="demo">Demo <a class="w-headline-link" href="#demo">#</a></h3>
+<p>You can see the above code in action in a <a href="https://browser-fs-access.glitch.me/" rel="noopener">demo</a> on Glitch.
+Its <a href="https://glitch.com/edit/#!/browser-fs-access" rel="noopener">source code</a> is likewise available there.
+Since for security reasons cross origin sub frames are not allowed to show a file picker,
+the demo cannot be embedded in this article.</p>
+<h2 id="the-browser-fs-access-library-in-the-wild">The browser-fs-access library in the wild <a class="w-headline-link" href="#the-browser-fs-access-library-in-the-wild">#</a></h2>
+<p>In my free time, I contribute a tiny bit to an
+<a href="/progressive-web-apps/#installable">installable PWA</a>
+called <a href="https://excalidraw.com/" rel="noopener">Excalidraw</a>,
+a whiteboard tool that lets you easily sketch diagrams with a hand-drawn feel.
+It is fully responsive and works well on a range of devices from small mobile phones to computers with large screens.
+This means it needs to deal with files on all the various platforms
+whether or not they support the File System Access API.
+This makes it a great candidate for the browser-fs-access library.</p>
+<p>I can, for example, start a drawing on my iPhone,
+save it (technically: download it, since Safari does not support the File System Access API)
+to my iPhone Downloads folder, open the file on my desktop (after transferring it from my phone),
+modify the file, and overwrite it with my changes, or even save it as a new file.</p>
+<figure class="w-figure">
+  <img     alt="An Excalidraw drawing on an iPhone."     class="w-screenshot"     decoding="async"     height="649"          loading="lazy"     sizes="(min-width: 300px) 300px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/u1Gwxp5MxS39wl8PW2vz.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/u1Gwxp5MxS39wl8PW2vz.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/u1Gwxp5MxS39wl8PW2vz.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/u1Gwxp5MxS39wl8PW2vz.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/u1Gwxp5MxS39wl8PW2vz.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/u1Gwxp5MxS39wl8PW2vz.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/u1Gwxp5MxS39wl8PW2vz.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/u1Gwxp5MxS39wl8PW2vz.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/u1Gwxp5MxS39wl8PW2vz.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/u1Gwxp5MxS39wl8PW2vz.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/u1Gwxp5MxS39wl8PW2vz.png?auto=format&w=600 600w"          width="300"   />
+  <figcaption class="w-figcaption">Starting an Excalidraw drawing on an iPhone where the File System Access API is not supported, but where a file can be saved (downloaded) to the Downloads folder.</figcaption>
+</figure>
+<figure class="w-figure">
+  <img     alt="The modified Excalidraw drawing on Chrome on the desktop."     class="w-screenshot"     decoding="async"     height="592"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/W1lt36DtKuveBJJTzonC.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/W1lt36DtKuveBJJTzonC.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/W1lt36DtKuveBJJTzonC.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/W1lt36DtKuveBJJTzonC.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/W1lt36DtKuveBJJTzonC.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/W1lt36DtKuveBJJTzonC.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/W1lt36DtKuveBJJTzonC.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/W1lt36DtKuveBJJTzonC.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/W1lt36DtKuveBJJTzonC.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/W1lt36DtKuveBJJTzonC.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/W1lt36DtKuveBJJTzonC.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/W1lt36DtKuveBJJTzonC.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/W1lt36DtKuveBJJTzonC.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/W1lt36DtKuveBJJTzonC.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/W1lt36DtKuveBJJTzonC.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/W1lt36DtKuveBJJTzonC.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/W1lt36DtKuveBJJTzonC.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/W1lt36DtKuveBJJTzonC.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">Opening and modifying the Excalidraw drawing on the desktop where the File System Access API is supported and thus the file can be accessed via the API.</figcaption>
+</figure>
+<figure class="w-figure">
+  <img     alt="Overwriting the original file with the modifications."     class="w-screenshot"     decoding="async"     height="585"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/srqhiMKy2i9UygEP4t8e.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/srqhiMKy2i9UygEP4t8e.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/srqhiMKy2i9UygEP4t8e.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/srqhiMKy2i9UygEP4t8e.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/srqhiMKy2i9UygEP4t8e.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/srqhiMKy2i9UygEP4t8e.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/srqhiMKy2i9UygEP4t8e.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/srqhiMKy2i9UygEP4t8e.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/srqhiMKy2i9UygEP4t8e.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/srqhiMKy2i9UygEP4t8e.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/srqhiMKy2i9UygEP4t8e.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/srqhiMKy2i9UygEP4t8e.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/srqhiMKy2i9UygEP4t8e.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/srqhiMKy2i9UygEP4t8e.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/srqhiMKy2i9UygEP4t8e.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/srqhiMKy2i9UygEP4t8e.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/srqhiMKy2i9UygEP4t8e.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/srqhiMKy2i9UygEP4t8e.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">Overwriting the original file with the modifications to the original Excalidraw drawing file. The browser shows a dialog asking me whether this is fine.</figcaption>
+</figure>
+<figure class="w-figure">
+  <img     alt="Saving the modifications to a new Excalidraw drawing file."     class="w-screenshot"     decoding="async"     height="592"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/FLzOZ4eXZ1lbdQaA4MQi.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/FLzOZ4eXZ1lbdQaA4MQi.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/FLzOZ4eXZ1lbdQaA4MQi.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/FLzOZ4eXZ1lbdQaA4MQi.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/FLzOZ4eXZ1lbdQaA4MQi.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/FLzOZ4eXZ1lbdQaA4MQi.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/FLzOZ4eXZ1lbdQaA4MQi.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/FLzOZ4eXZ1lbdQaA4MQi.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/FLzOZ4eXZ1lbdQaA4MQi.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/FLzOZ4eXZ1lbdQaA4MQi.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/FLzOZ4eXZ1lbdQaA4MQi.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/FLzOZ4eXZ1lbdQaA4MQi.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/FLzOZ4eXZ1lbdQaA4MQi.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/FLzOZ4eXZ1lbdQaA4MQi.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/FLzOZ4eXZ1lbdQaA4MQi.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/FLzOZ4eXZ1lbdQaA4MQi.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/FLzOZ4eXZ1lbdQaA4MQi.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/FLzOZ4eXZ1lbdQaA4MQi.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">Saving the modifications to a new Excalidraw file. The original file remains untouched.</figcaption>
+</figure>
+<h3 id="real-life-code-sample">Real life code sample <a class="w-headline-link" href="#real-life-code-sample">#</a></h3>
+<p>Below, you can see an actual example of browser-fs-access as it is used in Excalidraw.
+This excerpt is taken from
+<a href="https://github.com/excalidraw/excalidraw/blob/cd87bd6901b47430a692a06a8928b0f732d77097/src/data/json.ts#L24-L52" rel="noopener"><code>/src/data/json.ts</code></a>.
+Of special interest is how the <code>saveAsJSON()</code> method passes either a file handle or <code>null</code> to browser-fs-access'
+<code>fileSave()</code> method, which causes it to overwrite when a handle is given,
+or to save to a new file if not.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">export</span> <span class="token keyword">const</span> <span class="token function-variable function">saveAsJSON</span> <span class="token operator">=</span> <span class="token keyword">async</span> <span class="token punctuation">(</span><br>  <span class="token parameter">elements<span class="token operator">:</span> readonly ExcalidrawElement<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span><br>  appState<span class="token operator">:</span> AppState<span class="token punctuation">,</span><br>  fileHandle<span class="token operator">:</span> any<span class="token punctuation">,</span></span><br><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token keyword">const</span> serialized <span class="token operator">=</span> <span class="token function">serializeAsJSON</span><span class="token punctuation">(</span>elements<span class="token punctuation">,</span> appState<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token keyword">const</span> blob <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Blob</span><span class="token punctuation">(</span><span class="token punctuation">[</span>serialized<span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">{</span><br>    type<span class="token operator">:</span> <span class="token string">"application/json"</span><span class="token punctuation">,</span><br>  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token keyword">const</span> name <span class="token operator">=</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>appState<span class="token punctuation">.</span>name<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">.excalidraw</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span><br>  <span class="token punctuation">(</span>window <span class="token keyword">as</span> any<span class="token punctuation">)</span><span class="token punctuation">.</span>handle <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">fileSave</span><span class="token punctuation">(</span><br>    blob<span class="token punctuation">,</span><br>    <span class="token punctuation">{</span><br>      fileName<span class="token operator">:</span> name<span class="token punctuation">,</span><br>      description<span class="token operator">:</span> <span class="token string">"Excalidraw file"</span><span class="token punctuation">,</span><br>      extensions<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"excalidraw"</span><span class="token punctuation">]</span><span class="token punctuation">,</span><br>    <span class="token punctuation">}</span><span class="token punctuation">,</span><br>    fileHandle <span class="token operator">||</span> <span class="token keyword">null</span><span class="token punctuation">,</span><br>  <span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span><br><br><span class="token keyword">export</span> <span class="token keyword">const</span> <span class="token function-variable function">loadFromJSON</span> <span class="token operator">=</span> <span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token keyword">const</span> blob <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">fileOpen</span><span class="token punctuation">(</span><span class="token punctuation">{</span><br>    description<span class="token operator">:</span> <span class="token string">"Excalidraw files"</span><span class="token punctuation">,</span><br>    extensions<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"json"</span><span class="token punctuation">,</span> <span class="token string">"excalidraw"</span><span class="token punctuation">]</span><span class="token punctuation">,</span><br>    mimeTypes<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"application/json"</span><span class="token punctuation">]</span><span class="token punctuation">,</span><br>  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token keyword">return</span> <span class="token function">loadFromBlob</span><span class="token punctuation">(</span>blob<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><h3 id="ui-considerations">UI considerations <a class="w-headline-link" href="#ui-considerations">#</a></h3>
+<p>Whether in Excalidraw or your app,
+the UI should adapt to the browser's support situation.
+If the File System Access API is supported (<code>if ('showOpenFilePicker' in window) {}</code>)
+you can show a <strong>Save As</strong> button in addition to a <strong>Save</strong> button.
+The screenshots below show the difference between Excalidraw's responsive main app toolbar on iPhone and on Chrome desktop.
+Note how on iPhone the <strong>Save As</strong> button is missing.</p>
+<figure class="w-figure">
+  <img     alt="Excalidraw app toolbar on iPhone with just a &#x27;Save&#x27; button."     class="w-screenshot"     decoding="async"     height="226"          loading="lazy"     sizes="(min-width: 300px) 300px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/c2sjjj86zh53VDrPIo6M.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/c2sjjj86zh53VDrPIo6M.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/c2sjjj86zh53VDrPIo6M.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/c2sjjj86zh53VDrPIo6M.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/c2sjjj86zh53VDrPIo6M.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/c2sjjj86zh53VDrPIo6M.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/c2sjjj86zh53VDrPIo6M.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/c2sjjj86zh53VDrPIo6M.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/c2sjjj86zh53VDrPIo6M.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/c2sjjj86zh53VDrPIo6M.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/c2sjjj86zh53VDrPIo6M.png?auto=format&w=600 600w"          width="300"   />
+  <figcaption class="w-figcaption">Excalidraw app toolbar on iPhone with just a <strong>Save</strong> button.</figcaption>
+</figure>
+<figure class="w-figure">
+  <img     alt="Excalidraw app toolbar on Chrome desktop with a &#x27;Save&#x27; and a &#x27;Save As&#x27; button."     class="w-screenshot"     decoding="async"     height="66"          loading="lazy"     sizes="(min-width: 300px) 300px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/unUUghwH5mG2hLnaViHK.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/unUUghwH5mG2hLnaViHK.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/unUUghwH5mG2hLnaViHK.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/unUUghwH5mG2hLnaViHK.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/unUUghwH5mG2hLnaViHK.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/unUUghwH5mG2hLnaViHK.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/unUUghwH5mG2hLnaViHK.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/unUUghwH5mG2hLnaViHK.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/unUUghwH5mG2hLnaViHK.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/unUUghwH5mG2hLnaViHK.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/unUUghwH5mG2hLnaViHK.png?auto=format&w=600 600w"          width="300"   />
+  <figcaption class="w-figcaption">Excalidraw app toolbar on Chrome  with a <strong>Save</strong> and a focused <strong>Save As</strong> button.</figcaption>
+</figure>
+<h2 id="conclusions">Conclusions <a class="w-headline-link" href="#conclusions">#</a></h2>
+<p>Working with system files technically works on all modern browsers.
+On browsers that support the File System Access API, you can make the experience better by allowing
+for true saving and overwriting (not just downloading) of files and
+by letting your users create new files wherever they want,
+all while remaining functional on browsers that do not support the File System Access API.
+The <a href="https://github.com/GoogleChromeLabs/browser-fs-access" rel="noopener">browser-fs-access</a> makes your life easier
+by dealing with the subtleties of progressive enhancement and making your code as simple as possible.</p>
+<h2 id="acknowledgements">Acknowledgements <a class="w-headline-link" href="#acknowledgements">#</a></h2>
+<p>This article was reviewed by <a href="https://github.com/jpmedley" rel="noopener">Joe Medley</a> and
+<a href="https://github.com/kaycebasques" rel="noopener">Kayce Basques</a>.
+Thanks to the <a href="https://github.com/excalidraw/excalidraw/graphs/contributors" rel="noopener">contributors to Excalidraw</a>
+for their work on the project and for reviewing my Pull Requests.
+<a href="https://unsplash.com/photos/hXrPSgGFpqQ" rel="noopener">Hero image</a> by
+<a href="https://unsplash.com/@ilyapavlov" rel="noopener">Ilya Pavlov</a> on Unsplash.</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/progressive-web-apps/">Progressive Web Apps</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/capabilities/">Capabilities</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/file-system/">File System</a>
+      
+    
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Jan 27, 2021</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/browser-fs-access/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions="api"></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

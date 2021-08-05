@@ -1,0 +1,860 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=850d567f6c5b6">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Browser-level lazy-loading for CMSs</title>
+<meta name="description" content="This post provides guidance on how to adopt the loading attribute in content management systems. " />
+
+<link rel="canonical" href="https://web.dev/browser-level-lazy-loading-for-cmss/" />
+
+<meta itemprop="name" content="Browser-level lazy-loading for CMSs" />
+<meta itemprop="description" content="This post provides guidance on how to adopt the loading attribute in content management systems. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/Tx8vq8DMsflw49EHAa8Q.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/browser-level-lazy-loading-for-cmss/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Browser-level lazy-loading for CMSs" />
+<meta property="og:description" content="This post provides guidance on how to adopt the loading attribute in content management systems. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/Tx8vq8DMsflw49EHAa8Q.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="A lazy leopard relaxing on a tree" />
+<meta property="tag" content="performance" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Browser-level lazy-loading for CMSs" />
+<meta name="twitter:description" content="This post provides guidance on how to adopt the loading attribute in content management systems. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/Tx8vq8DMsflw49EHAa8Q.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=0bfb8b1bae5dc', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=37e3ef722aead', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="A lazy leopard relaxing on a tree"     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/Tx8vq8DMsflw49EHAa8Q.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/Tx8vq8DMsflw49EHAa8Q.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/Tx8vq8DMsflw49EHAa8Q.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/Tx8vq8DMsflw49EHAa8Q.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/Tx8vq8DMsflw49EHAa8Q.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/Tx8vq8DMsflw49EHAa8Q.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/Tx8vq8DMsflw49EHAa8Q.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/Tx8vq8DMsflw49EHAa8Q.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/Tx8vq8DMsflw49EHAa8Q.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/Tx8vq8DMsflw49EHAa8Q.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/Tx8vq8DMsflw49EHAa8Q.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/Tx8vq8DMsflw49EHAa8Q.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/Tx8vq8DMsflw49EHAa8Q.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/Tx8vq8DMsflw49EHAa8Q.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/Tx8vq8DMsflw49EHAa8Q.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/Tx8vq8DMsflw49EHAa8Q.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/Tx8vq8DMsflw49EHAa8Q.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/Tx8vq8DMsflw49EHAa8Q.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#browser-level-lazy-loading-for-cmss" class="w-toc__header--link">
+        Browser-level lazy-loading for CMSs
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#background">Background</a></li><li><a href="#the-case-for-implementing-lazy-loading-now">The case for implementing lazy-loading now</a></li><li><a href="#standardization">Standardization</a></li><li><a href="#browser-support">Browser support</a></li><li><a href="#distance-from-viewport-thresholds">Distance-from-viewport thresholds</a></li><li><a href="#user-experience-recommendations">User experience recommendations</a></li><li><a href="#require-dimension-attributes-on-elements">Require dimension attributes on elements</a></li><li><a href="#avoid-lazy-loading-above-the-fold-elements">Avoid lazy-loading above-the-fold elements</a></li><li><a href="#avoid-a-javascript-fallback">Avoid a JavaScript fallback</a></li><li><a href="#technical-recommendations">Technical recommendations</a></li><li><a href="#enable-lazy-loading-by-default">Enable lazy-loading by default</a></li><li><a href="#allow-per-element-modifications">Allow per-element modifications</a></li><li><a href="#retrofit-existing-content">Retrofit existing content</a></li><li><a href="#next-steps">Next steps</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@felixarntz"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="browser-level-lazy-loading-for-cmss" class="w-article-header__headline">Browser-level lazy-loading for CMSs</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          Learnings for adopting the standardized loading attribute
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Nov 20, 2020</time>
+           <span class="w-author__separator">•</span> Updated <time>Jul 29, 2021</time> 
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/felixarntz/"><img     alt="Felix Arntz"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/rAUzMzFAA67M36n66uVT.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/rAUzMzFAA67M36n66uVT.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/rAUzMzFAA67M36n66uVT.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/rAUzMzFAA67M36n66uVT.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/rAUzMzFAA67M36n66uVT.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/rAUzMzFAA67M36n66uVT.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/felixarntz/">Felix Arntz</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/felixarntz"
+          >Twitter</a
+        >
+      </li>
+      
+      
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://felix-arntz.me">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>My goal with this post is to persuade CMS platform developers and contributors
+(i.e. the people who develop CMS cores) that
+<a href="#the-case-for-implementing-lazy-loading-now">now is the time to implement support for the browser-level image lazy-loading feature</a>.
+I'll also share recommendations on how to <a href="#user-experience-recommendations">ensure high-quality user
+experiences</a> and <a href="#technical-recommendations">enable customization by other
+developers</a> while implementing lazy-loading. These
+guidelines come from our experience adding support to WordPress as well as
+helping Joomla, Drupal, and TYPO3 implement the feature.</p>
+<p>Regardless of whether you're a CMS platform developer or a CMS user (i.e. a
+person who builds websites with a CMS), you can use this post to learn more
+about the benefits of browser-level lazy-loading in your CMS. Check out the
+<a href="#next-steps">Next steps</a> section for suggestions on how you can
+encourage your CMS platform to implement lazy-loading.</p>
+<h2 id="background">Background <a class="w-headline-link" href="#background">#</a></h2>
+<p>Over the past year,
+<a href="/browser-level-image-lazy-loading/">lazy-loading images and iframes using the <code>loading</code> attribute</a>
+has
+<a href="https://html.spec.whatwg.org/multipage/urls-and-fetching.html#lazy-loading-attributes" rel="noopener">become part of the WHATWG HTML Standard</a>
+and
+<a href="https://caniuse.com/#feat=loading-lazy-attr" rel="noopener">seen growing adoption by various browsers</a>.
+These milestones however only lay the groundwork for a
+<a href="/browser-level-image-lazy-loading/#why-browser-level-lazy-loading">faster and more resource-saving web</a>.
+It is now on the distributed web ecosystem to make use of the <code>loading</code>
+attribute.</p>
+<p>Content management systems
+<a href="https://w3techs.com/technologies/overview/content_management" rel="noopener">power about 60% of websites</a>,
+so these platforms play a vital role in bringing adoption of modern browser
+features to the web. With a few popular open-source CMSs such as
+<a href="https://make.wordpress.org/core/2020/07/14/lazy-loading-images-in-5-5/" rel="noopener">WordPress</a>,
+<a href="https://github.com/joomla/joomla-cms/pull/28838" rel="noopener">Joomla</a>, and
+<a href="https://review.typo3.org/c/Packages/TYPO3.CMS/+/63317" rel="noopener">TYPO3</a> having already
+implemented support for the <code>loading</code> attribute on images, let's have a look at
+their approaches and the takeaways which are relevant for adopting the feature
+in other CMS platforms as well. Lazy-loading media is a key web performance
+feature that sites should benefit from at a large scale, which is why adopting
+it at the CMS core level is recommended.</p>
+<h2 id="the-case-for-implementing-lazy-loading-now">The case for implementing lazy-loading now <a class="w-headline-link" href="#the-case-for-implementing-lazy-loading-now">#</a></h2>
+<h3 id="standardization">Standardization <a class="w-headline-link" href="#standardization">#</a></h3>
+<p>Adoption of non-standardized browser features in CMSs facilitates widespread
+testing and can surface potential areas of improvement. However, the general
+consensus across CMSs is that, as long as a browser feature is not standardized,
+it should preferably be implemented in the form of an extension or plugin for
+the respective platform. Only once standardized can a feature be considered for
+adoption in the platform core.</p>
+<div class="w-aside w-aside--success">
+<p><strong>Success</strong>:
+Browser-level lazy-loading is now part of the WHATWG HTML Standard for
+both
+<a href="https://html.spec.whatwg.org/multipage/embedded-content.html#attr-img-loading" rel="noopener"><code>img</code></a>
+and
+<a href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-loading" rel="noopener"><code>iframe</code></a>
+elements.</p>
+</div>
+<h3 id="browser-support">Browser support <a class="w-headline-link" href="#browser-support">#</a></h3>
+<p>Browser support of the feature is a similar concern: The majority of CMS users
+should be able to benefit from the feature. If there is a considerable
+percentage of browsers where the feature is not yet supported, the feature has
+to ensure that it at least has no adverse effect for those.</p>
+<div class="w-aside w-aside--success">
+<p><strong>Success</strong>:
+<a href="https://caniuse.com/#feat=loading-lazy-attr" rel="noopener">Browser-level lazy-loading is widely supported by browsers</a>
+and
+<a href="/browser-level-image-lazy-loading/#browser-compatibility">the <code>loading</code> attribute is simply ignored</a>
+by those browsers that have not adopted it yet.</p>
+</div>
+<h3 id="distance-from-viewport-thresholds">Distance-from-viewport thresholds <a class="w-headline-link" href="#distance-from-viewport-thresholds">#</a></h3>
+<p>A common concern with lazy-loading implementations is that they in principle
+increase the likelihood that an image will not be loaded once it becomes visible
+in the user's viewport because the loading cycle starts at a later stage.
+Contrary to previous JavaScript-based solutions,
+<a href="/browser-level-image-lazy-loading/#distance-from-viewport-thresholds">browsers approach this conservatively</a>
+and furthermore can fine-tune their approach based on real-world user experience data,
+minimizing the impact, so browser-level lazy-loading should be safe to adopt
+by CMS platforms.</p>
+<div class="w-aside w-aside--success">
+<p><strong>Success</strong>:
+Experiments using Chrome on Android indicated that on 4G networks, 97.5% of
+below-the-fold lazy-loaded images were fully loaded within 10ms of becoming
+visible, compared to 97.6% for non lazy-loaded images. In other words, there was
+virtually no difference (0.1%) in the user experience of eagerly-loaded images
+and lazy-loaded images.</p>
+</div>
+<h2 id="user-experience-recommendations">User experience recommendations <a class="w-headline-link" href="#user-experience-recommendations">#</a></h2>
+<h3 id="require-dimension-attributes-on-elements">Require dimension attributes on elements <a class="w-headline-link" href="#require-dimension-attributes-on-elements">#</a></h3>
+<p>In order to avoid <a href="/cls/">layout shifts</a>, it has been a
+long-standing recommendation that
+<a href="/optimize-cls/#images-without-dimensions">embedded content such as images or iframes should always include the dimension attributes <code>width</code> and <code>height</code></a>,
+so that the browser can infer the aspect ratio of those elements before actually
+loading them. This recommendation is relevant regardless of whether an element
+is being lazy-loaded or not. However, due to the
+<a href="#distance-from-viewport-thresholds">0.1% greater likelihood of an image not being fully loaded once in the viewport</a>
+it becomes slightly more applicable with lazy-loading in place.</p>
+<p>CMSs should preferably provide dimension attributes on all images and iframes.
+If this is not possible for every such element, they are recommended to skip
+lazy-loading images which do not provide both of these attributes.</p>
+<div class="w-aside w-aside--caution">
+<p><strong>Caution</strong>:
+If the CMS is unable to provide <code>width</code> and <code>height</code> attributes on
+images and iframes on a large scale, you will have to weigh the trade-offs
+between saving additional network resources and a slightly higher chance for
+layout shifts to decide whether lazy-loading is worth it.</p>
+</div>
+<h3 id="avoid-lazy-loading-above-the-fold-elements">Avoid lazy-loading above-the-fold elements <a class="w-headline-link" href="#avoid-lazy-loading-above-the-fold-elements">#</a></h3>
+<p>At the moment CMSs are recommended to only add <code>loading=&quot;lazy&quot;</code> attributes to
+images and iframes which are positioned below-the-fold, to avoid a delay
+in the <a href="/lcp/">Largest Contentful Paint</a> metric, which in some cases can be
+significant <a href="/lcp-lazy-loading/">as discovered in July 2021</a>. However, it has
+to be acknowledged that it's complex to assess the position of an element
+relative to the viewport before the rendering process. This applies especially
+if the CMS uses an automated approach for adding <code>loading</code> attributes, but even
+based on manual intervention several factors such as the different viewport
+sizes and aspect ratios have to be considered. Still, it is strongly recommended to omit hero images and other images or iframes that are likely to appear above the fold from being lazy-loaded.</p>
+<div class="w-aside w-aside--note">
+<p>Depending on the capabilities and audience of the CMS, try to define reasonable
+estimates for whether an image or iframe is likely to be in the initial
+viewport, for example never lazy-loading elements in a header template or the hero image of the main content. In
+addition, offer either a UI or API which allows modifying the existence of the
+<code>loading</code> attribute on elements.</p>
+</div>
+<h3 id="avoid-a-javascript-fallback">Avoid a JavaScript fallback <a class="w-headline-link" href="#avoid-a-javascript-fallback">#</a></h3>
+<p>While JavaScript can be used to
+<a href="/browser-level-image-lazy-loading/#how-do-i-handle-browsers-that-don't-yet-support-lazy-loading">provide lazy-loading to browsers which do not (yet) support the <code>loading</code> attribute</a>,
+such mechanisms always rely on initially removing the <code>src</code> attribute of an
+image or iframe, which causes a delay for the browsers that <em>do</em> support the
+attribute. In addition, rolling out such a JavaScript-based solution in the
+frontends of a large-scale CMS increases the surface area for potential issues,
+which is part of why no major CMS had adopted lazy-loading in its core prior to
+the standardized browser feature.</p>
+<div class="w-aside w-aside--caution">
+<p><strong>Caution</strong>:
+Avoid providing a JavaScript-based fallback in the CMS. With
+growing adoption of the <code>loading</code> attribute and no adverse effects on browser
+versions that do not support it yet, it is safer to not provide the feature to
+those browsers and instead encourage updating to a newer browser version.</p>
+</div>
+<h2 id="technical-recommendations">Technical recommendations <a class="w-headline-link" href="#technical-recommendations">#</a></h2>
+<h3 id="enable-lazy-loading-by-default">Enable lazy-loading by default <a class="w-headline-link" href="#enable-lazy-loading-by-default">#</a></h3>
+<p>The overall recommendation for CMSs implementing browser-level lazy-loading is to
+enable it by default, i.e. <code>loading=&quot;lazy&quot;</code> should be added to images and
+iframes, preferably
+<a href="#require-dimension-attributes-on-elements">only for those elements that include dimension attributes</a>.
+Having the feature enabled by default will result in greater network resource
+savings than if it had to be enabled manually, for example on a per-image
+basis.</p>
+<p>As much as possible, <code>loading=&quot;lazy&quot;</code> should
+<a href="#avoid-lazy-loading-above-the-fold-elements">only be added to elements which likely appear below-the-fold</a>.
+While this requirement can be complex to implement for a CMS due to lack of client-side awareness and various viewport sizes, it is recommended to at least <a href="/lcp-lazy-loading/#testing-a-fix">use approximate heuristics to omit elements such as hero images that will likely appear above-the-fold from being lazy-loaded</a>.</p>
+<h3 id="allow-per-element-modifications">Allow per-element modifications <a class="w-headline-link" href="#allow-per-element-modifications">#</a></h3>
+<p>While <code>loading=&quot;lazy&quot;</code> should be added to images and iframes by default, it is
+crucial to allow omitting the attribute on certain images, for example to
+optimize for <a href="/lcp/">LCP</a>. If the audience of the CMS is on
+average considered more tech-savvy, this could be a UI control exposed for every
+image and iframe allowing to opt out of lazy-loading for that element.
+Alternatively or in addition, an API could be exposed to third-party developers
+so that they can make similar changes through code.</p>
+<p>WordPress for example allows to skip the <code>loading</code> attribute either for an
+<a href="https://developer.wordpress.org/reference/hooks/wp_lazy_loading_enabled/" rel="noopener">entire HTML tag or context</a>
+or for a
+<a href="https://developer.wordpress.org/reference/hooks/wp_img_tag_add_loading_attr/" rel="noopener">specific HTML element in the content</a>.</p>
+<div class="w-aside w-aside--caution">
+<p><strong>Caution</strong>:
+If an element should not be lazy-loaded, require or encourage
+skipping the <code>loading</code> attribute entirely. While using <code>loading=&quot;eager&quot;</code> is a
+supported alternative, this would tell the browser explicitly to always load the
+image right away, which would prevent potential benefits if browsers implemented
+further mechanisms and heuristics to automatically decide which elements to
+lazy-load.</p>
+</div>
+<h3 id="retrofit-existing-content">Retrofit existing content <a class="w-headline-link" href="#retrofit-existing-content">#</a></h3>
+<p>At a high level, there are two approaches for adding the <code>loading</code> attribute to
+HTML elements in a CMS:</p>
+<ul>
+<li>Either add the attribute from within the content editor in the
+backend, persistently saving it in the database.</li>
+<li>Add the attribute on the fly when rendering content from the database in
+the frontend.</li>
+</ul>
+<p>It is recommended for CMS to opt for adding the attribute on the fly when
+rendering, in order to bring the lazy-loading benefits to any existing content
+as well. If the attribute could solely be added through the editor, only new or
+recently modified pieces of content would receive the benefits, drastically
+reducing the CMS's impact on saving network resources. Furthermore, adding the
+attribute on the fly will easily allow for future modifications, should the
+capabilities of browser-level lazy-loading be further expanded.</p>
+<p>Adding the attribute on the fly should cater for a potentially existing
+<code>loading</code> attribute on an element though and let such an attribute take
+precedence. This way, the CMS or an extension for it could also implement the
+editor-driven approach without causing a conflict with duplicate attributes.</p>
+<h4 id="optimize-server-side-performance">Optimize server-side performance <a class="w-headline-link" href="#optimize-server-side-performance">#</a></h4>
+<p>When adding the <code>loading</code> attribute to content on the fly using (for example) a
+server-side middleware, speed is a consideration. Depending on the CMS, the
+attribute could be added either via DOM traversal or regular expressions, with
+the latter being recommended for performance.</p>
+<p>Regular expressions use should be kept to a minimum, for example a single regex
+which collects all <code>img</code> and <code>iframe</code> tags in the content including their
+attributes and then adds the <code>loading</code> attribute to each tag string as
+applicable. WordPress for example goes as far as
+<a href="https://developer.wordpress.org/reference/functions/wp_filter_content_tags/" rel="noopener">having a single general regular expression to perform various on-the-fly operations to certain elements</a>,
+of which adding <code>loading=&quot;lazy&quot;</code> is just one, using a single regular expression
+to facilitate multiple features. This form of optimization furthermore is
+another reason why adopting lazy-loading in a CMS's core is recommended over an
+extension - it allows for better server-side performance optimization.</p>
+<h2 id="next-steps">Next steps <a class="w-headline-link" href="#next-steps">#</a></h2>
+<p>See if there is an existing feature request ticket to add support for the
+feature in your CMS, or open a new one if there is none yet. Use references to
+this post as needed to support your proposal.</p>
+<p>Tweet me (<a href="https://twitter.com/felixarntz" rel="noopener">felixarntz@</a>) for questions or
+comments, or to get your CMS listed on this page if support for browser-level
+lazy-loading has been added. If you encounter other challenges, I am also
+curious to learn more about them to hopefully find a solution.</p>
+<p>If you're a CMS platform developer, study how other CMSs have implemented
+lazy-loading:</p>
+<ul>
+<li><a href="https://make.wordpress.org/core/2020/07/14/lazy-loading-images-in-5-5/" rel="noopener">WordPress Core</a></li>
+<li><a href="https://github.com/joomla/joomla-cms/pull/28838" rel="noopener">Joomla</a></li>
+<li><a href="https://review.typo3.org/c/Packages/TYPO3.CMS/+/63317" rel="noopener">TYPO3</a></li>
+</ul>
+<p>You can use the learnings from your research and the technical recommendations
+from this post to start contributing code to your CMS, for example in form of a
+patch or pull-request.</p>
+<p>Hero photo by <a href="https://unsplash.com/@imagefactory?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText" rel="noopener">Colin Watts</a> on <a href="https://unsplash.com/s/photos/lazy?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText" rel="noopener">Unsplash</a>.</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/performance/">Performance</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Jul 29, 2021</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/browser-level-lazy-loading-for-cmss/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

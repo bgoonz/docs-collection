@@ -1,0 +1,680 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=1b90dcffab7b9">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>How to distribute Signed HTTP Exchanges (SXG) using nginx</title>
+<meta name="description" content="How to get and serve SXG files using nginx, and the challenges of subresource prefetching." />
+
+<link rel="canonical" href="https://web.dev/how-to-distribute-signed-http-exchanges/" />
+
+<meta itemprop="name" content="How to distribute Signed HTTP Exchanges (SXG) using nginx" />
+<meta itemprop="description" content="How to get and serve SXG files using nginx, and the challenges of subresource prefetching." />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vU99HKzIf5EUPnzGVPf1.png?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/how-to-distribute-signed-http-exchanges/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="How to distribute Signed HTTP Exchanges (SXG) using nginx" />
+<meta property="og:description" content="How to get and serve SXG files using nginx, and the challenges of subresource prefetching." />
+<meta property="og:image" content="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vU99HKzIf5EUPnzGVPf1.png?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="" />
+<meta property="tag" content="SXG" />
+<meta property="tag" content="nginx" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="How to distribute Signed HTTP Exchanges (SXG) using nginx" />
+<meta name="twitter:description" content="How to get and serve SXG files using nginx, and the challenges of subresource prefetching." />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vU99HKzIf5EUPnzGVPf1.png?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=191a1501f11ad', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=f2b5d5e07e3ab', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#how-to-distribute-signed-http-exchanges-(sxg)-using-nginx" class="w-toc__header--link">
+        How to distribute Signed HTTP Exchanges (SXG) using nginx
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#cross-browser-support">Cross-browser support</a></li><li><a href="#get-sxg-files">Get SXG files</a></li><li><a href="#serve-a-simple-sxg-file">Serve a simple SXG file</a></li><li><a href="#prefetch-subresources">Prefetch subresources</a></li><li><a href="#send-feedback">Send feedback</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@kumagi"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="how-to-distribute-signed-http-exchanges-(sxg)-using-nginx" class="w-article-header__headline">How to distribute Signed HTTP Exchanges (SXG) using nginx</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          How to get and serve SXG files using nginx, and the challenges of subresource prefetching.
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Mar 11, 2020</time>
+          
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/kumagi/"><img     alt="Hiroki Kumazaki"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/Y780bmlJiHhk6UwxgOFF.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/Y780bmlJiHhk6UwxgOFF.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/Y780bmlJiHhk6UwxgOFF.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/Y780bmlJiHhk6UwxgOFF.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/Y780bmlJiHhk6UwxgOFF.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/Y780bmlJiHhk6UwxgOFF.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/kumagi/">Hiroki Kumazaki</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/kumagi"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/kumagi">GitHub</a>
+      </li>
+      
+      
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>As a <a href="https://developers.google.com/web/updates/2018/11/signed-exchanges" rel="noopener">Signed HTTP Exchanges (SXG)</a> distributor, you can deliver SXG files on behalf of the original content creators. Web browsers that support SXG will display such SXG files as if they were delivered from the original content creators. This enables you to implement cross-site preloading without violating privacy. This guide shows you how to distribute SXG properly.</p>
+<h2 id="cross-browser-support">Cross-browser support <a class="w-headline-link" href="#cross-browser-support">#</a></h2>
+<p>Chrome is currently the only browser that supports SXG. See the Consensus &amp; Standardization section of <a href="https://www.chromestatus.com/feature/5745285984681984" rel="noopener">Origin-Signed HTTP Exchanges</a> for more up-to-date information.</p>
+<h2 id="get-sxg-files">Get SXG files <a class="w-headline-link" href="#get-sxg-files">#</a></h2>
+<p>Specify in your <code>Accept</code> request header that you want the server to return an SXG file along with the request:</p>
+<web-copy-code><pre class="language-bash"><code class="language-bash">Accept: application/signed-exchange<span class="token punctuation">;</span><span class="token assign-left variable">v</span><span class="token operator">=</span>b3,*/*<span class="token punctuation">;</span><span class="token assign-left variable">q</span><span class="token operator">=</span><span class="token number">0.8</span></code></pre>
+</web-copy-code><p>This guide assumes that you put your SXG files in <code>/var/www/sxg</code>.</p>
+<h2 id="serve-a-simple-sxg-file">Serve a simple SXG file <a class="w-headline-link" href="#serve-a-simple-sxg-file">#</a></h2>
+<p>Attach the following headers to distribute a single SXG file:</p>
+<web-copy-code><pre class="language-text"><code class="language-text">Content-Type: application/signed-exchange;v=v3<br>X-Content-Type-Options: nosniff</code></pre>
+</web-copy-code><p>Configure <code>nginx</code>:</p>
+<web-copy-code><pre class="language-nginx"><code class="language-nginx"><span class="token directive"><span class="token keyword">http</span></span> <span class="token punctuation">{</span><br>    ...<br>    <span class="token directive"><span class="token keyword">types</span></span> <span class="token punctuation">{</span><br>        <span class="token directive"><span class="token keyword">application/signed-exchange</span></span><span class="token punctuation">;</span>v=b3  <span class="token directive"><span class="token keyword">sxg</span></span><span class="token punctuation">;</span><br>    <span class="token punctuation">}</span><br>    <span class="token directive"><span class="token keyword">add_header</span> X-Content-Type-Options nosniff</span><span class="token punctuation">;</span><br><br>    <span class="token directive"><span class="token keyword">location</span> /</span> <span class="token punctuation">{</span><br>        <span class="token directive"><span class="token keyword">more_set_headers</span> <span class="token string">"Content-Type: application/signed-exchange;v=b3"</span></span><span class="token punctuation">;</span><br>        <span class="token directive"><span class="token keyword">alias</span> /var/www/sxg/</span><span class="token punctuation">;</span><br>        <span class="token directive"><span class="token keyword">try_files</span> <span class="token variable">$uri</span>.sxg <span class="token variable">$uri</span> =404</span><span class="token punctuation">;</span><br>        <span class="token directive"><span class="token keyword">autoindex</span> <span class="token boolean">off</span></span><span class="token punctuation">;</span><br>    <span class="token punctuation">}</span><br>    ...</code></pre>
+</web-copy-code><p>Load the new configuration into <code>nginx</code>:</p>
+<web-copy-code><pre class="language-bash"><code class="language-bash"><span class="token function">sudo</span> systemctl restart nginx.service</code></pre>
+</web-copy-code><p><code>nginx</code> will start serving SXG files.
+When Chrome accesses your server, the address of the original content publisher will appear in the bar!</p>
+<h2 id="prefetch-subresources">Prefetch subresources <a class="w-headline-link" href="#prefetch-subresources">#</a></h2>
+<p>Most web pages consist of multiple subresources, such as CSS, JavaScript, fonts, and images.
+The content of SXG cannot be changed without the content creator's private key.
+This causes problems when the browser tries to resolve subresources.</p>
+<p>For example, suppose <code>index.html.sxg</code> from <code>https://website.test/index.html</code> has a link to <code>https://website.test/app.js</code>. When a user's browser receives the SXG file from <code>https://distributor.test/example.com/index.html.sxg</code>, it will find the link to <code>https://website.test/app.js</code>.
+The browser can fetch <code>https://website.test/app.js</code> directly on actual access, but it should not be done in the preload phase to preserve privacy.
+If the resource was fetched during the preload phase, it would be possible for the content creator (<code>website.test</code>) to be able to detect which content distributor (<code>distributor.test</code>) is requesting the resource.</p>
+<img     alt="The link to app.js in distributor.test/index.html.sxg points to website.test/app.js."          decoding="async"     height="214"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/1wbVnJkocJ9cv3lR2wZv.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/1wbVnJkocJ9cv3lR2wZv.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/1wbVnJkocJ9cv3lR2wZv.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/1wbVnJkocJ9cv3lR2wZv.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/1wbVnJkocJ9cv3lR2wZv.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/1wbVnJkocJ9cv3lR2wZv.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/1wbVnJkocJ9cv3lR2wZv.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/1wbVnJkocJ9cv3lR2wZv.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/1wbVnJkocJ9cv3lR2wZv.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/1wbVnJkocJ9cv3lR2wZv.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/1wbVnJkocJ9cv3lR2wZv.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/1wbVnJkocJ9cv3lR2wZv.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/1wbVnJkocJ9cv3lR2wZv.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/1wbVnJkocJ9cv3lR2wZv.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/1wbVnJkocJ9cv3lR2wZv.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/1wbVnJkocJ9cv3lR2wZv.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/1wbVnJkocJ9cv3lR2wZv.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/1wbVnJkocJ9cv3lR2wZv.png?auto=format&w=1600 1600w"          width="800"   />
+<p>If the distributor wants to serve <code>app.js.sxg</code> from their own service and tries to modify <code>https://website.test/app.js</code> to be the distributor's version of that subresource (such as <code>https://distributor.test/website.test/app.js.sxg</code>), it will cause a signature mismatch and make the SXG invalid.</p>
+<img     alt="An attempt to link the reference to app.js in distributor.test/index.html.sxg to distributor.test/app.js causes a signature mismatch."          decoding="async"     height="258"          loading="lazy"     sizes="(min-width: 592px) 592px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/IRRFoXyhnmwVXwiDgeny.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/IRRFoXyhnmwVXwiDgeny.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/IRRFoXyhnmwVXwiDgeny.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/IRRFoXyhnmwVXwiDgeny.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/IRRFoXyhnmwVXwiDgeny.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/IRRFoXyhnmwVXwiDgeny.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/IRRFoXyhnmwVXwiDgeny.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/IRRFoXyhnmwVXwiDgeny.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/IRRFoXyhnmwVXwiDgeny.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/IRRFoXyhnmwVXwiDgeny.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/IRRFoXyhnmwVXwiDgeny.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/IRRFoXyhnmwVXwiDgeny.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/IRRFoXyhnmwVXwiDgeny.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/IRRFoXyhnmwVXwiDgeny.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/IRRFoXyhnmwVXwiDgeny.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/IRRFoXyhnmwVXwiDgeny.png?auto=format&w=1184 1184w"          width="592"   />
+<p>To solve this problem, there's an experimental SXG subresource prefetching feature in Chrome now.
+You can enable it at: <code>about://flags/#enable-sxg-subresource-prefetching</code>.
+To use subresource prefetching the following conditions must be met:</p>
+<ul>
+<li>The publisher must embed a response header entry in SXG, such as: <code>link: &lt;https://website.test/app.js&gt;;rel=&quot;preload&quot;;as=&quot;script&quot;,&lt;https://website.test/app.js&gt;;rel=&quot;allowed-alt-sxg&quot;;header-integrity=&quot;sha256-h6GuCtTXe2nITIHHpJM+xCxcKrYDpOFcIXjihE4asxk=&quot;</code>. This specifies the subresource that can be substituted with the SXG's specific integrity hash.</li>
+<li>The distributor must attach a response header when serving the SXG, such as: <code>link: &lt;https://distributor.test/website.test/app.js.sxg&gt;;rel=&quot;alternate&quot;;type=&quot;application/signed-exchange;v=b3&quot;;anchor=&quot;https://website.test/app.js&quot;</code>. This specifies the path of <code>app.js</code> and corresponds to the subresource.</li>
+</ul>
+<img     alt="anchor"          decoding="async"     height="244"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/zsSl4DBys5jv8i5bQ6AT.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/zsSl4DBys5jv8i5bQ6AT.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/zsSl4DBys5jv8i5bQ6AT.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/zsSl4DBys5jv8i5bQ6AT.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/zsSl4DBys5jv8i5bQ6AT.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/zsSl4DBys5jv8i5bQ6AT.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/zsSl4DBys5jv8i5bQ6AT.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/zsSl4DBys5jv8i5bQ6AT.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/zsSl4DBys5jv8i5bQ6AT.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/zsSl4DBys5jv8i5bQ6AT.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/zsSl4DBys5jv8i5bQ6AT.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/zsSl4DBys5jv8i5bQ6AT.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/zsSl4DBys5jv8i5bQ6AT.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/zsSl4DBys5jv8i5bQ6AT.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/zsSl4DBys5jv8i5bQ6AT.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/zsSl4DBys5jv8i5bQ6AT.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/zsSl4DBys5jv8i5bQ6AT.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/zsSl4DBys5jv8i5bQ6AT.png?auto=format&w=1600 1600w"          width="800"   />
+<p>The first one is relatively easy because <a href="https://github.com/google/nginx-sxg-module" rel="noopener"><code>nginx-sxg-module</code></a> can calculate integrity hashes and embed them into link headers from upstream responses. But the second one is more difficult because the content distributor must be aware of the specified subresources in the SXG.</p>
+<p>If there are no subresources other than <code>https://website.test/app.js</code>, then all you need to append in your nginx config is:</p>
+<web-copy-code><pre class="language-nginx"><code class="language-nginx"><span class="token directive"><span class="token keyword">add_header</span> link &lt;https://distributor.test/website.test/app.js.sxg></span><span class="token punctuation">;</span>rel="alter...</code></pre>
+</web-copy-code><p>But such cases are rare because typical websites consist of a lot of subresources. Additionally, the distributor must attach the proper anchor link header when serving an SXG file. Currently, there is no easy way to resolve this issue, so stay tuned for updates!</p>
+<h2 id="send-feedback">Send feedback <a class="w-headline-link" href="#send-feedback">#</a></h2>
+<p>Chromium engineers are keen to hear your feedback on distributing SXG at <a href="mailto:webpackage-dev@chromium.org" rel="noopener">webpackage-dev@chromium.org</a>.
+You can also join <a href="https://github.com/WICG/webpackage/issues" rel="noopener">the spec discussion</a>, or <a href="https://bugs.chromium.org/p/chromium/issues/entry?status=untriaged&amp;components=Blink%3ELoader&amp;labels=Type-Bug,Hotlist-SignedExchange" rel="noopener">report a bug</a> to the team.
+Your feedback will greatly help the standardization process and also help address implementation issues.
+Thank you!</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Mar 11, 2020</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/how-to-distribute-signed-http-exchanges/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions="api"></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

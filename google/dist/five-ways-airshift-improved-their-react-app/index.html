@@ -1,0 +1,880 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=ddba359b7947d">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Five ways AirSHIFT improved their React app's runtime performance</title>
+<meta name="description" content="How the AirSHIFT team used table virtualization, RUM data, lazy loading, web workers, performance budgets, and hackathons to optimize their React app's runtime performance. " />
+
+<link rel="canonical" href="https://web.dev/five-ways-airshift-improved-their-react-app/" />
+
+<meta itemprop="name" content="Five ways AirSHIFT improved their React app's runtime performance" />
+<meta itemprop="description" content="How the AirSHIFT team used table virtualization, RUM data, lazy loading, web workers, performance budgets, and hackathons to optimize their React app's runtime performance. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/hXPZqAroVuGdFYQd9RFZ.png?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/five-ways-airshift-improved-their-react-app/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Five ways AirSHIFT improved their React app's runtime performance" />
+<meta property="og:description" content="How the AirSHIFT team used table virtualization, RUM data, lazy loading, web workers, performance budgets, and hackathons to optimize their React app's runtime performance. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/hXPZqAroVuGdFYQd9RFZ.png?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="AirSHIFT's logo." />
+<meta property="tag" content="case-study" />
+<meta property="tag" content="performance" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Five ways AirSHIFT improved their React app's runtime performance" />
+<meta name="twitter:description" content="How the AirSHIFT team used table virtualization, RUM data, lazy loading, web workers, performance budgets, and hackathons to optimize their React app's runtime performance. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/hXPZqAroVuGdFYQd9RFZ.png?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=66e0921ba8411', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=b2002612b5b84', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="AirSHIFT&#x27;s logo."     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/LD0Xn6rMjbIo8nCziZhK.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/LD0Xn6rMjbIo8nCziZhK.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/LD0Xn6rMjbIo8nCziZhK.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/LD0Xn6rMjbIo8nCziZhK.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/LD0Xn6rMjbIo8nCziZhK.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/LD0Xn6rMjbIo8nCziZhK.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/LD0Xn6rMjbIo8nCziZhK.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/LD0Xn6rMjbIo8nCziZhK.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/LD0Xn6rMjbIo8nCziZhK.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/LD0Xn6rMjbIo8nCziZhK.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/LD0Xn6rMjbIo8nCziZhK.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/LD0Xn6rMjbIo8nCziZhK.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/LD0Xn6rMjbIo8nCziZhK.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/LD0Xn6rMjbIo8nCziZhK.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/LD0Xn6rMjbIo8nCziZhK.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/LD0Xn6rMjbIo8nCziZhK.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/LD0Xn6rMjbIo8nCziZhK.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/LD0Xn6rMjbIo8nCziZhK.png?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#five-ways-airshift-improved-their-react-app&#39;s-runtime-performance" class="w-toc__header--link">
+        Five ways AirSHIFT improved their React app's runtime performance
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#slow-response-less-productivity">Slow response, less productivity</a></li><li><a href="#1.-virtualize-large-tables">1. Virtualize large tables</a></li><li><a href="#results">Results</a></li><li><a href="#2.-audit-with-user-timing-api">2. Audit with User Timing API</a></li><li><a href="#results-2">Results</a></li><li><a href="#3.-lazy-load-components-and-move-expensive-logic-to-web-workers">3. Lazy load components and move expensive logic to web workers</a></li><li><a href="#results-3">Results</a></li><li><a href="#4.-setting-a-performance-budget">4. Setting a performance budget</a></li><li><a href="#results-4">Results</a></li><li><a href="#5.-performance-hackathons">5. Performance hackathons</a></li><li><a href="#results-5">Results</a></li><li><a href="#summary">Summary</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@uskay | @yosuke_furukawa | i18n.authors.satoshi_arai.title | @maxmellon_9039"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="five-ways-airshift-improved-their-react-app&#39;s-runtime-performance" class="w-article-header__headline">Five ways AirSHIFT improved their React app's runtime performance</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          <p>A real-world case study of React SPA performance optimization.</p>
+
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Nov 6, 2019</time>
+          
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/uskay/"><img     alt="Yusuke Utsunomiya"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/ztcrpMPYTd84oPTN4GdY.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/ztcrpMPYTd84oPTN4GdY.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/ztcrpMPYTd84oPTN4GdY.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/ztcrpMPYTd84oPTN4GdY.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/ztcrpMPYTd84oPTN4GdY.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/ztcrpMPYTd84oPTN4GdY.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/uskay/">Yusuke Utsunomiya</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/uskay"
+          >Twitter</a
+        >
+      </li>
+      
+      
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://blog.uskay.io/">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+            <div class="w-author">
+  <a href="/authors/yosuke_furukawa/"><img     alt="Yosuke Furukawa"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/XCKP6ZnBZIezAB5ReAfk.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/XCKP6ZnBZIezAB5ReAfk.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/XCKP6ZnBZIezAB5ReAfk.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/XCKP6ZnBZIezAB5ReAfk.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/XCKP6ZnBZIezAB5ReAfk.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/XCKP6ZnBZIezAB5ReAfk.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/yosuke_furukawa/">Yosuke Furukawa</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/yosuke_furukawa"
+          >Twitter</a
+        >
+      </li>
+      
+      
+      
+    </ul>
+  </div>
+</div>
+          
+            <div class="w-author">
+  <a href="/authors/satoshi_arai/"><img     alt="Satoshi Arai"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/bSMJWJHcRvGcRhnwVxs7.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/bSMJWJHcRvGcRhnwVxs7.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/bSMJWJHcRvGcRhnwVxs7.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/bSMJWJHcRvGcRhnwVxs7.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/bSMJWJHcRvGcRhnwVxs7.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/bSMJWJHcRvGcRhnwVxs7.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/satoshi_arai/">Satoshi Arai</a>
+    </cite>
+    
+  </div>
+</div>
+          
+            <div class="w-author">
+  <a href="/authors/kento_tsuji/"><img     alt="Kento Tsuji"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/6IoGBLrEZkQnm0JfMV0O.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/6IoGBLrEZkQnm0JfMV0O.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/6IoGBLrEZkQnm0JfMV0O.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/6IoGBLrEZkQnm0JfMV0O.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/6IoGBLrEZkQnm0JfMV0O.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/6IoGBLrEZkQnm0JfMV0O.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/kento_tsuji/">Kento Tsuji</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/maxmellon_9039"
+          >Twitter</a
+        >
+      </li>
+      
+      
+      
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>Website performance is not just about load time. It is critical to provide a fast and responsive experience to users, especially for productivity desktop apps which people use everyday. The engineering team at <a href="https://recruit-tech.co.jp/" rel="noopener">Recruit Technologies</a> went through a refactoring project to improve one of their web apps, <a href="https://airregi.jp/shift/" rel="noopener">AirSHIFT</a>, for better user input performance. Here's how they did it.</p>
+<h2 id="slow-response-less-productivity">Slow response, less productivity <a class="w-headline-link" href="#slow-response-less-productivity">#</a></h2>
+<p>AirSHIFT is a desktop web application that helps store owners, like restaurants and cafes, to manage the shift work of their staff members. Built with React, the single page application provides rich client features including various grid tables of shift schedules organized by day, week, month and more.</p>
+<img     alt="A screenshot of the AirSHIFT web app."     class="w-screenshot"     decoding="async"     height="626"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/q7g5sY2ix1oTwoPJX7qX.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/q7g5sY2ix1oTwoPJX7qX.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/q7g5sY2ix1oTwoPJX7qX.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/q7g5sY2ix1oTwoPJX7qX.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/q7g5sY2ix1oTwoPJX7qX.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/q7g5sY2ix1oTwoPJX7qX.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/q7g5sY2ix1oTwoPJX7qX.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/q7g5sY2ix1oTwoPJX7qX.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/q7g5sY2ix1oTwoPJX7qX.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/q7g5sY2ix1oTwoPJX7qX.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/q7g5sY2ix1oTwoPJX7qX.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/q7g5sY2ix1oTwoPJX7qX.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/q7g5sY2ix1oTwoPJX7qX.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/q7g5sY2ix1oTwoPJX7qX.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/q7g5sY2ix1oTwoPJX7qX.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/q7g5sY2ix1oTwoPJX7qX.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/q7g5sY2ix1oTwoPJX7qX.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/q7g5sY2ix1oTwoPJX7qX.png?auto=format&w=1600 1600w"          width="800"   />
+<p>As the Recruit Technologies engineering team added new features to the
+AirSHIFT app, they started seeing more feedback around slow performance.
+The engineering manager of AirSHIFT, Yosuke Furukawa, said:</p>
+<blockquote class="w-blockquote">
+  In a user research study, we were shocked when one of the store owners said she
+  would leave her seat to brew coffee after clicking a button, just to kill time waiting
+  for the shift table to load.
+</blockquote>
+<p>After going through the research, the engineering team realized that many of their users were trying to load massive shift tables on low spec computers, such as a 1 GHz Celeron M laptop from 10 years ago.</p>
+<figure class="w-figure">
+  <video controls autoplay loop muted class="w-screenshot">
+    <source src="https://storage.googleapis.com/web-dev-assets/airshift-perf-optimization/endless_spinner_vp9.webm"
+            type="video/webm; codecs=vp8">
+    <source src="https://storage.googleapis.com/web-dev-assets/airshift-perf-optimization/endless_spinner_h264.mp4"
+            type="video/mp4; codecs=h264">
+  </video>
+ <figcaption class="w-figcaption">
+    Endless spinner on low end devices.
+  </figcaption>
+</figure>
+<p>The AirSHIFT app was blocking the main thread with expensive scripts,
+but the engineering team didn't realize how expensive the scripts were because they
+were developing and testing on rich spec computers with fast Wi-Fi connections.</p>
+<figure class="w-figure">
+  <img     alt="A chart that shows the app&#x27;s runtime activity."     class="w-screenshot"     decoding="async"     height="476"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/RAi3zG4JngSi0UlSMi0a.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/RAi3zG4JngSi0UlSMi0a.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/RAi3zG4JngSi0UlSMi0a.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/RAi3zG4JngSi0UlSMi0a.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/RAi3zG4JngSi0UlSMi0a.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/RAi3zG4JngSi0UlSMi0a.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/RAi3zG4JngSi0UlSMi0a.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/RAi3zG4JngSi0UlSMi0a.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/RAi3zG4JngSi0UlSMi0a.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/RAi3zG4JngSi0UlSMi0a.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/RAi3zG4JngSi0UlSMi0a.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/RAi3zG4JngSi0UlSMi0a.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/RAi3zG4JngSi0UlSMi0a.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/RAi3zG4JngSi0UlSMi0a.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/RAi3zG4JngSi0UlSMi0a.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/RAi3zG4JngSi0UlSMi0a.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/RAi3zG4JngSi0UlSMi0a.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/RAi3zG4JngSi0UlSMi0a.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">
+    When loading the shift table, around 80% of the load time was consumed by running scripts.
+  </figcaption>
+</figure>
+<p>After profiling their performance in Chrome DevTools with CPU and network throttling enabled,
+it became clear that performance optimization was needed.
+AirSHIFT formed a task force to tackle this issue. Here are 5 things
+they focused on to make their app more responsive to user input.</p>
+<h2 id="1.-virtualize-large-tables">1. Virtualize large tables <a class="w-headline-link" href="#1.-virtualize-large-tables">#</a></h2>
+<p>Displaying the shift table required multiple expensive steps: constructing the virtual DOM and rendering it on screen in proportion to the number of staff members and time slots. For example, if a restaurant had 50 working members and wanted to check their monthly shift schedule, it would be a table of 50 (members) multiplied by 30 (days) which would lead to 1,500 cell components to render. This is a very expensive operation, especially for low spec devices. In reality, things were worse. From the research they learned there were shops managing 200 staff members, requiring around 6,000 cell components in a single monthly table.</p>
+<p>To reduce the cost of this operation, AirSHIFT virtualized the shift table. The app now only mounts the components within the viewport and unmounts the off-screen components.</p>
+<figure class="w-figure">
+  <img     alt="An annotated screenshot that demonstrates that AirSHIFT used to render content outside of the viewport."     class="w-screenshot"     decoding="async"     height="306"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/QOVmOQa0Jryhg8tKPBFs.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/QOVmOQa0Jryhg8tKPBFs.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/QOVmOQa0Jryhg8tKPBFs.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/QOVmOQa0Jryhg8tKPBFs.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/QOVmOQa0Jryhg8tKPBFs.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/QOVmOQa0Jryhg8tKPBFs.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/QOVmOQa0Jryhg8tKPBFs.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/QOVmOQa0Jryhg8tKPBFs.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/QOVmOQa0Jryhg8tKPBFs.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/QOVmOQa0Jryhg8tKPBFs.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/QOVmOQa0Jryhg8tKPBFs.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/QOVmOQa0Jryhg8tKPBFs.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/QOVmOQa0Jryhg8tKPBFs.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/QOVmOQa0Jryhg8tKPBFs.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/QOVmOQa0Jryhg8tKPBFs.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/QOVmOQa0Jryhg8tKPBFs.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/QOVmOQa0Jryhg8tKPBFs.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/QOVmOQa0Jryhg8tKPBFs.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">
+    Before: Rendering all the shift table cells.
+  </figcaption>
+</figure>
+<figure class="w-figure">
+  <img     alt="An annotated screenshot that demonstrates that AirSHIFT now only renders content that&#x27;s visible in the viewport."     class="w-screenshot"     decoding="async"     height="307"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/NLSdFKj1gpGBO82pfNNO.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/NLSdFKj1gpGBO82pfNNO.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/NLSdFKj1gpGBO82pfNNO.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/NLSdFKj1gpGBO82pfNNO.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/NLSdFKj1gpGBO82pfNNO.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/NLSdFKj1gpGBO82pfNNO.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/NLSdFKj1gpGBO82pfNNO.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/NLSdFKj1gpGBO82pfNNO.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/NLSdFKj1gpGBO82pfNNO.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/NLSdFKj1gpGBO82pfNNO.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/NLSdFKj1gpGBO82pfNNO.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/NLSdFKj1gpGBO82pfNNO.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/NLSdFKj1gpGBO82pfNNO.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/NLSdFKj1gpGBO82pfNNO.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/NLSdFKj1gpGBO82pfNNO.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/NLSdFKj1gpGBO82pfNNO.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/NLSdFKj1gpGBO82pfNNO.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/NLSdFKj1gpGBO82pfNNO.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">
+    After: Only rendering the cells within the viewport.
+  </figcaption>
+</figure>
+<p>In this case, AirSHIFT used <a href="https://github.com/bvaughn/react-virtualized" rel="noopener">react-virtualized</a> as there were requirements around enabling complex two dimensional grid tables. They are also exploring ways to convert the implementation to use the lightweight <a href="/virtualize-long-lists-react-window/">react-window</a> in the future.</p>
+<h3 id="results">Results <a class="w-headline-link" href="#results">#</a></h3>
+<p>Virtualizing the table alone reduced scripting time by 6 seconds (on a 4x CPU slowdown + Fast 3G throttled Macbook Pro environment). This was the most impactful performance improvement in the refactoring project.</p>
+<figure class="w-figure">
+  <img     alt="An annotated screenshot of a Chrome DevTools Performance panel recording."     class="w-screenshot"     decoding="async"     height="289"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/pRX1ap7tVOdAoTo35MWj.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/pRX1ap7tVOdAoTo35MWj.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/pRX1ap7tVOdAoTo35MWj.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/pRX1ap7tVOdAoTo35MWj.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/pRX1ap7tVOdAoTo35MWj.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/pRX1ap7tVOdAoTo35MWj.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/pRX1ap7tVOdAoTo35MWj.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/pRX1ap7tVOdAoTo35MWj.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/pRX1ap7tVOdAoTo35MWj.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/pRX1ap7tVOdAoTo35MWj.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/pRX1ap7tVOdAoTo35MWj.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/pRX1ap7tVOdAoTo35MWj.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/pRX1ap7tVOdAoTo35MWj.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/pRX1ap7tVOdAoTo35MWj.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/pRX1ap7tVOdAoTo35MWj.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/pRX1ap7tVOdAoTo35MWj.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/pRX1ap7tVOdAoTo35MWj.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/pRX1ap7tVOdAoTo35MWj.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">
+    Before: Around 10 seconds of scripting after user input.
+  </figcaption>
+</figure>
+<figure class="w-figure">
+  <img     alt="Another annotated screenshot of a Chrome DevTools Performance panel recording."     class="w-screenshot"     decoding="async"     height="358"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/bCy17DjlhMWXSsN1cFAZ.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/bCy17DjlhMWXSsN1cFAZ.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/bCy17DjlhMWXSsN1cFAZ.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/bCy17DjlhMWXSsN1cFAZ.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/bCy17DjlhMWXSsN1cFAZ.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/bCy17DjlhMWXSsN1cFAZ.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/bCy17DjlhMWXSsN1cFAZ.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/bCy17DjlhMWXSsN1cFAZ.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/bCy17DjlhMWXSsN1cFAZ.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/bCy17DjlhMWXSsN1cFAZ.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/bCy17DjlhMWXSsN1cFAZ.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/bCy17DjlhMWXSsN1cFAZ.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/bCy17DjlhMWXSsN1cFAZ.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/bCy17DjlhMWXSsN1cFAZ.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/bCy17DjlhMWXSsN1cFAZ.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/bCy17DjlhMWXSsN1cFAZ.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/bCy17DjlhMWXSsN1cFAZ.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/bCy17DjlhMWXSsN1cFAZ.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">
+    After: 4 seconds of scripting after user input.
+  </figcaption>
+</figure>
+<h2 id="2.-audit-with-user-timing-api">2. Audit with User Timing API <a class="w-headline-link" href="#2.-audit-with-user-timing-api">#</a></h2>
+<p>Next, the AirSHIFT team refactored the scripts that run on user input.
+The <a href="https://developers.google.com/web/tools/chrome-devtools/evaluate-performance/reference#main" rel="noopener">flame chart</a>
+of <a href="https://developers.google.com/web/tools/chrome-devtools/" rel="noopener">Chrome DevTools</a>
+makes it possible to analyze what's actually happening in the main thread.
+But the AirSHIFT team found it easier to analyze application activity based
+on React's lifecycle.</p>
+<p>React 16 provides its performance trace via the
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/User_Timing_API" rel="noopener">User Timing API</a>,
+which you can visualize from the
+<a href="https://developers.google.com/web/updates/2018/04/devtools#tabs" rel="noopener">Timings section</a>
+of Chrome DevTools. AirSHIFT used the Timings section to find
+unnecessary logic running in React lifecycle events.</p>
+<figure class="w-figure">
+  <img     alt="The Timings section of the Performance panel of Chrome DevTools."     class="w-screenshot"     decoding="async"     height="388"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/zTvUhCKRSCvZzo9mlkte.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/zTvUhCKRSCvZzo9mlkte.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/zTvUhCKRSCvZzo9mlkte.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/zTvUhCKRSCvZzo9mlkte.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/zTvUhCKRSCvZzo9mlkte.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/zTvUhCKRSCvZzo9mlkte.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/zTvUhCKRSCvZzo9mlkte.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/zTvUhCKRSCvZzo9mlkte.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/zTvUhCKRSCvZzo9mlkte.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/zTvUhCKRSCvZzo9mlkte.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/zTvUhCKRSCvZzo9mlkte.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/zTvUhCKRSCvZzo9mlkte.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/zTvUhCKRSCvZzo9mlkte.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/zTvUhCKRSCvZzo9mlkte.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/zTvUhCKRSCvZzo9mlkte.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/zTvUhCKRSCvZzo9mlkte.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/zTvUhCKRSCvZzo9mlkte.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/zTvUhCKRSCvZzo9mlkte.png?auto=format&w=1600 1600w"     style="max-width: 75%;"     width="800"   />
+  <figcaption class="w-figcaption">
+    React's User Timing events.
+  </figcaption>
+</figure>
+<div class="w-aside w-aside--note">
+<p>Related article: <a href="https://reactjs.org/docs/optimizing-performance.html#profiling-components-with-the-chrome-performance-tab" rel="noopener">Profiling Components with the Chrome Performance Tab</a></p>
+</div>
+<h3 id="results-2">Results <a class="w-headline-link" href="#results-2">#</a></h3>
+<p>The AirSHIFT team discovered that an unnecessary
+<a href="https://reactjs.org/docs/reconciliation.html" rel="noopener">React Tree Reconciliation</a>
+was happening right before every route navigation. This meant that
+React was updating the shift table unnecessarily before navigations.
+An unnecessary Redux state update was causing this issue.
+Fixing it saved around 750 ms of scripting time. AirSHIFT
+made other micro optimizations as well which eventually led to
+a 1 second total reduction in scripting time.</p>
+<h2 id="3.-lazy-load-components-and-move-expensive-logic-to-web-workers">3. Lazy load components and move expensive logic to web workers <a class="w-headline-link" href="#3.-lazy-load-components-and-move-expensive-logic-to-web-workers">#</a></h2>
+<p>AirSHIFT has a built-in chat application. Many store owners communicate with their staff members via the chat while looking at the shift table, which means that a user might be typing a message while the table is loading. If the main thread is occupied with scripts that are rendering the table, user input could be janky.</p>
+<p>To improve this experience, AirSHIFT now uses <a href="/code-splitting-suspense/">React.lazy and Suspense</a> to show placeholders for table contents while lazily loading the actual components.</p>
+<p>The AirSHIFT team also migrated some of the expensive business logic
+within the lazily loaded components to
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers" rel="noopener">web workers</a>.
+This solved the user input jank problem by freeing up the main thread
+so that it could focus on responding to user input.</p>
+<p>Typically developers face complexity in using workers but this time <a href="https://github.com/GoogleChromeLabs/comlink" rel="noopener">Comlink</a> did the heavy lifting for them. Below is the pseudo code of how AirSHIFT workerized one of the most expensive operations they had: calculating total labor costs.</p>
+<p><em>In App.js, use React.lazy and Suspense to show fallback content while loading</em></p>
+<web-copy-code><pre class="language-javascript"><code class="language-javascript"><span class="token comment">/** App.js */</span><br><span class="token keyword">import</span> React<span class="token punctuation">,</span> <span class="token punctuation">{</span> lazy<span class="token punctuation">,</span> Suspense <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'react'</span><br><br><span class="token comment">// Lazily loading the Cost component with React.lazy</span><br><span class="token keyword">const</span> Hello <span class="token operator">=</span> <span class="token function">lazy</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token keyword">import</span><span class="token punctuation">(</span><span class="token string">'./Cost'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><br><br><span class="token keyword">const</span> <span class="token function-variable function">Loading</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">(</span><br>  <span class="token operator">&lt;</span>div<span class="token operator">></span>Some fallback content to show <span class="token keyword">while</span> loading<span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span><br><span class="token punctuation">)</span><br><br><span class="token comment">// Showing the fallback content while loading the Cost component by Suspense</span><br><span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token keyword">function</span> <span class="token function">App</span><span class="token punctuation">(</span><span class="token parameter"><span class="token punctuation">{</span> userInfo <span class="token punctuation">}</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>   <span class="token keyword">return</span> <span class="token punctuation">(</span><br>    <span class="token operator">&lt;</span>div<span class="token operator">></span><br>      <span class="token operator">&lt;</span>Suspense fallback<span class="token operator">=</span><span class="token punctuation">{</span><span class="token operator">&lt;</span>Loading <span class="token operator">/</span><span class="token operator">></span><span class="token punctuation">}</span><span class="token operator">></span><br>        <span class="token operator">&lt;</span>Cost <span class="token operator">/</span><span class="token operator">></span><br>      <span class="token operator">&lt;</span><span class="token operator">/</span>Suspense<span class="token operator">></span><br>    <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span><br>  <span class="token punctuation">)</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p><em>In the Cost component, use comlink to execute the calc logic</em></p>
+<web-copy-code><pre class="language-javascript"><code class="language-javascript"><span class="token comment">/** Cost.js */</span><br><span class="token keyword">import</span> React <span class="token keyword">from</span> <span class="token string">'react'</span><span class="token punctuation">;</span><br><span class="token keyword">import</span> <span class="token punctuation">{</span> proxy <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'comlink'</span><span class="token punctuation">;</span><br><br><span class="token comment">// import the workerlized calc function with comlink</span><br><span class="token keyword">const</span> WorkerlizedCostCalc <span class="token operator">=</span> <span class="token function">proxy</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Worker</span><span class="token punctuation">(</span><span class="token string">'./WorkerlizedCostCalc.js'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token keyword">async</span> <span class="token keyword">function</span> <span class="token function">Cost</span><span class="token punctuation">(</span><span class="token parameter"><span class="token punctuation">{</span> userInfo <span class="token punctuation">}</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token comment">// execute the calculation in the worker</span><br>  <span class="token keyword">const</span> instance <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token keyword">new</span> <span class="token class-name">WorkerlizedCostCalc</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token keyword">const</span> cost <span class="token operator">=</span> <span class="token keyword">await</span> instance<span class="token punctuation">.</span><span class="token function">calc</span><span class="token punctuation">(</span>userInfo<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token keyword">return</span> <span class="token operator">&lt;</span>p<span class="token operator">></span><span class="token punctuation">{</span>cost<span class="token punctuation">}</span><span class="token operator">&lt;</span><span class="token operator">/</span>p<span class="token operator">></span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p><em>Implement the calculation logic that runs in the worker and expose it with comlink</em></p>
+<web-copy-code><pre class="language-javascript"><code class="language-javascript"><span class="token comment">// WorkerlizedCostCalc.js</span><br><span class="token keyword">import</span> <span class="token punctuation">{</span> expose <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'comlink'</span><br><span class="token keyword">import</span> <span class="token punctuation">{</span> someExpensiveCalculation <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'./CostCalc.js'</span><br><br><span class="token comment">// Expose the new workerlized calc function with comlink</span><br><span class="token function">expose</span><span class="token punctuation">(</span><span class="token punctuation">{</span><br>  <span class="token function">calc</span><span class="token punctuation">(</span><span class="token parameter">userInfo</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token comment">// run existing (expensive) function in the worker</span><br>    <span class="token keyword">return</span> <span class="token function">someExpensiveCalculation</span><span class="token punctuation">(</span>userInfo<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span><span class="token punctuation">,</span> self<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><div class="w-aside w-aside--note">
+<p>Related article: <a href="https://dassur.ma/things/react-redux-comlink/" rel="noopener">React + Redux + Comlink = Off-main-thread</a></p>
+</div>
+<h3 id="results-3">Results <a class="w-headline-link" href="#results-3">#</a></h3>
+<p>Despite the limited amount of logic they workerized as a trial, AirSHIFT shifted around 100 ms of
+their JavaScript from the main thread to the worker thread (simulated with 4x CPU throttling).</p>
+<img     alt="A screenshot of a Chrome DevTools Performance panel recording that shows that scripting is now occurring on a web worker rather than the main thread."     class="w-screenshot"     decoding="async"     height="99"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/cFIFNeEKqbyWGBEuPCy2.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/cFIFNeEKqbyWGBEuPCy2.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/cFIFNeEKqbyWGBEuPCy2.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/cFIFNeEKqbyWGBEuPCy2.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/cFIFNeEKqbyWGBEuPCy2.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/cFIFNeEKqbyWGBEuPCy2.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/cFIFNeEKqbyWGBEuPCy2.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/cFIFNeEKqbyWGBEuPCy2.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/cFIFNeEKqbyWGBEuPCy2.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/cFIFNeEKqbyWGBEuPCy2.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/cFIFNeEKqbyWGBEuPCy2.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/cFIFNeEKqbyWGBEuPCy2.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/cFIFNeEKqbyWGBEuPCy2.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/cFIFNeEKqbyWGBEuPCy2.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/cFIFNeEKqbyWGBEuPCy2.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/cFIFNeEKqbyWGBEuPCy2.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/cFIFNeEKqbyWGBEuPCy2.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/cFIFNeEKqbyWGBEuPCy2.png?auto=format&w=1600 1600w"          width="800"   />
+<p>AirSHIFT is currently exploring whether they can lazy load other components
+and offload more logic to web workers to further reduce jank.</p>
+<h2 id="4.-setting-a-performance-budget">4. Setting a performance budget <a class="w-headline-link" href="#4.-setting-a-performance-budget">#</a></h2>
+<p>Having implemented all of these optimizations, it was critical to make sure that the app remains
+performant over time. AirSHIFT now uses <a href="https://github.com/siddharthkp/bundlesize" rel="noopener">bundlesize</a> to
+not exceed the current JavaScript and CSS file size. Aside from setting these basic budgets, they
+built a dashboard to show various percentiles of the shift table loading time to check whether the
+application is performant even in non-ideal conditions.</p>
+<ul>
+<li>The script completion time for every Redux event is now measured</li>
+<li>Performance data is collected in <a href="https://www.elastic.co/jp/" rel="noopener">Elasticsearch</a></li>
+<li>10th, 25th, 50th, and 75th percentile performance of each event is visualized with <a href="https://www.elastic.co/jp/products/kibana" rel="noopener">Kibana</a></li>
+</ul>
+<p>AirSHIFT is now monitoring the shift table loading event to make sure it completes in 3 seconds for
+the 75th percentile users. This is an unenforced budget for now but they are considering auto-notifications
+via Elasticsearch when they exceed their budget.</p>
+<figure class="w-figure">
+  <img     alt="A chart showing that the 75th percentile completes in around 2500 ms, the 50th percentile in around 1250 ms, the 25th percentile in around 750 ms, and the 10th percentile in around 500 ms."     class="w-screenshot"     decoding="async"     height="549"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/pSRqSKpmHKYGg8jalEr7.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/pSRqSKpmHKYGg8jalEr7.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/pSRqSKpmHKYGg8jalEr7.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/pSRqSKpmHKYGg8jalEr7.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/pSRqSKpmHKYGg8jalEr7.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/pSRqSKpmHKYGg8jalEr7.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/pSRqSKpmHKYGg8jalEr7.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/pSRqSKpmHKYGg8jalEr7.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/pSRqSKpmHKYGg8jalEr7.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/pSRqSKpmHKYGg8jalEr7.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/pSRqSKpmHKYGg8jalEr7.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/pSRqSKpmHKYGg8jalEr7.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/pSRqSKpmHKYGg8jalEr7.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/pSRqSKpmHKYGg8jalEr7.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/pSRqSKpmHKYGg8jalEr7.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/pSRqSKpmHKYGg8jalEr7.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/pSRqSKpmHKYGg8jalEr7.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/pSRqSKpmHKYGg8jalEr7.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">
+    The Kibana dashboard showing daily performance data by percentiles.
+  </figcaption>
+</figure>
+<div class="w-aside w-aside--note">
+<p>Related article: <a href="/performance-budgets-101">Performance budgets 101</a></p>
+</div>
+<h3 id="results-4">Results <a class="w-headline-link" href="#results-4">#</a></h3>
+<p>From the graph above, you can tell that AirSHIFT is now mostly hitting the 3 seconds budget for 75th percentile users and also loading the shift table within a second for 25th percentile users. By capturing RUM performance data from various conditions and devices, AirSHIFT can now check whether a new feature release is actually affecting the application's performance or not.</p>
+<h2 id="5.-performance-hackathons">5. Performance hackathons <a class="w-headline-link" href="#5.-performance-hackathons">#</a></h2>
+<p>Even though all of these performance optimization efforts were important and impactful,
+it's not always easy to get engineering and business teams to prioritize non-functional
+development. Part of the challenge is that some of these performance optimizations
+can't be planned. They require experimentation and a trial-and-error mindset.</p>
+<p>AirSHIFT is now conducting internal 1-day performance hackathons to let engineers focus only on performance related work. In these hackathons they remove all constraints and respect the engineers' creativity, meaning any implementation that contributes to speed is worth considering. To accelerate the hackathon, AirSHIFT splits the group into small teams and each team competes to see who can get the biggest <a href="https://developers.google.com/web/tools/lighthouse" rel="noopener">Lighthouse</a> performance score improvement.
+The teams get very competitive! 🔥</p>
+<img     alt="Photos of the hackathon."     class="w-screenshot"     decoding="async"     height="462"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/A1nus9lmROXOGm9rpCsO.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/A1nus9lmROXOGm9rpCsO.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/A1nus9lmROXOGm9rpCsO.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/A1nus9lmROXOGm9rpCsO.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/A1nus9lmROXOGm9rpCsO.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/A1nus9lmROXOGm9rpCsO.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/A1nus9lmROXOGm9rpCsO.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/A1nus9lmROXOGm9rpCsO.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/A1nus9lmROXOGm9rpCsO.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/A1nus9lmROXOGm9rpCsO.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/A1nus9lmROXOGm9rpCsO.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/A1nus9lmROXOGm9rpCsO.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/A1nus9lmROXOGm9rpCsO.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/A1nus9lmROXOGm9rpCsO.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/A1nus9lmROXOGm9rpCsO.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/A1nus9lmROXOGm9rpCsO.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/A1nus9lmROXOGm9rpCsO.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/A1nus9lmROXOGm9rpCsO.png?auto=format&w=1600 1600w"          width="800"   />
+<h3 id="results-5">Results <a class="w-headline-link" href="#results-5">#</a></h3>
+<p>The hackathon approach is working well for them.</p>
+<ul>
+<li>Performance bottlenecks can be easily detected by actually trying out multiple approaches during the hackathon and measuring each with Lighthouse.</li>
+<li>After the hackathon, it's rather easy to convince the team which optimization they should be prioritizing for production release.</li>
+<li>It's also an effective way of advocating the importance of speed. Every participant can understand the correlation between how you code and how it results in performance.</li>
+</ul>
+<p>A good side effect was that many other engineering teams within Recruit got interested in this hands-on approach and the AirSHIFT team is now facilitating multiple speed hackathons within the company.</p>
+<h2 id="summary">Summary <a class="w-headline-link" href="#summary">#</a></h2>
+<p>It was definitely not the easiest journey for AirSHIFT to work on these optimizations but it certainly paid off. Now AirSHIFT is loading the shift table within 1.5 sec in median which is a 6x improvement from their performance
+before the project.</p>
+<figure class="w-figure">
+  <video controls autoplay loop muted class="w-screenshot">
+    <source src="https://storage.googleapis.com/web-dev-assets/airshift-perf-optimization/compare_speed_vp9.webm" type="video/webm; codecs=vp8">
+    <source src="https://storage.googleapis.com/web-dev-assets/airshift-perf-optimization/compare_speed_h264.mp4" type="video/mp4; codecs=h264">
+  </video>
+</figure>
+<p>After the performance optimizations launched, one user said:</p>
+<blockquote class="w-blockquote">
+  Thank you so much for making the shift table load fast.
+  Arranging the shift work is so much more efficient now.
+</blockquote>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/case-study/">Case Study</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/performance/">Performance</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Nov 6, 2019</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/five-ways-airshift-improved-their-react-app/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

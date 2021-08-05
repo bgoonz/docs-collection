@@ -1,0 +1,904 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=915cb10a9b008">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Improved dark mode default styling with the color-scheme CSS property and the corresponding meta tag</title>
+<meta name="description" content="The color-scheme CSS property and the corresponding meta tag allow developers to opt their pages in to theme-specific defaults of the user agent stylesheet, such as, for example, form controls, scroll bars, as well as CSS system colors. At the same time, this feature prevents browsers from applying any transformations on their own. " />
+
+<link rel="canonical" href="https://web.dev/color-scheme/" />
+
+<meta itemprop="name" content="Improved dark mode default styling with the color-scheme CSS property and the corresponding meta tag" />
+<meta itemprop="description" content="The color-scheme CSS property and the corresponding meta tag allow developers to opt their pages in to theme-specific defaults of the user agent stylesheet, such as, for example, form controls, scroll bars, as well as CSS system colors. At the same time, this feature prevents browsers from applying any transformations on their own. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/rOe3wxcy28m5DCKcHv7E.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/color-scheme/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Improved dark mode default styling with the color-scheme CSS property and the corresponding meta tag" />
+<meta property="og:description" content="The color-scheme CSS property and the corresponding meta tag allow developers to opt their pages in to theme-specific defaults of the user agent stylesheet, such as, for example, form controls, scroll bars, as well as CSS system colors. At the same time, this feature prevents browsers from applying any transformations on their own. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/rOe3wxcy28m5DCKcHv7E.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="Pigeons on a wall with a sharp black and white contrast in the background." />
+<meta property="tag" content="css" />
+<meta property="tag" content="dark-mode" />
+<meta property="tag" content="dark-theme" />
+<meta property="tag" content="prefers-color-scheme" />
+<meta property="tag" content="color-scheme" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Improved dark mode default styling with the color-scheme CSS property and the corresponding meta tag" />
+<meta name="twitter:description" content="The color-scheme CSS property and the corresponding meta tag allow developers to opt their pages in to theme-specific defaults of the user agent stylesheet, such as, for example, form controls, scroll bars, as well as CSS system colors. At the same time, this feature prevents browsers from applying any transformations on their own. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/rOe3wxcy28m5DCKcHv7E.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=4afded145b08a', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=710e7f555e9d1', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="Pigeons on a wall with a sharp black and white contrast in the background."     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/rOe3wxcy28m5DCKcHv7E.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/rOe3wxcy28m5DCKcHv7E.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/rOe3wxcy28m5DCKcHv7E.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/rOe3wxcy28m5DCKcHv7E.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/rOe3wxcy28m5DCKcHv7E.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/rOe3wxcy28m5DCKcHv7E.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/rOe3wxcy28m5DCKcHv7E.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/rOe3wxcy28m5DCKcHv7E.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/rOe3wxcy28m5DCKcHv7E.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/rOe3wxcy28m5DCKcHv7E.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/rOe3wxcy28m5DCKcHv7E.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/rOe3wxcy28m5DCKcHv7E.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/rOe3wxcy28m5DCKcHv7E.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/rOe3wxcy28m5DCKcHv7E.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/rOe3wxcy28m5DCKcHv7E.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/rOe3wxcy28m5DCKcHv7E.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/rOe3wxcy28m5DCKcHv7E.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/rOe3wxcy28m5DCKcHv7E.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#improved-dark-mode-default-styling-with-the-lesscodegreatercolor-schemelesscodegreater-css-property-and-the-corresponding-meta-tag" class="w-toc__header--link">
+        Improved dark mode default styling with the <code>color-scheme</code> CSS property and the corresponding meta tag
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#background">Background</a></li><li><a href="#the-prefers-color-scheme-user-preference-media-feature">The prefers-color-scheme user preference media feature</a></li><li><a href="#the-user-agent-stylesheet">The user agent stylesheet</a></li><li><a href="#the-color-scheme-css-property">The color-scheme CSS property</a></li><li><a href="#the-color-scheme-meta-tag">The color-scheme meta tag</a></li><li><a href="#combining-color-scheme-and-prefers-color-scheme">Combining color-scheme and prefers-color-scheme</a></li><li><a href="#interplay-with-prefers-color-scheme">Interplay with prefers-color-scheme</a></li><li><a href="#demo">Demo</a></li><li><a href="#acknowledgements">Acknowledgements</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@tomayac"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="improved-dark-mode-default-styling-with-the-lesscodegreatercolor-schemelesscodegreater-css-property-and-the-corresponding-meta-tag" class="w-article-header__headline">Improved dark mode default styling with the <code>color-scheme</code> CSS property and the corresponding meta tag</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          <p>The <code>color-scheme</code> CSS property and the corresponding meta tag
+allow developers to opt their pages in to the theme-specific defaults of the user agent stylesheet.</p>
+
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Apr 8, 2020</time>
+           <span class="w-author__separator">•</span> Updated <time>Jun 16, 2020</time> 
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/thomassteiner/"><img     alt="Thomas Steiner"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/thomassteiner/">Thomas Steiner</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/tomayac"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/tomayac">GitHub</a>
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://glitch.com/@tomayac"
+          >Glitch</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://blog.tomayac.com/">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <h2 id="background">Background <a class="w-headline-link" href="#background">#</a></h2>
+<h3 id="the-prefers-color-scheme-user-preference-media-feature">The <code>prefers-color-scheme</code> user preference media feature <a class="w-headline-link" href="#the-prefers-color-scheme-user-preference-media-feature">#</a></h3>
+<p>The
+<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme" rel="noopener"><code>prefers-color-scheme</code></a>
+user preference media feature gives developers full control over their pages' appearances.
+If you are unfamiliar with it, please read my article
+<a href="/prefers-color-scheme/"><code>prefers-color-scheme</code>: Hello darkness, my old friend</a>,
+where I documented everything I know about creating amazing dark mode experiences.</p>
+<p>One puzzle piece that was only mentioned briefly in the article is
+the <code>color-scheme</code> CSS property and the corresponding meta tag of the same name.
+They both make your life as a developer easier
+by allowing you to opt your page in to theme-specific defaults of the user agent stylesheet,
+such as, for example, form controls, scroll bars, as well as CSS system colors.
+At the same time, this feature prevents browsers from applying any transformations on their own.</p>
+<h3 id="the-user-agent-stylesheet">The user agent stylesheet <a class="w-headline-link" href="#the-user-agent-stylesheet">#</a></h3>
+<p>Before I continue, let me briefly describe what a user agent stylesheet is.
+Most of the time, you can think of the word <em>user agent</em> (UA)
+as a fancy way to say <em>browser</em>.
+The UA stylesheet determines the default look and feel of a page.
+As the name suggests, a UA stylesheet is something that depends on the UA in question.
+You can have a look at
+<a href="https://chromium.googlesource.com/chromium/blink/+/master/Source/core/css/html.css" rel="noopener">Chrome's</a>
+(and Chromium's) UA stylesheet and compare it to
+<a href="https://dxr.mozilla.org/mozilla-central/source/layout/style/res/html.css" rel="noopener">Firefox's</a> or
+<a href="https://trac.webkit.org/browser/trunk/Source/WebCore/css/html.css" rel="noopener">Safari's</a> (and WebKit's).
+Typically, UA stylesheets agree on the majority of things.
+For example, they all make links blue, general text black, and background color white,
+but there are also important (and sometimes annoying) differences,
+for instance, how they style form controls.</p>
+<p>Have a closer look at
+<a href="https://trac.webkit.org/browser/trunk/Source/WebCore/css/html.css" rel="noopener">WebKit's UA stylesheet</a>
+and what it does regarding dark mode.
+(Do a full text search for &quot;dark&quot; in the stylesheet.)
+The default provided by the stylesheet changes based on whether dark mode is on or off.
+To illustrate this, here is one such CSS rule using the
+<a href="https://css-tricks.com/almanac/selectors/m/matches/" rel="noopener"><code>:matches</code></a>
+pseudo class and WebKit-internal variables like <code>-apple-system-control-background</code>,
+as well as the WebKit-internal preprocessor directive <code>#if defined</code>:</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">input,<br>input:matches([type="password"], [type="search"])</span> <span class="token punctuation">{</span><br>  <span class="token property">-webkit-appearance</span><span class="token punctuation">:</span> textfield<span class="token punctuation">;</span><br>  #if <span class="token function">defined</span><span class="token punctuation">(</span>HAVE_OS_DARK_MODE_SUPPORT<span class="token punctuation">)</span> &amp;&amp;<br>      HAVE_OS_DARK_MODE_SUPPORT<br>    <span class="token property">color</span><span class="token punctuation">:</span> text<span class="token punctuation">;</span><br>    <span class="token property">background-color</span><span class="token punctuation">:</span> -apple-system-control-background<span class="token punctuation">;</span><br>  #else<br>    <span class="token property">background-color</span><span class="token punctuation">:</span> white<span class="token punctuation">;</span><br>  #endif<br>  <span class="token comment">/* snip */</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>You will notice some non-standard values for the <code>color</code> and <code>background-color</code> properties above.
+Neither <code>text</code> nor <code>-apple-system-control-background</code> are valid CSS colors.
+They are WebKit-internal <em>semantic</em> colors.</p>
+<p>Turns out, CSS has standardized semantic system colors.
+They are specified in
+<a href="https://drafts.csswg.org/css-color/#css-system-colors" rel="noopener">CSS Color Module Level 4</a>.
+For example,
+<a href="https://drafts.csswg.org/css-color/#valdef-system-color-canvas" rel="noopener"><code>Canvas</code></a>
+(not to be confused with the <code>&lt;canvas&gt;</code> tag)
+is for the background of application content or documents,
+whereas
+<a href="https://drafts.csswg.org/css-color/#valdef-system-color-canvastext" rel="noopener"><code>CanvasText</code></a>
+is for text in application content or documents.
+The two go together and should not be used in isolation.</p>
+<p>UA stylesheets can use either their own proprietary or the standardized semantic system colors,
+to determine how HTML elements should be rendered by default.
+If the operating system is set to dark mode or uses a dark theme,
+<code>CanvasText</code> (or <code>text</code>) would be conditionally set to white,
+and <code>Canvas</code> (or <code>-apple-system-control-background</code>) would be set to black.
+The UA stylesheet then assigns the following CSS only once, and covers both light and dark mode.</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token comment">/**<br>  Not actual UA stylesheet code.<br>  For illustrative purposes only.<br>*/</span><br><span class="token selector">body</span> <span class="token punctuation">{</span><br>  <span class="token property">color</span><span class="token punctuation">:</span> CanvasText<span class="token punctuation">;</span><br>  <span class="token property">background-color</span><span class="token punctuation">:</span> Canvas<br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><h2 id="the-color-scheme-css-property">The <code>color-scheme</code> CSS property <a class="w-headline-link" href="#the-color-scheme-css-property">#</a></h2>
+<p>The <a href="https://drafts.csswg.org/css-color-adjust/" rel="noopener">CSS Color Adjustment Module Level 1</a>
+specification introduces a model and controls
+over automatic color adjustment by the user agent
+with the objective of handling user preferences
+such as dark mode, contrast adjustment, or specific desired color schemes.</p>
+<p>The <a href="https://drafts.csswg.org/css-color-adjust/#color-scheme-prop" rel="noopener"><code>color-scheme</code></a>
+property defined therein allows an element to indicate
+which color schemes it is comfortable being rendered with.
+These values are negotiated with the user's preferences, resulting in a chosen color scheme
+that affects user interface (UI) things such as the default colors of form controls
+and scroll bars, as well as the used values of the CSS system colors.
+The following values are currently supported:</p>
+<ul>
+<li>
+<p><em><code>normal</code></em> Indicates that the element is not aware of color schemes at all,
+and so the element should be rendered with the browser's default color scheme.</p>
+</li>
+<li>
+<p><em><code>[ light | dark ]+</code></em> Indicates that the element is aware of and can handle
+the listed color schemes, and expresses an ordered preference between them.</p>
+</li>
+</ul>
+<div class="w-aside w-aside--note">
+<p>Providing both keywords indicates that the first scheme is preferred (by the author),
+but the second is also acceptable if the user prefers it instead.</p>
+</div>
+<p>In this list, <code>light</code> represents a light color scheme,
+with light background colors and dark foreground colors,
+whereas <code>dark</code> represents the opposite, with dark background colors and light foreground colors.</p>
+<div class="w-aside w-aside--warning">
+<p><strong>Warning</strong>:
+Previously, the specification allowed an additional value <code>light only</code>
+that indicated that the element had to be rendered with a light color scheme if possible,
+even if the user's preference is for a different color scheme.
+Authors <em>should not</em> use this value, and should instead ensure their page renders well
+with whatever color scheme the user prefers.</p>
+</div>
+<p>For all elements, rendering with a color scheme should cause the colors used
+in all browser-provided UI for the element to match with the intent of the color scheme.
+Examples are scroll bars, spellcheck underlines, form controls, etc.</p>
+<div class="w-aside w-aside--note">
+<p>The <code>color-scheme</code> CSS property can be used on both the <code>:root</code> level,
+as well as on an individual per-element level.</p>
+</div>
+<p>On the <code>:root</code> element, rendering with a color scheme
+additionally must affect the surface color of the canvas (that is, the global background color),
+the initial value of the <code>color</code> property, and the used values of the system colors,
+and should also affect the viewport's scroll bars.</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token comment">/*<br>  The page supports both dark and light color schemes,<br>  and the page author prefers dark.<br>*/</span><br><span class="token selector">:root</span> <span class="token punctuation">{</span><br>  <span class="token property">color-scheme</span><span class="token punctuation">:</span> dark light<span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><h2 id="the-color-scheme-meta-tag">The <code>color-scheme</code> meta tag <a class="w-headline-link" href="#the-color-scheme-meta-tag">#</a></h2>
+<p>Honoring the <code>color-scheme</code> CSS property requires the CSS to be first downloaded
+(if it is referenced via <code>&lt;link rel=&quot;stylesheet&quot;&gt;</code>) and to be parsed.
+To aid user agents in rendering the page background with the desired color scheme <em>immediately</em>,
+a <code>color-scheme</code> value can also be provided in a
+<a href="https://html.spec.whatwg.org/multipage/semantics.html#meta-color-scheme" rel="noopener"><code>&lt;meta name=&quot;color-scheme&quot;&gt;</code></a>
+element.</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token comment">&lt;!--<br>  The page supports both dark and light color schemes,<br>  and the page author prefers dark.<br>--></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>color-scheme<span class="token punctuation">"</span></span> <span class="token attr-name">content</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>dark light<span class="token punctuation">"</span></span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><h2 id="combining-color-scheme-and-prefers-color-scheme">Combining <code>color-scheme</code> and <code>prefers-color-scheme</code> <a class="w-headline-link" href="#combining-color-scheme-and-prefers-color-scheme">#</a></h2>
+<p>Since both the meta tag and the CSS property (if applied to the <code>:root</code> element)
+eventually result in the same behavior, I always recommend specifying the color scheme
+via the meta tag, so the browser can adopt to the preferred scheme faster.</p>
+<p>While for absolute baseline pages no additional CSS rules are necessary,
+in the general case you should always combine <code>color-scheme</code> with <code>prefers-color-scheme</code>.
+For example, the proprietary WebKit CSS color <code>-webkit-link</code>, used by WebKit and Chrome
+for the classic link blue <code>rgb(0,0,238)</code>,
+has an insufficient contrast ratio of 2.23:1 on a black background and
+<a href="https://webaim.org/resources/contrastchecker/?fcolor=0000EE&amp;bcolor=000000" rel="noopener">fails</a>
+both the WCAG AA as well as the WCAG AAA
+<a href="https://www.w3.org/WAI/WCAG21/Understanding/conformance#levels" rel="noopener">requirements</a>.</p>
+<p>I have opened bugs for <a href="https://crbug.com/1066811" rel="noopener">Chrome</a>,
+<a href="https://bugs.webkit.org/show_bug.cgi?id=209851" rel="noopener">WebKit</a>, and
+<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1626560" rel="noopener">Firefox</a>
+as well as a <a href="https://github.com/whatwg/html/issues/5426" rel="noopener">meta issue in the HTML Standard</a>
+to get this fixed.</p>
+<h2 id="interplay-with-prefers-color-scheme">Interplay with <code>prefers-color-scheme</code> <a class="w-headline-link" href="#interplay-with-prefers-color-scheme">#</a></h2>
+<p>The interplay of the <code>color-scheme</code> CSS property and the corresponding meta tag
+with the <code>prefers-color-scheme</code> user preference media feature may seem confusing at first.
+In fact, they play together really well.
+The most important thing to understand is that <code>color-scheme</code>
+exclusively determines the default appearance,
+whereas <code>prefers-color-scheme</code> determines the stylable appearance.
+To make this clearer, assume the following page:</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>color-scheme<span class="token punctuation">"</span></span> <span class="token attr-name">content</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>dark light<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>style</span><span class="token punctuation">></span></span><span class="token style"><span class="token language-css"><br>    <span class="token selector">fieldset</span> <span class="token punctuation">{</span><br>      <span class="token property">background-color</span><span class="token punctuation">:</span> gainsboro<span class="token punctuation">;</span><br>    <span class="token punctuation">}</span><br>    <span class="token atrule"><span class="token rule">@media</span> <span class="token punctuation">(</span><span class="token property">prefers-color-scheme</span><span class="token punctuation">:</span> dark<span class="token punctuation">)</span></span> <span class="token punctuation">{</span><br>      <span class="token selector">fieldset</span> <span class="token punctuation">{</span><br>        <span class="token property">background-color</span><span class="token punctuation">:</span> darkslategray<span class="token punctuation">;</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">}</span><br>  </span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>style</span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>head</span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span><span class="token punctuation">></span></span><br>    Lorem ipsum dolor sit amet, legere ancillae ne vis.<br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>form</span><span class="token punctuation">></span></span><br>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>fieldset</span><span class="token punctuation">></span></span><br>      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>legend</span><span class="token punctuation">></span></span>Lorem ipsum<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>legend</span><span class="token punctuation">></span></span><br>      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>button<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Lorem ipsum<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span><br>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>fieldset</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>form</span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><p>The inline CSS code on the page
+sets the <code>&lt;fieldset&gt;</code> element's <code>background-color</code> to <code>gainsboro</code> in the general case,
+and to <code>darkslategray</code> if the user prefers a <code>dark</code> color scheme
+according to the <code>prefers-color-scheme</code> user preference media feature.</p>
+<p>Via the <code>&lt;meta name=&quot;color-scheme&quot; content=&quot;dark light&quot;&gt;</code> element,
+the page tells the browser that it supports a dark and a light theme,
+with a preference for a dark theme.</p>
+<p>Depending on whether the operating system is set to dark or light mode,
+the whole page appears light on dark, or vice versa, based on the user agent stylesheet.
+There is <em>no</em> additional developer-provided CSS involved to change the paragraph text
+or the background color of the page.</p>
+<p>Note how the <code>&lt;fieldset&gt;</code> element's <code>background-color</code> changes
+based on whether dark mode is enabled, following the rules
+in the developer-provided inline stylesheet on the page.
+It is either <code>gainsboro</code> or <code>darkslategray</code>.</p>
+<figure class="w-figure">
+  <img     alt="A page in light mode."     class="w-screenshot w-screenshot--filled"     decoding="async"     height="322"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/kSgOIiGRqjw2PvRlVCaV.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/kSgOIiGRqjw2PvRlVCaV.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/kSgOIiGRqjw2PvRlVCaV.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/kSgOIiGRqjw2PvRlVCaV.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/kSgOIiGRqjw2PvRlVCaV.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/kSgOIiGRqjw2PvRlVCaV.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/kSgOIiGRqjw2PvRlVCaV.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/kSgOIiGRqjw2PvRlVCaV.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/kSgOIiGRqjw2PvRlVCaV.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/kSgOIiGRqjw2PvRlVCaV.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/kSgOIiGRqjw2PvRlVCaV.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/kSgOIiGRqjw2PvRlVCaV.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/kSgOIiGRqjw2PvRlVCaV.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/kSgOIiGRqjw2PvRlVCaV.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/kSgOIiGRqjw2PvRlVCaV.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/kSgOIiGRqjw2PvRlVCaV.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/kSgOIiGRqjw2PvRlVCaV.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/kSgOIiGRqjw2PvRlVCaV.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">
+    <strong>Light mode:</strong> Styles specified by the developer and the user agent.
+    The text is black and the background is white as per the user agent stylesheet.
+    The <code>&lt;fieldset&gt;</code> element's <code>background-color</code> is <code>gainsboro</code>
+    as per the inlined developer stylesheet.
+  </figcaption>
+</figure>
+<figure class="w-figure">
+  <img     alt="A page in dark mode."     class="w-screenshot w-screenshot--filled"     decoding="async"     height="322"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/qqkHz83kerktbDIGCJeG.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/qqkHz83kerktbDIGCJeG.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/qqkHz83kerktbDIGCJeG.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/qqkHz83kerktbDIGCJeG.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/qqkHz83kerktbDIGCJeG.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/qqkHz83kerktbDIGCJeG.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/qqkHz83kerktbDIGCJeG.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/qqkHz83kerktbDIGCJeG.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/qqkHz83kerktbDIGCJeG.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/qqkHz83kerktbDIGCJeG.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/qqkHz83kerktbDIGCJeG.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/qqkHz83kerktbDIGCJeG.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/qqkHz83kerktbDIGCJeG.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/qqkHz83kerktbDIGCJeG.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/qqkHz83kerktbDIGCJeG.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/qqkHz83kerktbDIGCJeG.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/qqkHz83kerktbDIGCJeG.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/qqkHz83kerktbDIGCJeG.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">
+    <strong>Dark mode:</strong> Styles specified by the developer and the user agent.
+    The text is white and the background is black as per the user agent stylesheet.
+    The <code>&lt;fieldset&gt;</code> element's <code>background-color</code> is <code>darkslategray</code>
+    as per the inlined developer stylesheet.
+  </figcaption>
+</figure>
+<p>The <code>&lt;button&gt;</code> element's appearance is controlled by the user agent stylesheet.
+Its <code>color</code> is set to the
+<a href="https://drafts.csswg.org/css-color/#valdef-system-color-buttontext" rel="noopener"><code>ButtonText</code></a>
+system color, and its <code>background-color</code> and the four <code>border-color</code>s are set to the system color
+<a href="https://drafts.csswg.org/css-color/#valdef-system-color-buttonface" rel="noopener"><code>ButtonFace</code></a>.</p>
+<figure class="w-figure">
+  <img     alt="A light mode page that uses the ButtonFace property."     class="w-screenshot w-screenshot--filled"     decoding="async"     height="322"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/lSNFROIe1P94DlhoVtoV.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/lSNFROIe1P94DlhoVtoV.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/lSNFROIe1P94DlhoVtoV.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/lSNFROIe1P94DlhoVtoV.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/lSNFROIe1P94DlhoVtoV.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/lSNFROIe1P94DlhoVtoV.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/lSNFROIe1P94DlhoVtoV.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/lSNFROIe1P94DlhoVtoV.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/lSNFROIe1P94DlhoVtoV.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/lSNFROIe1P94DlhoVtoV.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/lSNFROIe1P94DlhoVtoV.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/lSNFROIe1P94DlhoVtoV.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/lSNFROIe1P94DlhoVtoV.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/lSNFROIe1P94DlhoVtoV.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/lSNFROIe1P94DlhoVtoV.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/lSNFROIe1P94DlhoVtoV.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/lSNFROIe1P94DlhoVtoV.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/lSNFROIe1P94DlhoVtoV.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">
+    <strong>Light mode:</strong> The <code>background-color</code> and the various
+    <code>border-color</code>s are set to the <a href="https://drafts.csswg.org/css-color/#valdef-system-color-buttonface">ButtonFace</a>
+    system color.
+  </figcaption>
+</figure>
+<p>Now note how the <code>&lt;button&gt;</code> element's <code>border-color</code> changes.
+The <em>computed</em> value for the <code>border-top-color</code> and the <code>border-bottom-color</code>
+switches from <code>rgba(0, 0, 0, 0.847)</code> (blackish) to <code>rgba(255, 255, 255, 0.847)</code> (whitish),
+since the user agent updates <code>ButtonFace</code> dynamically based on the color scheme.
+The same applies for the <code>&lt;button&gt;</code> element's <code>color</code>
+that is set to the corresponding system color <code>ButtonText</code>.</p>
+<figure class="w-figure">
+  <img     alt="Showing that the computed color values match ButtonFace."     class="w-screenshot w-screenshot--filled"     decoding="async"     height="322"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/IogmyIzUhokJgnnxUkPi.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/IogmyIzUhokJgnnxUkPi.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/IogmyIzUhokJgnnxUkPi.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/IogmyIzUhokJgnnxUkPi.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/IogmyIzUhokJgnnxUkPi.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/IogmyIzUhokJgnnxUkPi.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/IogmyIzUhokJgnnxUkPi.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/IogmyIzUhokJgnnxUkPi.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/IogmyIzUhokJgnnxUkPi.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/IogmyIzUhokJgnnxUkPi.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/IogmyIzUhokJgnnxUkPi.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/IogmyIzUhokJgnnxUkPi.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/IogmyIzUhokJgnnxUkPi.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/IogmyIzUhokJgnnxUkPi.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/IogmyIzUhokJgnnxUkPi.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/IogmyIzUhokJgnnxUkPi.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/IogmyIzUhokJgnnxUkPi.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/IogmyIzUhokJgnnxUkPi.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">
+    <strong>Light mode:</strong> The computed values of the <code>border-top-color</code>
+    and the <code>border-bottom-color</code> that are both set to <code>ButtonFace</code>
+    in the user agent stylesheet are now <code>rgba(0, 0, 0, 0.847)</code>.
+  </figcaption>
+</figure>
+<figure class="w-figure">
+  <img     alt="Showing that the computed color values still match ButtonFace while in dark mode."     class="w-screenshot w-screenshot--filled"     decoding="async"     height="322"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/3sU1uZyt3zNhEgw3gpZJ.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/3sU1uZyt3zNhEgw3gpZJ.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/3sU1uZyt3zNhEgw3gpZJ.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/3sU1uZyt3zNhEgw3gpZJ.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/3sU1uZyt3zNhEgw3gpZJ.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/3sU1uZyt3zNhEgw3gpZJ.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/3sU1uZyt3zNhEgw3gpZJ.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/3sU1uZyt3zNhEgw3gpZJ.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/3sU1uZyt3zNhEgw3gpZJ.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/3sU1uZyt3zNhEgw3gpZJ.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/3sU1uZyt3zNhEgw3gpZJ.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/3sU1uZyt3zNhEgw3gpZJ.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/3sU1uZyt3zNhEgw3gpZJ.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/3sU1uZyt3zNhEgw3gpZJ.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/3sU1uZyt3zNhEgw3gpZJ.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/3sU1uZyt3zNhEgw3gpZJ.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/3sU1uZyt3zNhEgw3gpZJ.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/3sU1uZyt3zNhEgw3gpZJ.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">
+    <strong>Dark mode:</strong> The computed values of the <code>border-top-color</code>
+    and the <code>border-bottom-color</code> that are both set to <code>ButtonFace</code>
+    in the user agent stylesheet are now <code>rgba(255, 255, 255, 0.847)</code>.
+  </figcaption>
+</figure>
+<h2 id="demo">Demo <a class="w-headline-link" href="#demo">#</a></h2>
+<p>You can see the effects of <code>color-scheme</code> applied to a large number of HTML elements
+in a <a href="https://color-scheme-demo.glitch.me/" rel="noopener">demo on Glitch</a>.
+The demo <em>deliberately</em> shows the WCAG AA and WCAG AAA
+<a href="https://webaim.org/resources/contrastchecker/?fcolor=0000EE&amp;bcolor=000000" rel="noopener">violation</a>
+with the link colors mentioned in the
+<a href="#using-color-scheme-in-practice">warning above</a>.</p>
+<figure class="w-figure">
+  <img     alt="The demo while in light mode."     class="w-screenshot w-screenshot--filled"     decoding="async"     height="982"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/bqXapQKcNbyE3uwEOELO.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/bqXapQKcNbyE3uwEOELO.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/bqXapQKcNbyE3uwEOELO.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/bqXapQKcNbyE3uwEOELO.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/bqXapQKcNbyE3uwEOELO.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/bqXapQKcNbyE3uwEOELO.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/bqXapQKcNbyE3uwEOELO.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/bqXapQKcNbyE3uwEOELO.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/bqXapQKcNbyE3uwEOELO.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/bqXapQKcNbyE3uwEOELO.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/bqXapQKcNbyE3uwEOELO.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/bqXapQKcNbyE3uwEOELO.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/bqXapQKcNbyE3uwEOELO.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/bqXapQKcNbyE3uwEOELO.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/bqXapQKcNbyE3uwEOELO.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/bqXapQKcNbyE3uwEOELO.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/bqXapQKcNbyE3uwEOELO.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/bqXapQKcNbyE3uwEOELO.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">
+    The <a href="https://color-scheme-demo.glitch.me/">demo</a>
+    toggled to <code>color-scheme: light</code>.
+  </figcaption>
+</figure>
+<figure class="w-figure">
+  <img     alt="The demo while in dark mode."     class="w-screenshot w-screenshot--filled"     decoding="async"     height="982"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/9G4hFdtSSwPLOm57zedD.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/9G4hFdtSSwPLOm57zedD.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/9G4hFdtSSwPLOm57zedD.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/9G4hFdtSSwPLOm57zedD.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/9G4hFdtSSwPLOm57zedD.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/9G4hFdtSSwPLOm57zedD.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/9G4hFdtSSwPLOm57zedD.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/9G4hFdtSSwPLOm57zedD.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/9G4hFdtSSwPLOm57zedD.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/9G4hFdtSSwPLOm57zedD.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/9G4hFdtSSwPLOm57zedD.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/9G4hFdtSSwPLOm57zedD.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/9G4hFdtSSwPLOm57zedD.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/9G4hFdtSSwPLOm57zedD.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/9G4hFdtSSwPLOm57zedD.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/9G4hFdtSSwPLOm57zedD.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/9G4hFdtSSwPLOm57zedD.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/9G4hFdtSSwPLOm57zedD.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">
+    The <a href="https://color-scheme-demo.glitch.me/">demo</a>
+    toggled to <code>color-scheme: dark</code>.
+    Note the WCAG&nbsp;AA and WCAG&nbsp;AAA
+    <a href="https://webaim.org/resources/contrastchecker/?fcolor=0000EE&bcolor=000000">
+      violation
+    </a>
+    with the link colors.
+  </figcaption>
+</figure>
+<h2 id="acknowledgements">Acknowledgements <a class="w-headline-link" href="#acknowledgements">#</a></h2>
+<p>The <code>color-scheme</code> CSS property and the corresponding meta tag were implemented by
+<a href="https://github.com/lilles" rel="noopener">Rune Lillesveen</a>.
+Rune is also a co-editor of the CSS Color Adjustment Module Level 1 specification.
+Hero image by
+<a href="https://unsplash.com/@philinit?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText" rel="noopener">Philippe Leone</a>
+on <a href="https://unsplash.com/photos/dbFfEBOCrkU" rel="noopener">Unsplash</a>.</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/css/">CSS</a>
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Jun 16, 2020</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/color-scheme/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions="api"></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

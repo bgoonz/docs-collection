@@ -1,0 +1,1080 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=ad568b0fd8828">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Building a Settings component</title>
+<meta name="description" content="A foundational overview of how to build a settings component of sliders and checkboxes." />
+
+<link rel="canonical" href="https://web.dev/building-a-settings-component/" />
+
+<meta itemprop="name" content="Building a Settings component" />
+<meta itemprop="description" content="A foundational overview of how to build a settings component of sliders and checkboxes." />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/zkv1FlI6dn82rJ104yBV.png?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/building-a-settings-component/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Building a Settings component" />
+<meta property="og:description" content="A foundational overview of how to build a settings component of sliders and checkboxes." />
+<meta property="og:image" content="https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/zkv1FlI6dn82rJ104yBV.png?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="" />
+<meta property="tag" content="css" />
+<meta property="tag" content="dom" />
+<meta property="tag" content="javascript" />
+<meta property="tag" content="layout" />
+<meta property="tag" content="mobile" />
+<meta property="tag" content="ux" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Building a Settings component" />
+<meta name="twitter:description" content="A foundational overview of how to build a settings component of sliders and checkboxes." />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/zkv1FlI6dn82rJ104yBV.png?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=b25539237866f', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=6f0488e00e6ac', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="Hero Image"     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/SUaxDTgOYvv2JXxaErBP.png?auto=format"     srcset="https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/SUaxDTgOYvv2JXxaErBP.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/SUaxDTgOYvv2JXxaErBP.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/SUaxDTgOYvv2JXxaErBP.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/SUaxDTgOYvv2JXxaErBP.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/SUaxDTgOYvv2JXxaErBP.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/SUaxDTgOYvv2JXxaErBP.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/SUaxDTgOYvv2JXxaErBP.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/SUaxDTgOYvv2JXxaErBP.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/SUaxDTgOYvv2JXxaErBP.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/SUaxDTgOYvv2JXxaErBP.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/SUaxDTgOYvv2JXxaErBP.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/SUaxDTgOYvv2JXxaErBP.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/SUaxDTgOYvv2JXxaErBP.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/SUaxDTgOYvv2JXxaErBP.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/SUaxDTgOYvv2JXxaErBP.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/SUaxDTgOYvv2JXxaErBP.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/SUaxDTgOYvv2JXxaErBP.png?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#building-a-settings-component" class="w-toc__header--link">
+        Building a Settings component
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#overview">Overview</a></li><li><a href="#layouts">Layouts</a></li><li><a href="#just-for-gap">Just for gap</a></li><li><a href="#natural-grid-wrapping">Natural grid wrapping</a></li><li><a href="#spacing">Spacing</a></li><li><a href="#color">Color</a></li><li><a href="#lch">LCH?</a></li><li><a href="#adaptive-form-controls-with-color-scheme">Adaptive form controls with color-scheme</a></li><li><a href="#css-accent-color">CSS accent-color</a></li><li><a href="#color-pops-with-fixed-gradients-and-focus-within">Color pops with fixed gradients and focus-within</a></li><li><a href="#custom-range">Custom range</a></li><li><a href="#range-element-styles">Range element styles</a></li><li><a href="#track-styles">Track styles</a></li><li><a href="#thumb-styles">Thumb styles</a></li><li><a href="#cross-browser-selectors">Cross browser selectors</a></li><li><a href="#custom-checkbox">Custom Checkbox</a></li><li><a href="#checkbox-element">Checkbox element</a></li><li><a href="#checkbox-labels">Checkbox labels</a></li><li><a href="#checkbox-highlight">Checkbox highlight</a></li><li><a href="#accessibility">Accessibility</a></li><li><a href="#html-element-choices">HTML Element Choices</a></li><li><a href="#html-attributes">HTML Attributes</a></li><li><a href="#javascript">JavaScript</a></li><li><a href="#conclusion">Conclusion</a></li><li><a href="#community-remixes">Community remixes</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@argyleink"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="building-a-settings-component" class="w-article-header__headline">Building a Settings component</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          A foundational overview of how to build a settings component of sliders and checkboxes.
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Mar 17, 2021</time>
+          
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/adamargyle/"><img     alt="Adam Argyle"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/adamargyle/">Adam Argyle</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/argyleink"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/argyleink">GitHub</a>
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://glitch.com/@argyleink"
+          >Glitch</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://nerdy.dev">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>In this post I want to share thinking on building a Settings component for the
+web that is responsive, supports multiple device inputs, and works across
+browsers. Try the <a href="https://gui-challenges.web.app/settings/dist/" rel="noopener">demo</a>.</p>
+<figure class="w-figure w-figure--fullbleed">
+  <video      autoplay            class="w-screenshot"                              loop      muted                            >      <source src="https://storage.googleapis.com/web-dev-uploads/video/vS06HQ1YTsbMKSFTIPl2iogUQP73/WuIwd9jPb30KmmnjJn75.mp4" type="video/mp4" />    </video>
+  <figcaption class="w-figure">
+    <a href="https://gui-challenges.web.app/settings/dist/">Demo</a>
+  </figcaption>
+</figure>
+<p>If you prefer video, or want a UI/UX preview of what we're building, here's a
+shorter walkthrough on YouTube:</p>
+<div class="youtube">  <lite-youtube    videoid="dm7gnp6eh3Q"      >  </lite-youtube></div>
+<h2 id="overview">Overview <a class="w-headline-link" href="#overview">#</a></h2>
+<p>I've broken out the aspects of this component into the following sections:</p>
+<ol>
+<li><a href="#layouts">Layouts</a></li>
+<li><a href="#color">Color</a></li>
+<li><a href="#custom-range">Custom range input</a></li>
+<li><a href="#custom-checkbox">Custom checkbox input</a></li>
+<li><a href="#accessibility">Accessibility considerations</a></li>
+<li><a href="#javascript">JavaScript</a></li>
+</ol>
+<div class="w-aside w-aside--gotchas"><strong>Gotchas!</strong>
+<p>The CSS snippets below assume PostCSS with
+<a href="https://preset-env.cssdb.org/features" rel="noopener">PostCSS Preset Env</a>.
+Intent is to practice early and often with syntax in early drafts or
+experimentally available in browsers. Or as the plugin likes to say,
+&quot;Use tomorrow's CSS today&quot;.</p>
+</div>
+<h2 id="layouts">Layouts <a class="w-headline-link" href="#layouts">#</a></h2>
+<p>This is the first GUI Challenge demo to be <strong>all CSS Grid</strong>! Here's each grid
+highlighted with the <a href="https://goo.gle/devtools-grid" rel="noopener">Chrome DevTools for grid</a>:</p>
+<img     alt="Colorful outlines and gap spacing overlays that help show all the boxes that make up the settings layout"     class="w-screenshot"     decoding="async"     height="563"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/h6LZhScslprBcFol4gGp.png?auto=format"     srcset="https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/h6LZhScslprBcFol4gGp.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/h6LZhScslprBcFol4gGp.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/h6LZhScslprBcFol4gGp.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/h6LZhScslprBcFol4gGp.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/h6LZhScslprBcFol4gGp.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/h6LZhScslprBcFol4gGp.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/h6LZhScslprBcFol4gGp.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/h6LZhScslprBcFol4gGp.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/h6LZhScslprBcFol4gGp.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/h6LZhScslprBcFol4gGp.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/h6LZhScslprBcFol4gGp.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/h6LZhScslprBcFol4gGp.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/h6LZhScslprBcFol4gGp.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/h6LZhScslprBcFol4gGp.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/h6LZhScslprBcFol4gGp.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/h6LZhScslprBcFol4gGp.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/h6LZhScslprBcFol4gGp.png?auto=format&w=1600 1600w"          width="800"   />
+<div role="banner" class="w-banner w-banner--neutral ">
+<p>To highlight your grid layouts:</p>
+<ol>
+<li>Open Chrome DevTools with <code>cmd+opt+i</code> or <code>ctrl+alt+i</code>.</li>
+<li>Select the Layout tab next to the Styles tab.</li>
+<li>Under the Grid layouts section, check on all the layouts.</li>
+<li>Change the colors of all layouts.</li>
+</ol>
+</div>
+<h3 id="just-for-gap">Just for gap <a class="w-headline-link" href="#just-for-gap">#</a></h3>
+<p>The most common layout:</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">foo</span> <span class="token punctuation">{</span><br>  <span class="token property">display</span><span class="token punctuation">:</span> grid<span class="token punctuation">;</span><br>  <span class="token property">gap</span><span class="token punctuation">:</span> <span class="token function">var</span><span class="token punctuation">(</span>--something<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>I call this layout &quot;just for gap&quot; because it only uses grid to add gaps between blocks.</p>
+<p>Five layouts use this strategy, here's all of them displayed:</p>
+<img     alt="Vertical grid layouts highlighted with outlines and filled in gaps"          decoding="async"     height="568"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/zYWSVLzdtrh1K8p8yUuA.png?auto=format"     srcset="https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/zYWSVLzdtrh1K8p8yUuA.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/zYWSVLzdtrh1K8p8yUuA.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/zYWSVLzdtrh1K8p8yUuA.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/zYWSVLzdtrh1K8p8yUuA.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/zYWSVLzdtrh1K8p8yUuA.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/zYWSVLzdtrh1K8p8yUuA.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/zYWSVLzdtrh1K8p8yUuA.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/zYWSVLzdtrh1K8p8yUuA.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/zYWSVLzdtrh1K8p8yUuA.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/zYWSVLzdtrh1K8p8yUuA.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/zYWSVLzdtrh1K8p8yUuA.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/zYWSVLzdtrh1K8p8yUuA.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/zYWSVLzdtrh1K8p8yUuA.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/zYWSVLzdtrh1K8p8yUuA.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/zYWSVLzdtrh1K8p8yUuA.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/zYWSVLzdtrh1K8p8yUuA.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/zYWSVLzdtrh1K8p8yUuA.png?auto=format&w=1600 1600w"          width="800"   />
+<p>The <code>fieldset</code> element, which contains each input group (<code>.fieldset-item</code>), is using <code>gap: 1px</code> to
+create the hairline borders between elements. No tricky border solution!</p>
+<div class="w-columns">
+<figure class="w-compare"><p class="w-compare__label w-compare__label--better">Filled gap</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">.grid</span> <span class="token punctuation">{</span><br>  <span class="token property">display</span><span class="token punctuation">:</span> grid<span class="token punctuation">;</span><br>  <span class="token property">gap</span><span class="token punctuation">:</span> 1px<span class="token punctuation">;</span><br>  <span class="token property">background</span><span class="token punctuation">:</span> <span class="token function">var</span><span class="token punctuation">(</span>--bg-surface-1<span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>  <span class="token selector">&amp; > .fieldset-item</span> <span class="token punctuation">{</span><br>    <span class="token property">background</span><span class="token punctuation">:</span> <span class="token function">var</span><span class="token punctuation">(</span>--bg-surface-2<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code></figure>
+<figure class="w-compare"><p class="w-compare__label w-compare__label--worse">Border trick</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">.grid</span> <span class="token punctuation">{</span><br>  <span class="token property">display</span><span class="token punctuation">:</span> grid<span class="token punctuation">;</span><br><br>  <span class="token selector">&amp; > .fieldset-item</span> <span class="token punctuation">{</span><br>    <span class="token property">background</span><span class="token punctuation">:</span> <span class="token function">var</span><span class="token punctuation">(</span>--bg-surface-2<span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>    <span class="token selector">&amp;:not(:last-child)</span> <span class="token punctuation">{</span><br>      <span class="token property">border-bottom</span><span class="token punctuation">:</span> 1px solid <span class="token function">var</span><span class="token punctuation">(</span>--bg-surface-1<span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code></figure>
+</div>
+<h3 id="natural-grid-wrapping">Natural grid wrapping <a class="w-headline-link" href="#natural-grid-wrapping">#</a></h3>
+<p>The most complex layout ended up being the macro layout, the logical layout
+system between <code>&lt;main&gt;</code> and <code>&lt;form&gt;</code>.</p>
+<h4 id="centering-wrapping-content">Centering wrapping content <a class="w-headline-link" href="#centering-wrapping-content">#</a></h4>
+<p>Flexbox and grid both provide abilities to <code>align-items</code> or
+<code>align-content</code>, and when dealing with wrapping elements, <code>content</code> layout
+alignments will distribute space amongst the children as a group.</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">main</span> <span class="token punctuation">{</span><br>  <span class="token property">display</span><span class="token punctuation">:</span> grid<span class="token punctuation">;</span><br>  <span class="token property">gap</span><span class="token punctuation">:</span> <span class="token function">var</span><span class="token punctuation">(</span>--space-xl<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token property">place-content</span><span class="token punctuation">:</span> center<span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>The main element is using <code>place-content: center</code> <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/place-content" rel="noopener">alignment
+shorthand</a> so
+that the children are centered vertically and horizontally in both one and two column layouts.</p>
+<p><video      autoplay            class="w-screenshot"                              loop      muted                            >      <source src="https://storage.googleapis.com/web-dev-uploads/video/vS06HQ1YTsbMKSFTIPl2iogUQP73/IQI2PofA6gpNFUkDrvKo.mp4" type="video/mp4" />    </video></p>
+<p>Watch in the above video how the &quot;content&quot; stays centered, even though wrapping
+has occurred.</p>
+<h4 id="repeat-auto-fit-minmax">Repeat auto-fit minmax <a class="w-headline-link" href="#repeat-auto-fit-minmax">#</a></h4>
+<p>The <code>&lt;form&gt;</code> uses an adaptive grid layout for each section.
+This layout switches from one to two columns based on available space.</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">form</span> <span class="token punctuation">{</span><br>  <span class="token property">display</span><span class="token punctuation">:</span> grid<span class="token punctuation">;</span><br>  <span class="token property">gap</span><span class="token punctuation">:</span> <span class="token function">var</span><span class="token punctuation">(</span>--space-xl<span class="token punctuation">)</span> <span class="token function">var</span><span class="token punctuation">(</span>--space-xxl<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token property">grid-template-columns</span><span class="token punctuation">:</span> <span class="token function">repeat</span><span class="token punctuation">(</span>auto-fit<span class="token punctuation">,</span> <span class="token function">minmax</span><span class="token punctuation">(</span><span class="token function">min</span><span class="token punctuation">(</span>10ch<span class="token punctuation">,</span> 100%<span class="token punctuation">)</span><span class="token punctuation">,</span> 35ch<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token property">align-items</span><span class="token punctuation">:</span> flex-start<span class="token punctuation">;</span><br>  <span class="token property">max-width</span><span class="token punctuation">:</span> 89vw<span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>This grid has a different value for <code>row-gap</code> (--space-xl) than <code>column-gap</code> (--space-xxl)
+to put that custom touch on the responsive layout. When the columns stack, we
+want a large gap, but not as large as if we're on a wide screen.</p>
+<p>The <code>grid-template-columns</code> property uses 3 CSS functions: <code>repeat()</code>, <code>minmax()</code> and
+<code>min()</code>. <a href="#">Una Kravets</a> has a <a href="/one-line-layouts/">great layout blog
+post</a> about this, calling it
+<a href="/one-line-layouts/#07.-ram-(repeat-auto-minmax):-grid-template-columns(auto-fit-minmax(lessbasegreater-1fr))">RAM</a>.</p>
+<p>There's 3 special additions in our layout, if you compare it to Una's:</p>
+<ul>
+<li>We pass an extra <code>min()</code> function.</li>
+<li>We specify <code>align-items: flex-start</code>.</li>
+<li>There's a <code>max-width: 89vw</code> style.</li>
+</ul>
+<p>The extra <code>min()</code> function is well described by Evan Minto on their blog in the
+post <a href="https://evanminto.com/blog/intrinsically-responsive-css-grid-minmax-min/" rel="noopener">Intrinsically Responsive CSS Grid with minmax() and
+min()</a>.
+I recommend giving that a read. The <code>flex-start</code> alignment correction is to
+remove the default stretching effect, so that the children of this layout don't
+need to have equal heights, they can have natural, intrinsic heights. The
+YouTube video has a quick breakdown of this alignment addition.</p>
+<p><code>max-width: 89vw</code> is worth a small breakdown in this post.
+Let me show you the layout with and without the style applied:</p>
+<p><video      autoplay            class="w-screenshot"                              loop      muted                            >      <source src="https://storage.googleapis.com/web-dev-uploads/video/vS06HQ1YTsbMKSFTIPl2iogUQP73/gdldf7hyaBrHWwxQbSaT.mp4" type="video/mp4" />    </video></p>
+<p>What's happening? When <code>max-width</code> is specified, it's providing context,
+explicit sizing or <a href="https://drafts.csswg.org/css-sizing-3/#definite" rel="noopener">definite
+sizing</a> for the <a href="https://drafts.csswg.org/css-grid/#auto-repeat" rel="noopener"><code>auto-fit</code>
+layout algorithm</a> to know how
+many repetitions it can fit into the space. While it seems obvious that the
+space is &quot;full width&quot;, per the CSS grid spec, a definite size or max-size must
+be provided. I've provided a max-size.</p>
+<p>So, why <code>89vw</code>? Because &quot;it worked&quot; for my layout.
+Me and a couple of other Chrome folks are investigating why a more reasonable value,
+like <code>100vw</code> isn't sufficient, and if this is in fact a bug.</p>
+<h3 id="spacing">Spacing <a class="w-headline-link" href="#spacing">#</a></h3>
+<p>A majority of the harmony of this layout is from a limited palette of spacing, 7
+to be exact.</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">:root</span> <span class="token punctuation">{</span><br>  <span class="token property">--space-xxs</span><span class="token punctuation">:</span> .25rem<span class="token punctuation">;</span><br>  <span class="token property">--space-xs</span><span class="token punctuation">:</span>  .5rem<span class="token punctuation">;</span><br>  <span class="token property">--space-sm</span><span class="token punctuation">:</span>  1rem<span class="token punctuation">;</span><br>  <span class="token property">--space-md</span><span class="token punctuation">:</span>  1.5rem<span class="token punctuation">;</span><br>  <span class="token property">--space-lg</span><span class="token punctuation">:</span>  2rem<span class="token punctuation">;</span><br>  <span class="token property">--space-xl</span><span class="token punctuation">:</span>  3rem<span class="token punctuation">;</span><br>  <span class="token property">--space-xxl</span><span class="token punctuation">:</span> 6rem<span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>Usage of these flows really nicely with grid, <a href="https://drafts.csswg.org/css-nesting-1/" rel="noopener">CSS @nest</a>, and <a href="https://drafts.csswg.org/mediaqueries-5/" rel="noopener">level 5 syntax
+of @media</a>. Here's an example, the fully <code>&lt;main&gt;</code> layout set of styles.</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">main</span> <span class="token punctuation">{</span><br>  <span class="token property">display</span><span class="token punctuation">:</span> grid<span class="token punctuation">;</span><br>  <span class="token property">gap</span><span class="token punctuation">:</span> <span class="token function">var</span><span class="token punctuation">(</span>--space-xl<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token property">place-content</span><span class="token punctuation">:</span> center<span class="token punctuation">;</span><br>  <span class="token property">padding</span><span class="token punctuation">:</span> <span class="token function">var</span><span class="token punctuation">(</span>--space-sm<span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>  <span class="token atrule"><span class="token rule">@media</span> <span class="token punctuation">(</span>width >= 540px<span class="token punctuation">)</span></span> <span class="token punctuation">{</span><br>    <span class="token selector">&amp;</span> <span class="token punctuation">{</span><br>      <span class="token property">padding</span><span class="token punctuation">:</span> <span class="token function">var</span><span class="token punctuation">(</span>--space-lg<span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">}</span><br><br>  <span class="token atrule"><span class="token rule">@media</span> <span class="token punctuation">(</span>width >= 800px<span class="token punctuation">)</span></span> <span class="token punctuation">{</span><br>    <span class="token selector">&amp;</span> <span class="token punctuation">{</span><br>      <span class="token property">padding</span><span class="token punctuation">:</span> <span class="token function">var</span><span class="token punctuation">(</span>--space-xl<span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>A grid with centered content, moderately padded by default (like on mobile). But
+as more viewport space becomes available, it spreads out by increasing padding.
+2021 CSS is looking pretty good!</p>
+<p>Remember the earlier layout, &quot;just for gap&quot;? Here's a more complete version of
+how they look in this component:</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">header</span> <span class="token punctuation">{</span><br>  <span class="token property">display</span><span class="token punctuation">:</span> grid<span class="token punctuation">;</span><br>  <span class="token property">gap</span><span class="token punctuation">:</span> <span class="token function">var</span><span class="token punctuation">(</span>--space-xxs<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><br><br><span class="token selector">section</span> <span class="token punctuation">{</span><br>  <span class="token property">display</span><span class="token punctuation">:</span> grid<span class="token punctuation">;</span><br>  <span class="token property">gap</span><span class="token punctuation">:</span> <span class="token function">var</span><span class="token punctuation">(</span>--space-md<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><h2 id="color">Color <a class="w-headline-link" href="#color">#</a></h2>
+<p>A controlled use of color helped this design stand out as expressive yet
+minimal. I do it like this:</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">:root</span> <span class="token punctuation">{</span><br>  <span class="token property">--surface1</span><span class="token punctuation">:</span> <span class="token function">lch</span><span class="token punctuation">(</span>10 0 0<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token property">--surface2</span><span class="token punctuation">:</span> <span class="token function">lch</span><span class="token punctuation">(</span>15 0 0<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token property">--surface3</span><span class="token punctuation">:</span> <span class="token function">lch</span><span class="token punctuation">(</span>20 0 0<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token property">--surface4</span><span class="token punctuation">:</span> <span class="token function">lch</span><span class="token punctuation">(</span>25 0 0<span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>  <span class="token property">--text1</span><span class="token punctuation">:</span> <span class="token function">lch</span><span class="token punctuation">(</span>95 0 0<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token property">--text2</span><span class="token punctuation">:</span> <span class="token function">lch</span><span class="token punctuation">(</span>75 0 0<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><div class="w-aside w-aside--key-term">
+<p><strong>Key Term</strong>:
+<a href="https://github.com/csstools/postcss-lab-function" rel="noopener">PostCSS <code>lab()</code> and <code>lch()</code>
+plugin</a> is part of <a href="https://preset-env.cssdb.org/features#lch-function" rel="noopener">PostCSS
+Preset Env</a>, and will output
+<code>rgb()</code> colors.</p>
+</div>
+<p>I name my surface and text colors with numbers as opposed to names like
+<code>surface-dark</code> and <code>surface-darker</code> because in a media query, I'll be flipping
+them, and light and dark won't be meaningful.</p>
+<p>I flip them in a preference media query like this:</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">:root</span> <span class="token punctuation">{</span><br>  ...<br><br>  <span class="token atrule"><span class="token rule">@media</span> <span class="token punctuation">(</span><span class="token property">prefers-color-scheme</span><span class="token punctuation">:</span> light<span class="token punctuation">)</span></span> <span class="token punctuation">{</span><br>    <span class="token selector">&amp;</span> <span class="token punctuation">{</span><br>      <span class="token property">--surface1</span><span class="token punctuation">:</span> <span class="token function">lch</span><span class="token punctuation">(</span>90 0 0<span class="token punctuation">)</span><span class="token punctuation">;</span><br>      <span class="token property">--surface2</span><span class="token punctuation">:</span> <span class="token function">lch</span><span class="token punctuation">(</span>100 0 0<span class="token punctuation">)</span><span class="token punctuation">;</span><br>      <span class="token property">--surface3</span><span class="token punctuation">:</span> <span class="token function">lch</span><span class="token punctuation">(</span>98 0 0<span class="token punctuation">)</span><span class="token punctuation">;</span><br>      <span class="token property">--surface4</span><span class="token punctuation">:</span> <span class="token function">lch</span><span class="token punctuation">(</span>85 0 0<span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>      <span class="token property">--text1</span><span class="token punctuation">:</span> <span class="token function">lch</span><span class="token punctuation">(</span>20 0 0<span class="token punctuation">)</span><span class="token punctuation">;</span><br>      <span class="token property">--text2</span><span class="token punctuation">:</span> <span class="token function">lch</span><span class="token punctuation">(</span>40 0 0<span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><div class="w-aside w-aside--key-term">
+<p><strong>Key Term</strong>:
+<a href="https://github.com/csstools/postcss-nesting" rel="noopener">PostCSS <code>@nest</code> plugin</a> is part of <a href="https://preset-env.cssdb.org/features" rel="noopener">PostCSS
+Preset Env</a>, and will expand selectors to a syntax
+browsers support today.</p>
+</div>
+<p>It's important to get a quick glimpse at the overall picture and strategy before
+we dive into color syntax details. But, since I've gotten a bit ahead of myself,
+let me back up a bit.</p>
+<h3 id="lch">LCH? <a class="w-headline-link" href="#lch">#</a></h3>
+<p>Without getting too deep into color theory land, LCH is a human oriented syntax,
+that caters to how we percieve color, not how we measure color with math (like
+255). This gives it a distinct advantage as humans can write it more easily and other
+humans will be in tune with these adjustments.</p>
+<figure class="w-figure w-screenshot">
+  <img     alt="A screenshot of pod.link/csspodcast webpage, with Color 2: Perception episode pulled up"          decoding="async"     height="329"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/160dWLSrMhFISwWMVd4w.png?auto=format"     srcset="https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/160dWLSrMhFISwWMVd4w.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/160dWLSrMhFISwWMVd4w.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/160dWLSrMhFISwWMVd4w.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/160dWLSrMhFISwWMVd4w.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/160dWLSrMhFISwWMVd4w.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/160dWLSrMhFISwWMVd4w.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/160dWLSrMhFISwWMVd4w.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/160dWLSrMhFISwWMVd4w.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/160dWLSrMhFISwWMVd4w.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/160dWLSrMhFISwWMVd4w.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/160dWLSrMhFISwWMVd4w.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/160dWLSrMhFISwWMVd4w.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/160dWLSrMhFISwWMVd4w.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/160dWLSrMhFISwWMVd4w.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/160dWLSrMhFISwWMVd4w.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/160dWLSrMhFISwWMVd4w.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/160dWLSrMhFISwWMVd4w.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figure">
+    Learn about perceptual color (and more!) on the <a href="https://pod.link/thecsspodcast">CSS Podcast</a>
+  </figcaption>
+</figure>
+<p>For today, in this demo, let's focus on the syntax and the values I'm flipping
+to make light and dark. Let's look at 1 surface and 1 text color:</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">:root</span> <span class="token punctuation">{</span><br>  <span class="token property">--surface1</span><span class="token punctuation">:</span> <span class="token function">lch</span><span class="token punctuation">(</span>10 0 0<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token property">--text1</span><span class="token punctuation">:</span>    <span class="token function">lch</span><span class="token punctuation">(</span>95 0 0<span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>  <span class="token atrule"><span class="token rule">@media</span> <span class="token punctuation">(</span><span class="token property">prefers-color-scheme</span><span class="token punctuation">:</span> light<span class="token punctuation">)</span></span> <span class="token punctuation">{</span><br>    <span class="token selector">&amp;</span> <span class="token punctuation">{</span><br>      <span class="token property">--surface1</span><span class="token punctuation">:</span> <span class="token function">lch</span><span class="token punctuation">(</span>90 0 0<span class="token punctuation">)</span><span class="token punctuation">;</span><br>      <span class="token property">--text1</span><span class="token punctuation">:</span>    <span class="token function">lch</span><span class="token punctuation">(</span>40 0 0<span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p><code>--surface1: lch(10 0 0)</code> translates to <code>10%</code> lightness, 0 chroma and 0 hue: a
+very dark colorless gray. Then, in the media query for light mode, the lightness
+is flipped to <code>90%</code> with <code>--surface1: lch(90 0 0);</code>. And that's the gist of the
+strategy. Start by just changing lightness between the 2 themes, maintaining the
+contrast ratios the design calls for or what can maintain accessibility.</p>
+<p>The bonus with <code>lch()</code> here is that lightness is human oriented, and we can feel
+good about a <code>%</code> change to it, that it will be perceptually and consistently
+that <code>%</code> different. <code>hsl()</code> for example is <a href="https://twitter.com/argyleink/status/1201908189257555968" rel="noopener">not as
+reliable</a>.</p>
+<p>There's <a href="https://lea.verou.me/2020/04/lch-colors-in-css-what-why-and-how/" rel="noopener">more to
+learn</a> about
+color spaces and <code>lch()</code> if you're interested. It's coming!</p>
+<blockquote>
+<p>CSS right now <strong>cannot access these colors at all</strong>.
+Let me repeat: <strong>We have no access to one third of the colors in most modern
+monitors.</strong> And these are not just any colors, but the <strong>most vivid colors the
+screen can display</strong>. Our websites are washed out because monitor hardware evolved
+faster than CSS specs and browser implementations.</p>
+<p><cite>Lea Verou</cite></p>
+</blockquote>
+<h3 id="adaptive-form-controls-with-color-scheme">Adaptive form controls with color-scheme <a class="w-headline-link" href="#adaptive-form-controls-with-color-scheme">#</a></h3>
+<p>Many browsers ship dark theme controls, currently Safari and Chromium, but you
+have to specify in CSS or HTML that your design uses them.</p>
+<p><video      autoplay            class="w-screenshot"                              loop      muted                            >      <source src="https://storage.googleapis.com/web-dev-uploads/video/vS06HQ1YTsbMKSFTIPl2iogUQP73/0VVtEAWM6jHeIxahqnFy.mp4" type="video/mp4" />    </video></p>
+<p>The above is demonstrating the effect of the property from the Styles panel of
+DevTools. The demo uses the HTML tag, which in my opinion is generally
+a better location:</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>color-scheme<span class="token punctuation">"</span></span> <span class="token attr-name">content</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>dark light<span class="token punctuation">"</span></span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><p>Learn all about it in this <a href="/color-scheme/"><code>color-scheme</code>
+article</a> by <a href="/authors/thomassteiner/">Thomas
+Steiner</a>. There's a lot more to gain
+than dark checkbox inputs!</p>
+<h3 id="css-accent-color">CSS <code>accent-color</code> <a class="w-headline-link" href="#css-accent-color">#</a></h3>
+<p>There's been <a href="https://twitter.com/argyleink/status/1360022120810483715?s=20" rel="noopener">recent
+activity</a> around
+<code>accent-color</code> on form elements, being a single CSS style that can change the
+tint color used in the browsers input element. Read more about it <a href="https://github.com/w3c/csswg-drafts/issues/5187" rel="noopener">here on
+GitHub</a>. I've included it in my
+styles for this component. As browsers support it, my checkboxes will be
+more on theme with the pink and purple color pops.</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">input[type="checkbox"]</span> <span class="token punctuation">{</span><br>  <span class="token property">accent-color</span><span class="token punctuation">:</span> <span class="token function">var</span><span class="token punctuation">(</span>--brand<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><img     alt="A screenshot from Chromium on Linux of pink checkboxes"          decoding="async"     height="406"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/J9pbhB0ImoDzbsXkBGtG.png?auto=format"     srcset="https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/J9pbhB0ImoDzbsXkBGtG.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/J9pbhB0ImoDzbsXkBGtG.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/J9pbhB0ImoDzbsXkBGtG.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/J9pbhB0ImoDzbsXkBGtG.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/J9pbhB0ImoDzbsXkBGtG.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/J9pbhB0ImoDzbsXkBGtG.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/J9pbhB0ImoDzbsXkBGtG.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/J9pbhB0ImoDzbsXkBGtG.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/J9pbhB0ImoDzbsXkBGtG.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/J9pbhB0ImoDzbsXkBGtG.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/J9pbhB0ImoDzbsXkBGtG.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/J9pbhB0ImoDzbsXkBGtG.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/J9pbhB0ImoDzbsXkBGtG.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/J9pbhB0ImoDzbsXkBGtG.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/J9pbhB0ImoDzbsXkBGtG.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/J9pbhB0ImoDzbsXkBGtG.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/J9pbhB0ImoDzbsXkBGtG.png?auto=format&w=1600 1600w"          width="800"   />
+<h3 id="color-pops-with-fixed-gradients-and-focus-within">Color pops with fixed gradients and focus-within <a class="w-headline-link" href="#color-pops-with-fixed-gradients-and-focus-within">#</a></h3>
+<p>Color pops most when it's used sparingly, and one of the ways I like to achieve
+that is through colorful UI interactions.</p>
+<p><video      autoplay            class="w-screenshot"                              loop      muted                        width="480px"    >      <source src="https://storage.googleapis.com/web-dev-uploads/video/vS06HQ1YTsbMKSFTIPl2iogUQP73/Pm75QwVToKkiqedqPtmm.mp4" type="video/mp4" />    </video></p>
+<p>There are many layers of UI feedback and interaction in the above video, which
+help give personality to the interaction by:</p>
+<ul>
+<li>Highlighting context.</li>
+<li>Providing UI feedback of &quot;how full&quot; the value is in the range.</li>
+<li>Providing UI feedback that a field is accepting input.</li>
+</ul>
+<p>To provide feedback when an element is being interacted with, CSS is using the
+<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-within" rel="noopener"><code>:focus-within</code></a>
+pseudo class to change the appearance of various elements, let's break down the
+<code>.fieldset-item</code>, it's super interesting:</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">.fieldset-item</span> <span class="token punctuation">{</span><br>  <span class="token selector">...<br><br>  &amp;:focus-within</span> <span class="token punctuation">{</span><br>    <span class="token property">background</span><span class="token punctuation">:</span> <span class="token function">var</span><span class="token punctuation">(</span>--surface2<span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>    <span class="token selector">&amp; svg</span> <span class="token punctuation">{</span><br>      <span class="token property">fill</span><span class="token punctuation">:</span> white<span class="token punctuation">;</span><br>    <span class="token punctuation">}</span><br><br>    <span class="token selector">&amp; picture</span> <span class="token punctuation">{</span><br>      <span class="token property">clip-path</span><span class="token punctuation">:</span> <span class="token function">circle</span><span class="token punctuation">(</span>50%<span class="token punctuation">)</span><span class="token punctuation">;</span><br>      <span class="token property">background</span><span class="token punctuation">:</span> <span class="token function">var</span><span class="token punctuation">(</span>--brand-bg-gradient<span class="token punctuation">)</span> fixed<span class="token punctuation">;</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>When one of the children of this element has focus-within:</p>
+<ol>
+<li>The <code>.fieldset-item</code> background is assigned a higher contrast surface color.</li>
+<li>The nested <code>svg</code> is filled white for higher contrast.</li>
+<li>The nested <code>&lt;picture&gt;</code> <code>clip-path</code> expands to a full circle and the
+background is filled with the bright fixed gradient.</li>
+</ol>
+<h2 id="custom-range">Custom range <a class="w-headline-link" href="#custom-range">#</a></h2>
+<p>Given the following HTML input element, I'll show you how I customized its
+appearance:</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>range<span class="token punctuation">"</span></span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><p>There's 3 parts to this element we need to customize:</p>
+<ol>
+<li><a href="#range-element-styles">Range element / container</a></li>
+<li><a href="#track-styles">Track</a></li>
+<li><a href="#thumb-styles">Thumb</a></li>
+</ol>
+<h3 id="range-element-styles">Range element styles <a class="w-headline-link" href="#range-element-styles">#</a></h3>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">input[type="range"]</span> <span class="token punctuation">{</span><br>  <span class="token comment">/* style setting variables */</span><br>  <span class="token property">--track-height</span><span class="token punctuation">:</span> .5ex<span class="token punctuation">;</span><br>  <span class="token property">--track-fill</span><span class="token punctuation">:</span> 0%<span class="token punctuation">;</span><br>  <span class="token property">--thumb-size</span><span class="token punctuation">:</span> 3ex<span class="token punctuation">;</span><br>  <span class="token property">--thumb-offset</span><span class="token punctuation">:</span> -1.25ex<span class="token punctuation">;</span><br>  <span class="token property">--thumb-highlight-size</span><span class="token punctuation">:</span> 0px<span class="token punctuation">;</span><br><br>  <span class="token property">appearance</span><span class="token punctuation">:</span> none<span class="token punctuation">;</span>         <span class="token comment">/* clear styles, make way for mine */</span><br>  <span class="token property">display</span><span class="token punctuation">:</span> block<span class="token punctuation">;</span><br>  <span class="token property">inline-size</span><span class="token punctuation">:</span> 100%<span class="token punctuation">;</span>        <span class="token comment">/* fill container */</span><br>  <span class="token property">margin</span><span class="token punctuation">:</span> 1ex 0<span class="token punctuation">;</span>            <span class="token comment">/* ensure thumb isn't colliding with sibling content */</span><br>  <span class="token property">background</span><span class="token punctuation">:</span> transparent<span class="token punctuation">;</span>  <span class="token comment">/* bg is in the track */</span><br>  <span class="token property">outline-offset</span><span class="token punctuation">:</span> 5px<span class="token punctuation">;</span>      <span class="token comment">/* focus styles have space */</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>The first few lines of CSS are the custom parts of the styles, and I hope that
+clearly labeling them helps. The rest of the styles are mostly reset styles, to
+provide a consistent foundation for building the tricky parts of the component.</p>
+<h3 id="track-styles">Track styles <a class="w-headline-link" href="#track-styles">#</a></h3>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">input[type="range"]::-webkit-slider-runnable-track</span> <span class="token punctuation">{</span><br>  <span class="token property">appearance</span><span class="token punctuation">:</span> none<span class="token punctuation">;</span> <span class="token comment">/* clear styles, make way for mine */</span><br>  <span class="token property">block-size</span><span class="token punctuation">:</span> <span class="token function">var</span><span class="token punctuation">(</span>--track-height<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token property">border-radius</span><span class="token punctuation">:</span> 5ex<span class="token punctuation">;</span><br>  <span class="token property">background</span><span class="token punctuation">:</span><br>    <span class="token comment">/* hard stop gradient:<br>        - half transparent (where colorful fill we be)<br>        - half dark track fill<br>        - 1st background image is on top<br>    */</span><br>    <span class="token function">linear-gradient</span><span class="token punctuation">(</span><br>      to right<span class="token punctuation">,</span><br>      transparent <span class="token function">var</span><span class="token punctuation">(</span>--track-fill<span class="token punctuation">)</span><span class="token punctuation">,</span><br>      <span class="token function">var</span><span class="token punctuation">(</span>--surface1<span class="token punctuation">)</span> 0%<br>    <span class="token punctuation">)</span><span class="token punctuation">,</span><br>    <span class="token comment">/* colorful fill effect, behind track surface fill */</span><br>    <span class="token function">var</span><span class="token punctuation">(</span>--brand-bg-gradient<span class="token punctuation">)</span> fixed<span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>The trick to this is &quot;revealing&quot; the vibrant fill color. This is done with the
+hard stop gradient on top. The gradient is transparent up to the fill percentage, and after
+that uses the unfilled track surface color. Behind that unfilled surface, is a
+full width color, waiting for transparency to reveal it.</p>
+<p><video      autoplay            class="w-screenshot"                              loop      muted                            >      <source src="https://storage.googleapis.com/web-dev-uploads/video/vS06HQ1YTsbMKSFTIPl2iogUQP73/aiAL28AkDRZvaAZNEbW8.mp4" type="video/mp4" />    </video></p>
+<h4 id="track-fill-style">Track fill style <a class="w-headline-link" href="#track-fill-style">#</a></h4>
+<p>My design <strong>does require JavaScript</strong> in order to maintain the fill style. There
+are CSS only strategies but they require the thumb element to be the same height
+as the track, and I wasn't able to find a harmony within those limits.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token comment">/* grab sliders on page */</span><br><span class="token keyword">const</span> sliders <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">querySelectorAll</span><span class="token punctuation">(</span><span class="token string">'input[type="range"]'</span><span class="token punctuation">)</span><br><br><span class="token comment">/* take a slider element, return a percentage string for use in CSS */</span><br><span class="token keyword">const</span> <span class="token function-variable function">rangeToPercent</span> <span class="token operator">=</span> <span class="token parameter">slider</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token keyword">const</span> max <span class="token operator">=</span> slider<span class="token punctuation">.</span><span class="token function">getAttribute</span><span class="token punctuation">(</span><span class="token string">'max'</span><span class="token punctuation">)</span> <span class="token operator">||</span> <span class="token number">10</span><span class="token punctuation">;</span><br>  <span class="token keyword">const</span> percent <span class="token operator">=</span> slider<span class="token punctuation">.</span>value <span class="token operator">/</span> max <span class="token operator">*</span> <span class="token number">100</span><span class="token punctuation">;</span><br><br>  <span class="token keyword">return</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token function">parseInt</span><span class="token punctuation">(</span>percent<span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">%</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span><br><br><span class="token comment">/* on page load, set the fill amount */</span><br>sliders<span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token parameter">slider</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  slider<span class="token punctuation">.</span>style<span class="token punctuation">.</span><span class="token function">setProperty</span><span class="token punctuation">(</span><span class="token string">'--track-fill'</span><span class="token punctuation">,</span> <span class="token function">rangeToPercent</span><span class="token punctuation">(</span>slider<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>  <span class="token comment">/* when a slider changes, update the fill prop */</span><br>  slider<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'input'</span><span class="token punctuation">,</span> <span class="token parameter">e</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>    e<span class="token punctuation">.</span>target<span class="token punctuation">.</span>style<span class="token punctuation">.</span><span class="token function">setProperty</span><span class="token punctuation">(</span><span class="token string">'--track-fill'</span><span class="token punctuation">,</span> <span class="token function">rangeToPercent</span><span class="token punctuation">(</span>e<span class="token punctuation">.</span>target<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><span class="token punctuation">)</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span></code></pre>
+</web-copy-code><p>I think this makes for a nice visual upgrade. The slider works great without
+JavaScript, the <code>--track-fill</code> prop is not required, it simply will not have a
+fill style if not present. If JavaScript is available, populate the custom
+property while also observing any user changes, syncing the custom property with
+the value.</p>
+<p><a href="https://css-tricks.com/sliding-nightmare-understanding-range-input/" rel="noopener">Here's a great
+post</a> on
+<a href="https://css-tricks.com/" rel="noopener">CSS-Tricks</a> by <a href="https://twitter.com/anatudor" rel="noopener">Ana
+Tudor</a>, that demonstrates a CSS only solution for
+track fill. I also found this
+<a href="https://app.native-elements.dev/editor/elements/range" rel="noopener"><code>range</code> element</a> very inspiring.</p>
+<h3 id="thumb-styles">Thumb styles <a class="w-headline-link" href="#thumb-styles">#</a></h3>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">input[type="range"]::-webkit-slider-thumb</span> <span class="token punctuation">{</span><br>  <span class="token property">appearance</span><span class="token punctuation">:</span> none<span class="token punctuation">;</span> <span class="token comment">/* clear styles, make way for mine */</span><br>  <span class="token property">cursor</span><span class="token punctuation">:</span> ew-resize<span class="token punctuation">;</span> <span class="token comment">/* cursor style to support drag direction */</span><br>  <span class="token property">border</span><span class="token punctuation">:</span> 3px solid <span class="token function">var</span><span class="token punctuation">(</span>--surface3<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token property">block-size</span><span class="token punctuation">:</span> <span class="token function">var</span><span class="token punctuation">(</span>--thumb-size<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token property">inline-size</span><span class="token punctuation">:</span> <span class="token function">var</span><span class="token punctuation">(</span>--thumb-size<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token property">margin-top</span><span class="token punctuation">:</span> <span class="token function">var</span><span class="token punctuation">(</span>--thumb-offset<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token property">border-radius</span><span class="token punctuation">:</span> 50%<span class="token punctuation">;</span><br>  <span class="token property">background</span><span class="token punctuation">:</span> <span class="token function">var</span><span class="token punctuation">(</span>--brand-bg-gradient<span class="token punctuation">)</span> fixed<span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>The majority of these styles are to make a nice circle.
+Again you see the fixed background gradient there that unifies the
+dynamic colors of the thumbs, tracks and associated SVG elements.
+I separated the styles for the interaction to help isolate the <code>box-shadow</code>
+technique being used for the hover highlight:</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token atrule"><span class="token rule">@custom-media</span> --motionOK <span class="token punctuation">(</span><span class="token property">prefers-reduced-motion</span><span class="token punctuation">:</span> no-preference<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><br><span class="token selector">::-webkit-slider-thumb</span> <span class="token punctuation">{</span><br>  …<br><br>  <span class="token comment">/* shadow spread is initally 0 */</span><br>  <span class="token property">box-shadow</span><span class="token punctuation">:</span> 0 0 0 <span class="token function">var</span><span class="token punctuation">(</span>--thumb-highlight-size<span class="token punctuation">)</span> <span class="token function">var</span><span class="token punctuation">(</span>--thumb-highlight-color<span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>  <span class="token comment">/* if motion is OK, transition the box-shadow change */</span><br>  <span class="token atrule"><span class="token rule">@media</span> <span class="token punctuation">(</span>--motionOK<span class="token punctuation">)</span></span> <span class="token punctuation">{</span><br>    <span class="token selector">&amp;</span> <span class="token punctuation">{</span><br>      <span class="token property">transition</span><span class="token punctuation">:</span> box-shadow .1s ease<span class="token punctuation">;</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">}</span><br><br>  <span class="token comment">/* on hover/active state of parent, increase size prop */</span><br>  <span class="token atrule"><span class="token rule">@nest</span> input[type=<span class="token string">"range"</span>]<span class="token punctuation">:</span><span class="token function">is</span><span class="token punctuation">(</span><span class="token punctuation">:</span>hover<span class="token punctuation">,</span><span class="token punctuation">:</span>active<span class="token punctuation">)</span> &amp;</span> <span class="token punctuation">{</span><br>    <span class="token property">--thumb-highlight-size</span><span class="token punctuation">:</span> 10px<span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><div class="w-aside w-aside--key-term">
+<p><strong>Key Term</strong>:
+<a href="https://drafts.csswg.org/mediaqueries-5/#custom-mq" rel="noopener">@custom-media</a>
+is a Level 5 spec addition that
+<a href="https://github.com/postcss/postcss-custom-media" rel="noopener">PostCSS Custom Media</a>, part of
+<a href="https://preset-env.cssdb.org/features" rel="noopener">PostCSS Preset Env</a>.</p>
+</div>
+<p>The goal was an easy to manage and animated visual highlight for user feedback.
+By using a box shadow I can avoid <a href="/animations-guide/#triggers">triggering
+layout</a> with the effect. I do this
+by creating a shadow that's not blurred and matches the circular shape of the
+thumb element. Then I change and transition it's spread size on hover.</p>
+<p><video      autoplay            class="w-screenshot"                              loop      muted                            >      <source src="https://storage.googleapis.com/web-dev-uploads/video/vS06HQ1YTsbMKSFTIPl2iogUQP73/s835RbH88L5bxjl5bMFl.mp4" type="video/mp4" />    </video></p>
+<p>If only the highlight effect was so easy on checkboxes…</p>
+<h3 id="cross-browser-selectors">Cross browser selectors <a class="w-headline-link" href="#cross-browser-selectors">#</a></h3>
+<p>I found I needed these <code>-webkit-</code> and <code>-moz-</code> selectors to achieve cross browser
+consistency:</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">input[type="range"]</span> <span class="token punctuation">{</span><br>  <span class="token selector">&amp;::-webkit-slider-runnable-track</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><br>  <span class="token selector">&amp;::-moz-range-track</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><br>  <span class="token selector">&amp;::-webkit-slider-thumb</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><br>  <span class="token selector">&amp;::-moz-range-thumb</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><div class="w-aside w-aside--gotchas"><strong>Gotchas!</strong>
+<p><a href="https://twitter.com/JoshWComeau" rel="noopener">Josh Comeau</a> outlines
+why the above examples don't simply use a comma between selectors for cross
+browser styling, see the <a href="https://twitter.com/JoshWComeau/status/1359213591602335752?s=20" rel="noopener">Twitter
+thread</a> for
+more information.</p>
+</div>
+<h2 id="custom-checkbox">Custom Checkbox <a class="w-headline-link" href="#custom-checkbox">#</a></h2>
+<p>Given the following HTML input element, I'll show you how I customized its
+appearance:</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>checkbox<span class="token punctuation">"</span></span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><p>There's 3 parts to this element we need to customize:</p>
+<ol>
+<li><a href="#checkbox-element">Checkbox element</a></li>
+<li><a href="#checkbox-labels">Associated labels</a></li>
+<li><a href="#checkbox-highlight">Highlight effect</a></li>
+</ol>
+<h3 id="checkbox-element">Checkbox element <a class="w-headline-link" href="#checkbox-element">#</a></h3>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">input[type="checkbox"]</span> <span class="token punctuation">{</span><br>  <span class="token property">inline-size</span><span class="token punctuation">:</span> <span class="token function">var</span><span class="token punctuation">(</span>--space-sm<span class="token punctuation">)</span><span class="token punctuation">;</span>   <span class="token comment">/* increase width */</span><br>  <span class="token property">block-size</span><span class="token punctuation">:</span> <span class="token function">var</span><span class="token punctuation">(</span>--space-sm<span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token comment">/* increase height */</span><br>  <span class="token property">outline-offset</span><span class="token punctuation">:</span> 5px<span class="token punctuation">;</span>            <span class="token comment">/* focus style enhancement */</span><br>  <span class="token property">accent-color</span><span class="token punctuation">:</span> <span class="token function">var</span><span class="token punctuation">(</span>--brand<span class="token punctuation">)</span><span class="token punctuation">;</span>     <span class="token comment">/* tint the input */</span><br>  <span class="token property">position</span><span class="token punctuation">:</span> relative<span class="token punctuation">;</span>             <span class="token comment">/* prepare for an absolute pseudo element */</span><br>  <span class="token property">transform-style</span><span class="token punctuation">:</span> preserve-3d<span class="token punctuation">;</span>   <span class="token comment">/* create a 3d z-space stacking context */</span><br>  <span class="token property">margin</span><span class="token punctuation">:</span> 0<span class="token punctuation">;</span><br>  <span class="token property">cursor</span><span class="token punctuation">:</span> pointer<span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>The <code>transform-style</code> and <code>position</code> styles prepare for the pseudo-element we will introduce later
+to style the highlight. Otherwise, it's mostly
+minor opinionated style stuff from me. I like the cursor to be pointer, I like
+outline offsets, default checkboxes are too tiny, and if <code>accent-color</code> is
+<a href="https://drafts.csswg.org/css-ui-4/#widget-accent" rel="noopener">supported</a>, bring these
+checkboxes into the brand color scheme.</p>
+<h3 id="checkbox-labels">Checkbox labels <a class="w-headline-link" href="#checkbox-labels">#</a></h3>
+<p>It's important to provide labels for checkboxes for 2 reasons. The first is to
+represent what the checkbox value is used for, to answer &quot;on or off for what?&quot;
+Second is for UX, web users have become accustomed to interacting with
+checkboxes via their associated labels.</p>
+<p><video      autoplay            class="w-screenshot"                              loop      muted                            >      <source src="https://storage.googleapis.com/web-dev-uploads/video/vS06HQ1YTsbMKSFTIPl2iogUQP73/7GYIFNjNCBdj13juFO7S.mp4" type="video/mp4" />    </video></p>
+<div class="w-columns">
+<figure class="w-compare"><p class="w-compare__label w-compare__label--better">input</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span><br>  <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>checkbox<span class="token punctuation">"</span></span><br>  <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>text-notifications<span class="token punctuation">"</span></span><br>  <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>text-notifications<span class="token punctuation">"</span></span><br><span class="token punctuation">></span></span></code></pre>
+</web-copy-code></figure>
+<figure class="w-compare"><p class="w-compare__label w-compare__label--better">label</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>label</span> <span class="token attr-name">for</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>text-notifications<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h3</span><span class="token punctuation">></span></span>Text Messages<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h3</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>small</span><span class="token punctuation">></span></span>Get notified about all text messages sent to your device<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>small</span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>label</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code></figure>
+</div>
+<p>On your label, put a <code>for</code> attribute that points to a checkbox by ID: <code>&lt;label for=&quot;text-notifications&quot;&gt;</code>. On your checkbox, double up both the name and id to
+ensure it's found with varying tools and tech, like a mouse or screenreader:
+<code>&lt;input type=&quot;checkbox&quot; id=&quot;text-notifications&quot; name=&quot;text-notifications&quot;&gt;</code>.
+<code>:hover</code>, <code>:active</code> and more come for free with the connection, increasing the
+ways your form can be interacted with.</p>
+<h3 id="checkbox-highlight">Checkbox highlight <a class="w-headline-link" href="#checkbox-highlight">#</a></h3>
+<p>I want to keep my interfaces consistent, and the slider element has a nice
+thumbnail highlight that I'd like to use with the checkbox. The thumbnail was
+able to use <code>box-shadow</code> and it's <code>spread</code> property to scale a shadow up and
+down. However, that effect doesn't work here because our checkboxes are, <a href="https://twitter.com/argyleink/status/1329230409784291328?s=20" rel="noopener">and should
+be</a>, square.</p>
+<p>I was able to achieve the same visual effect with a pseudo element, and an
+unfortunate amount of tricky CSS:</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token atrule"><span class="token rule">@custom-media</span> --motionOK <span class="token punctuation">(</span><span class="token property">prefers-reduced-motion</span><span class="token punctuation">:</span> no-preference<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><br><span class="token selector">input[type="checkbox"]::before</span> <span class="token punctuation">{</span><br>  <span class="token property">--thumb-scale</span><span class="token punctuation">:</span> .01<span class="token punctuation">;</span>                        <span class="token comment">/* initial scale of highlight */</span><br>  <span class="token property">--thumb-highlight-size</span><span class="token punctuation">:</span> <span class="token function">var</span><span class="token punctuation">(</span>--space-xl<span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>  <span class="token property">content</span><span class="token punctuation">:</span> <span class="token string">""</span><span class="token punctuation">;</span><br>  <span class="token property">inline-size</span><span class="token punctuation">:</span> <span class="token function">var</span><span class="token punctuation">(</span>--thumb-highlight-size<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token property">block-size</span><span class="token punctuation">:</span> <span class="token function">var</span><span class="token punctuation">(</span>--thumb-highlight-size<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token property">clip-path</span><span class="token punctuation">:</span> <span class="token function">circle</span><span class="token punctuation">(</span>50%<span class="token punctuation">)</span><span class="token punctuation">;</span>                     <span class="token comment">/* circle shape */</span><br>  <span class="token property">position</span><span class="token punctuation">:</span> absolute<span class="token punctuation">;</span>                         <span class="token comment">/* this is why position relative on parent */</span><br>  <span class="token property">top</span><span class="token punctuation">:</span> 50%<span class="token punctuation">;</span>                                   <span class="token comment">/* pop and plop technique (https://web.dev/centering-in-css/#5.-pop-and-plop) */</span><br>  <span class="token property">left</span><span class="token punctuation">:</span> 50%<span class="token punctuation">;</span><br>  <span class="token property">background</span><span class="token punctuation">:</span> <span class="token function">var</span><span class="token punctuation">(</span>--thumb-highlight-color<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token property">transform-origin</span><span class="token punctuation">:</span> center center<span class="token punctuation">;</span>            <span class="token comment">/* goal is a centered scaling circle */</span><br>  <span class="token property">transform</span><span class="token punctuation">:</span>                                  <span class="token comment">/* order here matters!! */</span><br>    <span class="token function">translateX</span><span class="token punctuation">(</span>-50%<span class="token punctuation">)</span>                          <span class="token comment">/* counter balances left: 50% */</span><br>    <span class="token function">translateY</span><span class="token punctuation">(</span>-50%<span class="token punctuation">)</span>                          <span class="token comment">/* counter balances top: 50% */</span><br>    <span class="token function">translateZ</span><span class="token punctuation">(</span>-1px<span class="token punctuation">)</span>                          <span class="token comment">/* PUTS IT BEHIND THE CHECKBOX */</span><br>    <span class="token function">scale</span><span class="token punctuation">(</span><span class="token function">var</span><span class="token punctuation">(</span>--thumb-scale<span class="token punctuation">)</span><span class="token punctuation">)</span>                 <span class="token comment">/* value we toggle for animation */</span><br>  <span class="token punctuation">;</span><br>  <span class="token property">will-change</span><span class="token punctuation">:</span> transform<span class="token punctuation">;</span><br><br>  <span class="token atrule"><span class="token rule">@media</span> <span class="token punctuation">(</span>--motionOK<span class="token punctuation">)</span></span> <span class="token punctuation">{</span>                       <span class="token comment">/* transition only if motion is OK */</span><br>    <span class="token selector">&amp;</span> <span class="token punctuation">{</span><br>      <span class="token property">transition</span><span class="token punctuation">:</span> transform .2s ease<span class="token punctuation">;</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span><br><br><span class="token comment">/* on hover, set scale custom property to "in" state */</span><br><span class="token selector">input[type="checkbox"]:hover::before</span> <span class="token punctuation">{</span><br>  <span class="token property">--thumb-scale</span><span class="token punctuation">:</span> 1<span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>Creating a circle psuedo-element is straightforward work, but <strong>placing it
+behind the element it's attached to</strong> was harder. Here's before and
+after I fixed it:</p>
+<p><video      autoplay            class="w-screenshot"                              loop      muted                            >      <source src="https://storage.googleapis.com/web-dev-uploads/video/vS06HQ1YTsbMKSFTIPl2iogUQP73/Spdpw5P1MD8ceazneRXo.mp4" type="video/mp4" />    </video></p>
+<p>It's definitely a micro interaction, but important to me to keep the visual
+consistency. The animation scaling technique is the same as we've been using in
+other places. We set a custom property to a new value and let CSS transition it
+based on motion preferences. The key feature here is <code>translateZ(-1px)</code>. The
+parent created a 3D space and this pseudo-element child tapped into it by
+placing itself slightly back in z-space.</p>
+<h2 id="accessibility">Accessibility <a class="w-headline-link" href="#accessibility">#</a></h2>
+<p>The YouTube video does a great demonstration of the mouse, keyboard and
+screenreader interactions for this settings component. I'll call out some of the
+details here.</p>
+<h3 id="html-element-choices">HTML Element Choices <a class="w-headline-link" href="#html-element-choices">#</a></h3>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>form</span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>header</span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>fieldset</span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>picture</span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>label</span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><p>Each of these holds hints and tips to the user's browsing tool. Some elements
+provide interaction hints, some connect interactivity, and some help shape the
+acccessibility tree that a screenreader navigates.</p>
+<h3 id="html-attributes">HTML Attributes <a class="w-headline-link" href="#html-attributes">#</a></h3>
+<p>We can hide elements that are not needed by screenreaders,
+in this case the icon next to the slider:</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>picture</span> <span class="token attr-name">aria-hidden</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>true<span class="token punctuation">"</span></span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><p><video      autoplay            class="w-screenshot"                              loop      muted                        width="480px"    >      <source src="https://storage.googleapis.com/web-dev-uploads/video/vS06HQ1YTsbMKSFTIPl2iogUQP73/fVjqHRZHQixAaxjeAvDP.mp4" type="video/mp4" />    </video></p>
+<p>The above video demonstrates the screenreader flow on Mac OS. Notice how input
+focus moves straight from one slider to the next. This is because we've hidden
+the icon that may have been a stop on the way to the next slider. Without this
+attribute, a user would need to stop, listen and move past the picture which
+they may not be able to see.</p>
+<div class="w-aside w-aside--gotchas"><strong>Gotchas!</strong>
+<p>Ensure to cross browser test screenreader interactions.
+The original demo included <code>&lt;label&gt;</code> in the list of elements with
+<code>aria-hidden=&quot;true&quot;</code>, but it's been since removed after <a href="https://twitter.com/rob_dodson/status/1371859386210029568" rel="noopener">Twitter
+conversation</a>
+revealed cross browser differences.</p>
+</div>
+<p>The SVG is a bunch of math, let's add a <code>&lt;title&gt;</code> element for a free mouse hover
+title and a human readable comment about what the math is creating:</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>svg</span> <span class="token attr-name">viewBox</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>0 0 24 24<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>title</span><span class="token punctuation">></span></span>A note icon<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>title</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>path</span> <span class="token attr-name">d</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>svg</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><p>Other than that, we've used enough clearly marked HTML, that the form tests
+really well across mouse, keyboard, video game controllers and screenreaders.</p>
+<h2 id="javascript">JavaScript <a class="w-headline-link" href="#javascript">#</a></h2>
+<p>I've <a href="#track-styles">already covered</a> how the track fill color was being managed from JavaScript,
+so let's look at the <code>&lt;form&gt;</code> related JavaScript now:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> form <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">querySelector</span><span class="token punctuation">(</span><span class="token string">'form'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>form<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'input'</span><span class="token punctuation">,</span> <span class="token parameter">event</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token keyword">const</span> formData <span class="token operator">=</span> Object<span class="token punctuation">.</span><span class="token function">fromEntries</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">FormData</span><span class="token punctuation">(</span>form<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  console<span class="token punctuation">.</span><span class="token function">table</span><span class="token punctuation">(</span>formData<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span></code></pre>
+</web-copy-code><p>Everytime the form is interacted with and changed, the console logs the form as
+an object into a table for easy review before submitting to a server.</p>
+<img     alt="A screenshot of the console.table() results, where the form data is shown in a table"     class="w-screenshot"     decoding="async"     height="285"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/hFAyIOpOSdiczdf4AtIj.png?auto=format"     srcset="https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/hFAyIOpOSdiczdf4AtIj.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/hFAyIOpOSdiczdf4AtIj.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/hFAyIOpOSdiczdf4AtIj.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/hFAyIOpOSdiczdf4AtIj.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/hFAyIOpOSdiczdf4AtIj.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/hFAyIOpOSdiczdf4AtIj.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/hFAyIOpOSdiczdf4AtIj.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/hFAyIOpOSdiczdf4AtIj.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/hFAyIOpOSdiczdf4AtIj.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/hFAyIOpOSdiczdf4AtIj.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/hFAyIOpOSdiczdf4AtIj.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/hFAyIOpOSdiczdf4AtIj.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/hFAyIOpOSdiczdf4AtIj.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/hFAyIOpOSdiczdf4AtIj.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/hFAyIOpOSdiczdf4AtIj.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/hFAyIOpOSdiczdf4AtIj.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/hFAyIOpOSdiczdf4AtIj.png?auto=format&w=1600 1600w"          width="800"   />
+<h2 id="conclusion">Conclusion <a class="w-headline-link" href="#conclusion">#</a></h2>
+<p>Now that you know how I did it, how would you?! This makes for some fun
+component architecture! Who's going to make the 1st version with slots in their
+favorite framework? 🙂</p>
+<p>Let's diversify our approaches and learn all the ways to build on the web.
+Create a demo, <a href="https://twitter.com/argyleink" rel="noopener">tweet me</a> links, and I'll add it
+to the <a href="#community-remixes">Community remixes</a> section below!</p>
+<h2 id="community-remixes">Community remixes <a class="w-headline-link" href="#community-remixes">#</a></h2>
+<ul>
+<li><a href="https://twitter.com/tomayac" rel="noopener">@tomayac</a> with their style regarding the
+hover area for the checkbox labels! This version has no hover gap between
+elements: <a href="https://tomayac.github.io/gui-challenges/settings/dist/" rel="noopener">demo</a> and
+<a href="https://github.com/tomayac/gui-challenges" rel="noopener">source</a>.</li>
+</ul>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/css/">CSS</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/dom/">DOM</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/javascript/">JavaScript</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/layout/">Layout</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/mobile/">Mobile</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/ux/">UX</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Mar 17, 2021</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/building-a-settings-component/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

@@ -1,0 +1,914 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=0ecc574df4388">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Debug Web Vitals in the field</title>
+<meta name="description" content="Learn how to attribute your Web Vitals data with debug information to help you identify and fix real-user issues with analytics " />
+
+<link rel="canonical" href="https://web.dev/debug-web-vitals-in-the-field/" />
+
+<meta itemprop="name" content="Debug Web Vitals in the field" />
+<meta itemprop="description" content="Learn how to attribute your Web Vitals data with debug information to help you identify and fix real-user issues with analytics " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/pOHexwZOflz5RGf6FT4P.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/debug-web-vitals-in-the-field/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Debug Web Vitals in the field" />
+<meta property="og:description" content="Learn how to attribute your Web Vitals data with debug information to help you identify and fix real-user issues with analytics " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/pOHexwZOflz5RGf6FT4P.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="Laptop screen showing an analytics interface" />
+<meta property="tag" content="performance" />
+<meta property="tag" content="web-vitals" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Debug Web Vitals in the field" />
+<meta name="twitter:description" content="Learn how to attribute your Web Vitals data with debug information to help you identify and fix real-user issues with analytics " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/pOHexwZOflz5RGf6FT4P.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=27b9fb33345f5', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=b690873fca7fe', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="Laptop screen showing an analytics interface"     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/pOHexwZOflz5RGf6FT4P.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/pOHexwZOflz5RGf6FT4P.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/pOHexwZOflz5RGf6FT4P.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/pOHexwZOflz5RGf6FT4P.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/pOHexwZOflz5RGf6FT4P.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/pOHexwZOflz5RGf6FT4P.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/pOHexwZOflz5RGf6FT4P.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/pOHexwZOflz5RGf6FT4P.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/pOHexwZOflz5RGf6FT4P.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/pOHexwZOflz5RGf6FT4P.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/pOHexwZOflz5RGf6FT4P.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/pOHexwZOflz5RGf6FT4P.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/pOHexwZOflz5RGf6FT4P.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/pOHexwZOflz5RGf6FT4P.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/pOHexwZOflz5RGf6FT4P.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/pOHexwZOflz5RGf6FT4P.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/pOHexwZOflz5RGf6FT4P.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/pOHexwZOflz5RGf6FT4P.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#debug-web-vitals-in-the-field" class="w-toc__header--link">
+        Debug Web Vitals in the field
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#apis-for-attribution-and-debugging">APIs for attribution and debugging</a></li><li><a href="#cls">CLS</a></li><li><a href="#lcp">LCP</a></li><li><a href="#fid">FID</a></li><li><a href="#usage-with-the-web-vitals-javascript-library">Usage with the web-vitals JavaScript library</a></li><li><a href="#report-and-visualize-the-data">Report and visualize the data</a></li><li><a href="#the-web-vitals-report-tool">The Web Vitals Report tool</a></li><li><a href="#summary">Summary</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@philwalton"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="debug-web-vitals-in-the-field" class="w-article-header__headline">Debug Web Vitals in the field</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          <p>Learn how to attribute your Web Vitals data with debug information
+to help you identify and fix real-user issues with analytics</p>
+
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Apr 1, 2021</time>
+           <span class="w-author__separator">•</span> Updated <time>Apr 1, 2021</time> 
+        </div>
+      
+      <div class="w-layout-container--narrow w-post-signpost">
+  <span class="w-post-signpost__title">Appears in:</span>
+  <a
+          class="w-post-signpost__link"
+          href="/learn-web-vitals"
+          >Web Vitals</a
+        >
+</div>
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/philipwalton/"><img     alt="Philip Walton"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/ovBM8MF9rYDxVVHUVlcG.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/ovBM8MF9rYDxVVHUVlcG.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/ovBM8MF9rYDxVVHUVlcG.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/ovBM8MF9rYDxVVHUVlcG.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/ovBM8MF9rYDxVVHUVlcG.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/ovBM8MF9rYDxVVHUVlcG.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/philipwalton/">Philip Walton</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/philwalton"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/philipwalton">GitHub</a>
+      </li>
+      
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://philipwalton.com">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>Google currently provides two categories of tools to measure and debug Web Vitals:</p>
+<ul>
+<li><strong>Lab tools:</strong> Tools such as Lighthouse, where your page is loaded in a
+simulated environment that can mimic various conditions (for example, a slow
+network and a low-end mobile device).</li>
+<li><strong>Field tools:</strong> Tools such as <a href="https://developers.google.com/web/tools/chrome-user-experience-report" rel="noopener">Chrome User Experience
+Report</a>
+(CrUX), which is based on aggregate, real-user data from Chrome. (Note that the
+field data reported by tools such as <a href="https://developers.google.com/speed/pagespeed/insights/" rel="noopener">PageSpeed
+Insights</a> and <a href="https://support.google.com/webmasters/answer/9205520" rel="noopener">Search
+Console</a> is sourced from
+CrUX data.)</li>
+</ul>
+<p>While field tools offer more accurate data—data which actually represents what
+real users experience—lab tools are often better at helping you identify and fix
+issues.</p>
+<p>CrUX data is more representative of your page's real performance, but knowing
+your CrUX scores is unlikely to help you figure out <em>how</em> to improve your
+performance.</p>
+<p>Lighthouse, on the other hand, will identify issues and make specific
+suggestions for how to improve. However, Lighthouse will only make suggestions
+for performance issues it discovers at page load time. It does not detect issues
+that only manifest as a result of user interaction such as scrolling or clicking
+buttons on the page.</p>
+<p>This raises an important question: <strong>how can you capture debug information for
+the Web Vitals metric data from real users in the field?</strong></p>
+<p>This post will explain in detail what APIs you can use to collect additional
+debugging information for each of the current Core Web Vitals metrics and give
+you ideas for how to capture this data in your existing analytics tool.</p>
+<h2 id="apis-for-attribution-and-debugging">APIs for attribution and debugging <a class="w-headline-link" href="#apis-for-attribution-and-debugging">#</a></h2>
+<h3 id="cls">CLS <a class="w-headline-link" href="#cls">#</a></h3>
+<p>Of all the Core Web Vitals metrics, <a href="/cls/">CLS</a> is perhaps the one for which
+collecting debug information in the field is the most important. CLS is measured
+throughout the entire lifespan of the page, so the way a user interacts with the
+page—how far they scroll, what they click on, and so on—can have a significant
+impact on whether there are layout shifts and which elements are shifting.</p>
+<p>Consider the following report from PageSpeed Insights for the URL:
+<a href="/measure/">web.dev/measure</a></p>
+<img     alt="A PageSpeed Insights Report with different CLS values"     class="w-screenshot"     decoding="async"     height="587"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/nZjd6rXrOgW5VUsm5fyx.png?auto=format"     srcset="https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/nZjd6rXrOgW5VUsm5fyx.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/nZjd6rXrOgW5VUsm5fyx.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/nZjd6rXrOgW5VUsm5fyx.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/nZjd6rXrOgW5VUsm5fyx.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/nZjd6rXrOgW5VUsm5fyx.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/nZjd6rXrOgW5VUsm5fyx.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/nZjd6rXrOgW5VUsm5fyx.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/nZjd6rXrOgW5VUsm5fyx.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/nZjd6rXrOgW5VUsm5fyx.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/nZjd6rXrOgW5VUsm5fyx.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/nZjd6rXrOgW5VUsm5fyx.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/nZjd6rXrOgW5VUsm5fyx.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/nZjd6rXrOgW5VUsm5fyx.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/nZjd6rXrOgW5VUsm5fyx.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/nZjd6rXrOgW5VUsm5fyx.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/nZjd6rXrOgW5VUsm5fyx.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/nZjd6rXrOgW5VUsm5fyx.png?auto=format&w=1600 1600w"          width="800"   />
+<p>The value reported for CLS from the lab (Lighthouse) compared to the CLS from
+the field (CrUX data) are quite different, and this makes sense if you consider
+that the <a href="/measure/">web.dev/measure</a> page has a lot of interactive content that
+is not being used when tested in Lighthouse.</p>
+<p>But even if you understand that user interaction affects field data, you still
+need to know what elements on the page are shifting to result in a score of 0.45
+at the 75th percentile.</p>
+<p>The <a href="/debug-layout-shifts/#layoutshiftattribution">LayoutShiftAttribution</a>
+interface makes that possible.</p>
+<h4 id="get-layout-shift-attribution">Get layout shift attribution <a class="w-headline-link" href="#get-layout-shift-attribution">#</a></h4>
+<p>The <a href="/debug-layout-shifts/#layoutshiftattribution">LayoutShiftAttribution</a>
+interface is exposed on each <code>layout-shift</code> entry that <a href="https://wicg.github.io/layout-instability" rel="noopener">Layout Instability
+API</a> emmits.</p>
+<p>For a detailed explanation of both of these interfaces, see <a href="/debug-layout-shifts/#layoutshiftattribution">Debug layout
+shifts</a>. For the purposes of
+this post, the main thing you need to know is that, as a developer, you are able
+to observe every layout shift that happens on the page as well as what elements
+are shifting.</p>
+<p>Here's some example code that logs each layout shift as well as the elements
+that shifted:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">new</span> <span class="token class-name">PerformanceObserver</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">list</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token punctuation">{</span>value<span class="token punctuation">,</span> startTime<span class="token punctuation">,</span> sources<span class="token punctuation">}</span> <span class="token keyword">of</span> list<span class="token punctuation">.</span><span class="token function">getEntries</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token comment">// Log the shift amount and other entry info.</span><br>    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'Layout shift:'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>value<span class="token punctuation">,</span> startTime<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token keyword">if</span> <span class="token punctuation">(</span>sources<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>      <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token punctuation">{</span>node<span class="token punctuation">,</span> curRect<span class="token punctuation">,</span> prevRect<span class="token punctuation">}</span> <span class="token keyword">of</span> sources<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>        <span class="token comment">// Log the elements that shifted.</span><br>        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'  Shift source:'</span><span class="token punctuation">,</span> node<span class="token punctuation">,</span> <span class="token punctuation">{</span>curRect<span class="token punctuation">,</span> prevRect<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">observe</span><span class="token punctuation">(</span><span class="token punctuation">{</span>type<span class="token operator">:</span> <span class="token string">'layout-shift'</span><span class="token punctuation">,</span> buffered<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>It's probably not practical to measure and send data to your analytics tool for
+every single layout shift that occurs; however, by monitoring all shifts, you
+can keep track of the worst shifts and just report information about those.</p>
+<p>The goal isn't to identify and fix every single layout shift that occurs for
+every user, the goal is to identify the shifts that affect the largest number of
+users and thus contribute the most to your page's CLS at the 75th percentile.</p>
+<p>Also, you don't need to compute the largest source element every time there's a
+shift, you only need to do so when you're ready to send the CLS value to your
+analytics tool.</p>
+<p>The following code takes a list of <code>layout-shift</code> entries that have contributed
+to CLS and returns the largest source element from the largest shift:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">getCLSDebugTarget</span><span class="token punctuation">(</span><span class="token parameter">entries</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token keyword">const</span> largestEntry <span class="token operator">=</span> entries<span class="token punctuation">.</span><span class="token function">reduce</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">a<span class="token punctuation">,</span> b</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>    <span class="token keyword">return</span> a <span class="token operator">&amp;&amp;</span> a<span class="token punctuation">.</span>value <span class="token operator">></span> b<span class="token punctuation">.</span>value <span class="token operator">?</span> a <span class="token operator">:</span> b<span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token keyword">if</span> <span class="token punctuation">(</span>largestEntry <span class="token operator">&amp;&amp;</span> largestEntry<span class="token punctuation">.</span>sources <span class="token operator">&amp;&amp;</span> largestEntry<span class="token punctuation">.</span>sources<span class="token punctuation">.</span>length<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token keyword">const</span> largestSource <span class="token operator">=</span> largestEntry<span class="token punctuation">.</span>sources<span class="token punctuation">.</span><span class="token function">reduce</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">a<span class="token punctuation">,</span> b</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>      <span class="token keyword">return</span> a<span class="token punctuation">.</span>node <span class="token operator">&amp;&amp;</span> a<span class="token punctuation">.</span>previousRect<span class="token punctuation">.</span>width <span class="token operator">*</span> a<span class="token punctuation">.</span>previousRect<span class="token punctuation">.</span>height <span class="token operator">></span><br>          b<span class="token punctuation">.</span>previousRect<span class="token punctuation">.</span>width <span class="token operator">*</span> b<span class="token punctuation">.</span>previousRect<span class="token punctuation">.</span>height <span class="token operator">?</span> a <span class="token operator">:</span> b<span class="token punctuation">;</span><br>    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token keyword">if</span> <span class="token punctuation">(</span>largestSource<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>      <span class="token keyword">return</span> largestSource<span class="token punctuation">.</span>node<span class="token punctuation">;</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>Once you've identified the largest element contributing to the largest shift,
+you can report that to your analytics tool.</p>
+<p>The element contributing the most to CLS for a given page will likely vary from
+user to user, but if you aggregate those elements across all users, you'll be
+able to generate a list of shifting elements affecting the most number of users.</p>
+<p>Once you've identified and fixed the root cause of the shifts for those
+elements, your analytics code will start reporting smaller shifts as the &quot;worst&quot;
+shifts for your pages. Eventually, all reported shifts will be small enough that
+your pages are well within <a href="/cls/#what-is-a-good-cls-score">the &quot;good&quot; threshold of
+0.1</a>!</p>
+<p>Some other metadata that may be useful to capture along with the largest shift
+source element is:</p>
+<ul>
+<li>The time of the largest shift</li>
+<li>The URL path at the time of the largest shift (for sites that dynamically
+update the URL, such as Single Page Applications).</li>
+</ul>
+<h3 id="lcp">LCP <a class="w-headline-link" href="#lcp">#</a></h3>
+<p>To debug LCP in the field, the primary information you need is which particular
+element was the largest element (the LCP candidate element) for that particular
+page load.</p>
+<p>Note that it's entirely possible—in fact, it's quite common—that the LCP
+candidate element will be different from user to user, even for the exact same
+page.</p>
+<p>This can happen for several reasons:</p>
+<ul>
+<li>User devices have different screen resolutions, which results in different
+page layouts and thus different elements being visible within the viewport.</li>
+<li>Users don't always load pages scrolled to the very top. Oftentimes links will
+contain <a href="/text-fragments/#fragment-identifiers">fragment identifiers</a> or even
+<a href="/text-fragments/#text-fragments">text fragments</a>, which means it's possible
+for your pages to be loaded and displayed at any scroll position on the page.</li>
+<li>Content may be personalized for the current user, so the LCP candidate element
+could vary wildly from user to user.</li>
+</ul>
+<p>This means you cannot make assumptions about which element or set of elements
+will be the most common LCP candidate element for a particular page. You have to
+measure it based on real-user behavior.</p>
+<h4 id="identify-the-lcp-candidate-element">Identify the LCP candidate element <a class="w-headline-link" href="#identify-the-lcp-candidate-element">#</a></h4>
+<p>To determine the LCP candidate element in JavaScript you can use the <a href="https://wicg.github.io/largest-contentful-paint/" rel="noopener">Largest
+Contentful Paint API</a>, the
+same API you use to determine the LCP time value.</p>
+<p>Given a list of <code>largest-contentful-paint</code> entries, you can determine the
+current LCP candidate element by looking at the last entry:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">getLCPDebugTarget</span><span class="token punctuation">(</span><span class="token parameter">entries</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token keyword">const</span> lastEntry <span class="token operator">=</span> entries<span class="token punctuation">[</span>entries<span class="token punctuation">.</span>length <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span><br>  <span class="token keyword">return</span> lastEntry<span class="token punctuation">.</span>element<span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><div class="w-aside w-aside--caution">
+<p><strong>Caution</strong>:
+As explained in the <a href="/lcp/">LCP metric documentation</a>, the LCP candidate
+element can change through the page load, so more work is required to identify
+the &quot;final&quot; LCP candidate element. The easiest way to identify and measure the
+&quot;final&quot; LCP candidate element is to use the
+<a href="https://github.com/GoogleChrome/web-vitals/" rel="noopener">web-vitals</a> JavaScript library,
+as shown in the <a href="#usage-with-the-web-vitals-javascript-library">example
+below</a>.</p>
+</div>
+<p>Once you know the LCP candidate element, you can send it to your analytics tool
+along with the metric value. As with CLS, this will help you identify which
+elements are most important to optimize first.</p>
+<p>Some other metadata that may be useful to capture along with the LCP candidate
+element:</p>
+<ul>
+<li>The image source URL (if the LCP candidate element is an image).</li>
+<li>The text font family (if the LCP candidate element is text and the page uses
+web fonts).</li>
+</ul>
+<h3 id="fid">FID <a class="w-headline-link" href="#fid">#</a></h3>
+<p>To debug FID in the field, it's important to remember that FID measures <a href="/fid/#fid-in-detail">only
+the delay portion</a> of the overall first input event
+latency. That means that what the user interacted with is not really as
+important as what else was happening on the main thread at the time they
+interacted.</p>
+<p>For example, many JavaScript applications that support server-side rendering
+(SSR) will deliver static HTML that can be rendered to the screen before it's
+interactive to user input—that is, before the JavaScript required to make the
+content interactive has finished loading.</p>
+<p>For these types of applications, it can be very important to know whether the
+first input occurred before or after
+<a href="https://en.wikipedia.org/wiki/Hydration_(web_development)" rel="noopener">hydration</a>. If it
+turns out that many people are attempting to interact with the page before
+hydration completes, consider rendering your pages in a disabled or loading
+state rather than in a state that looks interactive.</p>
+<p>If your application framework exposes the hydration timestamp, you can easily
+compare that with the timestamp of the <code>first-input</code> entry to determine whether
+the first input happened before or after hydration. If your framework doesn't
+expose that timestamp, or doesn't use hydration at all, another useful signal
+may be whether input occurred before or after JavaScript finished loading.</p>
+<p>The <code>DOMContentLoaded</code> event fires after the page's HTML has completely loaded
+and parsed, which includes waiting for any synchronous, deferred, or module
+scripts (including all statically imported modules) to load. So you can use the
+timing of that event and compare it to when FID occurred.</p>
+<p>The following code takes a <code>first-input</code> entry and returns true if the first
+input occurred prior to the end of the <code>DOMContentLoaded</code> event:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">wasFIDBeforeDCL</span><span class="token punctuation">(</span><span class="token parameter">fidEntry</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token keyword">const</span> navEntry <span class="token operator">=</span> performance<span class="token punctuation">.</span><span class="token function">getEntriesByType</span><span class="token punctuation">(</span><span class="token string">'navigation'</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">;</span><br>  <span class="token keyword">return</span> navEntry <span class="token operator">&amp;&amp;</span> fidEntry<span class="token punctuation">.</span>startTime <span class="token operator">&lt;</span> navEntry<span class="token punctuation">.</span>domContentLoadedEventStart<span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><div class="w-aside w-aside--note">
+<p>If your page uses <code>async</code> scripts or dynamic <code>import()</code> to load JavaScript,
+the <code>DOMContentLoaded</code> event may not be a useful signal. Instead, you can
+consider using the <code>load</code> event or—if there's a particular script you know
+takes a while to execute—you can use the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Resource_Timing_API/Using_the_Resource_Timing_API" rel="noopener">Resource
+Timing</a>
+entry for that script.</p>
+</div>
+<h4 id="identify-the-fid-target-element">Identify the FID target element <a class="w-headline-link" href="#identify-the-fid-target-element">#</a></h4>
+<p>Another potentially useful debug signal is the element that was interacted with.
+While the interaction with the element itself does not contribute to FID
+(remember FID is just the delay portion of the total event latency), knowing
+which elements your users are interacting with may be useful in determining how
+best to improve FID.</p>
+<p>For example, if the vast majority of your user's first interactions are with a
+particular element, it consider inlining the JavaScript code needed for that
+element in the HTML, and lazy loading the rest.</p>
+<p>To get the element associated with the first input event, you can reference the
+<code>first-input</code> entry's <code>target</code> property:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">getFIDDebugTarget</span><span class="token punctuation">(</span><span class="token parameter">entries</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token keyword">return</span> entries<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>target<span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>Some other metadata that may be useful to capture along with the FID target
+element:</p>
+<ul>
+<li>The type of event (such as <code>mousedown</code>, <code>keydown</code>, <code>pointerdown</code>).</li>
+<li>Any relevant <a href="https://w3c.github.io/longtasks/#taskattributiontiming" rel="noopener">long task attribution
+</a>data for the long
+task that occurred at the same time as the first input (useful if the page
+loads third-party scripts).</li>
+</ul>
+<h2 id="usage-with-the-web-vitals-javascript-library">Usage with the web-vitals JavaScript library <a class="w-headline-link" href="#usage-with-the-web-vitals-javascript-library">#</a></h2>
+<p>The sections above offer some suggestions for additional debug info to include
+in the data you send to your analytics tool. Each of the examples includes some
+code that uses one or more performance entries associated with a particular Web
+Vitals metric and returns a DOM element that can be used to help debug issues
+affecting that metric.</p>
+<p>These examples are designed to work well with the
+<a href="https://github.com/GoogleChrome/web-vitals" rel="noopener">web-vitals</a> JavaScript library,
+which exposes the list of performance entries on the
+<a href="https://github.com/GoogleChrome/web-vitals#api" rel="noopener"><code>Metric</code></a> object passed to each
+callback function.</p>
+<p>If you combine the examples listed above with the <code>web-vitals</code> metric functions,
+the end result will look something like this:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">import</span> <span class="token punctuation">{</span>getLCP<span class="token punctuation">,</span> getFID<span class="token punctuation">,</span> getCLS<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'web-vitals'</span><span class="token punctuation">;</span><br><br><span class="token keyword">function</span> <span class="token function">getSelector</span><span class="token punctuation">(</span><span class="token parameter">node<span class="token punctuation">,</span> maxLen <span class="token operator">=</span> <span class="token number">100</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token keyword">let</span> sel <span class="token operator">=</span> <span class="token string">''</span><span class="token punctuation">;</span><br>  <span class="token keyword">try</span> <span class="token punctuation">{</span><br>    <span class="token keyword">while</span> <span class="token punctuation">(</span>node <span class="token operator">&amp;&amp;</span> node<span class="token punctuation">.</span>nodeType <span class="token operator">!==</span> <span class="token number">9</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>      <span class="token keyword">const</span> part <span class="token operator">=</span> node<span class="token punctuation">.</span>id <span class="token operator">?</span> <span class="token string">'#'</span> <span class="token operator">+</span> node<span class="token punctuation">.</span>id <span class="token operator">:</span> node<span class="token punctuation">.</span>nodeName<span class="token punctuation">.</span><span class="token function">toLowerCase</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token punctuation">(</span><br>        <span class="token punctuation">(</span>node<span class="token punctuation">.</span>className <span class="token operator">&amp;&amp;</span> node<span class="token punctuation">.</span>className<span class="token punctuation">.</span>length<span class="token punctuation">)</span> <span class="token operator">?</span><br>        <span class="token string">'.'</span> <span class="token operator">+</span> Array<span class="token punctuation">.</span><span class="token function">from</span><span class="token punctuation">(</span>node<span class="token punctuation">.</span>classList<span class="token punctuation">.</span><span class="token function">values</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token string">'.'</span><span class="token punctuation">)</span> <span class="token operator">:</span> <span class="token string">''</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>      <span class="token keyword">if</span> <span class="token punctuation">(</span>sel<span class="token punctuation">.</span>length <span class="token operator">+</span> part<span class="token punctuation">.</span>length <span class="token operator">></span> maxLen <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token keyword">return</span> sel <span class="token operator">||</span> part<span class="token punctuation">;</span><br>      sel <span class="token operator">=</span> sel <span class="token operator">?</span> part <span class="token operator">+</span> <span class="token string">'>'</span> <span class="token operator">+</span> sel <span class="token operator">:</span> part<span class="token punctuation">;</span><br>      <span class="token keyword">if</span> <span class="token punctuation">(</span>node<span class="token punctuation">.</span>id<span class="token punctuation">)</span> <span class="token keyword">break</span><span class="token punctuation">;</span><br>      node <span class="token operator">=</span> node<span class="token punctuation">.</span>parentNode<span class="token punctuation">;</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span>err<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token comment">// Do nothing...</span><br>  <span class="token punctuation">}</span><br>  <span class="token keyword">return</span> sel<span class="token punctuation">;</span><br><span class="token punctuation">}</span><br><br><span class="token keyword">function</span> <span class="token function">getLargestLayoutShiftEntry</span><span class="token punctuation">(</span><span class="token parameter">entries</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token keyword">return</span> entries<span class="token punctuation">.</span><span class="token function">reduce</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">a<span class="token punctuation">,</span> b</span><span class="token punctuation">)</span> <span class="token operator">=></span> a <span class="token operator">&amp;&amp;</span> a<span class="token punctuation">.</span>value <span class="token operator">></span> b<span class="token punctuation">.</span>value <span class="token operator">?</span> a <span class="token operator">:</span> b<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><br><br><span class="token keyword">function</span> <span class="token function">getLargestLayoutShiftSource</span><span class="token punctuation">(</span><span class="token parameter">sources</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token keyword">return</span> sources<span class="token punctuation">.</span><span class="token function">reduce</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">a<span class="token punctuation">,</span> b</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>    <span class="token keyword">return</span> a<span class="token punctuation">.</span>node <span class="token operator">&amp;&amp;</span> a<span class="token punctuation">.</span>previousRect<span class="token punctuation">.</span>width <span class="token operator">*</span> a<span class="token punctuation">.</span>previousRect<span class="token punctuation">.</span>height <span class="token operator">></span><br>        b<span class="token punctuation">.</span>previousRect<span class="token punctuation">.</span>width <span class="token operator">*</span> b<span class="token punctuation">.</span>previousRect<span class="token punctuation">.</span>height <span class="token operator">?</span> a <span class="token operator">:</span> b<span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><br><br><span class="token keyword">function</span> <span class="token function">wasFIDBeforeDCL</span><span class="token punctuation">(</span><span class="token parameter">fidEntry</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token keyword">const</span> navEntry <span class="token operator">=</span> performance<span class="token punctuation">.</span><span class="token function">getEntriesByType</span><span class="token punctuation">(</span><span class="token string">'navigation'</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">;</span><br>  <span class="token keyword">return</span> navEntry <span class="token operator">&amp;&amp;</span> fidEntry<span class="token punctuation">.</span>startTime <span class="token operator">&lt;</span> navEntry<span class="token punctuation">.</span>domContentLoadedEventStart<span class="token punctuation">;</span><br><span class="token punctuation">}</span><br><br><span class="token keyword">function</span> <span class="token function">getDebugInfo</span><span class="token punctuation">(</span><span class="token parameter">name<span class="token punctuation">,</span> entries <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token comment">// In some cases there won't be any entries (e.g. if CLS is 0,</span><br>  <span class="token comment">// or for LCP after a bfcache restore), so we have to check first.</span><br>  <span class="token keyword">if</span> <span class="token punctuation">(</span>entries<span class="token punctuation">.</span>length<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token keyword">if</span> <span class="token punctuation">(</span>name <span class="token operator">===</span> <span class="token string">'LCP'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>      <span class="token keyword">const</span> lastEntry <span class="token operator">=</span> entries<span class="token punctuation">[</span>entries<span class="token punctuation">.</span>length <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span><br>      <span class="token keyword">return</span> <span class="token punctuation">{</span><br>        debug_target<span class="token operator">:</span> <span class="token function">getSelector</span><span class="token punctuation">(</span>lastEntry<span class="token punctuation">.</span>element<span class="token punctuation">)</span><span class="token punctuation">,</span><br>        event_time<span class="token operator">:</span> lastEntry<span class="token punctuation">.</span>startTime<span class="token punctuation">,</span><br>      <span class="token punctuation">}</span><span class="token punctuation">;</span><br>    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>name <span class="token operator">===</span> <span class="token string">'FID'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>      <span class="token keyword">const</span> firstEntry <span class="token operator">=</span> entries<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">;</span><br>      <span class="token keyword">return</span> <span class="token punctuation">{</span><br>        debug_target<span class="token operator">:</span> <span class="token function">getSelector</span><span class="token punctuation">(</span>firstEntry<span class="token punctuation">.</span>target<span class="token punctuation">)</span><span class="token punctuation">,</span><br>        debug_event<span class="token operator">:</span> firstEntry<span class="token punctuation">.</span>name<span class="token punctuation">,</span><br>        debug_timing<span class="token operator">:</span> <span class="token function">wasFIDBeforeDCL</span><span class="token punctuation">(</span>firstEntry<span class="token punctuation">)</span> <span class="token operator">?</span> <span class="token string">'pre_dcl'</span> <span class="token operator">:</span> <span class="token string">'post_dcl'</span><span class="token punctuation">,</span><br>        event_time<span class="token operator">:</span> firstEntry<span class="token punctuation">.</span>startTime<span class="token punctuation">,</span><br>      <span class="token punctuation">}</span><span class="token punctuation">;</span><br>    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>name <span class="token operator">===</span> <span class="token string">'CLS'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>      <span class="token keyword">const</span> largestEntry <span class="token operator">=</span> <span class="token function">getLargestLayoutShiftEntry</span><span class="token punctuation">(</span>entries<span class="token punctuation">)</span><span class="token punctuation">;</span><br>      <span class="token keyword">if</span> <span class="token punctuation">(</span>largestEntry <span class="token operator">&amp;&amp;</span> largestEntry<span class="token punctuation">.</span>sources <span class="token operator">&amp;&amp;</span> largestEntry<span class="token punctuation">.</span>sources<span class="token punctuation">.</span>length<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>        <span class="token keyword">const</span> largestSource <span class="token operator">=</span> <span class="token function">getLargestLayoutShiftSource</span><span class="token punctuation">(</span>largestEntry<span class="token punctuation">.</span>sources<span class="token punctuation">)</span><span class="token punctuation">;</span><br>        <span class="token keyword">if</span> <span class="token punctuation">(</span>largestSource<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>          <span class="token keyword">return</span> <span class="token punctuation">{</span><br>            debug_target<span class="token operator">:</span> <span class="token function">getSelector</span><span class="token punctuation">(</span>largestSource<span class="token punctuation">.</span>node<span class="token punctuation">)</span><span class="token punctuation">,</span><br>            event_time<span class="token operator">:</span> largestEntry<span class="token punctuation">.</span>startTime<span class="token punctuation">,</span><br>          <span class="token punctuation">}</span><span class="token punctuation">;</span><br>        <span class="token punctuation">}</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">}</span><br>  <span class="token comment">// Return default/empty params in case there are no entries.</span><br>  <span class="token keyword">return</span> <span class="token punctuation">{</span><br>    debug_target<span class="token operator">:</span> <span class="token string">'(not set)'</span><span class="token punctuation">,</span><br>  <span class="token punctuation">}</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><br><br><span class="token keyword">function</span> <span class="token function">sendToAnalytics</span><span class="token punctuation">(</span><span class="token parameter"><span class="token punctuation">{</span>name<span class="token punctuation">,</span> value<span class="token punctuation">,</span> entries<span class="token punctuation">}</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  navigator<span class="token punctuation">.</span><span class="token function">sendBeacon</span><span class="token punctuation">(</span><span class="token string">'/analytics'</span><span class="token punctuation">,</span> <span class="token constant">JSON</span><span class="token punctuation">.</span><span class="token function">stringify</span><span class="token punctuation">(</span><span class="token punctuation">{</span><br>    name<span class="token punctuation">,</span><br>    value<span class="token punctuation">,</span><br>    <span class="token operator">...</span><span class="token function">getDebugInfo</span><span class="token punctuation">(</span>name<span class="token punctuation">,</span> entries<span class="token punctuation">)</span><br>  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><br><br><span class="token function">getLCP</span><span class="token punctuation">(</span>sendToAnalytics<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token function">getFID</span><span class="token punctuation">(</span>sendToAnalytics<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token function">getCLS</span><span class="token punctuation">(</span>sendToAnalytics<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>The specific format required to send the data will vary by analytics tool, but
+the above code should be sufficient to get the data needed, regardless of the
+format requirements.</p>
+<div class="w-aside w-aside--note">
+<p>The code above also includes a <code>getSelector()</code> function (not mentioned in
+previous sections), which takes a DOM node and returns a CSS selector
+representing that node and its place in the DOM. It also takes an optional
+maximum length parameter (defaulting to 100 characters) in the event that your
+analytics provider has length restrictions on the data you send it.</p>
+</div>
+<h2 id="report-and-visualize-the-data">Report and visualize the data <a class="w-headline-link" href="#report-and-visualize-the-data">#</a></h2>
+<p>Once you've started collecting debug information along with your Web Vitals
+metrics, the next step is aggregating the data across all your users to start
+looking for patterns and trends.</p>
+<p>As mentioned above, you don't necessarily need to address every single issue
+your users are encountering, you want to address—especially at first—the issues
+that are affecting the largest number of users, which should also be the issues
+that have the largest negative impact on your Core Web Vitals scores.</p>
+<h3 id="the-web-vitals-report-tool">The Web Vitals Report tool <a class="w-headline-link" href="#the-web-vitals-report-tool">#</a></h3>
+<p>If you're using the <a href="https://github.com/GoogleChromeLabs/web-vitals-report" rel="noopener">Web Vitals
+Report</a> tool, it's been
+recently updated to support <a href="https://github.com/GoogleChromeLabs/web-vitals-report#debug-dimension" rel="noopener">reporting on a single debug
+dimension</a>
+for each of the Core Web Vitals metrics.</p>
+<p>Here's a screenshot from the Web Vitals Report debug info section, showing data
+for the Web Vitals Report tool website itself:</p>
+<img     alt="Web Vitals Report showing debug information"          decoding="async"     height="535"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/Y49u3cmRD6RfAaZGCSmx.png?auto=format"     srcset="https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/Y49u3cmRD6RfAaZGCSmx.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/Y49u3cmRD6RfAaZGCSmx.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/Y49u3cmRD6RfAaZGCSmx.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/Y49u3cmRD6RfAaZGCSmx.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/Y49u3cmRD6RfAaZGCSmx.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/Y49u3cmRD6RfAaZGCSmx.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/Y49u3cmRD6RfAaZGCSmx.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/Y49u3cmRD6RfAaZGCSmx.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/Y49u3cmRD6RfAaZGCSmx.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/Y49u3cmRD6RfAaZGCSmx.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/Y49u3cmRD6RfAaZGCSmx.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/Y49u3cmRD6RfAaZGCSmx.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/Y49u3cmRD6RfAaZGCSmx.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/Y49u3cmRD6RfAaZGCSmx.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/Y49u3cmRD6RfAaZGCSmx.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/Y49u3cmRD6RfAaZGCSmx.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/eqprBhZUGfb8WYnumQ9ljAxRrA72/Y49u3cmRD6RfAaZGCSmx.png?auto=format&w=1600 1600w"          width="800"   />
+<p>Using the data above, you can see that whatever is causing the <code>section.Intro</code>
+element to shift is contributing the most to CLS on this page, so identifying
+and fixing the cause of that shift will yield the greatest improvement to the
+score.</p>
+<h2 id="summary">Summary <a class="w-headline-link" href="#summary">#</a></h2>
+<p>Hopefully this post has helped outline the specific ways you can use the
+existing performance APIs to get debug information for each of the Core Web
+Vitals metrics based on real-user interactions in the field. While it's focused
+on the Core Web Vitals, the concepts also apply to debugging any performance
+metric that's measurable in JavaScript.</p>
+<p>If you're just getting started measuring performance, and you're already a
+Google Analytics user, the Web Vitals Report tool may be a good place to start
+because it already supports reporting debug information for each of the Core Web
+Vitals metrics.</p>
+<p>If you're an analytics vendor and you're looking to improve your products and
+provide more debugging information to your users, consider some of the
+techniques described here but don't limit yourself to <em>just</em> the ideas presented
+here. This post is intended to be generally applicable to all analytics tools;
+however, individual analytics tools likely can (and should) capture and report
+even more debug information.</p>
+<p>Lastly, if you feel there are gaps in your ability to debug these metrics due to
+missing features or information in the APIs themselves send your feedback to
+<a href="mailto:web-vitals-feedback@googlegroups.com" rel="noopener">web-vitals-feedback@googlegroups.com</a>.</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/performance/">Performance</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/web-vitals/">Web Vitals</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Apr 1, 2021</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/debug-web-vitals-in-the-field/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

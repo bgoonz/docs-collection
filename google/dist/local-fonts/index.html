@@ -1,0 +1,886 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=cb2db561ba7a5">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Use advanced typography with local fonts</title>
+<meta name="description" content="The Local Fonts API enumerates the user's installed local fonts and provides low-level access to the various TrueType/OpenType tables. " />
+
+<link rel="canonical" href="https://web.dev/local-fonts/" />
+
+<meta itemprop="name" content="Use advanced typography with local fonts" />
+<meta itemprop="description" content="The Local Fonts API enumerates the user's installed local fonts and provides low-level access to the various TrueType/OpenType tables. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/oeXwG1zSwnivzpvcUJly.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/local-fonts/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Use advanced typography with local fonts" />
+<meta property="og:description" content="The Local Fonts API enumerates the user's installed local fonts and provides low-level access to the various TrueType/OpenType tables. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/oeXwG1zSwnivzpvcUJly.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="Page of a font book." />
+<meta property="tag" content="fonts" />
+<meta property="tag" content="capabilities" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Use advanced typography with local fonts" />
+<meta name="twitter:description" content="The Local Fonts API enumerates the user's installed local fonts and provides low-level access to the various TrueType/OpenType tables. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/oeXwG1zSwnivzpvcUJly.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=686c465f5cc65', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=01acd545daef8', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="Page of a font book."     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/oeXwG1zSwnivzpvcUJly.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/oeXwG1zSwnivzpvcUJly.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/oeXwG1zSwnivzpvcUJly.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/oeXwG1zSwnivzpvcUJly.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/oeXwG1zSwnivzpvcUJly.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/oeXwG1zSwnivzpvcUJly.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/oeXwG1zSwnivzpvcUJly.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/oeXwG1zSwnivzpvcUJly.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/oeXwG1zSwnivzpvcUJly.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/oeXwG1zSwnivzpvcUJly.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/oeXwG1zSwnivzpvcUJly.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/oeXwG1zSwnivzpvcUJly.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/oeXwG1zSwnivzpvcUJly.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/oeXwG1zSwnivzpvcUJly.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/oeXwG1zSwnivzpvcUJly.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/oeXwG1zSwnivzpvcUJly.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/oeXwG1zSwnivzpvcUJly.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/oeXwG1zSwnivzpvcUJly.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#use-advanced-typography-with-local-fonts" class="w-toc__header--link">
+        Use advanced typography with local fonts
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#web-safe-fonts">Web safe fonts</a></li><li><a href="#web-fonts">Web fonts</a></li><li><a href="#local-fonts-as-fingerprint-vector">Local fonts as fingerprint vector</a></li><li><a href="#the-local-font-access-api">The Local Font Access API</a></li><li><a href="#why-do-we-need-the-local-font-access-api-when-there-are-web-fonts">Why do we need the Local Font Access API when there are web fonts?</a></li><li><a href="#status">Current status</a></li><li><a href="#how-to-use-the-local-font-access-api">How to use the Local Font Access API</a></li><li><a href="#demo">Demo</a></li><li><a href="#privacy-considerations">Privacy considerations</a></li><li><a href="#security-and-permissions">Security and permissions</a></li><li><a href="#user-control">User control</a></li><li><a href="#transparency">Transparency</a></li><li><a href="#permission-persistence">Permission persistence</a></li><li><a href="#feedback">Feedback</a></li><li><a href="#tell-us-about-the-api-design">Tell us about the API design</a></li><li><a href="#report-a-problem-with-the-implementation">Report a problem with the implementation</a></li><li><a href="#show-support-for-the-api">Show support for the API</a></li><li><a href="#helpful-links">Helpful links</a></li><li><a href="#acknowledgements">Acknowledgements</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@tomayac"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="use-advanced-typography-with-local-fonts" class="w-article-header__headline">Use advanced typography with local fonts</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          <p>Learn how the Local Font Access API allows you to access the user's locally installed fonts and obtain low-level details about them.</p>
+
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Aug 24, 2020</time>
+           <span class="w-author__separator">•</span> Updated <time>Jul 30, 2021</time> 
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/thomassteiner/"><img     alt="Thomas Steiner"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/thomassteiner/">Thomas Steiner</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/tomayac"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/tomayac">GitHub</a>
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://glitch.com/@tomayac"
+          >Glitch</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://blog.tomayac.com/">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <div class="w-aside w-aside--note">
+<p>The Local Font Access API is part of the
+<a href="https://developers.google.com/web/updates/capabilities" rel="noopener">capabilities project</a> and is currently in
+development. This post will be updated as the implementation progresses. </div></p>
+<h2 id="web-safe-fonts">Web safe fonts <a class="w-headline-link" href="#web-safe-fonts">#</a></h2>
+<p>If you have been doing web development long enough, you may remember the so-called
+<a href="https://developer.mozilla.org/en-US/docs/Learn/CSS/Styling_text/Fundamentals#Web_safe_fonts" rel="noopener">web safe fonts</a>.
+These fonts are known to be available on nearly all instances of the most used operating systems
+(namely Windows, macOS, the most common Linux distributions, Android, and iOS). In the early 2000s,
+Microsoft even spearheaded an
+<a href="https://web.archive.org/web/20020124085641/http://www.microsoft.com/typography/fontpack/default.htm" rel="noopener">initiative</a>
+called <em>TrueType core fonts for the Web</em> that provided these fonts for free download with the
+objective that <em>&quot;whenever you visit a Web site that specifies them, you'll see pages exactly as the
+site designer intended&quot;</em>. Yes, this included sites set in
+<a href="https://docs.microsoft.com/en-us/typography/font-list/comic-sans-ms" rel="noopener">Comic Sans MS</a>. Here is a
+classic web safe font stack (with the ultimate fallback of whatever
+<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/font-family#%3Cgeneric-name%3E:~:text=sans%2Dserif,-Glyphs" rel="noopener"><code>sans-serif</code></a>
+font) might look like this:</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">body</span> <span class="token punctuation">{</span><br>  <span class="token property">font-family</span><span class="token punctuation">:</span> Helvetica<span class="token punctuation">,</span> Arial<span class="token punctuation">,</span> sans-serif<span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><h2 id="web-fonts">Web fonts <a class="w-headline-link" href="#web-fonts">#</a></h2>
+<p>The days where web safe fonts really mattered are long gone. Today, we have
+<a href="https://developer.mozilla.org/en-US/docs/Learn/CSS/Styling_text/Web_fonts" rel="noopener">web fonts</a>, some of
+which are even <a href="/variable-fonts/">variable fonts</a> that we can tweak further by changing the values
+for the various exposed axes. You can use web fonts by declaring an
+<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face" rel="noopener"><code>@font-face</code></a> block at the start of
+the CSS, which specifies the font file(s) to download:</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token atrule"><span class="token rule">@font-face</span></span> <span class="token punctuation">{</span><br>  <span class="token property">font-family</span><span class="token punctuation">:</span> <span class="token string">'FlamboyantSansSerif'</span><span class="token punctuation">;</span><br>  <span class="token property">src</span><span class="token punctuation">:</span> <span class="token url"><span class="token function">url</span><span class="token punctuation">(</span><span class="token string url">'flamboyant.woff2'</span><span class="token punctuation">)</span></span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>After this, you can then use the custom web font by specifying the
+<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/font-family" rel="noopener"><code>font-family</code></a>, as normal:</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">body</span> <span class="token punctuation">{</span><br>  <span class="token property">font-family</span><span class="token punctuation">:</span> <span class="token string">'FlamboyantSansSerif'</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><h2 id="local-fonts-as-fingerprint-vector">Local fonts as fingerprint vector <a class="w-headline-link" href="#local-fonts-as-fingerprint-vector">#</a></h2>
+<p>Most web fonts come from, well, the web. An interesting fact, though, is that the
+<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/src" rel="noopener"><code>src</code></a> property in the
+<code>@font-face</code> declaration, apart from the
+<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/src#Values:~:text=%3Curl%3E%20%5B%20format(%20%3Cstring%3E%23%20)%20%5D%3F,-Specifies" rel="noopener"><code>url()</code></a>
+function, also accepts a
+<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/src#format():~:text=downloaded.-,%3Cfont%2Dface%2Dname%3E" rel="noopener"><code>local()</code></a>
+function. This allows custom fonts to be loaded (surprise!) locally. If the user happens to have
+<em>FlamboyantSansSerif</em> installed on their operating system, the local copy will be used rather than
+it being downloaded:</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token atrule"><span class="token rule">@font-face</span></span> <span class="token punctuation">{</span><br>  <span class="token property">font-family</span><span class="token punctuation">:</span> <span class="token string">'FlamboyantSansSerif'</span><span class="token punctuation">;</span><br>  <span class="token property">src</span><span class="token punctuation">:</span> <span class="token function">local</span><span class="token punctuation">(</span><span class="token string">'FlamboyantSansSerif'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token url"><span class="token function">url</span><span class="token punctuation">(</span><span class="token string url">'flamboyant.woff2'</span><span class="token punctuation">)</span></span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>This approach provides a nice fallback mechanism that potentially saves bandwidth. On the Internet,
+unfortunately, we cannot have nice things. The problem with the <code>local()</code> function is that it can be
+abused for browser fingerprinting. Turns out, the list of fonts a user has installed can be pretty
+identifying. A lot of companies have their own corporate fonts that are installed on employees'
+laptops. For example, Google has a corporate font called <em>Google Sans</em>.</p>
+<figure class="w-figure">
+  <img     alt="The macOS Font Book app showing a preview of the Google Sans font."     class="w-screenshot w-screenshot--filled"     decoding="async"     height="420"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xivl6c1xM2VlqFf9GvgQ.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xivl6c1xM2VlqFf9GvgQ.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xivl6c1xM2VlqFf9GvgQ.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xivl6c1xM2VlqFf9GvgQ.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xivl6c1xM2VlqFf9GvgQ.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xivl6c1xM2VlqFf9GvgQ.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xivl6c1xM2VlqFf9GvgQ.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xivl6c1xM2VlqFf9GvgQ.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xivl6c1xM2VlqFf9GvgQ.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xivl6c1xM2VlqFf9GvgQ.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xivl6c1xM2VlqFf9GvgQ.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xivl6c1xM2VlqFf9GvgQ.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xivl6c1xM2VlqFf9GvgQ.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xivl6c1xM2VlqFf9GvgQ.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xivl6c1xM2VlqFf9GvgQ.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xivl6c1xM2VlqFf9GvgQ.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xivl6c1xM2VlqFf9GvgQ.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xivl6c1xM2VlqFf9GvgQ.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">
+    The Google Sans font installed on a Google employee's laptop.
+  </figcaption>
+</figure>
+<p>An attacker can try to determine what company someone works for by testing for the existence of a
+large number of known corporate fonts like <em>Google Sans</em>. The attacker would attempt rendering text
+set in these fonts on a canvas and measure the glyphs. If the glyphs match the known shape of the
+corporate font, the attacker has a hit. If the glyphs do not match, the attacker knows that a
+default replacement font was used since the corporate font was not installed. For full details on
+this and other browser fingerprinting attacks, read the
+<a href="http://www-sop.inria.fr/members/Nataliia.Bielova/papers/Lape-etal-20-TWEB.pdf" rel="noopener">survey paper</a> by
+Laperdix <em>et al.</em></p>
+<p>Company fonts apart, even just the list of installed fonts can be identifying. The situation with
+this attack vector has become so bad that recently the WebKit team
+<a href="https://webkit.org/tracking-prevention/#table-of-contents-toggle:~:text=Changed%20font%20availability%20to%20web%20content,but%20not%20locally%20user%2Dinstalled%20fonts" rel="noopener">decided</a>
+to <em>&quot;only include [in the list available fonts] web fonts and fonts that come with the operating
+system, but not locally user-installed fonts&quot;</em>. (And here I am, with an article on granting access
+to local fonts.)</p>
+<h2 id="the-local-font-access-api">The Local Font Access API <a class="w-headline-link" href="#the-local-font-access-api">#</a></h2>
+<p>The beginning of this article may have put you in a negative mood. Can we really not have nice
+things? Fret not. We think we can, and maybe
+<a href="http://hyperboleandahalf.blogspot.com/2013/05/depression-part-two.html#Blog1:~:text=like-,hopeless" rel="noopener">everything is not hopeless</a>.
+But first, let me answer a question that you might be asking yourself.</p>
+<h3 id="why-do-we-need-the-local-font-access-api-when-there-are-web-fonts">Why do we need the Local Font Access API when there are web fonts? <a class="w-headline-link" href="#why-do-we-need-the-local-font-access-api-when-there-are-web-fonts">#</a></h3>
+<p>Professional-quality design and graphics tools have historically been difficult to deliver on the
+web. One stumbling block has been an inability to access and use the full variety of professionally
+constructed and hinted fonts that designers have locally installed. Web fonts enable some publishing
+use-cases, but fail to enable programmatic access to the vector glyph shapes and font tables used by
+rasterizers to render the glyph outlines. There is likewise no way to access a web font's binary
+data.</p>
+<ul>
+<li>Design tools need access to font bytes to do their own OpenType layout implementation and allow
+design tools to hook in at lower levels, for actions such as performing vector filters or
+transforms on the glyph shapes.</li>
+<li>Developers may have legacy font stacks for their applications that they are bringing to the web.
+To use these stacks, they usually require direct access to font data, something web fonts do not
+provide.</li>
+<li>Some fonts may not be licensed for delivery over the web. For example, Linotype has a license for
+some fonts that only includes <a href="https://www.linotype.com/25/font-licensing.html" rel="noopener">desktop use</a>.</li>
+</ul>
+<p>The Local Font Access API is an attempt at solving these challenges. It consists of two parts:</p>
+<ul>
+<li>A <strong>font enumeration API</strong>, which allows users to grant access to the full set of available system
+fonts.</li>
+<li>From each enumeration result, the ability to request low-level (byte-oriented) <strong>SFNT container
+access</strong> that includes the full font data.</li>
+</ul>
+<h3 id="status">Current status <a class="w-headline-link" href="#status">#</a></h3>
+<div class="w-table-wrapper">
+<div class="w-table-wrapper">
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Create explainer</td>
+<td><a href="https://github.com/WICG/local-font-access" rel="noopener">Complete</a></td>
+</tr>
+<tr>
+<td>2. Create initial draft of specification</td>
+<td><a href="https://wicg.github.io/local-font-access/" rel="noopener">In progress</a></td>
+</tr>
+<tr>
+<td>3. <strong>Gather feedback &amp; iterate on design</strong></td>
+<td><a href="#feedback"><strong>In progress</strong></a></td>
+</tr>
+<tr>
+<td>4. Origin trial</td>
+<td>Complete</td>
+</tr>
+<tr>
+<td>5. Launch</td>
+<td>Not started</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<h3 id="how-to-use-the-local-font-access-api">How to use the Local Font Access API <a class="w-headline-link" href="#how-to-use-the-local-font-access-api">#</a></h3>
+<h4 id="enabling-via-about:flags">Enabling via about://flags <a class="w-headline-link" href="#enabling-via-about:flags">#</a></h4>
+<p>To experiment with the Local Font Access API locally, enable the <code>#font-access</code> flag in
+<code>about://flags</code>.</p>
+<h4 id="feature-detection">Feature detection <a class="w-headline-link" href="#feature-detection">#</a></h4>
+<p>To check if the Local Font Access API is supported, use:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token string">'fonts'</span> <span class="token keyword">in</span> navigator<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token comment">// The Local Font Access API is supported</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><h4 id="asking-for-permission">Asking for permission <a class="w-headline-link" href="#asking-for-permission">#</a></h4>
+<p>Access to a user's local fonts is gated behind the <code>&quot;local-fonts&quot;</code> permission, which you can request
+with
+<a href="https://w3c.github.io/permissions/#requesting-more-permission" rel="noopener"><code>navigator.permissions.request()</code></a>.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token comment">// Ask for permission to use the API</span><br><span class="token keyword">try</span> <span class="token punctuation">{</span><br>  <span class="token keyword">const</span> status <span class="token operator">=</span> <span class="token keyword">await</span> navigator<span class="token punctuation">.</span>permissions<span class="token punctuation">.</span><span class="token function">request</span><span class="token punctuation">(</span><span class="token punctuation">{</span><br>    name<span class="token operator">:</span> <span class="token string">'local-fonts'</span><span class="token punctuation">,</span><br>  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token keyword">if</span> <span class="token punctuation">(</span>status<span class="token punctuation">.</span>state <span class="token operator">!==</span> <span class="token string">'granted'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">Error</span><span class="token punctuation">(</span><span class="token string">'Permission to access local fonts not granted.'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span>err<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token comment">// A `TypeError` indicates the 'local-fonts'</span><br>  <span class="token comment">// permission is not yet implemented, so</span><br>  <span class="token comment">// only `throw` if this is _not_ the problem.</span><br>  <span class="token keyword">if</span> <span class="token punctuation">(</span>err<span class="token punctuation">.</span>name <span class="token operator">!==</span> <span class="token string">'TypeError'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token keyword">throw</span> err<span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><h4 id="enumerating-local-fonts">Enumerating local fonts <a class="w-headline-link" href="#enumerating-local-fonts">#</a></h4>
+<p>Once the permission has been granted, you can then, from the <code>FontManager</code> interface that is exposed
+on <code>navigator.fonts</code>, call <code>query()</code> to ask the browser for the locally installed fonts, which it
+will display in a picker for the user to select all or a subset from to be shared with the page.
+This results in an array that you can loop over. Each font is represented as a <code>FontMetadata</code> object
+with the properties <code>family</code> (for example, <code>&quot;Comic Sans MS&quot;</code>), <code>fullName</code> (for example,
+<code>&quot;Comic Sans MS&quot;</code>), and <code>postscriptName</code> (for example, <code>&quot;ComicSansMS&quot;</code>).</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token comment">// Query for all available fonts and log metadata.</span><br><span class="token keyword">try</span> <span class="token punctuation">{</span><br>  <span class="token keyword">const</span> pickedFonts <span class="token operator">=</span> <span class="token keyword">await</span> navigator<span class="token punctuation">.</span>fonts<span class="token punctuation">.</span><span class="token function">query</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">const</span> metadata <span class="token keyword">of</span> pickedFonts<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>metadata<span class="token punctuation">.</span>postscriptName<span class="token punctuation">)</span><span class="token punctuation">;</span><br>    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>metadata<span class="token punctuation">.</span>fullName<span class="token punctuation">)</span><span class="token punctuation">;</span><br>    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>metadata<span class="token punctuation">.</span>family<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span>err<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  console<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span>err<span class="token punctuation">.</span>name<span class="token punctuation">,</span> err<span class="token punctuation">.</span>message<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><h4 id="accessing-sfnt-data">Accessing SFNT data <a class="w-headline-link" href="#accessing-sfnt-data">#</a></h4>
+<p>Full <a href="https://en.wikipedia.org/wiki/SFNT" rel="noopener">SFNT</a> access is available via the <code>blob()</code> method of the
+<code>FontMetadata</code> object. SFNT is a font file format which can contain other fonts, such as PostScript,
+TrueType, OpenType, Web Open Font Format (WOFF) fonts and others.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">try</span> <span class="token punctuation">{</span><br>  <span class="token keyword">const</span> pickedFonts <span class="token operator">=</span> <span class="token keyword">await</span> navigator<span class="token punctuation">.</span>fonts<span class="token punctuation">.</span><span class="token function">query</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">const</span> metadata <span class="token keyword">of</span> pickedFonts<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token comment">// We're only interested in a particular font.</span><br>    <span class="token keyword">if</span> <span class="token punctuation">(</span>metadata<span class="token punctuation">.</span>family <span class="token operator">!==</span> <span class="token string">'Comic Sans MS'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>      <span class="token keyword">continue</span><span class="token punctuation">;</span><br>    <span class="token punctuation">}</span><br>    <span class="token comment">// `blob()` returns a Blob containing valid and complete</span><br>    <span class="token comment">// SFNT-wrapped font data.</span><br>    <span class="token keyword">const</span> sfnt <span class="token operator">=</span> <span class="token keyword">await</span> metadata<span class="token punctuation">.</span><span class="token function">blob</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>    <span class="token keyword">const</span> sfntVersion <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">TextDecoder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">decode</span><span class="token punctuation">(</span><br>      <span class="token comment">// Slice out only the bytes we need: the first 4 bytes are the SFNT</span><br>      <span class="token comment">// version info.</span><br>      <span class="token comment">// Spec: https://docs.microsoft.com/en-us/typography/opentype/spec/otff#organization-of-an-opentype-font</span><br>      <span class="token keyword">await</span> sfnt<span class="token punctuation">.</span><span class="token function">slice</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">arrayBuffer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span><br>    <span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>    <span class="token keyword">let</span> outlineFormat <span class="token operator">=</span> <span class="token string">'UNKNOWN'</span><span class="token punctuation">;</span><br>    <span class="token keyword">switch</span> <span class="token punctuation">(</span>sfntVersion<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>      <span class="token keyword">case</span> <span class="token string">'\x00\x01\x00\x00'</span><span class="token operator">:</span><br>      <span class="token keyword">case</span> <span class="token string">'true'</span><span class="token operator">:</span><br>      <span class="token keyword">case</span> <span class="token string">'typ1'</span><span class="token operator">:</span><br>        outlineFormat <span class="token operator">=</span> <span class="token string">'truetype'</span><span class="token punctuation">;</span><br>        <span class="token keyword">break</span><span class="token punctuation">;</span><br>      <span class="token keyword">case</span> <span class="token string">'OTTO'</span><span class="token operator">:</span><br>        outlineFormat <span class="token operator">=</span> <span class="token string">'cff'</span><span class="token punctuation">;</span><br>        <span class="token keyword">break</span><span class="token punctuation">;</span><br>    <span class="token punctuation">}</span><br>    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'Outline format:'</span><span class="token punctuation">,</span> outlineFormat<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span>err<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  console<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span>err<span class="token punctuation">.</span>name<span class="token punctuation">,</span> err<span class="token punctuation">.</span>message<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><h2 id="demo">Demo <a class="w-headline-link" href="#demo">#</a></h2>
+<p>You can see the Local Font Access API in action in the
+<a href="https://local-font-access.glitch.me/demo/" rel="noopener">demo</a> below. Be sure to also check out the
+<a href="https://glitch.com/edit/#!/local-font-access?path=README.md%3A1%3A0" rel="noopener">source code</a>. The demo
+showcases a custom element called <a href="https://github.com/tomayac/font-select" rel="noopener"><code>&lt;font-select&gt;</code></a> that
+implements a local font picker.</p>
+<div class="glitch-embed-wrap" style="height: 500px; width: 100%;">
+  <iframe
+    src="https://glitch.com/embed/#!/embed/local-font-access?path=index.html&previewSize=100"
+    title="local-font-access on Glitch"
+    allow="local-fonts"
+    style="height: 100%; width: 100%; border: 0;">
+  </iframe>
+</div>
+<h2 id="privacy-considerations">Privacy considerations <a class="w-headline-link" href="#privacy-considerations">#</a></h2>
+<p>The <code>&quot;local-fonts&quot;</code> permission appears to provide a highly fingerprintable surface. However,
+browsers are free to return anything they like. For example, anonymity-focused browsers may choose
+to only provide a set of default fonts built into the browser. Similarly, browsers are not required
+to provide table data exactly as it appears on disk.</p>
+<p>Wherever possible, the Local Font Access API is designed to only expose exactly the information
+needed to enable the mentioned use cases. System APIs may produce a list of installed fonts not in a
+random or a sorted order, but in the order of font installation. Returning exactly the list of
+installed fonts given by such a system API can expose additional data that may be used for
+fingerprinting, and use cases we want to enable are not assisted by retaining this ordering. As a
+result, this API requires that the returned data be sorted before being returned.</p>
+<h2 id="security-and-permissions">Security and permissions <a class="w-headline-link" href="#security-and-permissions">#</a></h2>
+<p>The Chrome team has designed and implemented the Local Font Access API using the core principles
+defined in <a href="https://chromium.googlesource.com/chromium/src/+/lkgr/docs/security/permissions-for-powerful-web-platform-features.md" rel="noopener">Controlling Access to Powerful Web Platform Features</a>, including user
+control, transparency, and ergonomics.</p>
+<h3 id="user-control">User control <a class="w-headline-link" href="#user-control">#</a></h3>
+<p>Access to a user's fonts is fully under their control and will not be allowed unless the
+<code>&quot;local-fonts&quot;</code> permission, as listed in the
+<a href="https://w3c.github.io/permissions/#permission-registry" rel="noopener">permission registry</a>, is granted.</p>
+<h3 id="transparency">Transparency <a class="w-headline-link" href="#transparency">#</a></h3>
+<p>Whether a site has been granted access to the user's local fonts will be visible in the
+<a href="https://support.google.com/chrome/answer/114662?hl=en&amp;co=GENIE.Platform=Desktop" rel="noopener">site information sheet</a>.</p>
+<h3 id="permission-persistence">Permission persistence <a class="w-headline-link" href="#permission-persistence">#</a></h3>
+<p>The <code>&quot;local-fonts&quot;</code> permission will be persisted between page reloads. It can be revoked via the
+<em>site information</em> sheet.</p>
+<h2 id="feedback">Feedback <a class="w-headline-link" href="#feedback">#</a></h2>
+<p>The Chrome team wants to hear about your experiences with the Local Font Access API.</p>
+<h3 id="tell-us-about-the-api-design">Tell us about the API design <a class="w-headline-link" href="#tell-us-about-the-api-design">#</a></h3>
+<p>Is there something about the API that does not work like you expected? Or are there missing methods
+or properties that you need to implement your idea? Have a question or comment on the security
+model? File a spec issue on the corresponding <a href="https://github.com/WICG/local-font-access/issues" rel="noopener">GitHub repo</a>, or add your thoughts to an
+existing issue.</p>
+<h3 id="report-a-problem-with-the-implementation">Report a problem with the implementation <a class="w-headline-link" href="#report-a-problem-with-the-implementation">#</a></h3>
+<p>Did you find a bug with Chrome's implementation? Or is the implementation different from the spec?
+File a bug at <a href="https://new.crbug.com" rel="noopener">new.crbug.com</a>. Be sure to include as much detail as you can,
+simple instructions for reproducing, and enter <code>Blink&gt;Storage&gt;FontAccess</code> in the <strong>Components</strong> box.
+<a href="https://glitch.com/" rel="noopener">Glitch</a> works great for sharing quick and easy repros.</p>
+<h3 id="show-support-for-the-api">Show support for the API <a class="w-headline-link" href="#show-support-for-the-api">#</a></h3>
+<p>Are you planning to use the Local Font Access API? Your public support helps the Chrome team to
+prioritize features and shows other browser vendors how critical it is to support them.</p>
+<p>Send a tweet to <a href="https://twitter.com/ChromiumDev" rel="noopener">@ChromiumDev</a> using the hashtag
+<a href="https://twitter.com/search?q=%23LocalFontAccess&amp;src=typed_query&amp;f=live" rel="noopener"><code>#LocalFontAccess</code></a> and let
+us know where and how you're using it.</p>
+<h2 id="helpful-links">Helpful links <a class="w-headline-link" href="#helpful-links">#</a></h2>
+<ul>
+<li><a href="https://github.com/WICG/local-font-access" rel="noopener">Explainer</a></li>
+<li><a href="https://wicg.github.io/local-font-access/" rel="noopener">Spec draft</a></li>
+<li><a href="https://bugs.chromium.org/p/chromium/issues/detail?id=535764" rel="noopener">Chromium bug for font enumeration</a></li>
+<li><a href="https://crbug.com/982054" rel="noopener">Chromium bug for font table access</a></li>
+<li><a href="https://chromestatus.com/feature/6234451761692672" rel="noopener">ChromeStatus entry</a></li>
+<li><a href="https://github.com/WICG/local-font-access/issues" rel="noopener">GitHub repo</a></li>
+<li><a href="https://github.com/w3ctag/design-reviews/issues/399" rel="noopener">TAG review</a></li>
+<li><a href="https://github.com/mozilla/standards-positions/issues/401" rel="noopener">Mozilla standards position</a></li>
+<li><a href="https://developers.chrome.com/origintrials/#/view_trial/-7289075996899147775" rel="noopener">Origin Trial</a></li>
+</ul>
+<h2 id="acknowledgements">Acknowledgements <a class="w-headline-link" href="#acknowledgements">#</a></h2>
+<p>The Local Font Access API spec was edited by
+<a href="https://www.linkedin.com/in/emilaeklund/" rel="noopener">Emil A. Eklund</a>,
+<a href="https://infrequently.org/" rel="noopener">Alex Russell</a>,
+<a href="https://www.linkedin.com/in/joshuaseanbell/" rel="noopener">Joshua Bell</a>, and
+<a href="https://github.com/oyiptong/" rel="noopener">Olivier Yiptong</a>. This article was reviewed by
+<a href="https://github.com/jpmedley" rel="noopener">Joe Medley</a>,
+<a href="https://fi.linkedin.com/in/dominik-r%C3%B6ttsches-7323684" rel="noopener">Dominik Röttsches</a>, and
+<a href="https://github.com/oyiptong/" rel="noopener">Olivier Yiptong</a>. Hero image by
+<a href="https://unsplash.com/@brett_jordan" rel="noopener">Brett Jordan</a> on
+<a href="https://unsplash.com/photos/qrjvkj-oS-M" rel="noopener">Unsplash</a>.</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/fonts/">Fonts</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/capabilities/">Capabilities</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Jul 30, 2021</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/local-fonts/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions="api"></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

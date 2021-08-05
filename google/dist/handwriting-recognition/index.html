@@ -1,0 +1,955 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=5543069603bce">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Recognize your users' handwriting</title>
+<meta name="description" content="The Handwriting Recognition API allows web applications to use advanced handwriting recognition services to recognize text from handwritten input in real time. " />
+
+<link rel="canonical" href="https://web.dev/handwriting-recognition/" />
+
+<meta itemprop="name" content="Recognize your users' handwriting" />
+<meta itemprop="description" content="The Handwriting Recognition API allows web applications to use advanced handwriting recognition services to recognize text from handwritten input in real time. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/k1gdvpBMneFVrOC5h4yQ.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/handwriting-recognition/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Recognize your users' handwriting" />
+<meta property="og:description" content="The Handwriting Recognition API allows web applications to use advanced handwriting recognition services to recognize text from handwritten input in real time. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/k1gdvpBMneFVrOC5h4yQ.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="A hand draws letters in calligraphic script on paper." />
+<meta property="tag" content="capabilities" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Recognize your users' handwriting" />
+<meta name="twitter:description" content="The Handwriting Recognition API allows web applications to use advanced handwriting recognition services to recognize text from handwritten input in real time. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/k1gdvpBMneFVrOC5h4yQ.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=b9b043fe589dc', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=f114a43bcf2e', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="A hand draws letters in calligraphic script on paper."     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/k1gdvpBMneFVrOC5h4yQ.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/k1gdvpBMneFVrOC5h4yQ.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/k1gdvpBMneFVrOC5h4yQ.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/k1gdvpBMneFVrOC5h4yQ.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/k1gdvpBMneFVrOC5h4yQ.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/k1gdvpBMneFVrOC5h4yQ.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/k1gdvpBMneFVrOC5h4yQ.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/k1gdvpBMneFVrOC5h4yQ.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/k1gdvpBMneFVrOC5h4yQ.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/k1gdvpBMneFVrOC5h4yQ.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/k1gdvpBMneFVrOC5h4yQ.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/k1gdvpBMneFVrOC5h4yQ.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/k1gdvpBMneFVrOC5h4yQ.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/k1gdvpBMneFVrOC5h4yQ.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/k1gdvpBMneFVrOC5h4yQ.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/k1gdvpBMneFVrOC5h4yQ.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/k1gdvpBMneFVrOC5h4yQ.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/k1gdvpBMneFVrOC5h4yQ.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#recognize-your-users&#39;-handwriting" class="w-toc__header--link">
+        Recognize your users' handwriting
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#what">What is the Handwriting Recognition API?</a></li><li><a href="#use-cases">Suggested use cases for the Handwriting Recognition API</a></li><li><a href="#status">Current status</a></li><li><a href="#use">How to use the Handwriting Recognition API</a></li><li><a href="#enabling-via-about:flags">Enabling via about://flags</a></li><li><a href="#enabling-support-during-the-origin-trial-phase">Enabling support during the origin trial phase</a></li><li><a href="#register-for-ot">Register for the origin trial</a></li><li><a href="#feature-detection">Feature detection</a></li><li><a href="#core-concepts">Core concepts</a></li><li><a href="#demo">Demo</a></li><li><a href="#security-and-permissions">Security and permissions</a></li><li><a href="#user-control">User control</a></li><li><a href="#transparency">Transparency</a></li><li><a href="#permission-persistence">Permission persistence</a></li><li><a href="#feedback">Feedback</a></li><li><a href="#tell-us-about-the-api-design">Tell us about the API design</a></li><li><a href="#report-a-problem-with-the-implementation">Report a problem with the implementation</a></li><li><a href="#show-support-for-the-api">Show support for the API</a></li><li><a href="#helpful-links">Helpful Links</a></li><li><a href="#acknowledgements">Acknowledgements</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@christianliebel | @tomayac"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="recognize-your-users&#39;-handwriting" class="w-article-header__headline">Recognize your users' handwriting</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          The Handwriting Recognition API allows you to recognize text from handwritten input as it happens.
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>May 17, 2021</time>
+          
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/christianliebel/"><img     alt="Christian Liebel"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/pguQ0oykD0nNu9jM5OcP.jpeg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/pguQ0oykD0nNu9jM5OcP.jpeg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/pguQ0oykD0nNu9jM5OcP.jpeg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/pguQ0oykD0nNu9jM5OcP.jpeg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/pguQ0oykD0nNu9jM5OcP.jpeg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/pguQ0oykD0nNu9jM5OcP.jpeg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/christianliebel/">Christian Liebel</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/christianliebel"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/christianliebel">GitHub</a>
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://glitch.com/@christianliebel"
+          >Glitch</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://christianliebel.com/">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+            <div class="w-author">
+  <a href="/authors/thomassteiner/"><img     alt="Thomas Steiner"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/thomassteiner/">Thomas Steiner</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/tomayac"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/tomayac">GitHub</a>
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://glitch.com/@tomayac"
+          >Glitch</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://blog.tomayac.com/">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <div class="w-aside w-aside--note">
+<p>The Handwriting Recognition API is part of the <a href="/fugu-status/">capabilities project</a> and
+is currently in development. This post will be updated as the implementation progresses.</p>
+</div>
+<h2 id="what">What is the Handwriting Recognition API? <a class="w-headline-link" href="#what">#</a></h2>
+<p>The Handwriting Recognition API allows you to convert handwriting (ink) from your users into text.
+Some operating systems have long included such APIs, and with this new capability, your web apps can
+finally use this functionality. The conversion takes place directly on the user's device, works even
+in offline mode, all without adding any third-party libraries or services.</p>
+<p>This API implements so-called &quot;on-line&quot; or near real-time recognition. This means that the
+handwritten input is recognized while the user is drawing it by capturing and analyzing the single
+strokes. In contrast to &quot;off-line&quot; procedures such as Optical Character Recognition (OCR), where
+only the end product is known, on-line algorithms can provide a higher level of accuracy due to
+additional signals like the temporal sequence and pressure of individual ink strokes.</p>
+<p><video      autoplay                                          loop      muted      playsinline                      >      <source src="https://storage.googleapis.com/web-dev-uploads/video/8WbTDNrhLsU0El80frMBGE4eMCD3/xpKdyvsjKswk4kISP0pQ.mp4" type="video/mp4" />    </video></p>
+<h3 id="use-cases">Suggested use cases for the Handwriting Recognition API <a class="w-headline-link" href="#use-cases">#</a></h3>
+<p>Example uses include:</p>
+<ul>
+<li>Note-taking applications where users want to capture handwritten notes and have them translated
+into text.</li>
+<li>Forms applications where users can use pen or finger input due to time constraints.</li>
+<li>Games that require filling in letters or numbers, such as crosswords, hangman, or sudoku.</li>
+</ul>
+<h2 id="status">Current status <a class="w-headline-link" href="#status">#</a></h2>
+<div class="w-table-wrapper">
+<div class="w-table-wrapper">
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Create explainer</td>
+<td><a href="https://github.com/WICG/handwriting-recognition/blob/main/explainer.md" rel="noopener">Complete</a></td>
+</tr>
+<tr>
+<td>2. Create initial draft of specification</td>
+<td>Not started</td>
+</tr>
+<tr>
+<td>3. Gather feedback &amp; iterate on design</td>
+<td><a href="#feedback">In progress</a></td>
+</tr>
+<tr>
+<td>4. Origin trial</td>
+<td><a href="https://developer.chrome.com/origintrials/#/view_trial/3207688834594635777" rel="noopener">In progress</a></td>
+</tr>
+<tr>
+<td>5. Launch</td>
+<td>Not started</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<h2 id="use">How to use the Handwriting Recognition API <a class="w-headline-link" href="#use">#</a></h2>
+<h3 id="enabling-via-about:flags">Enabling via about://flags <a class="w-headline-link" href="#enabling-via-about:flags">#</a></h3>
+<p>To experiment with the Handwriting Recognition API locally, without an origin trial token, enable
+the <code>#experimental-web-platform-features</code> flag in <code>about://flags</code>.</p>
+<div class="w-aside w-aside--note">
+<p>Note that the API is currently exclusive to Chrome OS devices. Chrome 91
+already contains limited support for the API, but to fully experience it, we recommend you test on
+Chrome 92 to Chrome 94. </div></p>
+<h3 id="enabling-support-during-the-origin-trial-phase">Enabling support during the origin trial phase <a class="w-headline-link" href="#enabling-support-during-the-origin-trial-phase">#</a></h3>
+<p>Starting in Chrome 92, the Handwriting Recognition API will be available as an origin trial on
+Chrome OS. The origin trial is expected to end in Chrome 94 (October 13, 2021).</p>
+<p>Origin trials allow you to try new features and give feedback on their
+usability, practicality, and effectiveness to the web standards community. For
+more information, see the <a href="https://github.com/GoogleChrome/OriginTrials/blob/gh-pages/developer-guide.md" rel="noopener">Origin Trials Guide for Web Developers</a>.
+To sign up for this or another origin trial, visit the <a href="https://developers.chrome.com/origintrials/#/trials/active" rel="noopener">registration page</a>.</p>
+<h3 id="register-for-ot">Register for the origin trial <a class="w-headline-link" href="#register-for-ot">#</a></h3>
+<ol>
+<li><a href="https://developer.chrome.com/origintrials/#/view_trial/3207688834594635777" rel="noopener">Request a token</a> for your origin.</li>
+<li>Add the token to your pages. There are two ways to do that:
+<ul>
+<li>Add an <code>origin-trial</code> <code>&lt;meta&gt;</code> tag to the head of each page. For example,
+this may look something like: <br>
+<code>&lt;meta http-equiv=&quot;origin-trial&quot; content=&quot;TOKEN_GOES_HERE&quot;&gt;</code></li>
+<li>If you can configure your server, you can also add the token
+using an <code>Origin-Trial</code> HTTP header. The resulting response header should
+look something like:<br>
+<code>Origin-Trial: TOKEN_GOES_HERE</code></li>
+</ul>
+</li>
+</ol>
+<h3 id="feature-detection">Feature detection <a class="w-headline-link" href="#feature-detection">#</a></h3>
+<p>Detect browser support by checking for the existence of the <code>createHandwritingRecognizer()</code> method
+on the navigator object:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token string">'createHandwritingRecognizer'</span> <span class="token keyword">in</span> navigator<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token comment">// 🎉 The Handwriting Recognition API is supported!</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><h3 id="core-concepts">Core concepts <a class="w-headline-link" href="#core-concepts">#</a></h3>
+<p>The Handwriting Recognition API converts handwritten input into text, regardless of the input method
+(mouse, touch, pen). The API has four main entities:</p>
+<ol>
+<li>A <em>point</em> represents where the pointer was at a particular time.</li>
+<li>A <em>stroke</em> consists of one or more points. The recording of a stroke starts when the user puts
+the pointer down (i.e., clicks the primary mouse button, or touches the screen with their pen or
+finger) and ends when they raise the pointer back up.</li>
+<li>A <em>drawing</em> consists of one or more strokes. The actual recognition takes place at this level.</li>
+<li>The <em>recognizer</em> is configured with the expected input language. It is used to create an instance
+of a drawing with the recognizer configuration applied.</li>
+</ol>
+<p>These concepts are implemented as specific interfaces and dictionaries, which I'll cover shortly.</p>
+<img     alt="The core entities of the Handwriting Recognition API: One or more points compose a stroke, one or more strokes compose a drawing, that the recognizer creates. The actual recognition takes place at the drawing level."          decoding="async"     height="445"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/IUbfA7u5K0vUYspj7XK5.png?auto=format"     srcset="https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/IUbfA7u5K0vUYspj7XK5.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/IUbfA7u5K0vUYspj7XK5.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/IUbfA7u5K0vUYspj7XK5.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/IUbfA7u5K0vUYspj7XK5.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/IUbfA7u5K0vUYspj7XK5.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/IUbfA7u5K0vUYspj7XK5.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/IUbfA7u5K0vUYspj7XK5.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/IUbfA7u5K0vUYspj7XK5.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/IUbfA7u5K0vUYspj7XK5.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/IUbfA7u5K0vUYspj7XK5.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/IUbfA7u5K0vUYspj7XK5.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/IUbfA7u5K0vUYspj7XK5.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/IUbfA7u5K0vUYspj7XK5.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/IUbfA7u5K0vUYspj7XK5.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/IUbfA7u5K0vUYspj7XK5.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/IUbfA7u5K0vUYspj7XK5.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/IUbfA7u5K0vUYspj7XK5.png?auto=format&w=1600 1600w"          width="800"   />
+<h4 id="creating-a-recognizer">Creating a recognizer <a class="w-headline-link" href="#creating-a-recognizer">#</a></h4>
+<p>To recognize text from handwritten input, you need to obtain an instance of a
+<code>HandwritingRecognizer</code> by calling <code>navigator.createHandwritingRecognizer()</code> and passing constraints
+to it. Constraints determine the handwriting recognition model that should be used. Currently, you
+can specify a list of languages in order of preference:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> recognizer <span class="token operator">=</span> <span class="token keyword">await</span> navigator<span class="token punctuation">.</span><span class="token function">createHandwritingRecognizer</span><span class="token punctuation">(</span><span class="token punctuation">{</span><br>  languages<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">'en'</span><span class="token punctuation">]</span><span class="token punctuation">,</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><div class="w-aside w-aside--caution">
+<p><strong>Caution</strong>:  The current implementation on Chrome OS can only recognize one language
+at a time. It only supports English (<code>en</code>), and a gesture model (<code>zxx-x-gesture</code>) to recognize
+gestures such as crossing out words. </div></p>
+<p>The method returns a promise resolving with an instance of a <code>HandwritingRecognizer</code> when the
+browser can fulfill your request. Otherwise, it will reject the promise with an error, and
+handwriting recognition will not be available. For this reason, you may want to query the
+recognizer's support for particular recognition features first.</p>
+<h4 id="querying-recognizer-support">Querying recognizer support <a class="w-headline-link" href="#querying-recognizer-support">#</a></h4>
+<p>By calling <code>navigator.queryHandwritingRecognizerSupport()</code>, you can check if the target platform
+supports the handwriting recognition features you intend to use. In the following example, the
+developer:</p>
+<ul>
+<li>wants to detect texts in English</li>
+<li>get alternative, less likely predictions when available</li>
+<li>gain access to the segmentation result, i.e., the recognized characters, including the points and
+strokes that make them up</li>
+</ul>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> <span class="token punctuation">{</span> languages<span class="token punctuation">,</span> alternatives<span class="token punctuation">,</span> segmentationResults <span class="token punctuation">}</span> <span class="token operator">=</span><br>  <span class="token keyword">await</span> navigator<span class="token punctuation">.</span><span class="token function">queryHandwritingRecognizerSupport</span><span class="token punctuation">(</span><span class="token punctuation">{</span><br>    languages<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">'en'</span><span class="token punctuation">]</span><span class="token punctuation">,</span><br>    alternatives<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>    segmentationResult<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>languages<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// true or false</span><br>console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>alternatives<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// true or false</span><br>console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>segmentationResult<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// true or false</span></code></pre>
+</web-copy-code><p>The method returns a promise resolving with a result object. If the browser supports the feature
+specified by the developer, its value will be set to <code>true</code>. Otherwise, it will be set to <code>false</code>.
+You can use this information to enable or disable certain features within your application, or to
+adjust your query and send a new one.</p>
+<div class="w-aside w-aside--note">
+<p>Due to fingerprinting concerns, you cannot request a list of supported features, such as
+particular languages, and the browser may ask for user permission or reject your request entirely if
+you send too many feature queries. </div></p>
+<h4 id="start-a-drawing">Start a drawing <a class="w-headline-link" href="#start-a-drawing">#</a></h4>
+<p>Within your application, you should offer an input area where the user makes their handwritten
+entries. For performance reasons, it is recommended to implement this with the help of a
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial" rel="noopener">canvas object</a>. The exact
+implementation of this part is out of scope for this article, but you may refer to the <a href="#demo">demo</a>
+to see how it can be done.</p>
+<p>To start a new drawing, call the <code>startDrawing()</code> method on the recognizer. This method takes an
+object containing different hints to fine-tune the recognition algorithm. All hints are optional:</p>
+<ul>
+<li>The kind of text being entered: text, email addresses, numbers, or an individual character
+(<code>recognitionType</code>)</li>
+<li>The type of input device: mouse, touch, or pen input (<code>inputType</code>)</li>
+<li>The preceding text (<code>textContext</code>)</li>
+<li>The number of less-likely alternative predictions that should be returned (<code>alternatives</code>)</li>
+<li>A list of user-identifiable characters (&quot;graphemes&quot;) the user will most likely enter
+(<code>graphemeSet</code>)</li>
+</ul>
+<p>The Handwriting Recognition API plays well with
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events" rel="noopener">Pointer Events</a> which provide an
+abstract interface to consume input from any pointing device. The pointer event arguments contain
+the type of pointer being used. This means you can use pointer events to determine the input type
+automatically. In the following example, the drawing for handwriting recognition is automatically
+created on the first occurrence of a <code>pointerdown</code> event on the handwriting area. As the
+<code>pointerType</code> may be empty or set to a proprietary value, I introduced a consistency check to make
+sure only supported values are set for the drawing's input type.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">let</span> drawing<span class="token punctuation">;</span><br><span class="token keyword">let</span> activeStroke<span class="token punctuation">;</span><br><br>canvas<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'pointerdown'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token parameter">event</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>drawing<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    drawing <span class="token operator">=</span> recognizer<span class="token punctuation">.</span><span class="token function">startDrawing</span><span class="token punctuation">(</span><span class="token punctuation">{</span><br>      recognitionType<span class="token operator">:</span> <span class="token string">'text'</span><span class="token punctuation">,</span> <span class="token comment">// email, number, per-character</span><br>      inputType<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">'mouse'</span><span class="token punctuation">,</span> <span class="token string">'touch'</span><span class="token punctuation">,</span> <span class="token string">'pen'</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">type</span><span class="token punctuation">)</span> <span class="token operator">=></span> type <span class="token operator">===</span> event<span class="token punctuation">.</span>pointerType<span class="token punctuation">)</span><span class="token punctuation">,</span><br>      textContext<span class="token operator">:</span> <span class="token string">'Hello, '</span><span class="token punctuation">,</span><br>      alternatives<span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span><br>      graphemeSet<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">'f'</span><span class="token punctuation">,</span> <span class="token string">'i'</span><span class="token punctuation">,</span> <span class="token string">'z'</span><span class="token punctuation">,</span> <span class="token string">'b'</span><span class="token punctuation">,</span> <span class="token string">'u'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token comment">// for a fizz buzz entry form</span><br>    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br>  <span class="token function">startStroke</span><span class="token punctuation">(</span>event<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><div class="w-aside w-aside--caution">
+<p><strong>Caution</strong>:  The current implementation on Chrome OS does not support grapheme sets
+yet, they are silently ignored. </div></p>
+<h4 id="add-a-stroke">Add a stroke <a class="w-headline-link" href="#add-a-stroke">#</a></h4>
+<p>The <code>pointerdown</code> event is also the right place to start a new stroke. To do so, create a new
+instance of <code>HandwritingStroke</code>. Also, you should store the current time as a point of reference for
+the subsequent points added to it:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">startStroke</span><span class="token punctuation">(</span><span class="token parameter">event</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  activeStroke <span class="token operator">=</span> <span class="token punctuation">{</span><br>    stroke<span class="token operator">:</span> <span class="token keyword">new</span> <span class="token class-name">HandwritingStroke</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span><br>    startTime<span class="token operator">:</span> Date<span class="token punctuation">.</span><span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span><br>  <span class="token punctuation">}</span><span class="token punctuation">;</span><br>  <span class="token function">addPoint</span><span class="token punctuation">(</span>event<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><h4 id="add-a-point">Add a point <a class="w-headline-link" href="#add-a-point">#</a></h4>
+<p>After creating the stroke, you should directly add the first point to it. As you will add more
+points later on, it makes sense to implement the point creation logic in a separate method. In the
+following example, the <code>addPoint()</code> method calculates the elapsed time from the reference timestamp.
+The temporal information is optional, but can improve recognition quality. Then, it reads the X and
+Y coordinates from the pointer event and adds the point to the current stroke.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">addPoint</span><span class="token punctuation">(</span><span class="token parameter">event</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token keyword">const</span> timeElapsed <span class="token operator">=</span> Date<span class="token punctuation">.</span><span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> activeStroke<span class="token punctuation">.</span>startTime<span class="token punctuation">;</span><br>  activeStroke<span class="token punctuation">.</span>stroke<span class="token punctuation">.</span><span class="token function">addPoint</span><span class="token punctuation">(</span><span class="token punctuation">{</span><br>    x<span class="token operator">:</span> event<span class="token punctuation">.</span>offsetX<span class="token punctuation">,</span><br>    y<span class="token operator">:</span> event<span class="token punctuation">.</span>offsetY<span class="token punctuation">,</span><br>    t<span class="token operator">:</span> timeElapsed<span class="token punctuation">,</span><br>  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>The <code>pointermove</code> event handler is called when the pointer is moved across the screen. Those points
+need to be added to the stroke as well. The event can also be raised if the pointer is not in a
+&quot;down&quot; state, for example when moving the cursor across the screen without pressing the mouse
+button. The event handler from the following example checks if an active stroke exists, and adds the
+new point to it.</p>
+<web-copy-code><pre class="language-js"><code class="language-js">canvas<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'pointermove'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token parameter">event</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token keyword">if</span> <span class="token punctuation">(</span>activeStroke<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token function">addPoint</span><span class="token punctuation">(</span>event<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><h4 id="recognize-text">Recognize text <a class="w-headline-link" href="#recognize-text">#</a></h4>
+<p>When the user lifts the pointer again, you can add the stroke to your drawing by calling its
+<code>addStroke()</code> method. The following example also resets the <code>activeStroke</code>, so the <code>pointermove</code>
+handler will not add points to the completed stroke.</p>
+<div class="w-aside w-aside--note">
+<p>If necessary, you can also use the drawing's <code>getStrokes()</code> method to list all strokes,
+and the <code>removeStroke()</code> method to remove a particular one from the drawing. </div></p>
+<p>Next, it's time for recognizing the user's input by calling the <code>getPrediction()</code> method on the
+drawing. Recognition usually takes less than a few hundred milliseconds, so you can repeatedly run
+predictions if needed. The following example runs a new prediction after each completed stroke.</p>
+<web-copy-code><pre class="language-js"><code class="language-js">canvas<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'pointerup'</span><span class="token punctuation">,</span> <span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token parameter">event</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  drawing<span class="token punctuation">.</span><span class="token function">addStroke</span><span class="token punctuation">(</span>activeStroke<span class="token punctuation">.</span>stroke<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  activeStroke <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span><br><br>  <span class="token keyword">const</span> <span class="token punctuation">[</span>mostLikelyPrediction<span class="token punctuation">,</span> <span class="token operator">...</span>lessLikelyAlternatives<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">await</span> drawing<span class="token punctuation">.</span><span class="token function">getPrediction</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token keyword">if</span> <span class="token punctuation">(</span>mostLikelyPrediction<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>mostLikelyPrediction<span class="token punctuation">.</span>text<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br>  lessLikelyAlternatives<span class="token operator">?.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">alternative</span><span class="token punctuation">)</span> <span class="token operator">=></span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>alternative<span class="token punctuation">.</span>text<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>This method returns a promise which resolves with an array of predictions ordered by their
+likelihood. The number of elements depends on the value you passed to the <code>alternatives</code> hint. You
+could use this array to present the user with a choice of possible matches, and have them select an
+option. Alternatively, you can simply go with the most likely prediction, which is what I do in the
+example.</p>
+<p>The prediction object contains the recognized text and an optional segmentation result, which I will
+discuss in the following section.</p>
+<h4 id="detailed-insights-with-segmentation-results">Detailed insights with segmentation results <a class="w-headline-link" href="#detailed-insights-with-segmentation-results">#</a></h4>
+<p>If supported by the target platform, the prediction object can also contain a segmentation result.
+This is an array containing all recognized handwriting segment, a combination of the recognized
+user-identifiable character (<code>grapheme</code>) along with its position in the recognized text
+(<code>beginIndex</code>, <code>endIndex</code>), and the strokes and points that created it.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">if</span> <span class="token punctuation">(</span>mostLikelyPrediction<span class="token punctuation">.</span>segmentationResult<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  mostLikelyPrediction<span class="token punctuation">.</span>segmentationResult<span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><br>    <span class="token punctuation">(</span><span class="token parameter"><span class="token punctuation">{</span> grapheme<span class="token punctuation">,</span> beginIndex<span class="token punctuation">,</span> endIndex<span class="token punctuation">,</span> drawingSegments <span class="token punctuation">}</span></span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>grapheme<span class="token punctuation">,</span> beginIndex<span class="token punctuation">,</span> endIndex<span class="token punctuation">)</span><span class="token punctuation">;</span><br>      drawingSegments<span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter"><span class="token punctuation">{</span> strokeIndex<span class="token punctuation">,</span> beginPointIndex<span class="token punctuation">,</span> endPointIndex <span class="token punctuation">}</span></span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>strokeIndex<span class="token punctuation">,</span> beginPointIndex<span class="token punctuation">,</span> endPointIndex<span class="token punctuation">)</span><span class="token punctuation">;</span><br>      <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token punctuation">}</span><span class="token punctuation">,</span><br>  <span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>You could use this information to track down the recognized graphemes on the canvas again.</p>
+<img     alt="Boxes are drawn around each recognized grapheme"          decoding="async"     height="338"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/0UK0jj7vOXaNqkRr3SF9.png?auto=format"     srcset="https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/0UK0jj7vOXaNqkRr3SF9.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/0UK0jj7vOXaNqkRr3SF9.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/0UK0jj7vOXaNqkRr3SF9.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/0UK0jj7vOXaNqkRr3SF9.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/0UK0jj7vOXaNqkRr3SF9.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/0UK0jj7vOXaNqkRr3SF9.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/0UK0jj7vOXaNqkRr3SF9.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/0UK0jj7vOXaNqkRr3SF9.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/0UK0jj7vOXaNqkRr3SF9.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/0UK0jj7vOXaNqkRr3SF9.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/0UK0jj7vOXaNqkRr3SF9.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/0UK0jj7vOXaNqkRr3SF9.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/0UK0jj7vOXaNqkRr3SF9.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/0UK0jj7vOXaNqkRr3SF9.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/0UK0jj7vOXaNqkRr3SF9.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/0UK0jj7vOXaNqkRr3SF9.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/0UK0jj7vOXaNqkRr3SF9.png?auto=format&w=1600 1600w"          width="800"   />
+<h4 id="complete-recognition">Complete recognition <a class="w-headline-link" href="#complete-recognition">#</a></h4>
+<p>After the recognition has completed, you can free resources by calling the <code>clear()</code> method on the
+<code>HandwritingDrawing</code>, and the <code>finish()</code> method on the <code>HandwritingRecognizer</code>:</p>
+<web-copy-code><pre class="language-js"><code class="language-js">drawing<span class="token punctuation">.</span><span class="token function">clear</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>recognizer<span class="token punctuation">.</span><span class="token function">finish</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><h2 id="demo">Demo <a class="w-headline-link" href="#demo">#</a></h2>
+<p>The web component <code>&lt;handwriting-textarea&gt;</code> implements a
+<a href="/progressively-enhance-your-pwa/">progressively enhanced</a>, editing control capable of handwriting
+recognition. By clicking the button in the lower right corner of the editing control, you activate
+the drawing mode. When you complete the drawing, the web component will automatically start the
+recognition and add the recognized text back to the editing control. If the Handwriting Recognition
+API is not supported at all, or the platform doesn't support the requested features, the edit button
+will be hidden. But the basic editing control remains usable as a <code>&lt;textarea&gt;</code>.</p>
+<p>The web component offers properties and attributes to define the recognition behavior from the
+outside, including <code>languages</code> and <code>recognitiontype</code>. You can set the content of the control via the
+<code>value</code> attribute:</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>handwriting-textarea</span> <span class="token attr-name">languages</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>en<span class="token punctuation">"</span></span> <span class="token attr-name">recognitiontype</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>text<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>Hello<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>handwriting-textarea</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><p>To be informed about any changes to the value, you can listen to the <code>input</code> event.</p>
+<p>You can try the component using <a href="https://handwriting-recognition.glitch.me/" rel="noopener">this demo on Glitch</a>.
+Also be sure to have a look at the
+<a href="https://github.com/christianliebel/handwriting-textarea" rel="noopener">source code</a>. To use the control in your
+application, <a href="https://www.npmjs.com/package/handwriting-textarea" rel="noopener">obtain it from npm</a>.</p>
+<h2 id="security-and-permissions">Security and permissions <a class="w-headline-link" href="#security-and-permissions">#</a></h2>
+<p>The Chromium team has designed and implemented the Handwriting Recognition API using the core
+principles defined in <a href="https://chromium.googlesource.com/chromium/src/+/lkgr/docs/security/permissions-for-powerful-web-platform-features.md" rel="noopener">Controlling Access to Powerful Web Platform Features</a>,
+including user control, transparency, and ergonomics.</p>
+<h3 id="user-control">User control <a class="w-headline-link" href="#user-control">#</a></h3>
+<p>The Handwriting Recognition API can't be turned off by the user. It is only available for websites
+delivered via HTTPS, and may only be called from the top-level browsing context.</p>
+<h3 id="transparency">Transparency <a class="w-headline-link" href="#transparency">#</a></h3>
+<p>There is no indication if handwriting recognition is active. To prevent fingerprinting, the browser
+implements countermeasures, such as displaying a permission prompt to the user when it detects
+possible abuse.</p>
+<h3 id="permission-persistence">Permission persistence <a class="w-headline-link" href="#permission-persistence">#</a></h3>
+<p>The Handwriting Recognition API currently does not show any permissions prompts. Thus, permission
+does not need to be persisted in any way.</p>
+<h2 id="feedback">Feedback <a class="w-headline-link" href="#feedback">#</a></h2>
+<p>The Chromium team wants to hear about your experiences with the Handwriting Recognition API.</p>
+<h3 id="tell-us-about-the-api-design">Tell us about the API design <a class="w-headline-link" href="#tell-us-about-the-api-design">#</a></h3>
+<p>Is there something about the API that doesn't work like you expected? Or are there missing methods
+or properties that you need to implement your idea? Have a question or comment on the security
+model? File a spec issue on the corresponding <a href="https://github.com/WICG/handwriting-recognition/issues" rel="noopener">GitHub repo</a>, or add your thoughts to an
+existing issue.</p>
+<h3 id="report-a-problem-with-the-implementation">Report a problem with the implementation <a class="w-headline-link" href="#report-a-problem-with-the-implementation">#</a></h3>
+<p>Did you find a bug with Chromium's implementation? Or is the implementation different from the spec?
+File a bug at <a href="https://new.crbug.com" rel="noopener">new.crbug.com</a>. Be sure to include as much detail as you can,
+simple instructions for reproducing, and enter <code>Blink&gt;Handwriting</code> in the <strong>Components</strong> box.
+<a href="https://glitch.com/" rel="noopener">Glitch</a> works great for sharing quick and easy repros.</p>
+<h3 id="show-support-for-the-api">Show support for the API <a class="w-headline-link" href="#show-support-for-the-api">#</a></h3>
+<p>Are you planning to use the Handwriting Recognition API? Your public support helps the Chromium team
+prioritize features and shows other browser vendors how critical it is to support them.</p>
+<p>Share how you plan to use it on the <a href="https://discourse.wicg.io/t/proposal-handwriting-recognition-api/4935" rel="noopener">WICG Discourse thread</a>. Send a tweet to
+<a href="https://twitter.com/ChromiumDev" rel="noopener">@ChromiumDev</a> using the hashtag
+<a href="https://twitter.com/search?q=%23HandwritingRecognition&amp;src=recent_search_click&amp;f=live" rel="noopener"><code>#HandwritingRecognition</code></a>
+and let us know where and how you're using it.</p>
+<h2 id="helpful-links">Helpful Links <a class="w-headline-link" href="#helpful-links">#</a></h2>
+<ul>
+<li><a href="https://github.com/WICG/handwriting-recognition/blob/main/explainer.md" rel="noopener">Explainer</a></li>
+<li><a href="https://github.com/WICG/handwriting-recognition" rel="noopener">GitHub repo</a></li>
+<li><a href="https://www.chromestatus.com/features/5263213807534080" rel="noopener">ChromeStatus</a></li>
+<li><a href="https://crbug.com/1207667" rel="noopener">Chromium bug</a></li>
+<li><a href="https://github.com/w3ctag/design-reviews/issues/591" rel="noopener">TAG review</a></li>
+<li><a href="https://groups.google.com/a/chromium.org/g/blink-dev/c/VXUq1UY4m7Y" rel="noopener">Intent to Prototype</a></li>
+<li><a href="https://lists.webkit.org/pipermail/webkit-dev/2021-March/031762.html" rel="noopener">WebKit-Dev thread</a></li>
+<li><a href="https://github.com/mozilla/standards-positions/issues/507" rel="noopener">Mozilla standards position</a></li>
+</ul>
+<h2 id="acknowledgements">Acknowledgements <a class="w-headline-link" href="#acknowledgements">#</a></h2>
+<p>This article was reviewed by <a href="https://github.com/jpmedley" rel="noopener">Joe Medley</a>, Honglin Yu and Jiewei Qian. Hero image by
+<a href="https://unsplash.com/@sbouaked" rel="noopener">Samir Bouaked</a> on
+<a href="https://unsplash.com/photos/MFvflDBZdyM" rel="noopener">Unsplash</a>.</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/capabilities/">Capabilities</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>May 17, 2021</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/handwriting-recognition/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

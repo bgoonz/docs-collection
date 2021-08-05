@@ -1,0 +1,925 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=5bea7a54cbba5">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Building multiple Progressive Web Apps on the same domain</title>
+<meta name="description" content="Explore the recommended and not recommended ways of building multiple PWAs reusing the same domain with their pros and cons." />
+
+<link rel="canonical" href="https://web.dev/building-multiple-pwas-on-the-same-domain/" />
+
+<meta itemprop="name" content="Building multiple Progressive Web Apps on the same domain" />
+<meta itemprop="description" content="Explore the recommended and not recommended ways of building multiple PWAs reusing the same domain with their pros and cons." />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/RvAJGCLAmeyRSHKn5Nwc.jpeg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/building-multiple-pwas-on-the-same-domain/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Building multiple Progressive Web Apps on the same domain" />
+<meta property="og:description" content="Explore the recommended and not recommended ways of building multiple PWAs reusing the same domain with their pros and cons." />
+<meta property="og:image" content="https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/RvAJGCLAmeyRSHKn5Nwc.jpeg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="Multiple Shifting Gears." />
+<meta property="tag" content="progressive-web-apps" />
+<meta property="tag" content="service-worker" />
+<meta property="tag" content="storage" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Building multiple Progressive Web Apps on the same domain" />
+<meta name="twitter:description" content="Explore the recommended and not recommended ways of building multiple PWAs reusing the same domain with their pros and cons." />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/RvAJGCLAmeyRSHKn5Nwc.jpeg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=f153a44bdb0a4', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=a6c7f818fce6c', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="Multiple Shifting Gears."     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/RvAJGCLAmeyRSHKn5Nwc.jpeg?auto=format"     srcset="https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/RvAJGCLAmeyRSHKn5Nwc.jpeg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/RvAJGCLAmeyRSHKn5Nwc.jpeg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/RvAJGCLAmeyRSHKn5Nwc.jpeg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/RvAJGCLAmeyRSHKn5Nwc.jpeg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/RvAJGCLAmeyRSHKn5Nwc.jpeg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/RvAJGCLAmeyRSHKn5Nwc.jpeg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/RvAJGCLAmeyRSHKn5Nwc.jpeg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/RvAJGCLAmeyRSHKn5Nwc.jpeg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/RvAJGCLAmeyRSHKn5Nwc.jpeg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/RvAJGCLAmeyRSHKn5Nwc.jpeg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/RvAJGCLAmeyRSHKn5Nwc.jpeg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/RvAJGCLAmeyRSHKn5Nwc.jpeg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/RvAJGCLAmeyRSHKn5Nwc.jpeg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/RvAJGCLAmeyRSHKn5Nwc.jpeg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/RvAJGCLAmeyRSHKn5Nwc.jpeg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/RvAJGCLAmeyRSHKn5Nwc.jpeg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/RvAJGCLAmeyRSHKn5Nwc.jpeg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#building-multiple-progressive-web-apps-on-the-same-domain" class="w-toc__header--link">
+        Building multiple Progressive Web Apps on the same domain
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#technical-terms">Technical terms</a></li><li><a href="#the-case-for-multiple-related-pwas">The case for multiple, related PWAs</a></li><li><a href="#using-separate-origins">Using separate origins</a></li><li><a href="#using-the-same-origin">Using the same origin</a></li><li><a href="#non-overlapping-paths">Non-overlapping paths</a></li><li><a href="#overlappingnested-paths">Overlapping/nested paths</a></li><li><a href="#challenges-for-multiple-same-origin-pwas">Challenges for multiple, same-origin PWAs</a></li><li><a href="#additional-challenges-for-overlappingnested-paths">Additional challenges for overlapping/nested paths</a></li><li><a href="#conclusion">Conclusion</a></li><li><a href="#additional-resources">Additional resources</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@drenzulli | @mgiuca | i18n.authors.cmp.title"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="building-multiple-progressive-web-apps-on-the-same-domain" class="w-article-header__headline">Building multiple Progressive Web Apps on the same domain</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          How to build multiple PWAs, taking advantage of the same domain name, to make the user aware that they belong to the same organization or service.
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Jun 2, 2021</time>
+          
+        </div>
+      
+      <div class="w-layout-container--narrow w-post-signpost">
+  <span class="w-post-signpost__title">Appears in:</span>
+  <a
+          class="w-post-signpost__link"
+          href="/progressive-web-apps"
+          >Progressive Web Apps</a
+        >
+</div>
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/demianrenzulli/"><img     alt="Demian Renzulli"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/EuTrT82fyivFn16L0vD9.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/EuTrT82fyivFn16L0vD9.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/EuTrT82fyivFn16L0vD9.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/EuTrT82fyivFn16L0vD9.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/EuTrT82fyivFn16L0vD9.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/EuTrT82fyivFn16L0vD9.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/demianrenzulli/">Demian Renzulli</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/drenzulli"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/demianrenzulli">GitHub</a>
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://glitch.com/@demianrenzulli"
+          >Glitch</a
+        >
+      </li>
+      
+    </ul>
+  </div>
+</div>
+          
+            <div class="w-author">
+  <a href="/authors/mgiuca/"><img     alt="Matt Giuca"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/9gFKixjZHcpFPVcOX9Av.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/9gFKixjZHcpFPVcOX9Av.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/9gFKixjZHcpFPVcOX9Av.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/9gFKixjZHcpFPVcOX9Av.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/9gFKixjZHcpFPVcOX9Av.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/9gFKixjZHcpFPVcOX9Av.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/mgiuca/">Matt Giuca</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/mgiuca"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/mgiuca">GitHub</a>
+      </li>
+      
+      
+    </ul>
+  </div>
+</div>
+          
+            <div class="w-author">
+  <a href="/authors/cmp/"><img     alt="Chase Phillips"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"          src="https://web-dev.imgix.net/image/admin/1v5F1SOBl46ZghbHQMle.svg"               width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/cmp/">Chase Phillips</a>
+    </cite>
+    <ul class="w-author__link-list">
+      
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/chasephillips">GitHub</a>
+      </li>
+      
+      
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>In the <a href="https://web.dev/multi-origin-pwas/">Progressive Web Apps in multi-origin sites blog
+post</a>, Demian discussed the challenges that
+sites built on multiple origins face when trying to build a single Progressive
+Web App that encompasses all of them.</p>
+<p>An example of this type of site architecture is a ecommerce site where:</p>
+<ul>
+<li>The home page is at <code>https://www.example.com</code>.</li>
+<li>The category pages are hosted at <code>https://category.example.com</code>.</li>
+<li>The product detail pages at <code>https://product.example.com</code>.</li>
+</ul>
+<p>As discussed in the article, the <a href="https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy" rel="noopener">same-origin
+policy</a>
+imposes several restrictions, preventing the sharing of service workers, caches,
+and permissions across origins. For that reason, we strongly recommend
+avoiding this type of configuration and for those that already have sites
+built in this way, to consider migrating to a single origin site architecture
+whenever possible.</p>
+<figure class="w-figure">
+  <img     alt="Diagram showing a site divded into multiple origins and showing that technique is discouraged when building PWAs."          decoding="async"     height="461"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/QnwgUcEBv8o8k2XiAYbm.png?auto=format"     srcset="https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/QnwgUcEBv8o8k2XiAYbm.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/QnwgUcEBv8o8k2XiAYbm.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/QnwgUcEBv8o8k2XiAYbm.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/QnwgUcEBv8o8k2XiAYbm.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/QnwgUcEBv8o8k2XiAYbm.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/QnwgUcEBv8o8k2XiAYbm.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/QnwgUcEBv8o8k2XiAYbm.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/QnwgUcEBv8o8k2XiAYbm.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/QnwgUcEBv8o8k2XiAYbm.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/QnwgUcEBv8o8k2XiAYbm.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/QnwgUcEBv8o8k2XiAYbm.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/QnwgUcEBv8o8k2XiAYbm.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/QnwgUcEBv8o8k2XiAYbm.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/QnwgUcEBv8o8k2XiAYbm.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/QnwgUcEBv8o8k2XiAYbm.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/QnwgUcEBv8o8k2XiAYbm.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/QnwgUcEBv8o8k2XiAYbm.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">Avoid using different origins for site sections of the same site when trying to build a unified Progresive Web App.</figcaption>
+</figure>
+<p>In this post, we take a look at the opposite case: instead of a single PWA
+across different origins we'll analyze the case of companies that want to
+provide <strong>multiple PWAs</strong>, taking advantage of the same <strong>domain name</strong>, and make
+the user aware that those PWAs belong to the same organization or service.</p>
+<p>As you might have noticed, we are using different, but interrelated terms, like
+domains and origins. Before moving forward, let's review these concepts.</p>
+<h2 id="technical-terms">Technical terms <a class="w-headline-link" href="#technical-terms">#</a></h2>
+<ul>
+<li><strong>Domain:</strong> Any sequence of labels as defined in the Domain Name System (DNS).
+For example: <code>com</code> and <code>example.com</code> are domains.</li>
+<li><strong>Hostname:</strong> A DNS entry that resolves to at least one IP address. For
+example: <code>www.example.com</code> would be a hostname, <code>example.com</code> could be a
+hostname if it had an IP address, and <code>com</code> would never resolve to an IP
+address and so it could never be a hostname.</li>
+<li><strong>Origin:</strong> A combination of a scheme, hostname and (optionally) port. For
+example, <code>https://www.example.com:443</code> is an origin.</li>
+</ul>
+<p>As its name implies, <a href="https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy" rel="noopener">same-origin
+policy</a>
+imposes restrictions on origins, so we'll mostly refer to the term throughout
+the article. Nevertheless, we'll use &quot;domains&quot; or &quot;subdomains&quot; from time to
+time, to describe the technique being used, in order to create the different
+&quot;origins&quot;.</p>
+<h2 id="the-case-for-multiple-related-pwas">The case for multiple, related PWAs <a class="w-headline-link" href="#the-case-for-multiple-related-pwas">#</a></h2>
+<p>In some cases, you might want to build independent apps, but still identify them
+as belonging to the same organization or &quot;brand&quot;. Reusing the same <strong>domain
+name</strong> is a good way of establishing that relationship. For example:</p>
+<ul>
+<li>An ecommerce site wants to create a standalone experience to let sellers
+manage their inventory, while making sure they understand that it belongs to
+the main website where the users buy products.</li>
+<li>A sports news site wants to build a specific app for a major sporting event,
+to let users receive stats about their favorite competitions via
+notifications, and install it as a Progressive Web App, while making sure that
+users recognize it as an app built by the news company.</li>
+<li>A company wants to build separate chat, mail, and calendar apps and wants them
+to work as individual apps, tied to the company's name.</li>
+</ul>
+<figure class="w-figure">
+  <img     alt="Avoid using different origins for site sections of the same site when trying to build a unified Progresive Web App."          decoding="async"     height="475"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/XEwhGkkV9Bz7Z2KEJWjm.png?auto=format"     srcset="https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/XEwhGkkV9Bz7Z2KEJWjm.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/XEwhGkkV9Bz7Z2KEJWjm.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/XEwhGkkV9Bz7Z2KEJWjm.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/XEwhGkkV9Bz7Z2KEJWjm.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/XEwhGkkV9Bz7Z2KEJWjm.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/XEwhGkkV9Bz7Z2KEJWjm.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/XEwhGkkV9Bz7Z2KEJWjm.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/XEwhGkkV9Bz7Z2KEJWjm.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/XEwhGkkV9Bz7Z2KEJWjm.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/XEwhGkkV9Bz7Z2KEJWjm.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/XEwhGkkV9Bz7Z2KEJWjm.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/XEwhGkkV9Bz7Z2KEJWjm.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/XEwhGkkV9Bz7Z2KEJWjm.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/XEwhGkkV9Bz7Z2KEJWjm.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/XEwhGkkV9Bz7Z2KEJWjm.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/XEwhGkkV9Bz7Z2KEJWjm.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/XEwhGkkV9Bz7Z2KEJWjm.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">Company that owns example.com wants to provide three independent apps or PWAs, using the same domain name to establish the relationship between them.</figcaption>
+</figure>
+<h2 id="using-separate-origins">Using separate origins <a class="w-headline-link" href="#using-separate-origins">#</a></h2>
+<p>The recommended approach in cases like these is for each conceptually
+distinct app live on its own origin.</p>
+<p>If you want to use the same domain name inside all of them, you can do that by
+using subdomains. For example, a company that provides multiple internet apps or
+services can host a mail app at <code>https://mail.example.com</code> and a calendar app at
+<code>https://calendar.example.com</code>, while offering the main service of their
+business at <code>https://www.example.com</code>. Another example is a sports site that
+wants to create an independent app completely dedicated to an important sports
+event, like a football championship at <code>https://footballcup.example.com</code>, that
+users can install and use independently of the main sport site, hosted at
+<code>https://www.example.com</code>. This approach might also be useful for platforms that
+let customers create independent apps of their own under the company's brand.
+For example, an app that lets merchants create their own PWAs at
+<code>https://merchant1.example.com</code>, <code>https://merchant2.example.com</code>, etc.</p>
+<p>Using different origins ensures isolation between the apps, which means that
+each of them can manage different browser features independently, including:</p>
+<ul>
+<li><strong>Installability:</strong> Each app has its own Manifest and provides its own
+installable experience.</li>
+<li><strong>Storage:</strong> Each app has its own caches, local storage, and basically all
+forms of device-local storage, without sharing them with the others.</li>
+<li><strong>Service Workers:</strong> Each app has its own service worker for the registered
+scopes.</li>
+<li><strong>Permissions:</strong> Permissions are also scoped by origins. Thanks to that, users
+will know exactly which service they are giving permissions for, and
+features like notifications will be properly attributed to each app.</li>
+</ul>
+<p>Creating such a degree of isolation is the most desirable in the use case of
+multiple, independent PWAs, so <strong>we strongly recommend this approach</strong>.</p>
+<p>If apps on subdomains want to share local data with each other they will still
+be able to do it via cookies, or for more advanced scenarios they could
+consider synchronizing the storage through a server.</p>
+<figure class="w-figure">
+  <img     alt="ALT_TEXT_HERE"          decoding="async"     height="421"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/FfuseK64y4PRqXYEGEt9.png?auto=format"     srcset="https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/FfuseK64y4PRqXYEGEt9.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/FfuseK64y4PRqXYEGEt9.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/FfuseK64y4PRqXYEGEt9.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/FfuseK64y4PRqXYEGEt9.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/FfuseK64y4PRqXYEGEt9.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/FfuseK64y4PRqXYEGEt9.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/FfuseK64y4PRqXYEGEt9.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/FfuseK64y4PRqXYEGEt9.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/FfuseK64y4PRqXYEGEt9.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/FfuseK64y4PRqXYEGEt9.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/FfuseK64y4PRqXYEGEt9.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/FfuseK64y4PRqXYEGEt9.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/FfuseK64y4PRqXYEGEt9.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/FfuseK64y4PRqXYEGEt9.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/FfuseK64y4PRqXYEGEt9.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/FfuseK64y4PRqXYEGEt9.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/FfuseK64y4PRqXYEGEt9.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">Building different PWAs in distinct origins, by using subdomains is a good practice.</figcaption>
+</figure>
+<h2 id="using-the-same-origin">Using the same origin <a class="w-headline-link" href="#using-the-same-origin">#</a></h2>
+<p>The second approach is building the different PWAs on the same origin. This
+includes the following scenarios:</p>
+<h3 id="non-overlapping-paths">Non-overlapping paths <a class="w-headline-link" href="#non-overlapping-paths">#</a></h3>
+<p>Multiple PWAs or conceptual &quot;web apps&quot;, hosted on the same origin, with
+non-overlapping paths. For example:</p>
+<ul>
+<li><code>https://example.com/app1/</code></li>
+<li><code>https://example.com/app2/</code></li>
+</ul>
+<h3 id="overlappingnested-paths">Overlapping/nested paths <a class="w-headline-link" href="#overlappingnested-paths">#</a></h3>
+<p>Multiple PWAs on the same origin, one of whose scope is nested inside the other:</p>
+<ul>
+<li><code>https://example.com/</code> (the &quot;outer app&quot;)</li>
+<li><code>https://example.com/app/</code> (the &quot;inner app&quot;)</li>
+</ul>
+<p>The service worker API and manifest format allow you to do either of the above,
+using path-level scoping. However, in both cases, using the same origin presents
+many problems and limitations, the root of which stems from the fact that the
+browser won't fully consider these to be distinct &quot;apps&quot;, therefore <strong>this
+approach is discouraged</strong>.</p>
+<figure class="w-figure">
+  <img     alt="ALT_TEXT_HERE"          decoding="async"     height="420"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/6HX5zEb58sEEWQoJt82m.png?auto=format"     srcset="https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/6HX5zEb58sEEWQoJt82m.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/6HX5zEb58sEEWQoJt82m.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/6HX5zEb58sEEWQoJt82m.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/6HX5zEb58sEEWQoJt82m.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/6HX5zEb58sEEWQoJt82m.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/6HX5zEb58sEEWQoJt82m.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/6HX5zEb58sEEWQoJt82m.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/6HX5zEb58sEEWQoJt82m.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/6HX5zEb58sEEWQoJt82m.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/6HX5zEb58sEEWQoJt82m.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/6HX5zEb58sEEWQoJt82m.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/6HX5zEb58sEEWQoJt82m.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/6HX5zEb58sEEWQoJt82m.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/6HX5zEb58sEEWQoJt82m.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/6HX5zEb58sEEWQoJt82m.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/6HX5zEb58sEEWQoJt82m.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/26V1DWN36MZr3mUo8ChSBlCpzp43/6HX5zEb58sEEWQoJt82m.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">Using paths (overlapping or not) to provide two independent PWAs (“app1”, “app2”) under the same origin is discouraged.</figcaption>
+</figure>
+<p>In the next section, we analyze these challenges in more detail, and what can be
+done, if using separate origins is not an option.</p>
+<h2 id="challenges-for-multiple-same-origin-pwas">Challenges for multiple, same-origin PWAs <a class="w-headline-link" href="#challenges-for-multiple-same-origin-pwas">#</a></h2>
+<p>Here are some practical issues common to both same-origin approaches:</p>
+<ul>
+<li><strong>Storage:</strong> Cookies, local storage, and all forms of device-local storage are
+shared between apps. For that reason, if the user decides to wipe local data
+for one app, it will wipe all the data from the origin; there's no way
+to do this for a single app. Note that Chrome and some other
+browsers will actively prompt users to wipe local data when uninstalling one
+of the apps, and this will affect data for the other apps on the origin as
+well. Another issue is that apps will also have to share their <a href="https://web.dev/storage-for-the-web/#how-much">storage
+quota</a> which means if either of
+them takes up too much space, the other will be negatively impacted.</li>
+<li><strong>Permissions:</strong> Permissions are tied to the origin. That means if the user
+grants a permission to one app, it will apply to all apps on that origin
+simultaneously. That may sound like a good thing (not having to ask for a
+permission multiple times), but remember: if the user blocks permission to one
+app, it will prevent the others from requesting that permission or using that
+feature.</li>
+<li><strong>User settings:</strong> Settings are also set per-origin. For example, if two apps
+have different font sizes, and the user wants to adjust the zoom in only one
+of them to compensate for it, they won't be able to do it without applying the
+setting to the other apps as well.</li>
+</ul>
+<p>These challenges make it difficult to encourage this approach. Nevertheless, if
+you can't use a separate origin (e.g. a subdomain), as discussed in the <a href="#using-separate-origins">Using
+separate origins</a> section, from the two same-origin options we presented,
+using non-overlapping paths is strongly recommended, over
+overlapping/nested paths.</p>
+<p>As mentioned, the challenges discussed in this section are common to both
+same-origin approaches. In the next section we'll go deeper into the details
+of why using overlapping/nested paths is the least recommended strategy.</p>
+<h2 id="additional-challenges-for-overlappingnested-paths">Additional challenges for overlapping/nested paths <a class="w-headline-link" href="#additional-challenges-for-overlappingnested-paths">#</a></h2>
+<p>The additional issue with overlapping/nested paths approach (where
+<code>https://example.com/</code> is the outer app and  <code>https://example.com/app/</code> is the
+inner app), is that all URLs in the inner app will actually be considered
+part of both the outer app and the inner app.</p>
+<p>In practice this presents the following issues:</p>
+<ul>
+<li><strong>Installation Promotion:</strong> If the user visits the inner app (for example,
+in a web browser), when the outer app is already installed in the user's
+device, the browser won't show the install promotional banners, and the
+<a href="https://web.dev/customize-install/">BeforeInstallPrompt event</a> won't be
+triggered. The reason is that the browser will check and see whether the
+current page belongs to an app that's already installed, and it will conclude
+that it is. The workaround for this is to install the inner app manually
+(via &quot;Create Shortcut&quot; browser menu option), or to install the inner app
+first, before the outer app.</li>
+<li><strong><a href="https://developer.mozilla.org/en-US/docs/Web/API/notification" rel="noopener">Notification</a>
+and the <a href="https://web.dev/badging-api/">Badging API</a></strong>: If the outer app is
+installed but the inner app is not, notifications and badges coming from the
+inner app will be erroneously attributed to the outer app (which is the
+nearest enclosing scope of an installed app). This feature works properly in
+the case where both apps are installed on the user's device.</li>
+<li><strong><a href="https://github.com/WICG/sw-launch/blob/main/declarative_link_capturing.md" rel="noopener">Link
+Capturing</a></strong>:
+The outer app may capture URLs that belong to the inner app. This is
+especially likely if the outer app is installed but the inner app isn't.
+Similarly, links within the outer app that link to the inner app will not
+link capture into the inner app, since they are considered to be within the
+outer app's scope. Additionally, on Chrome OS and Android, if these apps are
+added to the Play Store (as <a href="https://developer.chrome.com/docs/android/trusted-web-activity/overview/" rel="noopener">Trusted Web
+Activities</a>),
+the outer app will capture all links. Even if the inner app is installed,
+the OS will still offer the user the choice of opening them in the outer
+app.</li>
+</ul>
+<h2 id="conclusion">Conclusion <a class="w-headline-link" href="#conclusion">#</a></h2>
+<p>In this article we looked at different ways in which developers can build
+multiple Progressive Web Apps related to each other within the same <strong>domain</strong>.</p>
+<p>In summary, we strongly recommend using a different origin (e.g. by using
+subdomains) to host independent PWAs. Hosting them in the same origin presents
+many challenges, mainly because the browser won't fully consider
+these to be distinct apps.</p>
+<ul>
+<li>Separate origins: <strong>Recommended</strong></li>
+<li>Same origin, non-overlapping paths: <strong>Not recommended</strong></li>
+<li>Same origin, overlapping/nested paths: <strong>Strongly not recommended</strong></li>
+</ul>
+<p>If it's not possible to use different origins, using non-overlapping paths (e.g.
+<code>https://example.com/app1/</code> and <code>https://example.com/app2/</code> it's strongly
+recommended over using overlapping or nested paths, like <code>https://example.com/</code>
+(for the outer app) and <code>https://example.com/app/</code> (for the inner app).</p>
+<h2 id="additional-resources">Additional resources <a class="w-headline-link" href="#additional-resources">#</a></h2>
+<ul>
+<li><a href="https://web.dev/multi-origin-pwas/">Progressive Web Apps in multi-origin
+sites</a></li>
+</ul>
+<p>With many thanks for their technical reviews and suggestions: <em>Joe Medley,
+Dominick Ng, Alan Cutter, Daniel Murphy, Penny McLachlan, Thomas Steiner and
+Darwin Huang</em></p>
+<p><em>Photo by <a href="https://unsplash.com/@timmossholder" rel="noopener">Tim Mossholder</a> on
+<a href="https://unsplash.com/photos/GmvH5v9l3K4" rel="noopener">Unsplash</a></em></p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/progressive-web-apps/">Progressive Web Apps</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/service-worker/">Service Worker</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/storage/">Storage</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Jun 2, 2021</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/building-multiple-pwas-on-the-same-domain/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

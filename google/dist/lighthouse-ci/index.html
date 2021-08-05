@@ -1,0 +1,984 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=08f73de918de7">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Performance monitoring with Lighthouse CI</title>
+<meta name="description" content="Learn how to setup Lighthouse CI and integrate it into developer workflows. " />
+
+<link rel="canonical" href="https://web.dev/lighthouse-ci/" />
+
+<meta itemprop="name" content="Performance monitoring with Lighthouse CI" />
+<meta itemprop="description" content="Learn how to setup Lighthouse CI and integrate it into developer workflows. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/8q10N5o2xDA7YJKcefm5.png?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/lighthouse-ci/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Performance monitoring with Lighthouse CI" />
+<meta property="og:description" content="Learn how to setup Lighthouse CI and integrate it into developer workflows. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/8q10N5o2xDA7YJKcefm5.png?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="Lighthouse CI displayed over a screenshot of Lighthouse CI server" />
+<meta property="tag" content="performance" />
+<meta property="tag" content="lighthouse" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Performance monitoring with Lighthouse CI" />
+<meta name="twitter:description" content="Learn how to setup Lighthouse CI and integrate it into developer workflows. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/8q10N5o2xDA7YJKcefm5.png?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=520b04d66af8f', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=22be72f084cd4', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="Lighthouse CI displayed over a screenshot of Lighthouse CI server"     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/8q10N5o2xDA7YJKcefm5.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/8q10N5o2xDA7YJKcefm5.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/8q10N5o2xDA7YJKcefm5.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/8q10N5o2xDA7YJKcefm5.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/8q10N5o2xDA7YJKcefm5.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/8q10N5o2xDA7YJKcefm5.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/8q10N5o2xDA7YJKcefm5.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/8q10N5o2xDA7YJKcefm5.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/8q10N5o2xDA7YJKcefm5.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/8q10N5o2xDA7YJKcefm5.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/8q10N5o2xDA7YJKcefm5.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/8q10N5o2xDA7YJKcefm5.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/8q10N5o2xDA7YJKcefm5.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/8q10N5o2xDA7YJKcefm5.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/8q10N5o2xDA7YJKcefm5.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/8q10N5o2xDA7YJKcefm5.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/8q10N5o2xDA7YJKcefm5.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/8q10N5o2xDA7YJKcefm5.png?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#performance-monitoring-with-lighthouse-ci" class="w-toc__header--link">
+        Performance monitoring with Lighthouse CI
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#overview">Overview</a></li><li><a href="#cli">Use Lighthouse CI locally</a></li><li><a href="#ci-setup">Setup your CI process to run Lighthouse CI</a></li><li><a href="#github-actions">Set up a GitHub Action to run Lighthouse CI</a></li><li><a href="#github-status-checks">Set up a GitHub status check</a></li><li><a href="#server-setup">Set up the Lighthouse CI Server</a></li><li><a href="#find-out-more">Find out more</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@katiehempenius"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="performance-monitoring-with-lighthouse-ci" class="w-article-header__headline">Performance monitoring with Lighthouse CI</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          How to add Lighthouse to a continuous integration system, such as GitHub Actions.
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Jul 27, 2020</time>
+          
+        </div>
+      
+      <div class="w-layout-container--narrow w-post-signpost">
+  <span class="w-post-signpost__title">Appears in:</span>
+  <a
+          class="w-post-signpost__link"
+          href="/fast"
+          >Fast load times</a
+        >
+</div>
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/katiehempenius/"><img     alt="Katie Hempenius"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/fZo7BJGec2MNRt6cWpeh.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/fZo7BJGec2MNRt6cWpeh.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/fZo7BJGec2MNRt6cWpeh.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/fZo7BJGec2MNRt6cWpeh.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/fZo7BJGec2MNRt6cWpeh.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/fZo7BJGec2MNRt6cWpeh.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/katiehempenius/">Katie Hempenius</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/katiehempenius"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/khempenius">GitHub</a>
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://glitch.com/@khempenius"
+          >Glitch</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://katiehempenius.com/">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p><a href="https://github.com/GoogleChrome/lighthouse-ci" rel="noopener">Lighthouse CI</a> is a suite of
+tools for using Lighthouse during continuous integration. Lighthouse CI can be
+incorporated into developer workflows in many different ways. This guide covers
+the following topics:</p>
+<ul>
+<li>Using the Lighthouse CI CLI.</li>
+<li>Configuring your CI provider to run Lighthouse CI.</li>
+<li>Setting up a <a href="https://github.com/features/actions" rel="noopener">GitHub Action</a> and
+<a href="https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/about-status-checks" rel="noopener">status
+check</a>
+for Lighthouse CI. This will automatically display Lighthouse results on
+GitHub pull requests.</li>
+<li>Building a performance dashboard and data store for Lighthouse reports.</li>
+</ul>
+<h2 id="overview">Overview <a class="w-headline-link" href="#overview">#</a></h2>
+<p>Lighthouse CI is a suite of free tools that facilitate using Lighthouse for
+performance monitoring. A single Lighthouse report provides a snapshot of a web
+page's performance at the time that it is run; Lighthouse CI shows how these
+findings have changed over time. This can be used to identify the impact of
+particular code changes or ensure that performance thresholds are met during
+continuous integration processes. Although performance monitoring is the most
+common use case for Lighthouse CI, it can be used to monitor other aspects of
+the Lighthouse report - for example, SEO or accessibility.</p>
+<p>The core functionality of Lighthouse CI is provided by the Lighthouse CI command
+line interface. (Note: This is a separate tool than the <a href="https://github.com/GoogleChrome/lighthouse#using-the-node-cli" rel="noopener">Lighthouse
+CLI</a>.) The
+Lighthouse CI CLI provides a set of
+<a href="https://github.com/GoogleChrome/lighthouse-ci/blob/master/docs/configuration.md#commands" rel="noopener">commands</a>
+for using Lighthouse CI. For example, the <code>autorun</code> command executes multiple
+Lighthouse runs, identifies the median Lighthouse report, and uploads the report
+for storage. This behavior can be heavily customized by passing additional flags
+or customizing Lighthouse CI's configuration file, <code>lighthouserc.js</code>.</p>
+<p>Although the core functionality of Lighthouse CI is primarily encapsulated in
+the Lighthouse CI CLI, Lighthouse CI is typically used through one of the
+following approaches:</p>
+<ul>
+<li>Running Lighthouse CI as part of continuous integration</li>
+<li>Using a Lighthouse CI GitHub Action that runs and comments on every pull
+request</li>
+<li>Tracking performance over time via the dashboard provided by Lighthouse
+Server.</li>
+</ul>
+<p>All of these approaches are built upon the Lighthouse CI CLI.</p>
+<p>Alternatives to Lighthouse CI include third-party performance monitoring
+services or writing your own script to collect performance data during the CI
+process. You should consider using a third-party service if you'd prefer to let
+someone else handle the management of your performance monitoring server and
+test devices, or, if you want notification capabilities (such as email or Slack
+integration) without having to build these features yourself.</p>
+<h2 id="cli">Use Lighthouse CI locally <a class="w-headline-link" href="#cli">#</a></h2>
+<p>This section explains how to run and install the Lighthouse CI CLI locally and
+how to configure <code>lighthouserc.js</code>. Running the Lighthouse CI CLI locally is the
+easiest way to make sure that your <code>lighthouserc.js</code> is configured correctly.</p>
+<ol>
+<li>
+<p>Install the Lighthouse CI CLI.</p>
+<web-copy-code><pre class="language-shell"><code class="language-shell"><span class="token function">npm</span> <span class="token function">install</span> -g @lhci/cli</code></pre>
+</web-copy-code><p>Lighthouse CI is configured by placing a <code>lighthouserc.js</code> file in the root of
+your project's repo. This file is mandatory and will contain Lighthouse CI
+related configuration information. Although Lighthouse CI can be <a href="https://github.com/GoogleChrome/lighthouse-ci/blob/master/docs/configuration.md#build-context" rel="noopener">configured to
+be used without a git
+repo</a>,
+the instructions in this article assume that your project repo is configured to
+use git.</p>
+</li>
+<li>
+<p>In the root of your repository, create a <code>lighthouserc.js</code> <a href="https://github.com/GoogleChrome/lighthouse-ci/blob/v0.4.1/docs/configuration.md#configuration-file" rel="noopener">configuration
+file</a>.</p>
+<web-copy-code><pre class="language-shell"><code class="language-shell"><span class="token function">touch</span> lighthouserc.js</code></pre>
+</web-copy-code></li>
+<li>
+<p>Add the following code to <code>lighthouserc.js</code>. This code is an empty
+Lighthouse CI configuration. You will be adding to this configuration in
+later steps.</p>
+<web-copy-code><pre class="language-js"><code class="language-js">module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">{</span><br>  ci<span class="token operator">:</span> <span class="token punctuation">{</span><br>    collect<span class="token operator">:</span> <span class="token punctuation">{</span><br>      <span class="token comment">/* Add configuration here */</span><br>    <span class="token punctuation">}</span><span class="token punctuation">,</span><br>    upload<span class="token operator">:</span> <span class="token punctuation">{</span><br>      <span class="token comment">/* Add configuration here */</span><br>    <span class="token punctuation">}</span><span class="token punctuation">,</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code></li>
+<li>
+<p>Every time that Lighthouse CI runs, it starts a server to serve your site.
+This server is what enables Lighthouse to load your site even when no other
+servers are running. When Lighthouse CI finishes running, it will
+automatically shutdown the server. To ensure that serving works correctly,
+you should configure either the
+<a href="https://github.com/GoogleChrome/lighthouse-ci/blob/master/docs/configuration.md#detecting-collectstaticdistdir" rel="noopener"><code>staticDistDir</code></a>
+or
+<a href="https://github.com/GoogleChrome/lighthouse-ci/blob/v0.4.1/docs/configuration.md#startservercommand" rel="noopener"><code>startServerCommand</code></a>
+properties.</p>
+<p>If your site is static, add the <code>staticDistDir</code> property to the <code>ci.collect</code>
+object to indicate where your static files are located. Lighthouse CI will
+use its own server to serve these files while testing your site. If your
+site is not static, add the <code>startServerCommand</code> property to the
+<code>ci.collect</code> object to indicate the command that starts your server.
+Lighthouse CI will start a new server process during testing and shut it
+down after.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token comment">// Static site example</span><br>collect<span class="token operator">:</span> <span class="token punctuation">{</span><br>  staticDistDir<span class="token operator">:</span> <span class="token string">'./public'</span><span class="token punctuation">,</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><web-copy-code><pre class="language-js"><code class="language-js"><span class="token comment">// Dynamic site example</span><br>collect<span class="token operator">:</span> <span class="token punctuation">{</span><br>  startServerCommand<span class="token operator">:</span> <span class="token string">'npm run start'</span><span class="token punctuation">,</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code></li>
+<li>
+<p>Add the
+<a href="https://github.com/GoogleChrome/lighthouse-ci/blob/master/docs/configuration.md#url" rel="noopener"><code>url</code></a>
+property to the <code>ci.collect</code> object to indicate URL(s) that Lighthouse CI
+should run Lighthouse against. The value of the <code>url</code> property should be
+provided as an array of URLs; this array can contain one or more URLs. By
+default, Lighthouse CI will run Lighthouse three times against each URL.</p>
+<web-copy-code><pre class="language-js"><code class="language-js">collect<span class="token operator">:</span> <span class="token punctuation">{</span><br>  <span class="token comment">// ...</span><br>  url<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">'http://localhost:8080'</span><span class="token punctuation">]</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>Note: These URLs should be serveable by the server you configured in the
+previous step. Thus, if you're running Lighthouse CI locally, these URLs should
+probably include <code>localhost</code> rather than your production host.</p>
+</li>
+<li>
+<p>Add the
+<a href="https://github.com/GoogleChrome/lighthouse-ci/blob/master/docs/configuration.md#target" rel="noopener"><code>target</code></a>
+property to the <code>ci.upload</code> object and set the value to
+<code>'temporary-public-storage'</code>. The Lighthouse report(s) collected by
+Lighthouse CI will be uploaded to temporary public storage. The report will
+remain there for seven days and then be automatically deleted. This setup
+guide uses the &quot;temporary public storage&quot; upload option because it is quick
+to setup. For information on other ways of storing Lighthouse reports, refer
+to the
+<a href="https://github.com/GoogleChrome/lighthouse-ci/blob/master/docs/configuration.md#target" rel="noopener">documentation</a>.</p>
+<web-copy-code><pre class="language-js"><code class="language-js">upload<span class="token operator">:</span> <span class="token punctuation">{</span><br>  target<span class="token operator">:</span> <span class="token string">'temporary-public-storage'</span><span class="token punctuation">,</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>The storage location of the report will be similar to this:</p>
+<web-copy-code><pre class="language-text"><code class="language-text">https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1580152437799-46441.report.html</code></pre>
+</web-copy-code><p>(This URL won't work because the report has already been deleted.)</p>
+</li>
+<li>
+<p>Run the Lighthouse CI CLI from the terminal using the <code>autorun</code> command.
+This will run Lighthouse three times and upload the median Lighthouse
+report.</p>
+<web-copy-code><pre class="language-shell"><code class="language-shell">lhci autorun</code></pre>
+</web-copy-code><p>If you've correctly configured Lighthouse CI, running this command should
+produce output similar to this:</p>
+<web-copy-code><pre class="language-shell"><code class="language-shell">✅  .lighthouseci/ directory writable<br>✅  Configuration <span class="token function">file</span> found<br>✅  Chrome installation found<br>⚠️   GitHub token not <span class="token builtin class-name">set</span><br>Healthcheck passed<span class="token operator">!</span><br><br>Started a web server on port <span class="token number">65324</span><span class="token punctuation">..</span>.<br>Running Lighthouse <span class="token number">3</span> time<span class="token punctuation">(</span>s<span class="token punctuation">)</span> on http://localhost:65324/index.html<br>Run <span class="token comment">#1...done.</span><br>Run <span class="token comment">#2...done.</span><br>Run <span class="token comment">#3...done.</span><br>Done running Lighthouse<span class="token operator">!</span><br><br>Uploading median LHR of http://localhost:65324/index.html<span class="token punctuation">..</span>.success<span class="token operator">!</span><br>Open the report at https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1591720514021-82403.report.html<br>No GitHub token set, skipping GitHub status check.<br><br>Done running autorun.</code></pre>
+</web-copy-code><p>You can ignore the <code>GitHub token not set</code> message in the console output. A
+GitHub token is only necessary if you want to use Lighthouse CI with a GitHub
+Action. How to setup a GitHub Action is explained later in this article.</p>
+<p>Clicking on the link in the output that begins with
+<code>https://storage.googleapis.com...</code> will take you to the Lighthouse report
+corresponding to the median Lighthouse run.</p>
+<p>The defaults used by <code>autorun</code> can be overridden via the command line or
+<code>lighthouserc.js</code>. For example, the <code>lighthouserc.js</code> configuration below
+indicates that five Lighthouse runs should be collected every time <code>autorun</code>
+executes.</p>
+</li>
+<li>
+<p>Update <code>lighthouserc.js</code> to use the <code>numberOfRuns</code> property:</p>
+<web-copy-code><pre class="language-js"><code class="language-js">module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">{</span><br>    <span class="token comment">// ...</span><br>    collect<span class="token operator">:</span> <span class="token punctuation">{</span><br>      numberOfRuns<span class="token operator">:</span> <span class="token number">5</span><br>    <span class="token punctuation">}</span><span class="token punctuation">,</span><br>  <span class="token comment">// ...</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code></li>
+<li>
+<p>Re-run the <code>autorun</code> command:</p>
+<web-copy-code><pre class="language-shell"><code class="language-shell">lhci autorun</code></pre>
+</web-copy-code><p>The terminal output should show that Lighthouse has been run five times rather
+than the default three:</p>
+<web-copy-code><pre class="language-shell"><code class="language-shell">✅  .lighthouseci/ directory writable<br>✅  Configuration <span class="token function">file</span> found<br>✅  Chrome installation found<br>⚠️   GitHub token not <span class="token builtin class-name">set</span><br>Healthcheck passed<span class="token operator">!</span><br><br>Automatically determined ./dist as <span class="token variable"><span class="token variable">`</span>staticDistDir<span class="token variable">`</span></span><span class="token builtin class-name">.</span><br>Set it explicitly <span class="token keyword">in</span> lighthouserc.json <span class="token keyword">if</span> incorrect.<br><br>Started a web server on port <span class="token number">64444</span><span class="token punctuation">..</span>.<br>Running Lighthouse <span class="token number">5</span> time<span class="token punctuation">(</span>s<span class="token punctuation">)</span> on http://localhost:64444/index.html<br>Run <span class="token comment">#1...done.</span><br>Run <span class="token comment">#2...done.</span><br>Run <span class="token comment">#3...done.</span><br>Run <span class="token comment">#4...done.</span><br>Run <span class="token comment">#5...done.</span><br>Done running Lighthouse<span class="token operator">!</span><br><br>Uploading median LHR of http://localhost:64444/index.html<span class="token punctuation">..</span>.success<span class="token operator">!</span><br>Open the report at https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1591716944028-6048.report.html<br>No GitHub token set, skipping GitHub status check.<br><br>Done running autorun.</code></pre>
+</web-copy-code><p>To learn about other configuration options, refer to the Lighthouse CI
+<a href="https://github.com/GoogleChrome/lighthouse-ci/blob/master/docs/configuration.md" rel="noopener">configuration
+documentation</a>.</p>
+</li>
+</ol>
+<h2 id="ci-setup">Setup your CI process to run Lighthouse CI <a class="w-headline-link" href="#ci-setup">#</a></h2>
+<p>Lighthouse CI can be used with your favorite CI tool. The <a href="https://github.com/GoogleChrome/lighthouse-ci/blob/master/docs/getting-started.md#configure-your-ci-provider" rel="noopener">Configure Your CI
+Provider</a>
+section of the Lighthouse CI documentation contains code samples showing how to
+incorporate Lighthouse CI into the configuration files of common CI tools.
+Specifically, these code samples show how to run Lighthouse CI to collect
+performance measurements during the CI process.</p>
+<p>Using Lighthouse CI to collect performance measurements is a good place to start
+with performance monitoring. However, advanced users may want to go a step
+further and use Lighthouse CI to fail builds if they don't meet pre-defined
+criteria such as passing particular Lighthouse audits or meeting all performance
+budgets. This behavior is configured through the
+<a href="https://github.com/GoogleChrome/lighthouse-ci/blob/master/docs/configuration.md#assert" rel="noopener"><code>assert</code></a>
+property of the <code>lighthouserc.js</code> file.</p>
+<p>Lighthouse CI supports three levels of assertions:</p>
+<ul>
+<li><code>off</code>: ignore assertions</li>
+<li><code>warn</code>: print failures to stderr</li>
+<li><code>error</code>: print failures to stderr and exit Lighthouse CI with a non-zero
+<a href="https://www.gnu.org/software/bash/manual/html_node/Exit-Status.html#:~:text=A%20non%2Dzero%20exit%20status,N%20as%20the%20exit%20status." rel="noopener">exit
+code</a></li>
+</ul>
+<p>Below is an example of a <code>lighthouserc.js</code> configuration that includes
+assertions. It sets assertions for the scores of Lighthouse's performance and
+accessibility categories. To try this out, add the assertions shown below to
+your <code>lighthouserc.js</code> file, then rerun Lighthouse CI.</p>
+<web-copy-code><pre class="language-js"><code class="language-js">module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">{</span><br>  ci<span class="token operator">:</span> <span class="token punctuation">{</span><br>    collect<span class="token operator">:</span> <span class="token punctuation">{</span><br>      <span class="token comment">// ...</span><br>    <span class="token punctuation">}</span><span class="token punctuation">,</span><br>    assert<span class="token operator">:</span> <span class="token punctuation">{</span><br>      assertions<span class="token operator">:</span> <span class="token punctuation">{</span><br>        <span class="token string">'categories:performance'</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">'warn'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>minScore<span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">,</span><br>        <span class="token string">'categories:accessibility'</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">'error'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>minScore<span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">}</span><span class="token punctuation">]</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">}</span><span class="token punctuation">,</span><br>    upload<span class="token operator">:</span> <span class="token punctuation">{</span><br>      <span class="token comment">// ...</span><br>    <span class="token punctuation">}</span><span class="token punctuation">,</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>The console output that it generates looks like this:</p>
+<figure class="w-figure">
+  <img     alt="Screenshot of a warning message generated by Lighthouse CI"     class="w-screenshot"     decoding="async"     height="431"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/ti9NuzxPKZCYVIzjjddc.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/ti9NuzxPKZCYVIzjjddc.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/ti9NuzxPKZCYVIzjjddc.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/ti9NuzxPKZCYVIzjjddc.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/ti9NuzxPKZCYVIzjjddc.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/ti9NuzxPKZCYVIzjjddc.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/ti9NuzxPKZCYVIzjjddc.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/ti9NuzxPKZCYVIzjjddc.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/ti9NuzxPKZCYVIzjjddc.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/ti9NuzxPKZCYVIzjjddc.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/ti9NuzxPKZCYVIzjjddc.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/ti9NuzxPKZCYVIzjjddc.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/ti9NuzxPKZCYVIzjjddc.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/ti9NuzxPKZCYVIzjjddc.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/ti9NuzxPKZCYVIzjjddc.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/ti9NuzxPKZCYVIzjjddc.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/ti9NuzxPKZCYVIzjjddc.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/ti9NuzxPKZCYVIzjjddc.png?auto=format&w=1600 1600w"          width="800"   />
+</figure>
+<p>For more information on Lighthouse CI assertions, refer to the
+<a href="https://github.com/GoogleChrome/lighthouse-ci/blob/master/docs/configuration.md#assert" rel="noopener">documentation</a>.</p>
+<h2 id="github-actions">Set up a GitHub Action to run Lighthouse CI <a class="w-headline-link" href="#github-actions">#</a></h2>
+<div class="w-aside w-aside--note">
+<p>This section assumes that you're familiar with git, GitHub, and
+GitHub Pull Requests. </div></p>
+<p>A <a href="https://github.com/features/actions" rel="noopener">GitHub Action</a> can be used to run
+Lighthouse CI. This will generate a new Lighthouse report every time that a code
+change is pushed to any branch of a GitHub repository. Use this in conjunction
+with a <a href="https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/about-status-checks" rel="noopener">status
+check</a>
+to display these results on each pull request.</p>
+<figure class="w-figure">
+  <img     alt="Screenshot of a GitHub status check"     class="w-screenshot"     decoding="async"     height="297"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/RZIfiOAPrst9Cxtxi9AX.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/RZIfiOAPrst9Cxtxi9AX.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/RZIfiOAPrst9Cxtxi9AX.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/RZIfiOAPrst9Cxtxi9AX.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/RZIfiOAPrst9Cxtxi9AX.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/RZIfiOAPrst9Cxtxi9AX.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/RZIfiOAPrst9Cxtxi9AX.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/RZIfiOAPrst9Cxtxi9AX.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/RZIfiOAPrst9Cxtxi9AX.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/RZIfiOAPrst9Cxtxi9AX.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/RZIfiOAPrst9Cxtxi9AX.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/RZIfiOAPrst9Cxtxi9AX.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/RZIfiOAPrst9Cxtxi9AX.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/RZIfiOAPrst9Cxtxi9AX.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/RZIfiOAPrst9Cxtxi9AX.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/RZIfiOAPrst9Cxtxi9AX.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/RZIfiOAPrst9Cxtxi9AX.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/RZIfiOAPrst9Cxtxi9AX.png?auto=format&w=1600 1600w"          width="800"   />
+</figure>
+<ol>
+<li>
+<p>In the root of your repository, create a directory named
+<code>.github/workflows</code>. The
+<a href="https://help.github.com/en/actions/configuring-and-managing-workflows/configuring-a-workflow#about-workflows" rel="noopener">workflows</a>
+for your project will go in this directory. A workflow is a process that
+runs at a predetermined time (for example, when code is pushed) and is
+composed of one or more actions.</p>
+<web-copy-code><pre class="language-shell"><code class="language-shell"><span class="token function">mkdir</span> .github<br><span class="token function">mkdir</span> .github/workflows</code></pre>
+</web-copy-code></li>
+<li>
+<p>In <code>.github/workflows</code> create a file named <code>lighthouse-ci.yaml</code>. This file
+will hold the configuration for a new workflow.</p>
+<web-copy-code><pre class="language-shell"><code class="language-shell"><span class="token function">touch</span> lighthouse-ci.yaml</code></pre>
+</web-copy-code></li>
+<li>
+<p>Add the following text to <code>lighthouse-ci.yaml</code>.</p>
+<web-copy-code><pre class="language-yaml"><code class="language-yaml"><span class="token key atrule">name</span><span class="token punctuation">:</span> Build project and run Lighthouse CI<br><span class="token key atrule">on</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>push<span class="token punctuation">]</span><br><span class="token key atrule">jobs</span><span class="token punctuation">:</span><br>  <span class="token key atrule">lhci</span><span class="token punctuation">:</span><br>    <span class="token key atrule">name</span><span class="token punctuation">:</span> Lighthouse CI<br>    <span class="token key atrule">runs-on</span><span class="token punctuation">:</span> ubuntu<span class="token punctuation">-</span>latest<br>    <span class="token key atrule">steps</span><span class="token punctuation">:</span><br>      <span class="token punctuation">-</span> <span class="token key atrule">uses</span><span class="token punctuation">:</span> actions/checkout@v1<br>      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Use Node.js 10.x<br>        <span class="token key atrule">uses</span><span class="token punctuation">:</span> actions/setup<span class="token punctuation">-</span>node@v1<br>        <span class="token key atrule">with</span><span class="token punctuation">:</span><br>          <span class="token key atrule">node-version</span><span class="token punctuation">:</span> 10.x<br>      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> npm install<br>        <span class="token key atrule">run</span><span class="token punctuation">:</span> <span class="token punctuation">|</span><span class="token scalar string"><br>          npm install</span><br>      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> run Lighthouse CI<br>        <span class="token key atrule">run</span><span class="token punctuation">:</span> <span class="token punctuation">|</span><span class="token scalar string"><br>          npm install -g @lhci/cli@0.3.x<br>          lhci autorun --upload.target=temporary-public-storage || echo "LHCI failed!"</span></code></pre>
+</web-copy-code><p>This configuration sets up a workflow consisting of a single job that will run
+whenever new code is pushed to the repository. This job has four steps:</p>
+<ul>
+<li>Check out the repository that Lighthouse CI will be run against</li>
+<li>Install and configure Node</li>
+<li>Install required npm packages</li>
+<li>Run Lighthouse CI and upload the results to temporary public storage.</li>
+</ul>
+</li>
+<li>
+<p>Commit these changes and push them to GitHub. If you've correctly followed
+the steps above, pushing code to GitHub will trigger running the workflow
+you just added.</p>
+</li>
+<li>
+<p>To confirm that Lighthouse CI has triggered and to view the report it
+generated, go to the <strong>Actions</strong> tab of your project. You should see the
+<strong>Build project and Run Lighthouse CI</strong> workflow listed under your most
+recent commit.</p>
+<figure class="w-figure">
+  <img     alt="Screenshot of the Github &#x27;Settings&#x27; tab"     class="w-screenshot"     decoding="async"     height="216"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/ougavsYk6faiNidNxIGQ.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/ougavsYk6faiNidNxIGQ.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/ougavsYk6faiNidNxIGQ.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/ougavsYk6faiNidNxIGQ.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/ougavsYk6faiNidNxIGQ.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/ougavsYk6faiNidNxIGQ.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/ougavsYk6faiNidNxIGQ.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/ougavsYk6faiNidNxIGQ.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/ougavsYk6faiNidNxIGQ.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/ougavsYk6faiNidNxIGQ.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/ougavsYk6faiNidNxIGQ.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/ougavsYk6faiNidNxIGQ.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/ougavsYk6faiNidNxIGQ.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/ougavsYk6faiNidNxIGQ.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/ougavsYk6faiNidNxIGQ.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/ougavsYk6faiNidNxIGQ.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/ougavsYk6faiNidNxIGQ.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/ougavsYk6faiNidNxIGQ.png?auto=format&w=1600 1600w"          width="800"   />
+</figure>
+<p>You can navigate to the Lighthouse report corresponding to a particular commit
+from the <strong>Actions</strong> tab. Click on the commit, click on the <strong>Lighthouse CI</strong>
+workflow step, then expand the results of the <strong>run Lighthouse CI</strong> step.</p>
+<figure class="w-figure">
+  <img     alt="Screenshot of the Github &#x27;Settings&#x27; tab"     class="w-screenshot"     decoding="async"     height="366"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/aJF6FVHGOPpGNxKB3LjY.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/aJF6FVHGOPpGNxKB3LjY.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/aJF6FVHGOPpGNxKB3LjY.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/aJF6FVHGOPpGNxKB3LjY.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/aJF6FVHGOPpGNxKB3LjY.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/aJF6FVHGOPpGNxKB3LjY.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/aJF6FVHGOPpGNxKB3LjY.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/aJF6FVHGOPpGNxKB3LjY.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/aJF6FVHGOPpGNxKB3LjY.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/aJF6FVHGOPpGNxKB3LjY.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/aJF6FVHGOPpGNxKB3LjY.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/aJF6FVHGOPpGNxKB3LjY.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/aJF6FVHGOPpGNxKB3LjY.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/aJF6FVHGOPpGNxKB3LjY.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/aJF6FVHGOPpGNxKB3LjY.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/aJF6FVHGOPpGNxKB3LjY.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/aJF6FVHGOPpGNxKB3LjY.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/aJF6FVHGOPpGNxKB3LjY.png?auto=format&w=1600 1600w"          width="800"   />
+</figure>
+<p>You've just set up a GitHub Action to run Lighthouse CI. This will be most
+useful when used in conjunction with a GitHub <a href="https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/about-status-checks" rel="noopener">status
+check</a>.</p>
+</li>
+</ol>
+<h3 id="github-status-checks">Set up a GitHub status check <a class="w-headline-link" href="#github-status-checks">#</a></h3>
+<p>A status check, if configured, is a message that appears on every PR and
+typically includes information such as the results of a test or the success of a
+build.</p>
+<figure class="w-figure">
+  <img     alt="Screenshot of the Github &#x27;Settings&#x27; tab"     class="w-screenshot"     decoding="async"     height="297"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/RZIfiOAPrst9Cxtxi9AX.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/RZIfiOAPrst9Cxtxi9AX.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/RZIfiOAPrst9Cxtxi9AX.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/RZIfiOAPrst9Cxtxi9AX.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/RZIfiOAPrst9Cxtxi9AX.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/RZIfiOAPrst9Cxtxi9AX.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/RZIfiOAPrst9Cxtxi9AX.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/RZIfiOAPrst9Cxtxi9AX.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/RZIfiOAPrst9Cxtxi9AX.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/RZIfiOAPrst9Cxtxi9AX.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/RZIfiOAPrst9Cxtxi9AX.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/RZIfiOAPrst9Cxtxi9AX.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/RZIfiOAPrst9Cxtxi9AX.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/RZIfiOAPrst9Cxtxi9AX.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/RZIfiOAPrst9Cxtxi9AX.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/RZIfiOAPrst9Cxtxi9AX.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/RZIfiOAPrst9Cxtxi9AX.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/RZIfiOAPrst9Cxtxi9AX.png?auto=format&w=1600 1600w"          width="800"   />
+</figure>
+<p>The steps below explain how to set up a status check for Lighthouse CI.</p>
+<ol>
+<li>
+<p>Go to the <a href="https://github.com/apps/lighthouse-ci" rel="noopener">Lighthouse CI GitHub App
+page</a> and click <strong>Configure</strong>.</p>
+</li>
+<li>
+<p>(Optional) If you're part of multiple organizations on GitHub, choose the
+organization that owns the repository for which you want to use Lighthouse
+CI.</p>
+</li>
+<li>
+<p>Select <strong>All repositories</strong> if you want to enable Lighthouse CI in all
+repositories or select <strong>Only select repositories</strong> if you only want to use
+it in specific repositories, and then select the repositories. Then click
+<strong>Install &amp; Authorize</strong>.</p>
+</li>
+<li>
+<p>Copy the token that is displayed. You'll use it in the next step.</p>
+</li>
+<li>
+<p>To add the token, navigate to the <strong>Settings</strong> page of your GitHub
+repository, click <strong>Secrets</strong>, then click <strong>Add a new secret</strong>.</p>
+<figure class="w-figure">
+  <img     alt="Screenshot of the Github &#x27;Settings&#x27; tab"     class="w-screenshot"     decoding="async"     height="375"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/ZYH9cOHehImZLI6vov1r.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/ZYH9cOHehImZLI6vov1r.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/ZYH9cOHehImZLI6vov1r.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/ZYH9cOHehImZLI6vov1r.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/ZYH9cOHehImZLI6vov1r.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/ZYH9cOHehImZLI6vov1r.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/ZYH9cOHehImZLI6vov1r.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/ZYH9cOHehImZLI6vov1r.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/ZYH9cOHehImZLI6vov1r.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/ZYH9cOHehImZLI6vov1r.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/ZYH9cOHehImZLI6vov1r.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/ZYH9cOHehImZLI6vov1r.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/ZYH9cOHehImZLI6vov1r.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/ZYH9cOHehImZLI6vov1r.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/ZYH9cOHehImZLI6vov1r.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/ZYH9cOHehImZLI6vov1r.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/ZYH9cOHehImZLI6vov1r.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/ZYH9cOHehImZLI6vov1r.png?auto=format&w=1600 1600w"          width="800"   />
+</figure>
+</li>
+<li>
+<p>Set the <strong>Name</strong> field to <code>LHCI_GITHUB_APP_TOKEN</code> and set the <strong>Value</strong>
+field to the token that you copied in the last step and then click the <strong>Add
+secret</strong> button.</p>
+</li>
+<li>
+<p>The status check is ready for use. To test it, <a href="https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request" rel="noopener">create a new pull
+request</a>
+or push a commit to an existing pull request.</p>
+</li>
+</ol>
+<h2 id="server-setup">Set up the Lighthouse CI Server <a class="w-headline-link" href="#server-setup">#</a></h2>
+<p>The Lighthouse CI server provides a dashboard for exploring historical
+Lighthouse reporting. It can also act as a private, long-term datastore for
+Lighthouse reports.</p>
+<figure class="w-figure">
+  <img     alt="Screenshot of the Lighthouse CI Server dashboard"     class="w-screenshot"     decoding="async"     height="581"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/4xv6LLe6G48weVNl1CO1.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/4xv6LLe6G48weVNl1CO1.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/4xv6LLe6G48weVNl1CO1.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/4xv6LLe6G48weVNl1CO1.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/4xv6LLe6G48weVNl1CO1.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/4xv6LLe6G48weVNl1CO1.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/4xv6LLe6G48weVNl1CO1.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/4xv6LLe6G48weVNl1CO1.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/4xv6LLe6G48weVNl1CO1.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/4xv6LLe6G48weVNl1CO1.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/4xv6LLe6G48weVNl1CO1.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/4xv6LLe6G48weVNl1CO1.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/4xv6LLe6G48weVNl1CO1.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/4xv6LLe6G48weVNl1CO1.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/4xv6LLe6G48weVNl1CO1.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/4xv6LLe6G48weVNl1CO1.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/4xv6LLe6G48weVNl1CO1.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/4xv6LLe6G48weVNl1CO1.png?auto=format&w=1600 1600w"          width="800"   />
+</figure>
+<figure class="w-figure">
+  <img     alt="Screenshot of comparing two Lighthouse reports in Lighthouse CI Server"     class="w-screenshot"     decoding="async"     height="556"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/vp9hVBQGZk01fUMpIQ1Z.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/vp9hVBQGZk01fUMpIQ1Z.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/vp9hVBQGZk01fUMpIQ1Z.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/vp9hVBQGZk01fUMpIQ1Z.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/vp9hVBQGZk01fUMpIQ1Z.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/vp9hVBQGZk01fUMpIQ1Z.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/vp9hVBQGZk01fUMpIQ1Z.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/vp9hVBQGZk01fUMpIQ1Z.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/vp9hVBQGZk01fUMpIQ1Z.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/vp9hVBQGZk01fUMpIQ1Z.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/vp9hVBQGZk01fUMpIQ1Z.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/vp9hVBQGZk01fUMpIQ1Z.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/vp9hVBQGZk01fUMpIQ1Z.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/vp9hVBQGZk01fUMpIQ1Z.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/vp9hVBQGZk01fUMpIQ1Z.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/vp9hVBQGZk01fUMpIQ1Z.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/vp9hVBQGZk01fUMpIQ1Z.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/vp9hVBQGZk01fUMpIQ1Z.png?auto=format&w=1600 1600w"          width="800"   />
+</figure>
+<ol>
+<li>Choose which commits to compare.</li>
+<li>The amount that the Lighthouse score has changed between the two commits.</li>
+<li>This section only shows metrics that have changed between the two commits.</li>
+<li>Regressions are highlighted in pink.</li>
+<li>Improvements are highlighted in blue.</li>
+</ol>
+<p>Lighthouse CI Server is best-suited to users who are comfortable deploying and
+managing their own infrastructure.</p>
+<p>For information on setting up the Lighthouse CI server, including recipes for
+using Heroku and Docker for deployment, refer to these
+<a href="https://github.com/GoogleChrome/lighthouse-ci/blob/master/docs/server.md" rel="noopener">instructions</a>.</p>
+<h2 id="find-out-more">Find out more <a class="w-headline-link" href="#find-out-more">#</a></h2>
+<ul>
+<li><a href="https://github.com/GoogleChrome/lighthouse-ci" rel="noopener">Lighthouse CI GitHub repo</a></li>
+</ul>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/performance/">Performance</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/lighthouse/">Lighthouse</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Jul 27, 2020</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/lighthouse-ci/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions="api"></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

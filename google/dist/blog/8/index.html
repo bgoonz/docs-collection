@@ -1,0 +1,2947 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="/css/main.css?v=6f2eee89ad66e" />
+
+    <link
+      rel="preload"
+      as="font"
+      crossorigin
+      href="/fonts/material-icons/regular.woff2"
+    />
+
+    <link
+      rel="preload"
+      as="font"
+      crossorigin
+      href="/fonts/google-sans/regular/latin.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      crossorigin
+      href="/fonts/google-sans/bold/latin.woff2"
+    />
+
+    <meta name="theme-color" content="#fff" />
+
+    <title>Blog</title>
+    <meta
+      name="description"
+      content="Our latest news, updates, and stories for developers"
+    />
+
+    <link rel="canonical" href="https://web.dev/blog/8/" />
+
+    <meta itemprop="name" content="Blog" />
+    <meta
+      itemprop="description"
+      content="Our latest news, updates, and stories for developers"
+    />
+    <meta
+      itemprop="image"
+      content="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vU99HKzIf5EUPnzGVPf1.png?auto=format&fit=max&w=1200&fm=auto"
+    />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://web.dev/blog/8/" />
+    <meta property="og:site_name" content="web.dev" />
+    <meta property="og:title" content="Blog" />
+    <meta
+      property="og:description"
+      content="Our latest news, updates, and stories for developers"
+    />
+    <meta
+      property="og:image"
+      content="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vU99HKzIf5EUPnzGVPf1.png?auto=format&fit=max&w=1200&fm=auto"
+    />
+    <meta property="og:image:alt" content="" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Blog" />
+    <meta
+      name="twitter:description"
+      content="Our latest news, updates, and stories for developers"
+    />
+    <meta
+      name="twitter:image"
+      content="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vU99HKzIf5EUPnzGVPf1.png?auto=format&fit=max&w=1200&fm=auto"
+    />
+    <link
+      rel="alternate"
+      href="/feed.xml"
+      type="application/atom+xml"
+      data-title="web.dev feed"
+    />
+
+    <link rel="manifest" href="/manifest.webmanifest" />
+
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/images/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/images/favicon-16x16.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/images/apple-touch-icon.png"
+    />
+    <link
+      rel="mask-icon"
+      color="#0054ff"
+      href="/images/safari-pinned-tab.svg"
+    />
+
+    <script>
+      window.ga =
+        window.ga ||
+        function () {
+          (ga.q = ga.q || []).push(arguments);
+        };
+      ga.l = +new Date();
+      ga("create", "UA-126406676-2");
+      ga("set", "transport", "beacon");
+      ga("set", "anonymizeIp", true);
+      ga("set", "page", window.location.pathname);
+      ga("set", "dimension5", "4");
+      ga("send", "pageview");
+    </script>
+
+    <script>
+      function loadScript(url, type) {
+        const s = document.createElement("script");
+        s.src = url;
+        if (type) {
+          s.type = type;
+        }
+        if (type === "module") {
+          s.async = false; // Preserve load order.
+          const pre = document.createElement("link");
+          pre.rel = "modulepreload";
+          pre.href = url;
+          document.head.append(pre);
+          // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+          window.addEventListener("DOMContentLoaded", () => {
+            document.head.append(s);
+          });
+        } else {
+          document.head.append(s);
+        }
+      }
+      loadScript("/js/app.js?v=fa53eaf9d884a", "module");
+
+      loadScript("/js/default.js?v=d9593e9848e0d", "module");
+
+      loadScript("https://www.google-analytics.com/analytics.js", null);
+    </script>
+  </head>
+  <body class="unresolved">
+    <web-snackbar-container></web-snackbar-container>
+
+    <web-header class="header-default" role="navigation">
+      <button
+        data-open-drawer-button
+        class="w-button--svg w-button--round"
+        aria-label="Open menu"
+      >
+        <svg
+          class="icon"
+          role="img"
+          aria-label="menu"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          height="24"
+          width="24"
+        >
+          <path d="M0 0h24v24H0z" fill="none" />
+          <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
+        </svg>
+
+        <span class="w-tooltip w-tooltip--left">Open menu</span>
+      </button>
+
+      <a
+        href="/"
+        class="header-default__logo-link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Site logo"
+      >
+        <img
+          class="header-default__logo"
+          width="125"
+          height="30"
+          src="/images/lockup.svg"
+          alt="web.dev"
+        />
+      </a>
+
+      <div class="header-default__middle">
+        <div class="header-default__links">
+          <a
+            href="/learn/"
+            class="header-default__link gc-analytics-event"
+            data-category="Site-Wide Custom Events"
+            data-label="Tab: Learn"
+          >
+            Learn
+          </a>
+
+          <a
+            href="/measure/"
+            class="header-default__link gc-analytics-event"
+            data-category="Site-Wide Custom Events"
+            data-label="Tab: Measure"
+          >
+            Measure
+          </a>
+
+          <a
+            href="/blog/"
+            class="header-default__link gc-analytics-event"
+            data-category="Site-Wide Custom Events"
+            data-label="Tab: Blog"
+          >
+            Blog
+          </a>
+
+          <a
+            href="/about/"
+            class="header-default__link gc-analytics-event"
+            data-category="Site-Wide Custom Events"
+            data-label="Tab: About"
+          >
+            About
+          </a>
+        </div>
+        <web-search results-id="search-main-results"></web-search>
+        <web-search-results id="search-main-results"></web-search-results>
+      </div>
+
+      <web-profile-switcher-container></web-profile-switcher-container>
+    </web-header>
+
+    <web-navigation-drawer class="drawer-default" type="modal">
+      <nav data-drawer-container>
+        <div class="drawer-default__contents">
+          <div class="drawer-default__header">
+            <button
+              data-drawer-close-button
+              class="drawer-default__hide w-button--svg w-button--round"
+              aria-label="Close"
+            >
+              <svg
+                class="icon"
+                role="img"
+                aria-label="close"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                height="24"
+                width="24"
+              >
+                <path d="M0 0h24v24H0z" fill="none" />
+                <path
+                  d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+                />
+              </svg>
+
+              <span class="w-tooltip">Close</span>
+            </button>
+            <a
+              href="/"
+              class="gc-analytics-event"
+              data-category="Site-Wide Custom Events"
+              data-label="Site logo"
+            >
+              <img
+                width="125"
+                height="30"
+                class="drawer-default__logo"
+                src="/images/lockup.svg"
+                alt="web.dev"
+              />
+            </a>
+          </div>
+          <a
+            href="/learn/"
+            class="drawer-default__link gc-analytics-event"
+            data-category="Site-Wide Custom Events"
+            data-label="SideNav: Learn"
+          >
+            Learn
+          </a>
+          <a
+            href="/measure/"
+            class="drawer-default__link gc-analytics-event"
+            data-category="Site-Wide Custom Events"
+            data-label="SideNav: Measure"
+          >
+            Measure
+          </a>
+          <a
+            href="/blog/"
+            class="drawer-default__link gc-analytics-event"
+            data-category="Site-Wide Custom Events"
+            data-label="SideNav: Blog"
+          >
+            Blog
+          </a>
+          <a
+            href="/about/"
+            class="drawer-default__link gc-analytics-event"
+            data-category="Site-Wide Custom Events"
+            data-label="SideNav: About"
+          >
+            About
+          </a>
+        </div>
+      </nav>
+    </web-navigation-drawer>
+
+    <main>
+      <div id="content">
+        <div class="blog-landing-page">
+          <div class="w-actions">
+            <a
+              class="
+                w-actions__fab w-actions__fab--subscribe
+                gc-analytics-event
+              "
+              data-category="web.dev"
+              data-label="view-subscribe"
+              data-action="click"
+              href="/newsletter/"
+            >
+              <span>subscribe</span>
+            </a>
+          </div>
+
+          <div class="w-layout-container w-pb--non">
+            <header class="w-page-header">
+              <h1 class="w-page-header__headline">Blog</h1>
+              <p class="w-page-header__copy">
+                Our latest news, updates, and stories for developers
+              </p>
+            </header>
+          </div>
+
+          <section class="w-grid">
+            <div class="w-grid__columns w-grid__columns--three" role="list">
+              <div class="w-card" role="listitem">
+                <article class="w-card-base w-card-base__with--cover">
+                  <div class="w-card-base__cover">
+                    <a
+                      href="/optimize-fid/"
+                      class="w-card-base__link"
+                      tabindex="-1"
+                      aria-hidden="true"
+                    >
+                      <figure class="w-card-base__figure">
+                        <img
+                          alt="A hand touching a smartphone screen"
+                          class="w-card-base__image"
+                          decoding="async"
+                          height="240"
+                          loading="lazy"
+                          sizes="(min-width: 354px) 354px, calc(100vw - 48px)"
+                          src="https://web-dev.imgix.net/image/admin/WH0KlcJXJlxvsxU9ow2i.jpg?auto=format&fit=crop&h=240&w=354"
+                          srcset="
+                            https://web-dev.imgix.net/image/admin/WH0KlcJXJlxvsxU9ow2i.jpg?fit=crop&h=240&w=354&auto=format&dpr=1&q=75 1x,
+                            https://web-dev.imgix.net/image/admin/WH0KlcJXJlxvsxU9ow2i.jpg?fit=crop&h=240&w=354&auto=format&dpr=2&q=50 2x,
+                            https://web-dev.imgix.net/image/admin/WH0KlcJXJlxvsxU9ow2i.jpg?fit=crop&h=240&w=354&auto=format&dpr=3&q=35 3x,
+                            https://web-dev.imgix.net/image/admin/WH0KlcJXJlxvsxU9ow2i.jpg?fit=crop&h=240&w=354&auto=format&dpr=4&q=23 4x,
+                            https://web-dev.imgix.net/image/admin/WH0KlcJXJlxvsxU9ow2i.jpg?fit=crop&h=240&w=354&auto=format&dpr=5&q=20 5x
+                          "
+                          width="354"
+                        />
+                      </figure>
+                    </a>
+                  </div>
+
+                  <div class="w-card-base__blurb">
+                    <a href="/optimize-fid/" class="w-card-base__link">
+                      <h2 class="w-card-base__headline--with-image">
+                        Optimize First Input Delay
+                      </h2>
+                    </a>
+                    <div class="w-authors__card">
+                      <div class="w-author__image--row">
+                        <div class="w-author__image--row-item">
+                          <a href="/authors/addyosmani/"
+                            ><img
+                              alt="Addy Osmani"
+                              class="w-author__image w-author__image--small"
+                              decoding="async"
+                              height="40"
+                              loading="lazy"
+                              sizes="(min-width: 40px) 40px, calc(100vw - 48px)"
+                              src="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LJyNTOzyWbowv2mrlzPS.jpeg?auto=format&fit=crop&h=40&w=40"
+                              srcset="
+                                https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LJyNTOzyWbowv2mrlzPS.jpeg?fit=crop&h=40&w=40&auto=format&dpr=1&q=75 1x,
+                                https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LJyNTOzyWbowv2mrlzPS.jpeg?fit=crop&h=40&w=40&auto=format&dpr=2&q=50 2x,
+                                https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LJyNTOzyWbowv2mrlzPS.jpeg?fit=crop&h=40&w=40&auto=format&dpr=3&q=35 3x,
+                                https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LJyNTOzyWbowv2mrlzPS.jpeg?fit=crop&h=40&w=40&auto=format&dpr=4&q=23 4x,
+                                https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LJyNTOzyWbowv2mrlzPS.jpeg?fit=crop&h=40&w=40&auto=format&dpr=5&q=20 5x
+                              "
+                              width="40"
+                          /></a>
+                        </div>
+                        <div class="w-author__image--row-item">
+                          <a href="/authors/houssein/"
+                            ><img
+                              alt="Houssein Djirdeh"
+                              class="w-author__image w-author__image--small"
+                              decoding="async"
+                              height="40"
+                              loading="lazy"
+                              sizes="(min-width: 40px) 40px, calc(100vw - 48px)"
+                              src="https://web-dev.imgix.net/image/admin/BibySYHD7JweNcHZCCOe.jpg?auto=format&fit=crop&h=40&w=40"
+                              srcset="
+                                https://web-dev.imgix.net/image/admin/BibySYHD7JweNcHZCCOe.jpg?fit=crop&h=40&w=40&auto=format&dpr=1&q=75 1x,
+                                https://web-dev.imgix.net/image/admin/BibySYHD7JweNcHZCCOe.jpg?fit=crop&h=40&w=40&auto=format&dpr=2&q=50 2x,
+                                https://web-dev.imgix.net/image/admin/BibySYHD7JweNcHZCCOe.jpg?fit=crop&h=40&w=40&auto=format&dpr=3&q=35 3x,
+                                https://web-dev.imgix.net/image/admin/BibySYHD7JweNcHZCCOe.jpg?fit=crop&h=40&w=40&auto=format&dpr=4&q=23 4x,
+                                https://web-dev.imgix.net/image/admin/BibySYHD7JweNcHZCCOe.jpg?fit=crop&h=40&w=40&auto=format&dpr=5&q=20 5x
+                              "
+                              width="40"
+                          /></a>
+                        </div>
+                      </div>
+                      <div class="w-authors__card--holder">
+                        <span class="w-author__name"
+                          ><a
+                            class="w-author__name-link"
+                            href="/authors/houssein/"
+                            >Houssein Djirdeh</a
+                          >,
+                          <a
+                            class="w-author__name-link"
+                            href="/authors/addyosmani/"
+                            >Addy Osmani</a
+                          ></span
+                        >
+                        <div class="w-author__published">
+                          <time>May 5, 2020</time>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="w-card-base__desc">
+                      <a
+                        class="w-card-base__link"
+                        tabindex="-1"
+                        href="/optimize-fid/"
+                      >
+                        <p class="w-card-base__subhead">
+                          How to respond faster to user interactions.
+                        </p>
+                      </a>
+
+                      <div class="w-chips w-card__chips">
+                        <a class="w-chip" href="/tags/performance/"
+                          >Performance</a
+                        >
+
+                        <a class="w-chip" href="/tags/web-vitals/"
+                          >Web Vitals</a
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              </div>
+
+              <div class="w-card" role="listitem">
+                <article class="w-card-base w-card-base__with--cover">
+                  <div class="w-card-base__cover">
+                    <a
+                      href="/optimize-cls/"
+                      class="w-card-base__link"
+                      tabindex="-1"
+                      aria-hidden="true"
+                    >
+                      <figure class="w-card-base__figure">
+                        <img
+                          alt="Layout shifts can suddenly push the content you are reading or are about to click further down the page, leading to a poor user-experience. Reserving space for dynamic content causing layout shifts leads to a more delightful user experience."
+                          class="w-card-base__image"
+                          decoding="async"
+                          height="240"
+                          loading="lazy"
+                          sizes="(min-width: 354px) 354px, calc(100vw - 48px)"
+                          src="https://web-dev.imgix.net/image/admin/74TRx6aETydsBGa2IZ7R.png?auto=format&fit=crop&h=240&w=354"
+                          srcset="
+                            https://web-dev.imgix.net/image/admin/74TRx6aETydsBGa2IZ7R.png?fit=crop&h=240&w=354&auto=format&dpr=1&q=75 1x,
+                            https://web-dev.imgix.net/image/admin/74TRx6aETydsBGa2IZ7R.png?fit=crop&h=240&w=354&auto=format&dpr=2&q=50 2x,
+                            https://web-dev.imgix.net/image/admin/74TRx6aETydsBGa2IZ7R.png?fit=crop&h=240&w=354&auto=format&dpr=3&q=35 3x,
+                            https://web-dev.imgix.net/image/admin/74TRx6aETydsBGa2IZ7R.png?fit=crop&h=240&w=354&auto=format&dpr=4&q=23 4x,
+                            https://web-dev.imgix.net/image/admin/74TRx6aETydsBGa2IZ7R.png?fit=crop&h=240&w=354&auto=format&dpr=5&q=20 5x
+                          "
+                          width="354"
+                        />
+                      </figure>
+                    </a>
+                  </div>
+
+                  <div class="w-card-base__blurb">
+                    <a href="/optimize-cls/" class="w-card-base__link">
+                      <h2 class="w-card-base__headline--with-image">
+                        Optimize Cumulative Layout Shift
+                      </h2>
+                    </a>
+                    <div class="w-authors__card">
+                      <div class="w-author__image--row">
+                        <div class="w-author__image--row-item">
+                          <a href="/authors/addyosmani/"
+                            ><img
+                              alt="Addy Osmani"
+                              class="w-author__image w-author__image--small"
+                              decoding="async"
+                              height="40"
+                              loading="lazy"
+                              sizes="(min-width: 40px) 40px, calc(100vw - 48px)"
+                              src="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LJyNTOzyWbowv2mrlzPS.jpeg?auto=format&fit=crop&h=40&w=40"
+                              srcset="
+                                https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LJyNTOzyWbowv2mrlzPS.jpeg?fit=crop&h=40&w=40&auto=format&dpr=1&q=75 1x,
+                                https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LJyNTOzyWbowv2mrlzPS.jpeg?fit=crop&h=40&w=40&auto=format&dpr=2&q=50 2x,
+                                https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LJyNTOzyWbowv2mrlzPS.jpeg?fit=crop&h=40&w=40&auto=format&dpr=3&q=35 3x,
+                                https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LJyNTOzyWbowv2mrlzPS.jpeg?fit=crop&h=40&w=40&auto=format&dpr=4&q=23 4x,
+                                https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LJyNTOzyWbowv2mrlzPS.jpeg?fit=crop&h=40&w=40&auto=format&dpr=5&q=20 5x
+                              "
+                              width="40"
+                          /></a>
+                        </div>
+                      </div>
+                      <div class="w-authors__card--holder">
+                        <span class="w-author__name"
+                          ><a
+                            class="w-author__name-link"
+                            href="/authors/addyosmani/"
+                            >Addy Osmani</a
+                          ></span
+                        >
+                        <div class="w-author__updated">
+                          <time>Updated: Aug 20, 2020</time>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="w-card-base__desc">
+                      <a
+                        class="w-card-base__link"
+                        tabindex="-1"
+                        href="/optimize-cls/"
+                      >
+                        <p class="w-card-base__subhead">
+                          Learn how to avoid sudden layout shifts to improve
+                          user-experience
+                        </p>
+                      </a>
+
+                      <div class="w-chips w-card__chips">
+                        <a class="w-chip" href="/tags/performance/"
+                          >Performance</a
+                        >
+
+                        <a class="w-chip" href="/tags/web-vitals/"
+                          >Web Vitals</a
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              </div>
+
+              <div class="w-card" role="listitem">
+                <article class="w-card-base w-card-base__with--cover">
+                  <div class="w-card-base__cover">
+                    <a
+                      href="/why-coop-coep/"
+                      class="w-card-base__link"
+                      tabindex="-1"
+                      aria-hidden="true"
+                    >
+                      <figure class="w-card-base__figure">
+                        <img
+                          alt=""
+                          class="w-card-base__image"
+                          decoding="async"
+                          height="240"
+                          loading="lazy"
+                          sizes="(min-width: 354px) 354px, calc(100vw - 48px)"
+                          src="https://web-dev.imgix.net/image/admin/h8g1TQjkfkJSpWJrPakB.jpg?auto=format&fit=crop&h=240&w=354"
+                          srcset="
+                            https://web-dev.imgix.net/image/admin/h8g1TQjkfkJSpWJrPakB.jpg?fit=crop&h=240&w=354&auto=format&dpr=1&q=75 1x,
+                            https://web-dev.imgix.net/image/admin/h8g1TQjkfkJSpWJrPakB.jpg?fit=crop&h=240&w=354&auto=format&dpr=2&q=50 2x,
+                            https://web-dev.imgix.net/image/admin/h8g1TQjkfkJSpWJrPakB.jpg?fit=crop&h=240&w=354&auto=format&dpr=3&q=35 3x,
+                            https://web-dev.imgix.net/image/admin/h8g1TQjkfkJSpWJrPakB.jpg?fit=crop&h=240&w=354&auto=format&dpr=4&q=23 4x,
+                            https://web-dev.imgix.net/image/admin/h8g1TQjkfkJSpWJrPakB.jpg?fit=crop&h=240&w=354&auto=format&dpr=5&q=20 5x
+                          "
+                          width="354"
+                        />
+                      </figure>
+                    </a>
+                  </div>
+
+                  <div class="w-card-base__blurb">
+                    <a href="/why-coop-coep/" class="w-card-base__link">
+                      <h2 class="w-card-base__headline--with-image">
+                        Why you need &quot;cross-origin isolated&quot; for
+                        powerful features
+                      </h2>
+                    </a>
+                    <div class="w-authors__card">
+                      <div class="w-author__image--row">
+                        <div class="w-author__image--row-item">
+                          <a href="/authors/domenic/"
+                            ><img
+                              alt="Domenic Denicola"
+                              class="w-author__image w-author__image--small"
+                              decoding="async"
+                              height="40"
+                              loading="lazy"
+                              sizes="(min-width: 40px) 40px, calc(100vw - 48px)"
+                              src="https://web-dev.imgix.net/image/admin/HXHbHrl9qxcxCQK90yIc.jpg?auto=format&fit=crop&h=40&w=40"
+                              srcset="
+                                https://web-dev.imgix.net/image/admin/HXHbHrl9qxcxCQK90yIc.jpg?fit=crop&h=40&w=40&auto=format&dpr=1&q=75 1x,
+                                https://web-dev.imgix.net/image/admin/HXHbHrl9qxcxCQK90yIc.jpg?fit=crop&h=40&w=40&auto=format&dpr=2&q=50 2x,
+                                https://web-dev.imgix.net/image/admin/HXHbHrl9qxcxCQK90yIc.jpg?fit=crop&h=40&w=40&auto=format&dpr=3&q=35 3x,
+                                https://web-dev.imgix.net/image/admin/HXHbHrl9qxcxCQK90yIc.jpg?fit=crop&h=40&w=40&auto=format&dpr=4&q=23 4x,
+                                https://web-dev.imgix.net/image/admin/HXHbHrl9qxcxCQK90yIc.jpg?fit=crop&h=40&w=40&auto=format&dpr=5&q=20 5x
+                              "
+                              width="40"
+                          /></a>
+                        </div>
+                        <div class="w-author__image--row-item">
+                          <a href="/authors/agektmr/"
+                            ><img
+                              alt="Eiji Kitamura"
+                              class="w-author__image w-author__image--small"
+                              decoding="async"
+                              height="40"
+                              loading="lazy"
+                              sizes="(min-width: 40px) 40px, calc(100vw - 48px)"
+                              src="https://web-dev.imgix.net/image/admin/Mh9DRmQhjlroJM9JDqsu.jpg?auto=format&fit=crop&h=40&w=40"
+                              srcset="
+                                https://web-dev.imgix.net/image/admin/Mh9DRmQhjlroJM9JDqsu.jpg?fit=crop&h=40&w=40&auto=format&dpr=1&q=75 1x,
+                                https://web-dev.imgix.net/image/admin/Mh9DRmQhjlroJM9JDqsu.jpg?fit=crop&h=40&w=40&auto=format&dpr=2&q=50 2x,
+                                https://web-dev.imgix.net/image/admin/Mh9DRmQhjlroJM9JDqsu.jpg?fit=crop&h=40&w=40&auto=format&dpr=3&q=35 3x,
+                                https://web-dev.imgix.net/image/admin/Mh9DRmQhjlroJM9JDqsu.jpg?fit=crop&h=40&w=40&auto=format&dpr=4&q=23 4x,
+                                https://web-dev.imgix.net/image/admin/Mh9DRmQhjlroJM9JDqsu.jpg?fit=crop&h=40&w=40&auto=format&dpr=5&q=20 5x
+                              "
+                              width="40"
+                          /></a>
+                        </div>
+                      </div>
+                      <div class="w-authors__card--holder">
+                        <span class="w-author__name"
+                          ><a
+                            class="w-author__name-link"
+                            href="/authors/agektmr/"
+                            >Eiji Kitamura</a
+                          >,
+                          <a
+                            class="w-author__name-link"
+                            href="/authors/domenic/"
+                            >Domenic Denicola</a
+                          ></span
+                        >
+                        <div class="w-author__updated">
+                          <time>Updated: Apr 12, 2021</time>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="w-card-base__desc">
+                      <a
+                        class="w-card-base__link"
+                        tabindex="-1"
+                        href="/why-coop-coep/"
+                      >
+                        <p class="w-card-base__subhead">
+                          Learn why cross-origin isolation is needed to use
+                          powerful features such as `SharedArrayBuffer`,
+                          `performance.measureUserAgentSpecificMemory()`, high
+                          resolution timer with better precision and the JS
+                          Self-Profiling API.
+                        </p>
+                      </a>
+
+                      <div class="w-chips w-card__chips">
+                        <a class="w-chip" href="/tags/security/">Security</a>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              </div>
+
+              <div class="w-card" role="listitem">
+                <article class="w-card-base w-card-base__with--cover">
+                  <div class="w-card-base__cover">
+                    <a
+                      href="/profiling-web-audio-apps-in-chrome/"
+                      class="w-card-base__link"
+                      tabindex="-1"
+                      aria-hidden="true"
+                    >
+                      <figure class="w-card-base__figure">
+                        <img
+                          alt="Artistic image of microphone and pop filter"
+                          class="w-card-base__image"
+                          decoding="async"
+                          height="240"
+                          loading="lazy"
+                          sizes="(min-width: 354px) 354px, calc(100vw - 48px)"
+                          src="https://web-dev.imgix.net/image/admin/uXHdcVy0A8BFAdNr8bXu.jpg?auto=format&fit=crop&h=240&w=354"
+                          srcset="
+                            https://web-dev.imgix.net/image/admin/uXHdcVy0A8BFAdNr8bXu.jpg?fit=crop&h=240&w=354&auto=format&dpr=1&q=75 1x,
+                            https://web-dev.imgix.net/image/admin/uXHdcVy0A8BFAdNr8bXu.jpg?fit=crop&h=240&w=354&auto=format&dpr=2&q=50 2x,
+                            https://web-dev.imgix.net/image/admin/uXHdcVy0A8BFAdNr8bXu.jpg?fit=crop&h=240&w=354&auto=format&dpr=3&q=35 3x,
+                            https://web-dev.imgix.net/image/admin/uXHdcVy0A8BFAdNr8bXu.jpg?fit=crop&h=240&w=354&auto=format&dpr=4&q=23 4x,
+                            https://web-dev.imgix.net/image/admin/uXHdcVy0A8BFAdNr8bXu.jpg?fit=crop&h=240&w=354&auto=format&dpr=5&q=20 5x
+                          "
+                          width="354"
+                        />
+                      </figure>
+                    </a>
+                  </div>
+
+                  <div class="w-card-base__blurb">
+                    <a
+                      href="/profiling-web-audio-apps-in-chrome/"
+                      class="w-card-base__link"
+                    >
+                      <h2 class="w-card-base__headline--with-image">
+                        Profiling Web Audio apps in Chrome
+                      </h2>
+                    </a>
+                    <div class="w-authors__card">
+                      <div class="w-author__image--row">
+                        <div class="w-author__image--row-item">
+                          <a href="/authors/hongchanchoi/"
+                            ><img
+                              alt="Hongchan Choi"
+                              class="w-author__image w-author__image--small"
+                              decoding="async"
+                              height="40"
+                              loading="lazy"
+                              sizes="(min-width: 40px) 40px, calc(100vw - 48px)"
+                              src="https://web-dev.imgix.net/image/admin/YbudG6EUF3JjB7u1iLey.jpg?auto=format&fit=crop&h=40&w=40"
+                              srcset="
+                                https://web-dev.imgix.net/image/admin/YbudG6EUF3JjB7u1iLey.jpg?fit=crop&h=40&w=40&auto=format&dpr=1&q=75 1x,
+                                https://web-dev.imgix.net/image/admin/YbudG6EUF3JjB7u1iLey.jpg?fit=crop&h=40&w=40&auto=format&dpr=2&q=50 2x,
+                                https://web-dev.imgix.net/image/admin/YbudG6EUF3JjB7u1iLey.jpg?fit=crop&h=40&w=40&auto=format&dpr=3&q=35 3x,
+                                https://web-dev.imgix.net/image/admin/YbudG6EUF3JjB7u1iLey.jpg?fit=crop&h=40&w=40&auto=format&dpr=4&q=23 4x,
+                                https://web-dev.imgix.net/image/admin/YbudG6EUF3JjB7u1iLey.jpg?fit=crop&h=40&w=40&auto=format&dpr=5&q=20 5x
+                              "
+                              width="40"
+                          /></a>
+                        </div>
+                      </div>
+                      <div class="w-authors__card--holder">
+                        <span class="w-author__name"
+                          ><a
+                            class="w-author__name-link"
+                            href="/authors/hongchanchoi/"
+                            >Hongchan Choi</a
+                          ></span
+                        >
+                        <div class="w-author__published">
+                          <time>May 4, 2020</time>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="w-card-base__desc">
+                      <a
+                        class="w-card-base__link"
+                        tabindex="-1"
+                        href="/profiling-web-audio-apps-in-chrome/"
+                      >
+                        <p class="w-card-base__subhead">
+                          Learn how to profile the performance of Web Audio apps
+                          in Chrome using `about://tracing` and the **WebAudio**
+                          tab in DevTools.
+                        </p>
+                      </a>
+
+                      <div class="w-chips w-card__chips">
+                        <a class="w-chip" href="/tags/media/">Media</a>
+
+                        <a class="w-chip" href="/tags/memory/">Memory</a>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              </div>
+
+              <div class="w-card" role="listitem">
+                <article class="w-card-base w-card-base__with--cover">
+                  <div class="w-card-base__cover">
+                    <a
+                      href="/granular-chunking-nextjs/"
+                      class="w-card-base__link"
+                      tabindex="-1"
+                      aria-hidden="true"
+                    >
+                      <figure class="w-card-base__figure">
+                        <img
+                          alt="Jigsaw pieces connecting"
+                          class="w-card-base__image"
+                          decoding="async"
+                          height="240"
+                          loading="lazy"
+                          sizes="(min-width: 354px) 354px, calc(100vw - 48px)"
+                          src="https://web-dev.imgix.net/image/admin/G5NYXIUQZ3hUfbyOnt0r.png?auto=format&fit=crop&h=240&w=354"
+                          srcset="
+                            https://web-dev.imgix.net/image/admin/G5NYXIUQZ3hUfbyOnt0r.png?fit=crop&h=240&w=354&auto=format&dpr=1&q=75 1x,
+                            https://web-dev.imgix.net/image/admin/G5NYXIUQZ3hUfbyOnt0r.png?fit=crop&h=240&w=354&auto=format&dpr=2&q=50 2x,
+                            https://web-dev.imgix.net/image/admin/G5NYXIUQZ3hUfbyOnt0r.png?fit=crop&h=240&w=354&auto=format&dpr=3&q=35 3x,
+                            https://web-dev.imgix.net/image/admin/G5NYXIUQZ3hUfbyOnt0r.png?fit=crop&h=240&w=354&auto=format&dpr=4&q=23 4x,
+                            https://web-dev.imgix.net/image/admin/G5NYXIUQZ3hUfbyOnt0r.png?fit=crop&h=240&w=354&auto=format&dpr=5&q=20 5x
+                          "
+                          width="354"
+                        />
+                      </figure>
+                    </a>
+                  </div>
+
+                  <div class="w-card-base__blurb">
+                    <a
+                      href="/granular-chunking-nextjs/"
+                      class="w-card-base__link"
+                    >
+                      <h2 class="w-card-base__headline--with-image">
+                        Improved Next.js and Gatsby page load performance with
+                        granular chunking
+                      </h2>
+                    </a>
+                    <div class="w-authors__card">
+                      <div class="w-author__image--row">
+                        <div class="w-author__image--row-item">
+                          <a href="/authors/houssein/"
+                            ><img
+                              alt="Houssein Djirdeh"
+                              class="w-author__image w-author__image--small"
+                              decoding="async"
+                              height="40"
+                              loading="lazy"
+                              sizes="(min-width: 40px) 40px, calc(100vw - 48px)"
+                              src="https://web-dev.imgix.net/image/admin/BibySYHD7JweNcHZCCOe.jpg?auto=format&fit=crop&h=40&w=40"
+                              srcset="
+                                https://web-dev.imgix.net/image/admin/BibySYHD7JweNcHZCCOe.jpg?fit=crop&h=40&w=40&auto=format&dpr=1&q=75 1x,
+                                https://web-dev.imgix.net/image/admin/BibySYHD7JweNcHZCCOe.jpg?fit=crop&h=40&w=40&auto=format&dpr=2&q=50 2x,
+                                https://web-dev.imgix.net/image/admin/BibySYHD7JweNcHZCCOe.jpg?fit=crop&h=40&w=40&auto=format&dpr=3&q=35 3x,
+                                https://web-dev.imgix.net/image/admin/BibySYHD7JweNcHZCCOe.jpg?fit=crop&h=40&w=40&auto=format&dpr=4&q=23 4x,
+                                https://web-dev.imgix.net/image/admin/BibySYHD7JweNcHZCCOe.jpg?fit=crop&h=40&w=40&auto=format&dpr=5&q=20 5x
+                              "
+                              width="40"
+                          /></a>
+                        </div>
+                      </div>
+                      <div class="w-authors__card--holder">
+                        <span class="w-author__name"
+                          ><a
+                            class="w-author__name-link"
+                            href="/authors/houssein/"
+                            >Houssein Djirdeh</a
+                          ></span
+                        >
+                        <div class="w-author__published">
+                          <time>Apr 29, 2020</time>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="w-card-base__desc">
+                      <a
+                        class="w-card-base__link"
+                        tabindex="-1"
+                        href="/granular-chunking-nextjs/"
+                      >
+                        <p class="w-card-base__subhead">
+                          A newer webpack chunking strategy in Next.js and
+                          Gatsby minimizes duplicate code to improve page load
+                          performance.
+                        </p>
+                      </a>
+
+                      <div class="w-chips w-card__chips">
+                        <a class="w-chip" href="/tags/performance/"
+                          >Performance</a
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              </div>
+
+              <div class="w-card" role="listitem">
+                <article class="w-card-base w-card-base__with--cover">
+                  <div class="w-card-base__cover">
+                    <a
+                      href="/storage-for-the-web/"
+                      class="w-card-base__link"
+                      tabindex="-1"
+                      aria-hidden="true"
+                    >
+                      <figure class="w-card-base__figure">
+                        <img
+                          alt="Stack of shipping containers"
+                          class="w-card-base__image"
+                          decoding="async"
+                          height="240"
+                          loading="lazy"
+                          sizes="(min-width: 354px) 354px, calc(100vw - 48px)"
+                          src="https://web-dev.imgix.net/image/admin/c8u2hKEFoFfgTsmcKeuK.jpg?auto=format&fit=crop&h=240&w=354"
+                          srcset="
+                            https://web-dev.imgix.net/image/admin/c8u2hKEFoFfgTsmcKeuK.jpg?fit=crop&h=240&w=354&auto=format&dpr=1&q=75 1x,
+                            https://web-dev.imgix.net/image/admin/c8u2hKEFoFfgTsmcKeuK.jpg?fit=crop&h=240&w=354&auto=format&dpr=2&q=50 2x,
+                            https://web-dev.imgix.net/image/admin/c8u2hKEFoFfgTsmcKeuK.jpg?fit=crop&h=240&w=354&auto=format&dpr=3&q=35 3x,
+                            https://web-dev.imgix.net/image/admin/c8u2hKEFoFfgTsmcKeuK.jpg?fit=crop&h=240&w=354&auto=format&dpr=4&q=23 4x,
+                            https://web-dev.imgix.net/image/admin/c8u2hKEFoFfgTsmcKeuK.jpg?fit=crop&h=240&w=354&auto=format&dpr=5&q=20 5x
+                          "
+                          width="354"
+                        />
+                      </figure>
+                    </a>
+                  </div>
+
+                  <div class="w-card-base__blurb">
+                    <a href="/storage-for-the-web/" class="w-card-base__link">
+                      <h2 class="w-card-base__headline--with-image">
+                        Storage for the web
+                      </h2>
+                    </a>
+                    <div class="w-authors__card">
+                      <div class="w-author__image--row">
+                        <div class="w-author__image--row-item">
+                          <a href="/authors/petelepage/"
+                            ><img
+                              alt="Pete LePage"
+                              class="w-author__image w-author__image--small"
+                              decoding="async"
+                              height="40"
+                              loading="lazy"
+                              sizes="(min-width: 40px) 40px, calc(100vw - 48px)"
+                              src="https://web-dev.imgix.net/image/0g2WvpbGRGdVs0aAPc6ObG7gkud2/3rFbsLsMMk1VveHfBRSu.jpg?auto=format&fit=crop&h=40&w=40"
+                              srcset="
+                                https://web-dev.imgix.net/image/0g2WvpbGRGdVs0aAPc6ObG7gkud2/3rFbsLsMMk1VveHfBRSu.jpg?fit=crop&h=40&w=40&auto=format&dpr=1&q=75 1x,
+                                https://web-dev.imgix.net/image/0g2WvpbGRGdVs0aAPc6ObG7gkud2/3rFbsLsMMk1VveHfBRSu.jpg?fit=crop&h=40&w=40&auto=format&dpr=2&q=50 2x,
+                                https://web-dev.imgix.net/image/0g2WvpbGRGdVs0aAPc6ObG7gkud2/3rFbsLsMMk1VveHfBRSu.jpg?fit=crop&h=40&w=40&auto=format&dpr=3&q=35 3x,
+                                https://web-dev.imgix.net/image/0g2WvpbGRGdVs0aAPc6ObG7gkud2/3rFbsLsMMk1VveHfBRSu.jpg?fit=crop&h=40&w=40&auto=format&dpr=4&q=23 4x,
+                                https://web-dev.imgix.net/image/0g2WvpbGRGdVs0aAPc6ObG7gkud2/3rFbsLsMMk1VveHfBRSu.jpg?fit=crop&h=40&w=40&auto=format&dpr=5&q=20 5x
+                              "
+                              width="40"
+                          /></a>
+                        </div>
+                      </div>
+                      <div class="w-authors__card--holder">
+                        <span class="w-author__name"
+                          ><a
+                            class="w-author__name-link"
+                            href="/authors/petelepage/"
+                            >Pete LePage</a
+                          ></span
+                        >
+                        <div class="w-author__updated">
+                          <time>Updated: Feb 11, 2021</time>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="w-card-base__desc">
+                      <a
+                        class="w-card-base__link"
+                        tabindex="-1"
+                        href="/storage-for-the-web/"
+                      >
+                        <p class="w-card-base__subhead">
+                          There are many different options for storing data in
+                          the browser. Which one is best for your needs?
+                        </p>
+                      </a>
+
+                      <div class="w-chips w-card__chips">
+                        <a class="w-chip" href="/tags/progressive-web-apps/"
+                          >Progressive Web Apps</a
+                        >
+
+                        <a class="w-chip" href="/tags/storage/">Storage</a>
+
+                        <a class="w-chip" href="/tags/memory/">Memory</a>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              </div>
+
+              <div class="w-card" role="listitem">
+                <article class="w-card-base w-card-base__with--cover">
+                  <div class="w-card-base__cover">
+                    <a
+                      href="/monitor-total-page-memory-usage/"
+                      class="w-card-base__link"
+                      tabindex="-1"
+                      aria-hidden="true"
+                    >
+                      <figure class="w-card-base__figure">
+                        <img
+                          alt="Green RAM stick. Photo by Harrison Broadbent on Unsplash."
+                          class="w-card-base__image"
+                          decoding="async"
+                          height="240"
+                          loading="lazy"
+                          sizes="(min-width: 354px) 354px, calc(100vw - 48px)"
+                          src="https://web-dev.imgix.net/image/admin/Ne2U4cUtHG6bJ0YeIkt5.jpg?auto=format&fit=crop&h=240&w=354"
+                          srcset="
+                            https://web-dev.imgix.net/image/admin/Ne2U4cUtHG6bJ0YeIkt5.jpg?fit=crop&h=240&w=354&auto=format&dpr=1&q=75 1x,
+                            https://web-dev.imgix.net/image/admin/Ne2U4cUtHG6bJ0YeIkt5.jpg?fit=crop&h=240&w=354&auto=format&dpr=2&q=50 2x,
+                            https://web-dev.imgix.net/image/admin/Ne2U4cUtHG6bJ0YeIkt5.jpg?fit=crop&h=240&w=354&auto=format&dpr=3&q=35 3x,
+                            https://web-dev.imgix.net/image/admin/Ne2U4cUtHG6bJ0YeIkt5.jpg?fit=crop&h=240&w=354&auto=format&dpr=4&q=23 4x,
+                            https://web-dev.imgix.net/image/admin/Ne2U4cUtHG6bJ0YeIkt5.jpg?fit=crop&h=240&w=354&auto=format&dpr=5&q=20 5x
+                          "
+                          width="354"
+                        />
+                      </figure>
+                    </a>
+                  </div>
+
+                  <div class="w-card-base__blurb">
+                    <a
+                      href="/monitor-total-page-memory-usage/"
+                      class="w-card-base__link"
+                    >
+                      <h2 class="w-card-base__headline--with-image">
+                        Monitor your web page&#39;s total memory usage with
+                        `measureUserAgentSpecificMemory()`
+                      </h2>
+                    </a>
+                    <div class="w-authors__card">
+                      <div class="w-author__image--row">
+                        <div class="w-author__image--row-item">
+                          <a href="/authors/ulan/"
+                            ><img
+                              alt="Ulan Degenbaev"
+                              class="w-author__image w-author__image--small"
+                              decoding="async"
+                              height="40"
+                              loading="lazy"
+                              sizes="(min-width: 40px) 40px, calc(100vw - 48px)"
+                              src="https://web-dev.imgix.net/image/admin/PmkU3edj6n65Zh0bjaX7.jpg?auto=format&fit=crop&h=40&w=40"
+                              srcset="
+                                https://web-dev.imgix.net/image/admin/PmkU3edj6n65Zh0bjaX7.jpg?fit=crop&h=40&w=40&auto=format&dpr=1&q=75 1x,
+                                https://web-dev.imgix.net/image/admin/PmkU3edj6n65Zh0bjaX7.jpg?fit=crop&h=40&w=40&auto=format&dpr=2&q=50 2x,
+                                https://web-dev.imgix.net/image/admin/PmkU3edj6n65Zh0bjaX7.jpg?fit=crop&h=40&w=40&auto=format&dpr=3&q=35 3x,
+                                https://web-dev.imgix.net/image/admin/PmkU3edj6n65Zh0bjaX7.jpg?fit=crop&h=40&w=40&auto=format&dpr=4&q=23 4x,
+                                https://web-dev.imgix.net/image/admin/PmkU3edj6n65Zh0bjaX7.jpg?fit=crop&h=40&w=40&auto=format&dpr=5&q=20 5x
+                              "
+                              width="40"
+                          /></a>
+                        </div>
+                      </div>
+                      <div class="w-authors__card--holder">
+                        <span class="w-author__name"
+                          ><a class="w-author__name-link" href="/authors/ulan/"
+                            >Ulan Degenbaev</a
+                          ></span
+                        >
+                        <div class="w-author__updated">
+                          <time>Updated: Oct 19, 2020</time>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="w-card-base__desc">
+                      <a
+                        class="w-card-base__link"
+                        tabindex="-1"
+                        href="/monitor-total-page-memory-usage/"
+                      >
+                        <p class="w-card-base__subhead">
+                          Learn how to measure memory usage of your web page in
+                          production to detect regressions.
+                        </p>
+                      </a>
+
+                      <div class="w-chips w-card__chips">
+                        <a class="w-chip" href="/tags/memory/">Memory</a>
+
+                        <a class="w-chip" href="/tags/javascript/"
+                          >JavaScript</a
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              </div>
+
+              <div class="w-card" role="listitem">
+                <article class="w-card-base w-card-base__with--cover">
+                  <div class="w-card-base__cover">
+                    <a
+                      href="/coop-coep/"
+                      class="w-card-base__link"
+                      tabindex="-1"
+                      aria-hidden="true"
+                    >
+                      <figure class="w-card-base__figure">
+                        <img
+                          alt="An illustration of a person browsing a website that has a popup, an iframe, and an image."
+                          class="w-card-base__image"
+                          decoding="async"
+                          height="240"
+                          loading="lazy"
+                          sizes="(min-width: 354px) 354px, calc(100vw - 48px)"
+                          src="https://web-dev.imgix.net/image/admin/Rv8gOTwZwxr2Z7b13Ize.jpg?auto=format&fit=crop&h=240&w=354"
+                          srcset="
+                            https://web-dev.imgix.net/image/admin/Rv8gOTwZwxr2Z7b13Ize.jpg?fit=crop&h=240&w=354&auto=format&dpr=1&q=75 1x,
+                            https://web-dev.imgix.net/image/admin/Rv8gOTwZwxr2Z7b13Ize.jpg?fit=crop&h=240&w=354&auto=format&dpr=2&q=50 2x,
+                            https://web-dev.imgix.net/image/admin/Rv8gOTwZwxr2Z7b13Ize.jpg?fit=crop&h=240&w=354&auto=format&dpr=3&q=35 3x,
+                            https://web-dev.imgix.net/image/admin/Rv8gOTwZwxr2Z7b13Ize.jpg?fit=crop&h=240&w=354&auto=format&dpr=4&q=23 4x,
+                            https://web-dev.imgix.net/image/admin/Rv8gOTwZwxr2Z7b13Ize.jpg?fit=crop&h=240&w=354&auto=format&dpr=5&q=20 5x
+                          "
+                          width="354"
+                        />
+                      </figure>
+                    </a>
+                  </div>
+
+                  <div class="w-card-base__blurb">
+                    <a href="/coop-coep/" class="w-card-base__link">
+                      <h2 class="w-card-base__headline--with-image">
+                        Making your website &quot;cross-origin isolated&quot;
+                        using COOP and COEP
+                      </h2>
+                    </a>
+                    <div class="w-authors__card">
+                      <div class="w-author__image--row">
+                        <div class="w-author__image--row-item">
+                          <a href="/authors/agektmr/"
+                            ><img
+                              alt="Eiji Kitamura"
+                              class="w-author__image w-author__image--small"
+                              decoding="async"
+                              height="40"
+                              loading="lazy"
+                              sizes="(min-width: 40px) 40px, calc(100vw - 48px)"
+                              src="https://web-dev.imgix.net/image/admin/Mh9DRmQhjlroJM9JDqsu.jpg?auto=format&fit=crop&h=40&w=40"
+                              srcset="
+                                https://web-dev.imgix.net/image/admin/Mh9DRmQhjlroJM9JDqsu.jpg?fit=crop&h=40&w=40&auto=format&dpr=1&q=75 1x,
+                                https://web-dev.imgix.net/image/admin/Mh9DRmQhjlroJM9JDqsu.jpg?fit=crop&h=40&w=40&auto=format&dpr=2&q=50 2x,
+                                https://web-dev.imgix.net/image/admin/Mh9DRmQhjlroJM9JDqsu.jpg?fit=crop&h=40&w=40&auto=format&dpr=3&q=35 3x,
+                                https://web-dev.imgix.net/image/admin/Mh9DRmQhjlroJM9JDqsu.jpg?fit=crop&h=40&w=40&auto=format&dpr=4&q=23 4x,
+                                https://web-dev.imgix.net/image/admin/Mh9DRmQhjlroJM9JDqsu.jpg?fit=crop&h=40&w=40&auto=format&dpr=5&q=20 5x
+                              "
+                              width="40"
+                          /></a>
+                        </div>
+                      </div>
+                      <div class="w-authors__card--holder">
+                        <span class="w-author__name"
+                          ><a
+                            class="w-author__name-link"
+                            href="/authors/agektmr/"
+                            >Eiji Kitamura</a
+                          ></span
+                        >
+                        <div class="w-author__updated">
+                          <time>Updated: Jun 23, 2021</time>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="w-card-base__desc">
+                      <a
+                        class="w-card-base__link"
+                        tabindex="-1"
+                        href="/coop-coep/"
+                      >
+                        <p class="w-card-base__subhead">
+                          Use COOP and COEP to set up a cross-origin isolated
+                          environment and enable powerful features like
+                          `SharedArrayBuffer`,
+                          `performance.measureUserAgentSpecificMemory()`, high
+                          resolution timer with better precision, and the JS
+                          Self-Profiling API.
+                        </p>
+                      </a>
+
+                      <div class="w-chips w-card__chips">
+                        <a class="w-chip" href="/tags/security/">Security</a>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              </div>
+
+              <div class="w-card" role="listitem">
+                <article class="w-card-base w-card-base__with--cover">
+                  <div class="w-card-base__cover">
+                    <a
+                      href="/how-we-build-webdev-and-use-web-components/"
+                      class="w-card-base__link"
+                      tabindex="-1"
+                      aria-hidden="true"
+                    >
+                      <figure class="w-card-base__figure">
+                        <img
+                          alt="Wind turbines on a hill"
+                          class="w-card-base__image"
+                          decoding="async"
+                          height="240"
+                          loading="lazy"
+                          sizes="(min-width: 354px) 354px, calc(100vw - 48px)"
+                          src="https://web-dev.imgix.net/image/admin/TzR3470Au1W5XGK2BH5M.jpg?auto=format&fit=crop&h=240&w=354"
+                          srcset="
+                            https://web-dev.imgix.net/image/admin/TzR3470Au1W5XGK2BH5M.jpg?fit=crop&h=240&w=354&auto=format&dpr=1&q=75 1x,
+                            https://web-dev.imgix.net/image/admin/TzR3470Au1W5XGK2BH5M.jpg?fit=crop&h=240&w=354&auto=format&dpr=2&q=50 2x,
+                            https://web-dev.imgix.net/image/admin/TzR3470Au1W5XGK2BH5M.jpg?fit=crop&h=240&w=354&auto=format&dpr=3&q=35 3x,
+                            https://web-dev.imgix.net/image/admin/TzR3470Au1W5XGK2BH5M.jpg?fit=crop&h=240&w=354&auto=format&dpr=4&q=23 4x,
+                            https://web-dev.imgix.net/image/admin/TzR3470Au1W5XGK2BH5M.jpg?fit=crop&h=240&w=354&auto=format&dpr=5&q=20 5x
+                          "
+                          width="354"
+                        />
+                      </figure>
+                    </a>
+                  </div>
+
+                  <div class="w-card-base__blurb">
+                    <a
+                      href="/how-we-build-webdev-and-use-web-components/"
+                      class="w-card-base__link"
+                    >
+                      <h2 class="w-card-base__headline--with-image">
+                        web.dev engineering blog #1: How we build the site and
+                        use Web Components
+                      </h2>
+                    </a>
+                    <div class="w-authors__card">
+                      <div class="w-author__image--row">
+                        <div class="w-author__image--row-item">
+                          <a href="/authors/samthor/"
+                            ><img
+                              alt="Sam Thorogood"
+                              class="w-author__image w-author__image--small"
+                              decoding="async"
+                              height="40"
+                              loading="lazy"
+                              sizes="(min-width: 40px) 40px, calc(100vw - 48px)"
+                              src="https://web-dev.imgix.net/image/admin/XQIDJD6narW2eA4d141g.jpg?auto=format&fit=crop&h=40&w=40"
+                              srcset="
+                                https://web-dev.imgix.net/image/admin/XQIDJD6narW2eA4d141g.jpg?fit=crop&h=40&w=40&auto=format&dpr=1&q=75 1x,
+                                https://web-dev.imgix.net/image/admin/XQIDJD6narW2eA4d141g.jpg?fit=crop&h=40&w=40&auto=format&dpr=2&q=50 2x,
+                                https://web-dev.imgix.net/image/admin/XQIDJD6narW2eA4d141g.jpg?fit=crop&h=40&w=40&auto=format&dpr=3&q=35 3x,
+                                https://web-dev.imgix.net/image/admin/XQIDJD6narW2eA4d141g.jpg?fit=crop&h=40&w=40&auto=format&dpr=4&q=23 4x,
+                                https://web-dev.imgix.net/image/admin/XQIDJD6narW2eA4d141g.jpg?fit=crop&h=40&w=40&auto=format&dpr=5&q=20 5x
+                              "
+                              width="40"
+                          /></a>
+                        </div>
+                      </div>
+                      <div class="w-authors__card--holder">
+                        <span class="w-author__name"
+                          ><a
+                            class="w-author__name-link"
+                            href="/authors/samthor/"
+                            >Sam Thorogood</a
+                          ></span
+                        >
+                        <div class="w-author__published">
+                          <time>Apr 9, 2020</time>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="w-card-base__desc">
+                      <div class="w-chips w-card__chips">
+                        <a class="w-chip" href="/tags/engineering-blog/"
+                          >Engineering Blog</a
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              </div>
+
+              <div class="w-card" role="listitem">
+                <article class="w-card-base w-card-base__with--cover">
+                  <div class="w-card-base__cover">
+                    <a
+                      href="/digging-into-the-privacy-sandbox/"
+                      class="w-card-base__link"
+                      tabindex="-1"
+                      aria-hidden="true"
+                    >
+                      <figure class="w-card-base__figure">
+                        <img
+                          alt="A black-on-white printed sign saying Private, on a wooden wall."
+                          class="w-card-base__image"
+                          decoding="async"
+                          height="240"
+                          loading="lazy"
+                          sizes="(min-width: 354px) 354px, calc(100vw - 48px)"
+                          src="https://web-dev.imgix.net/image/admin/5F89q0kLUOLWvYtNJeWZ.jpg?auto=format&fit=crop&h=240&w=354"
+                          srcset="
+                            https://web-dev.imgix.net/image/admin/5F89q0kLUOLWvYtNJeWZ.jpg?fit=crop&h=240&w=354&auto=format&dpr=1&q=75 1x,
+                            https://web-dev.imgix.net/image/admin/5F89q0kLUOLWvYtNJeWZ.jpg?fit=crop&h=240&w=354&auto=format&dpr=2&q=50 2x,
+                            https://web-dev.imgix.net/image/admin/5F89q0kLUOLWvYtNJeWZ.jpg?fit=crop&h=240&w=354&auto=format&dpr=3&q=35 3x,
+                            https://web-dev.imgix.net/image/admin/5F89q0kLUOLWvYtNJeWZ.jpg?fit=crop&h=240&w=354&auto=format&dpr=4&q=23 4x,
+                            https://web-dev.imgix.net/image/admin/5F89q0kLUOLWvYtNJeWZ.jpg?fit=crop&h=240&w=354&auto=format&dpr=5&q=20 5x
+                          "
+                          width="354"
+                        />
+                      </figure>
+                    </a>
+                  </div>
+
+                  <div class="w-card-base__blurb">
+                    <a
+                      href="/digging-into-the-privacy-sandbox/"
+                      class="w-card-base__link"
+                    >
+                      <h2 class="w-card-base__headline--with-image">
+                        Digging into the Privacy Sandbox
+                      </h2>
+                    </a>
+                    <div class="w-authors__card">
+                      <div class="w-author__image--row">
+                        <div class="w-author__image--row-item">
+                          <a href="/authors/samdutton/"
+                            ><img
+                              alt="Sam Dutton"
+                              class="w-author__image w-author__image--small"
+                              decoding="async"
+                              height="40"
+                              loading="lazy"
+                              sizes="(min-width: 40px) 40px, calc(100vw - 48px)"
+                              src="https://web-dev.imgix.net/image/admin/wPss4TJX9IJ1CJza7iFY.jpg?auto=format&fit=crop&h=40&w=40"
+                              srcset="
+                                https://web-dev.imgix.net/image/admin/wPss4TJX9IJ1CJza7iFY.jpg?fit=crop&h=40&w=40&auto=format&dpr=1&q=75 1x,
+                                https://web-dev.imgix.net/image/admin/wPss4TJX9IJ1CJza7iFY.jpg?fit=crop&h=40&w=40&auto=format&dpr=2&q=50 2x,
+                                https://web-dev.imgix.net/image/admin/wPss4TJX9IJ1CJza7iFY.jpg?fit=crop&h=40&w=40&auto=format&dpr=3&q=35 3x,
+                                https://web-dev.imgix.net/image/admin/wPss4TJX9IJ1CJza7iFY.jpg?fit=crop&h=40&w=40&auto=format&dpr=4&q=23 4x,
+                                https://web-dev.imgix.net/image/admin/wPss4TJX9IJ1CJza7iFY.jpg?fit=crop&h=40&w=40&auto=format&dpr=5&q=20 5x
+                              "
+                              width="40"
+                          /></a>
+                        </div>
+                      </div>
+                      <div class="w-authors__card--holder">
+                        <span class="w-author__name"
+                          ><a
+                            class="w-author__name-link"
+                            href="/authors/samdutton/"
+                            >Sam Dutton</a
+                          ></span
+                        >
+                        <div class="w-author__updated">
+                          <time>Updated: Dec 21, 2020</time>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="w-card-base__desc">
+                      <a
+                        class="w-card-base__link"
+                        tabindex="-1"
+                        href="/digging-into-the-privacy-sandbox/"
+                      >
+                        <p class="w-card-base__subhead">
+                          The Privacy Sandbox is a series of proposals to
+                          satisfy third-party use cases without third-party
+                          cookies or other tracking mechanisms.
+                        </p>
+                      </a>
+
+                      <div class="w-chips w-card__chips">
+                        <a class="w-chip" href="/tags/privacy/">Privacy</a>
+
+                        <a class="w-chip" href="/tags/security/">Security</a>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              </div>
+
+              <div class="w-card" role="listitem">
+                <article class="w-card-base w-card-base__with--cover">
+                  <div class="w-card-base__cover">
+                    <a
+                      href="/color-scheme/"
+                      class="w-card-base__link"
+                      tabindex="-1"
+                      aria-hidden="true"
+                    >
+                      <figure class="w-card-base__figure">
+                        <img
+                          alt="Pigeons on a wall with a sharp black and white contrast in the background."
+                          class="w-card-base__image"
+                          decoding="async"
+                          height="240"
+                          loading="lazy"
+                          sizes="(min-width: 354px) 354px, calc(100vw - 48px)"
+                          src="https://web-dev.imgix.net/image/admin/rOe3wxcy28m5DCKcHv7E.jpg?auto=format&fit=crop&h=240&w=354"
+                          srcset="
+                            https://web-dev.imgix.net/image/admin/rOe3wxcy28m5DCKcHv7E.jpg?fit=crop&h=240&w=354&auto=format&dpr=1&q=75 1x,
+                            https://web-dev.imgix.net/image/admin/rOe3wxcy28m5DCKcHv7E.jpg?fit=crop&h=240&w=354&auto=format&dpr=2&q=50 2x,
+                            https://web-dev.imgix.net/image/admin/rOe3wxcy28m5DCKcHv7E.jpg?fit=crop&h=240&w=354&auto=format&dpr=3&q=35 3x,
+                            https://web-dev.imgix.net/image/admin/rOe3wxcy28m5DCKcHv7E.jpg?fit=crop&h=240&w=354&auto=format&dpr=4&q=23 4x,
+                            https://web-dev.imgix.net/image/admin/rOe3wxcy28m5DCKcHv7E.jpg?fit=crop&h=240&w=354&auto=format&dpr=5&q=20 5x
+                          "
+                          width="354"
+                        />
+                      </figure>
+                    </a>
+                  </div>
+
+                  <div class="w-card-base__blurb">
+                    <a href="/color-scheme/" class="w-card-base__link">
+                      <h2 class="w-card-base__headline--with-image">
+                        Improved dark mode default styling with the
+                        `color-scheme` CSS property and the corresponding meta
+                        tag
+                      </h2>
+                    </a>
+                    <div class="w-authors__card">
+                      <div class="w-author__image--row">
+                        <div class="w-author__image--row-item">
+                          <a href="/authors/thomassteiner/"
+                            ><img
+                              alt="Thomas Steiner"
+                              class="w-author__image w-author__image--small"
+                              decoding="async"
+                              height="40"
+                              loading="lazy"
+                              sizes="(min-width: 40px) 40px, calc(100vw - 48px)"
+                              src="https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?auto=format&fit=crop&h=40&w=40"
+                              srcset="
+                                https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=40&w=40&auto=format&dpr=1&q=75 1x,
+                                https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=40&w=40&auto=format&dpr=2&q=50 2x,
+                                https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=40&w=40&auto=format&dpr=3&q=35 3x,
+                                https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=40&w=40&auto=format&dpr=4&q=23 4x,
+                                https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=40&w=40&auto=format&dpr=5&q=20 5x
+                              "
+                              width="40"
+                          /></a>
+                        </div>
+                      </div>
+                      <div class="w-authors__card--holder">
+                        <span class="w-author__name"
+                          ><a
+                            class="w-author__name-link"
+                            href="/authors/thomassteiner/"
+                            >Thomas Steiner</a
+                          ></span
+                        >
+                        <div class="w-author__updated">
+                          <time>Updated: Jun 16, 2020</time>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="w-card-base__desc">
+                      <a
+                        class="w-card-base__link"
+                        tabindex="-1"
+                        href="/color-scheme/"
+                      >
+                        <p class="w-card-base__subhead">
+                          The `color-scheme` CSS property and the corresponding
+                          meta tag allow developers to opt their pages in to the
+                          theme-specific defaults of the user agent stylesheet.
+                        </p>
+                      </a>
+
+                      <div class="w-chips w-card__chips">
+                        <a class="w-chip" href="/tags/css/">CSS</a>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              </div>
+
+              <div class="w-card" role="listitem">
+                <article class="w-card-base w-card-base__with--cover">
+                  <div class="w-card-base__cover">
+                    <a
+                      href="/covid19/"
+                      class="w-card-base__link"
+                      tabindex="-1"
+                      aria-hidden="true"
+                    >
+                      <figure class="w-card-base__figure">
+                        <img
+                          alt=""
+                          class="w-card-base__image"
+                          decoding="async"
+                          height="240"
+                          loading="lazy"
+                          sizes="(min-width: 354px) 354px, calc(100vw - 48px)"
+                          src="https://web-dev.imgix.net/image/admin/LH3VwpI4GW1lW51Ns5ab.jpg?auto=format&fit=crop&h=240&w=354"
+                          srcset="
+                            https://web-dev.imgix.net/image/admin/LH3VwpI4GW1lW51Ns5ab.jpg?fit=crop&h=240&w=354&auto=format&dpr=1&q=75 1x,
+                            https://web-dev.imgix.net/image/admin/LH3VwpI4GW1lW51Ns5ab.jpg?fit=crop&h=240&w=354&auto=format&dpr=2&q=50 2x,
+                            https://web-dev.imgix.net/image/admin/LH3VwpI4GW1lW51Ns5ab.jpg?fit=crop&h=240&w=354&auto=format&dpr=3&q=35 3x,
+                            https://web-dev.imgix.net/image/admin/LH3VwpI4GW1lW51Ns5ab.jpg?fit=crop&h=240&w=354&auto=format&dpr=4&q=23 4x,
+                            https://web-dev.imgix.net/image/admin/LH3VwpI4GW1lW51Ns5ab.jpg?fit=crop&h=240&w=354&auto=format&dpr=5&q=20 5x
+                          "
+                          width="354"
+                        />
+                      </figure>
+                    </a>
+                  </div>
+
+                  <div class="w-card-base__blurb">
+                    <a href="/covid19/" class="w-card-base__link">
+                      <h2 class="w-card-base__headline--with-image">
+                        Ensure your website is available and usable for everyone
+                        during COVID-19
+                      </h2>
+                    </a>
+                    <div class="w-authors__card">
+                      <div class="w-authors__card--holder">
+                        <div class="w-author__updated">
+                          <time>Updated: Apr 6, 2020</time>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="w-card-base__desc">
+                      <a
+                        class="w-card-base__link"
+                        tabindex="-1"
+                        href="/covid19/"
+                      >
+                        <p class="w-card-base__subhead">
+                          How to ensure that the core functionality of your
+                          website is always available, accessible, secure,
+                          usable, discoverable, and fast.
+                        </p>
+                      </a>
+
+                      <div class="w-chips w-card__chips">
+                        <a class="w-chip" href="/tags/accessibility/"
+                          >Accessibility</a
+                        >
+
+                        <a class="w-chip" href="/tags/performance/"
+                          >Performance</a
+                        >
+
+                        <a class="w-chip" href="/tags/seo/">SEO</a>
+
+                        <a class="w-chip" href="/tags/ux/">UX</a>
+
+                        <a class="w-chip" href="/tags/security/">Security</a>
+
+                        <a class="w-chip" href="/tags/mobile/">Mobile</a>
+
+                        <a class="w-chip" href="/tags/forms/">Forms</a>
+
+                        <a class="w-chip" href="/tags/images/">Images</a>
+
+                        <a class="w-chip" href="/tags/css/">CSS</a>
+
+                        <a class="w-chip" href="/tags/javascript/"
+                          >JavaScript</a
+                        >
+
+                        <a class="w-chip" href="/tags/lighthouse/"
+                          >Lighthouse</a
+                        >
+
+                        <a class="w-chip" href="/tags/media/">Media</a>
+
+                        <a class="w-chip" href="/tags/devtools/">DevTools</a>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              </div>
+
+              <div class="w-card" role="listitem">
+                <article class="w-card-base w-card-base__with--cover">
+                  <div class="w-card-base__cover">
+                    <a
+                      href="/overloaded-server/"
+                      class="w-card-base__link"
+                      tabindex="-1"
+                      aria-hidden="true"
+                    >
+                      <figure class="w-card-base__figure">
+                        <img
+                          alt=""
+                          class="w-card-base__image"
+                          decoding="async"
+                          height="240"
+                          loading="lazy"
+                          sizes="(min-width: 354px) 354px, calc(100vw - 48px)"
+                          src="https://web-dev.imgix.net/image/admin/5fmiwGShxNngW0sOeKvf.jpg?auto=format&fit=crop&h=240&w=354"
+                          srcset="
+                            https://web-dev.imgix.net/image/admin/5fmiwGShxNngW0sOeKvf.jpg?fit=crop&h=240&w=354&auto=format&dpr=1&q=75 1x,
+                            https://web-dev.imgix.net/image/admin/5fmiwGShxNngW0sOeKvf.jpg?fit=crop&h=240&w=354&auto=format&dpr=2&q=50 2x,
+                            https://web-dev.imgix.net/image/admin/5fmiwGShxNngW0sOeKvf.jpg?fit=crop&h=240&w=354&auto=format&dpr=3&q=35 3x,
+                            https://web-dev.imgix.net/image/admin/5fmiwGShxNngW0sOeKvf.jpg?fit=crop&h=240&w=354&auto=format&dpr=4&q=23 4x,
+                            https://web-dev.imgix.net/image/admin/5fmiwGShxNngW0sOeKvf.jpg?fit=crop&h=240&w=354&auto=format&dpr=5&q=20 5x
+                          "
+                          width="354"
+                        />
+                      </figure>
+                    </a>
+                  </div>
+
+                  <div class="w-card-base__blurb">
+                    <a href="/overloaded-server/" class="w-card-base__link">
+                      <h2 class="w-card-base__headline--with-image">
+                        Fix an overloaded server
+                      </h2>
+                    </a>
+                    <div class="w-authors__card">
+                      <div class="w-author__image--row">
+                        <div class="w-author__image--row-item">
+                          <a href="/authors/katiehempenius/"
+                            ><img
+                              alt="Katie Hempenius"
+                              class="w-author__image w-author__image--small"
+                              decoding="async"
+                              height="40"
+                              loading="lazy"
+                              sizes="(min-width: 40px) 40px, calc(100vw - 48px)"
+                              src="https://web-dev.imgix.net/image/admin/fZo7BJGec2MNRt6cWpeh.jpg?auto=format&fit=crop&h=40&w=40"
+                              srcset="
+                                https://web-dev.imgix.net/image/admin/fZo7BJGec2MNRt6cWpeh.jpg?fit=crop&h=40&w=40&auto=format&dpr=1&q=75 1x,
+                                https://web-dev.imgix.net/image/admin/fZo7BJGec2MNRt6cWpeh.jpg?fit=crop&h=40&w=40&auto=format&dpr=2&q=50 2x,
+                                https://web-dev.imgix.net/image/admin/fZo7BJGec2MNRt6cWpeh.jpg?fit=crop&h=40&w=40&auto=format&dpr=3&q=35 3x,
+                                https://web-dev.imgix.net/image/admin/fZo7BJGec2MNRt6cWpeh.jpg?fit=crop&h=40&w=40&auto=format&dpr=4&q=23 4x,
+                                https://web-dev.imgix.net/image/admin/fZo7BJGec2MNRt6cWpeh.jpg?fit=crop&h=40&w=40&auto=format&dpr=5&q=20 5x
+                              "
+                              width="40"
+                          /></a>
+                        </div>
+                      </div>
+                      <div class="w-authors__card--holder">
+                        <span class="w-author__name"
+                          ><a
+                            class="w-author__name-link"
+                            href="/authors/katiehempenius/"
+                            >Katie Hempenius</a
+                          ></span
+                        >
+                        <div class="w-author__published">
+                          <time>Mar 31, 2020</time>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="w-card-base__desc">
+                      <a
+                        class="w-card-base__link"
+                        tabindex="-1"
+                        href="/overloaded-server/"
+                      >
+                        <p class="w-card-base__subhead">
+                          How to determine a server&#39;s bottleneck, quickly
+                          fix the bottleneck, improve server performance, and
+                          prevent regressions.
+                        </p>
+                      </a>
+
+                      <div class="w-chips w-card__chips">
+                        <a class="w-chip" href="/tags/performance/"
+                          >Performance</a
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              </div>
+
+              <div class="w-card" role="listitem">
+                <article class="w-card-base w-card-base__with--cover">
+                  <div class="w-card-base__cover">
+                    <a
+                      href="/websocketstream/"
+                      class="w-card-base__link"
+                      tabindex="-1"
+                      aria-hidden="true"
+                    >
+                      <figure class="w-card-base__figure">
+                        <img
+                          alt="A fire hose with water dripping out of it."
+                          class="w-card-base__image"
+                          decoding="async"
+                          height="240"
+                          loading="lazy"
+                          sizes="(min-width: 354px) 354px, calc(100vw - 48px)"
+                          src="https://web-dev.imgix.net/image/admin/8SrIq5at2bH6i98stCgs.jpg?auto=format&fit=crop&h=240&w=354"
+                          srcset="
+                            https://web-dev.imgix.net/image/admin/8SrIq5at2bH6i98stCgs.jpg?fit=crop&h=240&w=354&auto=format&dpr=1&q=75 1x,
+                            https://web-dev.imgix.net/image/admin/8SrIq5at2bH6i98stCgs.jpg?fit=crop&h=240&w=354&auto=format&dpr=2&q=50 2x,
+                            https://web-dev.imgix.net/image/admin/8SrIq5at2bH6i98stCgs.jpg?fit=crop&h=240&w=354&auto=format&dpr=3&q=35 3x,
+                            https://web-dev.imgix.net/image/admin/8SrIq5at2bH6i98stCgs.jpg?fit=crop&h=240&w=354&auto=format&dpr=4&q=23 4x,
+                            https://web-dev.imgix.net/image/admin/8SrIq5at2bH6i98stCgs.jpg?fit=crop&h=240&w=354&auto=format&dpr=5&q=20 5x
+                          "
+                          width="354"
+                        />
+                      </figure>
+                    </a>
+                  </div>
+
+                  <div class="w-card-base__blurb">
+                    <a href="/websocketstream/" class="w-card-base__link">
+                      <h2 class="w-card-base__headline--with-image">
+                        WebSocketStream: integrating streams with the WebSocket
+                        API
+                      </h2>
+                    </a>
+                    <div class="w-authors__card">
+                      <div class="w-author__image--row">
+                        <div class="w-author__image--row-item">
+                          <a href="/authors/thomassteiner/"
+                            ><img
+                              alt="Thomas Steiner"
+                              class="w-author__image w-author__image--small"
+                              decoding="async"
+                              height="40"
+                              loading="lazy"
+                              sizes="(min-width: 40px) 40px, calc(100vw - 48px)"
+                              src="https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?auto=format&fit=crop&h=40&w=40"
+                              srcset="
+                                https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=40&w=40&auto=format&dpr=1&q=75 1x,
+                                https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=40&w=40&auto=format&dpr=2&q=50 2x,
+                                https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=40&w=40&auto=format&dpr=3&q=35 3x,
+                                https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=40&w=40&auto=format&dpr=4&q=23 4x,
+                                https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=40&w=40&auto=format&dpr=5&q=20 5x
+                              "
+                              width="40"
+                          /></a>
+                        </div>
+                      </div>
+                      <div class="w-authors__card--holder">
+                        <span class="w-author__name"
+                          ><a
+                            class="w-author__name-link"
+                            href="/authors/thomassteiner/"
+                            >Thomas Steiner</a
+                          ></span
+                        >
+                        <div class="w-author__updated">
+                          <time>Updated: Feb 23, 2021</time>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="w-card-base__desc">
+                      <a
+                        class="w-card-base__link"
+                        tabindex="-1"
+                        href="/websocketstream/"
+                      >
+                        <p class="w-card-base__subhead">
+                          Prevent your app from getting drowned in WebSocket
+                          messages or flooding a WebSocket server with messages
+                          by applying backpressure.
+                        </p>
+                      </a>
+
+                      <div class="w-chips w-card__chips">
+                        <a class="w-chip" href="/tags/capabilities/"
+                          >Capabilities</a
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              </div>
+
+              <div class="w-card" role="listitem">
+                <article class="w-card-base w-card-base__with--cover">
+                  <div class="w-card-base__cover">
+                    <a
+                      href="/trusted-types/"
+                      class="w-card-base__link"
+                      tabindex="-1"
+                      aria-hidden="true"
+                    >
+                      <figure class="w-card-base__figure">
+                        <img
+                          alt="Code snippets demonstrating cross-site scripting vulnerabilities."
+                          class="w-card-base__image"
+                          decoding="async"
+                          height="240"
+                          loading="lazy"
+                          sizes="(min-width: 354px) 354px, calc(100vw - 48px)"
+                          src="https://web-dev.imgix.net/image/admin/3Mgu37qU0P4fVdI4NTxM.png?auto=format&fit=crop&h=240&w=354"
+                          srcset="
+                            https://web-dev.imgix.net/image/admin/3Mgu37qU0P4fVdI4NTxM.png?fit=crop&h=240&w=354&auto=format&dpr=1&q=75 1x,
+                            https://web-dev.imgix.net/image/admin/3Mgu37qU0P4fVdI4NTxM.png?fit=crop&h=240&w=354&auto=format&dpr=2&q=50 2x,
+                            https://web-dev.imgix.net/image/admin/3Mgu37qU0P4fVdI4NTxM.png?fit=crop&h=240&w=354&auto=format&dpr=3&q=35 3x,
+                            https://web-dev.imgix.net/image/admin/3Mgu37qU0P4fVdI4NTxM.png?fit=crop&h=240&w=354&auto=format&dpr=4&q=23 4x,
+                            https://web-dev.imgix.net/image/admin/3Mgu37qU0P4fVdI4NTxM.png?fit=crop&h=240&w=354&auto=format&dpr=5&q=20 5x
+                          "
+                          width="354"
+                        />
+                      </figure>
+                    </a>
+                  </div>
+
+                  <div class="w-card-base__blurb">
+                    <a href="/trusted-types/" class="w-card-base__link">
+                      <h2 class="w-card-base__headline--with-image">
+                        Prevent DOM-based cross-site scripting vulnerabilities
+                        with Trusted Types
+                      </h2>
+                    </a>
+                    <div class="w-authors__card">
+                      <div class="w-author__image--row">
+                        <div class="w-author__image--row-item">
+                          <a href="/authors/koto/"
+                            ><img
+                              alt="Krzysztof Kotowicz"
+                              class="w-author__image w-author__image--small"
+                              decoding="async"
+                              height="40"
+                              loading="lazy"
+                              src="https://web-dev.imgix.net/image/admin/1v5F1SOBl46ZghbHQMle.svg"
+                              width="40"
+                          /></a>
+                        </div>
+                      </div>
+                      <div class="w-authors__card--holder">
+                        <span class="w-author__name"
+                          ><a class="w-author__name-link" href="/authors/koto/"
+                            >Krzysztof Kotowicz</a
+                          ></span
+                        >
+                        <div class="w-author__published">
+                          <time>Mar 25, 2020</time>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="w-card-base__desc">
+                      <a
+                        class="w-card-base__link"
+                        tabindex="-1"
+                        href="/trusted-types/"
+                      >
+                        <p class="w-card-base__subhead">
+                          Reduce the DOM XSS attack surface of your application.
+                        </p>
+                      </a>
+
+                      <div class="w-chips w-card__chips">
+                        <a class="w-chip" href="/tags/security/">Security</a>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              </div>
+
+              <div class="w-card" role="listitem">
+                <article class="w-card-base w-card-base__with--cover">
+                  <div class="w-card-base__cover">
+                    <a
+                      href="/preload-optional-fonts/"
+                      class="w-card-base__link"
+                      tabindex="-1"
+                      aria-hidden="true"
+                    >
+                      <figure class="w-card-base__figure">
+                        <img
+                          alt="A large letter A from a type set sitting on a white table."
+                          class="w-card-base__image"
+                          decoding="async"
+                          height="240"
+                          loading="lazy"
+                          sizes="(min-width: 354px) 354px, calc(100vw - 48px)"
+                          src="https://web-dev.imgix.net/image/admin/wv5DLtYiAhHm4lNemN1E.jpg?auto=format&fit=crop&h=240&w=354"
+                          srcset="
+                            https://web-dev.imgix.net/image/admin/wv5DLtYiAhHm4lNemN1E.jpg?fit=crop&h=240&w=354&auto=format&dpr=1&q=75 1x,
+                            https://web-dev.imgix.net/image/admin/wv5DLtYiAhHm4lNemN1E.jpg?fit=crop&h=240&w=354&auto=format&dpr=2&q=50 2x,
+                            https://web-dev.imgix.net/image/admin/wv5DLtYiAhHm4lNemN1E.jpg?fit=crop&h=240&w=354&auto=format&dpr=3&q=35 3x,
+                            https://web-dev.imgix.net/image/admin/wv5DLtYiAhHm4lNemN1E.jpg?fit=crop&h=240&w=354&auto=format&dpr=4&q=23 4x,
+                            https://web-dev.imgix.net/image/admin/wv5DLtYiAhHm4lNemN1E.jpg?fit=crop&h=240&w=354&auto=format&dpr=5&q=20 5x
+                          "
+                          width="354"
+                        />
+                      </figure>
+                    </a>
+                  </div>
+
+                  <div class="w-card-base__blurb">
+                    <a
+                      href="/preload-optional-fonts/"
+                      class="w-card-base__link"
+                    >
+                      <h2 class="w-card-base__headline--with-image">
+                        Prevent layout shifting and flashes of invisible text
+                        (FOIT) by preloading optional fonts
+                      </h2>
+                    </a>
+                    <div class="w-authors__card">
+                      <div class="w-author__image--row">
+                        <div class="w-author__image--row-item">
+                          <a href="/authors/houssein/"
+                            ><img
+                              alt="Houssein Djirdeh"
+                              class="w-author__image w-author__image--small"
+                              decoding="async"
+                              height="40"
+                              loading="lazy"
+                              sizes="(min-width: 40px) 40px, calc(100vw - 48px)"
+                              src="https://web-dev.imgix.net/image/admin/BibySYHD7JweNcHZCCOe.jpg?auto=format&fit=crop&h=40&w=40"
+                              srcset="
+                                https://web-dev.imgix.net/image/admin/BibySYHD7JweNcHZCCOe.jpg?fit=crop&h=40&w=40&auto=format&dpr=1&q=75 1x,
+                                https://web-dev.imgix.net/image/admin/BibySYHD7JweNcHZCCOe.jpg?fit=crop&h=40&w=40&auto=format&dpr=2&q=50 2x,
+                                https://web-dev.imgix.net/image/admin/BibySYHD7JweNcHZCCOe.jpg?fit=crop&h=40&w=40&auto=format&dpr=3&q=35 3x,
+                                https://web-dev.imgix.net/image/admin/BibySYHD7JweNcHZCCOe.jpg?fit=crop&h=40&w=40&auto=format&dpr=4&q=23 4x,
+                                https://web-dev.imgix.net/image/admin/BibySYHD7JweNcHZCCOe.jpg?fit=crop&h=40&w=40&auto=format&dpr=5&q=20 5x
+                              "
+                              width="40"
+                          /></a>
+                        </div>
+                      </div>
+                      <div class="w-authors__card--holder">
+                        <span class="w-author__name"
+                          ><a
+                            class="w-author__name-link"
+                            href="/authors/houssein/"
+                            >Houssein Djirdeh</a
+                          ></span
+                        >
+                        <div class="w-author__published">
+                          <time>Mar 18, 2020</time>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="w-card-base__desc">
+                      <a
+                        class="w-card-base__link"
+                        tabindex="-1"
+                        href="/preload-optional-fonts/"
+                      >
+                        <p class="w-card-base__subhead">
+                          Starting in Chrome 83, link rel=&quot;preload&quot;
+                          and font-display: optional can be combined to remove
+                          layout jank completely
+                        </p>
+                      </a>
+
+                      <div class="w-chips w-card__chips">
+                        <a class="w-chip" href="/tags/performance/"
+                          >Performance</a
+                        >
+
+                        <a class="w-chip" href="/tags/fonts/">Fonts</a>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              </div>
+
+              <div class="w-card" role="listitem">
+                <article class="w-card-base">
+                  <div class="w-card-base__blurb">
+                    <a
+                      href="/how-to-set-up-signed-http-exchanges/"
+                      class="w-card-base__link"
+                    >
+                      <h2 class="w-card-base__headline">
+                        How to set up Signed HTTP Exchanges (SXG) using nginx
+                      </h2>
+                    </a>
+                    <div class="w-authors__card">
+                      <div class="w-author__image--row">
+                        <div class="w-author__image--row-item">
+                          <a href="/authors/kumagi/"
+                            ><img
+                              alt="Hiroki Kumazaki"
+                              class="w-author__image w-author__image--small"
+                              decoding="async"
+                              height="40"
+                              loading="lazy"
+                              sizes="(min-width: 40px) 40px, calc(100vw - 48px)"
+                              src="https://web-dev.imgix.net/image/admin/Y780bmlJiHhk6UwxgOFF.jpg?auto=format&fit=crop&h=40&w=40"
+                              srcset="
+                                https://web-dev.imgix.net/image/admin/Y780bmlJiHhk6UwxgOFF.jpg?fit=crop&h=40&w=40&auto=format&dpr=1&q=75 1x,
+                                https://web-dev.imgix.net/image/admin/Y780bmlJiHhk6UwxgOFF.jpg?fit=crop&h=40&w=40&auto=format&dpr=2&q=50 2x,
+                                https://web-dev.imgix.net/image/admin/Y780bmlJiHhk6UwxgOFF.jpg?fit=crop&h=40&w=40&auto=format&dpr=3&q=35 3x,
+                                https://web-dev.imgix.net/image/admin/Y780bmlJiHhk6UwxgOFF.jpg?fit=crop&h=40&w=40&auto=format&dpr=4&q=23 4x,
+                                https://web-dev.imgix.net/image/admin/Y780bmlJiHhk6UwxgOFF.jpg?fit=crop&h=40&w=40&auto=format&dpr=5&q=20 5x
+                              "
+                              width="40"
+                          /></a>
+                        </div>
+                      </div>
+                      <div class="w-authors__card--holder">
+                        <span class="w-author__name"
+                          ><a
+                            class="w-author__name-link"
+                            href="/authors/kumagi/"
+                            >Hiroki Kumazaki</a
+                          ></span
+                        >
+                        <div class="w-author__published">
+                          <time>Mar 11, 2020</time>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="w-card-base__desc">
+                      <a
+                        class="w-card-base__link"
+                        tabindex="-1"
+                        href="/how-to-set-up-signed-http-exchanges/"
+                      >
+                        <p class="w-card-base__subhead">
+                          How to generate a TLS certificate with SXG extensions,
+                          install tools for generating SXG files, and configure
+                          nginx to serve SXG files.
+                        </p>
+                      </a>
+
+                      <div class="w-chips w-card__chips"></div>
+                    </div>
+                  </div>
+                </article>
+              </div>
+
+              <div class="w-card" role="listitem">
+                <article class="w-card-base">
+                  <div class="w-card-base__blurb">
+                    <a
+                      href="/how-to-distribute-signed-http-exchanges/"
+                      class="w-card-base__link"
+                    >
+                      <h2 class="w-card-base__headline">
+                        How to distribute Signed HTTP Exchanges (SXG) using
+                        nginx
+                      </h2>
+                    </a>
+                    <div class="w-authors__card">
+                      <div class="w-author__image--row">
+                        <div class="w-author__image--row-item">
+                          <a href="/authors/kumagi/"
+                            ><img
+                              alt="Hiroki Kumazaki"
+                              class="w-author__image w-author__image--small"
+                              decoding="async"
+                              height="40"
+                              loading="lazy"
+                              sizes="(min-width: 40px) 40px, calc(100vw - 48px)"
+                              src="https://web-dev.imgix.net/image/admin/Y780bmlJiHhk6UwxgOFF.jpg?auto=format&fit=crop&h=40&w=40"
+                              srcset="
+                                https://web-dev.imgix.net/image/admin/Y780bmlJiHhk6UwxgOFF.jpg?fit=crop&h=40&w=40&auto=format&dpr=1&q=75 1x,
+                                https://web-dev.imgix.net/image/admin/Y780bmlJiHhk6UwxgOFF.jpg?fit=crop&h=40&w=40&auto=format&dpr=2&q=50 2x,
+                                https://web-dev.imgix.net/image/admin/Y780bmlJiHhk6UwxgOFF.jpg?fit=crop&h=40&w=40&auto=format&dpr=3&q=35 3x,
+                                https://web-dev.imgix.net/image/admin/Y780bmlJiHhk6UwxgOFF.jpg?fit=crop&h=40&w=40&auto=format&dpr=4&q=23 4x,
+                                https://web-dev.imgix.net/image/admin/Y780bmlJiHhk6UwxgOFF.jpg?fit=crop&h=40&w=40&auto=format&dpr=5&q=20 5x
+                              "
+                              width="40"
+                          /></a>
+                        </div>
+                      </div>
+                      <div class="w-authors__card--holder">
+                        <span class="w-author__name"
+                          ><a
+                            class="w-author__name-link"
+                            href="/authors/kumagi/"
+                            >Hiroki Kumazaki</a
+                          ></span
+                        >
+                        <div class="w-author__published">
+                          <time>Mar 11, 2020</time>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="w-card-base__desc">
+                      <a
+                        class="w-card-base__link"
+                        tabindex="-1"
+                        href="/how-to-distribute-signed-http-exchanges/"
+                      >
+                        <p class="w-card-base__subhead">
+                          How to get and serve SXG files using nginx, and the
+                          challenges of subresource prefetching.
+                        </p>
+                      </a>
+
+                      <div class="w-chips w-card__chips"></div>
+                    </div>
+                  </div>
+                </article>
+              </div>
+
+              <div class="w-card" role="listitem">
+                <article class="w-card-base w-card-base__with--cover">
+                  <div class="w-card-base__cover">
+                    <a
+                      href="/media-session/"
+                      class="w-card-base__link"
+                      tabindex="-1"
+                      aria-hidden="true"
+                    >
+                      <figure class="w-card-base__figure">
+                        <img
+                          alt=""
+                          class="w-card-base__image"
+                          decoding="async"
+                          height="240"
+                          loading="lazy"
+                          sizes="(min-width: 354px) 354px, calc(100vw - 48px)"
+                          src="https://web-dev.imgix.net/image/admin/Q6CqQNLucogBCxGMsSU2.jpg?auto=format&fit=crop&h=240&w=354"
+                          srcset="
+                            https://web-dev.imgix.net/image/admin/Q6CqQNLucogBCxGMsSU2.jpg?fit=crop&h=240&w=354&auto=format&dpr=1&q=75 1x,
+                            https://web-dev.imgix.net/image/admin/Q6CqQNLucogBCxGMsSU2.jpg?fit=crop&h=240&w=354&auto=format&dpr=2&q=50 2x,
+                            https://web-dev.imgix.net/image/admin/Q6CqQNLucogBCxGMsSU2.jpg?fit=crop&h=240&w=354&auto=format&dpr=3&q=35 3x,
+                            https://web-dev.imgix.net/image/admin/Q6CqQNLucogBCxGMsSU2.jpg?fit=crop&h=240&w=354&auto=format&dpr=4&q=23 4x,
+                            https://web-dev.imgix.net/image/admin/Q6CqQNLucogBCxGMsSU2.jpg?fit=crop&h=240&w=354&auto=format&dpr=5&q=20 5x
+                          "
+                          width="354"
+                        />
+                      </figure>
+                    </a>
+                  </div>
+
+                  <div class="w-card-base__blurb">
+                    <a href="/media-session/" class="w-card-base__link">
+                      <h2 class="w-card-base__headline--with-image">
+                        Customize media notifications and playback controls with
+                        the Media Session API
+                      </h2>
+                    </a>
+                    <div class="w-authors__card">
+                      <div class="w-author__image--row">
+                        <div class="w-author__image--row-item">
+                          <a href="/authors/beaufortfrancois/"
+                            ><img
+                              alt="François Beaufort"
+                              class="w-author__image w-author__image--small"
+                              decoding="async"
+                              height="40"
+                              loading="lazy"
+                              sizes="(min-width: 40px) 40px, calc(100vw - 48px)"
+                              src="https://web-dev.imgix.net/image/admin/mXjY3z3JmrispGtu9yn6.jpg?auto=format&fit=crop&h=40&w=40"
+                              srcset="
+                                https://web-dev.imgix.net/image/admin/mXjY3z3JmrispGtu9yn6.jpg?fit=crop&h=40&w=40&auto=format&dpr=1&q=75 1x,
+                                https://web-dev.imgix.net/image/admin/mXjY3z3JmrispGtu9yn6.jpg?fit=crop&h=40&w=40&auto=format&dpr=2&q=50 2x,
+                                https://web-dev.imgix.net/image/admin/mXjY3z3JmrispGtu9yn6.jpg?fit=crop&h=40&w=40&auto=format&dpr=3&q=35 3x,
+                                https://web-dev.imgix.net/image/admin/mXjY3z3JmrispGtu9yn6.jpg?fit=crop&h=40&w=40&auto=format&dpr=4&q=23 4x,
+                                https://web-dev.imgix.net/image/admin/mXjY3z3JmrispGtu9yn6.jpg?fit=crop&h=40&w=40&auto=format&dpr=5&q=20 5x
+                              "
+                              width="40"
+                          /></a>
+                        </div>
+                      </div>
+                      <div class="w-authors__card--holder">
+                        <span class="w-author__name"
+                          ><a
+                            class="w-author__name-link"
+                            href="/authors/beaufortfrancois/"
+                            >François Beaufort</a
+                          ></span
+                        >
+                        <div class="w-author__updated">
+                          <time>Updated: Jul 1, 2021</time>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="w-card-base__desc">
+                      <a
+                        class="w-card-base__link"
+                        tabindex="-1"
+                        href="/media-session/"
+                      >
+                        <p class="w-card-base__subhead">
+                          How to integrate with hardware media keys, customize
+                          media notifications, and more.
+                        </p>
+                      </a>
+
+                      <div class="w-chips w-card__chips">
+                        <a class="w-chip" href="/tags/media/">Media</a>
+
+                        <a class="w-chip" href="/tags/audio/">Audio</a>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              </div>
+
+              <div class="w-card" role="listitem">
+                <article class="w-card-base w-card-base__with--cover">
+                  <div class="w-card-base__cover">
+                    <a
+                      href="/ads-case-study-stale-while-revalidate/"
+                      class="w-card-base__link"
+                      tabindex="-1"
+                      aria-hidden="true"
+                    >
+                      <figure class="w-card-base__figure">
+                        <img
+                          alt="Dew on a thin leaf in macro"
+                          class="w-card-base__image"
+                          decoding="async"
+                          height="240"
+                          loading="lazy"
+                          sizes="(min-width: 354px) 354px, calc(100vw - 48px)"
+                          src="https://web-dev.imgix.net/image/admin/KriMXq0cv6h8IhzVjyst.jpg?auto=format&fit=crop&h=240&w=354"
+                          srcset="
+                            https://web-dev.imgix.net/image/admin/KriMXq0cv6h8IhzVjyst.jpg?fit=crop&h=240&w=354&auto=format&dpr=1&q=75 1x,
+                            https://web-dev.imgix.net/image/admin/KriMXq0cv6h8IhzVjyst.jpg?fit=crop&h=240&w=354&auto=format&dpr=2&q=50 2x,
+                            https://web-dev.imgix.net/image/admin/KriMXq0cv6h8IhzVjyst.jpg?fit=crop&h=240&w=354&auto=format&dpr=3&q=35 3x,
+                            https://web-dev.imgix.net/image/admin/KriMXq0cv6h8IhzVjyst.jpg?fit=crop&h=240&w=354&auto=format&dpr=4&q=23 4x,
+                            https://web-dev.imgix.net/image/admin/KriMXq0cv6h8IhzVjyst.jpg?fit=crop&h=240&w=354&auto=format&dpr=5&q=20 5x
+                          "
+                          width="354"
+                        />
+                      </figure>
+                    </a>
+                  </div>
+
+                  <div class="w-card-base__blurb">
+                    <a
+                      href="/ads-case-study-stale-while-revalidate/"
+                      class="w-card-base__link"
+                    >
+                      <h2 class="w-card-base__headline--with-image">
+                        How Google improved ads performance with
+                        stale-while-revalidate
+                      </h2>
+                    </a>
+                    <div class="w-authors__card">
+                      <div class="w-author__image--row">
+                        <div class="w-author__image--row-item">
+                          <a href="/authors/jimper/"
+                            ><img
+                              alt="Jonathon Imperiosi"
+                              class="w-author__image w-author__image--small"
+                              decoding="async"
+                              height="40"
+                              loading="lazy"
+                              sizes="(min-width: 40px) 40px, calc(100vw - 48px)"
+                              src="https://web-dev.imgix.net/image/admin/9HsIJu89Pj0CqvED7rsc.jpg?auto=format&fit=crop&h=40&w=40"
+                              srcset="
+                                https://web-dev.imgix.net/image/admin/9HsIJu89Pj0CqvED7rsc.jpg?fit=crop&h=40&w=40&auto=format&dpr=1&q=75 1x,
+                                https://web-dev.imgix.net/image/admin/9HsIJu89Pj0CqvED7rsc.jpg?fit=crop&h=40&w=40&auto=format&dpr=2&q=50 2x,
+                                https://web-dev.imgix.net/image/admin/9HsIJu89Pj0CqvED7rsc.jpg?fit=crop&h=40&w=40&auto=format&dpr=3&q=35 3x,
+                                https://web-dev.imgix.net/image/admin/9HsIJu89Pj0CqvED7rsc.jpg?fit=crop&h=40&w=40&auto=format&dpr=4&q=23 4x,
+                                https://web-dev.imgix.net/image/admin/9HsIJu89Pj0CqvED7rsc.jpg?fit=crop&h=40&w=40&auto=format&dpr=5&q=20 5x
+                              "
+                              width="40"
+                          /></a>
+                        </div>
+                        <div class="w-author__image--row-item">
+                          <a href="/authors/thebengeu/"
+                            ><img
+                              alt="Beng Eu"
+                              class="w-author__image w-author__image--small"
+                              decoding="async"
+                              height="40"
+                              loading="lazy"
+                              sizes="(min-width: 40px) 40px, calc(100vw - 48px)"
+                              src="https://web-dev.imgix.net/image/admin/JcKHWSuhVrG1uuxlLaUq.jpg?auto=format&fit=crop&h=40&w=40"
+                              srcset="
+                                https://web-dev.imgix.net/image/admin/JcKHWSuhVrG1uuxlLaUq.jpg?fit=crop&h=40&w=40&auto=format&dpr=1&q=75 1x,
+                                https://web-dev.imgix.net/image/admin/JcKHWSuhVrG1uuxlLaUq.jpg?fit=crop&h=40&w=40&auto=format&dpr=2&q=50 2x,
+                                https://web-dev.imgix.net/image/admin/JcKHWSuhVrG1uuxlLaUq.jpg?fit=crop&h=40&w=40&auto=format&dpr=3&q=35 3x,
+                                https://web-dev.imgix.net/image/admin/JcKHWSuhVrG1uuxlLaUq.jpg?fit=crop&h=40&w=40&auto=format&dpr=4&q=23 4x,
+                                https://web-dev.imgix.net/image/admin/JcKHWSuhVrG1uuxlLaUq.jpg?fit=crop&h=40&w=40&auto=format&dpr=5&q=20 5x
+                              "
+                              width="40"
+                          /></a>
+                        </div>
+                      </div>
+                      <div class="w-authors__card--holder">
+                        <span class="w-author__name"
+                          ><a
+                            class="w-author__name-link"
+                            href="/authors/thebengeu/"
+                            >Beng Eu</a
+                          >,
+                          <a class="w-author__name-link" href="/authors/jimper/"
+                            >Jonathon Imperiosi</a
+                          ></span
+                        >
+                        <div class="w-author__published">
+                          <time>Mar 5, 2020</time>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="w-card-base__desc">
+                      <a
+                        class="w-card-base__link"
+                        tabindex="-1"
+                        href="/ads-case-study-stale-while-revalidate/"
+                      >
+                        <p class="w-card-base__subhead">
+                          Find out how loading third-party resources faster can
+                          increase revenue.
+                        </p>
+                      </a>
+
+                      <div class="w-chips w-card__chips">
+                        <a class="w-chip" href="/tags/case-study/"
+                          >Case Study</a
+                        >
+
+                        <a class="w-chip" href="/tags/performance/"
+                          >Performance</a
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              </div>
+
+              <div class="w-card" role="listitem">
+                <article class="w-card-base">
+                  <div class="w-card-base__blurb">
+                    <a href="/snap-after-layout/" class="w-card-base__link">
+                      <h2 class="w-card-base__headline">
+                        Scroll snapping after layout changes
+                      </h2>
+                    </a>
+                    <div class="w-authors__card">
+                      <div class="w-authors__card--holder">
+                        <span class="w-author__name"
+                          ><a class="w-author__name-link" href="/authors/yigu/"
+                            >Yi Gu</a
+                          >,
+                          <a class="w-author__name-link" href="/authors/alsan/"
+                            >Kaan Alsan</a
+                          >,
+                          <a
+                            class="w-author__name-link"
+                            href="/authors/adamargyle/"
+                            >Adam Argyle</a
+                          ></span
+                        >
+                        <div class="w-author__published">
+                          <time>Feb 22, 2020</time>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="w-card-base__desc">
+                      <a
+                        class="w-card-base__link"
+                        tabindex="-1"
+                        href="/snap-after-layout/"
+                      >
+                        <p class="w-card-base__subhead">
+                          Starting in Chrome 81, you no longer need to add event
+                          listeners to force resnapping.
+                        </p>
+                      </a>
+
+                      <div class="w-chips w-card__chips"></div>
+                    </div>
+                  </div>
+                </article>
+              </div>
+
+              <div class="w-card" role="listitem">
+                <article class="w-card-base w-card-base__with--cover">
+                  <div class="w-card-base__cover">
+                    <a
+                      href="/web-ar/"
+                      class="w-card-base__link"
+                      tabindex="-1"
+                      aria-hidden="true"
+                    >
+                      <figure class="w-card-base__figure">
+                        <img
+                          alt="A person using augmented reality with a smartphone."
+                          class="w-card-base__image"
+                          decoding="async"
+                          height="240"
+                          loading="lazy"
+                          sizes="(min-width: 354px) 354px, calc(100vw - 48px)"
+                          src="https://web-dev.imgix.net/image/admin/VMTT5zbuFgXWfTj7Hlvv.jpg?auto=format&fit=crop&h=240&w=354"
+                          srcset="
+                            https://web-dev.imgix.net/image/admin/VMTT5zbuFgXWfTj7Hlvv.jpg?fit=crop&h=240&w=354&auto=format&dpr=1&q=75 1x,
+                            https://web-dev.imgix.net/image/admin/VMTT5zbuFgXWfTj7Hlvv.jpg?fit=crop&h=240&w=354&auto=format&dpr=2&q=50 2x,
+                            https://web-dev.imgix.net/image/admin/VMTT5zbuFgXWfTj7Hlvv.jpg?fit=crop&h=240&w=354&auto=format&dpr=3&q=35 3x,
+                            https://web-dev.imgix.net/image/admin/VMTT5zbuFgXWfTj7Hlvv.jpg?fit=crop&h=240&w=354&auto=format&dpr=4&q=23 4x,
+                            https://web-dev.imgix.net/image/admin/VMTT5zbuFgXWfTj7Hlvv.jpg?fit=crop&h=240&w=354&auto=format&dpr=5&q=20 5x
+                          "
+                          width="354"
+                        />
+                      </figure>
+                    </a>
+                  </div>
+
+                  <div class="w-card-base__blurb">
+                    <a href="/web-ar/" class="w-card-base__link">
+                      <h2 class="w-card-base__headline--with-image">
+                        Augmented reality: You may already know it
+                      </h2>
+                    </a>
+                    <div class="w-authors__card">
+                      <div class="w-author__image--row">
+                        <div class="w-author__image--row-item">
+                          <a href="/authors/joemedley/"
+                            ><img
+                              alt="Joe Medley"
+                              class="w-author__image w-author__image--small"
+                              decoding="async"
+                              height="40"
+                              loading="lazy"
+                              sizes="(min-width: 40px) 40px, calc(100vw - 48px)"
+                              src="https://web-dev.imgix.net/image/admin/ynJFmvKEbD9diZZsTdkD.jpg?auto=format&fit=crop&h=40&w=40"
+                              srcset="
+                                https://web-dev.imgix.net/image/admin/ynJFmvKEbD9diZZsTdkD.jpg?fit=crop&h=40&w=40&auto=format&dpr=1&q=75 1x,
+                                https://web-dev.imgix.net/image/admin/ynJFmvKEbD9diZZsTdkD.jpg?fit=crop&h=40&w=40&auto=format&dpr=2&q=50 2x,
+                                https://web-dev.imgix.net/image/admin/ynJFmvKEbD9diZZsTdkD.jpg?fit=crop&h=40&w=40&auto=format&dpr=3&q=35 3x,
+                                https://web-dev.imgix.net/image/admin/ynJFmvKEbD9diZZsTdkD.jpg?fit=crop&h=40&w=40&auto=format&dpr=4&q=23 4x,
+                                https://web-dev.imgix.net/image/admin/ynJFmvKEbD9diZZsTdkD.jpg?fit=crop&h=40&w=40&auto=format&dpr=5&q=20 5x
+                              "
+                              width="40"
+                          /></a>
+                        </div>
+                      </div>
+                      <div class="w-authors__card--holder">
+                        <span class="w-author__name"
+                          ><a
+                            class="w-author__name-link"
+                            href="/authors/joemedley/"
+                            >Joe Medley</a
+                          ></span
+                        >
+                        <div class="w-author__published">
+                          <time>Feb 13, 2020</time>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="w-card-base__desc">
+                      <a
+                        class="w-card-base__link"
+                        tabindex="-1"
+                        href="/web-ar/"
+                      >
+                        <p class="w-card-base__subhead">
+                          If you&#39;ve used the WebXR Device API already,
+                          you&#39;re most of the way there.
+                        </p>
+                      </a>
+
+                      <div class="w-chips w-card__chips">
+                        <a class="w-chip" href="/tags/augmented-reality/"
+                          >Augmented Reality</a
+                        >
+
+                        <a class="w-chip" href="/tags/virtual-reality/"
+                          >Virtual Reality</a
+                        >
+
+                        <a class="w-chip" href="/tags/webxr/">WebXR</a>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              </div>
+
+              <div class="w-card" role="listitem">
+                <article class="w-card-base w-card-base__with--cover">
+                  <div class="w-card-base__cover">
+                    <a
+                      href="/vr-comes-to-the-web-pt-ii/"
+                      class="w-card-base__link"
+                      tabindex="-1"
+                      aria-hidden="true"
+                    >
+                      <figure class="w-card-base__figure">
+                        <img
+                          alt="A person using a virtual reality headset."
+                          class="w-card-base__image"
+                          decoding="async"
+                          height="240"
+                          loading="lazy"
+                          sizes="(min-width: 354px) 354px, calc(100vw - 48px)"
+                          src="https://web-dev.imgix.net/image/admin/2OEKtIp4RJNtX0stioZF.jpg?auto=format&fit=crop&h=240&w=354"
+                          srcset="
+                            https://web-dev.imgix.net/image/admin/2OEKtIp4RJNtX0stioZF.jpg?fit=crop&h=240&w=354&auto=format&dpr=1&q=75 1x,
+                            https://web-dev.imgix.net/image/admin/2OEKtIp4RJNtX0stioZF.jpg?fit=crop&h=240&w=354&auto=format&dpr=2&q=50 2x,
+                            https://web-dev.imgix.net/image/admin/2OEKtIp4RJNtX0stioZF.jpg?fit=crop&h=240&w=354&auto=format&dpr=3&q=35 3x,
+                            https://web-dev.imgix.net/image/admin/2OEKtIp4RJNtX0stioZF.jpg?fit=crop&h=240&w=354&auto=format&dpr=4&q=23 4x,
+                            https://web-dev.imgix.net/image/admin/2OEKtIp4RJNtX0stioZF.jpg?fit=crop&h=240&w=354&auto=format&dpr=5&q=20 5x
+                          "
+                          width="354"
+                        />
+                      </figure>
+                    </a>
+                  </div>
+
+                  <div class="w-card-base__blurb">
+                    <a
+                      href="/vr-comes-to-the-web-pt-ii/"
+                      class="w-card-base__link"
+                    >
+                      <h2 class="w-card-base__headline--with-image">
+                        Virtual reality comes to the web, part II
+                      </h2>
+                    </a>
+                    <div class="w-authors__card">
+                      <div class="w-author__image--row">
+                        <div class="w-author__image--row-item">
+                          <a href="/authors/joemedley/"
+                            ><img
+                              alt="Joe Medley"
+                              class="w-author__image w-author__image--small"
+                              decoding="async"
+                              height="40"
+                              loading="lazy"
+                              sizes="(min-width: 40px) 40px, calc(100vw - 48px)"
+                              src="https://web-dev.imgix.net/image/admin/ynJFmvKEbD9diZZsTdkD.jpg?auto=format&fit=crop&h=40&w=40"
+                              srcset="
+                                https://web-dev.imgix.net/image/admin/ynJFmvKEbD9diZZsTdkD.jpg?fit=crop&h=40&w=40&auto=format&dpr=1&q=75 1x,
+                                https://web-dev.imgix.net/image/admin/ynJFmvKEbD9diZZsTdkD.jpg?fit=crop&h=40&w=40&auto=format&dpr=2&q=50 2x,
+                                https://web-dev.imgix.net/image/admin/ynJFmvKEbD9diZZsTdkD.jpg?fit=crop&h=40&w=40&auto=format&dpr=3&q=35 3x,
+                                https://web-dev.imgix.net/image/admin/ynJFmvKEbD9diZZsTdkD.jpg?fit=crop&h=40&w=40&auto=format&dpr=4&q=23 4x,
+                                https://web-dev.imgix.net/image/admin/ynJFmvKEbD9diZZsTdkD.jpg?fit=crop&h=40&w=40&auto=format&dpr=5&q=20 5x
+                              "
+                              width="40"
+                          /></a>
+                        </div>
+                      </div>
+                      <div class="w-authors__card--holder">
+                        <span class="w-author__name"
+                          ><a
+                            class="w-author__name-link"
+                            href="/authors/joemedley/"
+                            >Joe Medley</a
+                          ></span
+                        >
+                        <div class="w-author__published">
+                          <time>Feb 13, 2020</time>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="w-card-base__desc">
+                      <a
+                        class="w-card-base__link"
+                        tabindex="-1"
+                        href="/vr-comes-to-the-web-pt-ii/"
+                      >
+                        <p class="w-card-base__subhead">
+                          All about the frame loop
+                        </p>
+                      </a>
+
+                      <div class="w-chips w-card__chips">
+                        <a class="w-chip" href="/tags/augmented-reality/"
+                          >Augmented Reality</a
+                        >
+
+                        <a class="w-chip" href="/tags/virtual-reality/"
+                          >Virtual Reality</a
+                        >
+
+                        <a class="w-chip" href="/tags/webxr/">WebXR</a>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              </div>
+
+              <div class="w-card" role="listitem">
+                <article class="w-card-base w-card-base__with--cover">
+                  <div class="w-card-base__cover">
+                    <a
+                      href="/ar-hit-test/"
+                      class="w-card-base__link"
+                      tabindex="-1"
+                      aria-hidden="true"
+                    >
+                      <figure class="w-card-base__figure">
+                        <img
+                          alt="A virtual object in a real-world view."
+                          class="w-card-base__image"
+                          decoding="async"
+                          height="240"
+                          loading="lazy"
+                          sizes="(min-width: 354px) 354px, calc(100vw - 48px)"
+                          src="https://web-dev.imgix.net/image/admin/7wUhOX8bWoohQObJO6lL.jpg?auto=format&fit=crop&h=240&w=354"
+                          srcset="
+                            https://web-dev.imgix.net/image/admin/7wUhOX8bWoohQObJO6lL.jpg?fit=crop&h=240&w=354&auto=format&dpr=1&q=75 1x,
+                            https://web-dev.imgix.net/image/admin/7wUhOX8bWoohQObJO6lL.jpg?fit=crop&h=240&w=354&auto=format&dpr=2&q=50 2x,
+                            https://web-dev.imgix.net/image/admin/7wUhOX8bWoohQObJO6lL.jpg?fit=crop&h=240&w=354&auto=format&dpr=3&q=35 3x,
+                            https://web-dev.imgix.net/image/admin/7wUhOX8bWoohQObJO6lL.jpg?fit=crop&h=240&w=354&auto=format&dpr=4&q=23 4x,
+                            https://web-dev.imgix.net/image/admin/7wUhOX8bWoohQObJO6lL.jpg?fit=crop&h=240&w=354&auto=format&dpr=5&q=20 5x
+                          "
+                          width="354"
+                        />
+                      </figure>
+                    </a>
+                  </div>
+
+                  <div class="w-card-base__blurb">
+                    <a href="/ar-hit-test/" class="w-card-base__link">
+                      <h2 class="w-card-base__headline--with-image">
+                        Positioning virtual objects in real-world views
+                      </h2>
+                    </a>
+                    <div class="w-authors__card">
+                      <div class="w-author__image--row">
+                        <div class="w-author__image--row-item">
+                          <a href="/authors/joemedley/"
+                            ><img
+                              alt="Joe Medley"
+                              class="w-author__image w-author__image--small"
+                              decoding="async"
+                              height="40"
+                              loading="lazy"
+                              sizes="(min-width: 40px) 40px, calc(100vw - 48px)"
+                              src="https://web-dev.imgix.net/image/admin/ynJFmvKEbD9diZZsTdkD.jpg?auto=format&fit=crop&h=40&w=40"
+                              srcset="
+                                https://web-dev.imgix.net/image/admin/ynJFmvKEbD9diZZsTdkD.jpg?fit=crop&h=40&w=40&auto=format&dpr=1&q=75 1x,
+                                https://web-dev.imgix.net/image/admin/ynJFmvKEbD9diZZsTdkD.jpg?fit=crop&h=40&w=40&auto=format&dpr=2&q=50 2x,
+                                https://web-dev.imgix.net/image/admin/ynJFmvKEbD9diZZsTdkD.jpg?fit=crop&h=40&w=40&auto=format&dpr=3&q=35 3x,
+                                https://web-dev.imgix.net/image/admin/ynJFmvKEbD9diZZsTdkD.jpg?fit=crop&h=40&w=40&auto=format&dpr=4&q=23 4x,
+                                https://web-dev.imgix.net/image/admin/ynJFmvKEbD9diZZsTdkD.jpg?fit=crop&h=40&w=40&auto=format&dpr=5&q=20 5x
+                              "
+                              width="40"
+                          /></a>
+                        </div>
+                      </div>
+                      <div class="w-authors__card--holder">
+                        <span class="w-author__name"
+                          ><a
+                            class="w-author__name-link"
+                            href="/authors/joemedley/"
+                            >Joe Medley</a
+                          ></span
+                        >
+                        <div class="w-author__updated">
+                          <time>Updated: Jun 4, 2020</time>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="w-card-base__desc">
+                      <a
+                        class="w-card-base__link"
+                        tabindex="-1"
+                        href="/ar-hit-test/"
+                      >
+                        <p class="w-card-base__subhead">
+                          The Hit Test API lets you position virtual items in a
+                          real-world view.
+                        </p>
+                      </a>
+
+                      <div class="w-chips w-card__chips">
+                        <a class="w-chip" href="/tags/augmented-reality/"
+                          >Augmented Reality</a
+                        >
+
+                        <a class="w-chip" href="/tags/virtual-reality/"
+                          >Virtual Reality</a
+                        >
+
+                        <a class="w-chip" href="/tags/webxr/">WebXR</a>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              </div>
+            </div>
+          </section>
+
+          <nav class="w-pagination">
+            <a
+              class="
+                w-pagination__link
+                w-pagination__arrow
+                w-pagination__arrow--first
+              "
+              aria-label="First Page"
+              href="/blog/"
+            ></a>
+
+            <a
+              class="
+                w-pagination__link
+                w-pagination__arrow
+                w-pagination__arrow--previous
+              "
+              aria-label="Previous Page"
+              href="/blog/7"
+            ></a>
+
+            <a class="w-pagination__link" aria-label="Page 4" href="/blog/4">
+              4
+            </a>
+
+            <a class="w-pagination__link" aria-label="Page 5" href="/blog/5">
+              5
+            </a>
+
+            <a class="w-pagination__link" aria-label="Page 6" href="/blog/6">
+              6
+            </a>
+
+            <a class="w-pagination__link" aria-label="Page 7" href="/blog/7">
+              7
+            </a>
+
+            <a
+              class="w-pagination__link w-pagination__link--active"
+              aria-current="page"
+              aria-label="Page 8"
+              href="/blog/8"
+            >
+              8
+            </a>
+
+            <a class="w-pagination__link" aria-label="Page 9" href="/blog/9">
+              9
+            </a>
+
+            <a class="w-pagination__link" aria-label="Page 10" href="/blog/10">
+              10
+            </a>
+
+            <span class="w-pagination__spacer">…</span>
+
+            <a class="w-pagination__link" aria-label="Page 12" href="/blog/12">
+              12
+            </a>
+
+            <a
+              class="
+                w-pagination__link w-pagination__arrow w-pagination__arrow--next
+              "
+              aria-label="Next Page"
+              href="/blog/9"
+            ></a>
+
+            <a
+              class="
+                w-pagination__link w-pagination__arrow w-pagination__arrow--last
+              "
+              aria-label="Last Page"
+              href="/blog/12"
+            ></a>
+          </nav>
+        </div>
+      </div>
+    </main>
+    <footer class="w-footer">
+      <nav class="w-footer__linkboxes">
+        <ul class="w-footer__linkboxes-list">
+          <li class="w-footer__linkbox">
+            <h3 class="w-footer__linkbox-heading">Contribute</h3>
+            <ul class="w-footer__linkbox-list">
+              <li class="w-footer__linkbox-item">
+                <a
+                  href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+                  class="w-footer__linkbox-link"
+                  data-category="Site-Wide Custom Events"
+                  data-label="Footer Link (index 1)"
+                >
+                  File a bug
+                </a>
+              </li>
+              <li class="w-footer__linkbox-item">
+                <a
+                  href="https://github.com/googlechrome/web.dev"
+                  class="w-footer__linkbox-link"
+                  data-category="Site-Wide Custom Events"
+                  data-label="Footer Link (index 2)"
+                >
+                  View source
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="w-footer__linkbox">
+            <h3 class="w-footer__linkbox-heading">Related content</h3>
+            <ul class="w-footer__linkbox-list">
+              <li class="w-footer__linkbox-item">
+                <a
+                  href="https://blog.chromium.org/"
+                  class="w-footer__linkbox-link"
+                  data-category="Site-Wide Custom Events"
+                  data-label="Footer Link (index 1)"
+                >
+                  Chrome updates
+                </a>
+              </li>
+              <li class="w-footer__linkbox-item">
+                <a
+                  href="https://developers.google.com/web/"
+                  class="w-footer__linkbox-link"
+                  data-category="Site-Wide Custom Events"
+                  data-label="Footer Link (index 2)"
+                >
+                  Web Fundamentals
+                </a>
+              </li>
+              <li class="w-footer__linkbox-item">
+                <a
+                  href="https://developers.google.com/web/showcase/"
+                  class="w-footer__linkbox-link"
+                  data-category="Site-Wide Custom Events"
+                  data-label="Footer Link (index 3)"
+                >
+                  Case studies
+                </a>
+              </li>
+              <li class="w-footer__linkbox-item">
+                <a
+                  href="https://devwebfeed.appspot.com/"
+                  class="w-footer__linkbox-link"
+                  data-category="Site-Wide Custom Events"
+                  data-label="Footer Link (index 4)"
+                >
+                  DevWeb Content Firehose
+                </a>
+              </li>
+              <li class="w-footer__linkbox-item">
+                <a
+                  href="/podcasts/"
+                  class="w-footer__linkbox-link"
+                  data-category="Podcasts"
+                  data-label="Footer Link (index 5)"
+                >
+                  Podcasts
+                </a>
+              </li>
+              <li class="w-footer__linkbox-item">
+                <a
+                  href="/shows/"
+                  class="w-footer__linkbox-link"
+                  data-category="Shows"
+                  data-label="Footer Link (index 6)"
+                >
+                  Shows
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="w-footer__linkbox">
+            <h3 class="w-footer__linkbox-heading">Connect</h3>
+            <ul class="w-footer__linkbox-list">
+              <li class="w-footer__linkbox-item">
+                <a
+                  href="https://www.twitter.com/@ChromiumDev"
+                  class="w-footer__linkbox-link"
+                  data-category="Site-Wide Custom Events"
+                  data-label="Footer Link (index 1)"
+                >
+                  Twitter
+                </a>
+              </li>
+              <li class="w-footer__linkbox-item">
+                <a
+                  href="https://www.youtube.com/user/ChromeDevelopers"
+                  class="w-footer__linkbox-link"
+                  data-category="Site-Wide Custom Events"
+                  data-label="Footer Link (index 2)"
+                >
+                  YouTube
+                </a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="w-footer__utility">
+        <nav class="w-footer__utility-nav">
+          <a
+            href="https://developers.google.com/"
+            class="w-footer__utility-logo-link"
+            data-category="Site-Wide Custom Events"
+            data-label="Footer Google Developers Link"
+          >
+            <img
+              loading="lazy"
+              width="185"
+              height="33"
+              class="w-footer__utility-logo"
+              src="/images/lockup-color.png"
+              alt="Google Developers"
+            />
+          </a>
+          <ul class="w-footer__utility-list">
+            <li class="w-footer__utility-item">
+              <a
+                class="w-footer__utility-link"
+                href="https://developer.chrome.com/home"
+                data-category="Site-Wide Custom Events"
+                data-label="Footer Chrome Link"
+              >
+                Chrome
+              </a>
+            </li>
+            <li class="w-footer__utility-item">
+              <a
+                class="w-footer__utility-link"
+                href="https://firebase.google.com/"
+                data-category="Site-Wide Custom Events"
+                data-label="Footer Firebase Link"
+              >
+                Firebase
+              </a>
+            </li>
+            <li class="w-footer__utility-item">
+              <a
+                class="w-footer__utility-link"
+                href="https://cloud.google.com/"
+                data-category="Site-Wide Custom Events"
+                data-label="Footer Google Cloud Platform Link"
+              >
+                Google Cloud Platform
+              </a>
+            </li>
+            <li class="w-footer__utility-item">
+              <a
+                class="w-footer__utility-link"
+                href="https://developers.google.com/products"
+                data-category="Site-Wide Custom Events"
+                data-label="Footer All products Link"
+              >
+                All products
+              </a>
+            </li>
+          </ul>
+          <web-language-select current="en"></web-language-select>
+        </nav>
+        <nav class="w-footer__utility-nav">
+          <ul class="w-footer__utility-list">
+            <li class="w-footer__utility-item">
+              <a
+                class="w-footer__utility-link"
+                href="https://policies.google.com/"
+                data-category="Site-Wide Custom Events"
+                data-label="Footer Terms and Privacy link"
+              >
+                Terms &amp; Privacy
+              </a>
+            </li>
+            <li class="w-footer__utility-item">
+              <a
+                class="w-footer__utility-link"
+                href="/community-guidelines/"
+                data-category="Site-Wide Custom Events"
+                data-label="Footer Community Guidelines link"
+              >
+                Community Guidelines
+              </a>
+            </li>
+          </ul>
+          <div class="w-footer__license">
+            <p>
+              Except as otherwise noted, the content of this page is licensed
+              under the
+              <a href="https://creativecommons.org/licenses/by/4.0/">
+                Creative Commons Attribution 4.0 License</a
+              >, and code samples are licensed under the
+              <a href="https://www.apache.org/licenses/LICENSE-2.0">
+                Apache 2.0 License</a
+              >. For details, see the
+              <a href="https://developers.google.com/site-policies">
+                Google Developers Site Policies</a
+              >.
+            </p>
+          </div>
+        </nav>
+      </div>
+    </footer>
+  </body>
+</html>

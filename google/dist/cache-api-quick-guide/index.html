@@ -1,0 +1,830 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=a6830e03f4f23">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>The Cache API: A quick guide</title>
+<meta name="description" content="Learn how to use the Cache API to make your application data available offline." />
+
+<link rel="canonical" href="https://web.dev/cache-api-quick-guide/" />
+
+<meta itemprop="name" content="The Cache API: A quick guide" />
+<meta itemprop="description" content="Learn how to use the Cache API to make your application data available offline." />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vU99HKzIf5EUPnzGVPf1.png?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/cache-api-quick-guide/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="The Cache API: A quick guide" />
+<meta property="og:description" content="Learn how to use the Cache API to make your application data available offline." />
+<meta property="og:image" content="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vU99HKzIf5EUPnzGVPf1.png?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="" />
+<meta property="tag" content="progressive-web-apps" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="The Cache API: A quick guide" />
+<meta name="twitter:description" content="Learn how to use the Cache API to make your application data available offline." />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vU99HKzIf5EUPnzGVPf1.png?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=4890940ee559d', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=04486fd4b7058', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#the-cache-api:-a-quick-guide" class="w-toc__header--link">
+        The Cache API: A quick guide
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#where-is-it-available">Where is it available?</a></li><li><a href="#what-can-be-stored">What can be stored</a></li><li><a href="#how-much-can-be-stored">How much can be stored?</a></li><li><a href="#creating-and-opening-a-cache">Creating and opening a cache</a></li><li><a href="#adding-to-a-cache">Adding to a cache</a></li><li><a href="#cache.add">cache.add</a></li><li><a href="#cache.addall">cache.addAll</a></li><li><a href="#cache.put">cache.put</a></li><li><a href="#retrieving">Retrieving from a cache</a></li><li><a href="#searching">Searching</a></li><li><a href="#filtering">Filtering</a></li><li><a href="#creating-an-index">Creating an index</a></li><li><a href="#deleting-an-item">Deleting an item</a></li><li><a href="#deleting-a-cache">Deleting a cache</a></li><li><a href="#thanks">Thanks</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@petele"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="the-cache-api:-a-quick-guide" class="w-article-header__headline">The Cache API: A quick guide</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          Learn how to use the Cache API to make your application data available offline.
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Oct 3, 2017</time>
+           <span class="w-author__separator">•</span> Updated <time>Apr 27, 2020</time> 
+        </div>
+      
+      <div class="w-layout-container--narrow w-post-signpost">
+  <span class="w-post-signpost__title">Appears in:</span>
+  <a
+          class="w-post-signpost__link"
+          href="/reliable"
+          >Network reliability</a
+        >
+</div>
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/petelepage/"><img     alt="Pete LePage"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/0g2WvpbGRGdVs0aAPc6ObG7gkud2/3rFbsLsMMk1VveHfBRSu.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/0g2WvpbGRGdVs0aAPc6ObG7gkud2/3rFbsLsMMk1VveHfBRSu.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/0g2WvpbGRGdVs0aAPc6ObG7gkud2/3rFbsLsMMk1VveHfBRSu.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/0g2WvpbGRGdVs0aAPc6ObG7gkud2/3rFbsLsMMk1VveHfBRSu.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/0g2WvpbGRGdVs0aAPc6ObG7gkud2/3rFbsLsMMk1VveHfBRSu.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/0g2WvpbGRGdVs0aAPc6ObG7gkud2/3rFbsLsMMk1VveHfBRSu.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/petelepage/">Pete LePage</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/petele"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/petele">GitHub</a>
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://glitch.com/@petele"
+          >Glitch</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://petelepage.com">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>The <a href="https://developer.mozilla.org/en-US/docs/Web/API/Cache" rel="noopener">Cache API</a> is a system for storing and retrieving network
+requests and their corresponding responses. These might be regular requests
+and responses created in the course of running your application, or they could
+be created solely for the purpose of storing data for later use.</p>
+<p>The Cache API was created to enable service workers to cache network requests
+so that they can provide fast responses, regardless of network speed or
+availablity. However, the API can also be used as a general storage mechanism.</p>
+<h2 id="where-is-it-available">Where is it available? <a class="w-headline-link" href="#where-is-it-available">#</a></h2>
+<p>The Cache API is available in <a href="https://caniuse.com/#feat=mdn-api_cache" rel="noopener">all modern browsers</a>. It is
+exposed via the global <code>caches</code> property, so you can test for the presence of
+the API with a simple feature detection:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> cacheAvailable <span class="token operator">=</span> <span class="token string">'caches'</span> <span class="token keyword">in</span> self<span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>The Cache API can be accessed from a window, iframe, worker, or service worker.</p>
+<h2 id="what-can-be-stored">What can be stored <a class="w-headline-link" href="#what-can-be-stored">#</a></h2>
+<p>The caches only store pairs of <a href="https://developer.mozilla.org/en-US/docs/Web/API/Request" rel="noopener"><code>Request</code></a> and
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/Response" rel="noopener"><code>Response</code></a> objects, representing HTTP requests and responses,
+respectively. However, the requests and responses can contain any kind of data
+that can be transferred over HTTP.</p>
+<h3 id="how-much-can-be-stored">How much can be stored? <a class="w-headline-link" href="#how-much-can-be-stored">#</a></h3>
+<p>In short, <strong>a lot</strong>, at least a couple of hundred megabytes, and potentially
+hundreds of gigabytes or more. Browser implementations vary, but the amount
+of storage available is usually based on the amount of storage available on
+the device.</p>
+<h2 id="creating-and-opening-a-cache">Creating and opening a cache <a class="w-headline-link" href="#creating-and-opening-a-cache">#</a></h2>
+<p>To open a cache, use the <code>caches.open(name)</code> method, passing the name of the
+cache as the single parameter. If the named cache does not exist, it is
+created. This method returns a <code>Promise</code> that resolves with the <code>Cache</code> object.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> cache <span class="token operator">=</span> <span class="token keyword">await</span> caches<span class="token punctuation">.</span><span class="token function">open</span><span class="token punctuation">(</span><span class="token string">'my-cache'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token comment">// do something with cache...</span></code></pre>
+</web-copy-code><h2 id="adding-to-a-cache">Adding to a cache <a class="w-headline-link" href="#adding-to-a-cache">#</a></h2>
+<p>There are three ways to add an item to a cache - <code>add</code>, <code>addAll</code>, and <code>put</code>.
+All three methods return a <code>Promise</code>.</p>
+<h3 id="cache.add"><code>cache.add</code> <a class="w-headline-link" href="#cache.add">#</a></h3>
+<p>First, there is <code>cache.add()</code>. It takes one parameter, either a <code>Request</code>
+or a URL (<code>string</code>). It makes a request to the network and stores the response
+in the cache. If the
+fetch fails, or if the status code of the response is not in the 200 range,
+then nothing is stored and the <code>Promise</code> rejects. Note that cross-origin
+requests not in CORS mode cannot be stored because they return a <code>status</code> of
+<code>0</code>. Such requests can only be stored with <code>put</code>.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token comment">// Retreive data.json from the server and store the response.</span><br>cache<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Request</span><span class="token punctuation">(</span><span class="token string">'/data.json'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token comment">// Retreive data.json from the server and store the response.</span><br>cache<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">'/data.json'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><h3 id="cache.addall"><code>cache.addAll</code> <a class="w-headline-link" href="#cache.addall">#</a></h3>
+<p>Next, there is <code>cache.addAll()</code>. It works similarly to <code>add()</code>, but takes an
+array of <code>Request</code> objects or URLs (<code>string</code>s). This works similarly to
+calling <code>cache.add</code> for each individual request, except that the <code>Promise</code>
+rejects if any single request is not cached.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> urls <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'/weather/today.json'</span><span class="token punctuation">,</span> <span class="token string">'/weather/tomorrow.json'</span><span class="token punctuation">]</span><span class="token punctuation">;</span><br>cache<span class="token punctuation">.</span><span class="token function">addAll</span><span class="token punctuation">(</span>urls<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>In each of these cases, a new entry overwrites any matching existing entry.
+This uses the same matching rules described in the section on
+<a href="#retrieving">retrieving</a>.</p>
+<h3 id="cache.put"><code>cache.put</code> <a class="w-headline-link" href="#cache.put">#</a></h3>
+<p>Finally, there is <code>cache.put()</code>, which allows you to store either a response
+from the network, or create and store your own <code>Response</code>. It takes two
+parameters. The first can either be a <code>Request</code> object or a URL (<code>string</code>).
+The second must be a <code>Response</code>, either from the network, or generated by your
+code.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token comment">// Retrieve data.json from the server and store the response.</span><br>cache<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">'/data.json'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token comment">// Create a new entry for test.json and store the newly created response.</span><br>cache<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">'/test.json'</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Response</span><span class="token punctuation">(</span><span class="token string">'{"foo": "bar"}'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token comment">// Retrieve data.json from the 3rd party site and store the response.</span><br>cache<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">'https://example.com/data.json'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>The <code>put()</code> method is more permissive than either <code>add()</code> or <code>addAll()</code>, and
+will allow you to store non-CORS responses, or other responses where the status
+code of the response is not in the 200 range. It will overwrite any previous
+responses for the same request.</p>
+<h4 id="creating-request-objects">Creating Request objects <a class="w-headline-link" href="#creating-request-objects">#</a></h4>
+<p>Create the <code>Request</code> object using a URL for the thing being stored:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> request <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Request</span><span class="token punctuation">(</span><span class="token string">'/my-data-store/item-id'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><h4 id="working-with-response-objects">Working with Response objects <a class="w-headline-link" href="#working-with-response-objects">#</a></h4>
+<p>The <code>Response</code> object constructor accepts many types of data, including
+<code>Blob</code>s, <code>ArrayBuffer</code>s, <code>FormData</code> objects, and strings.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> imageBlob <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Blob</span><span class="token punctuation">(</span><span class="token punctuation">[</span>data<span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>type<span class="token operator">:</span> <span class="token string">'image/jpeg'</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token keyword">const</span> imageResponse <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Response</span><span class="token punctuation">(</span>imageBlob<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token keyword">const</span> stringResponse <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Response</span><span class="token punctuation">(</span><span class="token string">'Hello world'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>You can set the MIME type of a <code>Response</code> by setting the appropriate header.</p>
+<web-copy-code><pre class="language-js"><code class="language-js">  <span class="token keyword">const</span> options <span class="token operator">=</span> <span class="token punctuation">{</span><br>    headers<span class="token operator">:</span> <span class="token punctuation">{</span><br>      <span class="token string">'Content-Type'</span><span class="token operator">:</span> <span class="token string">'application/json'</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">}</span><br>  <span class="token keyword">const</span> jsonResponse <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Response</span><span class="token punctuation">(</span><span class="token string">'{}'</span><span class="token punctuation">,</span> options<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>If you have retrieved a <code>Response</code> and wish to access its body, there are
+several helper methods you can use. Each returns a <code>Promise</code> that resolves
+with a value of a different type.</p>
+<table>
+  <thead>
+    <th>Method</th>
+    <th>Description</th>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>arrayBuffer</code></td>
+      <td>
+        Returns an <code>ArrayBuffer</code> containing the body, serialized to
+        bytes.
+      </td>
+    </tr>
+    <tr>
+      <td><code>blob</code></td>
+      <td>
+        Returns a <code>Blob</code>. If the <code>Response</code> was created
+        with a <code>Blob</code> then this new <code>Blob</code> has the same
+        type. Otherwise, the <code>Content-Type</code> of the
+        <code>Response</code> is used.
+      </td>
+    </tr>
+    <tr>
+      <td><code>text</code></td>
+      <td>
+        Interprets the bytes of the body as a UTF-8 encoded string.
+      </td>
+    </tr>
+    <tr>
+      <td><code>json</code></td>
+      <td>
+        Interprets the bytes of the body as a UTF-8 encoded string, then tries
+        to parse it as JSON. Returns the resulting object, or throws a
+        <code>TypeError</code> if the string cannot be parsed as JSON.
+      </td>
+    </tr>
+    <tr>
+      <td><code>formData</code></td>
+      <td>
+        Interprets the bytes of the body as an HTML form, encoded either as
+        <code>multipart/form-data</code> or
+        <code>application/x-www-form-urlencoded</code>. Returns a
+        <a href="https://developer.mozilla.org/en-US/docs/Web/API/FormData">FormData</a>
+        object, or throws a <code>TypeError</code> if the data cannot be parsed.
+      </td>
+    </tr>
+    <tr>
+      <td><code>body</code></td>
+      <td>
+        Returns a <a href="https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream">ReadableStream</a>
+        for the body data.
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>For example</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> response <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Response</span><span class="token punctuation">(</span><span class="token string">'Hello world'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token keyword">const</span> buffer <span class="token operator">=</span> <span class="token keyword">await</span> response<span class="token punctuation">.</span><span class="token function">arrayBuffer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Uint8Array</span><span class="token punctuation">(</span>buffer<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token comment">// Uint8Array(11) [72, 101, 108, 108, 111, 32, 119, 111, 114, 108, 100]</span></code></pre>
+</web-copy-code><h2 id="retrieving">Retrieving from a cache <a class="w-headline-link" href="#retrieving">#</a></h2>
+<p>To find an item in a cache, you can use the <code>match</code> method.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> response <span class="token operator">=</span> <span class="token keyword">await</span> cache<span class="token punctuation">.</span><span class="token function">match</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">;</span><br>console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>request<span class="token punctuation">,</span> response<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>If <code>request</code> is a string the browser converts it to a <code>Request</code> by calling
+<code>new Request(request)</code>. The function returns a <code>Promise</code> that resolves to
+a <code>Response</code> if a matching entry is found, or <code>undefined</code> otherwise.</p>
+<p>To determine if two <code>Requests</code> match, the browser uses more than just the URL. Two
+requests are considered different if they have different query strings,
+<code>Vary</code> headers, or HTTP methods (<code>GET</code>, <code>POST</code>, <code>PUT</code>, etc.).</p>
+<p>You can ignore some or all of these things by passing an options object as a
+second parameter.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> options <span class="token operator">=</span> <span class="token punctuation">{</span><br>  ignoreSearch<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>  ignoreMethod<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>  ignoreVary<span class="token operator">:</span> <span class="token boolean">true</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span><br><br><span class="token keyword">const</span> response <span class="token operator">=</span> <span class="token keyword">await</span> cache<span class="token punctuation">.</span><span class="token function">match</span><span class="token punctuation">(</span>request<span class="token punctuation">,</span> options<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token comment">// do something with the response</span></code></pre>
+</web-copy-code><p>If more than one cached request matches then the one that was created first is
+returned. If you want to retrieve <em>all</em> matching responses, you can use
+<code>cache.matchAll()</code>.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> options <span class="token operator">=</span> <span class="token punctuation">{</span><br>  ignoreSearch<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>  ignoreMethod<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>  ignoreVary<span class="token operator">:</span> <span class="token boolean">true</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span><br><br><span class="token keyword">const</span> responses <span class="token operator">=</span> <span class="token keyword">await</span> cache<span class="token punctuation">.</span><span class="token function">matchAll</span><span class="token punctuation">(</span>request<span class="token punctuation">,</span> options<span class="token punctuation">)</span><span class="token punctuation">;</span><br>console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">There are </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>responses<span class="token punctuation">.</span>length<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> matching responses.</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>As a shortcut you can search over all caches at once by using <code>caches.match()</code>
+instead of calling <code>cache.match()</code> for each cache.</p>
+<h2 id="searching">Searching <a class="w-headline-link" href="#searching">#</a></h2>
+<p>The Cache API does not provide a way to search for requests or responses
+except for matching entries against a <code>Response</code> object. However, you can
+implement your own search using filtering or by creating an index.</p>
+<h3 id="filtering">Filtering <a class="w-headline-link" href="#filtering">#</a></h3>
+<p>One way to implement your own search is to iterate over all entries and
+filter down to the ones that you want. Let's say that you want to find all
+items that have URLs ending with <code>.png</code>.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">async</span> <span class="token keyword">function</span> <span class="token function">findImages</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token comment">// Get a list of all of the caches for this origin</span><br>  <span class="token keyword">const</span> cacheNames <span class="token operator">=</span> <span class="token keyword">await</span> caches<span class="token punctuation">.</span><span class="token function">keys</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token keyword">const</span> result <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span><br><br>  <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">const</span> name <span class="token keyword">of</span> cacheNames<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token comment">// Open the cache</span><br>    <span class="token keyword">const</span> cache <span class="token operator">=</span> <span class="token keyword">await</span> caches<span class="token punctuation">.</span><span class="token function">open</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>    <span class="token comment">// Get a list of entries. Each item is a Request object</span><br>    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">const</span> request <span class="token keyword">of</span> <span class="token keyword">await</span> cache<span class="token punctuation">.</span><span class="token function">keys</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>      <span class="token comment">// If the request URL matches, add the response to the result</span><br>      <span class="token keyword">if</span> <span class="token punctuation">(</span>request<span class="token punctuation">.</span>url<span class="token punctuation">.</span><span class="token function">endsWith</span><span class="token punctuation">(</span><span class="token string">'.png'</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>        result<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token keyword">await</span> cache<span class="token punctuation">.</span><span class="token function">match</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">}</span><br><br>  <span class="token keyword">return</span> result<span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>This way you can use any property of the <code>Request</code> and <code>Response</code> objects to
+filter the entries. Note that this is slow if you search over large sets of
+data.</p>
+<h3 id="creating-an-index">Creating an index <a class="w-headline-link" href="#creating-an-index">#</a></h3>
+<p>The other way to implement your own search is to maintain a separate index of
+entries that can be searched and store the index in IndexedDB. Since this is the kind of
+operation that IndexedDB was designed for it has much better performance with
+large numbers of entries.</p>
+<p>If you store the URL of the <code>Request</code> alongside the searchable properties
+then you can easily retrieve the correct cache entry after doing the search.</p>
+<h2 id="deleting-an-item">Deleting an item <a class="w-headline-link" href="#deleting-an-item">#</a></h2>
+<p>To delete an item from a cache:</p>
+<web-copy-code><pre class="language-js"><code class="language-js">cache<span class="token punctuation">.</span><span class="token function">delete</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>Where request can be a <code>Request</code> or a URL string. This method also takes the
+same options object as <code>cache.match</code>, which allows you to delete multiple
+<code>Request</code>/<code>Response</code> pairs for the same URL.</p>
+<web-copy-code><pre class="language-js"><code class="language-js">cache<span class="token punctuation">.</span><span class="token function">delete</span><span class="token punctuation">(</span><span class="token string">'/example/file.txt'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>ignoreVary<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> ignoreSearch<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><h2 id="deleting-a-cache">Deleting a cache <a class="w-headline-link" href="#deleting-a-cache">#</a></h2>
+<p>To delete a cache, call <code>caches.delete(name)</code>. This function returns a
+<code>Promise</code> that resolves to <code>true</code> if the cache existed and was deleted, or
+<code>false</code> otherwise.</p>
+<h2 id="thanks">Thanks <a class="w-headline-link" href="#thanks">#</a></h2>
+<p>Thanks to Mat Scales who wrote the original version of this article, which
+first appeared on WebFundamentals.</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/progressive-web-apps/">Progressive Web Apps</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Apr 27, 2020</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/cache-api-quick-guide/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions="api"></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

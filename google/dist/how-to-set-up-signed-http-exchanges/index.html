@@ -1,0 +1,738 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=8e142c63ec86a">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>How to set up Signed HTTP Exchanges (SXG) using nginx</title>
+<meta name="description" content="How to generate a TLS certificate with SXG extensions, install tools for generating SXG files, and configure nginx to serve SXG files." />
+
+<link rel="canonical" href="https://web.dev/how-to-set-up-signed-http-exchanges/" />
+
+<meta itemprop="name" content="How to set up Signed HTTP Exchanges (SXG) using nginx" />
+<meta itemprop="description" content="How to generate a TLS certificate with SXG extensions, install tools for generating SXG files, and configure nginx to serve SXG files." />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vU99HKzIf5EUPnzGVPf1.png?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/how-to-set-up-signed-http-exchanges/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="How to set up Signed HTTP Exchanges (SXG) using nginx" />
+<meta property="og:description" content="How to generate a TLS certificate with SXG extensions, install tools for generating SXG files, and configure nginx to serve SXG files." />
+<meta property="og:image" content="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vU99HKzIf5EUPnzGVPf1.png?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="" />
+<meta property="tag" content="SXG" />
+<meta property="tag" content="nginx" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="How to set up Signed HTTP Exchanges (SXG) using nginx" />
+<meta name="twitter:description" content="How to generate a TLS certificate with SXG extensions, install tools for generating SXG files, and configure nginx to serve SXG files." />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vU99HKzIf5EUPnzGVPf1.png?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=2dd61ad5b6f3e', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=71bc89a4fdddf', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#how-to-set-up-signed-http-exchanges-(sxg)-using-nginx" class="w-toc__header--link">
+        How to set up Signed HTTP Exchanges (SXG) using nginx
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#cross-browser-support">Cross-browser support</a></li><li><a href="#prerequisites">Prerequisites</a></li><li><a href="#assumptions">Assumptions</a></li><li><a href="#step-1">Step 1: Get your certificate for SXG</a></li><li><a href="#step-2:-install-libsxg">Step 2: Install libsxg</a></li><li><a href="#option-1:-install-libsxg-from-a-debian-package">Option 1: Install libsxg from a Debian package</a></li><li><a href="#option-2:-build-libsxg-manually">Option 2: Build libsxg manually</a></li><li><a href="#step-3:-install-nginx-plugin">Step 3: Install nginx plugin</a></li><li><a href="#step-3-option-1">Option 1: Install the plugin from a Debian package</a></li><li><a href="#step-3-option-2">Option 2: Build plugin manually</a></li><li><a href="#step-4:-configure-the-nginx-plugin-to-work-with-sxg">Step 4: Configure the nginx plugin to work with SXG</a></li><li><a href="#option-1:-configure-an-installed-from-debian-nginx-module">Option 1: Configure an installed-from-Debian nginx module</a></li><li><a href="#option-2:-configure-a-built-from-source-nginx-module">Option 2: Configure a built-from-source nginx module</a></li><li><a href="#step-5:-serve-your-application-backend">Step 5: Serve your application backend</a></li><li><a href="#step-6:-test">Step 6: Test</a></li><li><a href="#send-feedback">Send feedback</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@kumagi"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="how-to-set-up-signed-http-exchanges-(sxg)-using-nginx" class="w-article-header__headline">How to set up Signed HTTP Exchanges (SXG) using nginx</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          How to generate a TLS certificate with SXG extensions, install tools for generating SXG files, and configure nginx to serve SXG files.
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Mar 11, 2020</time>
+          
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/kumagi/"><img     alt="Hiroki Kumazaki"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/Y780bmlJiHhk6UwxgOFF.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/Y780bmlJiHhk6UwxgOFF.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/Y780bmlJiHhk6UwxgOFF.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/Y780bmlJiHhk6UwxgOFF.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/Y780bmlJiHhk6UwxgOFF.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/Y780bmlJiHhk6UwxgOFF.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/kumagi/">Hiroki Kumazaki</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/kumagi"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/kumagi">GitHub</a>
+      </li>
+      
+      
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p><a href="https://developers.google.com/web/updates/2018/11/signed-exchanges" rel="noopener">Signed HTTP Exchanges (SXG)</a> is a new web technology that makes it easier for users to tell content creators apart from content distributors. This guide shows you how to set up SXG.</p>
+<h2 id="cross-browser-support">Cross-browser support <a class="w-headline-link" href="#cross-browser-support">#</a></h2>
+<p>Several Chromium-based browsers support SXG, including Google Chrome, Samsung
+Internet, and Microsoft Edge. See the Consensus and Standardization section of
+<a href="https://www.chromestatus.com/feature/5745285984681984" rel="noopener">Origin-Signed HTTP Exchanges</a>
+for more up-to-date information.</p>
+<h2 id="prerequisites">Prerequisites <a class="w-headline-link" href="#prerequisites">#</a></h2>
+<p>To implement SXG on your website, you must:</p>
+<ul>
+<li>Have control over your domain, including DNS entries.</li>
+<li>Get certificates. SXG requires the issuance of a dedicated certificate. In particular, you cannot reuse your TLS key or certificate.</li>
+<li>Have an HTTP server that can generate and serve SXG over HTTPS.</li>
+</ul>
+<h2 id="assumptions">Assumptions <a class="w-headline-link" href="#assumptions">#</a></h2>
+<p>This guide assumes that you:</p>
+<ul>
+<li>Have an OpenSSL 1.1.1 environment. This guide was written with Ubuntu 18.04 LTS on amd64 ISA.</li>
+<li>Have the ability to run <code>sudo</code> to install executables.</li>
+<li>Use <code>nginx</code> as an HTTP server.</li>
+<li>Are using DigiCert to generate certificates that include SXG-related extensions, because it currently appears to be the only provider that supports these extensions.</li>
+</ul>
+<p>Also, the example commands in this article assume your domain is <code>website.test</code>, so you'll need to replace <code>website.test</code> with your actual domain.</p>
+<h2 id="step-1">Step 1: Get your certificate for SXG <a class="w-headline-link" href="#step-1">#</a></h2>
+<p>To generate SXG, you need a TLS certificate with the <code>CanSignHttpExchanges</code> extension, as well as a particular key type.
+DigiCert provides certificates with this extension.
+You need a CSR file for issuance of a certificate, so generate it with the following commands:</p>
+<web-copy-code><pre class="language-bash"><code class="language-bash">openssl ecparam -genkey -name prime256v1 -out mySxg.key<br>openssl req -new -key mySxg.key -nodes -out mySxg.csr -subj <span class="token string">"/O=Test/C=US/CN=website.test"</span></code></pre>
+</web-copy-code><p>You will get a CSR file that looks like the following:</p>
+<web-copy-code><pre class="language-bash"><code class="language-bash">-----BEGIN CERTIFICATE REQUEST-----<br>MIHuMIGVAgEAMDMxDTALBgNVBAoMBFRlc3QxCzAJBgNVBAYTAlVTMRUwEwYDVQQD<br>DAx3ZWJzaXRlLnRlc3QwWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAAS7IVaeMvid<br>S5UO7BspzSe5eqT5Qk6X6dCggUiV/vyqQaFDjA/ALyTofgXpbCaksorPaDhdA+f9<br>APdHWkTbbdv1oAAwCgYIKoZIzj0EAwIDSAAwRQIhAIb7n7Kcc6Y6pU3vFr8SDNkB<br>kEadlVKNA24SVZ/hn3fjAiAS2tWXhYdJX6xjf2+DL/smB36MKbXg7VWy0K1tWmFi<br><span class="token assign-left variable">Sg</span><span class="token operator">==</span><br>-----END CERTIFICATE REQUEST-----</code></pre>
+</web-copy-code><p>Make sure that:</p>
+<ul>
+<li>The validity period does not exceed 90 days.</li>
+<li>The <strong>Include the CanSignHttpExchanges extension in the certificate</strong> checkbox is enabled,
+which is found under Additional Certificate Options.</li>
+</ul>
+<figure class="w-figure">
+  <img     alt=""     class="w-screenshot"     decoding="async"     height="133"          loading="lazy"     sizes="(min-width: 718px) 718px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/kFWTZFXNvwkHnwRu7y8Q.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/kFWTZFXNvwkHnwRu7y8Q.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/kFWTZFXNvwkHnwRu7y8Q.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/kFWTZFXNvwkHnwRu7y8Q.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/kFWTZFXNvwkHnwRu7y8Q.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/kFWTZFXNvwkHnwRu7y8Q.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/kFWTZFXNvwkHnwRu7y8Q.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/kFWTZFXNvwkHnwRu7y8Q.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/kFWTZFXNvwkHnwRu7y8Q.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/kFWTZFXNvwkHnwRu7y8Q.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/kFWTZFXNvwkHnwRu7y8Q.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/kFWTZFXNvwkHnwRu7y8Q.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/kFWTZFXNvwkHnwRu7y8Q.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/kFWTZFXNvwkHnwRu7y8Q.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/kFWTZFXNvwkHnwRu7y8Q.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/kFWTZFXNvwkHnwRu7y8Q.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/kFWTZFXNvwkHnwRu7y8Q.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/kFWTZFXNvwkHnwRu7y8Q.png?auto=format&w=1436 1436w"          width="718"   />
+  <figcaption class="w-figcaption">
+    The <b>Include the CanSignHttpExchanges extension in the certificate</b> checkbox.
+  </figcaption>
+</figure>
+<p>If your certificate does not match these conditions, browsers and distributors will reject your SXG for security reasons.
+This guide assumes that the filename of the certificate you got from DigiCert is <code>mySxg.pem</code>.</p>
+<h2 id="step-2:-install-libsxg">Step 2: Install <code>libsxg</code> <a class="w-headline-link" href="#step-2:-install-libsxg">#</a></h2>
+<p>The SXG format is complex and hard to generate without using tools.
+You can use one of the following options to generate SXG:</p>
+<ul>
+<li>The <a href="https://github.com/WICG/webpackage/tree/master/go/signedexchange" rel="noopener">gen-signedexchange</a> tool written in Go.</li>
+<li>The <a href="https://github.com/google/libsxg" rel="noopener"><code>libsxg</code> library</a> written in C.</li>
+</ul>
+<p>This guide uses <code>libsxg</code>.</p>
+<h3 id="option-1:-install-libsxg-from-a-debian-package">Option 1: Install <code>libsxg</code> from a Debian package <a class="w-headline-link" href="#option-1:-install-libsxg-from-a-debian-package">#</a></h3>
+<p>You can install the package in the usual Debian way, as long as the OpenSSL (<code>libssl-dev</code>) version matches.</p>
+<web-copy-code><pre class="language-bash"><code class="language-bash"><span class="token function">sudo</span> <span class="token function">apt</span> <span class="token function">install</span> -y libssl-dev<br><span class="token function">wget</span> https://github.com/google/libsxg/releases/download/v0.2/libsxg0_0.2-1_amd64.deb<br><span class="token function">wget</span> https://github.com/google/libsxg/releases/download/v0.2/libsxg-dev_0.2-1_amd64.deb<br><span class="token function">sudo</span> dpkg -i libsxg0_0.2-1_amd64.deb<br><span class="token function">sudo</span> dpkg -i libsxg-dev_0.2-1_amd64.deb</code></pre>
+</web-copy-code><h3 id="option-2:-build-libsxg-manually">Option 2: Build <code>libsxg</code> manually <a class="w-headline-link" href="#option-2:-build-libsxg-manually">#</a></h3>
+<p>If you are not using an environment compatible with <code>.deb</code> files, you can build <code>libsxg</code> yourself.
+As a precondition, you need to install <code>git</code>, <code>cmake</code>, <code>openssl</code>, and <code>gcc</code>.</p>
+<web-copy-code><pre class="language-bash"><code class="language-bash"><span class="token function">git</span> clone https://github.com/google/libsxg<br><span class="token function">mkdir</span> libsxg/build<br><span class="token builtin class-name">cd</span> libsxg/build<br>cmake <span class="token punctuation">..</span> -DRUN_TEST<span class="token operator">=</span>false -DCMAKE_BUILD_TYPE<span class="token operator">=</span>Release<br><span class="token function">make</span><br><span class="token function">sudo</span> <span class="token function">make</span> <span class="token function">install</span></code></pre>
+</web-copy-code><h2 id="step-3:-install-nginx-plugin">Step 3: Install <code>nginx</code> plugin <a class="w-headline-link" href="#step-3:-install-nginx-plugin">#</a></h2>
+<p>The <code>nginx</code> plugin allows you to generate SXG dynamically instead of statically generating them prior to serving.</p>
+<h3 id="step-3-option-1">Option 1: Install the plugin from a Debian package <a class="w-headline-link" href="#step-3-option-1">#</a></h3>
+<p>The <a href="https://github.com/kumagi/nginx-sxg-module" rel="noopener">SXG module for <code>nginx</code></a> is distributed on GitHub.
+On Debian-based systems, you can install it as a binary package:</p>
+<web-copy-code><pre class="language-bash"><code class="language-bash"><span class="token function">sudo</span> <span class="token function">apt</span> <span class="token function">install</span> -y nginx<br><span class="token function">wget</span> https://github.com/google/nginx-sxg-module/releases/download/v0.1/libnginx-mod-http-sxg-filter_1.15.9-0ubuntu1.1_amd64.deb<br><span class="token function">sudo</span> dpkg -i libnginx-mod-http-sxg-filter_1.15.9-0ubuntu1.1_amd64.deb</code></pre>
+</web-copy-code><h3 id="step-3-option-2">Option 2: Build plugin manually <a class="w-headline-link" href="#step-3-option-2">#</a></h3>
+<p>Building the <code>nginx</code> module requires the <code>nginx</code> source code.
+You can get the tarball and build it along with the SXG dynamic module using the commands below:</p>
+<web-copy-code><pre class="language-bash"><code class="language-bash"><span class="token function">git</span> clone https://github.com/google/nginx-sxg-module<br><span class="token function">wget</span> https://nginx.org/download/nginx-1.17.5.tar.gz<br><span class="token function">tar</span> xvf nginx-1.17.5.tar.gz<br><span class="token builtin class-name">cd</span> nginx-1.17.5<br>./configure --prefix<span class="token operator">=</span>/opt/nginx --add-dynamic-module<span class="token operator">=</span><span class="token punctuation">..</span>/nginx-sxg-module --without-http_rewrite_module --with-http_ssl_module<br><span class="token function">make</span><br><span class="token function">sudo</span> <span class="token function">make</span> <span class="token function">install</span></code></pre>
+</web-copy-code><p>The <code>nginx</code> configuration has great flexibility.
+Install <code>nginx</code> anywhere in your system, then specify a respective path of <code>module/config/log/pidfile</code>.
+This guide assumes that you install it to <code>/opt/nginx</code>.</p>
+<h2 id="step-4:-configure-the-nginx-plugin-to-work-with-sxg">Step 4: Configure the <code>nginx</code> plugin to work with SXG <a class="w-headline-link" href="#step-4:-configure-the-nginx-plugin-to-work-with-sxg">#</a></h2>
+<h3 id="option-1:-configure-an-installed-from-debian-nginx-module">Option 1: Configure an installed-from-Debian <code>nginx</code> module <a class="w-headline-link" href="#option-1:-configure-an-installed-from-debian-nginx-module">#</a></h3>
+<p>Follow these instructions if you used <a href="#step-3-option-1">Step 3, Option 1</a> earlier.</p>
+<p>Delivering SXG content requires HTTPS. You can get an SSL/TLS certificate from DigiCert, Let's Encrypt, and other services. Note that you CANNOT use an SXG certificate for SSL or vice versa, therefore you will need two certificates. The configuration file in <code>/etc/nginx/nginx.conf</code> should look similar to the following, assuming that you put the SSL key/certificate pair in <code>/path/to/ssl/</code> and the SXG key/certificate pair in <code>/path/to/sxg/</code>:</p>
+<web-copy-code><pre class="language-nginx"><code class="language-nginx"><span class="token directive"><span class="token keyword">user</span> www-data</span><span class="token punctuation">;</span><br><span class="token directive"><span class="token keyword">include</span> /etc/nginx/modules-enabled/*.conf</span><span class="token punctuation">;</span><br><br><span class="token directive"><span class="token keyword">events</span></span> <span class="token punctuation">{</span><br>     <span class="token directive"><span class="token keyword">worker_connections</span> <span class="token number">768</span></span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><br><br><span class="token directive"><span class="token keyword">http</span></span> <span class="token punctuation">{</span><br>    <span class="token directive"><span class="token keyword">include</span>       mime.types</span><span class="token punctuation">;</span><br>    <span class="token directive"><span class="token keyword">default_type</span>  application/octet-stream</span><span class="token punctuation">;</span><br>    <span class="token directive"><span class="token keyword">add_header</span>  X-Content-Type-Options nosniff</span><span class="token punctuation">;</span><br><br>    <span class="token directive"><span class="token keyword">server</span></span> <span class="token punctuation">{</span><br>        <span class="token directive"><span class="token keyword">listen</span> <span class="token number">443</span> ssl</span><span class="token punctuation">;</span><br>        <span class="token directive"><span class="token keyword">ssl_certificate</span>     /path/to/ssl/fullchain.pem</span><span class="token punctuation">;</span><br>        <span class="token directive"><span class="token keyword">ssl_certificate_key</span> /path/to/ssl/privkey.pem</span><span class="token punctuation">;</span><br>        <span class="token directive"><span class="token keyword">server_name</span>  website.test</span><span class="token punctuation">;</span><br><br>        <span class="token directive"><span class="token keyword">sxg</span> <span class="token boolean">on</span></span><span class="token punctuation">;</span><br>        <span class="token directive"><span class="token keyword">sxg_certificate</span>     /path/to/sxg/mySxg.pem</span><span class="token punctuation">;</span><br>        <span class="token directive"><span class="token keyword">sxg_certificate_key</span> /path/to/sxg/mySxg.key</span><span class="token punctuation">;</span><br>        <span class="token directive"><span class="token keyword">sxg_cert_url</span>        https://website.test/certs/cert.cbor</span><span class="token punctuation">;</span><br>        <span class="token directive"><span class="token keyword">sxg_validity_url</span>    https://website.test/validity/resource.msg</span><span class="token punctuation">;</span><br>        <span class="token directive"><span class="token keyword">sxg_cert_path</span>       /certs/cert.cbor</span><span class="token punctuation">;</span><br><br>        <span class="token directive"><span class="token keyword">root</span> /var/www/html</span><span class="token punctuation">;</span><br>    <span class="token punctuation">}</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><ul>
+<li><code>sxg_cert_url</code> is essential for browsers to load SXG properly because it locates the certificate chain. The certificate chain contains certificate and OCSP stapling information with cbor format. Note that you do not have to serve the <code>cert.cbor</code> file from the same origin. You can serve it via any CDNs or other static file serving services as long as it supports HTTPS.</li>
+<li><code>sxg_validitiy_url</code> is planned to serve SXG-signature-header-related information. If a page has not been modified since the last SXG, downloading the entire SXG file is not required technically. So updating signature header information alone is expected to reduce network traffic. But the details are not implemented yet.</li>
+</ul>
+<p>Start <code>nginx</code> and you are ready to serve SXG!</p>
+<web-copy-code><pre class="language-bash"><code class="language-bash"><span class="token function">sudo</span> systemctl start nginx.service<br><span class="token function">curl</span> -H<span class="token string">"Accept: application/signed-exchange;v=b3"</span> https://website.test/ <span class="token operator">></span> index.html.sxg<br><span class="token function">cat</span> index.html.sxg<br>sxg1-b3<span class="token punctuation">..</span>.https://website.test/<span class="token punctuation">..</span>.<span class="token punctuation">(</span>omit<span class="token punctuation">)</span></code></pre>
+</web-copy-code><h3 id="option-2:-configure-a-built-from-source-nginx-module">Option 2: Configure a built-from-source <code>nginx</code> module <a class="w-headline-link" href="#option-2:-configure-a-built-from-source-nginx-module">#</a></h3>
+<p>Follow these instructions if you used <a href="#step-3-option-2">Step 3, Option 2</a> earlier.</p>
+<p>Configure your <code>nginx</code> system installed under <code>/opt/nginx</code> to look similar to the following example:</p>
+<web-copy-code><pre class="language-nginx"><code class="language-nginx"><span class="token directive"><span class="token keyword">load_module</span> <span class="token string">"/opt/nginx/modules/ngx_http_sxg_filter_module.so"</span></span><span class="token punctuation">;</span><br><br><span class="token directive"><span class="token keyword">events</span></span> <span class="token punctuation">{</span><br>    <span class="token directive"><span class="token keyword">worker_connections</span> <span class="token number">768</span></span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><br><br><span class="token directive"><span class="token keyword">http</span></span> <span class="token punctuation">{</span><br>    <span class="token directive"><span class="token keyword">include</span>       mime.types</span><span class="token punctuation">;</span><br>    <span class="token directive"><span class="token keyword">default_type</span>  application/octet-stream</span><span class="token punctuation">;</span><br>    <span class="token directive"><span class="token keyword">add_header</span> X-Content-Type-Options nosniff</span><span class="token punctuation">;</span><br><br>    <span class="token directive"><span class="token keyword">server</span></span> <span class="token punctuation">{</span><br>        <span class="token directive"><span class="token keyword">listen</span> <span class="token number">443</span> ssl</span><span class="token punctuation">;</span><br>        <span class="token directive"><span class="token keyword">ssl_certificate</span>     /path/to/ssl/fullchain.pem</span><span class="token punctuation">;</span><br>        <span class="token directive"><span class="token keyword">ssl_certificate_key</span> /path/to/ssl/privkey.pem</span><span class="token punctuation">;</span><br>        <span class="token directive"><span class="token keyword">server_name</span>  example.com</span><span class="token punctuation">;</span><br><br>        <span class="token directive"><span class="token keyword">sxg</span> <span class="token boolean">on</span></span><span class="token punctuation">;</span><br>        <span class="token directive"><span class="token keyword">sxg_certificate</span>     /path/to/sxg/mySxg.pem</span><span class="token punctuation">;</span><br>        <span class="token directive"><span class="token keyword">sxg_certificate_key</span> /path/to/sxg/mySxg.key</span><span class="token punctuation">;</span><br>        <span class="token directive"><span class="token keyword">sxg_cert_url</span>        https://website.test/certs/cert.cbor</span><span class="token punctuation">;</span><br>        <span class="token directive"><span class="token keyword">sxg_validity_url</span>    https://website.test/validity/resource.msg</span><span class="token punctuation">;</span><br>        <span class="token directive"><span class="token keyword">sxg_cert_path</span>       /certs/cert.cbor</span><span class="token punctuation">;</span><br><br>        <span class="token directive"><span class="token keyword">root</span> /opt/nginx/html</span><span class="token punctuation">;</span><br>    <span class="token punctuation">}</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>Then start <code>nginx</code>. Now you can get your SXG!</p>
+<web-copy-code><pre class="language-bash"><code class="language-bash"><span class="token builtin class-name">cd</span> /opt/nginx/sbin<br><span class="token function">sudo</span> ./nginx<br><span class="token function">curl</span> -H <span class="token string">"Accept: application/signed-exchange;v=b3"</span> https://website.test/ <span class="token operator">></span> index.html.sxg<br><span class="token function">less</span> index.html.sxg<br>sxg1-b3<span class="token punctuation">..</span>.https://website.test/<span class="token punctuation">..</span>.<span class="token punctuation">(</span>omit<span class="token punctuation">)</span></code></pre>
+</web-copy-code><h2 id="step-5:-serve-your-application-backend">Step 5: Serve your application backend <a class="w-headline-link" href="#step-5:-serve-your-application-backend">#</a></h2>
+<p>In the above examples, <code>nginx</code> serves static files in the root directory, but you can use upstream directives for your applications to make SXG for arbitrary web application backends (such as Ruby on Rails, Django, or Express) as long as your <code>nginx</code> works as a front HTTP(S) server.</p>
+<web-copy-code><pre class="language-nginx"><code class="language-nginx"><span class="token directive"><span class="token keyword">upstream</span> app</span> <span class="token punctuation">{</span><br>    <span class="token directive"><span class="token keyword">server</span> 127.0.0.1:8080</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><br><br><span class="token directive"><span class="token keyword">server</span></span> <span class="token punctuation">{</span><br>    <span class="token directive"><span class="token keyword">location</span> /</span> <span class="token punctuation">{</span><br>        <span class="token directive"><span class="token keyword">proxy_pass</span> http://app</span><span class="token punctuation">;</span><br>    <span class="token punctuation">}</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><h2 id="step-6:-test">Step 6: Test <a class="w-headline-link" href="#step-6:-test">#</a></h2>
+<p>Use the <a href="https://github.com/WICG/webpackage/tree/master/go/signedexchange" rel="noopener">dump-signedexchange tool</a>
+to test that the SXGs being served are correct, ensure that no errors are reported, and verify that the headers
+and body are as expected.</p>
+<web-copy-code><pre class="language-bash"><code class="language-bash">go get -u github.com/WICG/webpackage/go/signedexchange/cmd/dump-signedexchange<br><span class="token builtin class-name">export</span> <span class="token assign-left variable"><span class="token environment constant">PATH</span></span><span class="token operator">=</span><span class="token environment constant">$PATH</span>:~/go/bin<br>dump-signedexchange -verify -uri https://website.test/ <span class="token operator">|</span> <span class="token function">less</span></code></pre>
+</web-copy-code><h2 id="send-feedback">Send feedback <a class="w-headline-link" href="#send-feedback">#</a></h2>
+<p>The Chromium engineers working on SXG are keen to hear your feedback at <a href="mailto:webpackage-dev@chromium.org" rel="noopener">webpackage-dev@chromium.org</a>.
+You can also join the <a href="https://github.com/WICG/webpackage/issues" rel="noopener">spec discussion</a>, or <a href="https://bugs.chromium.org/p/chromium/issues/entry?status=untriaged&amp;components=Blink%3ELoader&amp;labels=Type-Bug,Hotlist-SignedExchange" rel="noopener">report a bug</a> to the team.
+Your feedback will greatly help the standardization process and also help address implementation issues.
+Thank you!</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Mar 11, 2020</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/how-to-set-up-signed-http-exchanges/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions="api"></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

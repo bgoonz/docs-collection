@@ -1,0 +1,1054 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=a1e017fe60119">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Defining the Core Web Vitals metrics thresholds</title>
+<meta name="description" content="The research and methodology behind Core Web Vitals thresholds" />
+
+<link rel="canonical" href="https://web.dev/defining-core-web-vitals-thresholds/" />
+
+<meta itemprop="name" content="Defining the Core Web Vitals metrics thresholds" />
+<meta itemprop="description" content="The research and methodology behind Core Web Vitals thresholds" />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/WNrgCVjmp8Gyc8EbZ9Jv.png?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/defining-core-web-vitals-thresholds/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Defining the Core Web Vitals metrics thresholds" />
+<meta property="og:description" content="The research and methodology behind Core Web Vitals thresholds" />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/WNrgCVjmp8Gyc8EbZ9Jv.png?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="The research and methodology behind Core Web Vitals thresholds" />
+<meta property="tag" content="performance" />
+<meta property="tag" content="web-vitals" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Defining the Core Web Vitals metrics thresholds" />
+<meta name="twitter:description" content="The research and methodology behind Core Web Vitals thresholds" />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/WNrgCVjmp8Gyc8EbZ9Jv.png?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=14107534b74cf', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=5c4bd5d377dbc', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="The research and methodology behind Core Web Vitals thresholds"     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/WNrgCVjmp8Gyc8EbZ9Jv.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/WNrgCVjmp8Gyc8EbZ9Jv.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/WNrgCVjmp8Gyc8EbZ9Jv.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/WNrgCVjmp8Gyc8EbZ9Jv.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/WNrgCVjmp8Gyc8EbZ9Jv.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/WNrgCVjmp8Gyc8EbZ9Jv.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/WNrgCVjmp8Gyc8EbZ9Jv.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/WNrgCVjmp8Gyc8EbZ9Jv.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/WNrgCVjmp8Gyc8EbZ9Jv.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/WNrgCVjmp8Gyc8EbZ9Jv.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/WNrgCVjmp8Gyc8EbZ9Jv.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/WNrgCVjmp8Gyc8EbZ9Jv.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/WNrgCVjmp8Gyc8EbZ9Jv.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/WNrgCVjmp8Gyc8EbZ9Jv.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/WNrgCVjmp8Gyc8EbZ9Jv.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/WNrgCVjmp8Gyc8EbZ9Jv.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/WNrgCVjmp8Gyc8EbZ9Jv.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/WNrgCVjmp8Gyc8EbZ9Jv.png?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#defining-the-core-web-vitals-metrics-thresholds" class="w-toc__header--link">
+        Defining the Core Web Vitals metrics thresholds
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#refresher:-core-web-vitals-metrics-and-thresholds">Refresher: Core Web Vitals metrics and thresholds</a></li><li><a href="#criteria-for-the-core-web-vitals-metric-thresholds">Criteria for the Core Web Vitals metric thresholds</a></li><li><a href="#high-quality-user-experience">High-quality user experience</a></li><li><a href="#achievable-by-existing-web-content">Achievable by existing web content</a></li><li><a href="#final-thoughts-on-criteria">Final thoughts on criteria</a></li><li><a href="#choice-of-percentile">Choice of percentile</a></li><li><a href="#largest-contentful-paint">Largest Contentful Paint</a></li><li><a href="#quality-of-experience">Quality of experience</a></li><li><a href="#achievability">Achievability</a></li><li><a href="#first-input-delay">First Input Delay</a></li><li><a href="#quality-of-experience-2">Quality of experience</a></li><li><a href="#achievability-2">Achievability</a></li><li><a href="#cumulative-layout-shift">Cumulative Layout Shift</a></li><li><a href="#quality-of-experience-3">Quality of experience</a></li><li><a href="#achievability-3">Achievability</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@bryanmcquade"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="defining-the-core-web-vitals-metrics-thresholds" class="w-article-header__headline">Defining the Core Web Vitals metrics thresholds</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          The research and methodology behind Core Web Vitals thresholds
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>May 21, 2020</time>
+           <span class="w-author__separator">•</span> Updated <time>May 27, 2020</time> 
+        </div>
+      
+      <div class="w-layout-container--narrow w-post-signpost">
+  <span class="w-post-signpost__title">Appears in:</span>
+  <a
+          class="w-post-signpost__link"
+          href="/learn-web-vitals"
+          >Web Vitals</a
+        >
+</div>
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/bmcquade/"><img     alt="Bryan McQuade"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/KVeCLO473nZtAEMzDpo6.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/KVeCLO473nZtAEMzDpo6.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/KVeCLO473nZtAEMzDpo6.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/KVeCLO473nZtAEMzDpo6.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/KVeCLO473nZtAEMzDpo6.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/KVeCLO473nZtAEMzDpo6.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/bmcquade/">Bryan McQuade</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/bryanmcquade"
+          >Twitter</a
+        >
+      </li>
+      
+      
+      
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p><a href="/vitals/#core-web-vitals">Core Web Vitals</a> are a set of field metrics that
+measure important aspects of real-world user experience on the web. Core Web
+Vitals includes metrics, as well as target thresholds for each metric, which
+help developers qualitatively understand whether the experience of their site is
+&quot;good&quot;, &quot;needs improvement&quot;, or is &quot;poor&quot;. This post will explain the approach used to
+choose thresholds for Core Web Vitals metrics generally, as well as how the
+thresholds for each specific Core Web Vitals metric were chosen.</p>
+<h2 id="refresher:-core-web-vitals-metrics-and-thresholds">Refresher: Core Web Vitals metrics and thresholds <a class="w-headline-link" href="#refresher:-core-web-vitals-metrics-and-thresholds">#</a></h2>
+<p>In 2020 the Core Web Vitals are three metrics: Largest Contentful Paint (LCP),
+First Input Delay (FID), and Cumulative Layout Shift (CLS). Each metric measures
+a different aspect of user experience: LCP measures perceived load speed and
+marks the point in the page load timeline when the page's main content has
+likely loaded; FID measures responsiveness and quantifies the experience users
+feel when trying to first interact with the page; and CLS measures visual
+stability and quantifies the amount of unexpected layout shift of visible page
+content.</p>
+<p>Each Core Web Vitals metric has associated thresholds, which categorize
+performance as either &quot;good&quot;, &quot;needs improvement&quot;, or &quot;poor&quot;:</p>
+<div class="w-stack w-stack--center w-stack--md">
+  <img     alt="Largest Contentful Paint threshold recommendations"          decoding="async"     height="350"          loading="lazy"          src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ZZU8Z7TMKXmzZT2mCjJU.svg"               width="400"   />
+  <img     alt="First Input Delay threshold recommendations"          decoding="async"     height="350"          loading="lazy"          src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/iHYrrXKe4QRcb2uu8eV8.svg"               width="400"   />
+  <img     alt="Cumulative Layout Shift threshold recommendations"          decoding="async"     height="350"          loading="lazy"          src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/dgpDFckbHwwOKdIGDa3N.svg"               width="400"   />
+</div>
+<div class="w-table-wrapper">
+  <table>
+    <tr>
+      <th>&nbsp;</th>
+      <th>Good</th>
+      <th>Poor</th>
+      <th>Percentile</th>
+    </tr>
+    <tr>
+      <td>Largest Contentful Paint</td>
+      <td>≤2500ms</td>
+      <td>>4000ms</td>
+      <td>75</td>
+    </tr>
+    <tr>
+      <td>First Input Delay</td>
+      <td>≤100ms</td>
+      <td>>300ms</td>
+      <td>75</td>
+    </tr>
+    <tr>
+      <td> Cumulative Layout Shift</td>
+      <td>≤0.1</td>
+      <td>>0.25</td>
+      <td>75</td>
+    </tr>
+</table>
+<p>Additionally, to classify the overall performance of a page or site, we use the
+75th percentile value of all page views to that page or site. In other words, if
+at least 75 percent of page views to a site meet the &quot;good&quot; threshold, the site
+is classified as having &quot;good&quot; performance for that metric. Conversely, if at
+least 25 percent of page views meet the &quot;poor&quot; threshold, the site is classified
+as having &quot;poor&quot; performance. So, for example, a 75th percentile LCP of 2
+seconds is classified as &quot;good&quot;, while a 75th percentile LCP of 5 seconds is
+classified as &quot;poor&quot;.</p>
+<h2 id="criteria-for-the-core-web-vitals-metric-thresholds">Criteria for the Core Web Vitals metric thresholds <a class="w-headline-link" href="#criteria-for-the-core-web-vitals-metric-thresholds">#</a></h2>
+<p>When establishing thresholds for Core Web Vitals metrics, we first identified
+criteria that each threshold had to meet. Below, I explain the criteria we used
+at Google for evaluating 2020 Core Web Vitals metric thresholds. The subsequent
+sections will go into more detail on how these criteria were applied to select
+the thresholds for each metric in 2020. In future years we anticipate making
+improvements and additions to the criteria and thresholds to further improve our
+ability to measure great user experiences on the web.</p>
+<h3 id="high-quality-user-experience">High-quality user experience <a class="w-headline-link" href="#high-quality-user-experience">#</a></h3>
+<p>Our primary goal is to optimize for the user and their quality of experience.
+Given this, we aim to ensure that pages that meet the Core Web Vitals &quot;good&quot;
+thresholds deliver a high quality user experience.</p>
+<p>To identify a threshold associated with high-quality user experience, we look to
+human perception and HCI research. While this research is sometimes summarized
+using a single fixed threshold, we find that the underlying research is
+typically expressed as a range of values. For example, research on the amount of
+time users typically wait before losing focus is sometimes described as 1
+second, while the underlying research is actually expressed as a range, from
+hundreds of milliseconds to multiple seconds. The fact that perception
+thresholds vary depending on user and context is further supported by aggregated
+and anonymized Chrome metrics data, which shows that there is not a single
+amount of time users wait for a web page to display content before aborting the
+page load. Rather, this data shows a smooth and continuous distribution. For a
+more in depth look at human perception thresholds and relevant HCI research, see
+<a href="https://blog.chromium.org/2020/05/the-science-behind-web-vitals.html" rel="noopener">The Science Behind Web
+Vitals</a>.</p>
+<p>In cases where relevant user experience research is available for a given metric
+and there is reasonable consensus on the range of values in the literature, we
+use this range as an input to guide our threshold selection process. In cases
+where relevant user experience research is unavailable, such as for a new metric
+like Cumulative Layout Shift, we instead evaluate real-world pages that meet
+different candidate thresholds for a metric, to identify a threshold that
+results in a good user experience.</p>
+<h3 id="achievable-by-existing-web-content">Achievable by existing web content <a class="w-headline-link" href="#achievable-by-existing-web-content">#</a></h3>
+<p>Additionally, to ensure that site owners can succeed in optimizing their sites
+to meet the &quot;good&quot; thresholds, we require that these thresholds are achievable
+for existing content on the web. For example, while zero milliseconds is an
+ideal LCP &quot;good&quot; threshold, resulting in instant loading experiences, a zero
+millisecond threshold is not practically achievable in most cases, due to
+network and device processing latencies. Thus, zero milliseconds is not a
+reasonable LCP &quot;good&quot; threshold for Core Web Vitals.</p>
+<p>When evaluating candidate Core Web Vitals &quot;good&quot; thresholds, we verify that
+those thresholds are achievable, based on data from the <a href="https://developers.google.com/web/tools/chrome-user-experience-report" rel="noopener">Chrome User Experience
+Report</a>
+(CrUX). To confirm that a threshold is achievable, we require that at least 10%
+of <a href="/same-site-same-origin/#origin">origins</a> currently meet the &quot;good&quot;
+threshold. Additionally, to ensure that well-optimized sites are not
+misclassified due to variability in field data,  we also verify that
+well-optimized content consistently meets the &quot;good&quot; threshold.</p>
+<p>Conversely, we establish the &quot;poor&quot; threshold by identifying a level of
+performance that only a minority of origins are not currently meeting. Unless
+there is research available relevant to defining a &quot;poor&quot; threshold, by default
+the worst-performing 10-30% of origins are classified as &quot;poor&quot;.</p>
+<h3 id="final-thoughts-on-criteria">Final thoughts on criteria <a class="w-headline-link" href="#final-thoughts-on-criteria">#</a></h3>
+<p>When evaluating candidate thresholds, we found that the criteria were sometimes
+in conflict with one another. For example, there can be a tension between a
+threshold being consistently achievable and it ensuring consistently good user
+experiences. Additionally, given that human perception research typically
+provides a range of values, and user behavior metrics show gradual changes in
+behavior, we found there is often no single &quot;correct&quot; threshold for a metric.
+Thus, our approach for the 2020 Core Web Vitals has been to choose thresholds
+that best meet the above criteria, while recognizing that there is no one
+perfect threshold and that we may sometimes need to choose from multiple
+reasonable candidate thresholds. Rather than asking &quot;what is the perfect
+threshold?&quot; we instead focused on asking &quot;which candidate threshold best
+achieves our criteria?&quot;</p>
+<h2 id="choice-of-percentile">Choice of percentile <a class="w-headline-link" href="#choice-of-percentile">#</a></h2>
+<p>As noted earlier, to classify the overall performance of a page or site, we use
+the 75th percentile value of all visits to that page or site. The 75th
+percentile was chosen based on two criteria. First, the percentile should ensure
+that a majority of visits to a page or site experienced the target level of
+performance. Second, the value at the chosen percentile should not be overly
+impacted by outliers.</p>
+<p>These goals are somewhat at odds with one another. To satisfy the first goal, a
+higher percentile is typically a better choice. However, with higher
+percentiles, the likelihood of the resulting value being impacted by outliers
+also increases. If a few visits to a site happen to be on flaky network
+connections which result in excessively large LCP samples, we don't want our
+site classification to be decided by these outlier samples. For example, if we
+were evaluating the performance of a site with 100 visits using a high
+percentile such as the 95th, it would take just 5 outlier samples for the 95th
+percentile value to be affected by the outliers.</p>
+<p>Given these goals are a bit at odds, after analysis, we concluded that the 75th
+percentile strikes a reasonable balance. By using the 75th percentile, we know
+that most visits to the site (3 of 4) experienced the target level of
+performance or better. Additionally, the 75th percentile value is less likely to
+be affected by outliers. Returning to our example, for a site with 100 visits,
+25 of those visits would need to report large outlier samples for the value at
+the 75th percentile to be affected by outliers. While 25 of 100 samples being
+outliers is possible, it is much less likely than for the 95th percentile case.</p>
+<h2 id="largest-contentful-paint">Largest Contentful Paint <a class="w-headline-link" href="#largest-contentful-paint">#</a></h2>
+<h3 id="quality-of-experience">Quality of experience <a class="w-headline-link" href="#quality-of-experience">#</a></h3>
+<p>1 second is often cited as the amount of time a user will wait before they begin
+to lose focus on a task. On closer inspection of relevant research, we found
+that 1 second is an approximation to describe a range of values, from roughly
+several hundred milliseconds to several seconds.</p>
+<p>Two commonly cited sources for the 1 second threshold are <a href="https://dl.acm.org/doi/10.1145/108844.108874" rel="noopener">Card et
+al</a> and
+<a href="https://dl.acm.org/doi/10.1145/1476589.1476628" rel="noopener">Miller</a>. Card defines a
+1-second &quot;immediate response&quot; threshold, citing Newell's <a href="https://dl.acm.org/doi/book/10.5555/86564" rel="noopener">Unified Theories of
+Cognition</a>. Newell explains immediate
+responses as &quot;responses that must be made to some stimulus within <em>very
+approximately one second</em> (that is, roughly from ~0.3sec to ~3sec).&quot; This
+follows Newell's discussion on &quot;real-time constraints on cognition&quot;, where it is
+noted that &quot;interactions with the environment which evoke cognitive
+considerations take place on the order of seconds&quot; which range from roughly 0.5
+to 2-3 seconds. Miller, another commonly cited source for the 1 second
+threshold, notes &quot;tasks which humans can and will perform with machine
+communications will seriously change their character if response delays are
+greater than two seconds, with some possible extension of another second or so.&quot;</p>
+<p>Miller and Card's research describes the amount of time a user will wait before
+losing focus as a range, from roughly 0.3 to 3 seconds, which suggests our LCP
+&quot;good&quot; threshold should be in this range. Additionally, given that the existing
+First Contentful Paint &quot;good&quot; threshold is 1 second, and that the Largest
+Contentful Paint typically occurs after First Contentful Paint, we further
+constrain our range of candidate LCP thresholds, from 1 second to 3 seconds. To
+choose the threshold in this range that best meets our criteria, we look at the
+achievability of these candidate thresholds, below.</p>
+<h3 id="achievability">Achievability <a class="w-headline-link" href="#achievability">#</a></h3>
+<p>Using data from CrUX, we can determine the percentage of origins on the web that
+meet our candidate LCP &quot;good&quot; thresholds.</p>
+<p><strong>% of CrUX origins classified as &quot;good&quot; (for candidate LCP thresholds)</strong></p>
+<div class="w-table-wrapper">
+  <table>
+    <tr>
+      <th>&nbsp;</th>
+      <th>1 second</th>
+      <th>1.5 seconds</th>
+      <th>2 seconds</th>
+      <th>2.5 seconds</th>
+      <th>3 seconds</th>
+    </tr>
+    <tr>
+      <td><strong>phone</strong></td>
+      <td>3.5%</td>
+      <td>13%</td>
+      <td>27%</td>
+      <td>42%</td>
+      <td>55%</td>
+    </tr>
+    <tr>
+      <td><strong>desktop</strong></td>
+      <td>6.9%</td>
+      <td>19%</td>
+      <td>36%</td>
+      <td>51%</td>
+      <td>64%</td>
+    </tr>
+  </table>
+</div>
+<p>While less than 10% of origins meet the 1 second threshold, all other thresholds
+from 1.5 to 3 seconds satisfy our requirement that at least 10% of origins meet
+the &quot;good&quot; threshold, and are thus still valid candidates.</p>
+<p>In addition, to ensure the chosen threshold is consistently achievable for
+well-optimized sites, we analyze LCP performance for top-performing sites across
+the web, to determine which thresholds are consistently achievable for these
+sites. Specifically, we aim to identify a threshold that is consistently
+achievable at the 75th percentile for top performing sites. We find that the 1.5
+and 2 second thresholds are not consistently achievable, while 2.5 seconds is
+consistently achievable.</p>
+<p>To identify a &quot;poor&quot; threshold for LCP, we use CrUX data to identify a threshold
+met by most origins:</p>
+<p><strong>% of CrUX origins classified as &quot;poor&quot; (for candidate LCP thresholds)</strong></p>
+<div class="w-table-wrapper">
+  <table>
+    <tr>
+      <th>&nbsp;</th>
+      <th>3 seconds</th>
+      <th>3.5 seconds</th>
+      <th>4 seconds</th>
+      <th>4.5 seconds</th>
+      <th>5 seconds</th>
+    </tr>
+    <tr>
+      <td><strong>phone</strong></td>
+      <td>45%</td>
+      <td>35%</td>
+      <td>26%</td>
+      <td>20%</td>
+      <td>15%</td>
+    </tr>
+    <tr>
+      <td><strong>desktop</strong></td>
+      <td>36%</td>
+      <td>26%</td>
+      <td>19%</td>
+      <td>14%</td>
+      <td>10%</td>
+    </tr>
+  </table>
+</div>
+<p>For a 4 second threshold, roughly 26% of phone origins, and 21% of desktop
+origins, would be classified as poor. This falls in our target range of 10-30%,
+so we conclude that 4 seconds is an acceptable &quot;poor&quot; threshold.</p>
+<p>Thus, we conclude that 2.5 seconds is a reasonable &quot;good&quot; threshold, and 4
+seconds is a reasonable &quot;poor&quot; threshold for Largest Contentful Paint.</p>
+<h2 id="first-input-delay">First Input Delay <a class="w-headline-link" href="#first-input-delay">#</a></h2>
+<h3 id="quality-of-experience-2">Quality of experience <a class="w-headline-link" href="#quality-of-experience-2">#</a></h3>
+<p>Research is reasonably consistent in concluding that delays in visual feedback
+of up to around 100ms are perceived as being caused by an associated source,
+such as a user input. This suggests that a 100ms First Input Delay &quot;good&quot;
+threshold is likely appropriate as a minimum bar: if the delay for processing
+input exceeds 100ms, there is no chance for other processing and rendering steps
+to complete in time.</p>
+<p>Jakob Nielsen's commonly cited <a href="https://www.nngroup.com/articles/response-times-3-important-limits/" rel="noopener">Response Times: The 3 Important
+Limits</a>
+defines 0.1 second as the limit for having the user feel that the system is
+reacting instantaneously. Nielsen cites Miller and Card, who cites Michotte's
+1962 <a href="https://psycnet.apa.org/record/1964-05029-000" rel="noopener">The Perception of
+Causality</a>. In Michotte's
+research, experiment participants are shown &quot;two objects on a screen. Object A
+sets off and moves towards B. It stops at the moment when it comes into contact
+with B, while the latter then starts and moves away from A.&quot; Michotte varies the
+time interval between when Object A stops and when Object B starts to move.
+Michotte finds that, for delays up to roughly 100ms, participants have the
+impression that Object A causes the motion of Object B. For delays from roughly
+100ms to 200ms, the perception of causality is mixed, and for delays over 200ms,
+the motion of Object B is no longer seen as having been caused by Object A.</p>
+<p>Similarly, Miller defines a response threshold for &quot;Response to control
+activation&quot; as &quot;the indication of action given, ordinarily, by the movement of a
+key, switch or other control member that signals it has been physically
+actIvated. This response should be…perceived as a part of the mechanical
+action induced by the operator. Time delay: No more than 0.1 second&quot; and later
+&quot;the delay between depressing a key and visual feedback should be no more than
+0.1 to 0.2 seconds&quot;.</p>
+<p>More recently, in <a href="https://dl.acm.org/doi/10.1145/2611387" rel="noopener">Towards the Temporally Perfect Virtual
+Button</a>, Kaaresoja et al investigated
+the perception of simultaneity between touching a virtual button on a
+touchscreen and subsequent visual feedback indicating the button was touched,
+for various delays. When the delay between button press and visual feedback was
+85ms or less, participants reported the visual feedback appeared simultaneously
+with the button press 75% of the time. Additionally, for delays of 100ms or
+less, participants reported a consistently high perceived quality of the button
+press, with perceived quality falling off for delays of 100ms to 150ms, and
+reaching very low levels for delays of 300ms.</p>
+<p>Given the above, we conclude that research points to a range of values around
+100ms as an appropriate First Input Delay threshold for Web Vitals.
+Additionally, given users reported low quality levels for delays of 300ms or
+more, 300ms presents as a reasonable &quot;poor&quot; threshold.</p>
+<h3 id="achievability-2">Achievability <a class="w-headline-link" href="#achievability-2">#</a></h3>
+<p>Using data from CrUX, we determine that the majority of origins on the web meet
+the 100ms FID &quot;good&quot; threshold at the 75th percentile:</p>
+<p><strong>% of CrUX origins classified as &quot;good&quot; for FID 100ms threshold</strong></p>
+<div class="w-table-wrapper">
+  <table>
+    <tr>
+      <th></th>
+      <th>100ms</th>
+    </tr>
+    <tr>
+      <td><strong>phone</strong></td>
+      <td>78%</td>
+    </tr>
+    <tr>
+      <td><strong>desktop</strong></td>
+      <td>>99%</td>
+    </tr>
+  </table>
+</div>
+<p>Additionally, we observe that top sites across the web are able to consistently
+meet this threshold at the 75th percentile (and often meet it at the 95th
+percentile).</p>
+<p>Given the above, we conclude that 100ms is a reasonable &quot;good&quot; threshold for
+FID.</p>
+<h2 id="cumulative-layout-shift">Cumulative Layout Shift <a class="w-headline-link" href="#cumulative-layout-shift">#</a></h2>
+<h3 id="quality-of-experience-3">Quality of experience <a class="w-headline-link" href="#quality-of-experience-3">#</a></h3>
+<p>Cumulative Layout Shift (CLS) is a new metric that measures how much the visible
+content of a page shifts around. Given CLS is new, we are not aware of research
+that can directly inform the thresholds for this metric. Thus, to identify a
+threshold that is aligned with user expectations, we evaluated real-world pages
+with different amounts of layout shift, to determine the maximum amount of shift
+that is perceived as acceptable before causing significant disruptions when
+consuming page content. In our internal testing, we found that levels of shift
+from 0.15 and above were consistently perceived as disruptive, while shifts of
+0.1 and below were noticeable but not excessively disruptive. Thus, while zero
+layout shift is ideal, we concluded that values up to 0.1 are candidate &quot;good&quot;
+CLS thresholds.</p>
+<h3 id="achievability-3">Achievability <a class="w-headline-link" href="#achievability-3">#</a></h3>
+<p>Based on CrUX data, we can see that nearly 50% of origins have CLS of 0.05 or
+below.</p>
+<p><strong>% of CrUX origins classified as &quot;good&quot; (for candidate CLS thresholds)</strong></p>
+<div class="w-table-wrapper">
+  <table>
+    <tr>
+      <th>&nbsp;</th>
+      <th>0.05</th>
+      <th>0.1</th>
+      <th>0.15</th>
+    </tr>
+    <tr>
+      <td><strong>phone</strong></td>
+      <td>49%</td>
+      <td>60%</td>
+      <td>69%</td>
+    </tr>
+    <tr>
+      <td><strong>desktop</strong></td>
+      <td>42%</td>
+      <td>59%</td>
+      <td>69%</td>
+    </tr>
+  </table>
+</div>
+<p>While the CrUX data suggests that 0.05 might be a reasonable CLS &quot;good&quot;
+threshold, we recognize that there are some use cases where it is currently
+difficult to avoid disruptive layout shifts. For example, for third-party
+embedded content, such as social media embeds, the height of the embedded
+content is sometimes not known until it finishes loading, which can lead to a
+layout shift greater than 0.05. Thus, we conclude that, while many origins meet
+the 0.05 threshold, the slightly less stringent CLS threshold of 0.1 strikes a
+better balance between quality of experience and achievability. It is our hope
+that, going forward, the web ecosystem will identify solutions to address layout
+shifts caused by third party embeds, which would allow for using a more
+stringent CLS &quot;good&quot; threshold of 0.05 or 0 in a future iteration of Core Web
+Vitals.</p>
+<p>Additionally, to determine a &quot;poor&quot; threshold for CLS, we used CrUX data to
+identify a threshold met by most origins:</p>
+<p><strong>% of CrUX origins classified as &quot;poor&quot; (for candidate CLS thresholds)</strong></p>
+<div class="w-table-wrapper">
+  <table>
+    <tr>
+      <th>&nbsp;</th>
+      <th>0.15</th>
+      <th>0.2</th>
+      <th>0.25</th>
+      <th>0.3</th>
+    </tr>
+    <tr>
+      <td><strong>phone</strong></td>
+      <td>31%</td>
+      <td>25%</td>
+      <td>20%</td>
+      <td>18%</td>
+    </tr>
+    <tr>
+      <td><strong>desktop</strong></td>
+      <td>31%</td>
+      <td>23%</td>
+      <td>18%</td>
+      <td>16%</td>
+    </tr>
+  </table>
+</div>
+<p>For a 0.25 threshold, roughly 20% of phone origins, and 18% of desktop origins,
+would be classified as &quot;poor&quot;. This falls in our target range of 10-30%, so we
+concluded that 0.25 is an acceptable &quot;poor&quot; threshold.</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/performance/">Performance</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/web-vitals/">Web Vitals</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>May 27, 2020</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/defining-core-web-vitals-thresholds/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

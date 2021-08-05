@@ -1,0 +1,936 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=7552334365da2">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>What is FLoC?</title>
+<meta name="description" content="Our latest news, updates, and stories for developers" />
+
+<link rel="canonical" href="https://web.dev/floc/" />
+
+<meta itemprop="name" content="What is FLoC?" />
+<meta itemprop="description" content="Our latest news, updates, and stories for developers" />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/OuORgPSvN06ntXT5xOii.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/floc/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="What is FLoC?" />
+<meta property="og:description" content="Our latest news, updates, and stories for developers" />
+<meta property="og:image" content="https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/OuORgPSvN06ntXT5xOii.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="Murmuration of starlings over Brighton pier" />
+<meta property="tag" content="privacy" />
+<meta property="tag" content="privacy-sandbox" />
+<meta property="tag" content="security" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="What is FLoC?" />
+<meta name="twitter:description" content="Our latest news, updates, and stories for developers" />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/OuORgPSvN06ntXT5xOii.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=ae5338d2029c6', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=9386ac910f955', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="Murmuration of starlings over Brighton pier"     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/GA543wiVTwpbwp6Zmw0H.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/GA543wiVTwpbwp6Zmw0H.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/GA543wiVTwpbwp6Zmw0H.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/GA543wiVTwpbwp6Zmw0H.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/GA543wiVTwpbwp6Zmw0H.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/GA543wiVTwpbwp6Zmw0H.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/GA543wiVTwpbwp6Zmw0H.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/GA543wiVTwpbwp6Zmw0H.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/GA543wiVTwpbwp6Zmw0H.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/GA543wiVTwpbwp6Zmw0H.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/GA543wiVTwpbwp6Zmw0H.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/GA543wiVTwpbwp6Zmw0H.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/GA543wiVTwpbwp6Zmw0H.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/GA543wiVTwpbwp6Zmw0H.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/GA543wiVTwpbwp6Zmw0H.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/GA543wiVTwpbwp6Zmw0H.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/GA543wiVTwpbwp6Zmw0H.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/GA543wiVTwpbwp6Zmw0H.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#what-is-floc" class="w-toc__header--link">
+        What is FLoC?
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#why-do-we-need-floc">Why do we need FLoC?</a></li><li><a href="#what-can-floc-be-used-for">What can FLoC be used for?</a></li><li><a href="#how-does-floc-work">How does FLoC work?</a></li><li><a href="#1.-floc-service">1. FLoC service</a></li><li><a href="#2.-browser">2. Browser</a></li><li><a href="#3.-advertiser:-shoestore.example">3. Advertiser: shoestore.example</a></li><li><a href="#4.-publisher:-dailynews.example">4. Publisher: dailynews.example</a></li><li><a href="#5.-adtech-platform:-adnetwork.example">5. Adtech platform: adnetwork.example</a></li><li><a href="#who-runs-the-back-end-service-that-creates-the-floc-model">Who runs the back-end service that creates the FLoC model?</a></li><li><a href="#floc-server">How does the FLoC service enable the browser to work out its cohort?</a></li><li><a href="#can-a-browser's-cohort-change">Can a browser's cohort change?</a></li><li><a href="#floc-algorithm">How does the browser work out its cohort?</a></li><li><a href="#how-does-floc-work-out-the-right-size-of-cohort">How does FLoC work out the right size of cohort?</a></li><li><a href="#can-floc-be-used-to-group-people-based-on-sensitive-categories">Can FLoC be used to group people based on sensitive categories?</a></li><li><a href="#is-floc-just-another-way-of-categorizing-people-online">Is FLoC just another way of categorizing people online?</a></li><li><a href="#do-websites-have-to-participate-and-share-information">Do websites have to participate and share information?</a></li><li><a href="#as-a-web-developer-how-can-i-try-out-floc">As a web developer how can I try out FLoC?</a></li><li><a href="#how-can-websites-opt-out-of-the-floc-computation">How can websites opt out of the FLoC computation?</a></li><li><a href="#how-can-i-make-suggestions-or-provide-feedback">How can I make suggestions or provide feedback?</a></li><li><a href="#find-out-more">Find out more</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@sw12"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="what-is-floc" class="w-article-header__headline">What is FLoC?</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          FLoC enables ad selection without sharing the browsing behaviour of individual users.
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Mar 30, 2021</time>
+           <span class="w-author__separator">•</span> Updated <time>May 14, 2021</time> 
+        </div>
+      
+      <div class="w-layout-container--narrow w-post-signpost">
+  <span class="w-post-signpost__title">Appears in:</span>
+  <a
+          class="w-post-signpost__link"
+          href="/secure"
+          >Safe and secure</a
+        >
+</div>
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/samdutton/"><img     alt="Sam Dutton"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/wPss4TJX9IJ1CJza7iFY.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/wPss4TJX9IJ1CJza7iFY.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/wPss4TJX9IJ1CJza7iFY.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/wPss4TJX9IJ1CJza7iFY.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/wPss4TJX9IJ1CJza7iFY.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/wPss4TJX9IJ1CJza7iFY.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/samdutton/">Sam Dutton</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/sw12"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/samdutton">GitHub</a>
+      </li>
+      
+      
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>FLoC provides a privacy-preserving mechanism for interest-based ad selection.</p>
+<p>As a user moves around the web, their browser uses the FLoC algorithm to work out its &quot;interest
+cohort&quot;, which will be the same for thousands of browsers with a similar recent browsing history.
+The browser recalculates its cohort periodically, on the user's device, without sharing
+individual browsing data with the browser vendor or anyone else.</p>
+<div class="w-aside w-aside--note">
+<p>FLoC is now in <a href="/origin-trials/">origin trial in Chrome</a>. Find out more:
+<a href="https://developer.chrome.com/blog/floc/" rel="noopener">How to take part in the FLoC origin trial</a>.</p>
+<p>During the current FLoC origin trial, a page visit will only be included in the browser's FLoC
+computation for one of two reasons:</p>
+<ul>
+<li>The FLoC API (<code>document.interestCohort()</code>) is used on the page.</li>
+<li>Chrome detects that the page <a href="https://github.com/WICG/floc/issues/82" rel="noopener">loads ads or ads-related resources</a>.</li>
+</ul>
+<p>For other clustering algorithms, the trial may experiment with different inclusion criteria: that's
+part of the origin trial experiment process.</p>
+</div>
+<p>Advertisers (sites that pay for advertisements) can include code on their own websites in order to
+gather and provide cohort data to their adtech platforms (companies that provide software and tools
+to deliver advertising). For example, an adtech platform might learn from an online shoe store that
+browsers from cohorts 1101 and 1354 seem interested in the store's hiking gear. From other
+advertisers, the adtech platform learns about other interests of those cohorts.</p>
+<p>Subsequently, the ad platform can use this data to select relevant ads (such as an ad for hiking
+boots from the shoe store) when a browser from one of those cohorts requests a page from a site that
+displays ads, such as a news website.</p>
+<p>The Privacy Sandbox is a series of proposals to satisfy third-party use cases without third-party
+cookies or other tracking mechanisms. See <a href="/digging-into-the-privacy-sandbox">Digging into the Privacy Sandbox</a>
+for an overview of all the proposals.</p>
+<p><strong>This proposal needs your feedback.</strong> If you have comments, please <a href="https://github.com/WICG/floc/issues/new" rel="noopener">create an
+issue</a> on the <a href="https://github.com/WICG/floc" rel="noopener">FLoC Explainer</a>
+repository.  If you have feedback on Chrome's experiment with this proposal, please post a reply on
+the <a href="https://groups.google.com/a/chromium.org/g/blink-dev/c/MmijXrmwrJs" rel="noopener">Intent to Experiment</a>.</p>
+<h2 id="why-do-we-need-floc">Why do we need FLoC? <a class="w-headline-link" href="#why-do-we-need-floc">#</a></h2>
+<p>Many businesses rely on advertising to drive traffic to their sites, and many publisher websites
+fund content by selling advertising inventory. People generally prefer to see ads that are
+relevant and useful to them, and relevant ads also bring more business to advertisers and
+<a href="https://services.google.com/fh/files/misc/disabling_third-party_cookies_publisher_revenue.pdf" rel="noopener">more revenue to the websites that host them</a>. In other words, ad space is more valuable when
+it displays relevant ads. Thus, selecting relevant ads increases revenue for ad-supported websites.
+That, in turn, means that relevant ads help fund content creation that benefits users.</p>
+<p>However, many people are concerned about the privacy implications of tailored advertising, which
+currently relies on techniques such as tracking cookies and device fingerprinting which are used to
+track individual browsing behavior. The FLoC proposal aims to allow more effective ad selection
+without compromising privacy.</p>
+<h2 id="what-can-floc-be-used-for">What can FLoC be used for? <a class="w-headline-link" href="#what-can-floc-be-used-for">#</a></h2>
+<ul>
+<li>Show ads to people whose browsers belong to a cohort that has been observed to frequently visit an
+advertiser's site or shows interest in relevant topics.</li>
+<li>Use machine learning models to predict the probability a user will convert based on their cohort,
+in order to inform ad auction bidding behavior.</li>
+<li>Recommend content to users. For example, suppose a news site observes that their sports podcast
+page has become especially popular with visitors from cohorts 1234 and 7. They can recommend that
+content to other visitors from those cohorts.</li>
+</ul>
+<h2 id="how-does-floc-work">How does FLoC work? <a class="w-headline-link" href="#how-does-floc-work">#</a></h2>
+<p>The example below describes the different roles in selecting an ad using FLoC.</p>
+<ul>
+<li>
+<p>The <strong>advertiser</strong> (a company that pays for advertising) in this example is an online shoe
+retailer: <br>
+<strong><u>shoestore.example</u></strong></p>
+</li>
+<li>
+<p>The <strong>publisher</strong> (a site that sells ad space) in the example is a news site: <br>
+<strong><u>dailynews.example</u></strong></p>
+</li>
+<li>
+<p>The <strong>adtech platform</strong> (which provides software and tools to deliver advertising) is: <br>
+<strong><u>adnetwork.example</u></strong></p>
+</li>
+</ul>
+<img     alt="Diagram showing, step by step, the different roles in selecting and delivering an ad using   FLoC: FLoC service, Browser, Advertisers, Publisher (to observe cohorts), Adtech,   Publisher (to display ads)"          decoding="async"     height="359"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/wnJ1fSECf5STngywgE7V.png?auto=format"     srcset="https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/wnJ1fSECf5STngywgE7V.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/wnJ1fSECf5STngywgE7V.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/wnJ1fSECf5STngywgE7V.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/wnJ1fSECf5STngywgE7V.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/wnJ1fSECf5STngywgE7V.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/wnJ1fSECf5STngywgE7V.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/wnJ1fSECf5STngywgE7V.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/wnJ1fSECf5STngywgE7V.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/wnJ1fSECf5STngywgE7V.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/wnJ1fSECf5STngywgE7V.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/wnJ1fSECf5STngywgE7V.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/wnJ1fSECf5STngywgE7V.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/wnJ1fSECf5STngywgE7V.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/wnJ1fSECf5STngywgE7V.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/wnJ1fSECf5STngywgE7V.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/wnJ1fSECf5STngywgE7V.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/wnJ1fSECf5STngywgE7V.png?auto=format&w=1600 1600w"          width="800"   />
+<p>In this example we've called the users <strong>Yoshi</strong> and <strong>Alex</strong>. Initially their browsers both belong
+to the same cohort, 1354.</p>
+<div class="w-aside w-aside--note">
+<p>We've called the users here Yoshi and Alex, but this is only for the purpose of the example. Names
+and individual identities are not revealed to the advertiser, publisher, or adtech platform with
+FLoC.</p>
+<p>Don't think of a cohort as a collection of people. Instead, think of a cohort as a grouping of
+browsing activity.</p>
+</div>
+<h3 id="1.-floc-service">1. FLoC service <a class="w-headline-link" href="#1.-floc-service">#</a></h3>
+<ol>
+<li>The FLoC service used by the browser creates a mathematical model with thousands of &quot;cohorts&quot;,
+each of which will correspond to thousands of web browsers with similar recent browsing histories.
+More about how this works <a href="#floc-server">below</a>.</li>
+<li>Each cohort is given a number.</li>
+</ol>
+<h3 id="2.-browser">2. Browser <a class="w-headline-link" href="#2.-browser">#</a></h3>
+<ol>
+<li>From the FLoC service, Yoshi's browser gets data describing the FLoC model.</li>
+<li>Yoshi's browser works out its cohort <a href="#floc-algorithm">by using the FLoC model's algorithm</a>
+to calculate which cohort corresponds most closely to its own browsing history. In this example,
+that will be the cohort 1354. Note that Yoshi's browser does not share any data with the FLoC
+service.</li>
+<li>In the same way, Alex's browser calculates its cohort ID. Alex's browsing history is
+different from Yoshi's, but similar enough that their browsers both belong to cohort 1354.</li>
+</ol>
+<h3 id="3.-advertiser:-shoestore.example">3. Advertiser: <span style="font-weight:normal">shoestore.example</span> <a class="w-headline-link" href="#3.-advertiser:-shoestore.example">#</a></h3>
+<ol>
+<li>Yoshi visits <u>shoestore.example</u>.</li>
+<li>The site asks Yoshi's browser for its cohort: 1354.</li>
+<li>Yoshi looks at hiking boots.</li>
+<li>The site records that a browser from cohort 1354 showed interest in hiking boots.</li>
+<li>The site later records additional interest in its products from cohort 1354, as well as from other
+cohorts.</li>
+<li>The site periodically aggregates and shares information about cohorts and product interests with
+its adtech platform <u>adnetwork.example</u>.</li>
+</ol>
+<p>Now it's Alex's turn.</p>
+<h3 id="4.-publisher:-dailynews.example">4. Publisher: <span style="font-weight:normal">dailynews.example</span> <a class="w-headline-link" href="#4.-publisher:-dailynews.example">#</a></h3>
+<ol>
+<li>Alex visits <u>dailynews.example</u>.</li>
+<li>The site asks Alex's browser for its cohort.</li>
+<li>The site then makes a request for an ad to its adtech platform, <u>adnetwork.example</u>, including
+Alex's browser's cohort: 1354.</li>
+</ol>
+<h3 id="5.-adtech-platform:-adnetwork.example">5. Adtech platform: <span style="font-weight:normal">adnetwork.example</span> <a class="w-headline-link" href="#5.-adtech-platform:-adnetwork.example">#</a></h3>
+<ol>
+<li><u>adnetwork.example</u> can select an ad suitable for Alex by combining the data it has from
+the publisher <u>dailynews.example</u> and the advertiser <u>shoestore.example</u>:
+<ul>
+<li>Alex's browser's cohort (1354) provided by <u>dailynews.example</u>.</li>
+<li>Data about cohorts and product interests from <u>shoestore.example</u>: &quot;Browsers from cohort 1354
+might be interested in hiking boots.&quot;</li>
+</ul>
+</li>
+<li><u>adnetwork.example</u> selects an ad appropriate to Alex: an ad for hiking boots on
+<u>shoestore.example</u>.</li>
+<li><u>dailynews.example</u> displays the ad 🥾.</li>
+</ol>
+<div class="w-aside w-aside--note">
+<p>Current approaches for ad selection rely on techniques such as tracking cookies and device
+fingerprinting, which are used by third parties such as advertisers to track individual browsing
+behavior.</p>
+<p>With FLoC, the browser <strong>does not share</strong> its browsing history with the FLoC service or anyone else.
+The browser, on the user's device, works out which cohort it belongs to. The user's browsing history
+never leaves the device.</p>
+</div>
+<h2 id="who-runs-the-back-end-service-that-creates-the-floc-model">Who runs the back-end service that creates the FLoC model? <a class="w-headline-link" href="#who-runs-the-back-end-service-that-creates-the-floc-model">#</a></h2>
+<p>Every browser vendor will need to make their own choice of how to group browsers into cohorts.
+Chrome is running its own FLoC service; other browsers might choose to implement FLoC with a
+different clustering approach, and would run their own service to do so.</p>
+<h2 id="floc-server">How does the FLoC service enable the browser to work out its cohort? <a class="w-headline-link" href="#floc-server">#</a></h2>
+<ol>
+<li>The FLoC service used by the browser creates a multi-dimensional mathematical representation
+of all potential web browsing histories. We'll call this model &quot;cohort space&quot;.</li>
+<li>The service divides up this space into thousands of segments. Each segment represents a
+cluster of thousands of similar browsing histories. These groupings aren't based on knowing
+any actual browsing histories; they're simply based on picking random centers in &quot;cohort space&quot; or
+cutting up the space with random lines.</li>
+<li>Each segment is given a cohort number.</li>
+<li>The web browser gets this data describing &quot;cohort space&quot; from its FLoC service.</li>
+<li>As a user moves around the web, their browser <a href="#floc-algorithm">uses an algorithm</a> to
+periodically calculate the region in &quot;cohort space&quot; that corresponds most closely to its own
+browsing history.</li>
+</ol>
+<figure style="text-align: center">
+<img     alt="Diagram of the &#x27;browsing history space&#x27; created by a FLoC server, showing multiple segments, each with a cohort number."          decoding="async"     height="359"          loading="lazy"     sizes="(min-width: 400px) 400px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/32k5jByqLrgwSMwb9mqo.png?auto=format"     srcset="https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/32k5jByqLrgwSMwb9mqo.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/32k5jByqLrgwSMwb9mqo.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/32k5jByqLrgwSMwb9mqo.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/32k5jByqLrgwSMwb9mqo.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/32k5jByqLrgwSMwb9mqo.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/32k5jByqLrgwSMwb9mqo.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/32k5jByqLrgwSMwb9mqo.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/32k5jByqLrgwSMwb9mqo.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/32k5jByqLrgwSMwb9mqo.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/32k5jByqLrgwSMwb9mqo.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/32k5jByqLrgwSMwb9mqo.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/32k5jByqLrgwSMwb9mqo.png?auto=format&w=800 800w"          width="400"   />
+<figcaption class="w-figcaption">The FLoC service divides up "cohort space" into
+thousands of segments (only a few are shown here).</figcaption>
+</figure>
+<div class="w-aside w-aside--note">
+<p>At no point in this process is the user's browsing history shared with the FLoC service, or
+any third party. The browser's cohort is calculated by the browser, on the user's device. No
+user data is acquired or stored by the FLoC service.</p>
+</div>
+<h2 id="can-a-browser's-cohort-change">Can a browser's cohort change? <a class="w-headline-link" href="#can-a-browser's-cohort-change">#</a></h2>
+<p><em>Yes</em>! A browser's cohort definitely can change! You probably don't visit the same websites every
+week, and your browser's cohort will reflect that.</p>
+<p>A cohort represents a cluster of browsing activity, not a collection of people. The activity
+characteristics of a cohort are generally consistent over time, and cohorts are useful for ad selection
+because they group similar recent browsing behavior. Individual people's browsers will float in and
+out of a cohort as their browsing behavior changes. Initially, we expect the browser to recalculate
+its cohort every seven days.</p>
+<p>In the example above, both Yoshi and Alex's browser's cohort is 1354. In the future, Yoshi's
+browser and Alex's browser may move to a different cohort if their interests change. In the
+example below, Yoshi's browser moves to cohort 1101 and Alex's browser moves to cohort 1378. Other
+people's browsers will move into and out of cohorts as their browsing interests change.</p>
+<figure style="text-align: center">
+<img     alt="Diagram of the &#x27;browsing history space&#x27; created by a FLoC server, showing multiple segments, each with a cohort number. The diagram shows browsers belonging to users Yoshi and Alex moving from one cohort to another as their browsing interests change over time."          decoding="async"     height="533"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/LMkb62V3iJTqkOrFACnM.png?auto=format"     srcset="https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/LMkb62V3iJTqkOrFACnM.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/LMkb62V3iJTqkOrFACnM.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/LMkb62V3iJTqkOrFACnM.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/LMkb62V3iJTqkOrFACnM.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/LMkb62V3iJTqkOrFACnM.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/LMkb62V3iJTqkOrFACnM.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/LMkb62V3iJTqkOrFACnM.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/LMkb62V3iJTqkOrFACnM.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/LMkb62V3iJTqkOrFACnM.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/LMkb62V3iJTqkOrFACnM.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/LMkb62V3iJTqkOrFACnM.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/LMkb62V3iJTqkOrFACnM.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/LMkb62V3iJTqkOrFACnM.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/LMkb62V3iJTqkOrFACnM.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/LMkb62V3iJTqkOrFACnM.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/LMkb62V3iJTqkOrFACnM.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/LMkb62V3iJTqkOrFACnM.png?auto=format&w=1600 1600w"          width="800"   />
+<figcaption class="w-figcaption">Yoshi's and Alex's browser cohort may change if their interests
+change.</figcaption>
+</figure>
+<div class="w-aside w-aside--note">
+<p>A cohort defines a grouping of browsing activity, not a group of people. Browsers will move in and out of a cohort as their activity changes.</p>
+</div>
+<h2 id="floc-algorithm">How does the browser work out its cohort? <a class="w-headline-link" href="#floc-algorithm">#</a></h2>
+<p>As described above, the user's browser gets data from its FLoC service that describes the
+mathematical model for cohorts: a multi-dimensional space that represents the browsing activity of
+all users. The browser then uses an algorithm to work out which region of this &quot;cohort space&quot; (that
+is, which cohort) most closely matches its own recent browsing behavior.</p>
+<h2 id="how-does-floc-work-out-the-right-size-of-cohort">How does FLoC work out the right size of cohort? <a class="w-headline-link" href="#how-does-floc-work-out-the-right-size-of-cohort">#</a></h2>
+<p>There will be thousands of browsers in each cohort.</p>
+<p>A smaller cohort size might be more useful for personalizing ads, but is less likely to stop user
+tracking—and vice versa. A mechanism for assigning browsers to cohorts needs to make a trade off
+between privacy and utility. The Privacy Sandbox uses <a href="https://en.wikipedia.org/wiki/K-anonymity" rel="noopener">k-anonymity</a>
+to allow a user to &quot;hide in a crowd&quot;. A cohort is k-anonymous if it is shared by at least k users. The higher the k
+number, the more privacy-preserving the cohort.</p>
+<h2 id="can-floc-be-used-to-group-people-based-on-sensitive-categories">Can FLoC be used to group people based on sensitive categories? <a class="w-headline-link" href="#can-floc-be-used-to-group-people-based-on-sensitive-categories">#</a></h2>
+<p>The clustering algorithm used to construct the FLoC cohort model is designed to evaluate whether a
+cohort may be correlated with sensitive categories, without learning why a category is sensitive.
+Cohorts that might reveal sensitive categories such as race, sexuality, or medical history will be
+blocked. In other words, when working out its cohort, a browser will only be choosing between
+cohorts that won't reveal sensitive categories.</p>
+<h2 id="is-floc-just-another-way-of-categorizing-people-online">Is FLoC just another way of categorizing people online? <a class="w-headline-link" href="#is-floc-just-another-way-of-categorizing-people-online">#</a></h2>
+<p>With FLoC, a user's browser will belong to one of thousands of cohorts, along with thousands of
+other users' browsers. Unlike with third-party cookies and other targeting mechanisms, FLoC only
+reveals the cohort a user's browser is in, and not an individual user ID. It does not enable others
+to distinguish an individual within a cohort. In addition, the information about browsing activity
+that is used to work out a browser's cohort is kept local on the browser or device, and is not
+uploaded elsewhere. The browser may further leverage other anonymization methods, such as
+<a href="https://en.wikipedia.org/wiki/Differential_privacy" rel="noopener">differential privacy</a>.</p>
+<h2 id="do-websites-have-to-participate-and-share-information">Do websites have to participate and share information? <a class="w-headline-link" href="#do-websites-have-to-participate-and-share-information">#</a></h2>
+<p>Websites will have the ability to opt in or out of FLoC, so sites about sensitive topics will be
+able to prevent visits to their site from being included in the FLoC calculation. As additional
+protection, analysis by the FLoC service will evaluate whether a cohort may reveal sensitive
+information about users without learning why that cohort is sensitive. If a cohort might represent a
+greater-than-typical number of people who visit sites in a sensitive category, that entire cohort is
+removed. Negative financial status and mental health are among the sensitive categories covered by
+this analysis.</p>
+<p>Websites <a href="https://github.com/WICG/floc#opting-out-of-computation" rel="noopener">can exclude a page from the FLoC calculation</a>
+by setting a <a href="https://www.w3.org/TR/permissions-policy-1/#introduction" rel="noopener">Permissions-Policy</a> header
+<code>interest-cohort=()</code> for that page. For pages that haven't been excluded, a page visit will be included
+in the browser's FLoC calculation if <code>document.interestCohort()</code> is used on the page. During the current
+<a href="https://developer.chrome.com/origintrials/#/view_trial/213920982300098561" rel="noopener">FLoC origin trial</a>, a
+page will also be included in the calculation if Chrome detects that the page
+<a href="https://github.com/WICG/floc/issues/82" rel="noopener">loads ads or ads-related resources</a>.
+(<a href="https://chromium.googlesource.com/chromium/src/+/master/docs/ad_tagging.md" rel="noopener">Ad Tagging in Chromium</a>
+explains how Chrome's ad detection mechanism works.)</p>
+<p>Pages served from private IP addresses, such as intranet pages, won't be part of the FLoC
+computation.</p>
+<h2 id="as-a-web-developer-how-can-i-try-out-floc">As a web developer how can I try out FLoC? <a class="w-headline-link" href="#as-a-web-developer-how-can-i-try-out-floc">#</a></h2>
+<p>The FLoC API is very simple: just a single method that returns a promise that resolves to an object
+providing the cohort <code>id</code> and <code>version</code>:</p>
+<web-copy-code><pre class="language-javascript"><code class="language-javascript"><span class="token keyword">const</span> <span class="token punctuation">{</span> id<span class="token punctuation">,</span> version <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">await</span> document<span class="token punctuation">.</span><span class="token function">interestCohort</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'FLoC ID:'</span><span class="token punctuation">,</span> id<span class="token punctuation">)</span><span class="token punctuation">;</span><br>console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'FLoC version:'</span><span class="token punctuation">,</span> version<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>The cohort data made available looks like this:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token punctuation">{</span><br>	id<span class="token operator">:</span> <span class="token string">"14159"</span><span class="token punctuation">,</span><br>	version<span class="token operator">:</span> <span class="token string">"chrome.1.0"</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>The <code>version</code> value enables sites using FLoC to know which browser and which FLoC model the cohort
+ID refers to. As described below, the promise returned by <code>document.interestCohort()</code> will reject
+for any frame that is not allowed the <code>interest-cohort</code> permission.</p>
+<p>The FLoC API is available in Chrome 89 and above, but if you are not taking part in the origin
+trial, you will need to set flags and run Chrome from the command line.
+<a href="http://www.chromium.org/developers/how-tos/run-chromium-with-flags" rel="noopener">Run Chromium with flags</a>
+explains how to do this for different operating systems.</p>
+<ol>
+<li>
+<p>Start Chrome with the following flags: <br></p>
+<web-copy-code><pre class="language-text"><code class="language-text">--enable-blink-features=InterestCohortAPI<br>--enable-features="FederatedLearningOfCohorts:update_interval/10s/minimum_history_domain_size_required/1,FlocIdSortingLshBasedComputation,InterestCohortFeaturePolicy"</code></pre>
+</web-copy-code></li>
+<li>
+<p>Make sure third-party cookies are not blocked and that no ad blocker is running.</p>
+</li>
+<li>
+<p>View the demo at <a href="https://floc.glitch.me/" rel="noopener">floc.glitch.me</a>.</p>
+</li>
+</ol>
+<div class="w-aside w-aside--note">
+<p><a href="https://developer.chrome.com/blog/floc" rel="noopener">How to take part in the FLoC origin trial</a> explains how
+to try out FLoC in both first- and third-party contexts.</p>
+</div>
+<h2 id="how-can-websites-opt-out-of-the-floc-computation">How can websites opt out of the FLoC computation? <a class="w-headline-link" href="#how-can-websites-opt-out-of-the-floc-computation">#</a></h2>
+<p>The <code>interest-cohort</code> permissions policy enables a site to declare that it does not want to be
+included in the user's list of sites for cohort calculation. The policy will be <code>allow</code> by default.
+The promise returned by <code>document.interestCohort()</code> will reject for any frame that is not allowed
+<code>interest-cohort</code> permission. If the main frame does not have the <code>interest-cohort</code> permission, then the
+page visit will not be included in the interest cohort calculation.</p>
+<p>For example, a site can opt out of all FLoC cohort calculation by sending the following HTTP response header:</p>
+<web-copy-code><pre class="language-text"><code class="language-text">  Permissions-Policy: interest-cohort=()</code></pre>
+</web-copy-code><h2 id="how-can-i-make-suggestions-or-provide-feedback">How can I make suggestions or provide feedback? <a class="w-headline-link" href="#how-can-i-make-suggestions-or-provide-feedback">#</a></h2>
+<p>If you have comments on the API, please <a href="https://github.com/WICG/floc/issues/new" rel="noopener">create an issue</a>
+on the <a href="https://github.com/WICG/floc" rel="noopener">FLoC Explainer</a> repository.</p>
+<h2 id="find-out-more">Find out more <a class="w-headline-link" href="#find-out-more">#</a></h2>
+<ul>
+<li><a href="https://floc.glitch.me" rel="noopener">FLoC demo</a></li>
+<li><a href="https://developer.chrome.com/blog/floc" rel="noopener">How to take part in the FLoC origin trial</a></li>
+<li><a href="/digging-into-the-privacy-sandbox/">Digging in to the Privacy Sandbox</a></li>
+<li><a href="https://github.com/WICG/floc" rel="noopener">FLoC Explainer</a></li>
+<li><a href="https://github.com/google/ads-privacy/blob/master/proposals/FLoC/README.md" rel="noopener">Evaluation of cohort Algorithms for the FLoC API</a></li>
+</ul>
+<hr>
+<p>Photo by <a href="https://unsplash.com/@rhyskentish" rel="noopener">Rhys Kentish</a> on <a href="https://unsplash.com/photos/I5AYxsxSuVA" rel="noopener">Unsplash</a>.</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/privacy/">Privacy</a>
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/security/">Security</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>May 14, 2021</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/floc/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions="api"></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

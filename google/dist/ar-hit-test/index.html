@@ -1,0 +1,785 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=95c303a6e90d4">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Positioning virtual objects in real-world views</title>
+<meta name="description" content="The WebXR Hit Test API is an enhancement to the web's augmented reality that lets you place virtual objects in a real-world view." />
+
+<link rel="canonical" href="https://web.dev/ar-hit-test/" />
+
+<meta itemprop="name" content="Positioning virtual objects in real-world views" />
+<meta itemprop="description" content="The WebXR Hit Test API is an enhancement to the web's augmented reality that lets you place virtual objects in a real-world view." />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/7wUhOX8bWoohQObJO6lL.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/ar-hit-test/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Positioning virtual objects in real-world views" />
+<meta property="og:description" content="The WebXR Hit Test API is an enhancement to the web's augmented reality that lets you place virtual objects in a real-world view." />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/7wUhOX8bWoohQObJO6lL.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="A virtual object in a real-world view." />
+<meta property="tag" content="augmented-reality" />
+<meta property="tag" content="hit-test" />
+<meta property="tag" content="virtual-reality" />
+<meta property="tag" content="webxr" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Positioning virtual objects in real-world views" />
+<meta name="twitter:description" content="The WebXR Hit Test API is an enhancement to the web's augmented reality that lets you place virtual objects in a real-world view." />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/7wUhOX8bWoohQObJO6lL.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=358638ffb14d2', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=5da851fbda751', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="A virtual object in a real-world view."     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/7wUhOX8bWoohQObJO6lL.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/7wUhOX8bWoohQObJO6lL.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/7wUhOX8bWoohQObJO6lL.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/7wUhOX8bWoohQObJO6lL.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/7wUhOX8bWoohQObJO6lL.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/7wUhOX8bWoohQObJO6lL.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/7wUhOX8bWoohQObJO6lL.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/7wUhOX8bWoohQObJO6lL.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/7wUhOX8bWoohQObJO6lL.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/7wUhOX8bWoohQObJO6lL.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/7wUhOX8bWoohQObJO6lL.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/7wUhOX8bWoohQObJO6lL.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/7wUhOX8bWoohQObJO6lL.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/7wUhOX8bWoohQObJO6lL.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/7wUhOX8bWoohQObJO6lL.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/7wUhOX8bWoohQObJO6lL.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/7wUhOX8bWoohQObJO6lL.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/7wUhOX8bWoohQObJO6lL.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#positioning-virtual-objects-in-real-world-views" class="w-toc__header--link">
+        Positioning virtual objects in real-world views
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#the-immersive-ar-session-sample">The immersive AR session sample</a></li><li><a href="#create-the-reticle">Create the reticle</a></li><li><a href="#request-a-session">Request a session</a></li><li><a href="#entering-a-session">Entering a session</a></li><li><a href="#multiple-reference-spaces">Multiple reference spaces</a></li><li><a href="#running-a-frame-loop">Running a frame loop</a></li><li><a href="#placing-an-object">Placing an object</a></li><li><a href="#conclusion">Conclusion</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@medleyjp"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="positioning-virtual-objects-in-real-world-views" class="w-article-header__headline">Positioning virtual objects in real-world views</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          The Hit Test API lets you position virtual items in a real-world view.
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Feb 13, 2020</time>
+           <span class="w-author__separator">•</span> Updated <time>Jun 4, 2020</time> 
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/joemedley/"><img     alt="Joe Medley"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/ynJFmvKEbD9diZZsTdkD.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/ynJFmvKEbD9diZZsTdkD.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/ynJFmvKEbD9diZZsTdkD.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/ynJFmvKEbD9diZZsTdkD.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/ynJFmvKEbD9diZZsTdkD.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/ynJFmvKEbD9diZZsTdkD.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/joemedley/">Joe Medley</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/medleyjp"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/jpmedley">GitHub</a>
+      </li>
+      
+      
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>The WebXR Device API shipped last fall in Chrome 79. As stated then, Chrome's
+implementation of the API is a work in progress. Chrome is happy to announce
+that some of the work is finished. In Chrome 81, two new features have arrived:</p>
+<ul>
+<li><a href="https://www.chromestatus.com/feature/5450241148977152" rel="noopener">Augmented reality session types</a></li>
+<li><a href="https://www.chromestatus.com/feature/4755348300759040" rel="noopener">Hit testing</a></li>
+</ul>
+<p>This article covers the <a href="https://github.com/immersive-web/hit-test/blob/master/hit-testing-explainer.md" rel="noopener">WebXR Hit Test
+API</a>, a
+means of placing virtual objects in a real-world camera view.</p>
+<p>In this article I assume you already know how to create an augmented reality
+session and that you know how to run a frame loop. If you're not familiar with
+these concepts, you should read the earlier articles in this series.</p>
+<ul>
+<li><a href="/vr-comes-to-the-web/">Virtual reality comes to the web</a></li>
+<li><a href="/vr-comes-to-the-web-pt-ii/">Virtual reality comes to the web, part II</a></li>
+<li><a href="/web-ar">Web AR: you may already know how to use it</a></li>
+</ul>
+<h2 id="the-immersive-ar-session-sample">The immersive AR session sample <a class="w-headline-link" href="#the-immersive-ar-session-sample">#</a></h2>
+<p>The code in this article is based on, but not identical to, that found in the
+Immersive Web Working Group's Hit Test sample
+(<a href="https://immersive-web.github.io/webxr-samples/hit-test.html" rel="noopener">demo</a>,
+<a href="https://github.com/immersive-web/webxr-samples/blob/master/hit-test.html" rel="noopener">source</a>).
+This example lets you place virtual sunflowers on surfaces in the real world.</p>
+<p>When you first open the app, you'll see a blue circle with a dot in the middle.
+The dot is the intersection between an imaginary line from your device to the
+point in the environment. It moves as you move the device. As it finds
+intersection points, it appears to snap to surfaces such as floors, table tops,
+and walls. It does this because hit testing provides the position and
+orientation of the intersection point, but nothing about the surfaces
+themselves.</p>
+<div class="w-aside w-aside--note">
+<p>A reminder for those of you are new: in the WebXR device API &quot;position and
+orientation&quot; are covered by the term pose. I will be using that term from here
+on.</p>
+</div>
+<p>This circle is called a <em>reticle</em>, which is a temporary image that aids in
+placing an object in augmented reality. If you tap the screen, a sunflower is
+placed on the surface at the reticle location and orientation of the reticle
+point, regardless of where you tapped the screen. The reticle continues to move
+with your device.</p>
+<figure class="w-figure  w-figure--right">
+  <img     alt="A reticle rendered on a wall, Lax, or Strict depending on their context"          decoding="async"     height="1422"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/42fbB0q2WTa9ytTm8NZN.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/42fbB0q2WTa9ytTm8NZN.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/42fbB0q2WTa9ytTm8NZN.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/42fbB0q2WTa9ytTm8NZN.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/42fbB0q2WTa9ytTm8NZN.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/42fbB0q2WTa9ytTm8NZN.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/42fbB0q2WTa9ytTm8NZN.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/42fbB0q2WTa9ytTm8NZN.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/42fbB0q2WTa9ytTm8NZN.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/42fbB0q2WTa9ytTm8NZN.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/42fbB0q2WTa9ytTm8NZN.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/42fbB0q2WTa9ytTm8NZN.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/42fbB0q2WTa9ytTm8NZN.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/42fbB0q2WTa9ytTm8NZN.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/42fbB0q2WTa9ytTm8NZN.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/42fbB0q2WTa9ytTm8NZN.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/42fbB0q2WTa9ytTm8NZN.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/42fbB0q2WTa9ytTm8NZN.png?auto=format&w=1600 1600w"     style="max-width: 60vw;"     width="800"   />
+  <figcaption class="w-figcaption">
+    The reticle is a temporary image that aids in placing an object in augmented reality.
+  </figcaption>
+</figure>
+<h2 id="create-the-reticle">Create the reticle <a class="w-headline-link" href="#create-the-reticle">#</a></h2>
+<p>You must create the reticle image yourself since it is not provided by the
+browser or the API. The method of loading and drawing it is framework specific.
+If you're not drawing it directly using WebGL or WebGL2 consult your framework
+documentation. For this reason, I won't go into detail about how the reticle is
+drawn in the sample. Below I show one line of it for one reason only: so that in
+later code samples, you'll know what I'm referring to when I use the <code>reticle</code>
+variable.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">let</span> reticle <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Gltf2Node</span><span class="token punctuation">(</span><span class="token punctuation">{</span>url<span class="token operator">:</span> <span class="token string">'media/gltf/reticle/reticle.gltf'</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><h2 id="request-a-session">Request a session <a class="w-headline-link" href="#request-a-session">#</a></h2>
+<p>When requesting a session, you must request <code>'hit-test'</code> in the
+<code>requiredFeatures</code> array as shown below.</p>
+<web-copy-code><pre class="language-js"><code class="language-js">navigator<span class="token punctuation">.</span>xr<span class="token punctuation">.</span><span class="token function">requestSession</span><span class="token punctuation">(</span><span class="token string">'immersive-ar'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span><br>  requiredFeatures<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">'local'</span><span class="token punctuation">,</span> <span class="token string">'hit-test'</span><span class="token punctuation">]</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><br><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">session</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token comment">// Do something with the session</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><h2 id="entering-a-session">Entering a session <a class="w-headline-link" href="#entering-a-session">#</a></h2>
+<p>In previous articles I've presented code for entering an XR session. I've shown
+a version of this below with some additions. First I've added the <code>select</code> event
+listener. When the user taps the screen, a flower will be placed in the camera
+view based on the pose of the reticle. I'll describe that event listener later.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="highlight-line"><span class="token keyword">function</span> <span class="token function">onSessionStarted</span><span class="token punctuation">(</span><span class="token parameter">xrSession</span><span class="token punctuation">)</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">  xrSession<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'end'</span><span class="token punctuation">,</span> onSessionEnded<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><mark class="highlight-line highlight-line-active">  xrSession<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'select'</span><span class="token punctuation">,</span> onSelect<span class="token punctuation">)</span><span class="token punctuation">;</span></mark><br><span class="highlight-line"></span><br><span class="highlight-line">  <span class="token keyword">let</span> canvas <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">createElement</span><span class="token punctuation">(</span><span class="token string">'canvas'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line">  gl <span class="token operator">=</span> canvas<span class="token punctuation">.</span><span class="token function">getContext</span><span class="token punctuation">(</span><span class="token string">'webgl'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> xrCompatible<span class="token operator">:</span> <span class="token boolean">true</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line"></span><br><span class="highlight-line">  xrSession<span class="token punctuation">.</span><span class="token function">updateRenderState</span><span class="token punctuation">(</span><span class="token punctuation">{</span></span><br><span class="highlight-line">    baseLayer<span class="token operator">:</span> <span class="token keyword">new</span> <span class="token class-name">XRWebGLLayer</span><span class="token punctuation">(</span>session<span class="token punctuation">,</span> gl<span class="token punctuation">)</span></span><br><span class="highlight-line">  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line"></span><br><mark class="highlight-line highlight-line-active">  xrSession<span class="token punctuation">.</span><span class="token function">requestReferenceSpace</span><span class="token punctuation">(</span><span class="token string">'viewer'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">refSpace</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span></mark><br><mark class="highlight-line highlight-line-active">    xrViewerSpace <span class="token operator">=</span> refSpace<span class="token punctuation">;</span></mark><br><mark class="highlight-line highlight-line-active">    xrSession<span class="token punctuation">.</span><span class="token function">requestHitTestSource</span><span class="token punctuation">(</span><span class="token punctuation">{</span> space<span class="token operator">:</span> xrViewerSpace <span class="token punctuation">}</span><span class="token punctuation">)</span></mark><br><mark class="highlight-line highlight-line-active">    <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">hitTestSource</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span></mark><br><mark class="highlight-line highlight-line-active">      xrHitTestSource <span class="token operator">=</span> hitTestSource<span class="token punctuation">;</span></mark><br><mark class="highlight-line highlight-line-active">    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></mark><br><mark class="highlight-line highlight-line-active">  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></mark><br><mark class="highlight-line highlight-line-active"></mark><br><mark class="highlight-line highlight-line-active">  xrSession<span class="token punctuation">.</span><span class="token function">requestReferenceSpace</span><span class="token punctuation">(</span><span class="token string">'local'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">refSpace</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span></mark><br><mark class="highlight-line highlight-line-active">    xrRefSpace <span class="token operator">=</span> refSpace<span class="token punctuation">;</span></mark><br><mark class="highlight-line highlight-line-active">    xrSession<span class="token punctuation">.</span><span class="token function">requestAnimationFrame</span><span class="token punctuation">(</span>onXRFrame<span class="token punctuation">)</span><span class="token punctuation">;</span></mark><br><mark class="highlight-line highlight-line-active">  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></mark><br><mark class="highlight-line highlight-line-active"><span class="token punctuation">}</span></mark></code></pre>
+</web-copy-code><h3 id="multiple-reference-spaces">Multiple reference spaces <a class="w-headline-link" href="#multiple-reference-spaces">#</a></h3>
+<p>Notice that the highlighted code calls <code>XRSession.requestReferenceSpace()</code>
+twice. I initially found this confusing. I asked why does the hit test code not
+request an animation frame (starting the frame loop) and why does the frame loop
+seem to not involve hit tests. The source of the confusion was a
+misunderstanding of reference spaces. Reference spaces express relationships
+between an origin and the world.</p>
+<p>To understand what this code is doing, pretend that you're viewing this sample
+using a standalone rig, and you have both a headset and a controller. To measure
+distances from the controller, you would use a controller-centered frame of
+reference. But to draw something to the screen you would use user-centered
+coordinates.</p>
+<p>In this sample, the viewer and the controller are the same device. But I have a
+problem. What I draw must be stable with regard to the environment, but the
+'controller' I'm drawing with is moving.</p>
+<p>For image drawing, I use the <code>local</code> reference space, which gives me stability
+in terms of the environment. After getting this I start the frame loop by
+calling <code>requestAnimationFrame()</code>.</p>
+<p>For hit testing, I use the <code>viewer</code> reference space, which is based on the
+device's pose at the time of the hit test. The label 'viewer' is somewhat
+confusing in this context because I'm talking about a controller. It makes sense
+if you think of the controller as an electronic viewer. After getting this, I
+call <code>xrSession.requestHitTestSource()</code>, which creates the source of hit test
+data that I'll use when drawing.</p>
+<h2 id="running-a-frame-loop">Running a frame loop <a class="w-headline-link" href="#running-a-frame-loop">#</a></h2>
+<p>The <code>requestAnimationFrame()</code> callback also gets new code to handle hit testing.</p>
+<p>As you move your device, the reticle needs to move with it as it tries to find
+surfaces. To create the illusion of movement, redraw the reticle in every frame.
+But don't show the reticle if the hit test fails. So, for the reticle I created
+earlier, I set it's <code>visible</code> property to <code>false</code>.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="highlight-line"><span class="token keyword">function</span> <span class="token function">onXRFrame</span><span class="token punctuation">(</span><span class="token parameter">hrTime<span class="token punctuation">,</span> xrFrame</span><span class="token punctuation">)</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">  <span class="token keyword">let</span> xrSession <span class="token operator">=</span> xrFrame<span class="token punctuation">.</span>session<span class="token punctuation">;</span></span><br><span class="highlight-line">  xrSession<span class="token punctuation">.</span><span class="token function">requestAnimationFrame</span><span class="token punctuation">(</span>onXRFrame<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line">  <span class="token keyword">let</span> xrViewerPose <span class="token operator">=</span> xrFrame<span class="token punctuation">.</span><span class="token function">getViewerPose</span><span class="token punctuation">(</span>xrRefSpace<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line"></span><br><mark class="highlight-line highlight-line-active">  reticle<span class="token punctuation">.</span>visible <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span></mark><br><span class="highlight-line"></span><br><span class="highlight-line">  <span class="token comment">// Reminder: the hitTestSource was acquired during onSessionStart()</span></span><br><span class="highlight-line">  <span class="token keyword">if</span> <span class="token punctuation">(</span>xrHitTestSource <span class="token operator">&amp;&amp;</span> xrViewerPose<span class="token punctuation">)</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">    <span class="token keyword">let</span> hitTestResults <span class="token operator">=</span> xrFrame<span class="token punctuation">.</span><span class="token function">getHitTestResults</span><span class="token punctuation">(</span>xrHitTestSource<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line">    <span class="token keyword">if</span> <span class="token punctuation">(</span>hitTestResults<span class="token punctuation">.</span>length <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">      <span class="token keyword">let</span> pose <span class="token operator">=</span> hitTestResults<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">getPose</span><span class="token punctuation">(</span>xrRefSpace<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line">      reticle<span class="token punctuation">.</span>visible <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span></span><br><span class="highlight-line">      reticle<span class="token punctuation">.</span>matrix <span class="token operator">=</span> pose<span class="token punctuation">.</span>transform<span class="token punctuation">.</span>matrix<span class="token punctuation">;</span></span><br><span class="highlight-line">    <span class="token punctuation">}</span></span><br><span class="highlight-line">  <span class="token punctuation">}</span></span><br><span class="highlight-line"></span><br><span class="highlight-line">  <span class="token comment">// Draw to the screen</span></span><br><span class="highlight-line"><span class="token punctuation">}</span></span><br><span class="highlight-line"></span></code></pre>
+</web-copy-code><p>To draw anything in AR, I need to know where the viewer is and where they're
+looking. So I test that <code>hitTestSource</code> and the <code>xrViewerPose</code> are still valid.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="highlight-line"><span class="token keyword">function</span> <span class="token function">onXRFrame</span><span class="token punctuation">(</span><span class="token parameter">hrTime<span class="token punctuation">,</span> xrFrame</span><span class="token punctuation">)</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">  <span class="token keyword">let</span> xrSession <span class="token operator">=</span> xrFrame<span class="token punctuation">.</span>session<span class="token punctuation">;</span></span><br><span class="highlight-line">  xrSession<span class="token punctuation">.</span><span class="token function">requestAnimationFrame</span><span class="token punctuation">(</span>onXRFrame<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><mark class="highlight-line highlight-line-active">  <span class="token keyword">let</span> xrViewerPose <span class="token operator">=</span> xrFrame<span class="token punctuation">.</span><span class="token function">getViewerPose</span><span class="token punctuation">(</span>xrRefSpace<span class="token punctuation">)</span><span class="token punctuation">;</span></mark><br><span class="highlight-line"></span><br><span class="highlight-line">  reticle<span class="token punctuation">.</span>visible <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span></span><br><span class="highlight-line"></span><br><span class="highlight-line">  <span class="token comment">// Reminder: the hitTestSource was acquired during onSessionStart()</span></span><br><mark class="highlight-line highlight-line-active">  <span class="token keyword">if</span> <span class="token punctuation">(</span>xrHitTestSource <span class="token operator">&amp;&amp;</span> xrViewerPose<span class="token punctuation">)</span> <span class="token punctuation">{</span></mark><br><span class="highlight-line">    <span class="token keyword">let</span> hitTestResults <span class="token operator">=</span> xrFrame<span class="token punctuation">.</span><span class="token function">getHitTestResults</span><span class="token punctuation">(</span>xrHitTestSource<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line">    <span class="token keyword">if</span> <span class="token punctuation">(</span>hitTestResults<span class="token punctuation">.</span>length <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">      <span class="token keyword">let</span> pose <span class="token operator">=</span> hitTestResults<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">getPose</span><span class="token punctuation">(</span>xrRefSpace<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line">      reticle<span class="token punctuation">.</span>visible <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span></span><br><span class="highlight-line">      reticle<span class="token punctuation">.</span>matrix <span class="token operator">=</span> pose<span class="token punctuation">.</span>transform<span class="token punctuation">.</span>matrix<span class="token punctuation">;</span></span><br><span class="highlight-line">    <span class="token punctuation">}</span></span><br><span class="highlight-line">  <span class="token punctuation">}</span></span><br><span class="highlight-line"></span><br><span class="highlight-line">  <span class="token comment">// Draw to the screen</span></span><br><span class="highlight-line"><span class="token punctuation">}</span></span><br><span class="highlight-line"></span></code></pre>
+</web-copy-code><p>Now I call <code>getHitTestResults()</code>. It takes the <code>hitTestSource</code> as an argument
+and returns an array of <code>HitTestResult</code> instances. The hit test may find
+multiple surfaces. The first one in the array is the one closest to the camera.
+Most of the time you will use it, but an array is returned for advanced use
+cases. For example, imagine your camera is pointed at a box on a table on a
+floor. It's possible that the hit test will return all three surfaces in the
+array. In most cases, it will be the box that I care about. If the length of the
+returned array is 0, in other words, if no hit test is returned, continue
+onward. Try again in the next frame.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="highlight-line"><span class="token keyword">function</span> <span class="token function">onXRFrame</span><span class="token punctuation">(</span><span class="token parameter">hrTime<span class="token punctuation">,</span> xrFrame</span><span class="token punctuation">)</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">  <span class="token keyword">let</span> xrSession <span class="token operator">=</span> xrFrame<span class="token punctuation">.</span>session<span class="token punctuation">;</span></span><br><span class="highlight-line">  xrSession<span class="token punctuation">.</span><span class="token function">requestAnimationFrame</span><span class="token punctuation">(</span>onXRFrame<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line">  <span class="token keyword">let</span> xrViewerPose <span class="token operator">=</span> xrFrame<span class="token punctuation">.</span><span class="token function">getViewerPose</span><span class="token punctuation">(</span>xrRefSpace<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line"></span><br><span class="highlight-line">  reticle<span class="token punctuation">.</span>visible <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span></span><br><span class="highlight-line"></span><br><span class="highlight-line">  <span class="token comment">// Reminder: the hitTestSource was acquired during onSessionStart()</span></span><br><span class="highlight-line">  <span class="token keyword">if</span> <span class="token punctuation">(</span>xrHitTestSource <span class="token operator">&amp;&amp;</span> xrViewerPose<span class="token punctuation">)</span> <span class="token punctuation">{</span></span><br><mark class="highlight-line highlight-line-active">    <span class="token keyword">let</span> hitTestResults <span class="token operator">=</span> xrFrame<span class="token punctuation">.</span><span class="token function">getHitTestResults</span><span class="token punctuation">(</span>xrHitTestSource<span class="token punctuation">)</span><span class="token punctuation">;</span></mark><br><mark class="highlight-line highlight-line-active">    <span class="token keyword">if</span> <span class="token punctuation">(</span>hitTestResults<span class="token punctuation">.</span>length <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span></mark><br><span class="highlight-line">      <span class="token keyword">let</span> pose <span class="token operator">=</span> hitTestResults<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">getPose</span><span class="token punctuation">(</span>xrRefSpace<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line">      reticle<span class="token punctuation">.</span>visible <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span></span><br><span class="highlight-line">      reticle<span class="token punctuation">.</span>matrix <span class="token operator">=</span> pose<span class="token punctuation">.</span>transform<span class="token punctuation">.</span>matrix<span class="token punctuation">;</span></span><br><span class="highlight-line">    <span class="token punctuation">}</span></span><br><span class="highlight-line">  <span class="token punctuation">}</span></span><br><span class="highlight-line"></span><br><span class="highlight-line">  <span class="token comment">// Draw to the screen</span></span><br><span class="highlight-line"><span class="token punctuation">}</span></span><br><span class="highlight-line"></span></code></pre>
+</web-copy-code><p>Finally, I need to process the hit test results. The basic process is this. Get
+a pose from the hit test result, transform (move) the reticle image to the hit
+test position, then set its <code>visible</code> property to true.  The pose represents the
+pose of a point on a surface.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">onXRFrame</span><span class="token punctuation">(</span><span class="token parameter">hrTime<span class="token punctuation">,</span> xrFrame</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token keyword">let</span> xrSession <span class="token operator">=</span> xrFrame<span class="token punctuation">.</span>session<span class="token punctuation">;</span><br>  xrSession<span class="token punctuation">.</span><span class="token function">requestAnimationFrame</span><span class="token punctuation">(</span>onXRFrame<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token keyword">let</span> xrViewerPose <span class="token operator">=</span> xrFrame<span class="token punctuation">.</span><span class="token function">getViewerPose</span><span class="token punctuation">(</span>xrRefSpace<span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>  reticle<span class="token punctuation">.</span>visible <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span><br><br>  <span class="token comment">// Reminder: the hitTestSource was acquired during onSessionStart()</span><br>  <span class="token keyword">if</span> <span class="token punctuation">(</span>xrHitTestSource <span class="token operator">&amp;&amp;</span> xrViewerPose<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token keyword">let</span> hitTestResults <span class="token operator">=</span> xrFrame<span class="token punctuation">.</span><span class="token function">getHitTestResults</span><span class="token punctuation">(</span>xrHitTestSource<span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token keyword">if</span> <span class="token punctuation">(</span>hitTestResults<span class="token punctuation">.</span>length <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>      <span class="token keyword">let</span> pose <span class="token operator">=</span> hitTestResults<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">getPose</span><span class="token punctuation">(</span>xrRefSpace<span class="token punctuation">)</span><span class="token punctuation">;</span><br>      reticle<span class="token punctuation">.</span>matrix <span class="token operator">=</span> pose<span class="token punctuation">.</span>transform<span class="token punctuation">.</span>matrix<span class="token punctuation">;</span><br>      reticle<span class="token punctuation">.</span>visible <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span><br><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">}</span><br><br>  <span class="token comment">// Draw to the screen</span><br><span class="token punctuation">}</span><br></code></pre>
+</web-copy-code><h2 id="placing-an-object">Placing an object <a class="w-headline-link" href="#placing-an-object">#</a></h2>
+<p>An object is placed in AR when the user taps the screen. I already added a
+<code>select</code> event handler to the session. (<a href="#entering-a-session">See above</a>.)</p>
+<p>The important thing in this step is knowing where to place it. Since the moving
+reticle gives you a constant source of hit tests, the simplest way to place an
+object is to draw it at the location of the reticle at the last hit test.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">onSelect</span><span class="token punctuation">(</span><span class="token parameter">event</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token keyword">if</span> <span class="token punctuation">(</span>reticle<span class="token punctuation">.</span>visible<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token comment">// The reticle should already be positioned at the latest hit point,</span><br>    <span class="token comment">// so we can just use its matrix to save an unnecessary call to</span><br>    <span class="token comment">// event.frame.getHitTestResults.</span><br>    <span class="token function">addARObjectAt</span><span class="token punctuation">(</span>reticle<span class="token punctuation">.</span>matrix<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><h2 id="conclusion">Conclusion <a class="w-headline-link" href="#conclusion">#</a></h2>
+<p>The best way to get a handle on this is to step through the <a href="https://immersive-web.github.io/webxr-samples/immersive-ar-session.html" rel="noopener">sample
+code</a> or
+try out the
+<a href="https://codelabs.developers.google.com/codelabs/ar-with-webxr" rel="noopener">codelab</a>. I hope
+I've given you enough background to make sense of both.</p>
+<p>We're not done building immersive web APIs, not by a long shot. We'll publish
+new articles here as we make progress.</p>
+<p>Photo by <a href="https://unsplash.com/@fr3nks" rel="noopener">Daniel Frank</a> on <a href="https://unsplash.com/" rel="noopener">Unsplash</a></p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/augmented-reality/">Augmented Reality</a>
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/virtual-reality/">Virtual Reality</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/webxr/">WebXR</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Jun 4, 2020</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/ar-hit-test/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

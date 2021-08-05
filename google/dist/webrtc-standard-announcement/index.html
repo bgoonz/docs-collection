@@ -1,0 +1,715 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=608f706f61fe6">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>WebRTC is now a W3C and IETF standard</title>
+<meta name="description" content="A brief overview of the history, architecture, use cases, and future of WebRTC. " />
+
+<link rel="canonical" href="https://web.dev/webrtc-standard-announcement/" />
+
+<meta itemprop="name" content="WebRTC is now a W3C and IETF standard" />
+<meta itemprop="description" content="A brief overview of the history, architecture, use cases, and future of WebRTC. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vU99HKzIf5EUPnzGVPf1.png?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/webrtc-standard-announcement/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="WebRTC is now a W3C and IETF standard" />
+<meta property="og:description" content="A brief overview of the history, architecture, use cases, and future of WebRTC. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vU99HKzIf5EUPnzGVPf1.png?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="" />
+<meta property="tag" content="media" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="WebRTC is now a W3C and IETF standard" />
+<meta name="twitter:description" content="A brief overview of the history, architecture, use cases, and future of WebRTC. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vU99HKzIf5EUPnzGVPf1.png?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=ed00dfeb43db', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=84a87e124f2ed', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#webrtc-is-now-a-w3c-and-ietf-standard" class="w-toc__header--link">
+        WebRTC is now a W3C and IETF standard
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#history">History</a></li><li><a href="#architecture">Architecture and functionality</a></li><li><a href="#use-cases">Use cases: when it's a matter of milliseconds</a></li><li><a href="#performance">Pandemic puts focus on video calling performance</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@HKleinhout"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="webrtc-is-now-a-w3c-and-ietf-standard" class="w-article-header__headline">WebRTC is now a W3C and IETF standard</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          <p>A brief overview of the history, architecture, use cases, and future of WebRTC.</p>
+
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Jan 26, 2021</time>
+           <span class="w-author__separator">•</span> Updated <time>Jan 26, 2021</time> 
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/huib/"><img     alt="Huib Kleinhout"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/ljpewM8syhxW7SBleO58.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/ljpewM8syhxW7SBleO58.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/ljpewM8syhxW7SBleO58.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/ljpewM8syhxW7SBleO58.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/ljpewM8syhxW7SBleO58.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/ljpewM8syhxW7SBleO58.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/huib/">Huib Kleinhout</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/HKleinhout"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/huibk">GitHub</a>
+      </li>
+      
+      
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>The process of defining a web standard is a lengthy process that ensures usefulness, consistency and
+compatibility across browsers. Today <a href="https://www.w3.org/2021/01/pressrelease-webrtc-rec.html.en" rel="noopener">the W3C and
+IETF</a> mark the completion of perhaps one
+of the most important standards during the pandemic: WebRTC.</p>
+<div class="w-aside w-aside--note">
+<p>Check out the <a href="https://codelabs.developers.google.com/codelabs/webrtc-web" rel="noopener">Real-time communication with WebRTC</a>
+codelab for a hands-on walkthrough of implementing WebRTC.</p>
+</div>
+<h2 id="history">History <a class="w-headline-link" href="#history">#</a></h2>
+<p>WebRTC is a platform giving browsers, mobile apps, and desktop apps real-time communication
+capabilities, typically used for video calling. The platform consists of a comprehensive set of
+technologies and standards. Google initiated the idea to create WebRTC in 2009, as an alternative to
+Adobe Flash and desktop applications that couldn't run in the browser. The previous generation of
+browser-based products were built on top of licensed proprietary technology. Various products were
+built with this technology, including Hangouts. Google then acquired the companies it had been
+licensing the technology from and made it available as the open source WebRTC project. This codebase
+is integrated in Chrome and used by the majority of applications using WebRTC. Together with other
+browser vendors and industry leaders such as Mozilla, Microsoft, Cisco, and Ericsson, the
+standardization of WebRTC was kicked off in both the W3C and IETF.  In 2013, Mozilla and Google
+<a href="https://blog.chromium.org/2013/02/hello-firefox-this-is-chrome-calling.html" rel="noopener">demonstrated</a> video
+calling between their browsers. Through the evolution of the standard, many architectural
+discussions had led to implementation differences across browsers and challenged compatibility and
+interoperability. Most of these disagreements were ultimately settled as the standard became
+finalized in the past years. The WebRTC specification is now accompanied with a
+<a href="https://wpt.fyi/results/webrtc?label=experimental&amp;label=master&amp;aligned" rel="noopener">full set of platform tests</a>
+and tools to address compatibility and browsers have largely adapted their implementations
+accordingly. This brings an end to a challenging period where web developers had to continuously
+adopt their services to different browser implementations and specification changes.</p>
+<h2 id="architecture">Architecture and functionality <a class="w-headline-link" href="#architecture">#</a></h2>
+<p>The <a href="https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection" rel="noopener"><code>RTCPeerConnection</code> API</a> is
+the central part of the WebRTC specification. <code>RTCPeerConnection</code> deals with connecting two
+applications on different endpoints to communicate using a peer-to-peer protocol. The <code>PeerConnection</code>
+API interacts closely with
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia" rel="noopener"><code>getUserMedia</code></a> for
+accessing camera and microphone, and
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getDisplayMedia" rel="noopener"><code>getDisplayMedia</code></a> for
+capturing screen content. WebRTC allows you to send and receive streams that include audio and/or
+video content, as well as arbitrary binary data through the <code>DataChannel</code>. The media functionality for
+processing, encoding, and decoding audio and video provides the core of any WebRTC implementation.
+WebRTC supports various audio codecs, with Opus being the most used and versatile. WebRTC
+implementations are required to support both Google's free-to-use VP8 video codec and H.264 for
+processing video. WebRTC connections are always encrypted, which is achieved through two existing
+protocols: DTLS and SRTP.  WebRTC leans heavily on existing standards and technologies, from video
+codecs (VP8,H264), network traversal (ICE), transport (RTP, SCTP), to media description protocols
+(SDP). This is tied together in over 50 RFCs.</p>
+<h2 id="use-cases">Use cases: when it's a matter of milliseconds <a class="w-headline-link" href="#use-cases">#</a></h2>
+<p>WebRTC is widely used in time-critical applications such as remote surgery, system monitoring, and
+remote control of autonomous cars, and voice or video calls built on UDP where buffering is not
+possible. Nearly all browser-based video callings services from companies such as Google, Facebook,
+Cisco, RingCentral, and Jitsi use WebRTC. Google Stadia and NVIDIA GeForce NOW use WebRTC to get the
+stream of gameplay from the cloud to the web browser without perceivable delay.</p>
+<h2 id="performance">Pandemic puts focus on video calling performance <a class="w-headline-link" href="#performance">#</a></h2>
+<p>Over the past year, WebRTC has seen a 100X increase of usage in Chrome due to increased video
+calling from within the browser. Recognizing that video calling has become a fundamental part of
+many people's lives during the pandemic, browser vendors have begun to optimize the technologies
+that video calling depends on. This was particularly important as resource demanding large meetings
+and video effects in video meetings became more common when employees and students started to work
+and study from home.  In the past year Chrome has become up to 30% more battery friendly for video
+calling, with more optimizations to come for heavy usage scenarios. Mozilla, Apple, and Microsoft
+all <a href="https://www.youtube.com/watch?v=YZROn-WsyO4" rel="noopener">have made significant improvements</a> in their
+implementation of WebRTC through the pandemic, in particular in making sure they adhere to the now
+formalized standard.</p>
+<h2 id="">The future of WebRTC <a class="w-headline-link" href="#">#</a></h2>
+<p>While WebRTC is now completed as a W3C standard, improvements continue. The new video codec AV1
+which
+<a href="https://blog.google/products/duo/4-new-google-duo-features-help-you-stay-connected/" rel="noopener">saves up to 50% of bandwidth</a>
+is becoming available in WebRTC and web browsers. Continued improvements in the open source code
+base are expected to further reduce delay and improve the quality of video that can be streamed.
+<a href="https://www.w3.org/TR/webrtc-nv-use-cases/" rel="noopener">WebRTC NV</a> gathers the initiative to create
+supplementary APIs to enable new use cases. These consist of extensions to existing APIs to give
+more control over existing functionality such as <a href="https://www.w3.org/TR/webrtc-svc/" rel="noopener">Scalable Video
+Coding</a> as well as APIs that give access to
+<a href="https://github.com/w3c/mediacapture-insertable-streams/blob/main/explainer.md" rel="noopener">lower-level components</a>.
+The latter gives more flexibility to web developers to innovate by integrating high-performance
+custom WebAssembly components. With emerging 5G networks and demand for more interactive services,
+we're expecting to see a continued increase of services building on top of WebRTC in the year to
+come.</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/media/">Media</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Jan 26, 2021</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/webrtc-standard-announcement/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

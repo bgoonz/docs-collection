@@ -1,0 +1,854 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=e3f373284900d">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>ARIA: poison or antidote? </title>
+<meta name="description" content="How lying to screen readers cures accessibility, when it doesn't rub salt in it! " />
+
+<link rel="canonical" href="https://web.dev/aria-poison-or-antidote/" />
+
+<meta itemprop="name" content="ARIA: poison or antidote? " />
+<meta itemprop="description" content="How lying to screen readers cures accessibility, when it doesn't rub salt in it! " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/avB7jubYxhJr1dHQzl6c.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/aria-poison-or-antidote/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="ARIA: poison or antidote? " />
+<meta property="og:description" content="How lying to screen readers cures accessibility, when it doesn't rub salt in it! " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/avB7jubYxhJr1dHQzl6c.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="Man lying on the floor covered in post-it notes with empty checkboxes and messages  such as off line, overthink, $, chill, take a break, and zzzz.  " />
+<meta property="tag" content="accessibility" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="ARIA: poison or antidote? " />
+<meta name="twitter:description" content="How lying to screen readers cures accessibility, when it doesn't rub salt in it! " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/avB7jubYxhJr1dHQzl6c.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=b8ee33791dbfd', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=0485e8d6a7445', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="Man lying on the floor covered in post-it notes with empty checkboxes and messages  such as off line, overthink, $, chill, take a break, and zzzz."     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/avB7jubYxhJr1dHQzl6c.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/avB7jubYxhJr1dHQzl6c.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/avB7jubYxhJr1dHQzl6c.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/avB7jubYxhJr1dHQzl6c.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/avB7jubYxhJr1dHQzl6c.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/avB7jubYxhJr1dHQzl6c.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/avB7jubYxhJr1dHQzl6c.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/avB7jubYxhJr1dHQzl6c.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/avB7jubYxhJr1dHQzl6c.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/avB7jubYxhJr1dHQzl6c.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/avB7jubYxhJr1dHQzl6c.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/avB7jubYxhJr1dHQzl6c.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/avB7jubYxhJr1dHQzl6c.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/avB7jubYxhJr1dHQzl6c.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/avB7jubYxhJr1dHQzl6c.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/avB7jubYxhJr1dHQzl6c.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/avB7jubYxhJr1dHQzl6c.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/avB7jubYxhJr1dHQzl6c.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#aria:-poison-or-antidote" class="w-toc__header--link">
+        ARIA: poison or antidote?
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#what-is-aria">What is ARIA?</a></li><li><a href="#what-isn't-aria">What isn't ARIA?</a></li><li><a href="#how-does-aria-work">How does ARIA work?</a></li><li><a href="#why-aria">Why ARIA?</a></li><li><a href="#menu-bar-example">Menu bar example</a></li><li><a href="#supporting-mouse-clicker-people">Supporting mouse clicker people</a></li><li><a href="#making-our-menu-bar-keyboard-accessible">Making our menu bar keyboard accessible</a></li><li><a href="#screen-reader-access-to-our-menu-bar">Screen reader access to our menu bar</a></li><li><a href="#dealing-with-bugs">Dealing with bugs</a></li><li><a href="#keyboard-bugs-(html!)">Keyboard bugs (HTML!)</a></li><li><a href="#aria-bugs:-why-are-there-so-many">ARIA bugs: why are there so many?</a></li><li><a href="#summary">Summary</a></li><li><a href="#addendum-1:-additional-resources">Addendum 1: Additional Resources</a></li><li><a href="#hybrid-reference-with-keyboard-info-and-code-examples">Hybrid reference with keyboard info and code examples</a></li><li><a href="#addendum-2:-what-is-aria-most-used-for">Addendum 2: What is ARIA most used for?</a></li><li><a href="#addendum-3:-what's-an-accessibility-api">Addendum 3: What's an Accessibility API?</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@aaronlev"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="aria:-poison-or-antidote" class="w-article-header__headline">ARIA: poison or antidote?</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          <p>How lying to screen readers cures accessibility, when it doesn't rub salt in it!</p>
+
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Aug 18, 2020</time>
+          
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/aaronleventhal/"><img     alt="Aaron Leventhal"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/VU5wtCAkiSbrzkXznpwT.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/VU5wtCAkiSbrzkXznpwT.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/VU5wtCAkiSbrzkXznpwT.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/VU5wtCAkiSbrzkXznpwT.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/VU5wtCAkiSbrzkXznpwT.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/VU5wtCAkiSbrzkXznpwT.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/aaronleventhal/">Aaron Leventhal</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/aaronlev"
+          >Twitter</a
+        >
+      </li>
+      
+      
+      
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <h2 id="what-is-aria">What is ARIA? <a class="w-headline-link" href="#what-is-aria">#</a></h2>
+<p>ARIA lets web authors create an alternative reality, seen only by screen readers 🤥</p>
+<p>Sometimes it's necessary to expand on the truth or even downright &quot;lie&quot; to screen readers about
+what's happening in web content. For example, &quot;focus is really over here!&quot; or &quot;this is really a
+slider!&quot;. It's like adding magical sticky notes on top of tools and widgets on your workbench. These
+magical sticky notes make everyone believe what's written on them.</p>
+<p>Whenever a magical sticky note exists, it either overrides our belief about what each tool is, or
+something about the tool. Example: &quot;this thing over here is a glue gun!&quot;. Even though it's still
+actually an empty blue box sitting there on the workbench, the magical sticky note will make us see
+it is a glue gun. We can also add, &quot;and it is 30% full!&quot;. The screen reader will now report that
+there is a 30% full glue gun there.</p>
+<p>The web equivalent to this is to take a plain box element (a div) with an image inside of it, and
+use ARIA to say it's a slider at value 30 out of 100.</p>
+<h2 id="what-isn't-aria">What isn't ARIA? <a class="w-headline-link" href="#what-isn't-aria">#</a></h2>
+<p>ARIA does not affect the appearance of a web page, or the behavior for a mouse or keyboard user.
+Only users of assistive technologies will notice any difference from ARIA. Web developers can add
+any arbitrary ARIA without affecting users that aren't running an assistive technology.</p>
+<p>You read it right: ARIA doesn't actually do anything to keyboard focus or tab order. That's all done
+in HTML, sometimes tweaked with bits of JavaScript.</p>
+<h2 id="how-does-aria-work">How does ARIA work? <a class="w-headline-link" href="#how-does-aria-work">#</a></h2>
+<p>Browsers are asked by a screen reader or other assistive technology for information about each
+element. When ARIA is present on an element, the browser takes in the information and changes
+what it tells the screen reader about that element.</p>
+<h2 id="why-aria">Why ARIA? <a class="w-headline-link" href="#why-aria">#</a></h2>
+<p>Why would we ever want to lie to our users!?</p>
+<p>Let's say the local web store doesn't sell all the widgets we need. But, we are
+<a href="https://www.cbs.com/shows/macgyver/" rel="noopener">MacGyver</a>, dammit. We can just invent our own widgets from
+other widgets! FWIW, the
+<a href="https://www.cbs.com/shows/macgyver/news/1005839/the-notorious-tools-of-macgyver-s-trade/" rel="noopener">MacGyver's seven most used things</a>
+are Swiss Army knives, gum, shoe strings, matches, paper clips, birthday candles, and duct tape. He
+uses them to make bombs and other things that aren't just laying around. This is pretty similar to a
+web author who needs to make a menu bar. Menu bars are so useful you would think they would be part of
+HTML, but they aren't. Oh well! You didn't think authors would be happy with links and buttons did
+you? So the author will cobble one together using their favorite tools: divs, images, style, click
+handlers, keypress handlers, spit, and ARIA.</p>
+<p>Sometimes, rather than using ARIA to the max, we just use it as an enhancement. It can be useful to
+sprinkle a little ARIA on some HTML that already basically works. For example, we might want a form
+control to point to an error message alert that relates to some invalid input. Or we might want to
+indicate that a textbox is for searching. These little tweaks can make ordinary websites more usable
+with a screen reader.</p>
+<h2 id="menu-bar-example">Menu bar example <a class="w-headline-link" href="#menu-bar-example">#</a></h2>
+<h3 id="supporting-mouse-clicker-people">Supporting mouse clicker people <a class="w-headline-link" href="#supporting-mouse-clicker-people">#</a></h3>
+<p>Let's make a menu bar together. We show a bunch of items in generic box elements called divs. Any
+time our user clicks on a div, it executes the corresponding command. Cool, it works for mouse
+clicker people!</p>
+<p>Next we make it look pretty. We use CSS, i.e. styles, lining things up nicely and putting visual
+outlines around them. We make it look enough like other menu bars that sighties intuitively know
+that it's a menu bar and how to use it. Our menu bar even uses a different background color on any
+item that the mouse is over, giving the user some helpful visual feedback.</p>
+<p>Some menu items are parents. They spawn child submenus. Whenever the user hovers on one of these we
+start an animation that slides out the child submenu.</p>
+<p>This, of course, is all pretty inaccessible, as is the usual case for many things on the web,
+largely because the HTML standards wizards didn't add everything a web author needs. And even if
+they did, web authors would always want to invent their own special version anyway.</p>
+<h3 id="making-our-menu-bar-keyboard-accessible">Making our menu bar keyboard accessible <a class="w-headline-link" href="#making-our-menu-bar-keyboard-accessible">#</a></h3>
+<p>As a first step toward accessibility, let's add keyboard accessibility. This part only uses HTML,
+and not ARIA. Remember that ARIA does not affect core aspects such as appearance, mouse, or
+keyboard for users without assistive technologies.</p>
+<p>Just like a web page can respond to the mouse, it can also respond to the keyboard. Our JavaScript
+will listen to all keystrokes that occur and decide if the keypress is useful. If not, it throws it
+back to the page like a fish that's too small to eat. Our rules are something like:</p>
+<ul>
+<li>If the user presses an arrow key, let's look at our own internal menu bar blueprints and
+decide what the new active menu item should be. We will clear any current highlights and
+highlight the new menu item so the sighted user visually knows where they are. The web page
+should then call <code>event.preventDefault()</code> to prevent the browser from performing the
+usual action (scrolling the page, in this case).</li>
+<li>If the user presses the <kbd>Enter</kbd> key, we can treat it just like a click, and perform
+the appropriate action (or even open another menu).</li>
+<li>If the user presses a key that should do something else, don't eat that!
+Throw it back to the page as nature intended. For example, our menu bar
+doesn't need the <kbd>Tab</kbd> key, so throw it back! This is hard to get
+right, and authors often mess it up. For example, the menu bar needs arrow
+keys, but not <kbd>Alt</kbd>+<kbd>Arrow</kbd> or
+<kbd>Command</kbd>+</kbd>Arrow</kbd>. Those are shortcuts for moving to the
+previous/next page in the web history of your browser tab. If the author
+isn't careful, the menu bar will eat those. This kind of bug happens a lot,
+and we haven't even started with ARIA yet!</li>
+</ul>
+<h3 id="screen-reader-access-to-our-menu-bar">Screen reader access to our menu bar <a class="w-headline-link" href="#screen-reader-access-to-our-menu-bar">#</a></h3>
+<p>Our menu bar was created with duct tape and divs. As a result, a screen reader has no idea what any
+of it is. The background color for the active item is just a color. The menu item divs are just
+plain objects with no particular meaning. Consequently, a user of our menu bar doesn't get any
+instructions about what keys to press or what item they're on.</p>
+<p>But that's no fair! The menu bar acts just fine for the sighted user.</p>
+<p>ARIA to the rescue. ARIA lets us pretend to the screen reader that focus is in a
+menu bar. If the author does everything right, our custom menu bar will look to the screen reader
+just like a menu bar in a desktop application.</p>
+<p>Our first, ahem, ARIA lie, is to use the <code>aria-activedescendant</code> attribute, and set it to the ID of
+the currently active menuitem, being careful to update it whenever it changes. For example,
+<code>aria-activedescendant=&quot;settings-menuitem&quot;</code>. This little white lie causes the screen reader to
+consider our ARIA active item as the focus, which is read aloud or shown on a Braille display.</p>
+<details class="w-details" >
+<summary class="w-details__summary">
+  <h2 class="w-details__header">
+    Explanation of <em>ancestor</em>, <em>parent</em>, and <em>descendant</em>
+  </h2>
+</summary>
+The term descendant refers to the
+fact that an item is contained somewhere inside of another. The opposite term is ancestor, which is
+to say an item is contained by ancestors. For the next container up/down, these may use the more
+specific terms parent/child. For example, imagine a document with a paragraph that has a link
+inside. The link's parent is a paragraph, but it also has the document as an ancestor. 
+Conversely, the document may have many paragraph children, each with links. The links are all
+descendants of the grandparent document.
+</details>
+<p>Back to <code>aria-activedescendant</code>. By using it to point from the focused menu bar to a specific menu
+item, the screen reader now knows where the user has moved, but nothing else about the object. What
+is this div thing anyway? That's where the role attribute comes in. We use <code>role=&quot;menubar&quot;</code> on the
+containing element for the entire thing, then we use <code>role=&quot;menu&quot;</code> on groups of items, and
+<code>role=&quot;menuitem&quot;</code> on … drumroll … the individual menu items.</p>
+<p>And what if the menuitem can lead to a child menu? The user needs to know that right? For a sighted
+user, there might be a little picture of a triangle at the end of the menu, but the screen reader
+doesn't know how to automatically read images, at least at this point. We can add
+<code>aria-expanded=&quot;false&quot;</code> on each expandable menuitem to indicate that 1) there is something that can
+be expanded, and 2) it currently is not expanded. As an added touch the author should put
+<code>role=&quot;none&quot;</code> on the img triangle to indicate it's for prettification purposes only. This prevents
+the screen reader from saying anything about the image that would be redundant at best and possibly annoying.</p>
+<h2 id="dealing-with-bugs">Dealing with bugs <a class="w-headline-link" href="#dealing-with-bugs">#</a></h2>
+<h3 id="keyboard-bugs-(html!)">Keyboard bugs (HTML!) <a class="w-headline-link" href="#keyboard-bugs-(html!)">#</a></h3>
+<p>Although keyboard access is a part of core HTML, authors mess it up all the time, either because
+they don't use keyboard navigation all that much, or because there is much nuance to get right.</p>
+<p>Examples of bugs:</p>
+<ul>
+<li>A checkbox uses spacebar to toggle, but the author forgot to call <code>preventDefault()</code>. Now
+the spacebar will both toggle the checkbox and page down, which is the default browser behavior
+for spacebar.</li>
+<li>An ARIA modal dialog wants to trap tab navigation inside of it, and the author forgets to
+specifically allow <kbd>Control</kbd>+<kbd>Tab</kbd> through to the browser. Now,
+<kbd>Control</kbd>+<kbd>Tab</kbd> just navigates within their dialog, and doesn't switch tabs
+in the browser as it should. Ugh.</li>
+<li>An author creates a selection list, and implements up/down, but does not implement
+home/end/pageup/pagedown or first letter navigation.</li>
+</ul>
+<p>Authors should follow known patterns. Check out the <a href="#resources">Resources</a> section for more information.</p>
+<p>For pure keyboard access issues, it's useful to also try without a screen reader, or with virtual
+browser mode off. Screen readers are not generally necessary to discover keyboard bugs, and keyboard
+access is actually implemented with HTML, not ARIA. After all, ARIA doesn't affect basic stuff like
+the keyboard or mouse behavior, it only lies to the screen reader about what's in the web page,
+what's currently focused, etc.</p>
+<p>Keyboard bugs are almost always a bug in the web content, specifically in their HTML and JavaScript,
+not in ARIA.</p>
+<h3 id="aria-bugs:-why-are-there-so-many">ARIA bugs: why are there so many? <a class="w-headline-link" href="#aria-bugs:-why-are-there-so-many">#</a></h3>
+<p>There are many, many places where authors can get ARIA wrong, and each will lead to either complete
+breakage or subtle differences. The subtle ones are probably worse, because the author won't catch
+most of them before publishing.</p>
+<p>After all, unless the author is an experienced screen reader user, something is going to go wrong in
+the ARIA. In our menu bar example, the author could think the &quot;option&quot; role was to be used when &quot;menuitem&quot;
+was correct. They could forget to use <code>aria-expanded</code>, forget to set and clear
+<code>aria-activedescendant</code> at the right times, or forget to have a menu bar containing the other menus.
+And what about menu item counts? Usually menu items are presented by screen readers with something
+like &quot;item 3 of 5&quot; so that the user knows where they are. This is generally counted automatically by
+the browser, but in some cases, and in some browser - screen reader combinations, the wrong numbers
+might be computed, and the author would need to override these numbers with <code>aria-posinset</code> and
+<code>aria-setsize</code>.</p>
+<p>And this is just menu bars. Think of how many kinds of widgets there are. Glance at the ARIA spec or
+authoring practices if you like. For each pattern, there are a dozen ways ARIA could be misused.
+ARIA relies on authors to know what they're doing. What could possibly go wrong, given that most
+authors are not screen reader users?</p>
+<p>In other words, it is 100 percent necessary for actual screen reader users to try ARIA widgets before
+they're considered shippable. There's too much nuance. Ideally everything would be tried with
+several different browser-screen reader combinations, because of the numerous implementation
+quirks, in addition to a few incomplete implementations.</p>
+<h2 id="summary">Summary <a class="w-headline-link" href="#summary">#</a></h2>
+<p>In summary, ARIA magic can be used to override or add to anything and everything that the HTML says.
+It can be used to do little fine changes to the accessibility presentation, or to create an
+entire experience. This is why ARIA is both incredibly powerful and yet dangerous in the hands of
+our friendly local web authors who don't generally use screen readers themselves.</p>
+<p>ARIA is just a dumb truth override markup layer. When a screen reader asks what's happening, if ARIA
+exists, they get the ARIA version of the truth instead of the real underlying truth.</p>
+<h2 id="addendum-1:-additional-resources">Addendum 1: Additional Resources <a class="w-headline-link" href="#addendum-1:-additional-resources">#</a></h2>
+<h3 id="hybrid-reference-with-keyboard-info-and-code-examples">Hybrid reference with keyboard info and code examples <a class="w-headline-link" href="#hybrid-reference-with-keyboard-info-and-code-examples">#</a></h3>
+<ul>
+<li><a href="https://www.w3.org/TR/wai-aria-practices-1.1/" rel="noopener">W3C's ARIA Authoring Practices</a>: this
+documents the important keyboard navigation characteristics of each example and provides
+working JS/CSS/ARIA code. The examples are focused on what works today, and do not cover mobile.</li>
+</ul>
+<h2 id="addendum-2:-what-is-aria-most-used-for">Addendum 2: What is ARIA most used for? <a class="w-headline-link" href="#addendum-2:-what-is-aria-most-used-for">#</a></h2>
+<p>Because ARIA can replace or supplement small or large truths, generally
+useful for saying stuff that the screen reader cares about.</p>
+<p>Here are some common uses of ARIA.</p>
+<ul>
+<li>Special widgets that don't exist in HTML, like a menu bar, autocomplete, tree, or spreadsheet</li>
+<li>Widgets that exist in HTML, but the author invented their own anyway, possibly because they
+needed to tweak the behavior or appearance of the normal widget. For example, an HTML <code>&lt;input type=&quot;range&quot;&gt;</code> element is basically a slider, but authors want to make it look different. For
+most things, CSS can be used, but for <code>input type=&quot;range&quot;</code>, CSS is awkward. An author can
+make their own slider, and use <code>role=&quot;slider&quot;</code> on it with <code>aria-valuenow</code> to say what the current
+value is.</li>
+<li>Live regions tell screen readers &quot;in this area of the page, anything that changes is worth telling
+the user about.&quot;</li>
+<li>Landmarks (HTML has equivalents now). These are somewhat like headings, in that they help
+screen reader users find what they want faster. However, they're different in that they contain
+the entire related area. Like, &quot;this container is the main area of the page&quot; and &quot;this
+container over here is a navigation panel&quot;.</li>
+</ul>
+<h2 id="addendum-3:-what's-an-accessibility-api">Addendum 3: What's an Accessibility API? <a class="w-headline-link" href="#addendum-3:-what's-an-accessibility-api">#</a></h2>
+<p>An accessibility API is how a screen reader or other AT knows what's in the page and what's
+happening right now. Examples include MSAA, IA2, and UIA. And that's just Windows! There are two parts to
+an accessibility API:</p>
+<ul>
+<li>A &quot;tree&quot; of objects that represents a container hierarchy. These are like Russian nesting dolls,
+but each doll can contain multiple other dolls. For example, a document can contain a bunch of
+paragraphs, and a paragraph can have text, images, links, boldface, etc. Each item in the
+object tree can have properties like a role (what am I?), a name/label, a user-entered value, a
+description, as well as boolean states like focusable, focused, required, checked. ARIA can
+override any of these properties.<br>
+The screen reader uses the tree to help the user navigate in virtual buffer mode, like &quot;go to
+the next heading please&quot;.</li>
+<li>A series of events that occur describing changes to the tree, like &quot;focus is now over
+here!&quot;.  The screen reader uses the events to tell the user what has just happened. When
+important HTML or ARIA markup changes, an event is fired to tell the screen reader that
+something changed.</li>
+</ul>
+<p>Usually authors just use HTML, which maps nicely to these accessibility APIs. When HTML is not
+enough, ARIA is used and the browser overrides the HTML semantics before sending the object tree or
+events to the screen reader.</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/accessibility/">Accessibility</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Aug 18, 2020</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/aria-poison-or-antidote/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

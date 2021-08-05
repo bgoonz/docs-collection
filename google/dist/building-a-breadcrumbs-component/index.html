@@ -1,0 +1,858 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=6e4c0f1ebe474">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Building a breadcrumbs component</title>
+<meta name="description" content="A foundational overview of how to build a responsive and accessible breadcrumbs component for users to navigate your site." />
+
+<link rel="canonical" href="https://web.dev/building-a-breadcrumbs-component/" />
+
+<meta itemprop="name" content="Building a breadcrumbs component" />
+<meta itemprop="description" content="A foundational overview of how to build a responsive and accessible breadcrumbs component for users to navigate your site." />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/kCeb8N9YlMYsI5O5ChC9.png?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/building-a-breadcrumbs-component/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Building a breadcrumbs component" />
+<meta property="og:description" content="A foundational overview of how to build a responsive and accessible breadcrumbs component for users to navigate your site." />
+<meta property="og:image" content="https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/kCeb8N9YlMYsI5O5ChC9.png?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="" />
+<meta property="tag" content="css" />
+<meta property="tag" content="dom" />
+<meta property="tag" content="javascript" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Building a breadcrumbs component" />
+<meta name="twitter:description" content="A foundational overview of how to build a responsive and accessible breadcrumbs component for users to navigate your site." />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/kCeb8N9YlMYsI5O5ChC9.png?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=a4054fbd32a9e', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=8ebf9089ed6a4', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="Hero Image"     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/dk9VreVtYiF3LBkRpZlg.png?auto=format"     srcset="https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/dk9VreVtYiF3LBkRpZlg.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/dk9VreVtYiF3LBkRpZlg.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/dk9VreVtYiF3LBkRpZlg.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/dk9VreVtYiF3LBkRpZlg.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/dk9VreVtYiF3LBkRpZlg.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/dk9VreVtYiF3LBkRpZlg.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/dk9VreVtYiF3LBkRpZlg.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/dk9VreVtYiF3LBkRpZlg.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/dk9VreVtYiF3LBkRpZlg.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/dk9VreVtYiF3LBkRpZlg.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/dk9VreVtYiF3LBkRpZlg.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/dk9VreVtYiF3LBkRpZlg.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/dk9VreVtYiF3LBkRpZlg.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/dk9VreVtYiF3LBkRpZlg.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/dk9VreVtYiF3LBkRpZlg.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/dk9VreVtYiF3LBkRpZlg.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/dk9VreVtYiF3LBkRpZlg.png?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#building-a-breadcrumbs-component" class="w-toc__header--link">
+        Building a breadcrumbs component
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#overview">Overview</a></li><li><a href="#background-ux">Background UX</a></li><li><a href="#information-architecture">Information architecture</a></li><li><a href="#collections">Collections</a></li><li><a href="#items">Items</a></li><li><a href="#layouts">Layouts</a></li><li><a href="#markup">Markup</a></li><li><a href="#styles">Styles</a></li><li><a href="#accessibility">Accessibility</a></li><li><a href="#motion">Motion</a></li><li><a href="#javascript">JavaScript</a></li><li><a href="#conclusion">Conclusion</a></li><li><a href="#community-remixes">Community remixes</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@argyleink"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="building-a-breadcrumbs-component" class="w-article-header__headline">Building a breadcrumbs component</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          A foundational overview of how to build a responsive and accessible breadcrumbs component for users to navigate your site.
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Jul 14, 2021</time>
+           <span class="w-author__separator">•</span> Updated <time>Jul 15, 2021</time> 
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/adamargyle/"><img     alt="Adam Argyle"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/adamargyle/">Adam Argyle</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/argyleink"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/argyleink">GitHub</a>
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://glitch.com/@argyleink"
+          >Glitch</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://nerdy.dev">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>In this post I want to share thinking on a way to build breadcrumb components.
+<a href="https://gui-challenges.web.app/breadcrumbs/dist/" rel="noopener">Try the demo</a>.</p>
+<figure class="w-figure w-figure--fullbleed">
+  <video      autoplay            class="w-screenshot"                              loop      muted                            >      <source src="https://storage.googleapis.com/web-dev-uploads/video/vS06HQ1YTsbMKSFTIPl2iogUQP73/90PkYJ8y9wi2U1w034gv.mp4" type="video/mp4" />    </video>
+  <figcaption class="w-figure">
+    <a href="https://gui-challenges.web.app/breadcrumbs/dist/">Demo</a>
+  </figcaption>
+</figure>
+<p>If you prefer video, here's a YouTube version of this post:</p>
+<div class="youtube">  <lite-youtube    videoid="kHL3gxAlvK8"      >  </lite-youtube></div>
+<h2 id="overview">Overview <a class="w-headline-link" href="#overview">#</a></h2>
+<p>A <a href="https://codepen.io/search/pens?q=breadcrumbs" rel="noopener">breadcrumbs</a> component shows
+where in the site hierarchy the user is. The name is from <a href="https://en.wikipedia.org/wiki/Hansel_and_Gretel" rel="noopener">Hansel and
+Gretel</a>, who dropped
+breadcrumbs behind them in some dark woods and were able to find their way home
+by tracing crumbs backwards.</p>
+<p>The breadcrumbs in this post are not <a href="https://www.w3.org/TR/wai-aria-practices-1.1/examples/breadcrumb/index.html" rel="noopener">standard
+breadcrumbs</a>,
+they're breadcrumb-like. They offer additional functionality by putting sibling
+pages right into the navigation with a <code>&lt;select&gt;</code>, making multi-tiered access
+possible.</p>
+<h3 id="background-ux">Background UX <a class="w-headline-link" href="#background-ux">#</a></h3>
+<p>In the component demo video above, the placeholder categories are genres of
+video games. This trail is created by navigating the following path:  <code>home » rpg » indie » on sale</code>, as shown below.</p>
+<p><video      autoplay            class="w-screenshot"                              loop      muted                            >      <source src="https://storage.googleapis.com/web-dev-uploads/video/vS06HQ1YTsbMKSFTIPl2iogUQP73/u3nemRGC7g39sVvPnUBh.mp4" type="video/mp4" />    </video></p>
+<p>This breadcrumb component should enable users to move through this
+information hierarchy; jumping branches and selecting pages with speed and
+accuracy.</p>
+<p><video      autoplay            class="w-screenshot"                              loop      muted                            >      <source src="https://storage.googleapis.com/web-dev-uploads/video/vS06HQ1YTsbMKSFTIPl2iogUQP73/69hQj4fuf6cJltEqGxDJ.mp4" type="video/mp4" />    </video></p>
+<h2 id="information-architecture">Information architecture <a class="w-headline-link" href="#information-architecture">#</a></h2>
+<p>I find it's helpful to think in terms of collections and items.</p>
+<h3 id="collections">Collections <a class="w-headline-link" href="#collections">#</a></h3>
+<p>A collection is an array of options to choose from. From the homepage of
+the breadcrumb prototype of this post, the collections are FPS, RPG, brawler,
+dungeon crawler, sports and puzzle.</p>
+<h3 id="items">Items <a class="w-headline-link" href="#items">#</a></h3>
+<p>A video game is an item, a specific collection could also be an item if it
+represents another collection. For example, RPG is an item and a valid
+collection. When it's an item, the user is on that collection page. For example,
+they are on  the RPG page, which displays a list of RPG games, including the
+additional subcategories AAA, Indie and Self Published.</p>
+<p>In computer science terms, this breadcrumbs component represents a
+<a href="https://www.javascripttutorial.net/javascript-multidimensional-array/" rel="noopener">multidimensional
+array</a>:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> rawBreadcrumbData <span class="token operator">=</span> <span class="token punctuation">{</span><br>  <span class="token string">"FPS"</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token operator">...</span><span class="token punctuation">}</span><span class="token punctuation">,</span><br>  <span class="token string">"RPG"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>    <span class="token string">"AAA"</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token operator">...</span><span class="token punctuation">}</span><span class="token punctuation">,</span><br>    <span class="token string">"indie"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>      <span class="token string">"new"</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token operator">...</span><span class="token punctuation">}</span><span class="token punctuation">,</span><br>      <span class="token string">"on sale"</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token operator">...</span><span class="token punctuation">}</span><span class="token punctuation">,</span><br>      <span class="token string">"under 5"</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token operator">...</span><span class="token punctuation">}</span><span class="token punctuation">,</span><br>    <span class="token punctuation">}</span><span class="token punctuation">,</span><br>    <span class="token string">"self published"</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token operator">...</span><span class="token punctuation">}</span><span class="token punctuation">,</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span><br>  <span class="token string">"brawler"</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token operator">...</span><span class="token punctuation">}</span><span class="token punctuation">,</span><br>  <span class="token string">"dungeon crawler"</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token operator">...</span><span class="token punctuation">}</span><span class="token punctuation">,</span><br>  <span class="token string">"sports"</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token operator">...</span><span class="token punctuation">}</span><span class="token punctuation">,</span><br>  <span class="token string">"puzzle"</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token operator">...</span><span class="token punctuation">}</span><span class="token punctuation">,</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>Your app or website will have custom information architecture (IA) creating a
+different multidimensional array, but I hope the concept of collection landing
+pages and hierarchy traversal can make it into your breadcrumbs as well.</p>
+<h2 id="layouts">Layouts <a class="w-headline-link" href="#layouts">#</a></h2>
+<h3 id="markup">Markup <a class="w-headline-link" href="#markup">#</a></h3>
+<p>Good components begin with appropriate HTML. In this next section I'll cover my
+markup choices and how they impact the overall component.</p>
+<h4 id="dark-and-light-scheme">Dark and light scheme <a class="w-headline-link" href="#dark-and-light-scheme">#</a></h4>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>color-scheme<span class="token punctuation">"</span></span> <span class="token attr-name">content</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>dark light<span class="token punctuation">"</span></span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><p><video      autoplay            class="w-screenshot"                              loop      muted                            >      <source src="https://storage.googleapis.com/web-dev-uploads/video/vS06HQ1YTsbMKSFTIPl2iogUQP73/I8w6oe28ueaZsDiOFssl.mp4" type="video/mp4" />    </video></p>
+<p>The <a href="/color-scheme/"><code>color-scheme</code></a> meta tag in the above
+snippet informs the browser that this page wants the light and dark browser
+styles. The example breadcrumbs don't include any CSS for these color schemes,
+and so the breadcrumbs will use the default colors provided by the browser.</p>
+<div class="w-aside w-aside--note">
+<p>Try removing all the styles from the demo page. The component works
+without them due to the well structured markup. </div></p>
+<h4 id="navigation-element">Navigation element <a class="w-headline-link" href="#navigation-element">#</a></h4>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>nav</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>breadcrumbs<span class="token punctuation">"</span></span> <span class="token attr-name">role</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>navigation<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>nav</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><p>It's appropriate to use the
+<a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/nav" rel="noopener"><code>&lt;nav&gt;</code></a> element
+for site navigation, which has an implicit ARIA <a href="https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/Navigation_Role" rel="noopener">role of
+navigation</a>.
+In testing, I noticed that having the <code>role</code> attribute changed the way a
+screen reader interacted with the element, it was actually announced as
+navigation, and so I've chosen to add it.</p>
+<h4 id="icons">Icons <a class="w-headline-link" href="#icons">#</a></h4>
+<p>When an icon is repeated on a page, the SVG
+<a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Element/use" rel="noopener"><code>&lt;use&gt;</code></a> element
+means that you can define the <code>path</code> once, and use it for all instances of the
+icon. This prevents the same path information from being repeated, causing
+larger documents and the potential of path inconsistency.</p>
+<p>To use this technique, add a hidden SVG element to the page and wrap the icons
+in a <code>&lt;symbol&gt;</code> element with a unique ID:</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>svg</span> <span class="token special-attr"><span class="token attr-name">style</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span><span class="token value css language-css"><span class="token property">display</span><span class="token punctuation">:</span> none<span class="token punctuation">;</span></span><span class="token punctuation">"</span></span></span><span class="token punctuation">></span></span><br><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>symbol</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>icon-home<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><br>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>title</span><span class="token punctuation">></span></span>A home icon<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>title</span><span class="token punctuation">></span></span><br>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>path</span> <span class="token attr-name">d</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>symbol</span><span class="token punctuation">></span></span><br>  <br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>symbol</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>icon-dropdown-arrow<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><br>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>title</span><span class="token punctuation">></span></span>A down arrow<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>title</span><span class="token punctuation">></span></span><br>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>path</span> <span class="token attr-name">d</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>M19 9l-7 7-7-7<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>symbol</span><span class="token punctuation">></span></span><br>  <br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>svg</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><p>The browser reads the SVG HTML, puts the icon information into memory, and
+continues with the rest of the page referencing the ID for additional uses of
+the icon, like this:</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>svg</span> <span class="token attr-name">viewBox</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>0 0 24 24<span class="token punctuation">"</span></span> <span class="token attr-name">width</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>24<span class="token punctuation">"</span></span> <span class="token attr-name">height</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>24<span class="token punctuation">"</span></span> <span class="token attr-name">aria-hidden</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>true<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>use</span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>#icon-home<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>svg</span><span class="token punctuation">></span></span><br><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>svg</span> <span class="token attr-name">viewBox</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>0 0 24 24<span class="token punctuation">"</span></span> <span class="token attr-name">width</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>24<span class="token punctuation">"</span></span> <span class="token attr-name">height</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>24<span class="token punctuation">"</span></span> <span class="token attr-name">aria-hidden</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>true<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>use</span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>#icon-dropdown-arrow<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>svg</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><img     alt="DevTools showing a rendered &#x60;&lt;use&gt;&#x60; SVG element."          decoding="async"     height="447"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/BVkOZ3YnQBgF6K09sLTE.png?auto=format"     srcset="https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/BVkOZ3YnQBgF6K09sLTE.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/BVkOZ3YnQBgF6K09sLTE.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/BVkOZ3YnQBgF6K09sLTE.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/BVkOZ3YnQBgF6K09sLTE.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/BVkOZ3YnQBgF6K09sLTE.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/BVkOZ3YnQBgF6K09sLTE.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/BVkOZ3YnQBgF6K09sLTE.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/BVkOZ3YnQBgF6K09sLTE.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/BVkOZ3YnQBgF6K09sLTE.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/BVkOZ3YnQBgF6K09sLTE.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/BVkOZ3YnQBgF6K09sLTE.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/BVkOZ3YnQBgF6K09sLTE.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/BVkOZ3YnQBgF6K09sLTE.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/BVkOZ3YnQBgF6K09sLTE.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/BVkOZ3YnQBgF6K09sLTE.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/BVkOZ3YnQBgF6K09sLTE.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/BVkOZ3YnQBgF6K09sLTE.png?auto=format&w=1600 1600w"          width="800"   />
+<p>Define once, use as many times as you like, with minimal page performance impact
+and flexible styling. Notice <code>aria-hidden=&quot;true&quot;</code> is added to the SVG element.
+The icons are not useful to someone browsing who only hears the content, hiding
+them from those users stops them adding unnecessary noise.</p>
+<h4 id="split-link-.crumb">Split-link <code>.crumb</code> <a class="w-headline-link" href="#split-link-.crumb">#</a></h4>
+<p>This is where the traditional breadcrumb and those in this component diverge.
+Normally, this would only be an <code>&lt;a&gt;</code> link, but I've added traversal UX with a
+disguised select. The <code>.crumb</code> class is responsible for laying out the link and
+the icon, while the <code>.crumbicon</code> is responsible for stacking the icon and select
+element together. I've called it a split-link because its functions are very
+similar to a <a href="https://www.nngroup.com/articles/split-buttons/" rel="noopener">split-button</a>,
+but for page navigation.</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>span</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>crumb<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>a</span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>#sub-collection-b<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Category B<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>a</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>span</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>crumbicon<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><br>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>svg</span><span class="token punctuation">></span></span>...<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>svg</span><span class="token punctuation">></span></span><br>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>select</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>disguised-select<span class="token punctuation">"</span></span> <span class="token attr-name">title</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>Navigate to another category<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><br>      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>option</span><span class="token punctuation">></span></span>Category A<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>option</span><span class="token punctuation">></span></span><br>      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>option</span> <span class="token attr-name">selected</span><span class="token punctuation">></span></span>Category B<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>option</span><span class="token punctuation">></span></span><br>      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>option</span><span class="token punctuation">></span></span>Category C<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>option</span><span class="token punctuation">></span></span><br>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>select</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>span</span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>span</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><p>A link and some options is nothing special but adds more functionality to a
+simple breadcrumb. Adding a <code>title</code> to the <code>&lt;select&gt;</code> element is helpful for screen
+reader users, giving them information about the action of the button. However it
+provides the same help to everyone else too, you'll see it's front and center on
+iPad. One attribute provides button context to many users.</p>
+<img     alt="Screenshot with the invisible select element being hovered and its contextual tooltip showing."          decoding="async"     height="83"          loading="lazy"     sizes="(min-width: 271px) 271px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/IbANGFRfyEC61P7ETlGp.png?auto=format"     srcset="https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/IbANGFRfyEC61P7ETlGp.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/IbANGFRfyEC61P7ETlGp.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/IbANGFRfyEC61P7ETlGp.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/IbANGFRfyEC61P7ETlGp.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/IbANGFRfyEC61P7ETlGp.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/IbANGFRfyEC61P7ETlGp.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/IbANGFRfyEC61P7ETlGp.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/IbANGFRfyEC61P7ETlGp.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/IbANGFRfyEC61P7ETlGp.png?auto=format&w=542 542w"          width="271"   />
+<h4 id="separator-decorations">Separator decorations <a class="w-headline-link" href="#separator-decorations">#</a></h4>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>span</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>crumb-separator<span class="token punctuation">"</span></span> <span class="token attr-name">aria-hidden</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>true<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>→<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>span</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><p><video      autoplay            class="w-screenshot"                              loop      muted                            >      <source src="https://storage.googleapis.com/web-dev-uploads/video/vS06HQ1YTsbMKSFTIPl2iogUQP73/LASjAldbKTMivtF01aWo.mp4" type="video/mp4" />    </video></p>
+<p>Separators are optional, adding just one works great too (see the third example in the video
+above). I then give each <code>aria-hidden=&quot;true&quot;</code> since they are decorative and not
+something a screen reader needs to announce.</p>
+<p>The <a href="/flexbox-gap"><code>gap</code></a> property, covered next, makes the spacing of these straightforward.</p>
+<h3 id="styles">Styles <a class="w-headline-link" href="#styles">#</a></h3>
+<p>Since the color uses <a href="https://www.w3.org/TR/css-color-4/#css-system-colors" rel="noopener">system colors</a>, it's mostly gaps and stacks for styles!</p>
+<h4 id="layout-direction-and-flow">Layout direction and flow <a class="w-headline-link" href="#layout-direction-and-flow">#</a></h4>
+<img     alt="DevTools showing breadcrumb nav alignment with a its flexbox overlay feature."          decoding="async"     height="74"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/uPs9kdqJgyaY5GWqdZHP.png?auto=format"     srcset="https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/uPs9kdqJgyaY5GWqdZHP.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/uPs9kdqJgyaY5GWqdZHP.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/uPs9kdqJgyaY5GWqdZHP.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/uPs9kdqJgyaY5GWqdZHP.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/uPs9kdqJgyaY5GWqdZHP.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/uPs9kdqJgyaY5GWqdZHP.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/uPs9kdqJgyaY5GWqdZHP.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/uPs9kdqJgyaY5GWqdZHP.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/uPs9kdqJgyaY5GWqdZHP.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/uPs9kdqJgyaY5GWqdZHP.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/uPs9kdqJgyaY5GWqdZHP.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/uPs9kdqJgyaY5GWqdZHP.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/uPs9kdqJgyaY5GWqdZHP.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/uPs9kdqJgyaY5GWqdZHP.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/uPs9kdqJgyaY5GWqdZHP.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/uPs9kdqJgyaY5GWqdZHP.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/uPs9kdqJgyaY5GWqdZHP.png?auto=format&w=1600 1600w"          width="800"   />
+<p>The primary navigation element <code>nav.breadcrumbs</code> sets a scoped custom property
+for children to use, and otherwise establishes a horizontal vertically aligned
+layout. This ensures that the crumbs, dividers, and icons align.</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">.breadcrumbs</span> <span class="token punctuation">{</span><br>  <span class="token property">--nav-gap</span><span class="token punctuation">:</span> 2ch<span class="token punctuation">;</span><br><br>  <span class="token property">display</span><span class="token punctuation">:</span> flex<span class="token punctuation">;</span><br>  <span class="token property">align-items</span><span class="token punctuation">:</span> center<span class="token punctuation">;</span><br>  <span class="token property">gap</span><span class="token punctuation">:</span> <span class="token function">var</span><span class="token punctuation">(</span>--nav-gap<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token property">padding</span><span class="token punctuation">:</span> <span class="token function">calc</span><span class="token punctuation">(</span><span class="token function">var</span><span class="token punctuation">(</span>--nav-gap<span class="token punctuation">)</span> / 2<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><img     alt="One breadcrumb shown vertically aligned with flexbox overlays."          decoding="async"     height="66"          loading="lazy"     sizes="(min-width: 167px) 167px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/8JJyoerH462n22u0vD2R.png?auto=format"     srcset="https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/8JJyoerH462n22u0vD2R.png?auto=format&w=167 167w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/8JJyoerH462n22u0vD2R.png?auto=format&w=190 190w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/8JJyoerH462n22u0vD2R.png?auto=format&w=217 217w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/8JJyoerH462n22u0vD2R.png?auto=format&w=247 247w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/8JJyoerH462n22u0vD2R.png?auto=format&w=282 282w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/8JJyoerH462n22u0vD2R.png?auto=format&w=322 322w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/8JJyoerH462n22u0vD2R.png?auto=format&w=334 334w"          width="167"   />
+<p>Each <code>.crumb</code> also establishes a horizontal vertically aligned layout with some
+gap, but specially targets its link children and specifies the style
+<code>white-space: nowrap</code>. This is crucial for multi-word breadcrumbs as we dont
+want them to go multi-line. Later in this post we'll add styles to handle the
+horizontal overflow this <code>white-space</code> property caused.</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">.crumb</span> <span class="token punctuation">{</span><br>  <span class="token property">display</span><span class="token punctuation">:</span> inline-flex<span class="token punctuation">;</span><br>  <span class="token property">align-items</span><span class="token punctuation">:</span> center<span class="token punctuation">;</span><br>  <span class="token property">gap</span><span class="token punctuation">:</span> <span class="token function">calc</span><span class="token punctuation">(</span><span class="token function">var</span><span class="token punctuation">(</span>--nav-gap<span class="token punctuation">)</span> / 4<span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>  <span class="token selector">&amp; > a</span> <span class="token punctuation">{</span><br>    <span class="token property">white-space</span><span class="token punctuation">:</span> nowrap<span class="token punctuation">;</span><br><br>    <span class="token selector">&amp;[aria-current="page"]</span> <span class="token punctuation">{</span><br>      <span class="token property">font-weight</span><span class="token punctuation">:</span> bold<span class="token punctuation">;</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p><code>aria-current=&quot;page&quot;</code> is added to help the current page link stand out from the
+rest. Not only will screen reader users have a clear indicator that the link is
+for the current page, we've visually styled the element to help sighted users
+get a similar user experience.</p>
+<p>The <code>.crumbicon</code> component uses grid to stack an SVG icon with a &quot;nearly
+invisible&quot; <code>&lt;select&gt;</code> element.</p>
+<img     alt="Grid DevTools shown overlaying a button where the row and column are both named stack."          decoding="async"     height="180"          loading="lazy"     sizes="(min-width: 218px) 218px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/jx2uAiFT8NEHD5AbuSp3.png?auto=format"     srcset="https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/jx2uAiFT8NEHD5AbuSp3.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/jx2uAiFT8NEHD5AbuSp3.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/jx2uAiFT8NEHD5AbuSp3.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/jx2uAiFT8NEHD5AbuSp3.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/jx2uAiFT8NEHD5AbuSp3.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/jx2uAiFT8NEHD5AbuSp3.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/jx2uAiFT8NEHD5AbuSp3.png?auto=format&w=436 436w"          width="218"   />
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="highlight-line"><span class="token selector">.crumbicon</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">  <span class="token property">--crumbicon-size</span><span class="token punctuation">:</span> 3ch<span class="token punctuation">;</span></span><br><span class="highlight-line"></span><br><span class="highlight-line">  <span class="token property">display</span><span class="token punctuation">:</span> grid<span class="token punctuation">;</span></span><br><span class="highlight-line">  <span class="token property">grid</span><span class="token punctuation">:</span> [stack] <span class="token function">var</span><span class="token punctuation">(</span>--crumbicon-size<span class="token punctuation">)</span> / [stack] <span class="token function">var</span><span class="token punctuation">(</span>--crumbicon-size<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line">  <span class="token property">place-items</span><span class="token punctuation">:</span> center<span class="token punctuation">;</span></span><br><span class="highlight-line"></span><br><span class="highlight-line">  <span class="token selector">&amp; > *</span> <span class="token punctuation">{</span></span><br><mark class="highlight-line highlight-line-active">    <span class="token property">grid-area</span><span class="token punctuation">:</span> stack<span class="token punctuation">;</span></mark><br><span class="highlight-line">  <span class="token punctuation">}</span></span><br><span class="highlight-line"><span class="token punctuation">}</span></span></code></pre>
+</web-copy-code><p>The <code>&lt;select&gt;</code> element is last in the DOM, so it's on top of the stack,
+and interactive. Add a style of <code>opacity: .01</code> so the element is still usable,
+and the result is a select box that fits perfectly to the shape of the icon.
+This is a nice way to customize the look of a <code>&lt;select&gt;</code> element while
+maintaining the built-in functionality.</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">.disguised-select</span> <span class="token punctuation">{</span><br>  <span class="token property">inline-size</span><span class="token punctuation">:</span> 100%<span class="token punctuation">;</span><br>  <span class="token property">block-size</span><span class="token punctuation">:</span> 100%<span class="token punctuation">;</span><br>  <span class="token property">opacity</span><span class="token punctuation">:</span> .01<span class="token punctuation">;</span><br>  <span class="token property">font-size</span><span class="token punctuation">:</span> <span class="token function">min</span><span class="token punctuation">(</span>100%<span class="token punctuation">,</span> 16px<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">/* Defaults to 16px; fixes iOS zoom */</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><div class="w-aside w-aside--note">
+<p>Try using this icon component from mobile!</p>
+</div>
+<p><video      autoplay            class="w-screenshot"                              loop      muted                            >      <source src="https://storage.googleapis.com/web-dev-uploads/video/vS06HQ1YTsbMKSFTIPl2iogUQP73/n3MsbELMwsvYn355hXdi.mp4" type="video/mp4" />    </video></p>
+<h4 id="overflow">Overflow <a class="w-headline-link" href="#overflow">#</a></h4>
+<p>Breadcrumbs should be able to represent a very long trail. I'm a fan of allowing
+things to go offscreen horizontally, when appropriate, and I felt this
+breadcrumbs component qualified well.</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">.breadcrumbs</span> <span class="token punctuation">{</span><br>  <span class="token property">overflow-x</span><span class="token punctuation">:</span> auto<span class="token punctuation">;</span><br>  <span class="token property">overscroll-behavior-x</span><span class="token punctuation">:</span> contain<span class="token punctuation">;</span><br>  <span class="token property">scroll-snap-type</span><span class="token punctuation">:</span> x proximity<span class="token punctuation">;</span><br>  <span class="token property">scroll-padding-inline</span><span class="token punctuation">:</span> <span class="token function">calc</span><span class="token punctuation">(</span><span class="token function">var</span><span class="token punctuation">(</span>--nav-gap<span class="token punctuation">)</span> / 2<span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>  <span class="token selector">&amp; > .crumb:last-of-type</span> <span class="token punctuation">{</span><br>    <span class="token property">scroll-snap-align</span><span class="token punctuation">:</span> end<span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><br>  <span class="token atrule"><span class="token rule">@supports</span> <span class="token punctuation">(</span><span class="token property">-webkit-hyphens</span><span class="token punctuation">:</span>none<span class="token punctuation">)</span></span> <span class="token punctuation">{</span> <span class="token selector">&amp;</span> <span class="token punctuation">{</span><br>    <span class="token property">scroll-snap-type</span><span class="token punctuation">:</span> none<span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><span class="token punctuation">}</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>The overflow styles set up the following UX:</p>
+<ul>
+<li>Horizontal scroll with overscroll containment.</li>
+<li>Horizontal scroll padding.</li>
+<li>One snap point on the last crumb. This means that on page load the first
+crumb loads snapped and in view.</li>
+<li>Removes the snap point from Safari, which struggles with the horizontal
+scrolling and snap effect combinations.</li>
+</ul>
+<h4 id="media-queries">Media queries <a class="w-headline-link" href="#media-queries">#</a></h4>
+<p>One subtle adjustment for smaller viewports is to hide the &quot;Home&quot; label, leaving
+just the icon:</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token atrule"><span class="token rule">@media</span> <span class="token punctuation">(</span>width &lt;= 480px<span class="token punctuation">)</span></span> <span class="token punctuation">{</span> <br>  <span class="token selector">.breadcrumbs .home-label</span> <span class="token punctuation">{</span><br>    <span class="token property">display</span><span class="token punctuation">:</span> none<span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><img     alt="Side by side of the breadcrumbs with and without a home label, for comparison."          decoding="async"     height="84"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/T47A7AUqFPuneqNK3GWa.png?auto=format"     srcset="https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/T47A7AUqFPuneqNK3GWa.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/T47A7AUqFPuneqNK3GWa.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/T47A7AUqFPuneqNK3GWa.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/T47A7AUqFPuneqNK3GWa.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/T47A7AUqFPuneqNK3GWa.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/T47A7AUqFPuneqNK3GWa.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/T47A7AUqFPuneqNK3GWa.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/T47A7AUqFPuneqNK3GWa.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/T47A7AUqFPuneqNK3GWa.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/T47A7AUqFPuneqNK3GWa.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/T47A7AUqFPuneqNK3GWa.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/T47A7AUqFPuneqNK3GWa.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/T47A7AUqFPuneqNK3GWa.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/T47A7AUqFPuneqNK3GWa.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/T47A7AUqFPuneqNK3GWa.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/T47A7AUqFPuneqNK3GWa.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/T47A7AUqFPuneqNK3GWa.png?auto=format&w=1600 1600w"          width="800"   />
+<h2 id="accessibility">Accessibility <a class="w-headline-link" href="#accessibility">#</a></h2>
+<h3 id="motion">Motion <a class="w-headline-link" href="#motion">#</a></h3>
+<p>There isn't a whole lot of motion in this component, but by wrapping the
+transition in a <code>prefers-reduced-motion</code> check, we can prevent unwanted motion.</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token atrule"><span class="token rule">@media</span> <span class="token punctuation">(</span><span class="token property">prefers-reduced-motion</span><span class="token punctuation">:</span> no-preference<span class="token punctuation">)</span></span> <span class="token punctuation">{</span> <br>  <span class="token selector">.crumbicon</span> <span class="token punctuation">{</span><br>    <span class="token property">transition</span><span class="token punctuation">:</span> box-shadow .2s ease<span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>None of the other styles need to change, the hover and focus effects are great
+and meaningful without a <code>transition</code>, but if motion is okay, we'll add a subtle
+transition to the interaction.</p>
+<h3 id="javascript">JavaScript <a class="w-headline-link" href="#javascript">#</a></h3>
+<p>First, regardless of the type of router you use in your site or application,
+when a user changes the breadcrumbs, the URL needs to be updated and the user
+shown the appropriate page. Second, to normalize the user experience, make sure
+no unexpected navigations happen when users are just browsing <code>&lt;select&gt;</code>
+options.</p>
+<p>Two critical user experience measures to be handled by JavaScript: select has
+changed and eager <code>&lt;select&gt;</code> change event firing prevention.</p>
+<p>The eager event prevention is needed due to the use of a <code>&lt;select&gt;</code>
+element. On Windows Edge, and probably other browsers too, the select <code>changed</code>
+event fires as the user browses options with the keyboard. This is why I
+called it eager, as the user has only pseudo selected the option, like a hover
+or focus, yet hasn't confirmed the choice with <code>enter</code> or a <code>click</code>. The eager
+event makes this component category change feature inaccessible, because
+opening the select box and simply browsing an item will fire the event and
+change the page, before the user is ready.</p>
+<h4 id="a-better-lessselectgreater-changed-event">A better <code>&lt;select&gt;</code> changed event <a class="w-headline-link" href="#a-better-lessselectgreater-changed-event">#</a></h4>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> crumbs <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">querySelectorAll</span><span class="token punctuation">(</span><span class="token string">'.breadcrumbs select'</span><span class="token punctuation">)</span><br><span class="token keyword">const</span> allowedKeys <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Set</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'Tab'</span><span class="token punctuation">,</span> <span class="token string">'Enter'</span><span class="token punctuation">,</span> <span class="token string">' '</span><span class="token punctuation">]</span><span class="token punctuation">)</span><br><span class="token keyword">const</span> preventedKeys <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Set</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'ArrowUp'</span><span class="token punctuation">,</span> <span class="token string">'ArrowDown'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><br><br><span class="token comment">// watch crumbs for changes,</span><br><span class="token comment">// ensures it's a full value change, not a user exploring options via keyboard</span><br>crumbs<span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token parameter">nav</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token keyword">let</span> ignoreChange <span class="token operator">=</span> <span class="token boolean">false</span><br><br>  nav<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'change'</span><span class="token punctuation">,</span> <span class="token parameter">e</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>    <span class="token keyword">if</span> <span class="token punctuation">(</span>ignoreChange<span class="token punctuation">)</span> <span class="token keyword">return</span><br>    <span class="token comment">// it's actually changed!</span><br>  <span class="token punctuation">}</span><span class="token punctuation">)</span><br><br>  nav<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'keydown'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token parameter"><span class="token punctuation">{</span> key <span class="token punctuation">}</span></span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>    <span class="token keyword">if</span> <span class="token punctuation">(</span>preventedKeys<span class="token punctuation">.</span><span class="token function">has</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span><span class="token punctuation">)</span><br>      ignoreChange <span class="token operator">=</span> <span class="token boolean">true</span><br>    <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>allowedKeys<span class="token punctuation">.</span><span class="token function">has</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span><span class="token punctuation">)</span><br>      ignoreChange <span class="token operator">=</span> <span class="token boolean">false</span><br>  <span class="token punctuation">}</span><span class="token punctuation">)</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span></code></pre>
+</web-copy-code><p>The strategy for this is to watch for keyboard down events on each <code>&lt;select&gt;</code>
+element and determine if the key pressed was navigation confirmation (<code>Tab</code> or
+<code>Enter</code>) or spatial navigation (<code>ArrowUp</code> or <code>ArrowDown</code>). With this
+determination, the component can decide to wait or go, when the event for the
+<code>&lt;select&gt;</code> element fires.</p>
+<h2 id="conclusion">Conclusion <a class="w-headline-link" href="#conclusion">#</a></h2>
+<p>Now that you know how I did it, how would you‽ 🙂</p>
+<p>Let's diversify our approaches and learn all the ways to build on the web.
+Create a demo, <a href="https://twitter.com/argyleink" rel="noopener">tweet me</a> links, and I'll add it
+to the community remixes section below!</p>
+<h2 id="community-remixes">Community remixes <a class="w-headline-link" href="#community-remixes">#</a></h2>
+<p><em>Nothing to see here yet.</em></p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/css/">CSS</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/dom/">DOM</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/javascript/">JavaScript</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Jul 15, 2021</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/building-a-breadcrumbs-component/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

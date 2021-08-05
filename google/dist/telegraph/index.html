@@ -1,0 +1,868 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=2e44fd785f666">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Improving Cumulative Layout Shift at Telegraph Media Group</title>
+<meta name="description" content="How Telegraph, the leading UK news website managed to improve their 75th percentile CLS by 250% from 0.25 to 0.1 in a couple of months. " />
+
+<link rel="canonical" href="https://web.dev/telegraph/" />
+
+<meta itemprop="name" content="Improving Cumulative Layout Shift at Telegraph Media Group" />
+<meta itemprop="description" content="How Telegraph, the leading UK news website managed to improve their 75th percentile CLS by 250% from 0.25 to 0.1 in a couple of months. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/yDxN8dVjj4JCYvsoWTVg.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/telegraph/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Improving Cumulative Layout Shift at Telegraph Media Group" />
+<meta property="og:description" content="How Telegraph, the leading UK news website managed to improve their 75th percentile CLS by 250% from 0.25 to 0.1 in a couple of months. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/yDxN8dVjj4JCYvsoWTVg.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="The telegraph logo" />
+<meta property="tag" content="case-study" />
+<meta property="tag" content="web-vitals" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Improving Cumulative Layout Shift at Telegraph Media Group" />
+<meta name="twitter:description" content="How Telegraph, the leading UK news website managed to improve their 75th percentile CLS by 250% from 0.25 to 0.1 in a couple of months. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/yDxN8dVjj4JCYvsoWTVg.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=ca67cb66b70f9', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=897c86dabf85c', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="The telegraph logo"     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/wqtXsd9ZcxILt6oaA7rk.jpeg?auto=format"     srcset="https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/wqtXsd9ZcxILt6oaA7rk.jpeg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/wqtXsd9ZcxILt6oaA7rk.jpeg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/wqtXsd9ZcxILt6oaA7rk.jpeg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/wqtXsd9ZcxILt6oaA7rk.jpeg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/wqtXsd9ZcxILt6oaA7rk.jpeg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/wqtXsd9ZcxILt6oaA7rk.jpeg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/wqtXsd9ZcxILt6oaA7rk.jpeg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/wqtXsd9ZcxILt6oaA7rk.jpeg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/wqtXsd9ZcxILt6oaA7rk.jpeg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/wqtXsd9ZcxILt6oaA7rk.jpeg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/wqtXsd9ZcxILt6oaA7rk.jpeg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/wqtXsd9ZcxILt6oaA7rk.jpeg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/wqtXsd9ZcxILt6oaA7rk.jpeg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/wqtXsd9ZcxILt6oaA7rk.jpeg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/wqtXsd9ZcxILt6oaA7rk.jpeg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/wqtXsd9ZcxILt6oaA7rk.jpeg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/wqtXsd9ZcxILt6oaA7rk.jpeg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#improving-cumulative-layout-shift-at-telegraph-media-group" class="w-toc__header--link">
+        Improving Cumulative Layout Shift at Telegraph Media Group
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#the-visual-stability-challenge">The visual stability challenge</a></li><li><a href="#where-we-started">Where we started</a></li><li><a href="#how-we-measured-the-layout-shifts">How we measured the layout shifts</a></li><li><a href="#reducing-layout-shifts">Reducing layout shifts</a></li><li><a href="#adverts">Adverts</a></li><li><a href="#images">Images</a></li><li><a href="#header">Header</a></li><li><a href="#embeds">Embeds</a></li><li><a href="#measuring-the-impact">Measuring the impact</a></li><li><a href="#avoiding-cls-regressions">Avoiding CLS regressions</a></li><li><a href="#conclusion">Conclusion</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@cboakes"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="improving-cumulative-layout-shift-at-telegraph-media-group" class="w-article-header__headline">Improving Cumulative Layout Shift at Telegraph Media Group</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          <p>Within a couple of months the leading UK news website managed to improve their
+75th percentile CLS by 250% from 0.25 to 0.1.</p>
+
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Jun 14, 2021</time>
+          
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/chrisboakes/"><img     alt="Chris Boakes"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/eIgvuUcq2LknyiDixzOJ.jpeg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/eIgvuUcq2LknyiDixzOJ.jpeg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/eIgvuUcq2LknyiDixzOJ.jpeg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/eIgvuUcq2LknyiDixzOJ.jpeg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/eIgvuUcq2LknyiDixzOJ.jpeg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/eIgvuUcq2LknyiDixzOJ.jpeg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/chrisboakes/">Chris Boakes</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/cboakes"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/chrisboakes">GitHub</a>
+      </li>
+      
+      
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <div class="w-aside w-aside--note">
+<p>Chris is a principal software engineer at <a href="https://www.telegraph.co.uk/" rel="noopener">The
+Telegraph</a>. </div></p>
+<h2 id="the-visual-stability-challenge">The visual stability challenge <a class="w-headline-link" href="#the-visual-stability-challenge">#</a></h2>
+<p>Layout shifts can be very disruptive. At Telegraph Media Group (TMG) visual stability
+is particularly important because readers predominantly use our applications to
+consume the news. If the layout shifts while reading an article, the reader will
+likely lose their place. This can be a frustrating and distracting experience.</p>
+<p>From an engineering perspective, ensuring the pages don't shift and interrupt
+the reader can be challenging, especially when areas of your application are
+loaded asynchronously and added to the page dynamically.</p>
+<p>At TMG, we have multiple teams contributing code client-side:</p>
+<ul>
+<li><strong>Core engineering.</strong> Implementing third-party solutions to power areas such
+as content recommendations and commenting.</li>
+<li><strong>Marketing.</strong> Running A/B tests to assess how our readers interact with new
+features or changes.</li>
+<li><strong>Advertising.</strong> Managing advert requests and advert pre-bidding.</li>
+<li><strong>Editorial.</strong> Embedding code within articles such as tweets or videos, as
+well as custom widgets (for example, Coronavirus case tracker).</li>
+</ul>
+<p>Ensuring each of these teams do not cause the layout of the page to jolt can be
+difficult. Using the <a href="/cls/">Cumulative Layout Shift</a> metric to measure how
+often it's occurring for our readers, the teams got more insight into the real
+user experience and a clear goal to strive to. This resulted in our 75th
+percentile CLS improving from 0.25 to 0.1 and our passing bucket growing from
+57% to 72%.</p>
+<div class="w-stats">
+  <div class="w-stat">
+    <p class="w-stat__figure">250<sub class="w-stat__sub">%</sub></p>
+    <p class="w-stat__desc">75th percentile CLS improvement</p>
+  </div>
+  <div class="w-stat">
+    <p class="w-stat__figure">15<sub class="w-stat__sub">%</sub></p>
+    <p class="w-stat__desc">More users with good CLS score</p>
+  </div>
+</div>
+<h2 id="where-we-started">Where we started <a class="w-headline-link" href="#where-we-started">#</a></h2>
+<p>Using <a href="/chrome-ux-report-data-studio-dashboard/">CrUX dashboards</a> we were able
+to establish that our pages were shifting more than we'd like.</p>
+<figure class="w-figure">
+    <img     alt="CrUX Dashboard showing about 55-60% good, 15% needs improvement, and 25% of poor scores."     class="w-screenshot"     decoding="async"     height="472"          loading="lazy"     sizes="(min-width: 780px) 780px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/JvZwGUWfJ0bxKBQmD11P.png?auto=format"     srcset="https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/JvZwGUWfJ0bxKBQmD11P.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/JvZwGUWfJ0bxKBQmD11P.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/JvZwGUWfJ0bxKBQmD11P.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/JvZwGUWfJ0bxKBQmD11P.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/JvZwGUWfJ0bxKBQmD11P.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/JvZwGUWfJ0bxKBQmD11P.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/JvZwGUWfJ0bxKBQmD11P.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/JvZwGUWfJ0bxKBQmD11P.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/JvZwGUWfJ0bxKBQmD11P.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/JvZwGUWfJ0bxKBQmD11P.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/JvZwGUWfJ0bxKBQmD11P.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/JvZwGUWfJ0bxKBQmD11P.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/JvZwGUWfJ0bxKBQmD11P.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/JvZwGUWfJ0bxKBQmD11P.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/JvZwGUWfJ0bxKBQmD11P.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/JvZwGUWfJ0bxKBQmD11P.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/JvZwGUWfJ0bxKBQmD11P.png?auto=format&w=1560 1560w"          width="780"   />
+    <figcaption>Our Cumulative Layout Shift scores between June 2020 and February 2021.</figcaption>
+</figure>
+<p>We ideally wanted at least 75% of our readers to have a &quot;good&quot; experience so we
+started identifying the causes of the layout instability.</p>
+<h2 id="how-we-measured-the-layout-shifts">How we measured the layout shifts <a class="w-headline-link" href="#how-we-measured-the-layout-shifts">#</a></h2>
+<p>We used a combination of <a href="https://developer.chrome.com/docs/devtools/" rel="noopener">Chrome
+DevTools</a> and
+<a href="https://www.webpagetest.org/" rel="noopener">WebPageTest</a> to help recognize what was causing
+the layout to shift. In DevTools, we used the <a href="https://developer.chrome.com/blog/new-in-devtools-84/#cls" rel="noopener">Experience
+section</a> of the
+<a href="https://developer.chrome.com/docs/devtools/evaluate-performance/" rel="noopener">Performance</a>
+tab to highlight individual instances of shifting layout and how they
+contributed to the overall score.</p>
+<figure class="w-figure">
+    <img     alt="The front page of Telegraph with an ad in the header highlughted with a blue overlay."     class="w-screenshot"     decoding="async"     height="465"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/zfpYNnnpwtcG7YAmf7E5.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/zfpYNnnpwtcG7YAmf7E5.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/zfpYNnnpwtcG7YAmf7E5.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/zfpYNnnpwtcG7YAmf7E5.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/zfpYNnnpwtcG7YAmf7E5.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/zfpYNnnpwtcG7YAmf7E5.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/zfpYNnnpwtcG7YAmf7E5.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/zfpYNnnpwtcG7YAmf7E5.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/zfpYNnnpwtcG7YAmf7E5.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/zfpYNnnpwtcG7YAmf7E5.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/zfpYNnnpwtcG7YAmf7E5.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/zfpYNnnpwtcG7YAmf7E5.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/zfpYNnnpwtcG7YAmf7E5.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/zfpYNnnpwtcG7YAmf7E5.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/zfpYNnnpwtcG7YAmf7E5.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/zfpYNnnpwtcG7YAmf7E5.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/zfpYNnnpwtcG7YAmf7E5.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/zfpYNnnpwtcG7YAmf7E5.jpg?auto=format&w=1600 1600w"          width="800"   />
+    <figcaption>Identifying a layout shift caused by the advert loading client-side above the header using the Experience section of Chrome DevTools.<figcaption>
+</figure>
+<p><a href="https://www.webpagetest.org/" rel="noopener">WebPageTest</a> helpfully highlights where the
+layout shift occurs in the timeline view when &quot;Highlight Layout Shifts&quot; is
+selected.</p>
+<figure class="w-figure">
+    <img     alt="WebPageTest filmstrip view of the Telegraph website with the layoutshift highlighted with a red overlay."     class="w-screenshot"     decoding="async"     height="369"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/qaa60OEaFLoKVzWtntVw.png?auto=format"     srcset="https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/qaa60OEaFLoKVzWtntVw.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/qaa60OEaFLoKVzWtntVw.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/qaa60OEaFLoKVzWtntVw.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/qaa60OEaFLoKVzWtntVw.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/qaa60OEaFLoKVzWtntVw.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/qaa60OEaFLoKVzWtntVw.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/qaa60OEaFLoKVzWtntVw.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/qaa60OEaFLoKVzWtntVw.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/qaa60OEaFLoKVzWtntVw.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/qaa60OEaFLoKVzWtntVw.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/qaa60OEaFLoKVzWtntVw.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/qaa60OEaFLoKVzWtntVw.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/qaa60OEaFLoKVzWtntVw.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/qaa60OEaFLoKVzWtntVw.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/qaa60OEaFLoKVzWtntVw.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/qaa60OEaFLoKVzWtntVw.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/qaa60OEaFLoKVzWtntVw.png?auto=format&w=1600 1600w"          width="800"   />
+    <figcaption>WebPageTest highlighting where the layout shifted.</figcaption>
+</figure>
+<p>After reviewing each shift across our most visited templates we came up with a
+list of ideas as to how we could improve.</p>
+<h2 id="reducing-layout-shifts">Reducing layout shifts <a class="w-headline-link" href="#reducing-layout-shifts">#</a></h2>
+<p>We focused on four areas where we could reduce layout shifts:</p>
+<ul>
+<li>adverts</li>
+<li>images</li>
+<li>headers</li>
+<li>embeds</li>
+</ul>
+<h3 id="adverts">Adverts <a class="w-headline-link" href="#adverts">#</a></h3>
+<p>The adverts load after the initial paint via JavaScript. Some of the containers
+they loaded in did not have any reserved height on them.</p>
+<figure class="w-figure">
+<img     alt="Animation of the Telegraph website. The list of stories gets pushed down when an ad loads above it."     class="w-screenshot"     decoding="async"     height="438"          loading="lazy"     sizes="(min-width: 387px) 387px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/klpZyS7okn4DwfPbL5qZ.gif?auto=format"     srcset="https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/klpZyS7okn4DwfPbL5qZ.gif?auto=format&w=200 200w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/klpZyS7okn4DwfPbL5qZ.gif?auto=format&w=228 228w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/klpZyS7okn4DwfPbL5qZ.gif?auto=format&w=260 260w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/klpZyS7okn4DwfPbL5qZ.gif?auto=format&w=296 296w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/klpZyS7okn4DwfPbL5qZ.gif?auto=format&w=338 338w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/klpZyS7okn4DwfPbL5qZ.gif?auto=format&w=385 385w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/klpZyS7okn4DwfPbL5qZ.gif?auto=format&w=439 439w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/klpZyS7okn4DwfPbL5qZ.gif?auto=format&w=500 500w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/klpZyS7okn4DwfPbL5qZ.gif?auto=format&w=571 571w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/klpZyS7okn4DwfPbL5qZ.gif?auto=format&w=650 650w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/klpZyS7okn4DwfPbL5qZ.gif?auto=format&w=741 741w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/klpZyS7okn4DwfPbL5qZ.gif?auto=format&w=774 774w"          width="387"   />
+    <figcaption>The "More stories" block below the advert is shifted down after the advert loads.</figcaption>
+</figure>
+<p>Although we don't know the exact height, we're able to reserve space by using
+the most common advert size loaded in the slot.</p>
+<figure class="w-figure">
+    <img     alt="Animation of the Telegraph website. A placeholder rectangle for the ad is placed above the list of stories. The ad loads in place of the placeholder without causing a layout shift."     class="w-screenshot"     decoding="async"     height="438"          loading="lazy"     sizes="(min-width: 387px) 387px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/aA7rq5NGK1f1cA5FkT8n.gif?auto=format"     srcset="https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/aA7rq5NGK1f1cA5FkT8n.gif?auto=format&w=200 200w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/aA7rq5NGK1f1cA5FkT8n.gif?auto=format&w=228 228w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/aA7rq5NGK1f1cA5FkT8n.gif?auto=format&w=260 260w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/aA7rq5NGK1f1cA5FkT8n.gif?auto=format&w=296 296w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/aA7rq5NGK1f1cA5FkT8n.gif?auto=format&w=338 338w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/aA7rq5NGK1f1cA5FkT8n.gif?auto=format&w=385 385w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/aA7rq5NGK1f1cA5FkT8n.gif?auto=format&w=439 439w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/aA7rq5NGK1f1cA5FkT8n.gif?auto=format&w=500 500w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/aA7rq5NGK1f1cA5FkT8n.gif?auto=format&w=571 571w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/aA7rq5NGK1f1cA5FkT8n.gif?auto=format&w=650 650w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/aA7rq5NGK1f1cA5FkT8n.gif?auto=format&w=741 741w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/aA7rq5NGK1f1cA5FkT8n.gif?auto=format&w=774 774w"          width="387"   />
+    <figcaption>By reserving space for the advert, the "More stories" block below remains static before and after the advert loads.</figcaption>
+</figure>
+<p>We had misjudged the average height of the advert in some cases. For tablet
+readers, the slot was collapsing.</p>
+<figure class="w-figure">
+<img     alt="Animation of a tablet view of the Telegraph website. The placeholder slot is bigger than the ad so the content shifts up after ad loads."     class="w-screenshot"     decoding="async"     height="313"          loading="lazy"     sizes="(min-width: 600px) 600px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/by1xeAvvBKNjiZTVbQ1v.gif?auto=format"     srcset="https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/by1xeAvvBKNjiZTVbQ1v.gif?auto=format&w=200 200w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/by1xeAvvBKNjiZTVbQ1v.gif?auto=format&w=228 228w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/by1xeAvvBKNjiZTVbQ1v.gif?auto=format&w=260 260w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/by1xeAvvBKNjiZTVbQ1v.gif?auto=format&w=296 296w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/by1xeAvvBKNjiZTVbQ1v.gif?auto=format&w=338 338w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/by1xeAvvBKNjiZTVbQ1v.gif?auto=format&w=385 385w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/by1xeAvvBKNjiZTVbQ1v.gif?auto=format&w=439 439w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/by1xeAvvBKNjiZTVbQ1v.gif?auto=format&w=500 500w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/by1xeAvvBKNjiZTVbQ1v.gif?auto=format&w=571 571w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/by1xeAvvBKNjiZTVbQ1v.gif?auto=format&w=650 650w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/by1xeAvvBKNjiZTVbQ1v.gif?auto=format&w=741 741w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/by1xeAvvBKNjiZTVbQ1v.gif?auto=format&w=845 845w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/by1xeAvvBKNjiZTVbQ1v.gif?auto=format&w=964 964w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/by1xeAvvBKNjiZTVbQ1v.gif?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/by1xeAvvBKNjiZTVbQ1v.gif?auto=format&w=1200 1200w"          width="600"   />
+<figcaption>The advert slot collapsing after it loaded for readers on tablet sized devices.</figcaption>
+</figure>
+<p>We revisited the slot and adjusted the height to use the most common size.</p>
+<figure class="w-figure">
+<img     alt="Animation of a tablet view of the Telegraph website. With the placeholder matching the ad size, there&#x27;s no layoutshift when the ad loads."     class="w-screenshot"     decoding="async"     height="205"          loading="lazy"     sizes="(min-width: 600px) 600px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/arV5fG7O7CUUHb7mdt54.gif?auto=format"     srcset="https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/arV5fG7O7CUUHb7mdt54.gif?auto=format&w=200 200w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/arV5fG7O7CUUHb7mdt54.gif?auto=format&w=228 228w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/arV5fG7O7CUUHb7mdt54.gif?auto=format&w=260 260w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/arV5fG7O7CUUHb7mdt54.gif?auto=format&w=296 296w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/arV5fG7O7CUUHb7mdt54.gif?auto=format&w=338 338w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/arV5fG7O7CUUHb7mdt54.gif?auto=format&w=385 385w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/arV5fG7O7CUUHb7mdt54.gif?auto=format&w=439 439w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/arV5fG7O7CUUHb7mdt54.gif?auto=format&w=500 500w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/arV5fG7O7CUUHb7mdt54.gif?auto=format&w=571 571w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/arV5fG7O7CUUHb7mdt54.gif?auto=format&w=650 650w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/arV5fG7O7CUUHb7mdt54.gif?auto=format&w=741 741w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/arV5fG7O7CUUHb7mdt54.gif?auto=format&w=845 845w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/arV5fG7O7CUUHb7mdt54.gif?auto=format&w=964 964w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/arV5fG7O7CUUHb7mdt54.gif?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/arV5fG7O7CUUHb7mdt54.gif?auto=format&w=1200 1200w"          width="600"   />
+<figcaption>Ensuring the space we reserved for the advert slot matched the most commonly served height of the advert.
+</figcaption>
+</figure>
+<h3 id="images">Images <a class="w-headline-link" href="#images">#</a></h3>
+<p>A lot of the images across the website are lazy loaded and have their space
+reserved for them.</p>
+<figure class="w-figure">
+    <img     alt="Animation of article preview cards loading."     class="w-screenshot"     decoding="async"     height="352"          loading="lazy"     sizes="(min-width: 600px) 600px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/IFeiuIif24EDbbpObx4n.gif?auto=format"     srcset="https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/IFeiuIif24EDbbpObx4n.gif?auto=format&w=200 200w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/IFeiuIif24EDbbpObx4n.gif?auto=format&w=228 228w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/IFeiuIif24EDbbpObx4n.gif?auto=format&w=260 260w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/IFeiuIif24EDbbpObx4n.gif?auto=format&w=296 296w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/IFeiuIif24EDbbpObx4n.gif?auto=format&w=338 338w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/IFeiuIif24EDbbpObx4n.gif?auto=format&w=385 385w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/IFeiuIif24EDbbpObx4n.gif?auto=format&w=439 439w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/IFeiuIif24EDbbpObx4n.gif?auto=format&w=500 500w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/IFeiuIif24EDbbpObx4n.gif?auto=format&w=571 571w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/IFeiuIif24EDbbpObx4n.gif?auto=format&w=650 650w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/IFeiuIif24EDbbpObx4n.gif?auto=format&w=741 741w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/IFeiuIif24EDbbpObx4n.gif?auto=format&w=845 845w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/IFeiuIif24EDbbpObx4n.gif?auto=format&w=964 964w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/IFeiuIif24EDbbpObx4n.gif?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/IFeiuIif24EDbbpObx4n.gif?auto=format&w=1200 1200w"          width="600"   />
+    <figcaption>Lazy loading images without disrupting the layout.</figcaption>
+</figure>
+<p>However the inline images at the top of the articles did not have any space
+reserved on the container, nor did they have width and height attributes
+associated with the tags. This caused the layout to shift as they loaded in.</p>
+<figure class="w-figure">
+    <img     alt="Animation of the article page loading. When the main image loads at the top of the page, the text moves down."     class="w-screenshot"     decoding="async"     height="612"          loading="lazy"     sizes="(min-width: 360px) 360px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/G7PnNyKZhURv7mpYMx9Q.gif?auto=format"     srcset="https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/G7PnNyKZhURv7mpYMx9Q.gif?auto=format&w=200 200w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/G7PnNyKZhURv7mpYMx9Q.gif?auto=format&w=228 228w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/G7PnNyKZhURv7mpYMx9Q.gif?auto=format&w=260 260w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/G7PnNyKZhURv7mpYMx9Q.gif?auto=format&w=296 296w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/G7PnNyKZhURv7mpYMx9Q.gif?auto=format&w=338 338w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/G7PnNyKZhURv7mpYMx9Q.gif?auto=format&w=385 385w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/G7PnNyKZhURv7mpYMx9Q.gif?auto=format&w=439 439w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/G7PnNyKZhURv7mpYMx9Q.gif?auto=format&w=500 500w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/G7PnNyKZhURv7mpYMx9Q.gif?auto=format&w=571 571w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/G7PnNyKZhURv7mpYMx9Q.gif?auto=format&w=650 650w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/G7PnNyKZhURv7mpYMx9Q.gif?auto=format&w=720 720w"          width="360"   />
+    <figcaption>A layout shift caused by the article's main image.</figcaption>
+</figure>
+<p>Simply adding the width and height attributes to the images ensured the layout
+did not shift.</p>
+<figure class="w-figure">
+    <img     alt="Animation of the article page loading with placeholder reserved for the main image. When the main image loads at the top of the page, there&#x27;s no layout shift."     class="w-screenshot"     decoding="async"     height="630"          loading="lazy"     sizes="(min-width: 360px) 360px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/LuYayFKwpXN889Fk3GLG.gif?auto=format"     srcset="https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/LuYayFKwpXN889Fk3GLG.gif?auto=format&w=200 200w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/LuYayFKwpXN889Fk3GLG.gif?auto=format&w=228 228w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/LuYayFKwpXN889Fk3GLG.gif?auto=format&w=260 260w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/LuYayFKwpXN889Fk3GLG.gif?auto=format&w=296 296w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/LuYayFKwpXN889Fk3GLG.gif?auto=format&w=338 338w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/LuYayFKwpXN889Fk3GLG.gif?auto=format&w=385 385w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/LuYayFKwpXN889Fk3GLG.gif?auto=format&w=439 439w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/LuYayFKwpXN889Fk3GLG.gif?auto=format&w=500 500w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/LuYayFKwpXN889Fk3GLG.gif?auto=format&w=571 571w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/LuYayFKwpXN889Fk3GLG.gif?auto=format&w=650 650w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/LuYayFKwpXN889Fk3GLG.gif?auto=format&w=720 720w"          width="360"   />
+    <figcaption>The main article image loading without causing the layout to shift.</figcaption>
+</figure>
+<h3 id="header">Header <a class="w-headline-link" href="#header">#</a></h3>
+<p>The header was below the content in the markup and was positioned at the top
+using CSS. The original idea was to prioritise the content loading before the
+navigation however this caused the page to momentarily shift.</p>
+<figure class="w-figure">
+    <img     alt="ALT_TEXT_HERE"     class="w-screenshot"     decoding="async"     height="333"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/ym64zcKRzey40Ov0JYX5.png?auto=format"     srcset="https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/ym64zcKRzey40Ov0JYX5.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/ym64zcKRzey40Ov0JYX5.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/ym64zcKRzey40Ov0JYX5.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/ym64zcKRzey40Ov0JYX5.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/ym64zcKRzey40Ov0JYX5.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/ym64zcKRzey40Ov0JYX5.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/ym64zcKRzey40Ov0JYX5.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/ym64zcKRzey40Ov0JYX5.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/ym64zcKRzey40Ov0JYX5.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/ym64zcKRzey40Ov0JYX5.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/ym64zcKRzey40Ov0JYX5.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/ym64zcKRzey40Ov0JYX5.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/ym64zcKRzey40Ov0JYX5.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/ym64zcKRzey40Ov0JYX5.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/ym64zcKRzey40Ov0JYX5.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/ym64zcKRzey40Ov0JYX5.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/ym64zcKRzey40Ov0JYX5.png?auto=format&w=1600 1600w"          width="800"   />
+    <figcaption>The header of the page loading inelegantly.</figcaption>
+</figure>
+<p>Moving the header to the top of the markup allowed the page to render without
+this shift.</p>
+<figure class="w-figure">
+    <img     alt="ALT_TEXT_HERE"     class="w-screenshot"     decoding="async"     height="303"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/drYhZauv1oWZyp7mpQz9.png?auto=format"     srcset="https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/drYhZauv1oWZyp7mpQz9.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/drYhZauv1oWZyp7mpQz9.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/drYhZauv1oWZyp7mpQz9.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/drYhZauv1oWZyp7mpQz9.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/drYhZauv1oWZyp7mpQz9.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/drYhZauv1oWZyp7mpQz9.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/drYhZauv1oWZyp7mpQz9.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/drYhZauv1oWZyp7mpQz9.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/drYhZauv1oWZyp7mpQz9.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/drYhZauv1oWZyp7mpQz9.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/drYhZauv1oWZyp7mpQz9.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/drYhZauv1oWZyp7mpQz9.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/drYhZauv1oWZyp7mpQz9.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/drYhZauv1oWZyp7mpQz9.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/drYhZauv1oWZyp7mpQz9.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/drYhZauv1oWZyp7mpQz9.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/drYhZauv1oWZyp7mpQz9.png?auto=format&w=1600 1600w"          width="800"   />
+    <figcaption>The layout is no longer disrupted by the header of the page loading.</figcaption>
+</figure>
+<h3 id="embeds">Embeds <a class="w-headline-link" href="#embeds">#</a></h3>
+<p>Some of the frequently used embeds have a defined aspect ratio. For example,
+YouTube videos. While the player is loading, we pull the thumbnail from YouTube
+and use it as a placeholder while the video loads.</p>
+<figure class="w-figure">
+<img     alt="The video player slot loading a low resolution thumbnail while the video player loads."     class="w-screenshot"     decoding="async"     height="612"          loading="lazy"     sizes="(min-width: 360px) 360px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/BKPbdBJROUIUqoT8coFW.gif?auto=format"     srcset="https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/BKPbdBJROUIUqoT8coFW.gif?auto=format&w=200 200w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/BKPbdBJROUIUqoT8coFW.gif?auto=format&w=228 228w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/BKPbdBJROUIUqoT8coFW.gif?auto=format&w=260 260w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/BKPbdBJROUIUqoT8coFW.gif?auto=format&w=296 296w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/BKPbdBJROUIUqoT8coFW.gif?auto=format&w=338 338w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/BKPbdBJROUIUqoT8coFW.gif?auto=format&w=385 385w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/BKPbdBJROUIUqoT8coFW.gif?auto=format&w=439 439w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/BKPbdBJROUIUqoT8coFW.gif?auto=format&w=500 500w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/BKPbdBJROUIUqoT8coFW.gif?auto=format&w=571 571w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/BKPbdBJROUIUqoT8coFW.gif?auto=format&w=650 650w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/BKPbdBJROUIUqoT8coFW.gif?auto=format&w=720 720w"          width="360"   />
+    <figcaption>The video player slot loading a low resolution thumbnail while the video player loads.
+</figcaption>
+</figure>
+<h2 id="measuring-the-impact">Measuring the impact <a class="w-headline-link" href="#measuring-the-impact">#</a></h2>
+<p>We were able to measure the impact at a feature level quite easily using the
+tooling mentioned towards the start of the article. However we wanted to measure
+CLS both at a template level and at a site level. Synthetically, we used
+<a href="https://speedcurve.com/" rel="noopener">SpeedCurve</a> to validate changes both in pre-production
+and production.</p>
+<figure class="w-figure">
+    <img     alt="SpeedCurve chart showing a steep drop in CLS score."     class="w-screenshot"     decoding="async"     height="343"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/kVRCtjeFVTbN7aOV4O0z.png?auto=format"     srcset="https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/kVRCtjeFVTbN7aOV4O0z.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/kVRCtjeFVTbN7aOV4O0z.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/kVRCtjeFVTbN7aOV4O0z.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/kVRCtjeFVTbN7aOV4O0z.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/kVRCtjeFVTbN7aOV4O0z.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/kVRCtjeFVTbN7aOV4O0z.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/kVRCtjeFVTbN7aOV4O0z.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/kVRCtjeFVTbN7aOV4O0z.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/kVRCtjeFVTbN7aOV4O0z.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/kVRCtjeFVTbN7aOV4O0z.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/kVRCtjeFVTbN7aOV4O0z.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/kVRCtjeFVTbN7aOV4O0z.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/kVRCtjeFVTbN7aOV4O0z.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/kVRCtjeFVTbN7aOV4O0z.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/kVRCtjeFVTbN7aOV4O0z.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/kVRCtjeFVTbN7aOV4O0z.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/kVRCtjeFVTbN7aOV4O0z.png?auto=format&w=1600 1600w"          width="800"   />
+    <figcaption>Tracking CLS progress synthetically using SpeedCurve.</figcaption>
+</figure>
+<p>We're able to then validate the results in our RUM data (provided by
+<a href="https://www.akamai.com/uk/en/products/performance/mpulse-real-user-monitoring.jsp" rel="noopener">mPulse</a>)
+once the code reached production.</p>
+<figure class="w-figure">
+    <img     alt="mPulse chart showing a drop in CLS score."     class="w-screenshot"     decoding="async"     height="550"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/Bv8QeCPy9zQ4eru2qrhU.png?auto=format"     srcset="https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/Bv8QeCPy9zQ4eru2qrhU.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/Bv8QeCPy9zQ4eru2qrhU.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/Bv8QeCPy9zQ4eru2qrhU.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/Bv8QeCPy9zQ4eru2qrhU.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/Bv8QeCPy9zQ4eru2qrhU.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/Bv8QeCPy9zQ4eru2qrhU.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/Bv8QeCPy9zQ4eru2qrhU.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/Bv8QeCPy9zQ4eru2qrhU.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/Bv8QeCPy9zQ4eru2qrhU.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/Bv8QeCPy9zQ4eru2qrhU.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/Bv8QeCPy9zQ4eru2qrhU.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/Bv8QeCPy9zQ4eru2qrhU.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/Bv8QeCPy9zQ4eru2qrhU.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/Bv8QeCPy9zQ4eru2qrhU.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/Bv8QeCPy9zQ4eru2qrhU.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/Bv8QeCPy9zQ4eru2qrhU.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/Bv8QeCPy9zQ4eru2qrhU.png?auto=format&w=1600 1600w"          width="800"   />
+    <figcaption>Validating site-wide CLS improvements with mPulse RUM data before and after making changes.</figcaption>
+</figure>
+<p>Checking the RUM data provides us with a good level of confidence that the
+changes we're making are having a positive impact for our readers.</p>
+<p>The final numbers we looked at are for the RUM data Google collects. This is
+especially relevant now as they will soon <a href="https://developers.google.com/search/blog/2020/05/evaluating-page-experience#page-experience-ranking" rel="noopener">have an impact on page
+ranking</a>.
+For starters we used the <a href="/chrome-ux-report/">Chrome UX Report</a>, both in the
+monthly origin level data available through the <a href="https://g.co/chromeuxdash" rel="noopener">CrUX
+dashboard</a>, as well as by <a href="/chrome-ux-report-bigquery/">querying
+BigQuery</a> to retrieve historic p75 data. This way
+we were easily able to see that for all of the traffic measured by CrUX, <strong>our
+75th percentile CLS improved by 250% from 0.25 to 0.1 and our passing bucket
+grew from 57% to 72%</strong>.</p>
+<figure class="w-figure">
+    <img     alt="CrUX dashboard showing p75 CLS for telegraph.co.uk is 0.1."     class="w-screenshot"     decoding="async"     height="449"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/vmmokEtVcn7FJzmOIJB8.png?auto=format"     srcset="https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/vmmokEtVcn7FJzmOIJB8.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/vmmokEtVcn7FJzmOIJB8.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/vmmokEtVcn7FJzmOIJB8.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/vmmokEtVcn7FJzmOIJB8.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/vmmokEtVcn7FJzmOIJB8.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/vmmokEtVcn7FJzmOIJB8.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/vmmokEtVcn7FJzmOIJB8.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/vmmokEtVcn7FJzmOIJB8.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/vmmokEtVcn7FJzmOIJB8.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/vmmokEtVcn7FJzmOIJB8.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/vmmokEtVcn7FJzmOIJB8.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/vmmokEtVcn7FJzmOIJB8.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/vmmokEtVcn7FJzmOIJB8.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/vmmokEtVcn7FJzmOIJB8.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/vmmokEtVcn7FJzmOIJB8.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/vmmokEtVcn7FJzmOIJB8.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/vmmokEtVcn7FJzmOIJB8.png?auto=format&w=1600 1600w"          width="800"   />
+    <figcaption>Results from the Crux Dashboard.</figcaption>
+</figure>
+<figure class="w-figure">
+    <img     alt="BigQuery showing p75 values improving month to month, from 0.25 to 0.1."          decoding="async"     height="517"          loading="lazy"     sizes="(min-width: 488px) 488px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/8d8UOEi5GPcIitsTcQMA.png?auto=format"     srcset="https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/8d8UOEi5GPcIitsTcQMA.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/8d8UOEi5GPcIitsTcQMA.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/8d8UOEi5GPcIitsTcQMA.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/8d8UOEi5GPcIitsTcQMA.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/8d8UOEi5GPcIitsTcQMA.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/8d8UOEi5GPcIitsTcQMA.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/8d8UOEi5GPcIitsTcQMA.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/8d8UOEi5GPcIitsTcQMA.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/8d8UOEi5GPcIitsTcQMA.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/8d8UOEi5GPcIitsTcQMA.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/8d8UOEi5GPcIitsTcQMA.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/8d8UOEi5GPcIitsTcQMA.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/8d8UOEi5GPcIitsTcQMA.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/8d8UOEi5GPcIitsTcQMA.png?auto=format&w=976 976w"          width="488"   />
+    <figcaption>BigQuery run displaying the p75 values of 2021 to date.</figcaption>
+</figure>
+<p>In addition, we were able to make use of the <a href="https://developers.google.com/web/tools/chrome-user-experience-report/api/reference" rel="noopener">Chrome UX Report
+API</a>
+and create some internal dashboards split into templates.</p>
+<figure class="w-figure">
+    <img     alt="Internal dashboard showing average good score of 76.2, needs improvement of 9.3, and poor score of 14.6."     class="w-screenshot"     decoding="async"     height="402"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/aYW2QPaFucKThXxZfFAD.png?auto=format"     srcset="https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/aYW2QPaFucKThXxZfFAD.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/aYW2QPaFucKThXxZfFAD.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/aYW2QPaFucKThXxZfFAD.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/aYW2QPaFucKThXxZfFAD.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/aYW2QPaFucKThXxZfFAD.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/aYW2QPaFucKThXxZfFAD.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/aYW2QPaFucKThXxZfFAD.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/aYW2QPaFucKThXxZfFAD.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/aYW2QPaFucKThXxZfFAD.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/aYW2QPaFucKThXxZfFAD.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/aYW2QPaFucKThXxZfFAD.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/aYW2QPaFucKThXxZfFAD.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/aYW2QPaFucKThXxZfFAD.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/aYW2QPaFucKThXxZfFAD.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/aYW2QPaFucKThXxZfFAD.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/aYW2QPaFucKThXxZfFAD.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/aYW2QPaFucKThXxZfFAD.png?auto=format&w=1600 1600w"          width="800"   />
+    <figcaption>Internal dashboards making use of the Chrome UX Report API highlighting our average score and the worst performing pages using that template.</figcaption>
+</figure>
+<h2 id="avoiding-cls-regressions">Avoiding CLS regressions <a class="w-headline-link" href="#avoiding-cls-regressions">#</a></h2>
+<p>An important aspect of making performance improvements is avoiding regressions.
+We've set up some basic <a href="/performance-budgets-101/">performance budgets</a> for our
+key metrics and included CLS in those.</p>
+<figure class="w-figure">
+    <img     alt=""     class="w-screenshot"     decoding="async"     height="343"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/9ggBNUTAptmnmxVlXZGo.png?auto=format"     srcset="https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/9ggBNUTAptmnmxVlXZGo.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/9ggBNUTAptmnmxVlXZGo.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/9ggBNUTAptmnmxVlXZGo.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/9ggBNUTAptmnmxVlXZGo.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/9ggBNUTAptmnmxVlXZGo.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/9ggBNUTAptmnmxVlXZGo.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/9ggBNUTAptmnmxVlXZGo.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/9ggBNUTAptmnmxVlXZGo.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/9ggBNUTAptmnmxVlXZGo.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/9ggBNUTAptmnmxVlXZGo.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/9ggBNUTAptmnmxVlXZGo.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/9ggBNUTAptmnmxVlXZGo.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/9ggBNUTAptmnmxVlXZGo.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/9ggBNUTAptmnmxVlXZGo.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/9ggBNUTAptmnmxVlXZGo.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/9ggBNUTAptmnmxVlXZGo.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/vgdbNJBYHma2o62ZqYmcnkq3j0o1/9ggBNUTAptmnmxVlXZGo.png?auto=format&w=1600 1600w"          width="800"   />
+    <figcaption>A performance budget dashboard which shows synthetic checks measuring CLS on some of our high traffic templates. The budget is currently set at 0.025.</figcaption>
+</figure>
+<p>If the test exceeds the budget it'll send a message to a Slack channel so we can
+investigate the cause. We've also set up weekly reports, so that even if the
+templates remain in budget we're aware of any changes that have had a negative
+impact.</p>
+<p>We're also planning to expand our budgets to use RUM data as well as synthetic
+data, using mPulse to set both <a href="https://learn.akamai.com/en-us/webhelp/mpulse/mpulse-help/GUID-CEE8FE75-2CD9-423A-BB3E-26EC9D8735A9.html" rel="noopener">static
+alerts</a>
+and potentially <a href="https://learn.akamai.com/en-us/webhelp/mpulse/mpulse-help/GUID-C6C446C4-E545-471F-A943-2CE6D885E60C.html" rel="noopener">anomaly
+detection</a>
+which would make us aware of any changes that are out of the ordinary.</p>
+<p>It's important for us to approach new features with CLS in mind. A lot of the
+changes I've mentioned are those we've had to fix after they've been released to
+our readers. Layout stability will be a consideration for the solution design of
+any new feature going forward so that we can avoid any unexpected layout shifts
+from the start.</p>
+<h2 id="conclusion">Conclusion <a class="w-headline-link" href="#conclusion">#</a></h2>
+<p>The improvements we've made so far were quite easy to implement and have had a
+significant impact. A lot of changes I've outlined in this article didn't take
+much time to deliver and they were applied to all of the most commonly used
+templates which means they've had a widespread positive impact for our readers.</p>
+<p>There are still areas of the site we need to improve. We're exploring ways we
+might be able to do more of our client-side logic server-side which will improve
+CLS even more. We will keep tracking and monitoring our metrics with an aim to
+constantly improve them and provide our readers with the best user experience
+possible.</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/case-study/">Case Study</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/web-vitals/">Web Vitals</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Jun 14, 2021</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/telegraph/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

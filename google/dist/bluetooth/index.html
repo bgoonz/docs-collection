@@ -1,0 +1,916 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=3496f8021857f">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Communicating with Bluetooth devices over JavaScript</title>
+<meta name="description" content="The Web Bluetooth API allows websites to communicate with Bluetooth devices. " />
+
+<link rel="canonical" href="https://web.dev/bluetooth/" />
+
+<meta itemprop="name" content="Communicating with Bluetooth devices over JavaScript" />
+<meta itemprop="description" content="The Web Bluetooth API allows websites to communicate with Bluetooth devices. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/1J1OTu90a2oH8wFogKnF.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/bluetooth/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Communicating with Bluetooth devices over JavaScript" />
+<meta property="og:description" content="The Web Bluetooth API allows websites to communicate with Bluetooth devices. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/1J1OTu90a2oH8wFogKnF.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="A Bluetooth chip on a coin" />
+<meta property="tag" content="capabilities" />
+<meta property="tag" content="devices" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Communicating with Bluetooth devices over JavaScript" />
+<meta name="twitter:description" content="The Web Bluetooth API allows websites to communicate with Bluetooth devices. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/1J1OTu90a2oH8wFogKnF.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=fd4f6c7a827a2', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=4806a103bea35', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="A Bluetooth chip on a coin"     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/CME5IVhdn0pngs7jAlFX.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/CME5IVhdn0pngs7jAlFX.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/CME5IVhdn0pngs7jAlFX.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/CME5IVhdn0pngs7jAlFX.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/CME5IVhdn0pngs7jAlFX.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/CME5IVhdn0pngs7jAlFX.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/CME5IVhdn0pngs7jAlFX.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/CME5IVhdn0pngs7jAlFX.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/CME5IVhdn0pngs7jAlFX.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/CME5IVhdn0pngs7jAlFX.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/CME5IVhdn0pngs7jAlFX.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/CME5IVhdn0pngs7jAlFX.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/CME5IVhdn0pngs7jAlFX.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/CME5IVhdn0pngs7jAlFX.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/CME5IVhdn0pngs7jAlFX.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/CME5IVhdn0pngs7jAlFX.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/CME5IVhdn0pngs7jAlFX.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/CME5IVhdn0pngs7jAlFX.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#communicating-with-bluetooth-devices-over-javascript" class="w-toc__header--link">
+        Communicating with Bluetooth devices over JavaScript
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#before-we-start">Before we start</a></li><li><a href="#available-for-origin-trials">Available for origin trials</a></li><li><a href="#security-requirements">Security requirements</a></li><li><a href="#https-only">HTTPS only</a></li><li><a href="#user-gesture-required">User gesture required</a></li><li><a href="#get-into-the-code">Get into the code</a></li><li><a href="#request">Request Bluetooth devices</a></li><li><a href="#connect">Connect to a Bluetooth device</a></li><li><a href="#read">Read a Bluetooth Characteristic</a></li><li><a href="#write">Write to a Bluetooth Characteristic</a></li><li><a href="#notifications">Receive GATT notifications</a></li><li><a href="#disconnect">Disconnect from a Bluetooth Device</a></li><li><a href="#descriptors">Read and write to Bluetooth descriptors</a></li><li><a href="#samples-demos-and-codelabs">Samples, demos and codelabs</a></li><li><a href="#beginner">Beginner</a></li><li><a href="#combining-multiple-operations">Combining multiple operations</a></li><li><a href="#libraries">Libraries</a></li><li><a href="#tools">Tools</a></li><li><a href="#tips">Tips</a></li><li><a href="#what's-next">What's next</a></li><li><a href="#show-support-for-the-api">Show support for the API</a></li><li><a href="#resources">Resources</a></li><li><a href="#acknowledgements">Acknowledgements</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="i18n.authors.beaufortfrancois.title"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="communicating-with-bluetooth-devices-over-javascript" class="w-article-header__headline">Communicating with Bluetooth devices over JavaScript</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          <p>The Web Bluetooth API allows websites to communicate with Bluetooth devices.</p>
+
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Jul 21, 2015</time>
+           <span class="w-author__separator">•</span> Updated <time>May 7, 2021</time> 
+        </div>
+      
+      <div class="w-layout-container--narrow w-post-signpost">
+  <span class="w-post-signpost__title">Appears in:</span>
+  <a
+          class="w-post-signpost__link"
+          href="/devices"
+          >Devices</a
+        >
+</div>
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/beaufortfrancois/"><img     alt="François Beaufort"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/mXjY3z3JmrispGtu9yn6.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/mXjY3z3JmrispGtu9yn6.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/mXjY3z3JmrispGtu9yn6.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/mXjY3z3JmrispGtu9yn6.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/mXjY3z3JmrispGtu9yn6.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/mXjY3z3JmrispGtu9yn6.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/beaufortfrancois/">François Beaufort</a>
+    </cite>
+    <ul class="w-author__link-list">
+      
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/beaufortfrancois">GitHub</a>
+      </li>
+      
+      
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>What if I told you websites could communicate with nearby Bluetooth devices
+in a secure and privacy-preserving way? This way, heart rate monitors, singing
+lightbulbs, and even <a href="https://www.youtube.com/watch?v=1LV1Fk5ZXwA" rel="noopener">turtles</a> could interact directly with a website.</p>
+<p>Until now, the ability to interact with Bluetooth devices has been possible
+only for platform-specific apps. The Web Bluetooth API aims to change this and
+brings it to web browsers as well.</p>
+<h2 id="before-we-start">Before we start <a class="w-headline-link" href="#before-we-start">#</a></h2>
+<p>This article assumes you have some basic knowledge of how Bluetooth Low
+Energy (BLE) and the <a href="https://www.bluetooth.com/specifications/gatt/" rel="noopener">Generic Attribute Profile</a> (GATT) work.</p>
+<p>Even though the <a href="https://webbluetoothcg.github.io/web-bluetooth/" rel="noopener">Web Bluetooth API specification</a> is not finalized yet, the spec
+authors are actively looking for enthusiastic developers to try out this API and
+give <a href="https://github.com/WebBluetoothCG/web-bluetooth/issues" rel="noopener">feedback on the spec</a> and <a href="https://bugs.chromium.org/p/chromium/issues/entry?components=Blink%3EBluetooth" rel="noopener">feedback on the implementation</a>.</p>
+<p>A subset of the Web Bluetooth API is available in Chrome OS, Chrome for Android
+6.0, Mac (Chrome 56) and Windows 10 (Chrome 70). This means you should be able
+to <a href="#request">request</a> and <a href="#connect">connect to</a> nearby Bluetooth Low Energy devices,
+<a href="#read">read</a>/<a href="#write">write</a> Bluetooth characteristics, <a href="#notifications">receive GATT Notifications</a>, know
+when a <a href="#disconnect">Bluetooth device gets disconnected</a>, and even <a href="#descriptors">read and write to
+Bluetooth descriptors</a>. See MDN's <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Bluetooth_API#Browser_compatibility" rel="noopener">Browser compatibility</a> table for more
+information.</p>
+<p>For Linux and earlier versions of Windows, enable the
+<code>#experimental-web-platform-features</code> flag in <code>about://flags</code>.</p>
+<h3 id="available-for-origin-trials">Available for origin trials <a class="w-headline-link" href="#available-for-origin-trials">#</a></h3>
+<p>In order to get as much feedback as possible from developers using the Web
+Bluetooth API in the field, Chrome has previously added this feature in Chrome
+53 as an <a href="https://github.com/GoogleChrome/OriginTrials/blob/gh-pages/developer-guide.md" rel="noopener">origin trial</a> for Chrome OS, Android, and Mac.</p>
+<p>The trial has successfully ended in January 2017.</p>
+<h2 id="security-requirements">Security requirements <a class="w-headline-link" href="#security-requirements">#</a></h2>
+<p>To understand the security tradeoffs, I recommend the <a href="https://medium.com/@jyasskin/the-web-bluetooth-security-model-666b4e7eed2" rel="noopener">Web Bluetooth Security
+Model</a> post from Jeffrey Yasskin, a software engineer on the Chrome team,
+working on the Web Bluetooth API specification.</p>
+<h3 id="https-only">HTTPS only <a class="w-headline-link" href="#https-only">#</a></h3>
+<p>Because this experimental API is a powerful new feature added to the web, it is
+made available only to <a href="https://w3c.github.io/webappsec-secure-contexts/#intro" rel="noopener">secure contexts</a>. This means you'll need to build with
+<a href="https://en.wikipedia.org/wiki/Transport_Layer_Security" rel="noopener">TLS</a> in mind.</p>
+<h3 id="user-gesture-required">User gesture required <a class="w-headline-link" href="#user-gesture-required">#</a></h3>
+<p>As a security feature, discovering Bluetooth devices with
+<code>navigator.bluetooth.requestDevice</code> must be triggered by <a href="https://html.spec.whatwg.org/multipage/interaction.html#activation" rel="noopener">a user gesture</a> such
+as a touch or a mouse click. We're talking about listening to
+<a href="https://developers.google.com/web/updates/2016/10/pointer-events" rel="noopener"><code>pointerup</code></a>, <code>click</code>, and <code>touchend</code> events.</p>
+<web-copy-code><pre class="language-js"><code class="language-js">button<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'pointerup'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">event</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token comment">// Call navigator.bluetooth.requestDevice</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><h2 id="get-into-the-code">Get into the code <a class="w-headline-link" href="#get-into-the-code">#</a></h2>
+<p>The Web Bluetooth API relies heavily on JavaScript <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise" rel="noopener">Promises</a>. If you're not
+familiar with them, check out this great <a href="/promises">Promises tutorial</a>. One more thing,
+<code>() =&gt; {}</code> are simply ECMAScript 2015 <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Functions/Arrow_functions" rel="noopener">Arrow functions</a>.</p>
+<h3 id="request">Request Bluetooth devices <a class="w-headline-link" href="#request">#</a></h3>
+<p>This version of the Web Bluetooth API specification allows websites, running in
+the Central role, to connect to remote GATT Servers over a BLE connection. It
+supports communication among devices that implement Bluetooth 4.0 or later.</p>
+<p>When a website requests access to nearby devices using
+<code>navigator.bluetooth.requestDevice</code>, the browser prompts user with a device
+chooser where they can pick one device or simply cancel the request.</p>
+<figure class="w-figure">
+  <video controls autoplay loop muted>
+    <source src="https://storage.googleapis.com/web-dev-assets/bluetooth/bluetooth-device-chooser.mp4">
+  </video>
+  <figcaption class="w-figcaption">
+    <a href="https://webbluetoothcg.github.io/demos/playbulb-candle/">Bluetooth device user prompt.</a>
+  </figcaption>
+</figure>
+<p>The <code>navigator.bluetooth.requestDevice()</code> function takes a mandatory object that
+defines filters. These filters are used to return only devices that match some
+advertised Bluetooth GATT services and/or the device name.</p>
+<h4 id="services-filter">Services filter <a class="w-headline-link" href="#services-filter">#</a></h4>
+<p>For instance, to request Bluetooth devices advertising the <a href="https://www.bluetooth.com/specifications/gatt/" rel="noopener">Bluetooth GATT
+Battery Service</a>:</p>
+<web-copy-code><pre class="language-js"><code class="language-js">navigator<span class="token punctuation">.</span>bluetooth<span class="token punctuation">.</span><span class="token function">requestDevice</span><span class="token punctuation">(</span><span class="token punctuation">{</span> filters<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">{</span> services<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">'battery_service'</span><span class="token punctuation">]</span> <span class="token punctuation">}</span><span class="token punctuation">]</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><br><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">device</span> <span class="token operator">=></span> <span class="token punctuation">{</span> <span class="token comment">/* … */</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><br><span class="token punctuation">.</span><span class="token function">catch</span><span class="token punctuation">(</span><span class="token parameter">error</span> <span class="token operator">=></span> <span class="token punctuation">{</span> console<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span>error<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>If your Bluetooth GATT Service is not on the list of <a href="https://www.bluetooth.com/specifications/assigned-numbers/" rel="noopener">the standardized Bluetooth
+GATT services</a> though, you may provide either the full Bluetooth UUID or a short
+16- or 32-bit form.</p>
+<web-copy-code><pre class="language-js"><code class="language-js">navigator<span class="token punctuation">.</span>bluetooth<span class="token punctuation">.</span><span class="token function">requestDevice</span><span class="token punctuation">(</span><span class="token punctuation">{</span><br>  filters<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">{</span><br>    services<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token number">0x1234</span><span class="token punctuation">,</span> <span class="token number">0x12345678</span><span class="token punctuation">,</span> <span class="token string">'99999999-0000-1000-8000-00805f9b34fb'</span><span class="token punctuation">]</span><br>  <span class="token punctuation">}</span><span class="token punctuation">]</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><br><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">device</span> <span class="token operator">=></span> <span class="token punctuation">{</span> <span class="token comment">/* … */</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><br><span class="token punctuation">.</span><span class="token function">catch</span><span class="token punctuation">(</span><span class="token parameter">error</span> <span class="token operator">=></span> <span class="token punctuation">{</span> console<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span>error<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><h4 id="name-filter">Name filter <a class="w-headline-link" href="#name-filter">#</a></h4>
+<p>You can also request Bluetooth devices based on the device name being advertised
+with the <code>name</code> filters key, or even a prefix of this name with the <code>namePrefix</code>
+filters key. Note that in this case, you will also need to define the
+<code>optionalServices</code> key to be able to access any services not included in a
+service filter. If you don't, you'll get an error later when trying to access
+them.</p>
+<web-copy-code><pre class="language-js"><code class="language-js">navigator<span class="token punctuation">.</span>bluetooth<span class="token punctuation">.</span><span class="token function">requestDevice</span><span class="token punctuation">(</span><span class="token punctuation">{</span><br>  filters<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">{</span><br>    name<span class="token operator">:</span> <span class="token string">'Francois robot'</span><br>  <span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">,</span><br>  optionalServices<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">'battery_service'</span><span class="token punctuation">]</span> <span class="token comment">// Required to access service later.</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><br><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">device</span> <span class="token operator">=></span> <span class="token punctuation">{</span> <span class="token comment">/* … */</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><br><span class="token punctuation">.</span><span class="token function">catch</span><span class="token punctuation">(</span><span class="token parameter">error</span> <span class="token operator">=></span> <span class="token punctuation">{</span> console<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span>error<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><h4 id="manufacturer-data-filter">Manufacturer data filter <a class="w-headline-link" href="#manufacturer-data-filter">#</a></h4>
+<p>It is also possible to request Bluetooth devices based on the manufacturer
+specific data being advertised with the <code>manufacturerData</code> filters key. This key
+is an array of objects with a mandatory <a href="https://www.bluetooth.com/specifications/assigned-numbers/company-identifiers/" rel="noopener">Bluetooth company identifier</a> key named
+<code>companyIdentifier</code>. You can also provide a data prefix that filters
+manufacturer data from Bluetooth devices that start with it. Note that you will
+also need to define the <code>optionalServices</code> key to be able to access any services
+not included in a service filter. If you don't, you'll get an error later when
+trying to access them.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token comment">// Filter Bluetooth devices from Google company with manufacturer data bytes</span><br><span class="token comment">// that start with [0x01, 0x02].</span><br>navigator<span class="token punctuation">.</span>bluetooth<span class="token punctuation">.</span><span class="token function">requestDevice</span><span class="token punctuation">(</span><span class="token punctuation">{</span><br>  filters<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">{</span><br>    manufacturerData<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">{</span><br>      companyIdentifier<span class="token operator">:</span> <span class="token number">0x00e0</span><span class="token punctuation">,</span><br>      dataPrefix<span class="token operator">:</span> <span class="token keyword">new</span> <span class="token class-name">Uint8Array</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">0x01</span><span class="token punctuation">,</span> <span class="token number">0x02</span><span class="token punctuation">]</span><span class="token punctuation">)</span><br>    <span class="token punctuation">}</span><span class="token punctuation">]</span><br>  <span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">,</span><br>  optionalServices<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">'battery_service'</span><span class="token punctuation">]</span> <span class="token comment">// Required to access service later.</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><br><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">device</span> <span class="token operator">=></span> <span class="token punctuation">{</span> <span class="token comment">/* … */</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><br><span class="token punctuation">.</span><span class="token function">catch</span><span class="token punctuation">(</span><span class="token parameter">error</span> <span class="token operator">=></span> <span class="token punctuation">{</span> console<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span>error<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>A mask can also be used with a data prefix to match some patterns in
+manufacturer data. Check out the <a href="https://github.com/WebBluetoothCG/web-bluetooth/blob/main/data-filters-explainer.md" rel="noopener">Bluetooth data filters explainer</a> to learn
+more.</p>
+<div class="w-aside w-aside--note">
+<p>At the time of writing, the <code>manufacturerData</code> filter key is available in
+Chrome 92. If backwards compatibility with older browsers is desired, you
+have to provide a fallback option as the manufacturer data filter is considered
+empty. See an <a href="https://groups.google.com/a/chromium.org/g/blink-dev/c/5Id2LANtFko/m/5SIig7ktAgAJ" rel="noopener">example</a>.</p>
+</div>
+<h4 id="no-filters">No filters <a class="w-headline-link" href="#no-filters">#</a></h4>
+<p>Finally, instead of <code>filters</code> you can use the <code>acceptAllDevices</code> key to show all
+nearby Bluetooth devices. You will also need to define the <code>optionalServices</code>
+key to be able to access some services. If you don't, you'll get an error later
+when trying to access them.</p>
+<web-copy-code><pre class="language-js"><code class="language-js">navigator<span class="token punctuation">.</span>bluetooth<span class="token punctuation">.</span><span class="token function">requestDevice</span><span class="token punctuation">(</span><span class="token punctuation">{</span><br>  acceptAllDevices<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>  optionalServices<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">'battery_service'</span><span class="token punctuation">]</span> <span class="token comment">// Required to access service later.</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><br><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">device</span> <span class="token operator">=></span> <span class="token punctuation">{</span> <span class="token comment">/* … */</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><br><span class="token punctuation">.</span><span class="token function">catch</span><span class="token punctuation">(</span><span class="token parameter">error</span> <span class="token operator">=></span> <span class="token punctuation">{</span> console<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span>error<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><div class="w-aside w-aside--caution">
+<p><strong>Caution</strong>:
+This may result in a bunch of unrelated devices being shown in the chooser and
+energy being wasted as there are no filters. Use it with caution.</p>
+</div>
+<h3 id="connect">Connect to a Bluetooth device <a class="w-headline-link" href="#connect">#</a></h3>
+<p>So what do you do now that you have a <code>BluetoothDevice</code>? Let's connect to the
+Bluetooth remote GATT Server which holds the service and characteristic
+definitions.</p>
+<web-copy-code><pre class="language-js"><code class="language-js">navigator<span class="token punctuation">.</span>bluetooth<span class="token punctuation">.</span><span class="token function">requestDevice</span><span class="token punctuation">(</span><span class="token punctuation">{</span> filters<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">{</span> services<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">'battery_service'</span><span class="token punctuation">]</span> <span class="token punctuation">}</span><span class="token punctuation">]</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><br><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">device</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token comment">// Human-readable name of the device.</span><br>  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>device<span class="token punctuation">.</span>name<span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>  <span class="token comment">// Attempts to connect to remote GATT Server.</span><br>  <span class="token keyword">return</span> device<span class="token punctuation">.</span>gatt<span class="token punctuation">.</span><span class="token function">connect</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><br><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">server</span> <span class="token operator">=></span> <span class="token punctuation">{</span> <span class="token comment">/* … */</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><br><span class="token punctuation">.</span><span class="token function">catch</span><span class="token punctuation">(</span><span class="token parameter">error</span> <span class="token operator">=></span> <span class="token punctuation">{</span> console<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span>error<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><h3 id="read">Read a Bluetooth Characteristic <a class="w-headline-link" href="#read">#</a></h3>
+<p>Here we are connected to the GATT Server of the remote Bluetooth device. Now we
+want to get a Primary GATT Service and read a characteristic that belongs to
+this service. Let's try, for instance, to read the current charge level of the
+device's battery.</p>
+<p>In the example below, <code>battery_level</code> is the <a href="https://www.bluetooth.com/specifications/gatt/" rel="noopener">standardized Battery Level
+Characteristic</a>.</p>
+<web-copy-code><pre class="language-js"><code class="language-js">navigator<span class="token punctuation">.</span>bluetooth<span class="token punctuation">.</span><span class="token function">requestDevice</span><span class="token punctuation">(</span><span class="token punctuation">{</span> filters<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">{</span> services<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">'battery_service'</span><span class="token punctuation">]</span> <span class="token punctuation">}</span><span class="token punctuation">]</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><br><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">device</span> <span class="token operator">=></span> device<span class="token punctuation">.</span>gatt<span class="token punctuation">.</span><span class="token function">connect</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><br><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">server</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token comment">// Getting Battery Service…</span><br>  <span class="token keyword">return</span> server<span class="token punctuation">.</span><span class="token function">getPrimaryService</span><span class="token punctuation">(</span><span class="token string">'battery_service'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><br><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">service</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token comment">// Getting Battery Level Characteristic…</span><br>  <span class="token keyword">return</span> service<span class="token punctuation">.</span><span class="token function">getCharacteristic</span><span class="token punctuation">(</span><span class="token string">'battery_level'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><br><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">characteristic</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token comment">// Reading Battery Level…</span><br>  <span class="token keyword">return</span> characteristic<span class="token punctuation">.</span><span class="token function">readValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><br><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">value</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">Battery percentage is </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>value<span class="token punctuation">.</span><span class="token function">getUint8</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><br><span class="token punctuation">.</span><span class="token function">catch</span><span class="token punctuation">(</span><span class="token parameter">error</span> <span class="token operator">=></span> <span class="token punctuation">{</span> console<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span>error<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>If you use a custom Bluetooth GATT characteristic, you may provide either the
+full Bluetooth UUID or a short 16- or 32-bit form to
+<code>service.getCharacteristic</code>.</p>
+<p>Note that you can also add a <code>characteristicvaluechanged</code> event listener on a
+characteristic to handle reading its value. Check out the <a href="https://googlechrome.github.io/samples/web-bluetooth/read-characteristic-value-changed.html" rel="noopener">Read Characteristic
+Value Changed Sample</a> to see how to optionally handle upcoming GATT
+notifications as well.</p>
+<web-copy-code><pre class="language-js"><code class="language-js">…<br><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">characteristic</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token comment">// Set up event listener for when characteristic value changes.</span><br>  characteristic<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'characteristicvaluechanged'</span><span class="token punctuation">,</span><br>                                  handleBatteryLevelChanged<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token comment">// Reading Battery Level…</span><br>  <span class="token keyword">return</span> characteristic<span class="token punctuation">.</span><span class="token function">readValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><br><span class="token punctuation">.</span><span class="token function">catch</span><span class="token punctuation">(</span><span class="token parameter">error</span> <span class="token operator">=></span> <span class="token punctuation">{</span> console<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span>error<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token keyword">function</span> <span class="token function">handleBatteryLevelChanged</span><span class="token punctuation">(</span><span class="token parameter">event</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token keyword">const</span> batteryLevel <span class="token operator">=</span> event<span class="token punctuation">.</span>target<span class="token punctuation">.</span>value<span class="token punctuation">.</span><span class="token function">getUint8</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'Battery percentage is '</span> <span class="token operator">+</span> batteryLevel<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><h3 id="write">Write to a Bluetooth Characteristic <a class="w-headline-link" href="#write">#</a></h3>
+<p>Writing to a Bluetooth GATT Characteristic is as easy as reading it. This time,
+let's use the Heart Rate Control Point to reset the value of the Energy Expended
+field to 0 on a heart rate monitor device.</p>
+<p>I promise there is no magic here. It's all explained in the <a href="https://www.bluetooth.com/specifications/gatt/" rel="noopener">Heart Rate Control
+Point Characteristic page</a>.</p>
+<web-copy-code><pre class="language-js"><code class="language-js">navigator<span class="token punctuation">.</span>bluetooth<span class="token punctuation">.</span><span class="token function">requestDevice</span><span class="token punctuation">(</span><span class="token punctuation">{</span> filters<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">{</span> services<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">'heart_rate'</span><span class="token punctuation">]</span> <span class="token punctuation">}</span><span class="token punctuation">]</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><br><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">device</span> <span class="token operator">=></span> device<span class="token punctuation">.</span>gatt<span class="token punctuation">.</span><span class="token function">connect</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><br><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">server</span> <span class="token operator">=></span> server<span class="token punctuation">.</span><span class="token function">getPrimaryService</span><span class="token punctuation">(</span><span class="token string">'heart_rate'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><br><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">service</span> <span class="token operator">=></span> service<span class="token punctuation">.</span><span class="token function">getCharacteristic</span><span class="token punctuation">(</span><span class="token string">'heart_rate_control_point'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><br><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">characteristic</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token comment">// Writing 1 is the signal to reset energy expended.</span><br>  <span class="token keyword">const</span> resetEnergyExpended <span class="token operator">=</span> Uint8Array<span class="token punctuation">.</span><span class="token function">of</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token keyword">return</span> characteristic<span class="token punctuation">.</span><span class="token function">writeValue</span><span class="token punctuation">(</span>resetEnergyExpended<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><br><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">_</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'Energy expended has been reset.'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><br><span class="token punctuation">.</span><span class="token function">catch</span><span class="token punctuation">(</span><span class="token parameter">error</span> <span class="token operator">=></span> <span class="token punctuation">{</span> console<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span>error<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><h3 id="notifications">Receive GATT notifications <a class="w-headline-link" href="#notifications">#</a></h3>
+<p>Now, let's see how to be notified when the <a href="https://www.bluetooth.com/specifications/gatt/" rel="noopener">Heart Rate Measurement</a>
+characteristic changes on the device:</p>
+<web-copy-code><pre class="language-js"><code class="language-js">navigator<span class="token punctuation">.</span>bluetooth<span class="token punctuation">.</span><span class="token function">requestDevice</span><span class="token punctuation">(</span><span class="token punctuation">{</span> filters<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">{</span> services<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">'heart_rate'</span><span class="token punctuation">]</span> <span class="token punctuation">}</span><span class="token punctuation">]</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><br><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">device</span> <span class="token operator">=></span> device<span class="token punctuation">.</span>gatt<span class="token punctuation">.</span><span class="token function">connect</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><br><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">server</span> <span class="token operator">=></span> server<span class="token punctuation">.</span><span class="token function">getPrimaryService</span><span class="token punctuation">(</span><span class="token string">'heart_rate'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><br><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">service</span> <span class="token operator">=></span> service<span class="token punctuation">.</span><span class="token function">getCharacteristic</span><span class="token punctuation">(</span><span class="token string">'heart_rate_measurement'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><br><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">characteristic</span> <span class="token operator">=></span> characteristic<span class="token punctuation">.</span><span class="token function">startNotifications</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><br><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">characteristic</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  characteristic<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'characteristicvaluechanged'</span><span class="token punctuation">,</span><br>                                  handleCharacteristicValueChanged<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'Notifications have been started.'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><br><span class="token punctuation">.</span><span class="token function">catch</span><span class="token punctuation">(</span><span class="token parameter">error</span> <span class="token operator">=></span> <span class="token punctuation">{</span> console<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span>error<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token keyword">function</span> <span class="token function">handleCharacteristicValueChanged</span><span class="token punctuation">(</span><span class="token parameter">event</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token keyword">const</span> value <span class="token operator">=</span> event<span class="token punctuation">.</span>target<span class="token punctuation">.</span>value<span class="token punctuation">;</span><br>  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'Received '</span> <span class="token operator">+</span> value<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token comment">// TODO: Parse Heart Rate Measurement value.</span><br>  <span class="token comment">// See https://github.com/WebBluetoothCG/demos/blob/gh-pages/heart-rate-sensor/heartRateSensor.js</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>The <a href="https://googlechrome.github.io/samples/web-bluetooth/notifications.html" rel="noopener">Notifications Sample</a> shows you to how to stop notifications with
+<code>stopNotifications()</code> and properly remove the added <code>characteristicvaluechanged</code>
+event listener.</p>
+<h3 id="disconnect">Disconnect from a Bluetooth Device <a class="w-headline-link" href="#disconnect">#</a></h3>
+<p>To provide a better user experience, you may want to listen for disconnection events
+and invite the user to reconnect:</p>
+<web-copy-code><pre class="language-js"><code class="language-js">navigator<span class="token punctuation">.</span>bluetooth<span class="token punctuation">.</span><span class="token function">requestDevice</span><span class="token punctuation">(</span><span class="token punctuation">{</span> filters<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">{</span> name<span class="token operator">:</span> <span class="token string">'Francois robot'</span> <span class="token punctuation">}</span><span class="token punctuation">]</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><br><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">device</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token comment">// Set up event listener for when device gets disconnected.</span><br>  device<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'gattserverdisconnected'</span><span class="token punctuation">,</span> onDisconnected<span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>  <span class="token comment">// Attempts to connect to remote GATT Server.</span><br>  <span class="token keyword">return</span> device<span class="token punctuation">.</span>gatt<span class="token punctuation">.</span><span class="token function">connect</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><br><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">server</span> <span class="token operator">=></span> <span class="token punctuation">{</span> <span class="token comment">/* … */</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><br><span class="token punctuation">.</span><span class="token function">catch</span><span class="token punctuation">(</span><span class="token parameter">error</span> <span class="token operator">=></span> <span class="token punctuation">{</span> console<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span>error<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token keyword">function</span> <span class="token function">onDisconnected</span><span class="token punctuation">(</span><span class="token parameter">event</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token keyword">const</span> device <span class="token operator">=</span> event<span class="token punctuation">.</span>target<span class="token punctuation">;</span><br>  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">Device </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>device<span class="token punctuation">.</span>name<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> is disconnected.</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>You can also call <code>device.gatt.disconnect()</code> to disconnect your web app from the
+Bluetooth device. This will trigger existing <code>gattserverdisconnected</code> event
+listeners. Note that it will NOT stop bluetooth device communication if another
+app is already communicating with the Bluetooth device. Check out the <a href="https://googlechrome.github.io/samples/web-bluetooth/device-disconnect.html" rel="noopener">Device
+Disconnect Sample</a> and the <a href="https://googlechrome.github.io/samples/web-bluetooth/automatic-reconnect.html" rel="noopener">Automatic Reconnect Sample</a> to dive deeper.</p>
+<div class="w-aside w-aside--caution">
+<p><strong>Caution</strong>:
+Bluetooth GATT attributes, services, characteristics, etc. are invalidated when
+a device disconnects. This means your code should always retrieve (through
+<code>getPrimaryService(s)</code>, <code>getCharacteristic(s)</code>, etc.) these attributes after
+reconnecting.</p>
+</div>
+<h3 id="descriptors">Read and write to Bluetooth descriptors <a class="w-headline-link" href="#descriptors">#</a></h3>
+<p>Bluetooth GATT descriptors are attributes that describe a characteristic value.
+You can read and write them to in a similar way to Bluetooth GATT
+characteristics.</p>
+<p>Let's see for instance how to read the user description of the measurement
+interval of the device's health thermometer.</p>
+<p>In the example below, <code>health_thermometer</code> is the <a href="https://www.bluetooth.com/specifications/gatt/" rel="noopener">Health Thermometer service</a>,
+<code>measurement_interval</code> the <a href="https://www.bluetooth.com/specifications/gatt/" rel="noopener">Measurement Interval characteristic</a>, and
+<code>gatt.characteristic_user_description</code> the <a href="https://www.bluetooth.com/specifications/assigned-numbers/" rel="noopener">Characteristic User Description
+descriptor</a>.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="highlight-line">navigator<span class="token punctuation">.</span>bluetooth<span class="token punctuation">.</span><span class="token function">requestDevice</span><span class="token punctuation">(</span><span class="token punctuation">{</span> filters<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">{</span> services<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">'health_thermometer'</span><span class="token punctuation">]</span> <span class="token punctuation">}</span><span class="token punctuation">]</span> <span class="token punctuation">}</span><span class="token punctuation">)</span></span><br><span class="highlight-line"><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">device</span> <span class="token operator">=></span> device<span class="token punctuation">.</span>gatt<span class="token punctuation">.</span><span class="token function">connect</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span></span><br><span class="highlight-line"><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">server</span> <span class="token operator">=></span> server<span class="token punctuation">.</span><span class="token function">getPrimaryService</span><span class="token punctuation">(</span><span class="token string">'health_thermometer'</span><span class="token punctuation">)</span><span class="token punctuation">)</span></span><br><span class="highlight-line"><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">service</span> <span class="token operator">=></span> service<span class="token punctuation">.</span><span class="token function">getCharacteristic</span><span class="token punctuation">(</span><span class="token string">'measurement_interval'</span><span class="token punctuation">)</span><span class="token punctuation">)</span></span><br><mark class="highlight-line highlight-line-active"><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">characteristic</span> <span class="token operator">=></span> characteristic<span class="token punctuation">.</span><span class="token function">getDescriptor</span><span class="token punctuation">(</span><span class="token string">'gatt.characteristic_user_description'</span><span class="token punctuation">)</span><span class="token punctuation">)</span></mark><br><mark class="highlight-line highlight-line-active"><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">descriptor</span> <span class="token operator">=></span> descriptor<span class="token punctuation">.</span><span class="token function">readValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span></mark><br><mark class="highlight-line highlight-line-active"><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">value</span> <span class="token operator">=></span> <span class="token punctuation">{</span></mark><br><mark class="highlight-line highlight-line-active">  <span class="token keyword">const</span> decoder <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">TextDecoder</span><span class="token punctuation">(</span><span class="token string">'utf-8'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></mark><br><mark class="highlight-line highlight-line-active">  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">User Description: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>decoder<span class="token punctuation">.</span><span class="token function">decode</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span></mark><br><mark class="highlight-line highlight-line-active"><span class="token punctuation">}</span><span class="token punctuation">)</span></mark><br><span class="highlight-line"><span class="token punctuation">.</span><span class="token function">catch</span><span class="token punctuation">(</span><span class="token parameter">error</span> <span class="token operator">=></span> <span class="token punctuation">{</span> console<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span>error<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span></code></pre>
+</web-copy-code><p>Now that we've read the user description of the measurement interval of the
+device's health thermometer, let's see how to update it and write a custom
+value.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="highlight-line">navigator<span class="token punctuation">.</span>bluetooth<span class="token punctuation">.</span><span class="token function">requestDevice</span><span class="token punctuation">(</span><span class="token punctuation">{</span> filters<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">{</span> services<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">'health_thermometer'</span><span class="token punctuation">]</span> <span class="token punctuation">}</span><span class="token punctuation">]</span> <span class="token punctuation">}</span><span class="token punctuation">)</span></span><br><span class="highlight-line"><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">device</span> <span class="token operator">=></span> device<span class="token punctuation">.</span>gatt<span class="token punctuation">.</span><span class="token function">connect</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span></span><br><span class="highlight-line"><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">server</span> <span class="token operator">=></span> server<span class="token punctuation">.</span><span class="token function">getPrimaryService</span><span class="token punctuation">(</span><span class="token string">'health_thermometer'</span><span class="token punctuation">)</span><span class="token punctuation">)</span></span><br><span class="highlight-line"><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">service</span> <span class="token operator">=></span> service<span class="token punctuation">.</span><span class="token function">getCharacteristic</span><span class="token punctuation">(</span><span class="token string">'measurement_interval'</span><span class="token punctuation">)</span><span class="token punctuation">)</span></span><br><span class="highlight-line"><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">characteristic</span> <span class="token operator">=></span> characteristic<span class="token punctuation">.</span><span class="token function">getDescriptor</span><span class="token punctuation">(</span><span class="token string">'gatt.characteristic_user_description'</span><span class="token punctuation">)</span><span class="token punctuation">)</span></span><br><mark class="highlight-line highlight-line-active"><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">descriptor</span> <span class="token operator">=></span> <span class="token punctuation">{</span></mark><br><mark class="highlight-line highlight-line-active">  <span class="token keyword">const</span> encoder <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">TextEncoder</span><span class="token punctuation">(</span><span class="token string">'utf-8'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></mark><br><mark class="highlight-line highlight-line-active">  <span class="token keyword">const</span> userDescription <span class="token operator">=</span> encoder<span class="token punctuation">.</span><span class="token function">encode</span><span class="token punctuation">(</span><span class="token string">'Defines the time between measurements.'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></mark><br><mark class="highlight-line highlight-line-active">  <span class="token keyword">return</span> descriptor<span class="token punctuation">.</span><span class="token function">writeValue</span><span class="token punctuation">(</span>userDescription<span class="token punctuation">)</span><span class="token punctuation">;</span></mark><br><mark class="highlight-line highlight-line-active"><span class="token punctuation">}</span><span class="token punctuation">)</span></mark><br><span class="highlight-line"><span class="token punctuation">.</span><span class="token function">catch</span><span class="token punctuation">(</span><span class="token parameter">error</span> <span class="token operator">=></span> <span class="token punctuation">{</span> console<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span>error<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span></code></pre>
+</web-copy-code><h2 id="samples-demos-and-codelabs">Samples, demos and codelabs <a class="w-headline-link" href="#samples-demos-and-codelabs">#</a></h2>
+<p>All <a href="https://googlechrome.github.io/samples/web-bluetooth/index.html" rel="noopener">Web Bluetooth samples</a> below have been successfully tested. To enjoy these
+samples to their fullest, I recommend you install the <a href="https://play.google.com/store/apps/details?id=io.github.webbluetoothcg.bletestperipheral" rel="noopener">BLE Peripheral Simulator
+Android App</a> which simulates a BLE peripheral with a Battery Service, a Heart Rate
+Service, or a Health Thermometer Service.</p>
+<h3 id="beginner">Beginner <a class="w-headline-link" href="#beginner">#</a></h3>
+<ul>
+<li><a href="https://googlechrome.github.io/samples/web-bluetooth/device-info.html" rel="noopener">Device Info</a> - retrieve basic device information from a BLE Device.</li>
+<li><a href="https://googlechrome.github.io/samples/web-bluetooth/battery-level.html" rel="noopener">Battery Level</a> - retrieve battery information from a BLE Device advertising Battery information.</li>
+<li><a href="https://googlechrome.github.io/samples/web-bluetooth/reset-energy.html" rel="noopener">Reset Energy</a> - reset energy expended from a BLE Device advertising Heart Rate.</li>
+<li><a href="https://googlechrome.github.io/samples/web-bluetooth/characteristic-properties.html" rel="noopener">Characteristic Properties</a> - display all properties of a specific characteristic from a BLE Device.</li>
+<li><a href="https://googlechrome.github.io/samples/web-bluetooth/notifications.html" rel="noopener">Notifications</a> - start and stop characteristic notifications from a BLE Device.</li>
+<li><a href="https://googlechrome.github.io/samples/web-bluetooth/device-disconnect.html" rel="noopener">Device Disconnect</a> - disconnect and get notified from a disconnection of a BLE Device after connecting to it.</li>
+<li><a href="https://googlechrome.github.io/samples/web-bluetooth/get-characteristics.html" rel="noopener">Get Characteristics</a> - get all characteristics of an advertised service from a BLE Device.</li>
+<li><a href="https://googlechrome.github.io/samples/web-bluetooth/get-descriptors.html" rel="noopener">Get Descriptors</a> - get all characteristics' descriptors of an advertised service from a BLE Device.</li>
+<li><a href="https://googlechrome.github.io/samples/web-bluetooth/manufacturer-data-filter.html" rel="noopener">Manufacturer Data Filter</a> - retrieve basic device information from a BLE Device that matches manufacturer data.</li>
+</ul>
+<h3 id="combining-multiple-operations">Combining multiple operations <a class="w-headline-link" href="#combining-multiple-operations">#</a></h3>
+<ul>
+<li><a href="https://googlechrome.github.io/samples/web-bluetooth/gap-characteristics.html" rel="noopener">GAP Characteristics</a> - get all GAP characteristics of a BLE Device.</li>
+<li><a href="https://googlechrome.github.io/samples/web-bluetooth/device-information-characteristics.html" rel="noopener">Device Information Characteristics</a> - get all Device Information characteristics of a BLE Device.</li>
+<li><a href="https://googlechrome.github.io/samples/web-bluetooth/link-loss.html" rel="noopener">Link Loss</a> - set the Alert Level characteristic of a BLE Device (readValue &amp; writeValue).</li>
+<li><a href="https://googlechrome.github.io/samples/web-bluetooth/discover-services-and-characteristics.html" rel="noopener">Discover Services &amp; Characteristics</a> - discover all accessible primary services and their characteristics from a BLE Device.</li>
+<li><a href="https://googlechrome.github.io/samples/web-bluetooth/automatic-reconnect.html" rel="noopener">Automatic Reconnect</a> - reconnect to a disconnected BLE device using an exponential backoff algorithm.</li>
+<li><a href="https://googlechrome.github.io/samples/web-bluetooth/read-characteristic-value-changed.html" rel="noopener">Read Characteristic Value Changed</a> - read battery level and be notified of changes from a BLE Device.</li>
+<li><a href="https://googlechrome.github.io/samples/web-bluetooth/read-descriptors.html" rel="noopener">Read Descriptors</a> - read all characteristic's descriptors of a service from a BLE Device.</li>
+<li><a href="https://googlechrome.github.io/samples/web-bluetooth/write-descriptor.html" rel="noopener">Write Descriptor</a> - write to the descriptor &quot;Characteristic User Description&quot; on a BLE Device.</li>
+</ul>
+<p>Check out our <a href="https://github.com/WebBluetoothCG/demos" rel="noopener">curated Web Bluetooth Demos</a> and <a href="https://github.com/search?q=org%3Agooglecodelabs+bluetooth" rel="noopener">official Web Bluetooth Codelabs</a> as well.</p>
+<h2 id="libraries">Libraries <a class="w-headline-link" href="#libraries">#</a></h2>
+<ul>
+<li><a href="https://www.npmjs.com/package/web-bluetooth-utils" rel="noopener">web-bluetooth-utils</a> is a npm module that adds some convenience functions to
+the API.</li>
+<li>A Web Bluetooth API shim is available in <a href="https://github.com/sandeepmistry/noble" rel="noopener">noble</a>, the most popular Node.js BLE
+central module. This allows you to webpack/browserify noble without the need
+for a WebSocket server or other plugins.</li>
+<li><a href="https://github.com/manekinekko/angular-web-bluetooth" rel="noopener">angular-web-bluetooth</a> is a module for <a href="https://angularjs.org" rel="noopener">Angular</a> that abstracts away all the
+boilerplate needed to configure the Web Bluetooth API.</li>
+</ul>
+<h2 id="tools">Tools <a class="w-headline-link" href="#tools">#</a></h2>
+<ul>
+<li><a href="https://beaufortfrancois.github.io/sandbox/web-bluetooth/generator" rel="noopener">Get Started with Web Bluetooth</a> is a simple Web App that will generate all
+the JavaScript boilerplate code to start interacting with a Bluetooth device.
+Enter a device name, a service, a characteristic, define its properties and
+you're good to go.</li>
+<li>If you're already a Bluetooth developer, the <a href="https://github.com/beaufortfrancois/sandbox/tree/gh-pages/web-bluetooth/bluetooth-developer-studio-plugin" rel="noopener">Web Bluetooth Developer Studio
+Plugin</a> will also generate the Web Bluetooth JavaScript code for your
+Bluetooth device.</li>
+</ul>
+<h2 id="tips">Tips <a class="w-headline-link" href="#tips">#</a></h2>
+<p>A <strong>Bluetooth Internals</strong> page is available in Chrome at
+<code>about://bluetooth-internals</code> so that you can inspect everything about nearby
+Bluetooth devices: status, services, characteristics, and descriptors.</p>
+<figure class="w-figure">
+  <img     alt="Screenshot of the internal page to debug Bluetooth in Chrome"     class="w-screenshot"     decoding="async"     height="572"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/nPX2OfcQKwKtU9xBNhMe.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/nPX2OfcQKwKtU9xBNhMe.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/nPX2OfcQKwKtU9xBNhMe.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/nPX2OfcQKwKtU9xBNhMe.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/nPX2OfcQKwKtU9xBNhMe.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/nPX2OfcQKwKtU9xBNhMe.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/nPX2OfcQKwKtU9xBNhMe.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/nPX2OfcQKwKtU9xBNhMe.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/nPX2OfcQKwKtU9xBNhMe.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/nPX2OfcQKwKtU9xBNhMe.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/nPX2OfcQKwKtU9xBNhMe.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/nPX2OfcQKwKtU9xBNhMe.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/nPX2OfcQKwKtU9xBNhMe.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/nPX2OfcQKwKtU9xBNhMe.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/nPX2OfcQKwKtU9xBNhMe.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/nPX2OfcQKwKtU9xBNhMe.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/nPX2OfcQKwKtU9xBNhMe.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/nPX2OfcQKwKtU9xBNhMe.jpg?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">Internal page in Chrome for debugging Bluetooth devices.</figcaption>
+</figure>
+<p>I also recommend checking out the official <a href="https://sites.google.com/a/chromium.org/dev/developers/how-tos/file-web-bluetooth-bugs" rel="noopener">How to file Web Bluetooth bugs</a>
+page as debugging Bluetooth can be hard sometimes.</p>
+<h2 id="what's-next">What's next <a class="w-headline-link" href="#what's-next">#</a></h2>
+<p>Check the <a href="https://github.com/WebBluetoothCG/web-bluetooth/blob/master/implementation-status.md" rel="noopener">browser and platform implementation status</a> first to know which parts
+of the Web Bluetooth API are currently being implemented.</p>
+<p>Though it's still incomplete, here's a sneak peek of what to expect in the near
+future:</p>
+<ul>
+<li><a href="https://github.com/WebBluetoothCG/web-bluetooth/pull/239" rel="noopener">Scanning for nearby BLE advertisements</a>
+will happen with <code>navigator.bluetooth.requestLEScan()</code>.</li>
+<li>A new <code>serviceadded</code> event will track newly discovered Bluetooth GATT Services
+while <code>serviceremoved</code> event will track removed ones. A new <code>servicechanged</code>
+event will fire when any characteristic and/or descriptor gets added or
+removed from a Bluetooth GATT Service.</li>
+</ul>
+<h3 id="show-support-for-the-api">Show support for the API <a class="w-headline-link" href="#show-support-for-the-api">#</a></h3>
+<p>Are you planning to use the Web Bluetooth API? Your public support helps the Chrome team
+prioritize features and shows other browser vendors how critical it is to support them.</p>
+<p>Send a tweet to <a href="https://twitter.com/ChromiumDev" rel="noopener">@ChromiumDev</a> using the hashtag
+<a href="https://twitter.com/search?q=%23WebBluetooth&amp;src=typed_query&amp;f=live" rel="noopener"><code>#WebBluetooth</code></a>
+and let us know where and how you are using it.</p>
+<h2 id="resources">Resources <a class="w-headline-link" href="#resources">#</a></h2>
+<ul>
+<li>Stack Overflow: <a href="https://stackoverflow.com/questions/tagged/web-bluetooth" rel="noopener">https://stackoverflow.com/questions/tagged/web-bluetooth</a></li>
+<li>Chrome Feature Status: <a href="https://www.chromestatus.com/feature/5264933985976320" rel="noopener">https://www.chromestatus.com/feature/5264933985976320</a></li>
+<li>Chrome Implementation Bugs: <a href="https://crbug.com/?q=component:Blink%3EBluetooth" rel="noopener">https://crbug.com/?q=component:Blink&gt;Bluetooth</a></li>
+<li>Web Bluetooth Spec: <a href="https://webbluetoothcg.github.io/web-bluetooth" rel="noopener">https://webbluetoothcg.github.io/web-bluetooth</a></li>
+<li>Spec Issues: <a href="https://github.com/WebBluetoothCG/web-bluetooth/issues" rel="noopener">https://github.com/WebBluetoothCG/web-bluetooth/issues</a></li>
+<li>BLE Peripheral Simulator App: <a href="https://github.com/WebBluetoothCG/ble-test-peripheral-android" rel="noopener">https://github.com/WebBluetoothCG/ble-test-peripheral-android</a></li>
+</ul>
+<div class="youtube">  <lite-youtube    videoid="_BUwOBdLjzQ"      >  </lite-youtube></div>
+<h2 id="acknowledgements">Acknowledgements <a class="w-headline-link" href="#acknowledgements">#</a></h2>
+<p>Thanks to <a href="https://github.com/kaycebasques" rel="noopener">Kayce Basques</a> for reviewing this article.
+Hero image by <a href="https://commons.wikimedia.org/wiki/File:Bluetooth_4.0_Module_-_BR-LE_4.0-S2A_(16804031059).jpg" rel="noopener">SparkFun Electronics from Boulder, USA</a>.</p>
+
+
+    
+      <div class="w-aside w-aside--note">Have a question about using this feature? You can get help by <a href="https://stackoverflow.com/questions/ask?tags=web-bluetooth">asking a question on Stack Overflow</a>, or <a href="https://stackoverflow.com/search?q=%5Bweb-bluetooth%5D+is%3Aquestion">browsing a list of questions</a> asked by other developers.</div>
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/capabilities/">Capabilities</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/devices/">Devices</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>May 7, 2021</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/bluetooth/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions="api"></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

@@ -1,0 +1,840 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=6d10bd85d7f4b">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Using the HTML5 Drag and Drop API</title>
+<meta name="description" content="The HTML5 Drag and Drop (DnD) API means that we can make almost any element on our page draggable. In this post we’ll explain the basics of Drag and Drop. " />
+
+<link rel="canonical" href="https://web.dev/drag-and-drop/" />
+
+<meta itemprop="name" content="Using the HTML5 Drag and Drop API" />
+<meta itemprop="description" content="The HTML5 Drag and Drop (DnD) API means that we can make almost any element on our page draggable. In this post we’ll explain the basics of Drag and Drop. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vU99HKzIf5EUPnzGVPf1.png?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/drag-and-drop/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Using the HTML5 Drag and Drop API" />
+<meta property="og:description" content="The HTML5 Drag and Drop (DnD) API means that we can make almost any element on our page draggable. In this post we’ll explain the basics of Drag and Drop. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vU99HKzIf5EUPnzGVPf1.png?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="" />
+<meta property="tag" content="html" />
+<meta property="tag" content="javascript" />
+<meta property="tag" content="file-system" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Using the HTML5 Drag and Drop API" />
+<meta name="twitter:description" content="The HTML5 Drag and Drop (DnD) API means that we can make almost any element on our page draggable. In this post we’ll explain the basics of Drag and Drop. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vU99HKzIf5EUPnzGVPf1.png?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=fbe8f8ad61315', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=19f1a91e134ee', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#using-the-html5-drag-and-drop-api" class="w-toc__header--link">
+        Using the HTML5 Drag and Drop API
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#creating-draggable-content">Creating draggable content</a></li><li><a href="#listening-for-dragging-events">Listening for dragging events</a></li><li><a href="#starting-and-ending-a-drag-and-drop-sequence">Starting and ending a drag and drop sequence</a></li><li><a href="#add-additional-visual-cues-with-dragenter-dragover-and-dragleave">Add additional visual cues with dragenter, dragover, and dragleave</a></li><li><a href="#completing-the-drop">Completing the drop</a></li><li><a href="#more-dragging-properties">More dragging properties</a></li><li><a href="#file-upload-with-drag-and-drop">File upload with drag and drop</a></li><li><a href="#more-resources">More resources</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@ebidel | @rachelandrew"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="using-the-html5-drag-and-drop-api" class="w-article-header__headline">Using the HTML5 Drag and Drop API</h1>
+      
+
+      
+        <div class="w-author__published">
+          <time>Sep 30, 2010</time>
+           <span class="w-author__separator">•</span> Updated <time>Jul 29, 2020</time> 
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/ericbidelman/"><img     alt="Eric Bidelman"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/ACrLFM1rLlaY2fzUTeXl.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/ACrLFM1rLlaY2fzUTeXl.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/ACrLFM1rLlaY2fzUTeXl.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/ACrLFM1rLlaY2fzUTeXl.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/ACrLFM1rLlaY2fzUTeXl.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/ACrLFM1rLlaY2fzUTeXl.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/ericbidelman/">Eric Bidelman</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/ebidel"
+          >Twitter</a
+        >
+      </li>
+      
+      
+      
+    </ul>
+  </div>
+</div>
+          
+            <div class="w-author">
+  <a href="/authors/rachelandrew/"><img     alt="Rachel Andrew"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/dUAN2DEXHRT6G6iPrIby.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/dUAN2DEXHRT6G6iPrIby.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/dUAN2DEXHRT6G6iPrIby.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/dUAN2DEXHRT6G6iPrIby.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/dUAN2DEXHRT6G6iPrIby.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/dUAN2DEXHRT6G6iPrIby.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/rachelandrew/">Rachel Andrew</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/rachelandrew"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/rachelandrew">GitHub</a>
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://glitch.com/@rachelandrew"
+          >Glitch</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://rachelandrew.co.uk/">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>The HTML5 Drag and Drop (DnD) API means that we can make almost any element on our page draggable.
+In this post we'll explain the basics of Drag and Drop.</p>
+<h2 id="creating-draggable-content">Creating draggable content <a class="w-headline-link" href="#creating-draggable-content">#</a></h2>
+<p>It's worth noting that in most browsers, text selections, images, and links are draggable by default.
+For example, if you drag the Google logo on <a href="https://google.com" rel="noopener">Google Search</a> you will see the ghost image.
+The image can then be dropped in the address bar, an <code>&lt;input type=&quot;file&quot; /&gt;</code> element, or even the desktop.
+To make other types of content draggable you need to use the HTML5 DnD APIs.</p>
+<p>To make an object draggable set <code>draggable=true</code> on that element.
+Just about anything can be drag-enabled, images, files, links, files, or any markup on your page.</p>
+<p>In our example we're creating an interface to rearrange some columns,
+which have been laid out with CSS Grid.
+The basic markup for my columns looks like this,
+with each column having the <code>draggable</code> attribute set to <code>true</code>.</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>container<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">draggable</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>true<span class="token punctuation">"</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>box<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>A<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">draggable</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>true<span class="token punctuation">"</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>box<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>B<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">draggable</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>true<span class="token punctuation">"</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>box<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>C<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><p>Here's the CSS for my container and box elements.
+Note that the only CSS related to DnD functionality is the <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/cursor" rel="noopener"><code>cursor: move</code></a> property.
+The rest of the code just controls the layout and styling of the container and box elements.</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="highlight-line"><span class="token selector">.container</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">  <span class="token property">display</span><span class="token punctuation">:</span> grid<span class="token punctuation">;</span></span><br><span class="highlight-line">  <span class="token property">grid-template-columns</span><span class="token punctuation">:</span> <span class="token function">repeat</span><span class="token punctuation">(</span>5<span class="token punctuation">,</span> 1fr<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line">  <span class="token property">gap</span><span class="token punctuation">:</span> 10px<span class="token punctuation">;</span></span><br><span class="highlight-line"><span class="token punctuation">}</span></span><br><span class="highlight-line"></span><br><span class="highlight-line"><span class="token selector">.box</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">  <span class="token property">border</span><span class="token punctuation">:</span> 3px solid #666<span class="token punctuation">;</span></span><br><span class="highlight-line">  <span class="token property">background-color</span><span class="token punctuation">:</span> #ddd<span class="token punctuation">;</span></span><br><span class="highlight-line">  <span class="token property">border-radius</span><span class="token punctuation">:</span> .5em<span class="token punctuation">;</span></span><br><span class="highlight-line">  <span class="token property">padding</span><span class="token punctuation">:</span> 10px<span class="token punctuation">;</span></span><br><mark class="highlight-line highlight-line-active">  <span class="token property">cursor</span><span class="token punctuation">:</span> move<span class="token punctuation">;</span></mark><br><span class="highlight-line"><span class="token punctuation">}</span></span></code></pre>
+</web-copy-code><p>At this point you will find that you can drag the items,
+however nothing else will happen.
+To add the DnD functionality we need to use the JavaScript API.</p>
+<h2 id="listening-for-dragging-events">Listening for dragging events <a class="w-headline-link" href="#listening-for-dragging-events">#</a></h2>
+<p>There are a number of different events to attach to for monitoring the entire drag and drop process.</p>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/dragstart_event" rel="noopener"><code>dragstart</code></a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/drag_event" rel="noopener"><code>drag</code></a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/dragenter_event" rel="noopener"><code>dragenter</code></a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/dragleave_event" rel="noopener"><code>dragleave</code></a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/dragover_event" rel="noopener"><code>dragover</code></a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/drop_event" rel="noopener"><code>drop</code></a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/dragend_event" rel="noopener"><code>dragend</code></a></li>
+</ul>
+<p>To handle the DnD flow, you need some kind of source element (where the drag originates),
+the data payload (what you're trying to drop),
+and a target (an area to catch the drop).
+The source element can be an image, list, link, file object, block of HTML, etc.
+The target is the drop zone (or set of drop zones) that accepts the data the user is trying to drop.
+Keep in mind that not all elements can be targets, for example an image can't be a target.</p>
+<h2 id="starting-and-ending-a-drag-and-drop-sequence">Starting and ending a drag and drop sequence <a class="w-headline-link" href="#starting-and-ending-a-drag-and-drop-sequence">#</a></h2>
+<p>Once you have <code>draggable=&quot;true&quot;</code> attributes defined on your content,
+attach a <code>dragstart</code> event handler to kick off the DnD sequence for each column.</p>
+<p>This code will set the column's opacity to 40% when the user begins dragging it,
+then return it to 100% when the dragging event ends.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">handleDragStart</span><span class="token punctuation">(</span><span class="token parameter">e</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token keyword">this</span><span class="token punctuation">.</span>style<span class="token punctuation">.</span>opacity <span class="token operator">=</span> <span class="token string">'0.4'</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><br>  <span class="token keyword">function</span> <span class="token function">handleDragEnd</span><span class="token punctuation">(</span><span class="token parameter">e</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token keyword">this</span><span class="token punctuation">.</span>style<span class="token punctuation">.</span>opacity <span class="token operator">=</span> <span class="token string">'1'</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><br>  <span class="token keyword">let</span> items <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">querySelectorAll</span><span class="token punctuation">(</span><span class="token string">'.container .box'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  items<span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">item</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    item<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'dragstart'</span><span class="token punctuation">,</span> handleDragStart<span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    item<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'dragend'</span><span class="token punctuation">,</span> handleDragEnd<span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>The result can be seen in the Glitch demo below. Drag an item and it becomes opaque.
+As the <code>dragstart</code> event's target is the source element,
+setting <code>this.style.opacity</code> to 40% gives the user visual feedback that the element is the current selection being moved.
+Once you drop the item,
+although the drop functionality is not in place,
+the source element returns to 100% opacity.</p>
+<div class="glitch-embed-wrap" style="height: 420px; width: 100%;">
+  <iframe
+    allow="camera; clipboard-read; clipboard-write; encrypted-media; geolocation; microphone; midi"
+    loading="lazy"
+    src="https://glitch.com/embed/#!/embed/simple-drag-and-drop-1?attributionHidden=true&sidebarCollapsed=true&path=style.css&previewSize=100"
+    style="height: 100%; width: 100%; border: 0;"
+    title="simple-drag-and-drop-1 on Glitch"
+  ></iframe>
+</div>
+<h2 id="add-additional-visual-cues-with-dragenter-dragover-and-dragleave">Add additional visual cues with <code>dragenter</code>, <code>dragover</code>, and <code>dragleave</code> <a class="w-headline-link" href="#add-additional-visual-cues-with-dragenter-dragover-and-dragleave">#</a></h2>
+<p>To help the user understand how to interact with your interface,
+use the <code>dragenter</code>, <code>dragover</code> and <code>dragleave</code> event handlers.
+In this example the columns are drop targets in addition to being draggable.
+Help the user to understand this by making the border dashed as they hold a dragged item over a column.
+For example, in your CSS you might create an <code>over</code> class to represent elements that are drop targets:</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">.box.over</span> <span class="token punctuation">{</span><br>  <span class="token property">border</span><span class="token punctuation">:</span> 3px dotted #666<span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>Then, in your JavaScript set up the event handlers,
+add the <code>over</code> class when the column is dragged over,
+and remove it when we leave.
+In the <code>dragend</code> handler we also make sure to remove the classes at the end of the drag.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="highlight-line">document<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'DOMContentLoaded'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token parameter">event</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span></span><br><span class="highlight-line"></span><br><span class="highlight-line">  <span class="token keyword">function</span> <span class="token function">handleDragStart</span><span class="token punctuation">(</span><span class="token parameter">e</span><span class="token punctuation">)</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">    <span class="token keyword">this</span><span class="token punctuation">.</span>style<span class="token punctuation">.</span>opacity <span class="token operator">=</span> <span class="token string">'0.4'</span><span class="token punctuation">;</span></span><br><span class="highlight-line">  <span class="token punctuation">}</span></span><br><span class="highlight-line"></span><br><span class="highlight-line">  <span class="token keyword">function</span> <span class="token function">handleDragEnd</span><span class="token punctuation">(</span><span class="token parameter">e</span><span class="token punctuation">)</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">    <span class="token keyword">this</span><span class="token punctuation">.</span>style<span class="token punctuation">.</span>opacity <span class="token operator">=</span> <span class="token string">'1'</span><span class="token punctuation">;</span></span><br><span class="highlight-line"></span><br><mark class="highlight-line highlight-line-active">    items<span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">item</span><span class="token punctuation">)</span> <span class="token punctuation">{</span></mark><br><mark class="highlight-line highlight-line-active">      item<span class="token punctuation">.</span>classList<span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span><span class="token string">'over'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></mark><br><mark class="highlight-line highlight-line-active">    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></mark><br><span class="highlight-line">  <span class="token punctuation">}</span></span><br><span class="highlight-line"></span><br><mark class="highlight-line highlight-line-active">  <span class="token keyword">function</span> <span class="token function">handleDragOver</span><span class="token punctuation">(</span><span class="token parameter">e</span><span class="token punctuation">)</span> <span class="token punctuation">{</span></mark><br><mark class="highlight-line highlight-line-active">    <span class="token keyword">if</span> <span class="token punctuation">(</span>e<span class="token punctuation">.</span>preventDefault<span class="token punctuation">)</span> <span class="token punctuation">{</span></mark><br><mark class="highlight-line highlight-line-active">      e<span class="token punctuation">.</span><span class="token function">preventDefault</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></mark><br><mark class="highlight-line highlight-line-active">    <span class="token punctuation">}</span></mark><br><mark class="highlight-line highlight-line-active"></mark><br><mark class="highlight-line highlight-line-active">    <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span></mark><br><mark class="highlight-line highlight-line-active">  <span class="token punctuation">}</span></mark><br><mark class="highlight-line highlight-line-active"></mark><br><mark class="highlight-line highlight-line-active">  <span class="token keyword">function</span> <span class="token function">handleDragEnter</span><span class="token punctuation">(</span><span class="token parameter">e</span><span class="token punctuation">)</span> <span class="token punctuation">{</span></mark><br><mark class="highlight-line highlight-line-active">    <span class="token keyword">this</span><span class="token punctuation">.</span>classList<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">'over'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></mark><br><mark class="highlight-line highlight-line-active">  <span class="token punctuation">}</span></mark><br><mark class="highlight-line highlight-line-active"></mark><br><mark class="highlight-line highlight-line-active">  <span class="token keyword">function</span> <span class="token function">handleDragLeave</span><span class="token punctuation">(</span><span class="token parameter">e</span><span class="token punctuation">)</span> <span class="token punctuation">{</span></mark><br><mark class="highlight-line highlight-line-active">    <span class="token keyword">this</span><span class="token punctuation">.</span>classList<span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span><span class="token string">'over'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></mark><br><mark class="highlight-line highlight-line-active">  <span class="token punctuation">}</span></mark><br><span class="highlight-line"></span><br><span class="highlight-line">  <span class="token keyword">let</span> items <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">querySelectorAll</span><span class="token punctuation">(</span><span class="token string">'.container .box'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line">  items<span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">item</span><span class="token punctuation">)</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">    item<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'dragstart'</span><span class="token punctuation">,</span> handleDragStart<span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line">    item<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'dragover'</span><span class="token punctuation">,</span> handleDragOver<span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><mark class="highlight-line highlight-line-active">    item<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'dragenter'</span><span class="token punctuation">,</span> handleDragEnter<span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span></mark><br><mark class="highlight-line highlight-line-active">    item<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'dragleave'</span><span class="token punctuation">,</span> handleDragLeave<span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span></mark><br><mark class="highlight-line highlight-line-active">    item<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'dragend'</span><span class="token punctuation">,</span> handleDragEnd<span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span></mark><br><span class="highlight-line">  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line"><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span></code></pre>
+</web-copy-code><div class="glitch-embed-wrap" style="height: 420px; width: 100%;">
+  <iframe
+    allow="camera; clipboard-read; clipboard-write; encrypted-media; geolocation; microphone; midi"
+    loading="lazy"
+    src="https://glitch.com/embed/#!/embed/simple-drag-drop2?attributionHidden=true&sidebarCollapsed=true&path=dnd.js&previewSize=100"
+    style="height: 100%; width: 100%; border: 0;"
+    title="simple-drag-drop2 on Glitch"
+  ></iframe>
+</div>
+<p>There are a couple of points worth covering in this code:</p>
+<ul>
+<li>In the case of dragging something like a link,
+you need to prevent the browser's default behavior,
+which is to navigate to that link.
+To do this, call <code>e.preventDefault()</code> in the <code>dragover</code> event.
+Another good practice is to return <code>false</code> in that same handler.</li>
+<li>The <code>dragenter</code> event handler is used to toggle the <code>over</code> class instead of <code>dragover</code>.
+If you use <code>dragover</code>,
+the CSS class would be toggled many times as the event <code>dragover</code> continued to fire on a column hover.
+Ultimately, that would cause the browser's renderer to do a large amount of unnecessary work.
+Keeping redraws to a minimum is always a good idea.
+If you need to use the <code>dragover</code> event for something,
+consider <a href="https://css-tricks.com/debouncing-throttling-explained-examples/" rel="noopener">throttling or debouncing your event listener</a>.</li>
+</ul>
+<h2 id="completing-the-drop">Completing the drop <a class="w-headline-link" href="#completing-the-drop">#</a></h2>
+<p>To process the actual drop,
+add an event listener for the <code>drop</code> event.
+In the <code>drop</code> handler,
+you'll need to prevent the browser's default behavior for drops,
+which is typically some sort of annoying redirect.
+You can prevent the event from bubbling up the DOM by calling <code>e.stopPropagation()</code>.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">handleDrop</span><span class="token punctuation">(</span><span class="token parameter">e</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  e<span class="token punctuation">.</span><span class="token function">stopPropagation</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// stops the browser from redirecting.</span><br>  <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>If you run the code at this point,
+the item will not drop to the new location.
+To achieve this you need to use the <a href="https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer" rel="noopener"><code>DataTransfer</code></a> object.</p>
+<p>The <code>dataTransfer</code> property is where all the DnD magic happens.
+It holds the piece of data sent in a drag action.
+<code>dataTransfer</code> is set in the <code>dragstart</code> event and read/handled in the drop event.
+Calling <code>e.dataTransfer.setData(mimeType, dataPayload)</code> lets you set the object's MIME type and data payload.</p>
+<p>In this example, we're going to allow users to rearrange the order of the columns.
+To do that, first you need to store the source element's HTML when the drag starts:</p>
+  <figure class="w-figure">
+    <video controls autoplay loop muted class="w-screenshot">
+      <source src="https://storage.googleapis.com/web-dev-assets/drag-and-drop/webdev-dnd.mp4" type="video/mp4">
+    </video>
+  </figure>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="highlight-line"><span class="token keyword">function</span> <span class="token function">handleDragStart</span><span class="token punctuation">(</span><span class="token parameter">e</span><span class="token punctuation">)</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">  <span class="token keyword">this</span><span class="token punctuation">.</span>style<span class="token punctuation">.</span>opacity <span class="token operator">=</span> <span class="token string">'0.4'</span><span class="token punctuation">;</span></span><br><span class="highlight-line"></span><br><mark class="highlight-line highlight-line-active">  dragSrcEl <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">;</span></mark><br><mark class="highlight-line highlight-line-active"></mark><br><mark class="highlight-line highlight-line-active">  e<span class="token punctuation">.</span>dataTransfer<span class="token punctuation">.</span>effectAllowed <span class="token operator">=</span> <span class="token string">'move'</span><span class="token punctuation">;</span></mark><br><mark class="highlight-line highlight-line-active">  e<span class="token punctuation">.</span>dataTransfer<span class="token punctuation">.</span><span class="token function">setData</span><span class="token punctuation">(</span><span class="token string">'text/html'</span><span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">.</span>innerHTML<span class="token punctuation">)</span><span class="token punctuation">;</span></mark><br><span class="highlight-line"><span class="token punctuation">}</span></span></code></pre>
+</web-copy-code><p>In the <code>drop</code> event you process the column drop,
+setting the source column's HTML to the HTML of the target column that you dropped on,
+first checking that the user is not dropping back onto the same column they dragged from.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="highlight-line"><span class="token keyword">function</span> <span class="token function">handleDrop</span><span class="token punctuation">(</span><span class="token parameter">e</span><span class="token punctuation">)</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">  e<span class="token punctuation">.</span><span class="token function">stopPropagation</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line"></span><br><span class="highlight-line">  <span class="token keyword">if</span> <span class="token punctuation">(</span>dragSrcEl <span class="token operator">!==</span> <span class="token keyword">this</span><span class="token punctuation">)</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">    dragSrcEl<span class="token punctuation">.</span>innerHTML <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>innerHTML<span class="token punctuation">;</span></span><br><mark class="highlight-line highlight-line-active">    <span class="token keyword">this</span><span class="token punctuation">.</span>innerHTML <span class="token operator">=</span> e<span class="token punctuation">.</span>dataTransfer<span class="token punctuation">.</span><span class="token function">getData</span><span class="token punctuation">(</span><span class="token string">'text/html'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></mark><br><mark class="highlight-line highlight-line-active">  <span class="token punctuation">}</span></mark><br><mark class="highlight-line highlight-line-active"></mark><br><mark class="highlight-line highlight-line-active">  <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span></mark><br><span class="highlight-line"><span class="token punctuation">}</span></span></code></pre>
+</web-copy-code><p>You can see the result in the following demo.
+Drag and release the A column on top of the B column and notice how they change places:</p>
+<div class="glitch-embed-wrap" style="height: 420px; width: 100%;">
+  <iframe
+    allow="camera; clipboard-read; clipboard-write; encrypted-media; geolocation; microphone; midi"
+    loading="lazy"
+    src="https://glitch.com/embed/#!/embed/simple-drag-drop?attributionHidden=true&sidebarCollapsed=true&path=dnd.js&previewSize=100"
+    style="height: 100%; width: 100%; border: 0;"
+    title="simple-drag-drop on Glitch"
+  ></iframe>
+</div>
+<h2 id="more-dragging-properties">More dragging properties <a class="w-headline-link" href="#more-dragging-properties">#</a></h2>
+<p>The <code>dataTransfer</code> object exposes properties to provide visual feedback to the user during the drag process.
+These properties can also be used to control how each drop target responds to a particular data type.</p>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer/effectAllowed" rel="noopener"><code>dataTransfer.effectAllowed</code></a> restricts what 'type of drag' the user can perform on the element.
+It is used in the drag-and-drop processing model to initialize the <code>dropEffect</code> during the <code>dragenter</code> and <code>dragover</code> events.
+The property can be set to the following values: <code>none</code>, <code>copy</code>, <code>copyLink</code>, <code>copyMove</code>, <code>link</code>, <code>linkMove</code>, <code>move</code>, <code>all</code>, and <code>uninitialized</code>.</li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer/dropEffect" rel="noopener"><code>dataTransfer.dropEffect</code></a> controls the feedback that the user is given during the <code>dragenter</code> and <code>dragover</code> events.
+When the user hovers over a target element,
+the browser's cursor will indicate what type of operation is going to take place (e.g. a copy, a move, etc.).
+The effect can take on one of the following values:  <code>none</code>, <code>copy</code>, <code>link</code>, <code>move</code>.</li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer/setDragImage" rel="noopener"><code>e.dataTransfer.setDragImage(imgElement, x, y)</code></a>
+means that instead of using the browser's default 'ghost image' feedback,
+you can optionally set a drag icon.</li>
+</ul>
+<h2 id="file-upload-with-drag-and-drop">File upload with drag and drop <a class="w-headline-link" href="#file-upload-with-drag-and-drop">#</a></h2>
+<p>This simple example uses a column as both the drag source and drag target.
+This might be seen in a UI where the user is asked to rearrange the items.
+In some situations the drag target and source may be different,
+such as an interface where the user needs to select one image to be the main image for a product by dragging the selected image onto a target.</p>
+<p>Drag and Drop is frequently used to allow users to drag items from their desktop into an application.
+The main difference is in your <code>drop</code> handler.
+Instead of using <code>dataTransfer.getData()</code> to access the files,
+their data will be contained in the <code>dataTransfer.files</code> property:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">handleDrop</span><span class="token punctuation">(</span><span class="token parameter">e</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  e<span class="token punctuation">.</span><span class="token function">stopPropagation</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Stops some browsers from redirecting.</span><br>  e<span class="token punctuation">.</span><span class="token function">preventDefault</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>  <span class="token keyword">var</span> files <span class="token operator">=</span> e<span class="token punctuation">.</span>dataTransfer<span class="token punctuation">.</span>files<span class="token punctuation">;</span><br>  <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">var</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> f<span class="token punctuation">;</span> f <span class="token operator">=</span> files<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token comment">// Read the File objects in this FileList.</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>You can find more information about this in <a href="/read-files/#select-dnd">Custom drag-and-drop</a>.</p>
+<h2 id="more-resources">More resources <a class="w-headline-link" href="#more-resources">#</a></h2>
+<ul>
+<li><a href="https://html.spec.whatwg.org/multipage/dnd.html#dnd" rel="noopener">The Drag and Drop Specification</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API" rel="noopener">MDN HTML Drag and Drop API</a></li>
+<li><a href="https://www.smashingmagazine.com/2018/01/drag-drop-file-uploader-vanilla-js/" rel="noopener">How To Make A Drag-and-Drop File Uploader With Vanilla JavaScript</a></li>
+<li><a href="https://css-tricks.com/creating-a-parking-game-with-the-html-drag-and-drop-api/" rel="noopener">Creating a Parking Game With the HTML Drag and Drop API</a></li>
+<li><a href="https://www.smashingmagazine.com/2020/02/html-drag-drop-api-react/" rel="noopener">How To Use The HTML Drag-and-Drop API In React</a></li>
+</ul>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/html/">HTML</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/javascript/">JavaScript</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/file-system/">File System</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Jul 29, 2020</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/drag-and-drop/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

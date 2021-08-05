@@ -1,0 +1,756 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=5cbecd4d0c599">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Preparing for the display modes of tomorrow</title>
+<meta name="description" content="The display_override property allows developers to define a customized fallback chain of modes their PWAs should be displayed in. " />
+
+<link rel="canonical" href="https://web.dev/display-override/" />
+
+<meta itemprop="name" content="Preparing for the display modes of tomorrow" />
+<meta itemprop="description" content="The display_override property allows developers to define a customized fallback chain of modes their PWAs should be displayed in. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/woTD625c2X9tODE58koK.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/display-override/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Preparing for the display modes of tomorrow" />
+<meta property="og:description" content="The display_override property allows developers to define a customized fallback chain of modes their PWAs should be displayed in. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/woTD625c2X9tODE58koK.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="Web app manifest source code excerpt." />
+<meta property="tag" content="progressive-web-apps" />
+<meta property="tag" content="capabilities" />
+<meta property="tag" content="web-app-manifest" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Preparing for the display modes of tomorrow" />
+<meta name="twitter:description" content="The display_override property allows developers to define a customized fallback chain of modes their PWAs should be displayed in. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/woTD625c2X9tODE58koK.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=05735a8978598', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=19cf988004474', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="Web app manifest source code excerpt."     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/woTD625c2X9tODE58koK.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/woTD625c2X9tODE58koK.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/woTD625c2X9tODE58koK.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/woTD625c2X9tODE58koK.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/woTD625c2X9tODE58koK.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/woTD625c2X9tODE58koK.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/woTD625c2X9tODE58koK.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/woTD625c2X9tODE58koK.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/woTD625c2X9tODE58koK.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/woTD625c2X9tODE58koK.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/woTD625c2X9tODE58koK.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/woTD625c2X9tODE58koK.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/woTD625c2X9tODE58koK.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/woTD625c2X9tODE58koK.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/woTD625c2X9tODE58koK.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/woTD625c2X9tODE58koK.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/woTD625c2X9tODE58koK.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/woTD625c2X9tODE58koK.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#preparing-for-the-display-modes-of-tomorrow" class="w-toc__header--link">
+        Preparing for the display modes of tomorrow
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#shortcomings-of-the-display-property">Shortcomings of the display property</a></li><li><a href="#the-display_override-property">The display_override property</a></li><li><a href="#browser-compatibility">Browser compatibility</a></li><li><a href="#useful-links">Useful links</a></li><li><a href="#acknowledgments">Acknowledgments</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@tomayac"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="preparing-for-the-display-modes-of-tomorrow" class="w-article-header__headline">Preparing for the display modes of tomorrow</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          PWAs can use the &quot;display_override&quot; property to deal with special display modes.
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Feb 25, 2021</time>
+           <span class="w-author__separator">•</span> Updated <time>May 28, 2021</time> 
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/thomassteiner/"><img     alt="Thomas Steiner"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/thomassteiner/">Thomas Steiner</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/tomayac"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/tomayac">GitHub</a>
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://glitch.com/@tomayac"
+          >Glitch</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://blog.tomayac.com/">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>A <a href="/add-manifest/">web app manifest</a> is a JSON file that tells the browser about your Progressive
+Web App and how it should behave when installed on the user's desktop or mobile device.
+Via the <a href="/add-manifest/#display"><code>display</code></a> property, you can customize what browser UI is shown when your app is launched. For example, you can hide the
+address bar and browser chrome. Games can even be made to launch full screen.
+As a quick recap, below are the display modes that are specified at the time this article was written.</p>
+<div class="w-table-wrapper">
+  <table id="display-params">
+    <thead>
+      <tr>
+        <th><strong>Property</strong></th>
+        <th><strong>Use</strong></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>fullscreen</code></td>
+        <td>
+          Opens the web application without any browser UI and takes
+          up the entirety of the available display area.
+        </td>
+      </tr>
+      <tr>
+        <td><code>standalone</code></td>
+        <td>
+          Opens the web app to look and feel like a standalone
+          app. The app runs in its own window, separate from the browser, and
+          hides standard browser UI elements like the URL bar.
+        </td>
+      </tr>
+      <tr>
+        <td><code>minimal-ui</code></td>
+        <td>
+          This mode is similar to <code>standalone</code>, but provides the
+          user a minimal set of UI elements for controlling navigation (such
+          as back and reload).
+        </td>
+      </tr>
+      <tr>
+        <td><code>browser</code></td>
+        <td>A standard browser experience.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<p>These display modes follow a <a href="https://w3c.github.io/manifest/#dfn-fallback-display-mode" rel="noopener">well-defined fallback chain</a>
+(<code>&quot;fullscreen&quot;</code> → <code>&quot;standalone&quot;</code> → <code>&quot;minimal-ui&quot;</code> → <code>&quot;browser&quot;</code>). If a browser does not support a given
+mode, it falls back to the next display mode in the chain.</p>
+<h2 id="shortcomings-of-the-display-property">Shortcomings of the <code>display</code> property <a class="w-headline-link" href="#shortcomings-of-the-display-property">#</a></h2>
+<p>The problem with this hard-wired fallback chain approach is threefold:</p>
+<ul>
+<li>A developer cannot request <code>&quot;minimal-ui&quot;</code> without being forced back into the <code>&quot;browser&quot;</code> display mode in case <code>&quot;minimal-ui&quot;</code> is not supported by a given browser.</li>
+<li>Developers have no way of handling cross-browser differences, like if the browser includes or excludes a <a href="https://twitter.com/ChromiumDev/status/1012065260625383425/photo/1" rel="noopener">back button</a> in the window for <code>&quot;standalone&quot;</code> mode.</li>
+<li>The current behavior makes it impossible to introduce new display
+modes in a backward compatible way, since explorations like tabbed application mode do not have a
+natural place in the fallback chain.</li>
+</ul>
+<h2 id="the-display_override-property">The <code>display_override</code> property <a class="w-headline-link" href="#the-display_override-property">#</a></h2>
+<p>These problems are solved by the <code>display_override</code> property, which the browser considers <em>before</em>
+the <code>display</code> property. Its value is a sequence of strings that are considered in-order, and the
+first supported display mode is applied. If none are supported, the browser falls back to evaluating
+the <code>display</code> field.</p>
+<div class="w-aside w-aside--note">
+<p>The <code>display_override</code> property is meant to solve special corner cases. In almost all
+circumstances the regular <code>display</code> property is what developers should reach for.</p>
+</div>
+<p>In the example below, the display mode fallback chain would be as follows.
+(The details of <code>&quot;window-controls-overlay&quot;</code> are out-of-scope for this article.)</p>
+<ol>
+<li><code>&quot;window-controls-overlay&quot;</code> (First, look at <code>display_override</code>.)</li>
+<li><code>&quot;minimal-ui&quot;</code></li>
+<li><code>&quot;standalone&quot;</code> (When <code>display_override</code> is exhausted, evaluate <code>display</code>.)</li>
+<li><code>&quot;minimal-ui&quot;</code> (Finally, use the <code>display</code> fallback chain.)</li>
+<li><code>&quot;browser&quot;</code></li>
+</ol>
+<web-copy-code><pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"display_override"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"window-controls-overlay"</span><span class="token punctuation">,</span> <span class="token string">"minimal-ui"</span><span class="token punctuation">]</span><span class="token punctuation">,</span><br>  <span class="token property">"display"</span><span class="token operator">:</span> <span class="token string">"standalone"</span><span class="token punctuation">,</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><div class="w-aside w-aside--note">
+<p>The browser will not consider <code>display_override</code> unless <code>display</code> is also present.</p>
+</div>
+<p>To remain backward compatible, any future display mode will only be acceptable as a value of
+<code>display_override</code>, but not <code>display</code>.
+Browsers that do not support <code>display_override</code> fall back to the <code>display</code> property and ignore
+<code>display_override</code> as an unknown web app manifest property.</p>
+<div class="w-aside w-aside--note">
+<p>The <code>display_override</code> property is defined independently from its potential values.</p>
+</div>
+<h2 id="browser-compatibility">Browser compatibility <a class="w-headline-link" href="#browser-compatibility">#</a></h2>
+<p>The <code>display_override</code> property is supported as of Chromium 89. Other browsers support the
+<code>display</code> property, which caters to the majority of display mode use cases.</p>
+<h2 id="useful-links">Useful links <a class="w-headline-link" href="#useful-links">#</a></h2>
+<ul>
+<li><a href="https://github.com/WICG/display-override/blob/master/explainer.md" rel="noopener">Explainer</a></li>
+<li><a href="https://groups.google.com/a/chromium.org/g/blink-dev/c/MZgYJgS4Lcs/m/NnUxG2_mAAAJ" rel="noopener">Intent to Ship thread</a></li>
+<li><a href="https://bugs.chromium.org/p/chromium/issues/detail?id=1092667" rel="noopener">Chromium bug</a></li>
+<li><a href="https://chromestatus.com/feature/5728570678706176" rel="noopener">Chrome Status entry</a></li>
+<li><a href="https://github.com/WICG/manifest-incubations" rel="noopener">Manifest Incubations repository</a></li>
+</ul>
+<h2 id="acknowledgments">Acknowledgments <a class="w-headline-link" href="#acknowledgments">#</a></h2>
+<p>The <code>display_override</code> property was formalized by
+<a href="https://github.com/dmurph" rel="noopener">Daniel Murphy</a>.</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/progressive-web-apps/">Progressive Web Apps</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/capabilities/">Capabilities</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/web-app-manifest/">Web App Manifest</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>May 28, 2021</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/display-override/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

@@ -1,0 +1,738 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=b7ddee2410ee">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Chromium lands Flexbox gap</title>
+<meta name="description" content="The CSS gap property is here for Chromium's CSS Flexbox and Multi-Column layout engines." />
+
+<link rel="canonical" href="https://web.dev/flexbox-gap/" />
+
+<meta itemprop="name" content="Chromium lands Flexbox gap" />
+<meta itemprop="description" content="The CSS gap property is here for Chromium's CSS Flexbox and Multi-Column layout engines." />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/arR9d29YxN1N5Rak6OH6.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/flexbox-gap/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Chromium lands Flexbox gap" />
+<meta property="og:description" content="The CSS gap property is here for Chromium's CSS Flexbox and Multi-Column layout engines." />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/arR9d29YxN1N5Rak6OH6.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="A brick wall with gaps." />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Chromium lands Flexbox gap" />
+<meta name="twitter:description" content="The CSS gap property is here for Chromium's CSS Flexbox and Multi-Column layout engines." />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/arR9d29YxN1N5Rak6OH6.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=606752ecbd9b7', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=9b404499f5272', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="A brick wall with gaps."     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/arR9d29YxN1N5Rak6OH6.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/arR9d29YxN1N5Rak6OH6.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/arR9d29YxN1N5Rak6OH6.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/arR9d29YxN1N5Rak6OH6.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/arR9d29YxN1N5Rak6OH6.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/arR9d29YxN1N5Rak6OH6.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/arR9d29YxN1N5Rak6OH6.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/arR9d29YxN1N5Rak6OH6.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/arR9d29YxN1N5Rak6OH6.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/arR9d29YxN1N5Rak6OH6.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/arR9d29YxN1N5Rak6OH6.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/arR9d29YxN1N5Rak6OH6.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/arR9d29YxN1N5Rak6OH6.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/arR9d29YxN1N5Rak6OH6.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/arR9d29YxN1N5Rak6OH6.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/arR9d29YxN1N5Rak6OH6.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/arR9d29YxN1N5Rak6OH6.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/arR9d29YxN1N5Rak6OH6.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#chromium-lands-flexbox-lesscodegreatergaplesscodegreater" class="w-toc__header--link">
+        Chromium lands Flexbox <code>gap</code>
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#browser-compatibility">Browser compatibility</a></li><li><a href="#css-gap">CSS Gap</a></li><li><a href="#usage">Usage</a></li><li><a href="#flexbox-gap">Flexbox gap</a></li><li><a href="#previous-attempts">Previous Attempts</a></li><li><a href="#the-antidote:-gap">The Antidote: gap</a></li><li><a href="#chromium-devtools-updates">Chromium DevTools updates</a></li><li><a href="#new-layout-potential">New layout potential</a></li><li><a href="#multi-column-gap">Multi-column gap</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@argyleink | i18n.authors.dgrogan.title"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+
+      <h1 id="chromium-lands-flexbox-lesscodegreatergaplesscodegreater" class="w-article-header__headline">Chromium lands Flexbox <code>gap</code></h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          The CSS <code>gap</code> property is here for Chromium's CSS Flexbox and Multi-Column layout engines.
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>May 7, 2020</time>
+           <span class="w-author__separator">•</span> Updated <time>Jun 19, 2020</time> 
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/adamargyle/"><img     alt="Adam Argyle"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/adamargyle/">Adam Argyle</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/argyleink"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/argyleink">GitHub</a>
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://glitch.com/@argyleink"
+          >Glitch</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://nerdy.dev">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+            <div class="w-author">
+  <a href="/authors/dgrogan/"><img     alt="David Grogan"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/qPVct6hKRbw1YO0qVMcc.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/qPVct6hKRbw1YO0qVMcc.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/qPVct6hKRbw1YO0qVMcc.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/qPVct6hKRbw1YO0qVMcc.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/qPVct6hKRbw1YO0qVMcc.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/qPVct6hKRbw1YO0qVMcc.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/dgrogan/">David Grogan</a>
+    </cite>
+    <ul class="w-author__link-list">
+      
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/davidsgrogan">GitHub</a>
+      </li>
+      
+      
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <h3 id="browser-compatibility">Browser compatibility <a class="w-headline-link" href="#browser-compatibility">#</a></h3>
+<p>At the time of writing <code>gap</code> is supported in desktop Firefox 63, Firefox for Android 63,
+and Chromium 84 (desktop and Android). See
+<a href="https://developer.mozilla.org/docs/Web/CSS/gap#Browser_compatibility" rel="noopener">Browser compatibility</a>
+for updates.</p>
+<h2 id="css-gap">CSS Gap <a class="w-headline-link" href="#css-gap">#</a></h2>
+<div class="w-aside w-aside--key-term">
+<p><strong>Key Term</strong>:
+<code>gap</code> is the spacing <em>between children</em>. You may have heard of this type of spacing being
+called &quot;gutters&quot; or &quot;alleys&quot;. It's space only where the children box edges touch.</p>
+</div>
+<p><code>gap</code> is <a href="https://www.w3.org/TR/css-logical-1/#intro" rel="noopener">flow relative</a>, meaning it changes
+dynamically based on the direction of content flow. For example, <code>gap</code> will automatically
+adjust for the different <code>writing-mode</code> or <code>direction</code> values that you set for your
+international users. This significantly eases the burden of spacing challenges for
+the component and CSS author. <strong>Less code scaling further.</strong></p>
+<figure class="w-figure">
+  <video controls autoplay loop muted class="w-screenshot">
+    <source src="https://storage.googleapis.com/web-dev-assets/flexbox-gap/gap-i18n.webm" type="video/webm">
+    <source src="https://storage.googleapis.com/web-dev-assets/flexbox-gap/gap-i18n.mp4">
+  </video>
+  <figcaption class="w-figcaption">
+    Gap demonstrating localization support, as it handles changes to direction and writing-mode:
+    <a href="https://codepen.io/argyleink/pen/MWaoZJM">Codepen</a> |
+    <a href="https://twitter.com/argyleink/status/1254794309263491072?s=20">Tweet</a>
+  </figcaption>
+</figure>
+<h3 id="usage">Usage <a class="w-headline-link" href="#usage">#</a></h3>
+<p><code>gap</code> accepts any CSS <a href="https://drafts.csswg.org/css-values-4/#lengths" rel="noopener">length</a>
+or <a href="https://www.w3.org/TR/css-values-3/#percentages" rel="noopener">percentage</a> as a value.</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">.gap-example</span> <span class="token punctuation">{</span><br>  <span class="token property">display</span><span class="token punctuation">:</span> grid<span class="token punctuation">;</span><br>  <span class="token property">gap</span><span class="token punctuation">:</span> 10px<span class="token punctuation">;</span><br>  <span class="token property">gap</span><span class="token punctuation">:</span> 2ch<span class="token punctuation">;</span><br>  <span class="token property">gap</span><span class="token punctuation">:</span> 5%<span class="token punctuation">;</span><br>  <span class="token property">gap</span><span class="token punctuation">:</span> 1em<span class="token punctuation">;</span><br>  <span class="token property">gap</span><span class="token punctuation">:</span> 3vmax<span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><br>
+<p>Gap can be passed 1 length, which will be used for both row and column.</p>
+<div class="w-columns">
+<figure class="w-compare"><p class="w-compare__label w-compare__label--better">Shorthand</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">.grid</span> <span class="token punctuation">{</span><br>  <span class="token property">display</span><span class="token punctuation">:</span> grid<span class="token punctuation">;</span><br>  <span class="token property">gap</span><span class="token punctuation">:</span> 10px<span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><figcaption class="w-compare__caption">
+<p>Set both rows and columns <strong>together</strong> at once</p>
+</figcaption>
+</figure>
+<figure class="w-compare"><p class="w-compare__label w-compare__label--better">Expanded</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="highlight-line"><span class="token selector">.grid</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">  <span class="token property">display</span><span class="token punctuation">:</span> grid<span class="token punctuation">;</span></span><br><mark class="highlight-line highlight-line-active">  <span class="token property">row-gap</span><span class="token punctuation">:</span> 10px<span class="token punctuation">;</span></mark><br><mark class="highlight-line highlight-line-active">  <span class="token property">column-gap</span><span class="token punctuation">:</span> 10px<span class="token punctuation">;</span></mark><br><span class="highlight-line"><span class="token punctuation">}</span></span></code></pre>
+</web-copy-code></figure>
+</div>
+<br>
+<p>Gap can be passed 2 lengths, which will be used for row and column.</p>
+<div class="w-columns">
+<figure class="w-compare"><p class="w-compare__label w-compare__label--better">Shorthand</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">.grid</span> <span class="token punctuation">{</span><br>  <span class="token property">display</span><span class="token punctuation">:</span> grid<span class="token punctuation">;</span><br>  <span class="token property">gap</span><span class="token punctuation">:</span> 10px 5%<span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><figcaption class="w-compare__caption">
+<p>Set both rows and columns <strong>separately</strong> at once</p>
+</figcaption>
+</figure>
+<figure class="w-compare"><p class="w-compare__label w-compare__label--better">Expanded</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="highlight-line"><span class="token selector">.grid</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">  <span class="token property">display</span><span class="token punctuation">:</span> grid<span class="token punctuation">;</span></span><br><mark class="highlight-line highlight-line-active">  <span class="token property">row-gap</span><span class="token punctuation">:</span> 10px<span class="token punctuation">;</span></mark><br><mark class="highlight-line highlight-line-active">  <span class="token property">column-gap</span><span class="token punctuation">:</span> 5%<span class="token punctuation">;</span></mark><br><span class="highlight-line"><span class="token punctuation">}</span></span></code></pre>
+</web-copy-code></figure>
+</div>
+<h2 id="flexbox-gap">Flexbox <code>gap</code> <a class="w-headline-link" href="#flexbox-gap">#</a></h2>
+<p>Before <code>gap</code> was in Flexbox, strategies involved negative margins, complex selectors,
+<code>:last</code> or <code>:first</code> type pseudo-class selectors, or other means to manage the space
+of a dynamically layed-out and wrapping set of children.</p>
+<h3 id="previous-attempts">Previous Attempts <a class="w-headline-link" href="#previous-attempts">#</a></h3>
+<p>The following are patterns that folks have used to get gap-like spacing.</p>
+<div class="w-columns">
+<figure class="w-compare"><p class="w-compare__label w-compare__label--worse">pseudo-class selectors</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">.layout > :not(:last-child)</span> <span class="token punctuation">{</span><br>  <span class="token property">margin-bottom</span><span class="token punctuation">:</span> 10px<span class="token punctuation">;</span><br>  <span class="token property">margin-right</span><span class="token punctuation">:</span> 10px<span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code></figure>
+<figure class="w-compare"><p class="w-compare__label w-compare__label--worse">lobotomized owl</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">.layout > * + *</span> <span class="token punctuation">{</span><br>  <span class="token property">margin-bottom</span><span class="token punctuation">:</span> 10px<span class="token punctuation">;</span><br>  <span class="token property">margin-right</span><span class="token punctuation">:</span> 10px<span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><figcaption class="w-compare__caption">
+<p><a href="https://alistapart.com/article/axiomatic-css-and-lobotomized-owls/" rel="noopener">Source</a></p>
+</figcaption>
+</figure>
+</div>
+<p>The above are not a full replacement for <code>gap</code> though, and often need <code>@media</code>
+or <code>:lang()</code> adjustments to account for wrapping scenarios, writing modes or direction.
+Adding one or two media queries doesn't seem so bad, but they can add up and
+lead to complicated layout logic.</p>
+<p>What the above author really intended was to have none of the child items touch.</p>
+<h3 id="the-antidote:-gap">The Antidote: gap <a class="w-headline-link" href="#the-antidote:-gap">#</a></h3>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">.layout</span> <span class="token punctuation">{</span><br>  <span class="token property">display</span><span class="token punctuation">:</span> flex<span class="token punctuation">;</span><br>  <span class="token property">gap</span><span class="token punctuation">:</span> 10px<span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><div class="w-aside w-aside--note">
+<p>The ownership of the spacing shifts from the child to the parent</p>
+</div>
+<p>In the first 2 examples (without Flexbox <code>gap</code>), the children are targeted and
+assigned spacing from other elements. In the antidote gap example, the container
+owns the spacing. Each child can relieve itself of the burden, while also
+centralizing the spacing ownership. Simplifying consistency. Reorder,
+change viewports, remove elements, append new elements, etc. and spacing remains
+consistent. No new selectors, no new media queries, just space.</p>
+<h2 id="chromium-devtools-updates">Chromium DevTools updates <a class="w-headline-link" href="#chromium-devtools-updates">#</a></h2>
+<p>With these updates come changes to Chromium DevTools, notice how the <strong>Styles</strong>
+pane handles <code>grid-gap</code> and <code>gap</code> now 👍</p>
+<figure class="w-figure">
+  <img     alt="An office with two people working at a table."          decoding="async"     height="273"          loading="lazy"     sizes="(min-width: 400px) 400px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/7ZxgySczxUR1qxuD8cbC.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/7ZxgySczxUR1qxuD8cbC.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/7ZxgySczxUR1qxuD8cbC.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/7ZxgySczxUR1qxuD8cbC.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/7ZxgySczxUR1qxuD8cbC.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/7ZxgySczxUR1qxuD8cbC.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/7ZxgySczxUR1qxuD8cbC.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/7ZxgySczxUR1qxuD8cbC.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/7ZxgySczxUR1qxuD8cbC.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/7ZxgySczxUR1qxuD8cbC.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/7ZxgySczxUR1qxuD8cbC.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/7ZxgySczxUR1qxuD8cbC.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/7ZxgySczxUR1qxuD8cbC.png?auto=format&w=800 800w"          width="400"   />
+  <figcaption class="w-figcaption">Devtools shows the both <code>grid-gap<code> and <code>gap</code>, with <code>gap</code> shown used below <code>grid-gap</code> as to let the cascade use the latest syntax.</figcaption>
+</figure>
+<p>DevTools supports both <code>grid-gap</code> and <code>gap</code>, this is because <code>gap</code> is essentially
+an alias to the previous syntaxes.</p>
+<h2 id="new-layout-potential">New layout potential <a class="w-headline-link" href="#new-layout-potential">#</a></h2>
+<p>With Flexbox <code>gap</code>, we unlock more than convenience. We unlock powerful, perfectly
+spaced, intrinsic layouts. In the video and following code sample below, Grid
+cannot achieve the layout that Flexbox can. Grid must have equal rows and columns,
+even if they're intrinsically assigned.</p>
+<figure class="w-figure">
+  <video controls autoplay loop muted class="w-screenshot">
+    <source src="https://storage.googleapis.com/web-dev-assets/flexbox-gap/flex-gap-v1.webm" type="video/webm">
+    <source src="https://storage.googleapis.com/web-dev-assets/flexbox-gap/flex-gap-v1.mp4">
+  </video>
+  <figcaption class="w-figcaption">
+    <a href="https://twitter.com/argyleink/status/1255201934241198081?s=20">Tweet</a>
+  </figcaption>
+</figure>
+<p>Also, notice how dynamic the spacing between children is when they wrap intrinsically
+like that. Media queries can't detect wrapping like that to make intelligent adjustments.
+Flexbox <code>gap</code> can, and will, do it for you across all internationalizations.</p>
+<h2 id="multi-column-gap">Multi-column <code>gap</code> <a class="w-headline-link" href="#multi-column-gap">#</a></h2>
+<p>In addition to Flexbox supporting the <code>gap</code> syntax, multi-column layouts also support
+the shorter <code>gap</code> syntax.</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="highlight-line"><span class="token selector">article</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">  <span class="token property">column-width</span><span class="token punctuation">:</span> 40ch<span class="token punctuation">;</span></span><br><del class="highlight-line highlight-line-remove">  <span class="token property">column-gap</span><span class="token punctuation">:</span> 5ch<span class="token punctuation">;</span></del><br><ins class="highlight-line highlight-line-add">  <span class="token property">gap</span><span class="token punctuation">:</span> 5ch<span class="token punctuation">;</span></ins><br><span class="highlight-line"><span class="token punctuation">}</span></span></code></pre>
+</web-copy-code><p>Pretty rad.</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Jun 19, 2020</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/flexbox-gap/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions="api"></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

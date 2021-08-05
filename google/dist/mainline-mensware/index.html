@@ -1,0 +1,848 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=f8bc8a335afd9">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Mainline Menswear implements PWA and sees a 55% conversion rate uplift</title>
+<meta name="description" content="Mainline Menswear implements a Progressive Web App (PWA) and sees a 55% conversion rate uplift for users that installed the app with caching and offline capabilities. " />
+
+<link rel="canonical" href="https://web.dev/mainline-mensware/" />
+
+<meta itemprop="name" content="Mainline Menswear implements PWA and sees a 55% conversion rate uplift" />
+<meta itemprop="description" content="Mainline Menswear implements a Progressive Web App (PWA) and sees a 55% conversion rate uplift for users that installed the app with caching and offline capabilities. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/Yz5G0leLpdHLidygym31.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/mainline-mensware/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Mainline Menswear implements PWA and sees a 55% conversion rate uplift" />
+<meta property="og:description" content="Mainline Menswear implements a Progressive Web App (PWA) and sees a 55% conversion rate uplift for users that installed the app with caching and offline capabilities. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/Yz5G0leLpdHLidygym31.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="" />
+<meta property="tag" content="case-study" />
+<meta property="tag" content="service-worker" />
+<meta property="tag" content="progressive-web-apps" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Mainline Menswear implements PWA and sees a 55% conversion rate uplift" />
+<meta name="twitter:description" content="Mainline Menswear implements a Progressive Web App (PWA) and sees a 55% conversion rate uplift for users that installed the app with caching and offline capabilities. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/Yz5G0leLpdHLidygym31.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=96c1a9f311813', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=da4e2968667b6', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="Hero Image"     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/Yz5G0leLpdHLidygym31.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/Yz5G0leLpdHLidygym31.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/Yz5G0leLpdHLidygym31.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/Yz5G0leLpdHLidygym31.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/Yz5G0leLpdHLidygym31.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/Yz5G0leLpdHLidygym31.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/Yz5G0leLpdHLidygym31.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/Yz5G0leLpdHLidygym31.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/Yz5G0leLpdHLidygym31.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/Yz5G0leLpdHLidygym31.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/Yz5G0leLpdHLidygym31.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/Yz5G0leLpdHLidygym31.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/Yz5G0leLpdHLidygym31.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/Yz5G0leLpdHLidygym31.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/Yz5G0leLpdHLidygym31.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/Yz5G0leLpdHLidygym31.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/Yz5G0leLpdHLidygym31.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/Yz5G0leLpdHLidygym31.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#mainline-menswear-implements-pwa-and-sees-a-55percent-conversion-rate-uplift" class="w-toc__header--link">
+        Mainline Menswear implements PWA and sees a 55% conversion rate uplift
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#challenge">Challenge</a></li><li><a href="#solution">Solution</a></li><li><a href="#results">Results</a></li><li><a href="#technical-deep-dive">Technical deep dive</a></li><li><a href="#generating-a-service-worker-file">Generating a service worker file</a></li><li><a href="#anatomy-of-the-web-app-manifest">Anatomy of the web app manifest</a></li><li><a href="#runtime-caching-for-faster-navigations">Runtime caching for faster navigations</a></li><li><a href="#providing-offline-functionality">Providing offline functionality</a></li><li><a href="#demo">Demo</a></li><li><a href="#reporting-successful-installs">Reporting successful installs</a></li><li><a href="#conclusion">Conclusion</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@charistheo_dev | i18n.authors.natashakosoglov.title | @tomayac"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="mainline-menswear-implements-pwa-and-sees-a-55percent-conversion-rate-uplift" class="w-article-header__headline">Mainline Menswear implements PWA and sees a 55% conversion rate uplift</h1>
+      
+
+      
+        <div class="w-author__published">
+          <time>Apr 20, 2021</time>
+           <span class="w-author__separator">•</span> Updated <time>May 19, 2021</time> 
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/charistheodoulou/"><img     alt="Charis Theodoulou"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/RDHNBibB1P7yeOIrw0JX.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/RDHNBibB1P7yeOIrw0JX.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/RDHNBibB1P7yeOIrw0JX.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/RDHNBibB1P7yeOIrw0JX.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/RDHNBibB1P7yeOIrw0JX.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/RDHNBibB1P7yeOIrw0JX.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/charistheodoulou/">Charis Theodoulou</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/charistheo_dev"
+          >Twitter</a
+        >
+      </li>
+      
+      
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://www.charistheo.io/">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+            <div class="w-author">
+  <a href="/authors/natashakosoglov/"><img     alt="Natasha Kosoglov"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/ccGMk9IszZxs7LbBum7s.png?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/ccGMk9IszZxs7LbBum7s.png?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/ccGMk9IszZxs7LbBum7s.png?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/ccGMk9IszZxs7LbBum7s.png?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/ccGMk9IszZxs7LbBum7s.png?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/ccGMk9IszZxs7LbBum7s.png?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/natashakosoglov/">Natasha Kosoglov</a>
+    </cite>
+    
+  </div>
+</div>
+          
+            <div class="w-author">
+  <a href="/authors/thomassteiner/"><img     alt="Thomas Steiner"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/thomassteiner/">Thomas Steiner</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/tomayac"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/tomayac">GitHub</a>
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://glitch.com/@tomayac"
+          >Glitch</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://blog.tomayac.com/">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>Mainline is an online clothing retailer that offers the biggest designer brand names in fashion. The
+UK-based company entrusts its team of in-house experts, blended strategically with key partners, to
+provide a frictionless shopping experience for all. With market presence in over 100 countries via
+seven custom-built territorial websites and an app, Mainline will continue to ensure the ecommerce
+offering is rivalling the competition.</p>
+<h2 id="challenge">Challenge <a class="w-headline-link" href="#challenge">#</a></h2>
+<p>Mainline Menswear's goal was to complement the current mobile optimized website with progressive
+features that would adhere to their 'mobile first' vision, focusing on mobile-friendly design and
+functionality with a growing smartphone market in mind.</p>
+<h2 id="solution">Solution <a class="w-headline-link" href="#solution">#</a></h2>
+<p>The objective was to build and launch a PWA that complemented the original mobile friendly version
+of the Mainline Menswear website, and then compare the stats to their hybrid mobile app,
+which is currently available on Android and iOS.</p>
+<p>Once the app launched and was being used by a small section of Mainline Menswear users, they were able to
+determine the difference in key stats between PWA, app, and Web.</p>
+<p>The approach Mainline took when converting their website to a PWA was to make sure that
+the framework they selected for their website (Nuxt.js, utilizing Vue.js) would be future-proof
+and enable them to take advantage of fast moving web technology.</p>
+<h2 id="results">Results <a class="w-headline-link" href="#results">#</a></h2>
+<div class="w-stats">
+  <div class="w-stat">
+    <p class="w-stat__figure">139<sub class="w-stat__sub">%</sub></p>
+    <p class="w-stat__desc">More pages per session in PWA vs. web.</p>
+  </div>
+  <div class="w-stat">
+    <p class="w-stat__figure">161<sub class="w-stat__sub">%</sub></p>
+    <p class="w-stat__desc">Longer session durations in PWA vs. web.</p>
+  </div>
+  <div class="w-stat">
+    <p class="w-stat__figure">10<sub class="w-stat__sub">%</sub></p>
+    <p class="w-stat__desc">Lower bounce rate in PWA vs. web</p>
+  </div>
+</div>
+<div class="w-stats">
+  <div class="w-stat">
+    <p class="w-stat__figure">12.5<sub class="w-stat__sub">%</sub></p>
+    <p class="w-stat__desc">Higher average order value in PWA vs. web</p>
+  </div>
+  <div class="w-stat">
+    <p class="w-stat__figure">55<sub class="w-stat__sub">%</sub></p>
+    <p class="w-stat__desc">Higher conversion rate in PWA vs. web.</p>
+  </div>
+  <div class="w-stat">
+    <p class="w-stat__figure">243<sub class="w-stat__sub">%</sub></p>
+    <p class="w-stat__desc">Higher revenue per session in PWA vs. web.</p>
+  </div>
+</div>
+<h2 id="technical-deep-dive">Technical deep dive <a class="w-headline-link" href="#technical-deep-dive">#</a></h2>
+<p><a href="https://www.mainlinemenswear.co.uk/" rel="noopener">Mainline Menswear</a> is using the
+<a href="https://nuxtjs.org/" rel="noopener">Nuxt.js framework</a> to bundle and render their site, which is a single page
+application (SPA).</p>
+<h3 id="generating-a-service-worker-file">Generating a service worker file <a class="w-headline-link" href="#generating-a-service-worker-file">#</a></h3>
+<p>For generating the service worker, Mainline Menswear added configuration through a custom
+implementation of the <a href="https://pwa.nuxtjs.org/workbox" rel="noopener"><code>nuxt/pwa</code> Workbox module</a>.</p>
+<p>The reason they forked the <code>nuxt/pwa</code> module was to allow the team to add more customizations to the
+service worker file that they weren't able to or had issues with when using the standard version.
+One such optimization was around the <a href="#providing-offline-functionality">offline functionality</a> of
+the site like, for example, serving a default offline page and gathering analytics while offline.</p>
+<h3 id="anatomy-of-the-web-app-manifest">Anatomy of the web app manifest <a class="w-headline-link" href="#anatomy-of-the-web-app-manifest">#</a></h3>
+<p>The team generated a manifest with icons for different mobile app icon sizes and other web app
+details like <code>name</code>, <code>description</code> and <code>theme_color</code>:</p>
+<web-copy-code><pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"Mainline Menswear"</span><span class="token punctuation">,</span><br>  <span class="token property">"short_name"</span><span class="token operator">:</span> <span class="token string">"MMW"</span><span class="token punctuation">,</span><br>  <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"Shop mens designer clothes with Mainline Menswear. Famous brands including Hugo Boss, Adidas, and Emporio Armani."</span><span class="token punctuation">,</span><br>  <span class="token property">"icons"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token punctuation">{</span><br>      <span class="token property">"src"</span><span class="token operator">:</span> <span class="token string">"/_nuxt/icons/icon_512.c2336e.png"</span><span class="token punctuation">,</span><br>      <span class="token property">"sizes"</span><span class="token operator">:</span> <span class="token string">"512x512"</span><span class="token punctuation">,</span><br>      <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"image/png"</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">]</span><span class="token punctuation">,</span><br>  <span class="token property">"theme_color"</span><span class="token operator">:</span> <span class="token string">"#107cbb"</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>The web app, once installed, can be launched from the home screen without the browser getting in the
+way. This is achieved by adding the <code>display</code> parameter in the web app manifest file:</p>
+<web-copy-code><pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"display"</span><span class="token operator">:</span> <span class="token string">"standalone"</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>Last but not the least, the company is now able to easily track how many users are visiting their
+web app from the home screen by simply appending a <code>utm_source</code> parameter in the <code>start_url</code> field of
+the manifest:</p>
+<web-copy-code><pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"start_url"</span><span class="token operator">:</span> <span class="token string">"/?utm_source=pwa"</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><div class="w-aside w-aside--note">
+<p>See <a href="/add-manifest/">Add a web app manifest</a> for a more in-depth explanation of all the
+web app manifest fields. </div></p>
+<h3 id="runtime-caching-for-faster-navigations">Runtime caching for faster navigations <a class="w-headline-link" href="#runtime-caching-for-faster-navigations">#</a></h3>
+<p>Caching for web apps is a must for page speed optimization and for providing a better user
+experience for returning users.</p>
+<p>For caching on the web, there are quite a few
+<a href="https://dev.to/jonchen/service-worker-caching-and-http-caching-p82" rel="noopener">different approaches</a>. The team
+is using a mix of the <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Caching" rel="noopener">HTTP cache</a> and
+the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Cache" rel="noopener">Cache API</a> for caching assets on the
+client side.</p>
+<p>The Cache API gives Mainline Menswear finer control over the cached assets, allowing them to apply
+complex strategies to each file type. While all this sounds complicated and hard to set up and
+maintain, <a href="https://developers.google.com/web/tools/workbox" rel="noopener">Workbox</a> provides them with an easy
+way of declaring such complex strategies and eases the pain of maintenance.</p>
+<h4 id="caching-css-and-js">Caching CSS and JS <a class="w-headline-link" href="#caching-css-and-js">#</a></h4>
+<p>For CSS and JS files, the team chose to cache them and serve them over the cache using the
+<a href="https://developers.google.com/web/tools/workbox/reference-docs/latest/module-workbox-strategies.StaleWhileRevalidate" rel="noopener"><code>StaleWhileRevalidate</code></a>
+Workbox strategy. This strategy allows them to serve all Nuxt CSS and JS files fast,
+which significantly increases their site's performance.
+At the same time, the files are being updated in the background to the latest version for the next visit:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token comment">/* sw.js */</span><br>workbox<span class="token punctuation">.</span>routing<span class="token punctuation">.</span><span class="token function">registerRoute</span><span class="token punctuation">(</span><br>  <span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">\/_nuxt\/.*(?:js|css)$</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">,</span><br>  <span class="token keyword">new</span> <span class="token class-name">workbox<span class="token punctuation">.</span>strategies<span class="token punctuation">.</span>StaleWhileRevalidate</span><span class="token punctuation">(</span><span class="token punctuation">{</span><br>    cacheName<span class="token operator">:</span> <span class="token string">'css_js'</span><span class="token punctuation">,</span><br>  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span><br>  <span class="token string">'GET'</span><span class="token punctuation">,</span><br><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><h4 id="caching-google-fonts">Caching Google fonts <a class="w-headline-link" href="#caching-google-fonts">#</a></h4>
+<p>The strategy for caching Google Fonts depends on two file types:</p>
+<ul>
+<li>The stylesheet that contains the <code>@font-face</code> declarations.</li>
+<li>The underlying font files (requested within the stylesheet mentioned above).</li>
+</ul>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token comment">// Cache the Google Fonts stylesheets with a stale-while-revalidate strategy.</span><br>workbox<span class="token punctuation">.</span>routing<span class="token punctuation">.</span><span class="token function">registerRoute</span><span class="token punctuation">(</span><br>  <span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">https:\/\/fonts\.googleapis\.com\/*</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">,</span><br>  <span class="token keyword">new</span> <span class="token class-name">workbox<span class="token punctuation">.</span>strategies<span class="token punctuation">.</span>StaleWhileRevalidate</span><span class="token punctuation">(</span><span class="token punctuation">{</span><br>    cacheName<span class="token operator">:</span> <span class="token string">'google_fonts_stylesheets'</span><span class="token punctuation">,</span><br>  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span><br>  <span class="token string">'GET'</span><span class="token punctuation">,</span><br><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token comment">// Cache the underlying font files with a cache-first strategy for 1 year.</span><br>workbox<span class="token punctuation">.</span>routing<span class="token punctuation">.</span><span class="token function">registerRoute</span><span class="token punctuation">(</span><br>  <span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">https:\/\/fonts\.gstatic\.com\/*</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">,</span><br>  <span class="token keyword">new</span> <span class="token class-name">workbox<span class="token punctuation">.</span>strategies<span class="token punctuation">.</span>CacheFirst</span><span class="token punctuation">(</span><span class="token punctuation">{</span><br>    cacheName<span class="token operator">:</span> <span class="token string">'google_fonts_webfonts'</span><span class="token punctuation">,</span><br>    plugins<span class="token operator">:</span> <span class="token punctuation">[</span><br>      <span class="token keyword">new</span> <span class="token class-name">workbox<span class="token punctuation">.</span>cacheableResponse<span class="token punctuation">.</span>CacheableResponsePlugin</span><span class="token punctuation">(</span><span class="token punctuation">{</span><br>        statuses<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">200</span><span class="token punctuation">]</span><span class="token punctuation">,</span><br>      <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span><br>      <span class="token keyword">new</span> <span class="token class-name">workbox<span class="token punctuation">.</span>expiration<span class="token punctuation">.</span>ExpirationPlugin</span><span class="token punctuation">(</span><span class="token punctuation">{</span><br>        maxAgeSeconds<span class="token operator">:</span> <span class="token number">60</span> <span class="token operator">*</span> <span class="token number">60</span> <span class="token operator">*</span> <span class="token number">24</span> <span class="token operator">*</span> <span class="token number">365</span><span class="token punctuation">,</span> <span class="token comment">// 1 year</span><br>        maxEntries<span class="token operator">:</span> <span class="token number">30</span><span class="token punctuation">,</span><br>      <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span><br>    <span class="token punctuation">]</span><span class="token punctuation">,</span><br>  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span><br>  <span class="token string">'GET'</span><span class="token punctuation">,</span><br><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><div class="w-aside w-aside--note">
+<p>A full example of the common Google Fonts strategy can be found in the
+<a href="https://developers.google.com/web/tools/workbox/guides/common-recipes#google_fonts" rel="noopener">Workbox Docs</a>.</p>
+</div>
+<h4 id="caching-images">Caching images <a class="w-headline-link" href="#caching-images">#</a></h4>
+<p>For images, Mainline Menswear decided to go with two strategies. The first strategy applies
+to all images coming from their CDN, which are usually product images. Their pages are image-heavy so
+they are conscious of not taking too much of their users' device storage. So through Workbox, they
+added a strategy that is <strong>caching images coming only from their CDN</strong> with a <strong>maximum
+of 60 images</strong> using the
+<a href="https://developers.google.com/web/tools/workbox/reference-docs/latest/module-workbox-expiration.ExpirationPlugin" rel="noopener"><code>ExpirationPlugin</code></a>.</p>
+<p>The 61st (newest) image requested, replaces the 1st (oldest) image so that no more than 60 product
+images are cached at any point in time.</p>
+<web-copy-code><pre class="language-js"><code class="language-js">workbox<span class="token punctuation">.</span>routing<span class="token punctuation">.</span><span class="token function">registerRoute</span><span class="token punctuation">(</span><br>  <span class="token punctuation">(</span><span class="token parameter"><span class="token punctuation">{</span> url<span class="token punctuation">,</span> request <span class="token punctuation">}</span></span><span class="token punctuation">)</span> <span class="token operator">=></span><br>    url<span class="token punctuation">.</span>origin <span class="token operator">===</span> <span class="token string">'https://mainline-menswear-res.cloudinary.com'</span> <span class="token operator">&amp;&amp;</span><br>    request<span class="token punctuation">.</span>destination <span class="token operator">===</span> <span class="token string">'image'</span><span class="token punctuation">,</span><br>  <span class="token keyword">new</span> <span class="token class-name">workbox<span class="token punctuation">.</span>strategies<span class="token punctuation">.</span>StaleWhileRevalidate</span><span class="token punctuation">(</span><span class="token punctuation">{</span><br>    cacheName<span class="token operator">:</span> <span class="token string">'product_images'</span><span class="token punctuation">,</span><br>    plugins<span class="token operator">:</span> <span class="token punctuation">[</span><br>      <span class="token keyword">new</span> <span class="token class-name">workbox<span class="token punctuation">.</span>expiration<span class="token punctuation">.</span>ExpirationPlugin</span><span class="token punctuation">(</span><span class="token punctuation">{</span><br>        <span class="token comment">// Only cache 60 images.</span><br>        maxEntries<span class="token operator">:</span> <span class="token number">60</span><span class="token punctuation">,</span><br>        purgeOnQuotaError<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>      <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span><br>    <span class="token punctuation">]</span><span class="token punctuation">,</span><br>  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span><br><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>The second image strategy handles the rest of the images being requested by the origin.
+These images tend to be very few and small across the whole origin, but to be on the safe side,
+the number of these cached images is also limited to 60.</p>
+<web-copy-code><pre class="language-js"><code class="language-js">workbox<span class="token punctuation">.</span>routing<span class="token punctuation">.</span><span class="token function">registerRoute</span><span class="token punctuation">(</span><br>  <span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">\.(?:png|gif|jpg|jpeg|svg|webp)$</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">,</span><br>  <span class="token keyword">new</span> <span class="token class-name">workbox<span class="token punctuation">.</span>strategies<span class="token punctuation">.</span>StaleWhileRevalidate</span><span class="token punctuation">(</span><span class="token punctuation">{</span><br>    cacheName<span class="token operator">:</span> <span class="token string">'images'</span><span class="token punctuation">,</span><br>    plugins<span class="token operator">:</span> <span class="token punctuation">[</span><br>      <span class="token keyword">new</span> <span class="token class-name">workbox<span class="token punctuation">.</span>expiration<span class="token punctuation">.</span>ExpirationPlugin</span><span class="token punctuation">(</span><span class="token punctuation">{</span><br>        <span class="token comment">// Only cache 60 images.</span><br>        maxEntries<span class="token operator">:</span> <span class="token number">60</span><span class="token punctuation">,</span><br>        purgeOnQuotaError<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>      <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span><br>    <span class="token punctuation">]</span><span class="token punctuation">,</span><br>  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span><br><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><div class="w-aside w-aside--objective">
+<p><strong>Objective</strong>:  Even though the caching strategy is exactly the same as the previous one, by
+splitting images into two caches (<code>product_images</code> and <code>images</code>), it allows for more flexible
+updates to the strategies or caches. </div></p>
+<h3 id="providing-offline-functionality">Providing offline functionality <a class="w-headline-link" href="#providing-offline-functionality">#</a></h3>
+<p>The offline page is precached right after the service worker is installed and activated. They do
+this by creating a list of all offline dependencies: the offline HTML file and an offline SVG icon.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> <span class="token constant">OFFLINE_HTML</span> <span class="token operator">=</span> <span class="token string">'/offline/offline.html'</span><span class="token punctuation">;</span><br><span class="token keyword">const</span> <span class="token constant">PRECACHE</span> <span class="token operator">=</span> <span class="token punctuation">[</span><br>  <span class="token punctuation">{</span> url<span class="token operator">:</span> <span class="token constant">OFFLINE_HTML</span><span class="token punctuation">,</span> revision<span class="token operator">:</span> <span class="token string">'70f044fda3e9647a98f084763ae2c32a'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span><br>  <span class="token punctuation">{</span> url<span class="token operator">:</span> <span class="token string">'/offline/offline.svg'</span><span class="token punctuation">,</span> revision<span class="token operator">:</span> <span class="token string">'efe016c546d7ba9f20aefc0afa9fc74a'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span><br><span class="token punctuation">]</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>The precache list is then fed into Workbox which takes care of all the heavy lifting of adding the
+URLs to the cache, checking for any revision mismatch, updating, and serving the
+precached files with a <code>CacheFirst</code> strategy.</p>
+<web-copy-code><pre class="language-js"><code class="language-js">workbox<span class="token punctuation">.</span>precaching<span class="token punctuation">.</span><span class="token function">precacheAndRoute</span><span class="token punctuation">(</span><span class="token constant">PRECACHE</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><h4 id="handling-offline-navigations">Handling offline navigations <a class="w-headline-link" href="#handling-offline-navigations">#</a></h4>
+<p>Once the service worker activates and the offline page is precached, it is then used to <strong>respond to
+offline navigation requests by the user</strong>. While Mainline Menswear's web app is an SPA, the offline
+page shows only after the page reloads, the user closes and reopens the browser tab, or when the web
+app is launched from the home screen while offline.</p>
+<p>To achieve this, Mainline Menswear provided a fallback to failed
+<a href="https://developers.google.com/web/tools/workbox/reference-docs/latest/module-workbox-routing.NavigationRoute" rel="noopener"><code>NavigationRoute</code></a>
+requests with the precached offline page:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="highlight-line"><span class="token keyword">const</span> htmlHandler <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">workbox<span class="token punctuation">.</span>strategies<span class="token punctuation">.</span>NetworkOnly</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line"><span class="token keyword">const</span> navigationRoute <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">workbox<span class="token punctuation">.</span>routing<span class="token punctuation">.</span>NavigationRoute</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter"><span class="token punctuation">{</span> event <span class="token punctuation">}</span></span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span></span><br><span class="highlight-line">    <span class="token keyword">const</span> request <span class="token operator">=</span> event<span class="token punctuation">.</span>request<span class="token punctuation">;</span></span><br><span class="highlight-line">    <span class="token comment">// A NavigationRoute matches navigation requests in the browser, i.e. requests for HTML</span></span><br><mark class="highlight-line highlight-line-active">    <span class="token keyword">return</span> htmlHandler<span class="token punctuation">.</span><span class="token function">handle</span><span class="token punctuation">(</span><span class="token punctuation">{</span> event<span class="token punctuation">,</span> request <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">catch</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> caches<span class="token punctuation">.</span><span class="token function">match</span><span class="token punctuation">(</span><span class="token constant">OFFLINE_HTML</span><span class="token punctuation">,</span> <span class="token punctuation">{</span></mark><br><mark class="highlight-line highlight-line-active">        ignoreSearch<span class="token operator">:</span> <span class="token boolean">true</span></mark><br><mark class="highlight-line highlight-line-active">    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></mark><br><span class="highlight-line"><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line">workbox<span class="token punctuation">.</span>routing<span class="token punctuation">.</span><span class="token function">registerRoute</span><span class="token punctuation">(</span>navigationRoute<span class="token punctuation">)</span><span class="token punctuation">;</span></span></code></pre>
+</web-copy-code><h2 id="demo">Demo <a class="w-headline-link" href="#demo">#</a></h2>
+<figure class="w-figure">
+  <video      autoplay                                          loop      muted      playsinline                  width="300"    >      <source src="https://storage.googleapis.com/web-dev-uploads/video/8WbTDNrhLsU0El80frMBGE4eMCD3/eJgApjFLpSRFMcMyC4e0.mp4" type="video/mp4" />    </video>
+  <figcaption class="w-figcaption">Offline page example as seen on www.mainlinemenswear.co.uk.</figcaption>
+</figure>
+<h3 id="reporting-successful-installs">Reporting successful installs <a class="w-headline-link" href="#reporting-successful-installs">#</a></h3>
+<p>Apart from the home screen launch tracking (with <code>&quot;start_url&quot;: &quot;/?utm_source=pwa&quot;</code> in the web
+application manifest), the web app also reports successful app installs by listening to the
+<code>appinstalled</code> event on <code>window</code>:</p>
+<web-copy-code><pre class="language-js"><code class="language-js">window<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'appinstalled'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token parameter">evt</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token function">ga</span><span class="token punctuation">(</span><span class="token string">'send'</span><span class="token punctuation">,</span> <span class="token string">'event'</span><span class="token punctuation">,</span> <span class="token string">'Install'</span><span class="token punctuation">,</span> <span class="token string">'Success'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><blockquote>
+   Adding PWA capabilities to your website will
+  further enhance your customers experience of shopping with you, and will be quicker to market than a
+  [platform-specific] app. 
+  <cite>Andy Hoyle, Head of Development</cite>
+</blockquote>
+<h2 id="conclusion">Conclusion <a class="w-headline-link" href="#conclusion">#</a></h2>
+<p>To learn more about progressive web apps and how to build them, head to the
+<a href="/progressive-web-apps/">Progressive Web Apps section</a> on web.dev.</p>
+<p>To read more Progressive Web Apps case studies, browse to the
+<a href="https://web.dev/tags/case-study/">case studies section</a>.</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/case-study/">Case Study</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/service-worker/">Service Worker</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/progressive-web-apps/">Progressive Web Apps</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>May 19, 2021</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/mainline-mensware/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

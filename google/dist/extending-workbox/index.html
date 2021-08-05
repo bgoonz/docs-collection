@@ -1,0 +1,883 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=209cf8ea32e">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Extending Workbox</title>
+<meta name="description" content="Write your own reusable, shareable strategies and plugins. " />
+
+<link rel="canonical" href="https://web.dev/extending-workbox/" />
+
+<meta itemprop="name" content="Extending Workbox" />
+<meta itemprop="description" content="Write your own reusable, shareable strategies and plugins. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/XwmqHMJ27IY2gatiI6Ly.png?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/extending-workbox/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Extending Workbox" />
+<meta property="og:description" content="Write your own reusable, shareable strategies and plugins. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/XwmqHMJ27IY2gatiI6Ly.png?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="The Workbox logo." />
+<meta property="tag" content="service-worker" />
+<meta property="tag" content="offline" />
+<meta property="tag" content="network" />
+<meta property="tag" content="progressive-web-apps" />
+<meta property="tag" content="performance" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Extending Workbox" />
+<meta name="twitter:description" content="Write your own reusable, shareable strategies and plugins. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/XwmqHMJ27IY2gatiI6Ly.png?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=4593a16cbd168', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=510020681e96f', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="The Workbox logo."     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/KW5Rgyo01HyimeALdCZD.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/KW5Rgyo01HyimeALdCZD.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/KW5Rgyo01HyimeALdCZD.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/KW5Rgyo01HyimeALdCZD.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/KW5Rgyo01HyimeALdCZD.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/KW5Rgyo01HyimeALdCZD.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/KW5Rgyo01HyimeALdCZD.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/KW5Rgyo01HyimeALdCZD.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/KW5Rgyo01HyimeALdCZD.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/KW5Rgyo01HyimeALdCZD.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/KW5Rgyo01HyimeALdCZD.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/KW5Rgyo01HyimeALdCZD.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/KW5Rgyo01HyimeALdCZD.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/KW5Rgyo01HyimeALdCZD.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/KW5Rgyo01HyimeALdCZD.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/KW5Rgyo01HyimeALdCZD.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/KW5Rgyo01HyimeALdCZD.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/KW5Rgyo01HyimeALdCZD.png?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#extending-workbox" class="w-toc__header--link">
+        Extending Workbox
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#what's-workbox">What's Workbox?</a></li><li><a href="#custom-strategies">Custom strategies</a></li><li><a href="#handle-simultaneous-duplicate-requests-with-dedupenetworkfirst">Handle simultaneous, duplicate requests with DedupeNetworkFirst</a></li><li><a href="#create-a-race-between-the-cache-and-network-with-cachenetworkrace">Create a race between the cache and network with CacheNetworkRace</a></li><li><a href="#stategyhandler:-the-recommended-approach-for-creating-custom-strategies">StategyHandler: the recommended approach for creating custom strategies</a></li><li><a href="#drop-in-support-for-routing">Drop-in support for routing</a></li><li><a href="#custom-plugins">Custom plugins</a></li><li><a href="#lifecycle-event-overview">Lifecycle event overview</a></li><li><a href="#lifecycle-events-example:-fallbackonerrorplugin">Lifecycle events example: FallbackOnErrorPlugin</a></li><li><a href="#custom-strategy-or-custom-plugin">Custom strategy or custom plugin?</a></li><li><a href="#takeaways">Takeaways</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@jeffposnick"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="extending-workbox" class="w-article-header__headline">Extending Workbox</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          <p>Write your own reusable, shareable strategies and plugins.</p>
+
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Dec 10, 2020</time>
+          
+        </div>
+      
+      <div class="w-layout-container--narrow w-post-signpost">
+  <span class="w-post-signpost__title">Appears in:</span>
+  <a
+          class="w-post-signpost__link"
+          href="/reliable"
+          >Network reliability</a
+        >
+</div>
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/jeffposnick/"><img     alt="Jeff Posnick"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/uskKSRCW1HyOTCjtdMdo.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/uskKSRCW1HyOTCjtdMdo.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/uskKSRCW1HyOTCjtdMdo.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/uskKSRCW1HyOTCjtdMdo.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/uskKSRCW1HyOTCjtdMdo.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/uskKSRCW1HyOTCjtdMdo.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/jeffposnick/">Jeff Posnick</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/jeffposnick"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/jeffposnick">GitHub</a>
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://glitch.com/@jeffposnick"
+          >Glitch</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/jeffposnick">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>In this article, we're going to take a quick tour of some ways of extending
+<a href="https://developers.google.com/web/tools/workbox" rel="noopener">Workbox</a>. By the end, you'll
+be writing your own strategies and plugins, and hopefully sharing them with the
+world.</p>
+<p>If you're more of a visual person, you can watch a recording of a Chrome
+Dev Summit talk covering the same material:</p>
+<div class="youtube">  <lite-youtube    videoid="jR9-aDWZeSE"      >  </lite-youtube></div>
+<h2 id="what's-workbox">What's Workbox? <a class="w-headline-link" href="#what's-workbox">#</a></h2>
+<p>At its core, Workbox is a set of libraries to help with common service worker
+caching scenarios. And when we've written about Workbox in the past, the
+emphasis has been on &quot;common&quot; scenarios. For most developers, the
+<a href="https://developers.google.com/web/tools/workbox/modules/workbox-strategies" rel="noopener">caching strategies</a>
+that Workbox already provides will handle your caching needs.</p>
+<p>The built-in strategies include
+<a href="https://developers.google.com/web/tools/workbox/modules/workbox-strategies#stale-while-revalidate" rel="noopener">stale-while-revalidate</a>,
+where a cached response is used to respond to a request immediately, while the
+cache is also updated so that it's fresh the next time around. They also include
+<a href="https://developers.google.com/web/tools/workbox/modules/workbox-strategies#network_first_network_falling_back_to_cache" rel="noopener">network-first</a>,
+falling back to the cache when the network is unavailable, and a few more.</p>
+<h2 id="custom-strategies">Custom strategies <a class="w-headline-link" href="#custom-strategies">#</a></h2>
+<p>But what if you wanted to go beyond those common caching scenarios? Let's cover
+writing your own custom caching strategies.
+<a href="https://github.com/GoogleChrome/workbox/releases/tag/v6.0.0" rel="noopener">Workbox v6</a> offers
+a new <a href="https://developers.google.com/web/tools/workbox/reference-docs/latest/module-workbox-strategies.Strategy" rel="noopener"><code>Strategy</code> base class</a> that sits in front of lower-level APIs, like
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API" rel="noopener">Fetch</a> and
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/CacheStorage" rel="noopener">Cache Storage</a>.
+You can extend the <code>Strategy</code> base class, and then implement your own logic in
+the <a href="https://developers.google.com/web/tools/workbox/reference-docs/latest/module-workbox-strategies.Strategy#_handle" rel="noopener"><code>_handle()</code> method</a>.</p>
+<h3 id="handle-simultaneous-duplicate-requests-with-dedupenetworkfirst">Handle simultaneous, duplicate requests with DedupeNetworkFirst <a class="w-headline-link" href="#handle-simultaneous-duplicate-requests-with-dedupenetworkfirst">#</a></h3>
+<p>For instance, imagine that you want to implement a strategy that can handle
+multiple, simultaneous requests for the same URL by deduplicating them. A copy
+of the response is then used to fulfill all of the in-flight requests, saving
+bandwidth that would otherwise be wasted.</p>
+<p>Here's the code you can use to implement that, by extending the <a href="https://developers.google.com/web/tools/workbox/reference-docs/latest/module-workbox-strategies.NetworkFirst" rel="noopener"><code>NetworkFirst</code>
+strategy</a> (which itself extends the <code>Strategy</code> base):</p>
+<web-copy-code><pre class="language-javascript"><code class="language-javascript"><span class="token comment">// See https://developers.google.com/web/tools/workbox/guides/using-bundlers</span><br><span class="token keyword">import</span> <span class="token punctuation">{</span>NetworkFirst<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'workbox-strategies'</span><span class="token punctuation">;</span><br><br><span class="token keyword">class</span> <span class="token class-name">DedupeNetworkFirst</span> <span class="token keyword">extends</span> <span class="token class-name">NetworkFirst</span> <span class="token punctuation">{</span><br>  <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token parameter">options</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token keyword">super</span><span class="token punctuation">(</span>options<span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token comment">// This maps inflight requests to response promises.</span><br>    <span class="token keyword">this</span><span class="token punctuation">.</span>_requests <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Map</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><br>  <span class="token comment">// _handle is the standard entry point for our logic.</span><br>  <span class="token keyword">async</span> <span class="token function">_handle</span><span class="token punctuation">(</span><span class="token parameter">request<span class="token punctuation">,</span> handler</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token keyword">let</span> responsePromise <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>_requests<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>request<span class="token punctuation">.</span>url<span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>    <span class="token keyword">if</span> <span class="token punctuation">(</span>responsePromise<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>      <span class="token comment">// If there's already an inflight request, return a copy</span><br>      <span class="token comment">// of the eventual response.</span><br>      <span class="token keyword">const</span> response <span class="token operator">=</span> <span class="token keyword">await</span> responsePromise<span class="token punctuation">;</span><br>      <span class="token keyword">return</span> response<span class="token punctuation">.</span><span class="token function">clone</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span><br>      <span class="token comment">// If there isn't already an inflight request, then use</span><br>      <span class="token comment">// the _handle() method of NetworkFirst to kick one off.</span><br>      responsePromise <span class="token operator">=</span> <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">_handle</span><span class="token punctuation">(</span>request<span class="token punctuation">,</span> handler<span class="token punctuation">)</span><span class="token punctuation">;</span><br>      <span class="token keyword">this</span><span class="token punctuation">.</span>_requests<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span>request<span class="token punctuation">.</span>url<span class="token punctuation">,</span> responsePromise<span class="token punctuation">)</span><span class="token punctuation">;</span><br>      <span class="token keyword">try</span> <span class="token punctuation">{</span><br>        <span class="token keyword">const</span> response <span class="token operator">=</span> <span class="token keyword">await</span> responsePromise<span class="token punctuation">;</span><br>        <span class="token keyword">return</span> response<span class="token punctuation">.</span><span class="token function">clone</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>      <span class="token punctuation">}</span> <span class="token keyword">finally</span> <span class="token punctuation">{</span><br>        <span class="token comment">// Make sure to clean up after a batch of inflight</span><br>        <span class="token comment">// requests are fulfilled!</span><br>        <span class="token keyword">this</span><span class="token punctuation">.</span>_requests<span class="token punctuation">.</span><span class="token function">delete</span><span class="token punctuation">(</span>request<span class="token punctuation">.</span>url<span class="token punctuation">)</span><span class="token punctuation">;</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><div class="w-aside w-aside--note">
+<p>This code assumes that all requests for the same URL can be
+satisfied with the same response, which won't always be the case if cookies or
+session state information comes into play.</p>
+</div>
+<h3 id="create-a-race-between-the-cache-and-network-with-cachenetworkrace">Create a race between the cache and network with CacheNetworkRace <a class="w-headline-link" href="#create-a-race-between-the-cache-and-network-with-cachenetworkrace">#</a></h3>
+<p>Here's another example of a custom strategy—one that's a twist on
+stale-while-revalidate, where both the network and cache are checked at the same
+time, with a race to see which will return a response first.</p>
+<web-copy-code><pre class="language-javascript"><code class="language-javascript"><span class="token comment">// See https://developers.google.com/web/tools/workbox/guides/using-bundlers</span><br><span class="token keyword">import</span> <span class="token punctuation">{</span>Strategy<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'workbox-strategies'</span><span class="token punctuation">;</span><br><br><span class="token comment">// Instead of extending an existing strategy,</span><br><span class="token comment">// this extends the generic Strategy base class.</span><br><span class="token keyword">class</span> <span class="token class-name">CacheNetworkRace</span> <span class="token keyword">extends</span> <span class="token class-name">Strategy</span> <span class="token punctuation">{</span><br>  <span class="token comment">// _handle is the standard entry point for our logic.</span><br>  <span class="token function">_handle</span><span class="token punctuation">(</span><span class="token parameter">request<span class="token punctuation">,</span> handler</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token comment">// handler is an instance of the StrategyHandler class,</span><br>    <span class="token comment">// and exposes helper methods for interacting with the</span><br>    <span class="token comment">// cache and network.</span><br>    <span class="token keyword">const</span> fetchDone <span class="token operator">=</span> handler<span class="token punctuation">.</span><span class="token function">fetchAndCachePut</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token keyword">const</span> matchDone <span class="token operator">=</span> handler<span class="token punctuation">.</span><span class="token function">cacheMatch</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>    <span class="token comment">// The actual response generation logic relies on a "race"</span><br>    <span class="token comment">// between the network and cache promises.</span><br>    <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Promise</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">resolve<span class="token punctuation">,</span> reject</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>      fetchDone<span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>resolve<span class="token punctuation">)</span><span class="token punctuation">;</span><br>      matchDone<span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">response</span><span class="token punctuation">)</span> <span class="token operator">=></span> response <span class="token operator">&amp;&amp;</span> <span class="token function">resolve</span><span class="token punctuation">(</span>response<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>      <span class="token comment">// Promise.allSettled() is implemented in recent browsers.</span><br>      Promise<span class="token punctuation">.</span><span class="token function">allSettled</span><span class="token punctuation">(</span><span class="token punctuation">[</span>fetchDone<span class="token punctuation">,</span> matchDone<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">results</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>        <span class="token keyword">if</span> <span class="token punctuation">(</span>results<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>status <span class="token operator">===</span> <span class="token string">'rejected'</span> <span class="token operator">&amp;&amp;</span><br>            <span class="token operator">!</span>results<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">.</span>value<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>          <span class="token function">reject</span><span class="token punctuation">(</span>results<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>reason<span class="token punctuation">)</span><span class="token punctuation">;</span><br>        <span class="token punctuation">}</span>  <br>      <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><h2 id="stategyhandler:-the-recommended-approach-for-creating-custom-strategies">StategyHandler: the recommended approach for creating custom strategies <a class="w-headline-link" href="#stategyhandler:-the-recommended-approach-for-creating-custom-strategies">#</a></h2>
+<p>Although it's not required, it's strongly recommended that when interacting with
+the network or cache, you use the instance of the <a href="https://developers.google.com/web/tools/workbox/reference-docs/latest/module-workbox-strategies.StrategyHandler" rel="noopener"><code>StrategyHandler</code> class</a> that's
+passed to your <code>_handle()</code> method. It's the second parameter, called <code>handler</code>
+in the example code.</p>
+<p>This <code>StrategyHandler</code> instance will automatically pick up the cache name you've
+configured for the strategy, and calling its methods will invoke the expected
+plugin lifecycle callbacks that we'll describe soon.</p>
+<p>A <code>StrategyHandler</code> instance supports the following methods:</p>
+<div class="w-table-wrapper">
+  <table>
+    <thead>
+      <tr>
+        <th>Method</th>
+        <th>Purpose</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>fetch</code></td>
+        <td>Calls <code>fetch()</code>, invokes lifecycle events.</td>
+      </tr>
+      <tr>
+        <td><code>cachePut</code></td>
+        <td>Calls <code>cache.put()</code> on the configured cache, invokes lifecycle events.</td>
+      </tr>
+      <tr>
+        <td><code>cacheMatch</code></td>
+        <td>Calls <code>cache.match()</code> on the configured cache, invokes lifecycle events.</td>
+      </tr>
+      <tr>
+        <td><code>fetchAndCachePut</code></td>
+        <td>Calls <code>fetch()</code> and then <code>cache.put()</code> on the configured cache, invokes
+        lifecycle events.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h3 id="drop-in-support-for-routing">Drop-in support for routing <a class="w-headline-link" href="#drop-in-support-for-routing">#</a></h3>
+<p>Writing a Workbox strategy class is a great way to package up response logic in
+a reusable, and shareable, form. But once you've written one, how do you use it
+within your larger Workbox service worker? That's the best part—you can drop any
+of these strategies directly into your existing Workbox
+<a href="https://developers.google.com/web/tools/workbox/guides/route-requests" rel="noopener">routing rules</a>,
+just like any of the &quot;official&quot; strategies.</p>
+<web-copy-code><pre class="language-javascript"><code class="language-javascript"><span class="token comment">// See https://developers.google.com/web/tools/workbox/guides/using-bundlers</span><br><span class="token keyword">import</span> <span class="token punctuation">{</span>ExpirationPlugin<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'workbox-expiration'</span><span class="token punctuation">;</span><br><span class="token keyword">import</span> <span class="token punctuation">{</span>registerRoute<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'workbox-routing'</span><span class="token punctuation">;</span><br><br><span class="token comment">// DedupeNetworkFirst can be defined inline, or imported.</span><br><br><span class="token function">registerRoute</span><span class="token punctuation">(</span><br>  <span class="token punctuation">(</span><span class="token parameter"><span class="token punctuation">{</span>url<span class="token punctuation">}</span></span><span class="token punctuation">)</span> <span class="token operator">=></span> url<span class="token punctuation">.</span>pathname<span class="token punctuation">.</span><span class="token function">startsWith</span><span class="token punctuation">(</span><span class="token string">'/api'</span><span class="token punctuation">)</span><span class="token punctuation">,</span><br>  <span class="token comment">// DedupeNetworkFirst supports the standard strategy</span><br>  <span class="token comment">// configuration options, like cacheName and plugins.</span><br>  <span class="token keyword">new</span> <span class="token class-name">DedupeNetworkFirst</span><span class="token punctuation">(</span><span class="token punctuation">{</span><br>    cacheName<span class="token operator">:</span> <span class="token string">'my-cache'</span><span class="token punctuation">,</span><br>    plugins<span class="token operator">:</span> <span class="token punctuation">[</span><br>      <span class="token keyword">new</span> <span class="token class-name">ExpirationPlugin</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token operator">...</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span><br>    <span class="token punctuation">]</span><br>  <span class="token punctuation">}</span><span class="token punctuation">)</span><br><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>A properly written strategy should automatically work with all plugins as well.
+This applies to the standard plugins that Workbox provides, like the one that
+handles
+<a href="https://developers.google.com/web/tools/workbox/modules/workbox-expiration" rel="noopener">cache expiration</a>.
+But you're not limited to using the standard set of plugins! Another great way
+to extend Workbox is to write your own reusable plugins.</p>
+<h2 id="custom-plugins">Custom plugins <a class="w-headline-link" href="#custom-plugins">#</a></h2>
+<p>Taking a step back, what is a Workbox plugin, and why would you write your own?
+A plugin doesn't fundamentally change the order of network and cache operations
+performed by a strategy. Instead, it allows you to add in extra code that will
+be run at critical points in the lifetime of a request, like when a network
+request fails, or when a cached response is about to be returned to the page.</p>
+<h3 id="lifecycle-event-overview">Lifecycle event overview <a class="w-headline-link" href="#lifecycle-event-overview">#</a></h3>
+<p>Here's an overview of all the events that a plugin could listen to. Technical
+details about implementing callbacks for these events is in the
+<a href="https://developers.google.com/web/tools/workbox/guides/using-plugins" rel="noopener">Workbox documentation</a>.</p>
+<div class="w-table-wrapper">
+  <table>
+    <thead>
+      <tr>
+        <th>Lifecycle Event</th>
+        <th>Purpose</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>cacheWillUpdate</code></td>
+        <td>Change response before it's written to cache.</td>
+      </tr>
+      <tr>
+        <td><code>cacheDidUpdate</code></td>
+        <td>Do something following a cache write.</td>
+      </tr>
+      <tr>
+        <td><code>cacheKeyWillBeUsed</code></td>
+        <td>Override the cache key used for reads or writes.</td>
+      </tr>
+      <tr>
+        <td><code>cachedResponseWillBeUsed</code></td>
+        <td>Change response read from cache before it's used.</td>
+      </tr>
+      <tr>
+        <td><code>requestWillFetch</code></td>
+        <td>Change request before it's sent to the network.</td>
+      </tr>
+      <tr>
+        <td><code>fetchDidFail</code></td>
+        <td>Do something when a network request fails.</td>
+      </tr>
+      <tr>
+        <td><code>fetchDidSucceed</code></td>
+        <td>Do something when a network request succeeds.</td>
+      </tr>
+      <tr>
+        <td><code>handlerWillStart</code></td>
+        <td>Take note of when a handler starts up.</td>
+      </tr>
+      <tr>
+        <td><code>handlerWillRespond</code></td>
+        <td>Take note of when a handler is about to respond.</td>
+      </tr>
+      <tr>
+        <td><code>handlerDidRespond</code></td>
+        <td>Take note of when a handler finishes responding.</td>
+      </tr>
+      <tr>
+        <td><code>handlerDidComplete</code></td>
+        <td>Take note of when a handler has run all its code.</td>
+      </tr>
+      <tr>
+        <td><code>handlerDidError</code></td>
+        <td>Provide a fallback response if a handler throws an error.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<p>When writing your own plugin, you'll only implement callbacks for the limited
+number of events that match your purpose—there's no need to add in callbacks for
+<em>all</em> of the possible events. Additionally, it's up to you whether you implement
+your plugin as an
+<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" rel="noopener">Object</a></code>
+with properties that match the lifecycle event names, or as a class that exposes
+methods with those names.</p>
+<h3 id="lifecycle-events-example:-fallbackonerrorplugin">Lifecycle events example: FallbackOnErrorPlugin <a class="w-headline-link" href="#lifecycle-events-example:-fallbackonerrorplugin">#</a></h3>
+<p>For instance, here's a custom plugin class that implements callback methods for
+two events: <code>fetchDidSucceed</code>, and <code>handlerDidError</code>.</p>
+<web-copy-code><pre class="language-javascript"><code class="language-javascript"><span class="token keyword">class</span> <span class="token class-name">FallbackOnErrorPlugin</span> <span class="token punctuation">{</span><br>  <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token parameter">fallbackURL</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token comment">// Pass in a URL that you know is cached.</span><br>    <span class="token keyword">this</span><span class="token punctuation">.</span>fallbackURL <span class="token operator">=</span> fallbackURL<span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><br>  <span class="token function">fetchDidSucceed</span><span class="token punctuation">(</span><span class="token parameter"><span class="token punctuation">{</span>response<span class="token punctuation">}</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token comment">// If the network request returned a 2xx response,</span><br>    <span class="token comment">// just use it as-is.</span><br>    <span class="token keyword">if</span> <span class="token punctuation">(</span>response<span class="token punctuation">.</span>ok<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>      <span class="token keyword">return</span> response<span class="token punctuation">;</span><br>    <span class="token punctuation">}</span><span class="token punctuation">;</span><br><br>    <span class="token comment">// Otherwise, throw an error to trigger handlerDidError.</span><br>    <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">Error</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">Error response (</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>response<span class="token punctuation">.</span>status<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">)</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><br>  <span class="token comment">// Invoked whenever the strategy throws an error during handling.</span><br>  <span class="token function">handlerDidError</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token comment">// This will match the cached URL regardless of whether</span><br>    <span class="token comment">// there's any query parameters, i.e. those added</span><br>    <span class="token comment">// by Workbox precaching.</span><br>    <span class="token keyword">return</span> caches<span class="token punctuation">.</span><span class="token function">match</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>fallbackURL<span class="token punctuation">,</span> <span class="token punctuation">{</span><br>      ignoreSearch<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>This plugin class provides a &quot;fallback&quot; whenever a strategy would otherwise
+generate an error response. It can be added to any strategy class, and if
+running that strategy does not result in a <code>2xx OK</code> response, it will use a
+backup response from the cache instead.</p>
+<h2 id="custom-strategy-or-custom-plugin">Custom strategy or custom plugin? <a class="w-headline-link" href="#custom-strategy-or-custom-plugin">#</a></h2>
+<p>Now that you know more about custom strategies and plugins, you might be
+wondering which one to write for a given use case.</p>
+<p>A good rule of thumb is to sketch out a diagram of your desired request and
+response flow, taking into account the network and cache interactions. Then,
+compare that to the
+<a href="https://developers.google.com/web/tools/workbox/modules/workbox-strategies" rel="noopener">diagrams</a>
+of the built-in strategies. If your diagram has a set of connections then that's
+fundamentally different, that's a sign that a custom strategy is the best
+solution.</p>
+<p>Conversely, if your diagram ends up looking mostly like a standard strategy but
+with a few extra pieces of logic injected at keys points, then you should
+probably write a custom plugin.</p>
+<h2 id="takeaways">Takeaways <a class="w-headline-link" href="#takeaways">#</a></h2>
+<p>Whichever approach to customizing Workbox you go with, I hope this article has
+inspired you write your own strategies and plugins, and then release them on
+<a href="https://www.npmjs.com/" rel="noopener">npm</a>, tagged with <code>workbox-strategy</code> or
+<code>workbox-plugin</code>.</p>
+<p>Using those tags, you can search npm for
+<a href="https://www.npmjs.com/search?q=workbox-strategy" rel="noopener">strategies</a> and
+<a href="https://www.npmjs.com/search?q=workbox-plugin" rel="noopener">plugins</a> that have already been
+released.</p>
+<p>Go out there and extend Workbox, and then share what you build!</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/service-worker/">Service Worker</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/offline/">Offline</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/network/">Network</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/progressive-web-apps/">Progressive Web Apps</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/performance/">Performance</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Dec 10, 2020</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/extending-workbox/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

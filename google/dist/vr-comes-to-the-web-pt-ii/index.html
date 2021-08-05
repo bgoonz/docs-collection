@@ -1,0 +1,839 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=42d1b6e100a22">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Virtual reality comes to the web, part II</title>
+<meta name="description" content="Virtual reality came to the web in Chrome 79. Based on the WebXR Device API, this launch is the foundation for both augmented and virtual reality. This article is the second in a series, focusing on the frame loop, the part of an XR session where images are shown to a viewer. Other browsers will soon be supporting the WebXR Device API, including Firefox Reality, Oculus Browser, Edge and Magic Leap's Helio browser, among others." />
+
+<link rel="canonical" href="https://web.dev/vr-comes-to-the-web-pt-ii/" />
+
+<meta itemprop="name" content="Virtual reality comes to the web, part II" />
+<meta itemprop="description" content="Virtual reality came to the web in Chrome 79. Based on the WebXR Device API, this launch is the foundation for both augmented and virtual reality. This article is the second in a series, focusing on the frame loop, the part of an XR session where images are shown to a viewer. Other browsers will soon be supporting the WebXR Device API, including Firefox Reality, Oculus Browser, Edge and Magic Leap's Helio browser, among others." />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/2OEKtIp4RJNtX0stioZF.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/vr-comes-to-the-web-pt-ii/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Virtual reality comes to the web, part II" />
+<meta property="og:description" content="Virtual reality came to the web in Chrome 79. Based on the WebXR Device API, this launch is the foundation for both augmented and virtual reality. This article is the second in a series, focusing on the frame loop, the part of an XR session where images are shown to a viewer. Other browsers will soon be supporting the WebXR Device API, including Firefox Reality, Oculus Browser, Edge and Magic Leap's Helio browser, among others." />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/2OEKtIp4RJNtX0stioZF.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="A person using a virtual reality headset." />
+<meta property="tag" content="augmented-reality" />
+<meta property="tag" content="virtual-reality" />
+<meta property="tag" content="webxr" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Virtual reality comes to the web, part II" />
+<meta name="twitter:description" content="Virtual reality came to the web in Chrome 79. Based on the WebXR Device API, this launch is the foundation for both augmented and virtual reality. This article is the second in a series, focusing on the frame loop, the part of an XR session where images are shown to a viewer. Other browsers will soon be supporting the WebXR Device API, including Firefox Reality, Oculus Browser, Edge and Magic Leap's Helio browser, among others." />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/2OEKtIp4RJNtX0stioZF.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=b493e885a5823', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=dded92575f6e7', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="A person using a virtual reality headset."     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/2OEKtIp4RJNtX0stioZF.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/2OEKtIp4RJNtX0stioZF.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/2OEKtIp4RJNtX0stioZF.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/2OEKtIp4RJNtX0stioZF.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/2OEKtIp4RJNtX0stioZF.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/2OEKtIp4RJNtX0stioZF.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/2OEKtIp4RJNtX0stioZF.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/2OEKtIp4RJNtX0stioZF.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/2OEKtIp4RJNtX0stioZF.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/2OEKtIp4RJNtX0stioZF.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/2OEKtIp4RJNtX0stioZF.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/2OEKtIp4RJNtX0stioZF.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/2OEKtIp4RJNtX0stioZF.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/2OEKtIp4RJNtX0stioZF.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/2OEKtIp4RJNtX0stioZF.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/2OEKtIp4RJNtX0stioZF.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/2OEKtIp4RJNtX0stioZF.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/2OEKtIp4RJNtX0stioZF.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#virtual-reality-comes-to-the-web-part-ii" class="w-toc__header--link">
+        Virtual reality comes to the web, part II
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#what-this-article-is-not">What this article is not</a></li><li><a href="#the-players-and-the-game">The players and the game</a></li><li><a href="#the-players">The players</a></li><li><a href="#xrviewerpose">XRViewerPose</a></li><li><a href="#xrview">XRView</a></li><li><a href="#xrwebgllayer">XRWebGLLayer</a></li><li><a href="#webglframebuffer">WebGLFramebuffer</a></li><li><a href="#xrviewport">XRViewport</a></li><li><a href="#webglrenderingcontext">WebGLRenderingContext</a></li><li><a href="#the-game">The game</a></li><li><a href="#get-the-viewer's-pose">Get the viewer's pose</a></li><li><a href="#a-short-detour">A short detour</a></li><li><a href="#pass-('bind')-the-webglframebuffer">Pass ('bind') the WebGLFramebuffer</a></li><li><a href="#iterate-over-each-xrview-object">Iterate over each XRView object</a></li><li><a href="#pass-the-xrviewport-object-to-the-webglrenderingcontext">Pass the XRViewport object to the WebGLRenderingContext</a></li><li><a href="#draw-something-to-the-framebuffer">Draw something to the framebuffer</a></li><li><a href="#conclusion">Conclusion</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@medleyjp"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="virtual-reality-comes-to-the-web-part-ii" class="w-article-header__headline">Virtual reality comes to the web, part II</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          All about the frame loop
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Feb 13, 2020</time>
+          
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/joemedley/"><img     alt="Joe Medley"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/ynJFmvKEbD9diZZsTdkD.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/ynJFmvKEbD9diZZsTdkD.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/ynJFmvKEbD9diZZsTdkD.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/ynJFmvKEbD9diZZsTdkD.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/ynJFmvKEbD9diZZsTdkD.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/ynJFmvKEbD9diZZsTdkD.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/joemedley/">Joe Medley</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/medleyjp"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/jpmedley">GitHub</a>
+      </li>
+      
+      
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>Recently, I published <a href="/vr-comes-to-the-web/">Virtual reality comes to the
+web</a>, an article that introduced basic
+concepts behind the <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebXR_Device_API" rel="noopener">WebXR Device
+API</a>. I
+also provided instructions for requesting, entering, and ending an XR session.</p>
+<p>This article describes the frame loop, which is a user-agent controlled
+infinite loop in which content is repeatedly drawn to the screen. Content is
+drawn in discrete blocks called frames. The succession of frames creates the
+illusion of movement.</p>
+<h2 id="what-this-article-is-not">What this article is not <a class="w-headline-link" href="#what-this-article-is-not">#</a></h2>
+<p>WebGL and WebGL2 are the only means of rendering content during a frame loop in
+a WebXR App. Fortunately many frameworks provide a layer of abstraction on top
+of WebGL and WebGL2. Such frameworks include <a href="https://threejs.org/" rel="noopener">three.js</a>,
+<a href="https://www.babylonjs.com/" rel="noopener">babylonjs</a>, and
+<a href="https://playcanvas.com/" rel="noopener">PlayCanvas</a>, while <a href="https://aframe.io/" rel="noopener">A-Frame</a> and
+<a href="https://facebook.github.io/react-360/" rel="noopener">React 360</a> are designed for interacting
+with WebXR.</p>
+<p>This article is neither a WebGL nor a framework tutorial. It explains basics of
+a frame loop using the Immersive Web Working Group's Immersive VR Session sample
+(<a href="https://immersive-web.github.io/webxr-samples/immersive-vr-session.html" rel="noopener">demo</a>,
+<a href="https://github.com/immersive-web/webxr-samples/blob/master/immersive-vr-session.html" rel="noopener">source</a>).
+If you want to dive into WebGL or one of the frameworks, the internet provides a
+growing list of articles.</p>
+<h2 id="the-players-and-the-game">The players and the game <a class="w-headline-link" href="#the-players-and-the-game">#</a></h2>
+<p>When trying to understand the frame loop, I kept getting lost in the details.
+There's a lot of objects in play, and some of them are only named by reference
+properties on other objects. To help you keep it straight, I'll describe the
+objects, which I'm calling 'players'. Then I'll describe how they interact,
+which I'm calling 'the game'.</p>
+<h2 id="the-players">The players <a class="w-headline-link" href="#the-players">#</a></h2>
+<h3 id="xrviewerpose">XRViewerPose <a class="w-headline-link" href="#xrviewerpose">#</a></h3>
+<p>A pose is the position and orientation of something in 3D space. Both viewers
+and input devices have a pose, but it's the viewer's pose we're concerned with
+here. Both viewer and input device poses have a <code>transform</code> attribute describing
+its position as a vector and its orientation as a quaternion relative to the
+origin. The origin is specified based on the requested reference space type when
+calling <code>XRSession.requestReferenceSpace()</code>.</p>
+<p>Reference spaces take a bit to explain. I cover them in depth in <a href="/web-ar/">Augmented
+reality</a>. The sample I'm using as the basis for this
+article uses a <code>'local'</code> reference space which means the origin is at the
+viewer's position at the time of session creation without a well-defined floor,
+and its precise position may vary by platform.</p>
+<h3 id="xrview">XRView <a class="w-headline-link" href="#xrview">#</a></h3>
+<p>A view corresponds to a camera viewing the virtual scene. A view also has a
+<code>transform</code> attribute describing it's position as a vector and its orientation.
+These are provided both as a vector/quaternion pair and as an equivalent matrix,
+you can use either representation depending on which best fits your code. Each
+view corresponds to a display or a portion of a display used by a device to
+present imagery to the viewer. <code>XRView</code> objects are returned in an array from
+the <code>XRViewerPose</code> object. The number of views in the array varies. On mobile
+devices an AR scene has one view, which may or may not cover the device screen.
+Headsets typically have two views, one for each eye.</p>
+<h3 id="xrwebgllayer">XRWebGLLayer <a class="w-headline-link" href="#xrwebgllayer">#</a></h3>
+<p>Layers provide a source of bitmap images and descriptions of how those images
+are to be rendered in the device. This description doesn't quite capture what
+this player does. I've come to think of it as a middleman between a device and a
+<code>WebGLRenderingContext</code>. MDN takes much the same view, stating that it 'provides
+a linkage' between the two. As such, it provides access to the other players.</p>
+<p>In general, WebGL objects store state information for rendering 2D and 3D
+graphics.</p>
+<h3 id="webglframebuffer">WebGLFramebuffer <a class="w-headline-link" href="#webglframebuffer">#</a></h3>
+<p>A framebuffer provides image data to the <code>WebGLRenderingContext</code>. After
+retrieving it from the <code>XRWebGLLayer</code>, you simply pass it to the current
+<code>WebGLRenderingContext</code>. Other than calling <code>bindFramebuffer()</code> (more about that
+later) you will never access this object directly. You will merely pass it from
+the <code>XRWebGLLayer</code> to the WebGLRenderingContext.</p>
+<h3 id="xrviewport">XRViewport <a class="w-headline-link" href="#xrviewport">#</a></h3>
+<p>A viewport provides the coordinates and dimensions of a rectangular region in
+the <code>WebGLFramebuffer</code>.</p>
+<h3 id="webglrenderingcontext">WebGLRenderingContext <a class="w-headline-link" href="#webglrenderingcontext">#</a></h3>
+<p>A rendering context is a programmatic access point for a canvas (the space we're
+drawing on). To do this, it needs both a <code>WebGLFramebuffer</code> and an XRViewport.</p>
+<p>Notice the relationship between <code>XRWebGLLayer</code> and <code>WebGLRenderingContext</code>. One
+corresponds to the viewer's device and the other corresponds to the web page.
+<code>WebGLFramebuffer</code> and <code>XRViewport</code> are passed from the former to the latter.</p>
+<figure class="w-figure">
+  <img     alt="The relationship between XRWebGLLayer and WebGLRenderingContext"          decoding="async"     height="94"          loading="lazy"     sizes="(min-width: 711px) 711px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/ZdH8cIApe8jUr7F1WNgC.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/ZdH8cIApe8jUr7F1WNgC.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/ZdH8cIApe8jUr7F1WNgC.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/ZdH8cIApe8jUr7F1WNgC.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/ZdH8cIApe8jUr7F1WNgC.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/ZdH8cIApe8jUr7F1WNgC.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/ZdH8cIApe8jUr7F1WNgC.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/ZdH8cIApe8jUr7F1WNgC.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/ZdH8cIApe8jUr7F1WNgC.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/ZdH8cIApe8jUr7F1WNgC.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/ZdH8cIApe8jUr7F1WNgC.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/ZdH8cIApe8jUr7F1WNgC.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/ZdH8cIApe8jUr7F1WNgC.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/ZdH8cIApe8jUr7F1WNgC.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/ZdH8cIApe8jUr7F1WNgC.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/ZdH8cIApe8jUr7F1WNgC.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/ZdH8cIApe8jUr7F1WNgC.png?auto=format&w=1422 1422w"          width="711"   />
+  <figcaption class="w-figcaption w-figcaption--fullbleed">
+    The relationship between <code>XRWebGLLayer</code> and <code>WebGLRenderingContext</code>
+  </figcaption>
+</figure>
+<h2 id="the-game">The game <a class="w-headline-link" href="#the-game">#</a></h2>
+<p>Now that we know who the players are, let's look at the game they play. It's a
+game that starts over with every frame. Recall that frames are part of a <a href="/vr-comes-to-the-web/#running-a-frame-loop">frame
+loop</a> that happens at
+a rate that depends on the underlying hardware. For VR applications the frames
+per second can be anywhere from 60 to 144. AR for Android runs at 30 frames per
+second. Your code should not assume any particular frame rate.</p>
+<p>The basic process for the frame loop looks like this:</p>
+<ol>
+  <li>Call <code>XRSession.requestAnimationFrame()</code>. In response, the user agent invokes the <code>XRFrameRequestCallback</code>, which is defined by you.</li>
+  <li>Inside your callback function:
+    <ol>
+      <li>Call <code>XRSession.requestAnimationFrame()</code> again.</li>
+      <li>Get the viewer's pose.</li>
+      <li>Pass ('bind') the <code>WebGLFramebuffer</code> from the <code>XRWebGLLayer</code> to the <code>WebGLRenderingContext</code>.</li>
+      <li>Iterate over each <code>XRView</code> object, retrieving its <code>XRViewport</code> from the <code>XRWebGLLayer</code> and passing it to the <code>WebGLRenderingContext</code>.</li>
+      <li>Draw something to the framebuffer.</li>
+    </ol>
+  </li>
+</ol>
+<p>Because steps 1 and 2a were covered in the previous article, I'll start at step
+2b.</p>
+<h3 id="get-the-viewer's-pose">Get the viewer's pose <a class="w-headline-link" href="#get-the-viewer's-pose">#</a></h3>
+<p>It probably goes without saying. To draw anything in AR or VR, I need to know
+where the viewer is and where they're looking. The viewer's position and
+orientation are provided by an <a href="https://developer.mozilla.org/en-US/docs/Web/API/XRViewerPose" rel="noopener">XRViewerPose
+object</a>. I
+get the viewer's pose by calling <code>XRFrame.getViewerPose()</code> on the current
+animation frame. I pass it the reference space I acquired when I set up the
+session. The values returned by this object are always relative to the reference
+space I requested when I <a href="/vr-comes-to-the-web/#entering-a-session">entered the current
+session</a>. As you may
+recall, I have to pass the current reference space when requesting the pose.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="highlight-line"><span class="token keyword">function</span> <span class="token function">onXRFrame</span><span class="token punctuation">(</span><span class="token parameter">hrTime<span class="token punctuation">,</span> xrFrame</span><span class="token punctuation">)</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">  <span class="token keyword">let</span> xrSession <span class="token operator">=</span> xrFrame<span class="token punctuation">.</span>session<span class="token punctuation">;</span></span><br><span class="highlight-line">  xrSession<span class="token punctuation">.</span><span class="token function">requestAnimationFrame</span><span class="token punctuation">(</span>onXRFrame<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><mark class="highlight-line highlight-line-active">  <span class="token keyword">let</span> xrViewerPose <span class="token operator">=</span> xrFrame<span class="token punctuation">.</span><span class="token function">getViewerPose</span><span class="token punctuation">(</span>xrRefSpace<span class="token punctuation">)</span><span class="token punctuation">;</span></mark><br><mark class="highlight-line highlight-line-active">  <span class="token keyword">if</span> <span class="token punctuation">(</span>xrViewerPose<span class="token punctuation">)</span> <span class="token punctuation">{</span></mark><br><span class="highlight-line">    <span class="token comment">// Render based on the pose.</span></span><br><span class="highlight-line">  <span class="token punctuation">}</span></span><br><span class="highlight-line"><span class="token punctuation">}</span></span></code></pre>
+</web-copy-code><p>There's one viewer pose that represents the user's overall position, meaning
+either the viewer's head or the phone camera in the case of a smartphone.
+The pose tells your application where the viewer is. Actual image rendering uses
+<code>XRView</code> objects, which I'll get to in a bit.</p>
+<p>Before moving on, I test whether the viewer pose was returned in case the system
+loses tracking or blocks the pose for privacy reasons. Tracking is the XR
+device's ability to know where it and/or it's input devices are relative to the
+environment. Tracking can be lost in several ways, and varies depending on the
+method used for tracking. For example, if cameras on the headset or phone are
+used for tracking the device may lose its ability to determine where it is in
+situations with low or no light, or if the cameras are covered.</p>
+<p>An example of blocking the pose for privacy reasons is if the headset is showing
+a security dialog such as a permission prompt, the browser may stop providing
+poses to the application while this is happening. But I&quot;ve already called
+<code>XRSession.requestAnimationFrame()</code> so that if the system can recover, the frame
+loop will continue. If not, the user agent will end the session and call the
+<code>end</code> event handler.</p>
+<h3 id="a-short-detour">A short detour <a class="w-headline-link" href="#a-short-detour">#</a></h3>
+<p>The next step requires objects created during <a href="/vr-comes-to-the-web/#requesting-a-session">session
+set-up</a>. Recall that
+I created a canvas and instructed it to create an XR-compatible Web GL rendering
+context, which I got by calling <code>canvas.getContext()</code>. All drawing is done using
+the WebGL API, the WebGL2 API, or a WebGL-based framework such as Three.js. This
+context was passed to the session object via <code>updateRenderState()</code>, along with a
+new instance of <code>XRWebGLLayer</code>.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">let</span> canvas <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">createElement</span><span class="token punctuation">(</span><span class="token string">'canvas'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token comment">// The rendering context must be based on WebGL or WebGL2</span><br><span class="token keyword">let</span> webGLRenContext <span class="token operator">=</span> canvas<span class="token punctuation">.</span><span class="token function">getContext</span><span class="token punctuation">(</span><span class="token string">'webgl'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> xrCompatible<span class="token operator">:</span> <span class="token boolean">true</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>xrSession<span class="token punctuation">.</span><span class="token function">updateRenderState</span><span class="token punctuation">(</span><span class="token punctuation">{</span><br>    baseLayer<span class="token operator">:</span> <span class="token keyword">new</span> <span class="token class-name">XRWebGLLayer</span><span class="token punctuation">(</span>xrSession<span class="token punctuation">,</span> webGLRenContext<span class="token punctuation">)</span><br>  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br></code></pre>
+</web-copy-code><h3 id="pass-('bind')-the-webglframebuffer">Pass ('bind') the WebGLFramebuffer <a class="w-headline-link" href="#pass-('bind')-the-webglframebuffer">#</a></h3>
+<p>The <code>XRWebGLLayer</code> provides a framebuffer for the <code>WebGLRenderingContext</code>
+provided specifically for use with WebXR and replacing the rendering contexts
+default framebuffer. This is called 'binding' in the language of WebGL.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="highlight-line"><span class="token keyword">function</span> <span class="token function">onXRFrame</span><span class="token punctuation">(</span><span class="token parameter">hrTime<span class="token punctuation">,</span> xrFrame</span><span class="token punctuation">)</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">  <span class="token keyword">let</span> xrSession <span class="token operator">=</span> xrFrame<span class="token punctuation">.</span>session<span class="token punctuation">;</span></span><br><span class="highlight-line">  xrSession<span class="token punctuation">.</span><span class="token function">requestAnimationFrame</span><span class="token punctuation">(</span>onXRFrame<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line">  <span class="token keyword">let</span> xrViewerPose <span class="token operator">=</span> xrFrame<span class="token punctuation">.</span><span class="token function">getViewerPose</span><span class="token punctuation">(</span>xrRefSpace<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line">  <span class="token keyword">if</span> <span class="token punctuation">(</span>xrViewerPose<span class="token punctuation">)</span> <span class="token punctuation">{</span></span><br><mark class="highlight-line highlight-line-active">    <span class="token keyword">let</span> glLayer <span class="token operator">=</span> xrSession<span class="token punctuation">.</span>renderState<span class="token punctuation">.</span>baseLayer<span class="token punctuation">;</span></mark><br><mark class="highlight-line highlight-line-active">    webGLRenContext<span class="token punctuation">.</span><span class="token function">bindFramebuffer</span><span class="token punctuation">(</span>webGLRenContext<span class="token punctuation">.</span><span class="token constant">FRAMEBUFFER</span><span class="token punctuation">,</span> glLayer<span class="token punctuation">.</span>framebuffer<span class="token punctuation">)</span><span class="token punctuation">;</span></mark><br><span class="highlight-line">    <span class="token comment">// Iterate over the views</span></span><br><span class="highlight-line">  <span class="token punctuation">}</span></span><br><span class="highlight-line"><span class="token punctuation">}</span></span></code></pre>
+</web-copy-code><h3 id="iterate-over-each-xrview-object">Iterate over each XRView object <a class="w-headline-link" href="#iterate-over-each-xrview-object">#</a></h3>
+<p>After getting the pose and binding the framebuffer, it's time to get the
+viewports. The <code>XRViewerPose</code> contains an array of XRView interfaces each of
+which represents a display or a portion of a display. They contain information
+that's needed to render content that's correctly positioned for the device and
+the viewer such as the field of view, eye offset, and other optical properties.
+Since I'm drawing for two eyes, I have two views, which I loop through and draw
+a separate image for each.</p>
+<p>When implementing for phone-based augmented reality, I would have only one view
+but I'd still use a loop. Though it may seem pointless to iterate through one
+view, doing so allows you to have a single rendering path for a spectrum of
+immersive experiences. This is an important difference between WebXR and other
+immersive systems.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="highlight-line"><span class="token keyword">function</span> <span class="token function">onXRFrame</span><span class="token punctuation">(</span><span class="token parameter">hrTime<span class="token punctuation">,</span> xrFrame</span><span class="token punctuation">)</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">  <span class="token keyword">let</span> xrSession <span class="token operator">=</span> xrFrame<span class="token punctuation">.</span>session<span class="token punctuation">;</span></span><br><span class="highlight-line">  xrSession<span class="token punctuation">.</span><span class="token function">requestAnimationFrame</span><span class="token punctuation">(</span>onXRFrame<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line">  <span class="token keyword">let</span> xrViewerPose <span class="token operator">=</span> xrFrame<span class="token punctuation">.</span><span class="token function">getViewerPose</span><span class="token punctuation">(</span>xrRefSpace<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line">  <span class="token keyword">if</span> <span class="token punctuation">(</span>xrViewerPose<span class="token punctuation">)</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">    <span class="token keyword">let</span> glLayer <span class="token operator">=</span> xrSession<span class="token punctuation">.</span>renderState<span class="token punctuation">.</span>baseLayer<span class="token punctuation">;</span></span><br><span class="highlight-line">    webGLRenContext<span class="token punctuation">.</span><span class="token function">bindFramebuffer</span><span class="token punctuation">(</span>webGLRenContext<span class="token punctuation">.</span><span class="token constant">FRAMEBUFFER</span><span class="token punctuation">,</span> glLayer<span class="token punctuation">.</span>framebuffer<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><mark class="highlight-line highlight-line-active">    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> xrView <span class="token keyword">of</span> xrViewerPose<span class="token punctuation">.</span>views<span class="token punctuation">)</span> <span class="token punctuation">{</span></mark><br><mark class="highlight-line highlight-line-active">      <span class="token comment">// Pass viewports to the context</span></mark><br><mark class="highlight-line highlight-line-active">    <span class="token punctuation">}</span></mark><br><span class="highlight-line">  <span class="token punctuation">}</span></span><br><span class="highlight-line"><span class="token punctuation">}</span></span></code></pre>
+</web-copy-code><h3 id="pass-the-xrviewport-object-to-the-webglrenderingcontext">Pass the XRViewport object to the WebGLRenderingContext <a class="w-headline-link" href="#pass-the-xrviewport-object-to-the-webglrenderingcontext">#</a></h3>
+<p>An <code>XRView</code> object refers to what's observable on a screen. But to draw to that
+view I need coordinates and dimensions that are specific to my device. As with
+the framebuffer, I request them from the <code>XRWebGLLayer</code> and pass them to the
+<code>WebGLRenderingContext</code>.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="highlight-line"><span class="token keyword">function</span> <span class="token function">onXRFrame</span><span class="token punctuation">(</span><span class="token parameter">hrTime<span class="token punctuation">,</span> xrFrame</span><span class="token punctuation">)</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">  <span class="token keyword">let</span> xrSession <span class="token operator">=</span> xrFrame<span class="token punctuation">.</span>session<span class="token punctuation">;</span></span><br><span class="highlight-line">  xrSession<span class="token punctuation">.</span><span class="token function">requestAnimationFrame</span><span class="token punctuation">(</span>onXRFrame<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line">  <span class="token keyword">let</span> xrViewerPose <span class="token operator">=</span> xrFrame<span class="token punctuation">.</span><span class="token function">getViewerPose</span><span class="token punctuation">(</span>xrRefSpace<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line">  <span class="token keyword">if</span> <span class="token punctuation">(</span>xrViewerPose<span class="token punctuation">)</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">    <span class="token keyword">let</span> glLayer <span class="token operator">=</span> xrSession<span class="token punctuation">.</span>renderState<span class="token punctuation">.</span>baseLayer<span class="token punctuation">;</span></span><br><span class="highlight-line">    webGLRenContext<span class="token punctuation">.</span><span class="token function">bindFramebuffer</span><span class="token punctuation">(</span>webGLRenContext<span class="token punctuation">.</span><span class="token constant">FRAMEBUFFER</span><span class="token punctuation">,</span> glLayer<span class="token punctuation">.</span>framebuffer<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><mark class="highlight-line highlight-line-active">    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> xrView <span class="token keyword">of</span> xrViewerPose<span class="token punctuation">.</span>views<span class="token punctuation">)</span> <span class="token punctuation">{</span></mark><br><mark class="highlight-line highlight-line-active">      <span class="token keyword">let</span> viewport <span class="token operator">=</span> glLayer<span class="token punctuation">.</span><span class="token function">getViewport</span><span class="token punctuation">(</span>xrView<span class="token punctuation">)</span><span class="token punctuation">;</span></mark><br><mark class="highlight-line highlight-line-active">      webGLRenContext<span class="token punctuation">.</span><span class="token function">viewport</span><span class="token punctuation">(</span>viewport<span class="token punctuation">.</span>x<span class="token punctuation">,</span> viewport<span class="token punctuation">.</span>y<span class="token punctuation">,</span> viewport<span class="token punctuation">.</span>width<span class="token punctuation">,</span> viewport<span class="token punctuation">.</span>height<span class="token punctuation">)</span><span class="token punctuation">;</span></mark><br><span class="highlight-line">      <span class="token comment">// Draw something to the framebuffer</span></span><br><span class="highlight-line">    <span class="token punctuation">}</span></span><br><span class="highlight-line">  <span class="token punctuation">}</span></span><br><span class="highlight-line"><span class="token punctuation">}</span></span></code></pre>
+</web-copy-code><h4 id="the-webglrencontext">The webGLRenContext <a class="w-headline-link" href="#the-webglrencontext">#</a></h4>
+<p>In writing this article I had a debate with a few collegues over the naming of
+the <code>webGLRenContext</code> object. The sample scripts and most WebXR code simpley
+calls this variable <code>gl</code>. When I was working to understand the samples, I kept
+forgetting what <code>gl</code> referred to. I've called it <code>webGLRenContext</code> to remind you
+while your learning that this is an instance of <code>WebGLRenderingContext</code>.</p>
+<p>The reason is that using <code>gl</code> allows method names to look like their
+counterparts in the OpenGL ES 2.0 API, used for creating VR in compiled
+languages. This fact is obvious if you've written VR apps using OpenGL, but
+confusing if you're completely new to this technology.</p>
+<h3 id="draw-something-to-the-framebuffer">Draw something to the framebuffer <a class="w-headline-link" href="#draw-something-to-the-framebuffer">#</a></h3>
+<p>If you're feeling really ambitious, you can use WebGL directly, but I don't
+recommend that. It's much simpler to use one of the frameworks <a href="#what-this-article-is-not">listed at the
+top</a>.</p>
+<h2 id="conclusion">Conclusion <a class="w-headline-link" href="#conclusion">#</a></h2>
+<p>This is not the end of WebXR updates or articles. You can find a <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebXR_Device_API" rel="noopener">reference for
+all of WebXR's interfaces and
+members</a>
+at MDN. For upcoming enhancements to the interfaces themselves, follow
+individual features on <a href="https://www.chromestatus.com/features#WebXR" rel="noopener">Chrome
+Status</a>.</p>
+<p>Photo by <a href="https://unsplash.com/@jeshoots" rel="noopener">JESHOOTS.COM</a> on <a href="https://unsplash.com/" rel="noopener">Unsplash</a></p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/augmented-reality/">Augmented Reality</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/virtual-reality/">Virtual Reality</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/webxr/">WebXR</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Feb 13, 2020</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/vr-comes-to-the-web-pt-ii/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

@@ -1,0 +1,780 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=15e33602d5a1e">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Augmented reality: You may already know it</title>
+<meta name="description" content="If you've already used the WebXR Device API, you'll be happy to know there's very little new to learn. Entering a WebXR session is largely the same. Running a frame loop is largely the same. The differences lie in configurations that allow content to be shown appropriately for augmented reality." />
+
+<link rel="canonical" href="https://web.dev/web-ar/" />
+
+<meta itemprop="name" content="Augmented reality: You may already know it" />
+<meta itemprop="description" content="If you've already used the WebXR Device API, you'll be happy to know there's very little new to learn. Entering a WebXR session is largely the same. Running a frame loop is largely the same. The differences lie in configurations that allow content to be shown appropriately for augmented reality." />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/VMTT5zbuFgXWfTj7Hlvv.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/web-ar/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Augmented reality: You may already know it" />
+<meta property="og:description" content="If you've already used the WebXR Device API, you'll be happy to know there's very little new to learn. Entering a WebXR session is largely the same. Running a frame loop is largely the same. The differences lie in configurations that allow content to be shown appropriately for augmented reality." />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/VMTT5zbuFgXWfTj7Hlvv.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="A person using augmented reality with a smartphone." />
+<meta property="tag" content="augmented-reality" />
+<meta property="tag" content="virtual-reality" />
+<meta property="tag" content="webxr" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Augmented reality: You may already know it" />
+<meta name="twitter:description" content="If you've already used the WebXR Device API, you'll be happy to know there's very little new to learn. Entering a WebXR session is largely the same. Running a frame loop is largely the same. The differences lie in configurations that allow content to be shown appropriately for augmented reality." />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/VMTT5zbuFgXWfTj7Hlvv.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=86c11abbf1e11', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=b490e44f65028', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="A person using augmented reality with a smartphone."     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/VMTT5zbuFgXWfTj7Hlvv.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/VMTT5zbuFgXWfTj7Hlvv.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/VMTT5zbuFgXWfTj7Hlvv.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/VMTT5zbuFgXWfTj7Hlvv.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/VMTT5zbuFgXWfTj7Hlvv.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/VMTT5zbuFgXWfTj7Hlvv.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/VMTT5zbuFgXWfTj7Hlvv.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/VMTT5zbuFgXWfTj7Hlvv.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/VMTT5zbuFgXWfTj7Hlvv.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/VMTT5zbuFgXWfTj7Hlvv.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/VMTT5zbuFgXWfTj7Hlvv.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/VMTT5zbuFgXWfTj7Hlvv.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/VMTT5zbuFgXWfTj7Hlvv.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/VMTT5zbuFgXWfTj7Hlvv.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/VMTT5zbuFgXWfTj7Hlvv.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/VMTT5zbuFgXWfTj7Hlvv.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/VMTT5zbuFgXWfTj7Hlvv.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/VMTT5zbuFgXWfTj7Hlvv.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#augmented-reality:-you-may-already-know-it" class="w-toc__header--link">
+        Augmented reality: You may already know it
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#what's-it-useful-for">What's it useful for?</a></li><li><a href="#requesting-a-session">Requesting a session</a></li><li><a href="#a-convenience-property">A convenience property</a></li><li><a href="#entering-a-session">Entering a session</a></li><li><a href="#reference-spaces">Reference spaces</a></li><li><a href="#running-a-frame-loop">Running a frame loop</a></li><li><a href="#conclusion">Conclusion</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@medleyjp"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="augmented-reality:-you-may-already-know-it" class="w-article-header__headline">Augmented reality: You may already know it</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          If you've used the WebXR Device API already, you're most of the way there.
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Feb 13, 2020</time>
+          
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/joemedley/"><img     alt="Joe Medley"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/ynJFmvKEbD9diZZsTdkD.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/ynJFmvKEbD9diZZsTdkD.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/ynJFmvKEbD9diZZsTdkD.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/ynJFmvKEbD9diZZsTdkD.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/ynJFmvKEbD9diZZsTdkD.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/ynJFmvKEbD9diZZsTdkD.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/joemedley/">Joe Medley</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/medleyjp"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/jpmedley">GitHub</a>
+      </li>
+      
+      
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>The WebXR Device API shipped last fall in Chrome 79. As stated then, Chrome's
+implementation of the API is a work in progress. Chrome is happy to announce
+that some of the work is finished. In Chrome 81, two new features have arrived:</p>
+<ul>
+<li><a href="https://www.chromestatus.com/feature/5450241148977152" rel="noopener">Augmented reality session types</a>.</li>
+<li><a href="https://www.chromestatus.com/feature/4755348300759040" rel="noopener">Hit testing</a>.</li>
+</ul>
+<p>This article covers augmented reality. If you've already used the WebXR Device
+API, you'll be happy to know there's very little new to learn. Entering a WebXR
+session is largely the same. Running a frame loop is largely the same. The
+differences lie in configurations that allow content to be shown appropriately
+for augmented reality. If you're not familiar with the basic concepts of WebXR,
+you should read my earlier posts on the WebXR Device API, or at least be
+familiar with the topics covered therein. You should know how to <a href="/vr-comes-to-the-web/">request and
+enter a session</a> and you should know how
+to run <a href="/vr-comes-to-the-web-pt-ii">a frame loop</a>.</p>
+<p>For information on hit testing, see the companion article <a href="/ar-hit-test">Positioning virtual
+objects in real-world views</a>. The code in this
+article is based on the Immersive AR Session sample
+(<a href="https://immersive-web.github.io/webxr-samples/immersive-ar-session.html" rel="noopener">demo</a>
+<a href="https://github.com/immersive-web/webxr-samples/blob/master/immersive-vr-session.html" rel="noopener">source</a>) from
+the Immersive Web Working Group's <a href="https://immersive-web.github.io/webxr-samples/" rel="noopener">WebXR Device API
+samples</a>.</p>
+<p>Before diving into the code you should use the <a href="https://immersive-web.github.io/webxr-samples/immersive-ar-session.html" rel="noopener">Immersive AR Session
+sample</a>
+at least once. You'll need a modern Android phone with Chrome 81 or later.</p>
+<h2 id="what's-it-useful-for">What's it useful for? <a class="w-headline-link" href="#what's-it-useful-for">#</a></h2>
+<p>Augmented reality will be a valuable addition to a lot of existing or new web
+pages by allowing them to implement AR use cases without leaving the browser.
+For example, it can help people learn on education sites, and allow potential
+buyers to visualize objects in their home while shopping.</p>
+<p>Consider the second use case. Imagine simulating placing a life-size
+representation of a virtual object in a real scene. Once placed, the image stays
+on the selected surface, appears the size it would be if the actual item were on
+that surface, and allows the user to move around it as well as closer to it or
+farther from it. This gives viewers a deeper understanding of the object than is
+possible with a two dimensional image.</p>
+<p>I'm getting a little ahead of myself. To actually do what I've described, you
+need AR functionality and some means of detecting surfaces. This article covers
+the former. The accompanying article on the WebXR Hit Test API (linked to above)
+covers the latter.</p>
+<h2 id="requesting-a-session">Requesting a session <a class="w-headline-link" href="#requesting-a-session">#</a></h2>
+<p>Requesting a session is very much like what you've seen before. First find out
+if the session type you want is available on the current device by calling
+<code>xr.isSessionSupported()</code>. Instead of requesting <code>'immersive-vr'</code> as before,
+request <code>'immersive-ar'</code>.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="highlight-line"><span class="token keyword">if</span> <span class="token punctuation">(</span>navigator<span class="token punctuation">.</span>xr<span class="token punctuation">)</span> <span class="token punctuation">{</span></span><br><mark class="highlight-line highlight-line-active">  <span class="token keyword">const</span> supported <span class="token operator">=</span> <span class="token keyword">await</span> navigator<span class="token punctuation">.</span>xr<span class="token punctuation">.</span><span class="token function">isSessionSupported</span><span class="token punctuation">(</span><span class="token string">'immersive-ar'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></mark><br><span class="highlight-line">  <span class="token keyword">if</span> <span class="token punctuation">(</span>supported<span class="token punctuation">)</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">    xrButton<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'click'</span><span class="token punctuation">,</span> onButtonClicked<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line">    xrButton<span class="token punctuation">.</span>textContent <span class="token operator">=</span> <span class="token string">'Enter AR'</span><span class="token punctuation">;</span></span><br><span class="highlight-line">    xrButton<span class="token punctuation">.</span>enabled <span class="token operator">=</span> supported<span class="token punctuation">;</span> <span class="token comment">// supported is Boolean</span></span><br><span class="highlight-line">  <span class="token punctuation">}</span></span><br><span class="highlight-line"><span class="token punctuation">}</span></span></code></pre>
+</web-copy-code><p>As before, this enables an 'Enter AR' button. When the user clicks it, call
+<code>xr.requestSession()</code>, also passing <code>'immersive-ar'</code>.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="highlight-line"><span class="token keyword">let</span> xrSession <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span></span><br><span class="highlight-line"><span class="token keyword">function</span> <span class="token function">onButtonClicked</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>xrSession<span class="token punctuation">)</span> <span class="token punctuation">{</span></span><br><mark class="highlight-line highlight-line-active">    navigator<span class="token punctuation">.</span>xr<span class="token punctuation">.</span><span class="token function">requestSession</span><span class="token punctuation">(</span><span class="token string">'immersive-ar'</span><span class="token punctuation">)</span></mark><br><span class="highlight-line">    <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">session</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span></span><br><span class="highlight-line">      xrSession <span class="token operator">=</span> session<span class="token punctuation">;</span></span><br><mark class="highlight-line highlight-line-active">      xrSession<span class="token punctuation">.</span>isImmersive <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span></mark><br><span class="highlight-line">      xrButton<span class="token punctuation">.</span>textContent <span class="token operator">=</span> <span class="token string">'Exit AR'</span><span class="token punctuation">;</span></span><br><span class="highlight-line">      <span class="token function">onSessionStarted</span><span class="token punctuation">(</span>xrSession<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line">    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line">  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">    xrSession<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line">  <span class="token punctuation">}</span></span><br><span class="highlight-line"><span class="token punctuation">}</span></span></code></pre>
+</web-copy-code><h3 id="a-convenience-property">A convenience property <a class="w-headline-link" href="#a-convenience-property">#</a></h3>
+<p>You've probably noticed that I highlighted two lines in the last code sample.
+The <code>XRSession</code> object would seem to have a property called <code>isImmersive</code>. This
+is a convenience property I've created myself, and not part of the spec. I'll
+use it later to make decisions about what to show the viewer. Why isn't this
+property part of the API? Because your app may need to track this property
+differently so the spec authors decided to keep the API clean.</p>
+<h2 id="entering-a-session">Entering a session <a class="w-headline-link" href="#entering-a-session">#</a></h2>
+<p>Recall what <code>onSessionStarted()</code> looked like in my earlier article:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">onSessionStarted</span><span class="token punctuation">(</span><span class="token parameter">xrSession</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  xrSession<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'end'</span><span class="token punctuation">,</span> onSessionEnded<span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>  <span class="token keyword">let</span> canvas <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">createElement</span><span class="token punctuation">(</span><span class="token string">'canvas'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  gl <span class="token operator">=</span> canvas<span class="token punctuation">.</span><span class="token function">getContext</span><span class="token punctuation">(</span><span class="token string">'webgl'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> xrCompatible<span class="token operator">:</span> <span class="token boolean">true</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>  xrSession<span class="token punctuation">.</span><span class="token function">updateRenderState</span><span class="token punctuation">(</span><span class="token punctuation">{</span><br>    baseLayer<span class="token operator">:</span> <span class="token keyword">new</span> <span class="token class-name">XRWebGLLayer</span><span class="token punctuation">(</span>session<span class="token punctuation">,</span> gl<span class="token punctuation">)</span><br>  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>  xrSession<span class="token punctuation">.</span><span class="token function">requestReferenceSpace</span><span class="token punctuation">(</span><span class="token string">'local-floor'</span><span class="token punctuation">)</span><br>  <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">refSpace</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>    xrRefSpace <span class="token operator">=</span> refSpace<span class="token punctuation">;</span><br>    xrSession<span class="token punctuation">.</span><span class="token function">requestAnimationFrame</span><span class="token punctuation">(</span>onXRFrame<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>I need to add a few things to account for rendering augmented reality. Turn off
+the background First, I'm going to determine whether I need the background. This
+is the first place I'm going to use my convenience property.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="highlight-line"><span class="token keyword">function</span> <span class="token function">onSessionStarted</span><span class="token punctuation">(</span><span class="token parameter">xrSession</span><span class="token punctuation">)</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">  xrSession<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'end'</span><span class="token punctuation">,</span> onSessionEnded<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line"></span><br><mark class="highlight-line highlight-line-active">  <span class="token keyword">if</span> <span class="token punctuation">(</span>session<span class="token punctuation">.</span>isImmersive<span class="token punctuation">)</span> <span class="token punctuation">{</span></mark><br><mark class="highlight-line highlight-line-active">    <span class="token function">removeBackground</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></mark><br><mark class="highlight-line highlight-line-active">  <span class="token punctuation">}</span></mark><br><span class="highlight-line"></span><br><span class="highlight-line">  <span class="token keyword">let</span> canvas <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">createElement</span><span class="token punctuation">(</span><span class="token string">'canvas'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line">  gl <span class="token operator">=</span> canvas<span class="token punctuation">.</span><span class="token function">getContext</span><span class="token punctuation">(</span><span class="token string">'webgl'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> xrCompatible<span class="token operator">:</span> <span class="token boolean">true</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line"></span><br><span class="highlight-line">  xrSession<span class="token punctuation">.</span><span class="token function">updateRenderState</span><span class="token punctuation">(</span><span class="token punctuation">{</span></span><br><span class="highlight-line">    baseLayer<span class="token operator">:</span> <span class="token keyword">new</span> <span class="token class-name">XRWebGLLayer</span><span class="token punctuation">(</span>session<span class="token punctuation">,</span> gl<span class="token punctuation">)</span></span><br><span class="highlight-line">  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line"></span><br><span class="highlight-line">  refSpaceType <span class="token operator">=</span> xrSession<span class="token punctuation">.</span>isImmersive <span class="token operator">?</span> <span class="token string">'local'</span> <span class="token operator">:</span> <span class="token string">'viewer'</span><span class="token punctuation">;</span></span><br><span class="highlight-line">  xrSession<span class="token punctuation">.</span><span class="token function">requestReferenceSpace</span><span class="token punctuation">(</span>refSpaceType<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">refSpace</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span></span><br><span class="highlight-line">    xrSession<span class="token punctuation">.</span><span class="token function">requestAnimationFrame</span><span class="token punctuation">(</span>onXRFrame<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line">  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line"></span><br><span class="highlight-line"><span class="token punctuation">}</span></span></code></pre>
+</web-copy-code><h3 id="reference-spaces">Reference spaces <a class="w-headline-link" href="#reference-spaces">#</a></h3>
+<p>My earlier articles skimmed over reference spaces. The sample I'm describing
+uses two of them, so it's time to correct that omission.</p>
+<div class="w-aside w-aside--note">
+<p>A full explanation of reference spaces would be longer than I can provide
+here. I'm only going to discuss reference spaces in regards to augmented
+reality.</p>
+</div>
+<p>A reference space describes the relationship between the virtual world and the
+user's physical environment. It does this by:</p>
+<ul>
+<li>Specifying the origin for the coordinate system used for expressing positions
+in the virtual world.</li>
+<li>Specifying whether the user is expected to move within that coordinate system.</li>
+<li>Whether that coordinate system has pre-established boundaries. (The examples
+shown here do not use coordinate systems with pre-established boundaries.)</li>
+</ul>
+<p>For all reference spaces, the X coordinate expresses left and right, the Y
+expresses up and down, and Z expresses forward and backward. Positive values are
+right, up, and backward, respectively.</p>
+<p>The coordinates returned by <code>XRFrame.getViewerPose()</code> depend on the requested
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/XRReferenceSpace#Reference_space_types" rel="noopener">reference space
+type</a>.
+More about that when we get to the frame loop. Right now we need to select a
+reference type that's appropriate for augmented reality. Again, this uses my
+convenience property.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><mark class="highlight-line highlight-line-active"><span class="token keyword">let</span> refSpaceType</mark><br><span class="highlight-line"><span class="token keyword">function</span> <span class="token function">onSessionStarted</span><span class="token punctuation">(</span><span class="token parameter">xrSession</span><span class="token punctuation">)</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">  xrSession<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'end'</span><span class="token punctuation">,</span> onSessionEnded<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line"></span><br><span class="highlight-line">  <span class="token keyword">if</span> <span class="token punctuation">(</span>session<span class="token punctuation">.</span>isImmersive<span class="token punctuation">)</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">    <span class="token function">removeBackground</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line">  <span class="token punctuation">}</span></span><br><span class="highlight-line"></span><br><span class="highlight-line">  <span class="token keyword">let</span> canvas <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">createElement</span><span class="token punctuation">(</span><span class="token string">'canvas'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line">  gl <span class="token operator">=</span> canvas<span class="token punctuation">.</span><span class="token function">getContext</span><span class="token punctuation">(</span><span class="token string">'webgl'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> xrCompatible<span class="token operator">:</span> <span class="token boolean">true</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line"></span><br><span class="highlight-line">  xrSession<span class="token punctuation">.</span><span class="token function">updateRenderState</span><span class="token punctuation">(</span><span class="token punctuation">{</span></span><br><span class="highlight-line">    baseLayer<span class="token operator">:</span> <span class="token keyword">new</span> <span class="token class-name">XRWebGLLayer</span><span class="token punctuation">(</span>session<span class="token punctuation">,</span> gl<span class="token punctuation">)</span></span><br><span class="highlight-line">  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><mark class="highlight-line highlight-line-active"></mark><br><mark class="highlight-line highlight-line-active">  refSpaceType <span class="token operator">=</span> xrSession<span class="token punctuation">.</span>isImmersive <span class="token operator">?</span> <span class="token string">'local'</span> <span class="token operator">:</span> <span class="token string">'viewer'</span><span class="token punctuation">;</span></mark><br><span class="highlight-line">  xrSession<span class="token punctuation">.</span><span class="token function">requestReferenceSpace</span><span class="token punctuation">(</span>refSpaceType<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">refSpace</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span></span><br><span class="highlight-line">    xrSession<span class="token punctuation">.</span><span class="token function">requestAnimationFrame</span><span class="token punctuation">(</span>onXRFrame<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line">  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line"><span class="token punctuation">}</span></span></code></pre>
+</web-copy-code><p>If you've visited the <a href="https://immersive-web.github.io/webxr-samples/immersive-ar-session.html" rel="noopener">Immersive AR Session
+Sample</a>
+you'll notice that initially the scene is static and not at all augmented
+reality. You can drag and swipe with your finger to move around the scene. If
+you click &quot;START AR&quot;, the background drops out and you can move around the scene
+by moving the device. The modes use different reference space types. The
+highlighted text above shows how this is selected. It uses the following
+reference types:</p>
+<p><code>local</code> - The origin is at the viewer's position at the time of session
+creation. This means the experience doesn't necessarily have a well-defined
+floor and the exact position of the origin may vary by platform. Though there
+are no pre-established boundaries to the space, it's expected that content can
+be viewed with no movement other than rotation. As you can see from our own AR
+example, some movement within the space may be possible.</p>
+<p><code>viewer</code> - Used most frequently for content presented inline in the page, this
+space follows the viewing device. When passed to getViewerPose it provides no
+tracking, and thus always reports a pose at the origin unless the application
+modifies it with <code>XRReferenceSpace.getOffsetReferenceSpace()</code>. The sample uses
+this to enable touch-based panning of the camera.</p>
+<h2 id="running-a-frame-loop">Running a frame loop <a class="w-headline-link" href="#running-a-frame-loop">#</a></h2>
+<p>Conceptually, nothing changes from what I did in the VR session described in my
+earlier articles. Pass the reference space type to <code>XRFrame.getViewerPose()</code>.
+The returned <code>XRViewerPose</code> will be for the current reference space type. Using
+<code>viewer</code> as the default allows a page to show content previews before user
+consent is requested for AR or VR. This illustrates an important point: the
+inline content uses the same frame loop as the immersive content, cutting down
+the amount of code that needs to be maintained.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="highlight-line"><span class="token keyword">function</span> <span class="token function">onXRFrame</span><span class="token punctuation">(</span><span class="token parameter">hrTime<span class="token punctuation">,</span> xrFrame</span><span class="token punctuation">)</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">  <span class="token keyword">let</span> xrSession <span class="token operator">=</span> xrFrame<span class="token punctuation">.</span>session<span class="token punctuation">;</span></span><br><span class="highlight-line">  xrSession<span class="token punctuation">.</span><span class="token function">requestAnimationFrame</span><span class="token punctuation">(</span>onXRFrame<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><mark class="highlight-line highlight-line-active">  <span class="token keyword">let</span> xrViewerPose <span class="token operator">=</span> xrFrame<span class="token punctuation">.</span><span class="token function">getViewerPose</span><span class="token punctuation">(</span>refSpaceType<span class="token punctuation">)</span><span class="token punctuation">;</span></mark><br><span class="highlight-line">  <span class="token keyword">if</span> <span class="token punctuation">(</span>xrViewerPose<span class="token punctuation">)</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">    <span class="token comment">// Render based on the pose.</span></span><br><span class="highlight-line">  <span class="token punctuation">}</span></span><br><span class="highlight-line"><span class="token punctuation">}</span></span></code></pre>
+</web-copy-code><h2 id="conclusion">Conclusion <a class="w-headline-link" href="#conclusion">#</a></h2>
+<p>This series of articles only covers the basics of implementing immersive content
+on the web. Many more capabilities and use cases are presented by the Immersive
+Web Working Group's <a href="https://immersive-web.github.io/webxr-samples/" rel="noopener">WebXR Device API
+samples</a>. We've also just
+published a <a href="/ar-hit-test/">hit test article</a> which explains an API
+for detecting surfaces and placing virtual items in a real-world camera view.
+Check them out and watch The web.dev blog for more
+articles in the year to come.</p>
+<p>Photo by <a href="https://unsplash.com/@davidgrdm" rel="noopener">David Grandmougin</a> on <a href="https://unsplash.com/" rel="noopener">Unsplash</a></p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/augmented-reality/">Augmented Reality</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/virtual-reality/">Virtual Reality</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/webxr/">WebXR</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Feb 13, 2020</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/web-ar/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions="api"></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

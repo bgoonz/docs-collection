@@ -1,0 +1,811 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=2477e2f5de8ea">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Preparing for AppCache removal</title>
+<meta name="description" content="Details of Chrome's and other browsers' plans to remove AppCache." />
+
+<link rel="canonical" href="https://web.dev/appcache-removal/" />
+
+<meta itemprop="name" content="Preparing for AppCache removal" />
+<meta itemprop="description" content="Details of Chrome's and other browsers' plans to remove AppCache." />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/YDs2H4gLPhIwPMjPtc8o.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/appcache-removal/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Preparing for AppCache removal" />
+<meta property="og:description" content="Details of Chrome's and other browsers' plans to remove AppCache." />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/YDs2H4gLPhIwPMjPtc8o.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="An old-fashioned storage container." />
+<meta property="tag" content="appcache" />
+<meta property="tag" content="chrome84" />
+<meta property="tag" content="deprecation" />
+<meta property="tag" content="origin-trial" />
+<meta property="tag" content="removal" />
+<meta property="tag" content="service-worker" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Preparing for AppCache removal" />
+<meta name="twitter:description" content="Details of Chrome's and other browsers' plans to remove AppCache." />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/YDs2H4gLPhIwPMjPtc8o.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=992a1ea816578', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=df9db8c580342', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="An old-fashioned storage container."     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/YDs2H4gLPhIwPMjPtc8o.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/YDs2H4gLPhIwPMjPtc8o.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/YDs2H4gLPhIwPMjPtc8o.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/YDs2H4gLPhIwPMjPtc8o.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/YDs2H4gLPhIwPMjPtc8o.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/YDs2H4gLPhIwPMjPtc8o.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/YDs2H4gLPhIwPMjPtc8o.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/YDs2H4gLPhIwPMjPtc8o.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/YDs2H4gLPhIwPMjPtc8o.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/YDs2H4gLPhIwPMjPtc8o.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/YDs2H4gLPhIwPMjPtc8o.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/YDs2H4gLPhIwPMjPtc8o.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/YDs2H4gLPhIwPMjPtc8o.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/YDs2H4gLPhIwPMjPtc8o.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/YDs2H4gLPhIwPMjPtc8o.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/YDs2H4gLPhIwPMjPtc8o.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/YDs2H4gLPhIwPMjPtc8o.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/YDs2H4gLPhIwPMjPtc8o.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#preparing-for-appcache-removal" class="w-toc__header--link">
+        Preparing for AppCache removal
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#timeline">Timeline</a></li><li><a href="#origin-trial">Origin trial</a></li><li><a href="#why-are-tokens-needed-in-multiple-places">Why are tokens needed in multiple places?</a></li><li><a href="#origin-trial-deployment-timing-and-logistics">Origin trial deployment timing and logistics</a></li><li><a href="#testing-prior-to-removal">Testing prior to removal</a></li><li><a href="#migration-strategies">Migration strategies</a></li><li><a href="#service-workers-and-appcache-are-mutually-exclusive">Service workers and AppCache are mutually exclusive</a></li><li><a href="#the-cross-platform-story">The cross-platform story</a></li><li><a href="#firefox-on-all-platforms">Firefox on all platforms</a></li><li><a href="#safari-on-ios-and-macos">Safari on iOS and macOS</a></li><li><a href="#chrome-on-ios">Chrome on iOS</a></li><li><a href="#android-webviews">Android WebViews</a></li><li><a href="#learn-more">Learn more</a></li><li><a href="#articles">Articles</a></li><li><a href="#tools">Tools</a></li><li><a href="#getting-help">Getting help</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@jeffposnick"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="preparing-for-appcache-removal" class="w-article-header__headline">Preparing for AppCache removal</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          Chrome 85 removes support for AppCache by default. Most developers should migrate off AppCache now, and not wait any longer.
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>May 18, 2020</time>
+           <span class="w-author__separator">•</span> Updated <time>Feb 1, 2021</time> 
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/jeffposnick/"><img     alt="Jeff Posnick"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/uskKSRCW1HyOTCjtdMdo.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/uskKSRCW1HyOTCjtdMdo.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/uskKSRCW1HyOTCjtdMdo.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/uskKSRCW1HyOTCjtdMdo.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/uskKSRCW1HyOTCjtdMdo.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/uskKSRCW1HyOTCjtdMdo.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/jeffposnick/">Jeff Posnick</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/jeffposnick"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/jeffposnick">GitHub</a>
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://glitch.com/@jeffposnick"
+          >Glitch</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/jeffposnick">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>Following up on <a href="https://blog.chromium.org/2020/01/appcache-scope-restricted.html" rel="noopener">previous announcements</a>, support for <a href="https://developer.mozilla.org/docs/Web/HTML/Using_the_application_cache" rel="noopener">AppCache</a> will be removed from Chrome and other Chromium-based browsers. We encourage developers to migrate off of AppCache now, rather than waiting any longer.</p>
+<p><a href="https://developers.google.com/web/fundamentals/primers/service-workers" rel="noopener">Service workers</a>,
+which are widely supported in current browsers, offer an alternative to providing the offline
+experience that AppCache had offered. See <a href="#migration-strategies">Migration strategies</a>.</p>
+<h2 id="timeline">Timeline <a class="w-headline-link" href="#timeline">#</a></h2>
+<p><a href="https://blog.chromium.org/2020/03/chrome-and-chrome-os-release-updates.html" rel="noopener">Recent changes</a> to the Chrome release schedule means that the timing of some of these steps may vary. We will attempt to keep this timeline up-to-date, but at this point, please migrate off of AppCache as soon as possible, instead of waiting for specific milestones.</p>
+<p>A &quot;deprecated&quot; feature still exists, but logs warning messages discouraging use. A &quot;removed&quot; feature no longer exists in the browser.</p>
+<div class="w-table-wrapper">
+  <table>
+    <tr>
+    <td><a href="https://groups.google.com/a/chromium.org/g/blink-dev/c/UKF8cK0EwMI/m/NLhsIrs-AQAJ">Deprecation in non-secure contexts</a>
+    </td>
+    <td>Chrome 50 (April 2016)
+    </td>
+    </tr>
+    <tr>
+    <td><a href="https://groups.google.com/a/chromium.org/g/blink-dev/c/ANnafFBhReY/m/1Xdr53KxBAAJ?pli=1">Removal from non-secure contexts</a>
+    </td>
+    <td>Chrome 70 (October 2018)
+    </td>
+    </tr>
+    <tr>
+    <td><a href="https://groups.google.com/a/chromium.org/g/blink-dev/c/FvM-qo7BfkI/m/0daqyD8kCQAJ">Deprecation in secure contexts</a>
+    </td>
+    <td>Chrome 79 (December 2019)
+    </td>
+    </tr>
+    <tr>
+    <td><a href="https://blog.chromium.org/2020/01/appcache-scope-restricted.html">AppCache scope restriction</a>
+    </td>
+    <td>Chrome 80 (February 2020)
+    </td>
+    </tr>
+    <tr>
+    <td>"Reverse" origin trial begins
+    </td>
+    <td>Chrome 84 (<a href="https://chromiumdash.appspot.com/schedule">estimated July 2020</a>)
+    </td>
+    </tr>
+    <tr>
+    <td><a href="https://groups.google.com/a/chromium.org/g/blink-dev/c/FvM-qo7BfkI/m/AvxoE6JpBgAJ">Removal from secure contexts</a>, except for those opted-in to the origin trial
+    </td>
+    <td>Chrome 85 (<a href="https://chromiumdash.appspot.com/schedule">estimated August 2020</a>)
+    </td>
+    </tr>
+    <tr>
+    <td>Complete removal from secure contexts for everyone, with completion of origin trial
+    </td>
+    <td>Chrome 93 (<a href="https://chromiumdash.appspot.com/schedule">estimated October 2021</a>)
+    </td>
+    </tr>
+  </table>
+</div>
+<div class="w-aside w-aside--note">
+<p>This timeline applies to Chrome on <strong>all platforms other than iOS</strong>. There is also an adjusted timeline for AppCache used within an Android <a href="https://developer.android.com/reference/android/webkit/WebView" rel="noopener">WebView</a>. For more info, see <a href="#the-cross-platform-story">The cross-platform story</a> later in this post.</p>
+</div>
+<h2 id="origin-trial">Origin trial <a class="w-headline-link" href="#origin-trial">#</a></h2>
+<p>The timeline lists two upcoming milestones for removal. Beginning with Chrome 85, AppCache will no longer be available in Chrome by default. Developers who require additional time to migrate off of AppCache can <a href="https://developers.chrome.com/origintrials/#/register_trial/1776670052997660673" rel="noopener">sign up</a> for a &quot;reverse&quot; <a href="https://github.com/GoogleChrome/OriginTrials/blob/gh-pages/developer-guide.md" rel="noopener">origin trial</a> to extend the availability of AppCache for their web apps. The origin trial will start in Chrome 84 (in advance of the default removal in Chrome 85), and will be active through Chrome 89. Starting with Chrome 90, AppCache will be fully removed for everyone, even those who had signed up for the origin trial.</p>
+<div class="w-aside w-aside--note">
+<p>Why are we calling this a &quot;reverse&quot; origin trial? Normally, an origin trial allows developers to opt-in to early access to new functionality before it has shipped by default in Chrome. In this case, we're allowing developers to opt-in to using legacy technology even after it's been removed from Chrome, but only temporarily.</p>
+</div>
+<p>To participate in the &quot;reverse&quot; origin trial:</p>
+<ol>
+<li>
+<a href="https://developers.chrome.com/origintrials/#/register_trial/1776670052997660673">Request a token</a> for your origin.
+</li>
+<li>
+Add the token to your HTML pages. There are <a href="https://github.com/GoogleChrome/OriginTrials/blob/gh-pages/developer-guide.md#how-do-i-enable-an-experimental-feature-on-my-origin">two ways</a> to do that:
+<ul>
+<li>
+Add an <code>origin-trial</code> <code>&lt;meta&gt;</code> tag to the head of each page. For example: <code>&lt;meta http-equiv="origin-trial" content="TOKEN_GOES_HERE"&gt;</code>
+</li>
+<li>
+Alternatively, configure your server to return responses containing the <code>Origin-Trial</code> HTTP header. The resulting response header should look something like: <code>Origin-Trial: TOKEN_GOES_HERE</code>
+</li>
+</ul>
+</li>
+<li>
+Add the same token to your AppCache manifests. Do this via a new field in your manifest, with the format:
+<web-copy-code><pre class="language-text"><code class="language-text">ORIGIN-TRIAL:<br>TOKEN_GOES_HERE</code></pre>
+</web-copy-code><p>(There needs to be a new line between <code>ORIGIN-TRIAL</code> and your token.)</p>
+</li>
+</ol>
+<div class="w-aside w-aside--note">
+<p>The token for a manifest <strong>must</strong> be in an <code>ORIGIN-TRIAL</code> field of the manifest itself. Unlike an HTML page's token, it can't be provided via an HTTP header.</p>
+</div>
+<p>You can see a sample project embedded below that demonstrates adding the correct origin trial tokens into both the <code>index.html</code> and <code>manifest.appcache</code> files.</p>
+<div class="glitch-embed-wrap" style="height: 480px; width: 100%;">
+  <iframe
+    allow="camera; clipboard-read; clipboard-write; encrypted-media; geolocation; microphone; midi"
+    loading="lazy"
+    src="https://glitch.com/embed/#!/embed/appcache-reverse-ot?attributionHidden=true&sidebarCollapsed=true&path=manfiest.appcache&previewSize=100"
+    style="height: 100%; width: 100%; border: 0;"
+    title="appcache-reverse-ot on Glitch"
+  ></iframe>
+</div>
+<h3 id="why-are-tokens-needed-in-multiple-places">Why are tokens needed in multiple places? <a class="w-headline-link" href="#why-are-tokens-needed-in-multiple-places">#</a></h3>
+<p>The <strong>same origin trial token</strong> needs to be associated with:</p>
+<ul>
+<li><strong>All of your HTML pages</strong> that use AppCache.</li>
+<li><strong>All of your AppCache manifests</strong> via the <code>ORIGIN-TRIAL</code> manifest field.</li>
+</ul>
+<p>If you've participated in origin trials in the past, you might have added the token just to your HTML pages. The AppCache &quot;reverse&quot; origin trial is special in that you need to associate a token with each of your AppCache manifests as well.</p>
+<p>Adding the origin trial token to your HTML pages enables the <code>window.applicationCache</code> interface from within your web apps. Pages that are not associated with a token won't be able to use <code>window.applicationCache</code> methods and events. Pages without a token also won't be able to load resources from the AppCache. Starting with Chrome 85, they will behave as if AppCache did not exist.</p>
+<p>Adding the origin trial token to your AppCache manifests indicates that each manifest is still valid. Starting with Chrome 85, any manifests that does not have an <code>ORIGIN-TRIAL</code> field will be treated as malformed, and the rules within the manifest will be ignored.</p>
+<h3 id="origin-trial-deployment-timing-and-logistics">Origin trial deployment timing and logistics <a class="w-headline-link" href="#origin-trial-deployment-timing-and-logistics">#</a></h3>
+<p>While the &quot;reverse&quot; origin trial officially starts with Chrome 84, you can <a href="https://developers.chrome.com/origintrials/#/register_trial/1776670052997660673" rel="noopener">sign up</a> for the origin trial today and add the tokens to your HTML and AppCache manifests. As your web app's audience gradually upgrades to Chrome 84, any tokens that you've already added will go into effect.</p>
+<p>Once you've added a token to your AppCache manifest, visit <code>about://appcache-internals</code> to confirm that your local instance of Chrome (version 84 or later) has properly associated the origin trial token with your manifest's cached entries. If your origin trial is recognized, you should see a field with <code>Token Expires: Tue Apr 06 2021...</code> on that page, associated with your manifest:</p>
+<figure class="w-figure">
+  <img     alt="about://appcache-internals interface showing a recognized token."     class="w-screenshot"     decoding="async"     height="203"          loading="lazy"     sizes="(min-width: 550px) 550px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/Xid94kdPT5yGbQzBL4at.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/Xid94kdPT5yGbQzBL4at.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/Xid94kdPT5yGbQzBL4at.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/Xid94kdPT5yGbQzBL4at.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/Xid94kdPT5yGbQzBL4at.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/Xid94kdPT5yGbQzBL4at.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/Xid94kdPT5yGbQzBL4at.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/Xid94kdPT5yGbQzBL4at.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/Xid94kdPT5yGbQzBL4at.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/Xid94kdPT5yGbQzBL4at.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/Xid94kdPT5yGbQzBL4at.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/Xid94kdPT5yGbQzBL4at.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/Xid94kdPT5yGbQzBL4at.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/Xid94kdPT5yGbQzBL4at.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/Xid94kdPT5yGbQzBL4at.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/Xid94kdPT5yGbQzBL4at.jpg?auto=format&w=1100 1100w"          width="550"   />
+</figure>
+<h2 id="testing-prior-to-removal">Testing prior to removal <a class="w-headline-link" href="#testing-prior-to-removal">#</a></h2>
+<p>We strongly encourage you to migrate off of AppCache as soon as is feasible. If you want to test removal of AppCache on your web apps, use the <code>about://flags/#app-cache</code> <a href="https://www.chromium.org/developers/how-tos/run-chromium-with-flags" rel="noopener">flag</a> to simulate its removal. This flag is available starting with Chrome 84.</p>
+<h2 id="migration-strategies">Migration strategies <a class="w-headline-link" href="#migration-strategies">#</a></h2>
+<p>Service workers, which are <a href="https://developer.mozilla.org/docs/Web/API/ServiceWorker#Browser_compatibility" rel="noopener">widely supported in current browsers</a>, offer an alternative to the offline experience provided by AppCache.</p>
+<p>We've provided a <a href="https://github.com/GoogleChromeLabs/sw-appcache-behavior" rel="noopener">polyfill</a> that uses a service worker to replicate some of the functionality of AppCache, though it does not replicate the entire AppCache interface. In particular, it does not provide a replacement for the <code>window.applicationCache</code> interface or the related AppCache events.</p>
+<p>For more complex cases, libraries like <a href="https://developers.google.com/web/tools/workbox/" rel="noopener">Workbox</a> provide an easy way to create a modern service worker for your web app.</p>
+<h3 id="service-workers-and-appcache-are-mutually-exclusive">Service workers and AppCache are mutually exclusive <a class="w-headline-link" href="#service-workers-and-appcache-are-mutually-exclusive">#</a></h3>
+<p>While working on your migration strategy, please keep in mind that Chrome will disable AppCache functionality on any page that's loaded under the <a href="https://developers.google.com/web/fundamentals/primers/service-workers/lifecycle#scope_and_control" rel="noopener">control</a> of a service worker. In other words, as soon as you deploy a service worker that controls a given page, you're no longer able to use AppCache on that page.</p>
+<p>Because of this, we recommend that you do not attempt to migrate to service workers piece-by-piece. It would be a mistake to deploy a service worker that only contains some of your caching logic. You cannot fall back on AppCache to &quot;fill in the gaps.&quot;</p>
+<p>Similarly, if you deploy a service worker prior to AppCache removal, and then discover that you need to roll back to your previous AppCache implementation, you need to ensure that you <a href="https://stackoverflow.com/a/33705250/385997" rel="noopener">unregister</a> that service worker. As long as there's a registered service worker in scope for a given page, AppCache will not be used.</p>
+<h2 id="the-cross-platform-story">The cross-platform story <a class="w-headline-link" href="#the-cross-platform-story">#</a></h2>
+<p>We encourage you to follow up with a specific browser vendor if you'd like more information about their plans for AppCache removal.</p>
+<h3 id="firefox-on-all-platforms">Firefox on all platforms <a class="w-headline-link" href="#firefox-on-all-platforms">#</a></h3>
+<p>Firefox <a href="https://www.fxsitecompat.dev/en-CA/docs/2015/application-cache-api-has-been-deprecated/" rel="noopener">deprecated</a> AppCache in release 44 (September 2015), and has <a href="https://www.fxsitecompat.dev/en-CA/docs/2019/application-cache-storage-has-been-removed-in-nightly-and-early-beta/" rel="noopener">removed</a> support for it in its Beta and Nightly builds as of September 2019.</p>
+<h3 id="safari-on-ios-and-macos">Safari on iOS and macOS <a class="w-headline-link" href="#safari-on-ios-and-macos">#</a></h3>
+<p>Safari <a href="https://bugs.webkit.org/show_bug.cgi?id=181764" rel="noopener">deprecated</a> AppCache in early 2018.</p>
+<h3 id="chrome-on-ios">Chrome on iOS <a class="w-headline-link" href="#chrome-on-ios">#</a></h3>
+<p>Chrome for iOS is a special case, as it uses a different browser engine than Chrome on other platforms: the <a href="https://developer.apple.com/documentation/webkit/wkwebview" rel="noopener">WKWebView</a>. Service workers are not currently supported in iOS apps using WKWebView, and Chrome's AppCache removal announcement does not cover the <a href="https://webkit.org/status/#specification-application-cache" rel="noopener">availability of AppCache on Chrome for iOS</a>. Please keep this in mind if you know that your web app has a significant Chrome for iOS audience.</p>
+<h3 id="android-webviews">Android WebViews <a class="w-headline-link" href="#android-webviews">#</a></h3>
+<p>Some developers of Android applications use Chrome <a href="https://developer.android.com/reference/android/webkit/WebView" rel="noopener">WebView</a> to display web content, and might also use AppCache. However, it's not possible to enable an origin trial for a WebView. In light of that, Chrome WebView will support AppCache without an origin trial until the final removal takes place, expected in Chrome 90.</p>
+<h2 id="learn-more">Learn more <a class="w-headline-link" href="#learn-more">#</a></h2>
+<p>Here are some resources for developers migrating from AppCache to service workers.</p>
+<h3 id="articles">Articles <a class="w-headline-link" href="#articles">#</a></h3>
+<ul>
+<li><a href="https://developers.google.com/web/fundamentals/primers/service-workers" rel="noopener">Service Workers: an Introduction</a></li>
+<li><a href="https://developers.google.com/web/fundamentals/primers/service-workers/lifecycle" rel="noopener">The Service Worker Lifecycle</a></li>
+<li><a href="https://developers.google.com/web/ilt/pwa" rel="noopener">Progressive Web Apps Training</a></li>
+<li><a href="/reliable/">Network Reliability</a></li>
+</ul>
+<h3 id="tools">Tools <a class="w-headline-link" href="#tools">#</a></h3>
+<ul>
+<li><a href="https://github.com/GoogleChromeLabs/sw-appcache-behavior" rel="noopener">AppCache Polyfill</a></li>
+<li><a href="https://developers.google.com/web/tools/workbox/" rel="noopener">Workbox</a></li>
+<li><a href="https://www.pwabuilder.com/" rel="noopener">PWA Builder</a></li>
+</ul>
+<h2 id="getting-help">Getting help <a class="w-headline-link" href="#getting-help">#</a></h2>
+<p>If you run into an issue using a specific tool, open an issue in its GitHub repository.</p>
+<p>You can ask a general question about migrating off of AppCache on <a href="https://stackoverflow.com/" rel="noopener">Stack Overflow</a>, using the tag <code><a href="https://stackoverflow.com/questions/tagged/html5-appcache" rel="noopener">html5-appcache</a></code>.</p>
+<p>If you encounter a bug related to Chrome's AppCache removal, please <a href="https://crbug.com/new" rel="noopener">report it</a> using the Chromium issue tracker.</p>
+<p><em>Hero image based on <a href="https://www.si.edu/object/usnm-storage-drawer:siris_arc_391797" rel="noopener">Smithsonian Institution Archives, Acc. 11-007, Box 020, Image No. MNH-4477</a>.</em></p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/service-worker/">Service Worker</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Feb 1, 2021</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/appcache-removal/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

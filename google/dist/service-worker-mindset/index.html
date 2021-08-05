@@ -1,0 +1,740 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=078358927fa57">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Service worker mindset</title>
+<meta name="description" content="Working with service workers is new and unfamiliar for many web devs. This post provides some tips for wrapping your mind around them. " />
+
+<link rel="canonical" href="https://web.dev/service-worker-mindset/" />
+
+<meta itemprop="name" content="Service worker mindset" />
+<meta itemprop="description" content="Working with service workers is new and unfamiliar for many web devs. This post provides some tips for wrapping your mind around them. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/7cjkg6ggaRsRNwZ0C2Vf.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/service-worker-mindset/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Service worker mindset" />
+<meta property="og:description" content="Working with service workers is new and unfamiliar for many web devs. This post provides some tips for wrapping your mind around them. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/7cjkg6ggaRsRNwZ0C2Vf.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="Service workers lining up." />
+<meta property="tag" content="service-worker" />
+<meta property="tag" content="PWA" />
+<meta property="tag" content="offline" />
+<meta property="tag" content="caching" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Service worker mindset" />
+<meta name="twitter:description" content="Working with service workers is new and unfamiliar for many web devs. This post provides some tips for wrapping your mind around them. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/7cjkg6ggaRsRNwZ0C2Vf.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=13931f1705d95', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=1f26f2166d7f3', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="Service workers lining up."     class="w-hero w-hero--cover w-hero--center"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/7cjkg6ggaRsRNwZ0C2Vf.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/7cjkg6ggaRsRNwZ0C2Vf.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/7cjkg6ggaRsRNwZ0C2Vf.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/7cjkg6ggaRsRNwZ0C2Vf.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/7cjkg6ggaRsRNwZ0C2Vf.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/7cjkg6ggaRsRNwZ0C2Vf.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/7cjkg6ggaRsRNwZ0C2Vf.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/7cjkg6ggaRsRNwZ0C2Vf.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/7cjkg6ggaRsRNwZ0C2Vf.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/7cjkg6ggaRsRNwZ0C2Vf.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/7cjkg6ggaRsRNwZ0C2Vf.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/7cjkg6ggaRsRNwZ0C2Vf.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/7cjkg6ggaRsRNwZ0C2Vf.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/7cjkg6ggaRsRNwZ0C2Vf.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/7cjkg6ggaRsRNwZ0C2Vf.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/7cjkg6ggaRsRNwZ0C2Vf.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/7cjkg6ggaRsRNwZ0C2Vf.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/7cjkg6ggaRsRNwZ0C2Vf.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#service-worker-mindset" class="w-toc__header--link">
+        Service worker mindset
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#the-same-but-different">The same, but different</a></li><li><a href="#a-new-layer">A new layer</a></li><li><a href="#powerful-but-limited">Powerful, but limited</a></li><li><a href="#long-lived-but-short-lived">Long-lived, but short-lived</a></li><li><a href="#stopped">Stopped</a></li><li><a href="#waituntil">waitUntil</a></li><li><a href="#watch-out-for-global-state">Watch out for global state</a></li><li><a href="#together-but-separate">Together, but separate</a></li><li><a href="#messing-with-another-service-worker's-caches">Messing with another service worker's caches</a></li><li><a href="#skip-skipwaiting">Skip skipWaiting</a></li><li><a href="#start-clean">Start clean</a></li><li><a href="#end-clean">End clean</a></li><li><a href="#service-worker-mindset">Service worker mindset</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@geddski"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="service-worker-mindset" class="w-article-header__headline">Service worker mindset</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          How to think when thinking about service workers.
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Jun 4, 2019</time>
+          
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/geddski/"><img     alt="Dave Geddes"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/aU4CRVGbOgg8uSRuLAfh.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/aU4CRVGbOgg8uSRuLAfh.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/aU4CRVGbOgg8uSRuLAfh.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/aU4CRVGbOgg8uSRuLAfh.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/aU4CRVGbOgg8uSRuLAfh.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/aU4CRVGbOgg8uSRuLAfh.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/geddski/">Dave Geddes</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/geddski"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/geddski">GitHub</a>
+      </li>
+      
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://gedd.ski/">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>Service workers are powerful and absolutely worth learning. They let you deliver an entirely new level of experience to your users. Your site can load <em>instantly</em>. It can work <em>offline</em>. It can be installed as a platform-specific app and feel every bit as polished—but with the reach and freedom of the web.</p>
+<p>But service workers are unlike anything most of us web devs are used to. They come with a steep learning curve and a handful of snags you've got to watch out for.</p>
+<p><a href="https://twitter.com/ChromiumDev" rel="noopener">Google Developers</a> and I recently collaborated on a project—<a href="https://serviceworkies.com" rel="noopener">Service Workies</a>—a free game for understanding service workers. While building it and working with the complex ins and outs of service workers, I ran into a few snags. What helped me the most was coming up with a handful of depictive metaphors. In this post we'll explore these mental models and wrap our brains around the paradoxical traits that make service workers both tricky and awesome.</p>
+<h2 id="the-same-but-different">The same, but different <a class="w-headline-link" href="#the-same-but-different">#</a></h2>
+<p>While coding your service worker, many things will feel familiar. You get to use your favorite new JavaScript language features. You listen to lifecycle events just like with UI events. You manage control flow with promises like you're used to.</p>
+<p>But other service worker behavior causes you to scratch your head in confusion. Especially when you refresh the page and don't see your code changes applied.</p>
+<h3 id="a-new-layer">A new layer <a class="w-headline-link" href="#a-new-layer">#</a></h3>
+<p>Normally when building a site you have just two layers to think about: the client and the server. The service worker is a brand new layer that sits in the middle.</p>
+<img     alt="A service worker acts as a middle layer between the client and the server"          decoding="async"     height="232"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/w6JgZDMJMoqp24IuC9UZ.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/w6JgZDMJMoqp24IuC9UZ.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/w6JgZDMJMoqp24IuC9UZ.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/w6JgZDMJMoqp24IuC9UZ.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/w6JgZDMJMoqp24IuC9UZ.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/w6JgZDMJMoqp24IuC9UZ.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/w6JgZDMJMoqp24IuC9UZ.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/w6JgZDMJMoqp24IuC9UZ.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/w6JgZDMJMoqp24IuC9UZ.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/w6JgZDMJMoqp24IuC9UZ.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/w6JgZDMJMoqp24IuC9UZ.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/w6JgZDMJMoqp24IuC9UZ.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/w6JgZDMJMoqp24IuC9UZ.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/w6JgZDMJMoqp24IuC9UZ.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/w6JgZDMJMoqp24IuC9UZ.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/w6JgZDMJMoqp24IuC9UZ.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/w6JgZDMJMoqp24IuC9UZ.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/w6JgZDMJMoqp24IuC9UZ.jpg?auto=format&w=1600 1600w"          width="800"   />
+<p>Think of your service worker as a sort of <em>browser extension</em>—one that your site can install in your user's browser. Once installed, the service worker <em>extends</em> the browser for your site with a powerful middle layer. This service worker layer can intercept and handle all of the requests your site makes.</p>
+<p>The service worker layer has its <strong>own lifecycle</strong> independent of the browser tab. A simple page refresh isn't enough to update a service worker—just like you wouldn't expect a page refresh to update code deployed on a server. Each layer has its own unique rules for updating.</p>
+<p>In the <a href="https://serviceworkies.com" rel="noopener">Service Workies</a> game we cover the many details of the service worker lifecycle and give you a ton of practice working with it.</p>
+<img     alt="a new service worker replacing an old one"          decoding="async"     height="460"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/mOyHcAJW55YiI12VW05a.gif?auto=format"     srcset="https://web-dev.imgix.net/image/admin/mOyHcAJW55YiI12VW05a.gif?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/mOyHcAJW55YiI12VW05a.gif?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/mOyHcAJW55YiI12VW05a.gif?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/mOyHcAJW55YiI12VW05a.gif?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/mOyHcAJW55YiI12VW05a.gif?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/mOyHcAJW55YiI12VW05a.gif?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/mOyHcAJW55YiI12VW05a.gif?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/mOyHcAJW55YiI12VW05a.gif?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/mOyHcAJW55YiI12VW05a.gif?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/mOyHcAJW55YiI12VW05a.gif?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/mOyHcAJW55YiI12VW05a.gif?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/mOyHcAJW55YiI12VW05a.gif?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/mOyHcAJW55YiI12VW05a.gif?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/mOyHcAJW55YiI12VW05a.gif?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/mOyHcAJW55YiI12VW05a.gif?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/mOyHcAJW55YiI12VW05a.gif?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/mOyHcAJW55YiI12VW05a.gif?auto=format&w=1600 1600w"          width="800"   />
+<div class="w-aside w-aside--note">
+<p>Think of your service worker as a new middle layer with its own lifecycle and methods for updating.</p>
+</div>
+<h2 id="powerful-but-limited">Powerful, but limited <a class="w-headline-link" href="#powerful-but-limited">#</a></h2>
+<p>Having a service worker on your site gives you incredible benefits. Your site can:</p>
+<ul>
+<li>work flawlessly even when the user is offline</li>
+<li>gain massive performance improvements through <a href="https://developer.mozilla.org/en-US/docs/Web/API/Cache" rel="noopener">caching</a></li>
+<li>use <a href="https://developers.google.com/web/fundamentals/push-notifications/" rel="noopener">push notifications</a></li>
+<li>be installed as a <a href="https://developers.google.com/web/progressive-web-apps/" rel="noopener">PWA</a></li>
+</ul>
+<p>With as much as service workers can do, they are limited by design. They can't do anything synchronous or in the same thread as your site. So that means no access to:</p>
+<ul>
+<li>localStorage</li>
+<li>the DOM</li>
+<li>the window</li>
+</ul>
+<p>The good news is there are a handful of ways your page can communicate with its service worker, including direct <a href="https://developer.mozilla.org/en-US/docs/Web/API/Client/postMessage" rel="noopener"><code>postMessage</code></a>, one-to-one <a href="https://developer.mozilla.org/en-US/docs/Web/API/MessageChannel" rel="noopener">Message Channels</a> and one-to-many <a href="https://developers.google.com/web/updates/2016/09/broadcastchannel" rel="noopener">Broadcast Channels</a>.</p>
+<div class="w-aside w-aside--note">
+<p>Think of your service worker as something that lives outside of your page. You can talk to it, but it can't access your page directly.</p>
+</div>
+<h2 id="long-lived-but-short-lived">Long-lived, but short-lived <a class="w-headline-link" href="#long-lived-but-short-lived">#</a></h2>
+<p>An active service worker goes on living even after a user leaves your site or closes the tab. The browser keeps this service worker around so that it will be ready the next time the user comes back to your site. Before the very first request is made, the service worker gets a chance to intercept it and take control of the page. This is what allows a site to work offline—the service worker can serve a cached version of the page itself, even if the user has no connection to the internet.</p>
+<p>In <a href="https://serviceworkies.com" rel="noopener">Service Workies</a> we visualize this concept with Kolohe (a friendly service worker) intercepting and handling requests.</p>
+<img     alt="service worker intercepting http requests"          decoding="async"     height="605"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/YcXrupDTu2m7nlRU4FAz.gif?auto=format"     srcset="https://web-dev.imgix.net/image/admin/YcXrupDTu2m7nlRU4FAz.gif?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/YcXrupDTu2m7nlRU4FAz.gif?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/YcXrupDTu2m7nlRU4FAz.gif?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/YcXrupDTu2m7nlRU4FAz.gif?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/YcXrupDTu2m7nlRU4FAz.gif?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/YcXrupDTu2m7nlRU4FAz.gif?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/YcXrupDTu2m7nlRU4FAz.gif?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/YcXrupDTu2m7nlRU4FAz.gif?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/YcXrupDTu2m7nlRU4FAz.gif?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/YcXrupDTu2m7nlRU4FAz.gif?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/YcXrupDTu2m7nlRU4FAz.gif?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/YcXrupDTu2m7nlRU4FAz.gif?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/YcXrupDTu2m7nlRU4FAz.gif?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/YcXrupDTu2m7nlRU4FAz.gif?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/YcXrupDTu2m7nlRU4FAz.gif?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/YcXrupDTu2m7nlRU4FAz.gif?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/YcXrupDTu2m7nlRU4FAz.gif?auto=format&w=1600 1600w"          width="800"   />
+<h3 id="stopped">Stopped <a class="w-headline-link" href="#stopped">#</a></h3>
+<p>Despite service workers appearing to be immortal, they can be <strong>stopped</strong> at almost any time. The browser doesn't want to waste resources on a service worker that isn't currently doing anything. Getting stopped isn't the same thing as getting <em>terminated</em>—the service worker remains installed and activated. It's just put to sleep. The next time it's needed (e.g., to handle a request), the browser wakes it back up.</p>
+<h3 id="waituntil">waitUntil <a class="w-headline-link" href="#waituntil">#</a></h3>
+<p>Because of the constant possibility of getting put to sleep, your service worker needs a way to let the browser know when it's doing something important and doesn't feel like taking a nap. This is where <code>event.waitUntil()</code> comes into play. This method extends the lifecycle it's used in, keeping it both from being stopped and from moving on to the next phase of its lifecycle until we're ready. This gives us time to setup caches, fetch resources from the network, etc.</p>
+<p>This example tells the browser that our service worker isn't done installing until the <code>assets</code> cache has been created and populated with the picture of a sword:</p>
+<web-copy-code><pre class="language-js"><code class="language-js">self<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">"install"</span><span class="token punctuation">,</span> <span class="token parameter">event</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  event<span class="token punctuation">.</span><span class="token function">waitUntil</span><span class="token punctuation">(</span><br>    caches<span class="token punctuation">.</span><span class="token function">open</span><span class="token punctuation">(</span><span class="token string">"assets"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">cache</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>      <span class="token keyword">return</span> cache<span class="token punctuation">.</span><span class="token function">addAll</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"/weapons/sword/blade.png"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token punctuation">}</span><span class="token punctuation">)</span><br>  <span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><h3 id="watch-out-for-global-state">Watch out for global state <a class="w-headline-link" href="#watch-out-for-global-state">#</a></h3>
+<p>When this start/stop happens the service worker's global scope is reset. So be careful not to use any global state in your service worker or you'll be sad the next time it wakes back up and has different state from what it was expecting.</p>
+<p>Consider this example that uses a global state:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> favoriteNumber <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">random</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token keyword">let</span> hasHandledARequest <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span><br><br>self<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">"fetch"</span><span class="token punctuation">,</span> <span class="token parameter">event</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>favoriteNumber<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>hasHandledARequest<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  hasHandledARequest <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>On each request this service worker will log a number—let's say <code>0.13981866382421893</code>. The <code>hasHandledARequest</code> variable also changes to <code>true</code>. Now the service worker sits idle for a bit, so the browser stops it. The next time there's a request, the service worker is needed again, so the browser wakes it up. Its script is <strong>evaluated again</strong>. Now <code>hasHandledARequest</code> is reset to <code>false</code>, and <code>favoriteNumber</code> is something completely different—<code>0.5907281835659033</code>.</p>
+<p>You can't rely on stored state in a service worker. Also, creating instances of things like Message Channels can cause bugs: you'll get a brand new instance every time the service worker stops/starts.</p>
+<div class="w-aside w-aside--warning">
+<p><strong>Warning</strong>:
+This snag is especially important to keep in mind while working on your service worker code because when Chrome DevTools is open, the start/stop behavior is disabled. You may not even see bugs caused by relying on global state until they've shipped to your users.</p>
+</div>
+<p>In <a href="https://gedd.ski/post/service-workies-chapter3/" rel="noopener">Service Workies chapter 3</a> we visualize our stopped service worker as losing all color while it waits to be woken up.</p>
+<img     alt="visualization of a stopped service worker"          decoding="async"     height="313"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/QBmObxFoIRgNtjsUttkF.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/QBmObxFoIRgNtjsUttkF.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/QBmObxFoIRgNtjsUttkF.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/QBmObxFoIRgNtjsUttkF.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/QBmObxFoIRgNtjsUttkF.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/QBmObxFoIRgNtjsUttkF.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/QBmObxFoIRgNtjsUttkF.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/QBmObxFoIRgNtjsUttkF.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/QBmObxFoIRgNtjsUttkF.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/QBmObxFoIRgNtjsUttkF.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/QBmObxFoIRgNtjsUttkF.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/QBmObxFoIRgNtjsUttkF.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/QBmObxFoIRgNtjsUttkF.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/QBmObxFoIRgNtjsUttkF.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/QBmObxFoIRgNtjsUttkF.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/QBmObxFoIRgNtjsUttkF.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/QBmObxFoIRgNtjsUttkF.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/QBmObxFoIRgNtjsUttkF.jpg?auto=format&w=1600 1600w"          width="800"   />
+<div class="w-aside w-aside--note">
+<p>Think of your service worker as a <a href="https://www.akc.org/dog-breeds/whippet/" rel="noopener">whippet</a> dog. It's fast, loyal and awesome. It'll stick around by your side no matter what. But mostly it just wants to sleep. All the time. You've got to let it know when you want it to stay awake. Good dog!</p>
+</div>
+<h2 id="together-but-separate">Together, but separate <a class="w-headline-link" href="#together-but-separate">#</a></h2>
+<p>Your page can only be <em>controlled</em> by one service worker at a time. But it can have two service workers <em>installed</em> at once. When you make a change to your service worker code and refresh the page, you aren't actually editing your service worker at all. Service workers are <em>immutable</em>. You're instead making a brand new one. This new service worker (let's call it SW2) will <em>install</em> but it won't <em>activate</em> yet. It has to <em>wait</em> for the current service worker (SW1) to terminate (when your user leaves your site).</p>
+<h3 id="messing-with-another-service-worker's-caches">Messing with another service worker's caches <a class="w-headline-link" href="#messing-with-another-service-worker's-caches">#</a></h3>
+<p>While installing, SW2 can get things setup—usually creating and populating caches. But heads up: this new service worker has access to everything that the current service worker has access to. If you're not careful, your new waiting service worker can really mess things up for your current service worker. Some examples that could cause you trouble:</p>
+<ul>
+<li>SW2 could delete a cache that SW1 is actively using.</li>
+<li>SW2 could edit the contents of a cache that SW1 is using, causing SW1 to respond with assets that the page isn't expecting.</li>
+</ul>
+<h3 id="skip-skipwaiting">Skip skipWaiting <a class="w-headline-link" href="#skip-skipwaiting">#</a></h3>
+<p>A service worker can also use the risky <code>skipWaiting()</code> method to take control of the page as soon as it's done installing. This is generally a bad idea unless you're intentionally trying to replace a buggy service worker. The new service worker might be using updated resources that the current page isn't expecting, leading to errors and bugs.</p>
+<h3 id="start-clean">Start clean <a class="w-headline-link" href="#start-clean">#</a></h3>
+<p>The way to prevent your service workers from clobbering each other is to make sure they use different caches. The easiest way to accomplish that is to version the cache names they use.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> version <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span><br><span class="token keyword">const</span> assetCacheName <span class="token operator">=</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">assets-</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>version<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span><br><br>self<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">"install"</span><span class="token punctuation">,</span> <span class="token parameter">event</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  caches<span class="token punctuation">.</span><span class="token function">open</span><span class="token punctuation">(</span>assetCacheName<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">cache</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>    <span class="token comment">// confidently do stuff with your very own cache</span><br>  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>When you deploy a new service worker, you'll bump the <code>version</code> so that it does what it needs with an entirely separate cache from the previous service worker.</p>
+<img     alt="visualization of a cache"          decoding="async"     height="435"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/7REuAR11sps94W4tO7ng.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/7REuAR11sps94W4tO7ng.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/7REuAR11sps94W4tO7ng.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/7REuAR11sps94W4tO7ng.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/7REuAR11sps94W4tO7ng.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/7REuAR11sps94W4tO7ng.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/7REuAR11sps94W4tO7ng.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/7REuAR11sps94W4tO7ng.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/7REuAR11sps94W4tO7ng.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/7REuAR11sps94W4tO7ng.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/7REuAR11sps94W4tO7ng.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/7REuAR11sps94W4tO7ng.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/7REuAR11sps94W4tO7ng.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/7REuAR11sps94W4tO7ng.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/7REuAR11sps94W4tO7ng.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/7REuAR11sps94W4tO7ng.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/7REuAR11sps94W4tO7ng.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/7REuAR11sps94W4tO7ng.jpg?auto=format&w=1600 1600w"          width="800"   />
+<h3 id="end-clean">End clean <a class="w-headline-link" href="#end-clean">#</a></h3>
+<p>Once your service worker reaches the <code>activated</code> state, you know it has taken over, and the previous service worker is redundant (i.e., no longer needed). At this point it's important to clean up after the old service worker. Not only does it respect your users' cache storage limits, but it can also prevent unintentional bugs.</p>
+<p>The <a href="https://developer.mozilla.org/en-US/docs/Web/API/CacheStorage/match" rel="noopener"><code>caches.match()</code></a> method is an often-used shortcut for retrieving an item from <em>any</em> cache where there's a match. But it iterates through the caches in the order they were created. So let's say you've got two versions of a script file <code>app.js</code> in two different caches—<code>assets-1</code> and <code>assets-2</code>. Your page is expecting the newer script that's stored in <code>assets-2</code>. But if you haven't deleted the old cache, <code>caches.match('app.js')</code> is going to return the old one from <code>assets-1</code> and most likely break your site.</p>
+<p>All it takes to clean up after previous service workers is to delete any cache that the new service worker doesn't need:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> version <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">;</span><br><span class="token keyword">const</span> assetCacheName <span class="token operator">=</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">assets-</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>version<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span><br><br>self<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">"activate"</span><span class="token punctuation">,</span> <span class="token parameter">event</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  event<span class="token punctuation">.</span><span class="token function">waitUntil</span><span class="token punctuation">(</span><br>    caches<span class="token punctuation">.</span><span class="token function">keys</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">cacheNames</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>      <span class="token keyword">return</span> Promise<span class="token punctuation">.</span><span class="token function">all</span><span class="token punctuation">(</span><br>        cacheNames<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span><span class="token parameter">cacheName</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>          <span class="token keyword">if</span> <span class="token punctuation">(</span>cacheName <span class="token operator">!==</span> assetCacheName<span class="token punctuation">)</span><span class="token punctuation">{</span><br>            <span class="token keyword">return</span> caches<span class="token punctuation">.</span><span class="token function">delete</span><span class="token punctuation">(</span>cacheName<span class="token punctuation">)</span><span class="token punctuation">;</span><br>          <span class="token punctuation">}</span><br>        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>      <span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br></code></pre>
+</web-copy-code><p>Preventing your service workers from clobbering each other takes a bit of work and discipline but is worth the trouble.</p>
+<div class="w-aside w-aside--note">
+<p>Think of the combination of your service worker and your site as an <a href="/installable">installable</a> app. Each version should work. Each version should be separate from the others. Imagine how buggy a game would be if the developer accidentally released a patch that used new game logic but outdated assets. You'd rage on the forums so fast! Keep your app versions tidy &amp; clean.</p>
+</div>
+<h2 id="service-worker-mindset">Service worker mindset <a class="w-headline-link" href="#service-worker-mindset">#</a></h2>
+<p>Getting into the right mindset while thinking about service workers will help you build yours with confidence. Once you get the hang of them you'll be able to create incredible experiences for your users.</p>
+<p>If you want to understand all this by <a href="https://gedd.ski/post/mastery-through-play/" rel="noopener">playing a game</a>, then you're in luck! Go play <a href="https://serviceworkies.com" rel="noopener">Service Workies</a> where you'll learn the ways of the service worker in order to slay the offline beasts.</p>
+<img     alt="preview of the Service Workies game"          decoding="async"     height="519"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/HN8hJsK415482mqXmiaI.gif?auto=format"     srcset="https://web-dev.imgix.net/image/admin/HN8hJsK415482mqXmiaI.gif?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/HN8hJsK415482mqXmiaI.gif?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/HN8hJsK415482mqXmiaI.gif?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/HN8hJsK415482mqXmiaI.gif?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/HN8hJsK415482mqXmiaI.gif?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/HN8hJsK415482mqXmiaI.gif?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/HN8hJsK415482mqXmiaI.gif?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/HN8hJsK415482mqXmiaI.gif?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/HN8hJsK415482mqXmiaI.gif?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/HN8hJsK415482mqXmiaI.gif?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/HN8hJsK415482mqXmiaI.gif?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/HN8hJsK415482mqXmiaI.gif?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/HN8hJsK415482mqXmiaI.gif?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/HN8hJsK415482mqXmiaI.gif?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/HN8hJsK415482mqXmiaI.gif?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/HN8hJsK415482mqXmiaI.gif?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/HN8hJsK415482mqXmiaI.gif?auto=format&w=1600 1600w"          width="800"   />
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/service-worker/">Service Worker</a>
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/offline/">Offline</a>
+      
+    
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Jun 4, 2019</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/service-worker-mindset/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

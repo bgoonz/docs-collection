@@ -1,0 +1,834 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=13ea5b93db34e">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Receiving shared data with the Web Share Target API</title>
+<meta name="description" content="On a mobile or desktop device, sharing should be as simple as clicking the Share button, choosing an app, then choosing who to share with. The Web Share Target API allows installed web apps to register with the underlying operating system to receive shared content. " />
+
+<link rel="canonical" href="https://web.dev/web-share-target/" />
+
+<meta itemprop="name" content="Receiving shared data with the Web Share Target API" />
+<meta itemprop="description" content="On a mobile or desktop device, sharing should be as simple as clicking the Share button, choosing an app, then choosing who to share with. The Web Share Target API allows installed web apps to register with the underlying operating system to receive shared content. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/RfxdrfKdh5Fp8camulRt.png?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/web-share-target/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Receiving shared data with the Web Share Target API" />
+<meta property="og:description" content="On a mobile or desktop device, sharing should be as simple as clicking the Share button, choosing an app, then choosing who to share with. The Web Share Target API allows installed web apps to register with the underlying operating system to receive shared content. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/RfxdrfKdh5Fp8camulRt.png?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="An illustration demonstrating that platform-specific apps can now share content with web apps." />
+<meta property="tag" content="capabilities" />
+<meta property="tag" content="progressive-web-apps" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Receiving shared data with the Web Share Target API" />
+<meta name="twitter:description" content="On a mobile or desktop device, sharing should be as simple as clicking the Share button, choosing an app, then choosing who to share with. The Web Share Target API allows installed web apps to register with the underlying operating system to receive shared content. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/RfxdrfKdh5Fp8camulRt.png?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=a2e77a69e7d45', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=1727734c54143', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="An illustration demonstrating that platform-specific apps can now share content with web apps."     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/RfxdrfKdh5Fp8camulRt.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/RfxdrfKdh5Fp8camulRt.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/RfxdrfKdh5Fp8camulRt.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/RfxdrfKdh5Fp8camulRt.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/RfxdrfKdh5Fp8camulRt.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/RfxdrfKdh5Fp8camulRt.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/RfxdrfKdh5Fp8camulRt.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/RfxdrfKdh5Fp8camulRt.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/RfxdrfKdh5Fp8camulRt.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/RfxdrfKdh5Fp8camulRt.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/RfxdrfKdh5Fp8camulRt.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/RfxdrfKdh5Fp8camulRt.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/RfxdrfKdh5Fp8camulRt.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/RfxdrfKdh5Fp8camulRt.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/RfxdrfKdh5Fp8camulRt.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/RfxdrfKdh5Fp8camulRt.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/RfxdrfKdh5Fp8camulRt.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/RfxdrfKdh5Fp8camulRt.png?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#receiving-shared-data-with-the-web-share-target-api" class="w-toc__header--link">
+        Receiving shared data with the Web Share Target API
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#see-web-share-target-in-action">See Web Share Target in action</a></li><li><a href="#register-your-app-as-a-share-target">Register your app as a share target</a></li><li><a href="#update-your-web-app-manifest">Update your web app manifest</a></li><li><a href="#accepting-basic-information">Accepting basic information</a></li><li><a href="#accepting-application-changes">Accepting application changes</a></li><li><a href="#accepting-files">Accepting files</a></li><li><a href="#handle-the-incoming-content">Handle the incoming content</a></li><li><a href="#processing-get-shares">Processing GET shares</a></li><li><a href="#processing-post-shares">Processing POST shares</a></li><li><a href="#verifying-shared-content">Verifying shared content</a></li><li><a href="#browser-support">Browser support</a></li><li><a href="#sample-applications">Sample applications</a></li><li><a href="#show-support-for-the-api">Show support for the API</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@petele | @medleyjp"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="receiving-shared-data-with-the-web-share-target-api" class="w-article-header__headline">Receiving shared data with the Web Share Target API</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          Sharing on mobile and desktop made simple with the Web Share Target API
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Nov 8, 2019</time>
+           <span class="w-author__separator">•</span> Updated <time>Jun 7, 2021</time> 
+        </div>
+      
+      <div class="w-layout-container--narrow w-post-signpost">
+  <span class="w-post-signpost__title">Appears in:</span>
+  <a
+          class="w-post-signpost__link"
+          href="/progressive-web-apps"
+          >Progressive Web Apps</a
+        >
+</div>
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/petelepage/"><img     alt="Pete LePage"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/0g2WvpbGRGdVs0aAPc6ObG7gkud2/3rFbsLsMMk1VveHfBRSu.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/0g2WvpbGRGdVs0aAPc6ObG7gkud2/3rFbsLsMMk1VveHfBRSu.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/0g2WvpbGRGdVs0aAPc6ObG7gkud2/3rFbsLsMMk1VveHfBRSu.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/0g2WvpbGRGdVs0aAPc6ObG7gkud2/3rFbsLsMMk1VveHfBRSu.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/0g2WvpbGRGdVs0aAPc6ObG7gkud2/3rFbsLsMMk1VveHfBRSu.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/0g2WvpbGRGdVs0aAPc6ObG7gkud2/3rFbsLsMMk1VveHfBRSu.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/petelepage/">Pete LePage</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/petele"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/petele">GitHub</a>
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://glitch.com/@petele"
+          >Glitch</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://petelepage.com">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+            <div class="w-author">
+  <a href="/authors/joemedley/"><img     alt="Joe Medley"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/ynJFmvKEbD9diZZsTdkD.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/ynJFmvKEbD9diZZsTdkD.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/ynJFmvKEbD9diZZsTdkD.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/ynJFmvKEbD9diZZsTdkD.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/ynJFmvKEbD9diZZsTdkD.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/ynJFmvKEbD9diZZsTdkD.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/joemedley/">Joe Medley</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/medleyjp"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/jpmedley">GitHub</a>
+      </li>
+      
+      
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>On a mobile or desktop device, sharing should be as straightforward as clicking the <strong>Share</strong> button,
+choosing an app, and choosing who to share with. For example, you may want to
+share an interesting article, either by emailing it to friends or tweeting it to
+the world.</p>
+<p>In the past, only platform-specific apps could register with the operating system to
+receive shares from other installed apps. But with the Web Share Target API,
+installed web apps can register with the underlying operating system
+as a share target to receive shared content.</p>
+<div class="w-aside w-aside--note">
+<p>The Web Share Target API is only half of the magic. Web apps can share data,
+files, links, or text using the Web Share API. See
+<a href="/web-share/">Web Share API</a> for details.</p>
+</div>
+<figure class="w-figure w-figure--inline-right">
+  <img     alt="Android phone with the &#x27;Share via&#x27; drawer open."          decoding="async"     height="377"          loading="lazy"     sizes="(min-width: 400px) 400px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/Q4nuOQMpsQrTilpXA3fL.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/Q4nuOQMpsQrTilpXA3fL.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/Q4nuOQMpsQrTilpXA3fL.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/Q4nuOQMpsQrTilpXA3fL.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/Q4nuOQMpsQrTilpXA3fL.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/Q4nuOQMpsQrTilpXA3fL.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/Q4nuOQMpsQrTilpXA3fL.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/Q4nuOQMpsQrTilpXA3fL.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/Q4nuOQMpsQrTilpXA3fL.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/Q4nuOQMpsQrTilpXA3fL.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/Q4nuOQMpsQrTilpXA3fL.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/Q4nuOQMpsQrTilpXA3fL.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/Q4nuOQMpsQrTilpXA3fL.png?auto=format&w=800 800w"          width="400"   />
+  <figcaption class="w-figcaption w-figcaption--fullbleed">
+    System-level share target picker with an installed PWA as an option.
+  </figcaption>
+</figure>
+<h2 id="see-web-share-target-in-action">See Web Share Target in action <a class="w-headline-link" href="#see-web-share-target-in-action">#</a></h2>
+<ol>
+<li>Using either Chrome 76 or later for Android, or Chrome 89 or later on
+desktop, open the <a href="https://web-share.glitch.me/" rel="noopener">Web Share Target demo</a>.</li>
+<li>When prompted, click <strong>Install</strong> to add the app to your home screen, or
+use the Chrome menu to add it to your home screen.</li>
+<li>Open any app that supports sharing, or use the Share button
+in the demo app.</li>
+<li>From the target picker, choose <strong>Web Share Test</strong>.</li>
+</ol>
+<p>After sharing, you should see all of the shared information in
+the web share target web app.</p>
+<h2 id="register-your-app-as-a-share-target">Register your app as a share target <a class="w-headline-link" href="#register-your-app-as-a-share-target">#</a></h2>
+<p>To register your app as a share target, it needs to meet <a href="https://developers.google.com/web/fundamentals/app-install-banners/#criteria" rel="noopener">Chrome's
+installability criteria</a>. In addition, before a user can share
+to your app, they must add it to their home screen. This prevents sites from
+randomly adding themselves to the user's share intent chooser and ensures that
+sharing is something that users want to do with your app.</p>
+<h2 id="update-your-web-app-manifest">Update your web app manifest <a class="w-headline-link" href="#update-your-web-app-manifest">#</a></h2>
+<p>To register your app as a share target, add a <code>share_target</code> entry to its <a href="/add-manifest/">web
+app manifest</a>. This tells the operating system to include your app as
+an option in the intent chooser. What you add to the manifest controls the data
+that your app will accept. There are three common scenarios for the <code>share_target</code>
+entry:</p>
+<ul>
+<li>Accepting basic information</li>
+<li>Accepting application changes</li>
+<li>Accepting files</li>
+</ul>
+<div class="w-aside w-aside--note">
+<p>You can only have one <code>share_target</code> per manifest, if you want to share to
+different places within your app, provide that as an option within the share
+target landing page.</p>
+</div>
+<h3 id="accepting-basic-information">Accepting basic information <a class="w-headline-link" href="#accepting-basic-information">#</a></h3>
+<p>If your target app is merely accepting basic information such as data, links,
+and text, add the following to the <code>manifest.json</code> file:</p>
+<web-copy-code><pre class="language-json"><code class="language-json"><span class="token property">"share_target"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>  <span class="token property">"action"</span><span class="token operator">:</span> <span class="token string">"/share-target/"</span><span class="token punctuation">,</span><br>  <span class="token property">"method"</span><span class="token operator">:</span> <span class="token string">"GET"</span><span class="token punctuation">,</span><br>  <span class="token property">"params"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>    <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"title"</span><span class="token punctuation">,</span><br>    <span class="token property">"text"</span><span class="token operator">:</span> <span class="token string">"text"</span><span class="token punctuation">,</span><br>    <span class="token property">"url"</span><span class="token operator">:</span> <span class="token string">"url"</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>If your application already has a share URL scheme, you can replace the <code>param</code>
+values with your existing query parameters. For example, if your share URL
+scheme uses <code>body</code> instead of <code>text</code>, you could replace <code>&quot;text&quot;: &quot;text&quot;</code> with <code>&quot;text&quot;: &quot;body&quot;</code>.</p>
+<p>The <code>method</code> value defaults to <code>&quot;GET&quot;</code> if not provided. The <code>enctype</code> field, not
+shown in this example, indicates the <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form#attr-enctype" rel="noopener">type of encoding</a> for the data.
+For the <code>&quot;GET&quot;</code> method, <code>enctype</code> defaults to <code>&quot;application/x-www-form-urlencoded&quot;</code> and
+is ignored if it's set to anything else.</p>
+<h3 id="accepting-application-changes">Accepting application changes <a class="w-headline-link" href="#accepting-application-changes">#</a></h3>
+<p>If the shared data changes the target app in some way—for example, saving a
+bookmark in the target application—set the <code>method</code> value to <code>&quot;POST&quot;</code> and include
+the <code>enctype</code> field. The example below creates a bookmark in the target app,
+so it uses <code>&quot;POST&quot;</code> for the <code>method</code> and <code>&quot;multipart/form-data&quot;</code> for the
+<code>enctype</code>:</p>
+<web-copy-code><pre class="language-json"><code class="language-json"><span class="highlight-line"><span class="token punctuation">{</span></span><br><span class="highlight-line">  <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"Bookmark"</span><span class="token punctuation">,</span></span><br><span class="highlight-line">  <span class="token property">"share_target"</span><span class="token operator">:</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">    <span class="token property">"action"</span><span class="token operator">:</span> <span class="token string">"/bookmark"</span><span class="token punctuation">,</span></span><br><mark class="highlight-line highlight-line-active">    <span class="token property">"method"</span><span class="token operator">:</span> <span class="token string">"POST"</span><span class="token punctuation">,</span></mark><br><mark class="highlight-line highlight-line-active">    <span class="token property">"enctype"</span><span class="token operator">:</span> <span class="token string">"multipart/form-data"</span><span class="token punctuation">,</span></mark><br><span class="highlight-line">    <span class="token property">"params"</span><span class="token operator">:</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">      <span class="token property">"url"</span><span class="token operator">:</span> <span class="token string">"link"</span></span><br><span class="highlight-line">    <span class="token punctuation">}</span></span><br><span class="highlight-line">  <span class="token punctuation">}</span></span><br><span class="highlight-line"><span class="token punctuation">}</span></span></code></pre>
+</web-copy-code><h3 id="accepting-files">Accepting files <a class="w-headline-link" href="#accepting-files">#</a></h3>
+<p>As with application changes, accepting files requires that <code>method</code> be <code>&quot;POST&quot;</code>
+and that <code>enctype</code> be present. Additionally, <code>enctype</code> must be
+<code>&quot;multipart/form-data&quot;</code>, and a <code>files</code> entry must be added.</p>
+<p>You must also add a <code>files</code> array defining the types of files your app accepts. The
+array elements are entries with two members: a <code>name</code> field and an <code>accept</code>
+field. The <code>accept</code> field takes a MIME type, a file extension, or an array
+containing both. It's best to provide an array that includes both a
+MIME type and a file extension since operating systems differ in which
+they prefer.</p>
+<web-copy-code><pre class="language-json"><code class="language-json"><span class="highlight-line"><span class="token punctuation">{</span></span><br><span class="highlight-line">  <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"Aggregator"</span><span class="token punctuation">,</span></span><br><span class="highlight-line">  <span class="token property">"share_target"</span><span class="token operator">:</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">    <span class="token property">"action"</span><span class="token operator">:</span> <span class="token string">"/cgi-bin/aggregate"</span><span class="token punctuation">,</span></span><br><span class="highlight-line">    <span class="token property">"method"</span><span class="token operator">:</span> <span class="token string">"POST"</span><span class="token punctuation">,</span></span><br><mark class="highlight-line highlight-line-active">    <span class="token property">"enctype"</span><span class="token operator">:</span> <span class="token string">"multipart/form-data"</span><span class="token punctuation">,</span></mark><br><span class="highlight-line">    <span class="token property">"params"</span><span class="token operator">:</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">      <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"name"</span><span class="token punctuation">,</span></span><br><span class="highlight-line">      <span class="token property">"text"</span><span class="token operator">:</span> <span class="token string">"description"</span><span class="token punctuation">,</span></span><br><span class="highlight-line">      <span class="token property">"url"</span><span class="token operator">:</span> <span class="token string">"link"</span><span class="token punctuation">,</span></span><br><mark class="highlight-line highlight-line-active">      <span class="token property">"files"</span><span class="token operator">:</span> <span class="token punctuation">[</span></mark><br><mark class="highlight-line highlight-line-active">        <span class="token punctuation">{</span></mark><br><mark class="highlight-line highlight-line-active">          <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"records"</span><span class="token punctuation">,</span></mark><br><mark class="highlight-line highlight-line-active">          <span class="token property">"accept"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"text/csv"</span><span class="token punctuation">,</span> <span class="token string">".csv"</span><span class="token punctuation">]</span></mark><br><mark class="highlight-line highlight-line-active">        <span class="token punctuation">}</span><span class="token punctuation">,</span></mark><br><mark class="highlight-line highlight-line-active">        <span class="token punctuation">{</span></mark><br><mark class="highlight-line highlight-line-active">          <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"graphs"</span><span class="token punctuation">,</span></mark><br><mark class="highlight-line highlight-line-active">          <span class="token property">"accept"</span><span class="token operator">:</span> <span class="token string">"image/svg+xml"</span></mark><br><mark class="highlight-line highlight-line-active">        <span class="token punctuation">}</span></mark><br><mark class="highlight-line highlight-line-active">      <span class="token punctuation">]</span></mark><br><span class="highlight-line">    <span class="token punctuation">}</span></span><br><span class="highlight-line">  <span class="token punctuation">}</span></span><br><span class="highlight-line"><span class="token punctuation">}</span></span></code></pre>
+</web-copy-code><h2 id="handle-the-incoming-content">Handle the incoming content <a class="w-headline-link" href="#handle-the-incoming-content">#</a></h2>
+<p>How you deal with the incoming shared data is up to you and depends on your
+app. For example:</p>
+<ul>
+<li>An email client could draft a new email using <code>title</code> as the subject of an
+email, with <code>text</code> and <code>url</code> concatenated together as the body.</li>
+<li>A social networking app could draft a new post ignoring <code>title</code>, using
+<code>text</code> as the body of the message, and adding <code>url</code> as a link. If <code>text</code> is
+missing, the app might use <code>url</code> in the body as well. If <code>url</code> is missing,
+the app might scan <code>text</code> looking for a URL and add that as a link.</li>
+<li>A photo sharing app could create a new slideshow using <code>title</code> as the
+slideshow title, <code>text</code> as a description, and <code>files</code> as the slideshow images.</li>
+<li>A text messaging app could draft a new message using <code>text</code> and <code>url</code>
+concatenated together and dropping <code>title</code>.</li>
+</ul>
+<h3 id="processing-get-shares">Processing GET shares <a class="w-headline-link" href="#processing-get-shares">#</a></h3>
+<p>If the user selects your application, and your <code>method</code> is <code>&quot;GET&quot;</code> (the
+default), the browser opens a new window at the <code>action</code> URL. The browser then
+generates a query string using the URL-encoded values supplied in the manifest.
+For example, if the sharing app provides <code>title</code> and <code>text</code>, the query string is
+<code>?title=hello&amp;text=world</code>. To process this, use a <code>DOMContentLoaded</code> event
+listener in your foreground page and parse the query string:</p>
+<web-copy-code><pre class="language-js"><code class="language-js">window<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'DOMContentLoaded'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token keyword">const</span> parsedUrl <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">URL</span><span class="token punctuation">(</span>window<span class="token punctuation">.</span>location<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token comment">// searchParams.get() will properly handle decoding the values.</span><br>  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'Title shared: '</span> <span class="token operator">+</span> parsedUrl<span class="token punctuation">.</span>searchParams<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">'title'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'Text shared: '</span> <span class="token operator">+</span> parsedUrl<span class="token punctuation">.</span>searchParams<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">'text'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'URL shared: '</span> <span class="token operator">+</span> parsedUrl<span class="token punctuation">.</span>searchParams<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">'url'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>Be sure to use a service worker to <a href="https://developers.google.com/web/ilt/pwa/caching-files-with-service-worker" rel="noopener">precache</a> the <code>action</code>
+page so that it will load quickly and work reliably, even if the user is offline.
+<a href="https://developers.google.com/web/tools/workbox/" rel="noopener">Workbox</a> is a tool that can help you
+<a href="/precache-with-workbox/">implement precaching</a> in your service worker.</p>
+<h3 id="processing-post-shares">Processing POST shares <a class="w-headline-link" href="#processing-post-shares">#</a></h3>
+<p>If your <code>method</code> is <code>&quot;POST&quot;</code>, as it would be if your target app accepts a saved
+bookmark or shared files, then the body of the incoming <code>POST</code> request contains
+the data passed by the sharing application, encoded using the <code>enctype</code> value
+provided in the manifest.</p>
+<p>The foreground page cannot process this data directly. Since the page sees the data as
+a request, the page passes it to the service worker, where you can intercept it with a
+<code>fetch</code> event listener. From here, you can pass the data back to the foreground
+page using <code>postMessage()</code> or pass it on to the server:</p>
+<web-copy-code><pre class="language-js"><code class="language-js">self<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'fetch'</span><span class="token punctuation">,</span> <span class="token parameter">event</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token keyword">const</span> url <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">URL</span><span class="token punctuation">(</span>event<span class="token punctuation">.</span>request<span class="token punctuation">.</span>url<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token comment">// If this is an incoming POST request for the</span><br>  <span class="token comment">// registered "action" URL, respond to it.</span><br>  <span class="token keyword">if</span> <span class="token punctuation">(</span>event<span class="token punctuation">.</span>request<span class="token punctuation">.</span>method <span class="token operator">===</span> <span class="token string">'POST'</span> <span class="token operator">&amp;&amp;</span><br>      url<span class="token punctuation">.</span>pathname <span class="token operator">===</span> <span class="token string">'/bookmark'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    event<span class="token punctuation">.</span><span class="token function">respondWith</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>      <span class="token keyword">const</span> formData <span class="token operator">=</span> <span class="token keyword">await</span> event<span class="token punctuation">.</span>request<span class="token punctuation">.</span><span class="token function">formData</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>      <span class="token keyword">const</span> link <span class="token operator">=</span> formData<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">'link'</span><span class="token punctuation">)</span> <span class="token operator">||</span> <span class="token string">''</span><span class="token punctuation">;</span><br>      <span class="token keyword">const</span> responseUrl <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">saveBookmark</span><span class="token punctuation">(</span>link<span class="token punctuation">)</span><span class="token punctuation">;</span><br>      <span class="token keyword">return</span> Response<span class="token punctuation">.</span><span class="token function">redirect</span><span class="token punctuation">(</span>responseUrl<span class="token punctuation">,</span> <span class="token number">303</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><h3 id="verifying-shared-content">Verifying shared content <a class="w-headline-link" href="#verifying-shared-content">#</a></h3>
+<figure class="w-figure w-figure--inline-right">
+  <img     alt="An Android phone displaying the demo app with shared content."          decoding="async"     height="280"          loading="lazy"     sizes="(min-width: 400px) 400px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/hSwbgPk8IFgPC81oJbxZ.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/hSwbgPk8IFgPC81oJbxZ.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/hSwbgPk8IFgPC81oJbxZ.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/hSwbgPk8IFgPC81oJbxZ.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/hSwbgPk8IFgPC81oJbxZ.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/hSwbgPk8IFgPC81oJbxZ.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/hSwbgPk8IFgPC81oJbxZ.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/hSwbgPk8IFgPC81oJbxZ.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/hSwbgPk8IFgPC81oJbxZ.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/hSwbgPk8IFgPC81oJbxZ.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/hSwbgPk8IFgPC81oJbxZ.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/hSwbgPk8IFgPC81oJbxZ.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/hSwbgPk8IFgPC81oJbxZ.png?auto=format&w=800 800w"          width="400"   />
+  <figcaption class="w-figcaption w-figcaption--fullbleed">
+    The sample sharing target app.
+  </figcaption>
+</figure>
+<p>Be sure to verify incoming data. Unfortunately, there is no guarantee that other
+apps will share the appropriate content in the right parameter.</p>
+<p>For example, on Android, the <a href="https://bugs.chromium.org/p/chromium/issues/detail?id=789379" rel="noopener"><code>url</code> field will be
+empty</a> because
+it's not supported in Android's share system. Instead, URLs will often appear in
+the <code>text</code> field, or occasionally in the <code>title</code> field.</p>
+<div class="w-clearfix"></div>
+<h2 id="browser-support">Browser support <a class="w-headline-link" href="#browser-support">#</a></h2>
+<p>As of early 2021, the Web Share Target API is supported by:</p>
+<ul>
+<li>Chrome and Edge 76 or later on Android.</li>
+<li>Chrome 89 or later on Chrome OS.</li>
+</ul>
+<p>On all platforms, your web app has to be <a href="https://developers.google.com/web/fundamentals/app-install-banners/#criteria" rel="noopener">installed</a> before it will show up as a
+potential target for receiving shared data.</p>
+<h2 id="sample-applications">Sample applications <a class="w-headline-link" href="#sample-applications">#</a></h2>
+<ul>
+<li><a href="https://github.com/GoogleChromeLabs/squoosh" rel="noopener">Squoosh</a></li>
+<li><a href="https://github.com/GoogleChrome/samples/blob/gh-pages/web-share/README.md#web-share-demo" rel="noopener">Scrapbook PWA</a></li>
+</ul>
+<h3 id="show-support-for-the-api">Show support for the API <a class="w-headline-link" href="#show-support-for-the-api">#</a></h3>
+<p>Are you planning to use the Web Share Target API? Your public support helps the Chromium team
+prioritize features and shows other browser vendors how critical it is to support them.</p>
+<p>Send a tweet to <a href="https://twitter.com/ChromiumDev" rel="noopener">@ChromiumDev</a> using the hashtag
+<a href="https://twitter.com/search?q=%23WebShareTarget&amp;src=recent_search_click&amp;f=live" rel="noopener"><code>#WebShareTarget</code></a>
+and let us know where and how you're using it.</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/capabilities/">Capabilities</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/progressive-web-apps/">Progressive Web Apps</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Jun 7, 2021</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/web-share-target/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions="api"></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

@@ -1,0 +1,813 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=dc905175386fe">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Scroll snapping after layout changes</title>
+<meta name="description" content="Starting in Chrome 81, scrollers remain snapped when the page layout changes. In other words, you no longer need to add event listeners to force resnapping. " />
+
+<link rel="canonical" href="https://web.dev/snap-after-layout/" />
+
+<meta itemprop="name" content="Scroll snapping after layout changes" />
+<meta itemprop="description" content="Starting in Chrome 81, scrollers remain snapped when the page layout changes. In other words, you no longer need to add event listeners to force resnapping. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vU99HKzIf5EUPnzGVPf1.png?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/snap-after-layout/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Scroll snapping after layout changes" />
+<meta property="og:description" content="Starting in Chrome 81, scrollers remain snapped when the page layout changes. In other words, you no longer need to add event listeners to force resnapping. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vU99HKzIf5EUPnzGVPf1.png?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Scroll snapping after layout changes" />
+<meta name="twitter:description" content="Starting in Chrome 81, scrollers remain snapped when the page layout changes. In other words, you no longer need to add event listeners to force resnapping. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vU99HKzIf5EUPnzGVPf1.png?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=d12e4a74977d9', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=9f92e72459f59', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#scroll-snapping-after-layout-changes" class="w-toc__header--link">
+        Scroll snapping after layout changes
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#interoperability">Interoperability</a></li><li><a href="#background">Background</a></li><li><a href="#css-scroll-snap">CSS Scroll Snap</a></li><li><a href="#shortcomings">Shortcomings</a></li><li><a href="#built-in-support-for-re-snapping-after-layout-changes-in-chrome-81">Built-in support for re-snapping after layout changes in Chrome 81</a></li><li><a href="#example:-sticky-scrollbars">Example: Sticky scrollbars</a></li><li><a href="#future-work">Future work</a></li><li><a href="#feedback">Feedback</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@yigsgu | i18n.authors.alsan.title | @argyleink"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="scroll-snapping-after-layout-changes" class="w-article-header__headline">Scroll snapping after layout changes</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          <p>Starting in Chrome 81, you no longer need to add event listeners to force
+resnapping.</p>
+
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Feb 22, 2020</time>
+          
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/yigu/"><img     alt="Yi Gu"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/1jsaXAFfmWcyGObF0MF3.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/1jsaXAFfmWcyGObF0MF3.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/1jsaXAFfmWcyGObF0MF3.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/1jsaXAFfmWcyGObF0MF3.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/1jsaXAFfmWcyGObF0MF3.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/1jsaXAFfmWcyGObF0MF3.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/yigu/">Yi Gu</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/yigsgu"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/yi-gu">GitHub</a>
+      </li>
+      
+      
+    </ul>
+  </div>
+</div>
+          
+            <div class="w-author">
+  <a href="/authors/alsan/"><img     alt="Kaan Alsan"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/4PTUuazRuGaWSV1LbAOz.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/4PTUuazRuGaWSV1LbAOz.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/4PTUuazRuGaWSV1LbAOz.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/4PTUuazRuGaWSV1LbAOz.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/4PTUuazRuGaWSV1LbAOz.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/4PTUuazRuGaWSV1LbAOz.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/alsan/">Kaan Alsan</a>
+    </cite>
+    
+  </div>
+</div>
+          
+            <div class="w-author">
+  <a href="/authors/adamargyle/"><img     alt="Adam Argyle"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/adamargyle/">Adam Argyle</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/argyleink"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/argyleink">GitHub</a>
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://glitch.com/@argyleink"
+          >Glitch</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://nerdy.dev">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p><a href="https://developers.google.com/web/updates/2018/07/css-scroll-snap" rel="noopener">CSS Scroll Snap</a>
+allows web developers to create well-controlled scroll experiences by declaring
+scroll snapping positions. One shortcoming of the current implementation is that
+scroll snapping does not work well when the layout changes, such as when the viewport is
+resized or the device is rotated. This shortcoming is fixed in Chrome 81.</p>
+<h2 id="interoperability">Interoperability <a class="w-headline-link" href="#interoperability">#</a></h2>
+<p>Many browsers have basic support for CSS Scroll Snap. See <a href="https://caniuse.com/#feat=css-snappoints" rel="noopener">Can I use CSS
+Scroll Snap?</a> for more information.</p>
+<p>Chrome is currently the only browser to implement scroll snapping after layout
+changes.  Firefox has a
+<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1530253" rel="noopener">ticket</a> open for
+implementing this and Safari also has an open
+<a href="https://bugs.webkit.org/show_bug.cgi?id=144826" rel="noopener">ticket</a> for re-snapping after a
+scroller's content changes. For now, you can simulate this behaviour by adding
+the following code to event listeners to force a snapping to execute:</p>
+<web-copy-code><pre class="language-javascript"><code class="language-javascript">scroller<span class="token punctuation">.</span><span class="token function">scrollBy</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>However, this will not guarantee that the scroller snaps back to the same
+element.</p>
+<h2 id="background">Background <a class="w-headline-link" href="#background">#</a></h2>
+<h3 id="css-scroll-snap">CSS Scroll Snap <a class="w-headline-link" href="#css-scroll-snap">#</a></h3>
+<p>The CSS Scroll Snap feature allows web developers to create well-controlled
+scroll experiences by declaring scroll snapping positions. These positions
+ensure that scrollable content is properly aligned with its container to
+overcome the issues of imprecise scrolling. In other words, scroll snapping:</p>
+<ul>
+<li>Prevents awkward scroll positions when scrolling.</li>
+<li>Creates the effect of paging through content.</li>
+</ul>
+<p>Paginated articles and image carousels are two common use cases for scroll
+snaps.</p>
+<figure class="w-figure">
+  <img     alt="Example of CSS scroll snap."          decoding="async"     height="356"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/MzdzDJ2j4jJtfAYgg9e6.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/MzdzDJ2j4jJtfAYgg9e6.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/MzdzDJ2j4jJtfAYgg9e6.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/MzdzDJ2j4jJtfAYgg9e6.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/MzdzDJ2j4jJtfAYgg9e6.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/MzdzDJ2j4jJtfAYgg9e6.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/MzdzDJ2j4jJtfAYgg9e6.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/MzdzDJ2j4jJtfAYgg9e6.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/MzdzDJ2j4jJtfAYgg9e6.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/MzdzDJ2j4jJtfAYgg9e6.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/MzdzDJ2j4jJtfAYgg9e6.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/MzdzDJ2j4jJtfAYgg9e6.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/MzdzDJ2j4jJtfAYgg9e6.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/MzdzDJ2j4jJtfAYgg9e6.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/MzdzDJ2j4jJtfAYgg9e6.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/MzdzDJ2j4jJtfAYgg9e6.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/MzdzDJ2j4jJtfAYgg9e6.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/MzdzDJ2j4jJtfAYgg9e6.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">Example of CSS scroll snap. At the end of
+    scrolling an image's horizontal center is aligned with the horizontal center
+    of the scroll container.
+  </figcaption>
+</figure>
+<h3 id="shortcomings">Shortcomings <a class="w-headline-link" href="#shortcomings">#</a></h3>
+<figure class="w-figure">
+  <video controls autoplay loop muted class="w-screenshot">
+    <source src="https://storage.googleapis.com/web-dev-assets/snap-after-layout/resizing-breaks-snap-positions.webm" type="video/webm;">
+    <source src="https://storage.googleapis.com/web-dev-assets/snap-after-layout/resizing-breaks-snap-positions.mp4" type="video/mp4;">
+  </video>
+ <figcaption class="w-figcaption">
+    Snap positions get lost when resizing a window.
+  </figcaption>
+</figure>
+<p>Scroll snapping allows users to effortlessly navigate through content, but its
+inability to adapt to changes in content and layout blocks some of its potential
+benefits. As shown in the <a href="https://codepen.io/argyleink/pen/MWWpOmz" rel="noopener">example</a>
+above, users have to re-adjust scroll positions whenever resizing a window to
+find the previously snapped element. Some common scenarios that cause layout
+change are:</p>
+<ul>
+<li>Resizing a window</li>
+<li>Rotating a device</li>
+<li>Opening DevTools</li>
+</ul>
+<p>The first two scenarios make CSS Scroll Snap less appealing for users and the
+third one is a nightmare for developers when debugging. Developers also need to
+consider these shortcomings when trying to make a dynamic experience that
+supports actions such as adding, removing, or moving content.</p>
+<p>A common fix for this is to add listeners that execute a programmatic scroll via
+JavaScript to force snapping to execute whenever any of these mentioned layout
+changes happen. This workaround can be ineffective when the user expects the
+scroller to snap back to the same content as before. Any further handling with
+JavaScript seems to almost defeat the purpose of this CSS feature.</p>
+<h2 id="built-in-support-for-re-snapping-after-layout-changes-in-chrome-81">Built-in support for re-snapping after layout changes in Chrome 81 <a class="w-headline-link" href="#built-in-support-for-re-snapping-after-layout-changes-in-chrome-81">#</a></h2>
+<p>The mentioned shortcomings no longer exist in Chrome 81: scrollers will remain
+snapped even after changing layout. They will re-evaluate scroll positions after
+changing their layout, and re-snap to the closest snap position if necessary. If
+the scroller was previously snapped to an element that still exists after the
+layout change, then the scroller will try to snap back to it. Pay attention to
+what happens when the layout changes in the following
+<a href="https://codepen.io/argyleink/full/YzXyOaX" rel="noopener">example</a>.</p>
+<div class="w-columns">
+<figure class="w-compare"><p class="w-compare__label w-compare__label--worse">Snap position lost</p>
+<figure class="w-figure">
+  <video controls autoplay loop muted class="w-screenshot">
+    <source src="https://storage.googleapis.com/web-dev-assets/snap-after-layout/snap-positions-lost.webm" type="video/webm;">
+    <source src="https://storage.googleapis.com/web-dev-assets/snap-after-layout/snap-positions-lost.mp4" type="video/mp4;">
+  </video>
+</figure>
+<figcaption class="w-compare__caption">
+<p>Rotating a device <strong>does not</strong> preserve the snap positions in Chrome 80.
+After scrolling to the slide that says <code>NOPE</code> and changing the device orientation
+from portrait to landscape, a blank screen is shown, which indicates that the
+scroll snap position was lost.</p>
+</figcaption>
+</figure>
+<figure class="w-compare"><p class="w-compare__label w-compare__label--better">Snap position preserved</p>
+<figure class="w-figure">
+  <video controls autoplay loop muted class="w-screenshot">
+    <source src="https://storage.googleapis.com/web-dev-assets/snap-after-layout/snap-positions-preserved.webm" type="video/webm;">
+    <source src="https://storage.googleapis.com/web-dev-assets/snap-after-layout/snap-positions-preserved.mp4" type="video/mp4;">
+  </video>
+</figure>
+<figcaption class="w-compare__caption">
+<p>Rotating a device <strong>does</strong> preserve the snap positions in Chrome 81. The slide that
+says <code>NOPE</code> remains in view even though the device orientation changes multiple times.</p>
+</figcaption>
+</figure>
+</div>
+<p>See the <a href="https://drafts.csswg.org/css-scroll-snap-1/#re-snap" rel="noopener">Re-snapping after layout changes
+specification</a> for more
+details.</p>
+<div class="w-aside w-aside--caution">
+<p><strong>Caution</strong>:  Snapping is also executed when the page loads. This
+affects the initial scroll offset of scrollers using the scroll snap feature.</p>
+</div>
+<h2 id="example:-sticky-scrollbars">Example: Sticky scrollbars <a class="w-headline-link" href="#example:-sticky-scrollbars">#</a></h2>
+<p>With &quot;Snap after layout changes&quot;, developers can implement sticky scrollbars with a few
+lines of CSS:</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">.container</span> <span class="token punctuation">{</span><br>  <span class="token property">scroll-snap-type</span><span class="token punctuation">:</span> y proximity<span class="token punctuation">;</span><br><span class="token punctuation">}</span><br><br><span class="token selector">.container::after</span> <span class="token punctuation">{</span><br>  <span class="token property">scroll-snap-align</span><span class="token punctuation">:</span> end<span class="token punctuation">;</span><br>  <span class="token property">display</span><span class="token punctuation">:</span> block<span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>Want to learn more? See the following <a href="https://codepen.io/argyleink/pen/RwPWqKe" rel="noopener">demo chat
+UI</a> for visuals.</p>
+<figure class="w-figure">
+  <video controls autoplay loop muted class="w-screenshot">
+    <source src="https://storage.googleapis.com/web-dev-assets/snap-after-layout/scroll-snap-bottom.webm" type="video/webm;">
+    <source src="https://storage.googleapis.com/web-dev-assets/snap-after-layout/scroll-snap-bottom.mp4" type="video/mp4;">
+  </video>
+  <figcaption class="w-figcaption">
+    Adding a new message triggers re-snap which makes it stick to the bottom in
+    Chrome 81.
+  </figcaption>
+</figure>
+<h2 id="future-work">Future work <a class="w-headline-link" href="#future-work">#</a></h2>
+<p>All re-snapping scroll effects are currently instant; a potential follow-up is
+to support re-snapping with <a href="https://developers.google.com/web/updates/2016/02/smooth-scrolling-in-chrome-49" rel="noopener">smooth scrolling
+effects</a>.
+See the <a href="https://github.com/w3c/csswg-drafts/issues/4609" rel="noopener">specification issue</a>
+for details.</p>
+<h2 id="feedback">Feedback <a class="w-headline-link" href="#feedback">#</a></h2>
+<p>Your feedback is invaluable in making re-snapping after layout changes better, so go on
+and try it out and <a href="https://bugs.chromium.org/p/chromium/issues/detail?id=866127" rel="noopener">let the Chromium engineers
+know</a> what you
+think.</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Feb 22, 2020</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/snap-after-layout/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions="api"></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

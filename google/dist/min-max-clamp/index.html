@@ -1,0 +1,831 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=bb29ac96058fc">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>min(), max(), and clamp(): three logical CSS functions to use today</title>
+<meta name="description" content="Min, max, and clamp provide some powerful CSS capabilities that enable more responsive styling with fewer liens of code. This post goes over how to control element sizing, maintain proper spacing, and implement fluid typography using these well-supported CSS math functions." />
+
+<link rel="canonical" href="https://web.dev/min-max-clamp/" />
+
+<meta itemprop="name" content="min(), max(), and clamp(): three logical CSS functions to use today" />
+<meta itemprop="description" content="Min, max, and clamp provide some powerful CSS capabilities that enable more responsive styling with fewer liens of code. This post goes over how to control element sizing, maintain proper spacing, and implement fluid typography using these well-supported CSS math functions." />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/aVL3BEXD3AF9fFzPGKMf.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/min-max-clamp/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="min(), max(), and clamp(): three logical CSS functions to use today" />
+<meta property="og:description" content="Min, max, and clamp provide some powerful CSS capabilities that enable more responsive styling with fewer liens of code. This post goes over how to control element sizing, maintain proper spacing, and implement fluid typography using these well-supported CSS math functions." />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/aVL3BEXD3AF9fFzPGKMf.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="Set of tools on a desk." />
+<meta property="tag" content="css" />
+<meta property="tag" content="layout" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="min(), max(), and clamp(): three logical CSS functions to use today" />
+<meta name="twitter:description" content="Min, max, and clamp provide some powerful CSS capabilities that enable more responsive styling with fewer liens of code. This post goes over how to control element sizing, maintain proper spacing, and implement fluid typography using these well-supported CSS math functions." />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/aVL3BEXD3AF9fFzPGKMf.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=2b4f02201722d', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=4423f3a88a2a4', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="Set of tools on a desk."     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/aVL3BEXD3AF9fFzPGKMf.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/aVL3BEXD3AF9fFzPGKMf.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/aVL3BEXD3AF9fFzPGKMf.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/aVL3BEXD3AF9fFzPGKMf.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/aVL3BEXD3AF9fFzPGKMf.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/aVL3BEXD3AF9fFzPGKMf.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/aVL3BEXD3AF9fFzPGKMf.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/aVL3BEXD3AF9fFzPGKMf.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/aVL3BEXD3AF9fFzPGKMf.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/aVL3BEXD3AF9fFzPGKMf.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/aVL3BEXD3AF9fFzPGKMf.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/aVL3BEXD3AF9fFzPGKMf.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/aVL3BEXD3AF9fFzPGKMf.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/aVL3BEXD3AF9fFzPGKMf.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/aVL3BEXD3AF9fFzPGKMf.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/aVL3BEXD3AF9fFzPGKMf.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/aVL3BEXD3AF9fFzPGKMf.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/aVL3BEXD3AF9fFzPGKMf.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#min()-max()-and-clamp():-three-logical-css-functions-to-use-today" class="w-toc__header--link">
+        min(), max(), and clamp(): three logical CSS functions to use today
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#background">Background</a></li><li><a href="#usage">Usage</a></li><li><a href="#the-perfect-width">The perfect width</a></li><li><a href="#padding-management">Padding management</a></li><li><a href="#fluid-typography">Fluid typography</a></li><li><a href="#conclusion">Conclusion</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@una"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="min()-max()-and-clamp():-three-logical-css-functions-to-use-today" class="w-article-header__headline">min(), max(), and clamp(): three logical CSS functions to use today</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          Learn how to control element sizing, maintain proper spacing, and implement fluid typography using these well-supported CSS functions.
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Oct 14, 2020</time>
+          
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/una/"><img     alt="Una Kravets"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/c4bzyDkOZ9MhBaqp0HfW.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/c4bzyDkOZ9MhBaqp0HfW.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/c4bzyDkOZ9MhBaqp0HfW.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/c4bzyDkOZ9MhBaqp0HfW.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/c4bzyDkOZ9MhBaqp0HfW.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/c4bzyDkOZ9MhBaqp0HfW.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/una/">Una Kravets</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/una"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/una">GitHub</a>
+      </li>
+      
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://una.im/">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>With responsive design evolving and becoming increasingly nuanced, CSS itself is
+constantly evolving and providing authors increased control. The
+<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/min" rel="noopener"><code>min()</code></a>,
+<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/max" rel="noopener"><code>max()</code></a>, and
+<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/clamp" rel="noopener"><code>clamp()</code></a> functions,
+now supported in all modern browsers, are among the latest tools in making
+authoring websites and apps more dynamic and responsive.</p>
+<p>When it comes to flexible and fluid typography, controlled element resizing, and
+maintaining proper spacing, <code>min()</code>, <code>max()</code>, and <code>clamp()</code> can help.</p>
+<h2 id="background">Background <a class="w-headline-link" href="#background">#</a></h2>
+<blockquote>
+  <p>The math functions, <code>calc()</code>, <code>min()</code>, <code>max()</code>, and <code>clamp()</code> allow mathematical expressions with addition (+), subtraction (-), multiplication (*), and division (/) to be used as component values</p>
+  <cite><a href="https://www.w3.org/TR/css-values-4/#calc-notation">CSS Values And Units Level 4</a></cite>
+</blockquote>
+<p>Safari was the first to <a href="https://bugs.webkit.org/show_bug.cgi?id=167000" rel="noopener">ship</a>
+the complete set of functions in April 2019, with Chromium following later that
+year in version 79. This year, with Firefox
+<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1519519" rel="noopener">75</a> shipping, we now have
+browser parity for <code>min()</code>, <code>max()</code>, and <code>clamp()</code> in all evergreen browsers.</p>
+<figure class="w-figure">
+  <img     alt=""     class="w-screenshot"     decoding="async"     height="246"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ZIgePP41Quh7ubYh54vo.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ZIgePP41Quh7ubYh54vo.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ZIgePP41Quh7ubYh54vo.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ZIgePP41Quh7ubYh54vo.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ZIgePP41Quh7ubYh54vo.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ZIgePP41Quh7ubYh54vo.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ZIgePP41Quh7ubYh54vo.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ZIgePP41Quh7ubYh54vo.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ZIgePP41Quh7ubYh54vo.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ZIgePP41Quh7ubYh54vo.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ZIgePP41Quh7ubYh54vo.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ZIgePP41Quh7ubYh54vo.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ZIgePP41Quh7ubYh54vo.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ZIgePP41Quh7ubYh54vo.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ZIgePP41Quh7ubYh54vo.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ZIgePP41Quh7ubYh54vo.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ZIgePP41Quh7ubYh54vo.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ZIgePP41Quh7ubYh54vo.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">
+    <a href="https://caniuse.com/css-math-functions">Caniuse</a> support table.
+  </figcaption>
+</figure>
+<h2 id="usage">Usage <a class="w-headline-link" href="#usage">#</a></h2>
+<figure class="w-figure">
+  <video controls autoplay loop muted class="w-screenshot">
+    <source src="https://storage.googleapis.com/web-dev-assets/min-max-clamp/min-demo.mp4">
+  </video>
+  <figcaption class="w-figcaption">
+    Showing how the min() function selects a value based on a list of options and its parent. <a href="https://codepen.io/una/pen/rNeGNVL">See Demo on Codepen.</a>
+  </figcaption>
+</figure>
+<p>You can use <code>min()</code>, <code>max()</code>, and <code>clamp()</code> on the right hand side of any CSS
+expression where it would make sense. For <code>min()</code> and <code>max()</code>, you provide an
+argument list of values, and the browser determines which one is either the
+smallest or largest, respectively. For example, in the case of: <code>min(1rem, 50%, 10vw)</code>, the browser calculates which of these relative units is the smallest,
+and uses that value as the actual value.</p>
+<figure class="w-figure">
+  <video controls autoplay loop muted class="w-screenshot">
+    <source src="https://storage.googleapis.com/web-dev-assets/min-max-clamp/max-demo.mp4">
+  </video>
+  <figcaption class="w-figcaption">
+    Showing how the max() function selects a value based on a list of options and its parent. <a href="https://codepen.io/una/pen/RwaZXqR">See Demo on Codepen.</a>
+  </figcaption>
+</figure>
+<p>The <code>max()</code> function selects the largest value from a list of comma-separated
+expressions.</p>
+<figure class="w-figure">
+  <video controls autoplay loop muted class="w-screenshot">
+    <source src="https://storage.googleapis.com/web-dev-assets/min-max-clamp/clamp-demo.mp4">
+  </video>
+  <figcaption class="w-figcaption">
+    Showing how the clamp() function selects a value based on a list of options and its parent. <a href="https://codepen.io/una/pen/bGpoGdJ">See Demo on Codepen.</a>
+  </figcaption>
+</figure>
+<p>To use <code>clamp()</code> enter three values: a minimum value, ideal value (from which to
+calculate), and maximum value.</p>
+<p>Any of these functions can be used anywhere a <code>&lt;length&gt;</code>, <code>&lt;frequency&gt;</code>,
+<code>&lt;angle&gt;</code>, <code>&lt;time&gt;</code>, <code>&lt;percentage&gt;</code>, <code>&lt;number&gt;</code>, or <code>&lt;integer&gt;</code> is allowed. You
+can use these on their own (i.e. <code>font-size: max(0.5vw, 50%, 2rem)</code>), in
+conjunction with <code>calc()</code> (i.e. <code>font-size: max(calc(0.5vw - 1em), 2rem)</code>), or
+composed (i.e. <code>font-size: max(min(0.5vw, 1em), 2rem)</code>).</p>
+<div class="w-aside w-aside--note">
+<p>When using a calculation inside of a <code>min()</code>, <code>max()</code>, or <code>clamp()</code>
+function, you can remove the call to <code>calc()</code>. For example, writing <code>font-size: max(calc(0.5vw - 1em), 2rem)</code> would be the same as <code>font-size: max(0.5vw - 1em, 2rem)</code>. </div></p>
+<p>To recap:</p>
+<ul>
+<li><code>min(&lt;value-list&gt;)</code>: selects the smallest (most negative) value from a list of
+comma-separated expressions</li>
+<li><code>max(&lt;value-list&gt;)</code>: selects the largest (most positive) value from a list of
+comma-separated expressions</li>
+<li><code>clamp(&lt;min&gt;, &lt;ideal&gt;, &lt;max&gt;)</code>: clamps a value between an upper and lower
+bound, based on a set ideal value</li>
+</ul>
+<p>Let's take a look at some examples.</p>
+<h2 id="the-perfect-width">The perfect width <a class="w-headline-link" href="#the-perfect-width">#</a></h2>
+<p>According to <a href="http://webtypography.net/2.1.2#:~:text=%E2%80%9CAnything%20from%2045%20to%2075,is%2040%20to%2050%20characters.%E2%80%9D" rel="noopener">The Elements of Typographic
+Style</a>
+by Robert Bringhurst, &quot;anything from 45 to 75 characters is widely regarded as a
+satisfactory length of line for a single-column page set in a serifed text face
+in a text size.&quot;</p>
+<p>To ensure that your text blocks are not narrower than 45 characters or wider
+than 75 characters, use <code>clamp()</code> and the <code>ch</code> (0-width <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/length" rel="noopener">character advance</a>)
+unit:</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">p</span> <span class="token punctuation">{</span><br>  <span class="token property">width</span><span class="token punctuation">:</span> <span class="token function">clamp</span><span class="token punctuation">(</span>45ch<span class="token punctuation">,</span> 50%<span class="token punctuation">,</span> 75ch<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>This allows for the browser to determine the width of the paragraph. It will set
+the width to 50%, unless 50% is smaller than <code>45ch</code>, at which point <code>45ch</code> will
+be selected, and visa versa for if 50% is wider than <code>75ch</code>. In this demo, the
+card itself is getting clamped:</p>
+<figure class="w-figure">
+  <video controls autoplay loop muted class="w-screenshot">
+    <source src="https://storage.googleapis.com/web-dev-assets/min-max-clamp/clamp-width.mp4">
+  </video>
+  <figcaption class="w-figcaption">
+    Using the clamp() function to limit a minimum and maximum width. <a href="https://codepen.io/una/pen/QWyLxaL">See Demo on Codepen.</a>
+  </figcaption>
+</figure>
+<p>You could break this up with just the <code>min()</code> or <code>max()</code> function. If you want
+the element to always be at <code>50%</code> width, and not exceed <code>75ch</code> in width (i.e. on
+larger screens), write: <code>width: min(75ch, 50%);</code>. This essentially sets a &quot;max&quot;
+size by using the <code>min()</code> function.</p>
+<figure class="w-figure">
+  <video controls autoplay loop muted class="w-screenshot">
+    <source src="https://storage.googleapis.com/web-dev-assets/min-max-clamp/max-width.mp4">
+  </video>
+  <figcaption class="w-figcaption">
+    Using the clamp() function to limit a minimum and maximum width.
+  </figcaption>
+</figure>
+<p>By the same token, you can ensure a minimum size for legible text using the
+<code>max()</code> function. This would look like: <code>width: max(45ch, 50%);</code>. Here, the
+browser selects whichever is larger, <code>45ch</code> or <code>50%</code>, meaning the element must
+be at <em>least</em> <code>45ch</code> or larger.</p>
+<figure class="w-figure">
+  <video controls autoplay loop muted class="w-screenshot">
+    <source src="https://storage.googleapis.com/web-dev-assets/min-max-clamp/min-width.mp4">
+  </video>
+  <figcaption class="w-figcaption">
+    Using the clamp() function to limit a minimum and maximum width.
+  </figcaption>
+</figure>
+<h2 id="padding-management">Padding management <a class="w-headline-link" href="#padding-management">#</a></h2>
+<p>Using the same concept as above, where the <code>min()</code> function can set a &quot;max&quot;
+value and <code>max()</code> sets a &quot;min&quot; value, you can use <code>max()</code> to set a minimum
+padding size. This example comes from <a href="https://css-tricks.com/using-max-for-an-inner-element-max-width/" rel="noopener">CSS
+Tricks</a>, where
+reader Caluã de Lacerda Pataca shared this idea: The idea is to enable an
+element to have additional padding at larger screen sizes, but maintain a
+minimum padding at smaller screen sizes, particularly on the inline padding. To
+achieve this, use <code>calc()</code> and subtract the minimum padding from either side:
+<code>calc((100vw - var(--contentWidth)) / 2)</code>, <em>or</em> use max: <code>max(2rem, 50vw - var(--contentWidth) / 2)</code>. All together it looks like:</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">footer</span> <span class="token punctuation">{</span><br>  <span class="token property">padding</span><span class="token punctuation">:</span> <span class="token function">var</span><span class="token punctuation">(</span>--blockPadding<span class="token punctuation">)</span> <span class="token function">max</span><span class="token punctuation">(</span>2rem<span class="token punctuation">,</span> 50vw - <span class="token function">var</span><span class="token punctuation">(</span>--contentWidth<span class="token punctuation">)</span> / 2<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><figure class="w-figure">
+  <video controls autoplay loop muted class="w-screenshot">
+    <source src="https://storage.googleapis.com/web-dev-assets/min-max-clamp/min-padding.mp4">
+  </video>
+  <figcaption class="w-figcaption">
+    Setting a minimum padding for a component using the max() function. <a href="https://codepen.io/chriscoyier/pen/qBZqNKa">See Demo on Codepen.</a>
+  </figcaption>
+</figure>
+<h2 id="fluid-typography">Fluid typography <a class="w-headline-link" href="#fluid-typography">#</a></h2>
+<p>In order to enable <a href="https://www.smashingmagazine.com/2016/05/fluid-typography/" rel="noopener">fluid
+typography</a>, <a href="https://twitter.com/mikeriethmuller" rel="noopener">Mike
+Riethmeuller</a> popularized a technique that
+uses the <code>calc()</code> function to set a minimum font size, maximum font size, and
+allow for scaling from the min to the max.</p>
+<figure class="w-figure">
+  <video controls autoplay loop muted class="w-screenshot">
+    <source src="https://storage.googleapis.com/web-dev-assets/min-max-clamp/fliud-type.mp4">
+  </video>
+  <figcaption class="w-figcaption">
+    Creating fluid typography with clamp(). <a href="https://codepen.io/una/pen/ExyYXaN">See Demo on Codepen.</a>
+  </figcaption>
+</figure>
+<p>With <code>clamp()</code>, you can write this more clearly. Rather than requiring a complex
+string, the browser can do the work for you. Set the minimum acceptable font
+size (for example, <code>1.5rem</code> for a title, maximum size (i.e. <code>3rem</code>) and ideal
+size of <code>5vw</code>.</p>
+<p>Now, we get typography that scales with the viewport width of the page until it
+reaches the limiting minimum and maximum values, in a much more succinct line of
+code:</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">p</span> <span class="token punctuation">{</span><br>  <span class="token property">font-size</span><span class="token punctuation">:</span> <span class="token function">clamp</span><span class="token punctuation">(</span>1.5rem<span class="token punctuation">,</span> 5vw<span class="token punctuation">,</span> 3rem<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><div class="w-aside w-aside--warning">
+<p><strong>Warning</strong>:
+Limiting how large text can get with <code>max()</code> or <code>clamp()</code> can cause a WCAG failure
+under <a href="https://www.w3.org/WAI/WCAG21/quickref/?showtechniques=144#resize-text" rel="noopener">1.4.4 Resize text (AA)</a>
+, because a user may be unable to scale the text to 200% of its original size.
+Be certain to <a href="https://adrianroselli.com/2019/12/responsive-type-and-zoom.html" rel="noopener">test the results with zoom</a>.</p>
+</div>
+<h2 id="conclusion">Conclusion <a class="w-headline-link" href="#conclusion">#</a></h2>
+<p>The CSS math functions, <code>min()</code>, <code>max()</code>, and <code>clamp()</code> are very powerful, well
+supported, and could be just what you're looking for to help you build
+responsive UIs. For more resources, check out:</p>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Values_and_units" rel="noopener">CSS Values and Units on
+MDN</a></li>
+<li><a href="https://www.w3.org/TR/css-values-4/" rel="noopener">CSS Values and Units Level 4 Spec</a></li>
+<li><a href="https://css-tricks.com/using-max-for-an-inner-element-max-width/" rel="noopener">CSS Tricks on Article on Inner-Element Width</a></li>
+<li><a href="https://ishadeed.com/article/css-min-max-clamp/" rel="noopener">min(), max(), clamp() Overview by Ahmad Shadeed</a></li>
+</ul>
+<p>Cover image from <a href="https://unsplash.com/@yer_a_wizard" rel="noopener">@yer_a_wizard</a> on
+Unsplash.</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/css/">CSS</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/layout/">Layout</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Oct 14, 2020</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/min-max-clamp/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions="api"></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

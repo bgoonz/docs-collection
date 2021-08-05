@@ -1,0 +1,878 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=7a153c3b332f3">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Requesting performance isolation with the Origin-Agent-Cluster header</title>
+<meta name="description" content="The Origin-Agent-Cluster header cuts off synchronous access to other origins on the same domain, and hints to the browser to give your origin dedicated resources. " />
+
+<link rel="canonical" href="https://web.dev/origin-agent-cluster/" />
+
+<meta itemprop="name" content="Requesting performance isolation with the Origin-Agent-Cluster header" />
+<meta itemprop="description" content="The Origin-Agent-Cluster header cuts off synchronous access to other origins on the same domain, and hints to the browser to give your origin dedicated resources. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/6dA7AcZStU3xgfMiCdoJ.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/origin-agent-cluster/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Requesting performance isolation with the Origin-Agent-Cluster header" />
+<meta property="og:description" content="The Origin-Agent-Cluster header cuts off synchronous access to other origins on the same domain, and hints to the browser to give your origin dedicated resources. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/6dA7AcZStU3xgfMiCdoJ.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="A cluster of grapes" />
+<meta property="tag" content="performance" />
+<meta property="tag" content="memory" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Requesting performance isolation with the Origin-Agent-Cluster header" />
+<meta name="twitter:description" content="The Origin-Agent-Cluster header cuts off synchronous access to other origins on the same domain, and hints to the browser to give your origin dedicated resources. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/6dA7AcZStU3xgfMiCdoJ.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=8d17991419249', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=6a740b3aedab6', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="A cluster of grapes"     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/6dA7AcZStU3xgfMiCdoJ.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/6dA7AcZStU3xgfMiCdoJ.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/6dA7AcZStU3xgfMiCdoJ.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/6dA7AcZStU3xgfMiCdoJ.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/6dA7AcZStU3xgfMiCdoJ.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/6dA7AcZStU3xgfMiCdoJ.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/6dA7AcZStU3xgfMiCdoJ.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/6dA7AcZStU3xgfMiCdoJ.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/6dA7AcZStU3xgfMiCdoJ.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/6dA7AcZStU3xgfMiCdoJ.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/6dA7AcZStU3xgfMiCdoJ.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/6dA7AcZStU3xgfMiCdoJ.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/6dA7AcZStU3xgfMiCdoJ.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/6dA7AcZStU3xgfMiCdoJ.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/6dA7AcZStU3xgfMiCdoJ.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/6dA7AcZStU3xgfMiCdoJ.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/6dA7AcZStU3xgfMiCdoJ.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/6dA7AcZStU3xgfMiCdoJ.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#requesting-performance-isolation-with-the-origin-agent-cluster-header" class="w-toc__header--link">
+        Requesting performance isolation with the Origin-Agent-Cluster header
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#browser-compatibility">Browser compatibility</a></li><li><a href="#why-browsers-can't-automatically-segregate-same-site-origins">Why browsers can't automatically segregate same-site origins</a></li><li><a href="#limitations">What origin-keyed pages cannot do</a></li><li><a href="#when-to-use-origin-keyed-agent-clusters">When to use origin-keyed agent clusters</a></li><li><a href="#cross-origin-isolation">How is this related to cross-origin isolation?</a></li><li><a href="#how-to-use">How to use the Origin-Agent-Cluster header</a></li><li><a href="#origin-keying-is-not-a-security-feature">Origin-keying is not a security feature</a></li><li><a href="#feedback">Feedback</a></li><li><a href="#learn-more">Learn more</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@domenic"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="requesting-performance-isolation-with-the-origin-agent-cluster-header" class="w-article-header__headline">Requesting performance isolation with the Origin-Agent-Cluster header</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          <p>A new HTTP response header to limit domain-wide scripting and request dedicated resources from the browser.</p>
+
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Feb 1, 2021</time>
+          
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/domenic/"><img     alt="Domenic Denicola"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/HXHbHrl9qxcxCQK90yIc.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/HXHbHrl9qxcxCQK90yIc.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/HXHbHrl9qxcxCQK90yIc.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/HXHbHrl9qxcxCQK90yIc.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/HXHbHrl9qxcxCQK90yIc.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/HXHbHrl9qxcxCQK90yIc.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/domenic/">Domenic Denicola</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/domenic"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/domenic">GitHub</a>
+      </li>
+      
+      
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p><code>Origin-Agent-Cluster</code> is a new HTTP response header that instructs the browser to prevent
+synchronous scripting access between same-site cross-origin pages. Browsers may also use
+<code>Origin-Agent-Cluster</code> as a hint that your origin should get its own, separate resources, such as a
+dedicated process.</p>
+<h2 id="browser-compatibility">Browser compatibility <a class="w-headline-link" href="#browser-compatibility">#</a></h2>
+<p>Currently the <code>Origin-Agent-Cluster</code> header is only implemented in Chrome 88 onward. It was designed
+in close collaboration with representatives from Mozilla Firefox who have marked it as <a href="https://mozilla.github.io/standards-positions/#domenic-origin-isolation" rel="noopener">worth
+prototyping</a>, and has <a href="https://lists.webkit.org/pipermail/webkit-dev/2020-August/031355.html" rel="noopener">a
+preliminary positive
+reception</a> from
+representatives of WebKit, the browser engine used by Safari.</p>
+<p>But in the meantime, there's no problem with deploying the <code>Origin-Agent-Cluster</code> header to all your
+users today. Browsers which don't understand it will just ignore it. And, since pages in
+origin-keyed agent clusters can actually do <a href="#limitations">fewer things</a> than site-keyed ones (the
+default), there's no interoperability issue to be worried about.</p>
+<h2 id="why-browsers-can't-automatically-segregate-same-site-origins">Why browsers can't automatically segregate same-site origins <a class="w-headline-link" href="#why-browsers-can't-automatically-segregate-same-site-origins">#</a></h2>
+<p>The web is built on the <a href="/same-origin-policy/">same-origin policy</a>, which is a security feature that
+restricts how documents and scripts can interact with resources from another
+<a href="/same-site-same-origin/#origin">origin</a>. For example, a page hosted at <code>https://a.example</code> is at a
+different origin from one at <code>https://b.example</code>, or one at <code>https://sub.a.example</code>.</p>
+<p>Behind the scenes, browsers use the separation that origins provide in different ways. In the old
+days, even though separate origins would not be able to access each other's data, they would still
+share resources like operating system threads, processes, and memory allocation. This meant that if
+one tab was slow, it would slow down all the other tabs. Or if one tab used too much memory, it
+would crash the entire browser.</p>
+<p>These days browsers are more sophisticated, and try to separate different origins into different
+processes. How exactly this works varies per browser: most browsers have some level of separation
+between tabs, but different iframes inside a single tab might share a process. And because processes
+come with some memory overhead, they use heuristics to avoid spawning too many: for example, Firefox
+has a <a href="https://support.mozilla.org/en-US/kb/performance-settings" rel="noopener">user-configurable process limit</a>,
+and Chrome varies its behavior between desktop (where memory is more plentiful) and mobile (where it
+is scarce).</p>
+<p>These heuristics are not perfect. And they suffer from an important limitation: because there are
+exceptions to the same-origin policy which allow subdomains like <code>https://sub.a.example</code> and
+<code>https://a.example</code> to talk to each other, browsers cannot automatically segregate subdomains from
+each other.</p>
+<div class="w-aside w-aside--note">
+<p>The technical distinction here is that the browser cannot automatically segregate pages which are
+same-site to each other, even if they are cross-origin. The most common cases of same-site
+cross-origin pages happen with subdomains, but see the article <a href="/same-site-same-origin/">Understanding &quot;same-site&quot; and
+&quot;same-origin&quot;</a> for more.</p>
+</div>
+<p>This default behavior is called &quot;site-keyed agent clusters&quot;: that is, the browser groups pages based
+on their <em>site</em>. The new <code>Origin-Agent-Cluster</code> header asks the browser to change this default
+behavior for a given page, putting it into an <em>origin</em>-keyed agent cluster, so that it is grouped
+only with other pages that have the exact same origin. In particular, same-site cross-origin pages
+will be excluded from the agent cluster.</p>
+<p>This opt-in separation allows browsers to give these new origin-keyed agent clusters their own
+dedicated resources, which are not combined with those of other origins. For example, such pages
+could get their own process, or be scheduled on separate threads. By adding the
+<code>Origin-Agent-Cluster</code> header to your page, you're indicating to the browser that the page would
+benefit from such dedicated resources.</p>
+<p>However, in order to perform the separation, and get these benefits, the browser needs to disable
+some legacy features.</p>
+<h2 id="limitations">What origin-keyed pages cannot do <a class="w-headline-link" href="#limitations">#</a></h2>
+<p>When your page is in an origin-keyed agent cluster, you give up some abilities to talk to same-site
+cross-origin pages that were previously available. In particular:</p>
+<ul>
+<li>
+<p>You can no longer set
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/domain" rel="noopener"><code>document.domain</code></a>. This is a
+legacy feature that normally allows same-site cross-origin pages to synchronously access each
+other's DOM, but in origin-keyed agent clusters, it is disabled.</p>
+</li>
+<li>
+<p>You can no longer send
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly/Module" rel="noopener"><code>WebAssembly.Module</code></a>
+objects to other same-site cross-origin pages via <code>postMessage()</code>.</p>
+</li>
+<li>
+<p>(Chrome-only) You can no longer send
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer" rel="noopener"><code>SharedArrayBuffer</code></a>
+or
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly/Memory" rel="noopener"><code>WebAssembly.Memory</code></a>
+objects to other same-site cross-origin pages.</p>
+</li>
+</ul>
+<div class="w-aside w-aside--caution">
+<p><strong>Caution</strong>:
+Chrome is the only browser that allows sending <code>SharedArrayBuffer</code> and <code>WebAssembly.Memory</code> objects
+to same-site cross-origin pages. Other browsers, and <a href="https://groups.google.com/a/chromium.org/g/blink-dev/c/1NKvbIj3dq4/m/Vgfisu5HAwAJ" rel="noopener">future versions of
+Chrome</a>, will
+prevent sending these objects across the origin boundary regardless of whether the agent cluster is
+origin-keyed or site-keyed.</p>
+</div>
+<h2 id="when-to-use-origin-keyed-agent-clusters">When to use origin-keyed agent clusters <a class="w-headline-link" href="#when-to-use-origin-keyed-agent-clusters">#</a></h2>
+<p>The origins that most benefit from the <code>Origin-Agent-Cluster</code> header are those that:</p>
+<ul>
+<li>
+<p>Perform best with their own dedicated resources when possible. Examples include
+performance-intensive games, video conferencing sites, or multimedia creation apps.</p>
+</li>
+<li>
+<p>Contains resource-intensive iframes that are different-origin, but same-site. For example, if
+<code>https://mail.example.com</code> embeds <code>https://chat.example.com</code> iframes, origin-keying
+<code>https://mail.example.com/</code> ensures that the code written by the chat team cannot accidentally
+interfere with code written by the mail team, and can hint to the browser to give them separate
+processes to schedule them independently and decrease their performance impact on each other.</p>
+</li>
+<li>
+<p>Expect to be embedded on different-origin, same-site pages, but know themselves to be
+resource-intensive. For example, if <code>https://customerservicewidget.example.com</code> expects to use
+lots of resources for video chat, and will be embedded on various origins throughout
+<code>https://*.example.com</code>, the team maintaining that widget could use the <code>Origin-Agent-Cluster</code>
+header to try to decrease their performance impact on embedders.</p>
+</li>
+</ul>
+<p>Additionally, you'll also need to make sure you're OK disabling the above-discussed <a href="#limitations">rarely-used
+cross-origin communication features</a>, and that your site is <a href="/why-https-matters/">using
+HTTPS</a>.</p>
+<p>But in the end, these are just guidelines. Whether origin-keyed agent clusters will help your site
+or not is ultimately best determined through measurements. In particular, you'll want to <a href="/vitals-measurement-getting-started/">measure
+your Web Vitals</a>, and potentially your <a href="/monitor-total-page-memory-usage/">memory
+usage</a>, to see what impact origin-keying has. (Memory usage in
+particular is a potential concern, as increasing the number of processes in play can cause more
+per-process memory overhead.) You shouldn't just roll out origin-keying and hope for the best.</p>
+<h3 id="cross-origin-isolation">How is this related to cross-origin isolation? <a class="w-headline-link" href="#cross-origin-isolation">#</a></h3>
+<p>Origin-keying of agent clusters via the <code>Origin-Agent-Cluster</code> header is related to, but separate
+from, <a href="/coop-coep/">cross-origin isolation</a> via the <code>Cross-Origin-Opener-Policy</code> and
+<code>Cross-Origin-Embedder-Policy</code> headers.</p>
+<p>Any site which makes itself cross-origin isolated will also disable the same <a href="#limitations">same-site cross-origin
+communications features</a> as when using the <code>Origin-Agent-Cluster</code> header. However, the
+<code>Origin-Agent-Cluster</code> header can still be useful on top of cross-origin isolation, as an additional
+hint to the browser to modify its resource allocation heuristics. So you should still consider
+applying the <code>Origin-Agent-Cluster</code> header, and measuring the results, even on pages that are
+already cross-origin isolated.</p>
+<h2 id="how-to-use">How to use the <code>Origin-Agent-Cluster</code> header <a class="w-headline-link" href="#how-to-use">#</a></h2>
+<p>To use the <code>Origin-Agent-Cluster</code> header, configure your web server to send the following HTTP
+response header:</p>
+<web-copy-code><pre class="language-http"><code class="language-http"><span class="token header-name keyword">Origin-Agent-Cluster:</span> ?1</code></pre>
+</web-copy-code><p>The value of <code>?1</code> is the <a href="https://www.fastly.com/blog/improve-http-structured-headers" rel="noopener">structured
+header</a> syntax for a boolean <code>true</code>
+value.</p>
+<p>It's important to send this header on <em>all</em> responses from your origin, not just some pages.
+Otherwise, you can get inconsistent results, where the browser &quot;remembers&quot; seeing an origin-keying
+request and so it origin-keys even on pages that don't ask for it. Or the reverse: if the first page
+a user visits doesn't have the header, then the browser will remember that your origin does not want
+to be origin-keyed, and will ignore the header on subsequent pages.</p>
+<div class="w-aside w-aside--caution">
+<p><strong>Caution</strong>:
+Don't forget to send the header on error pages, like your 404 page!</p>
+</div>
+<details class="w-details" >
+<summary class="w-details__summary">
+  <h2 class="w-details__header">
+    Why can't the browser always respect the header?
+  </h2>
+</summary>
+<p>The reason for this &quot;memory&quot; is to ensure consistency of keying for an origin. If some pages on an
+origin were origin-keyed, while others weren't, then you could have two same-origin pages which were
+put into different agent clusters, and thus weren't allowed to talk to each other. This would be
+very strange, both for web developers and for the internals of the browser. So, the specification
+for <code>Origin-Agent-Cluster</code> instead ignores the header if it's inconsistent with what it's previously
+seen for a given origin. In Chrome, this will result in a console warning.</p>
+<p>This consistency is scoped to a browsing context group, which is a group of tabs, windows, or
+iframes which can all reach each other via mechanisms like <code>window.opener</code>, <code>frames[0]</code>, or
+<code>window.parent</code>. This means that, once an origin's origin- or site-keying has been settled (by the
+browser either seeing, or not seeing, the header), changing it requires opening up an entirely new
+tab, not connected to the old one in any way.</p>
+<p>These details can be important for testing the <code>Origin-Agent-Cluster</code> header. When first adding it
+to your site, just reloading the page will not work; you'll need to close the tab and open a new
+one.</p>
+</details>
+<p>To check whether the <code>Origin-Agent-Cluster</code> header is applied, use the JavaScript
+<code>window.originAgentCluster</code> property. This will be <code>true</code> in cases where the header (or other
+mechanisms, like <a href="#cross-origin-isolation">cross-origin isolation</a>) caused origin-keying; <code>false</code>
+when it did not; and <code>undefined</code> in browsers that don't implement the <code>Origin-Agent-Cluster</code> header.
+Logging this data to your analytics platform can provide a valuable check that you've configured
+your server correctly.</p>
+<p>Finally, note that the <code>Origin-Agent-Cluster</code> header will only work on <a href="https://developer.mozilla.org/en-US/docs/Web/Security/Secure_Contexts" rel="noopener">secure
+contexts</a>, i.e. on HTTPS
+pages or on <code>http://localhost</code>. Non-localhost HTTP pages do <em>not</em> support origin-keyed agent
+clusters.</p>
+<h2 id="origin-keying-is-not-a-security-feature">Origin-keying is not a security feature <a class="w-headline-link" href="#origin-keying-is-not-a-security-feature">#</a></h2>
+<p>While using an origin-keyed agent cluster does isolate your origin from synchronous access from
+same-site cross-origin pages, it does not give the <a href="/why-coop-coep/">protection</a> of
+security-related headers like
+<a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Cross-Origin_Resource_Policy_(CORP)" rel="noopener"><code>Cross-Origin-Resource-Policy</code></a>
+and
+<a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Opener-Policy" rel="noopener"><code>Cross-Origin-Opener-Policy</code></a>.
+In particular, it is not a reliable protection against side channel attacks like
+<a href="https://en.wikipedia.org/wiki/Spectre_(security_vulnerability)" rel="noopener">Spectre</a>.</p>
+<p>This might be a bit surprising, because origin-keying can sometimes cause your origin to get its own
+process, and separate processes are an important defence against side-channel attacks. But remember
+that the <code>Origin-Agent-Cluster</code> header is only a hint in that regard. The browser is under no
+obligation to give your origin a separate process, and it might not do so for a variety of reasons:</p>
+<ul>
+<li>
+<p>A browser might not implement the technology to do so. For example, currently Safari and Firefox
+can put separate tabs into their own processes, but cannot yet do so for iframes.</p>
+</li>
+<li>
+<p>The browser might decide it's not worth the overhead of a separate process. For example, on
+low-memory Android devices, or in Android WebView, Chrome uses as few processes as possible.</p>
+</li>
+<li>
+<p>The browser might want to respect the request that the <code>Origin-Agent-Cluster</code> header indicates,
+but it could do so using different isolation technology than processes. For example, Chrome is
+<a href="https://docs.google.com/document/d/12wEWJsZmxVnNwVGuxuEJF4922OWUr4fCs1xKHi9mTiI/edit?usp=sharing" rel="noopener">exploring</a>
+using threads instead of processes for this sort of performance isolation.</p>
+</li>
+<li>
+<p>The user, or code running on a different site, might have already navigated to a site-keyed page
+on your origin, causing the <a href="#how-to-use">consistency guarantee</a> to kick in and the
+<code>Origin-Agent-Cluster</code> header to be ignored entirely.</p>
+</li>
+</ul>
+<p>For these reasons, it's important not to think of origin-keyed agent clusters as a security feature.
+Instead, it's a way of helping the browser prioritize resource allocation, by hinting that your
+origin would benefit from dedicated resources (and that you're willing to give up <a href="#limitations">certain
+features</a> in exchange).</p>
+<h2 id="feedback">Feedback <a class="w-headline-link" href="#feedback">#</a></h2>
+<p>The Chrome team would love to hear from you if you're using, or considering using, the <code>Origin-Agent-Cluster</code>
+header. Your public interest and support helps us prioritize features and show other
+browser vendors how important they are. Tweet at <a href="https://twitter.com/chromiumdev" rel="noopener">@ChromiumDev</a> and
+let Chrome DevRel know your thoughts and experiences.</p>
+<p>If you have more questions about the specification, or the details of how the feature works, you can
+file an issue on the <a href="https://github.com/whatwg/html" rel="noopener">HTML Standard GitHub repository</a>. And if you
+encounter any issues with Chrome's implementation, you can file a bug at
+<a href="https://bugs.chromium.org/p/chromium/issues/entry?components=Internals%3ESandbox%3ESiteIsolation" rel="noopener">new.crbug.com</a>
+with the Components field set to <code>Internals&gt;Sandbox&gt;SiteIsolation</code>.</p>
+<h2 id="learn-more">Learn more <a class="w-headline-link" href="#learn-more">#</a></h2>
+<p>To learn more about origin-keyed agent clusters, you can dive into the details at these links:</p>
+<ul>
+<li><a href="https://origin-isolation-test.com/" rel="noopener">Demo</a> and <a href="https://github.com/domenic/origin-isolation-test.com" rel="noopener">demo
+source</a></li>
+<li><a href="https://github.com/WICG/origin-agent-cluster" rel="noopener">Explainer</a></li>
+<li><a href="https://html.spec.whatwg.org/multipage/origin.html#origin-keyed-agent-clusters" rel="noopener">Specification</a></li>
+<li>Tracking bugs: <a href="https://bugs.chromium.org/p/chromium/issues/detail?id=1042415" rel="noopener">Chrome</a>,
+<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1665474" rel="noopener">Firefox</a>,
+<a href="https://bugs.webkit.org/show_bug.cgi?id=216618" rel="noopener">Safari</a></li>
+</ul>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/performance/">Performance</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/memory/">Memory</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Feb 1, 2021</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/origin-agent-cluster/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

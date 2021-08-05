@@ -1,0 +1,955 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=8d8f476b7a62">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>High performance storage for your app: the Storage Foundation API</title>
+<meta name="description" content="The Storage Foundation API is a storage API that resembles a basic file system, with direct access to stored data through buffers and offsets. It gives developers flexibility by providing generic, simple, and performant primitives on which they can build higher-level components. It is particularly well suited for Wasm-based libraries and applications that perform best when they can use custom storage algorithms to fine-tune execution speed and memory usage. " />
+
+<link rel="canonical" href="https://web.dev/storage-foundation/" />
+
+<meta itemprop="name" content="High performance storage for your app: the Storage Foundation API" />
+<meta itemprop="description" content="The Storage Foundation API is a storage API that resembles a basic file system, with direct access to stored data through buffers and offsets. It gives developers flexibility by providing generic, simple, and performant primitives on which they can build higher-level components. It is particularly well suited for Wasm-based libraries and applications that perform best when they can use custom storage algorithms to fine-tune execution speed and memory usage. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/jHUvdkuNQBLYxfWrCizd.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/storage-foundation/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="High performance storage for your app: the Storage Foundation API" />
+<meta property="og:description" content="The Storage Foundation API is a storage API that resembles a basic file system, with direct access to stored data through buffers and offsets. It gives developers flexibility by providing generic, simple, and performant primitives on which they can build higher-level components. It is particularly well suited for Wasm-based libraries and applications that perform best when they can use custom storage algorithms to fine-tune execution speed and memory usage. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/jHUvdkuNQBLYxfWrCizd.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="Hacker binary attack code. " />
+<meta property="tag" content="capabilities" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="High performance storage for your app: the Storage Foundation API" />
+<meta name="twitter:description" content="The Storage Foundation API is a storage API that resembles a basic file system, with direct access to stored data through buffers and offsets. It gives developers flexibility by providing generic, simple, and performant primitives on which they can build higher-level components. It is particularly well suited for Wasm-based libraries and applications that perform best when they can use custom storage algorithms to fine-tune execution speed and memory usage. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/jHUvdkuNQBLYxfWrCizd.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=b58d81ee72dd', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=92df1f55bb8bf', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="Hacker binary attack code."     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/jHUvdkuNQBLYxfWrCizd.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/jHUvdkuNQBLYxfWrCizd.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/jHUvdkuNQBLYxfWrCizd.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/jHUvdkuNQBLYxfWrCizd.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/jHUvdkuNQBLYxfWrCizd.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/jHUvdkuNQBLYxfWrCizd.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/jHUvdkuNQBLYxfWrCizd.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/jHUvdkuNQBLYxfWrCizd.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/jHUvdkuNQBLYxfWrCizd.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/jHUvdkuNQBLYxfWrCizd.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/jHUvdkuNQBLYxfWrCizd.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/jHUvdkuNQBLYxfWrCizd.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/jHUvdkuNQBLYxfWrCizd.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/jHUvdkuNQBLYxfWrCizd.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/jHUvdkuNQBLYxfWrCizd.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/jHUvdkuNQBLYxfWrCizd.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/jHUvdkuNQBLYxfWrCizd.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/jHUvdkuNQBLYxfWrCizd.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#high-performance-storage-for-your-app:-the-storage-foundation-api" class="w-toc__header--link">
+        High performance storage for your app: the Storage Foundation API
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#why-does-the-web-need-another-storage-api">Why does the web need another storage API?</a></li><li><a href="#use-cases">Suggested use cases for the Storage Foundation API</a></li><li><a href="#what">What is the Storage Foundation API?</a></li><li><a href="#file-system-calls">File system calls</a></li><li><a href="#file-handles">File handles</a></li><li><a href="#status">Current status</a></li><li><a href="#use">How to use the Storage Foundation API</a></li><li><a href="#enabling-via-about:flags">Enabling via about://flags</a></li><li><a href="#enabling-support-during-the-origin-trial-phase">Enabling support during the origin trial phase</a></li><li><a href="#register-for-ot">Register for the origin trial</a></li><li><a href="#feature-detection">Feature detection</a></li><li><a href="#complete-examples">Complete examples</a></li><li><a href="#demo">Demo</a></li><li><a href="#security-and-permissions">Security and permissions</a></li><li><a href="#user-control">User control</a></li><li><a href="#feedback">Feedback</a></li><li><a href="#tell-us-about-the-api-design">Tell us about the API design</a></li><li><a href="#report-a-problem-with-the-implementation">Report a problem with the implementation</a></li><li><a href="#show-support-for-the-api">Show support for the API</a></li><li><a href="#helpful">Helpful links</a></li><li><a href="#acknowledgements">Acknowledgements</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@tomayac"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="high-performance-storage-for-your-app:-the-storage-foundation-api" class="w-article-header__headline">High performance storage for your app: the Storage Foundation API</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          <p>The Storage Foundation API resembles a basic file system,
+with direct access to stored data through buffers and offsets. It gives
+developers flexibility by providing generic, simple, and performant
+primitives on which they can build higher-level components.</p>
+
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Jun 16, 2021</time>
+           <span class="w-author__separator">•</span> Updated <time>Jun 30, 2021</time> 
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/thomassteiner/"><img     alt="Thomas Steiner"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/thomassteiner/">Thomas Steiner</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/tomayac"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/tomayac">GitHub</a>
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://glitch.com/@tomayac"
+          >Glitch</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://blog.tomayac.com/">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <div class="w-aside w-aside--note">
+<p>The Storage Foundation API is part of the
+<a href="https://web.dev/fugu-status/">capabilities project</a> and is currently in development. This post will
+be updated as the implementation progresses. </div></p>
+<p>The web platform increasingly offers developers the tools they need to build fined-tuned
+high-performance applications for the web. Most notably,
+<a href="https://developer.mozilla.org/en-US/docs/WebAssembly" rel="noopener">WebAssembly</a> (Wasm) has opened the door to
+fast and powerful web applications, while technologies like <a href="https://emscripten.org/" rel="noopener">Emscripten</a>
+now allow developers to reuse tried and tested code on the web. To truly leverage this potential,
+developers must have the same power and flexibility when it comes to storage.</p>
+<p>This is where the Storage Foundation API comes in. The Storage Foundation API is a new fast and
+unopinionated storage API that unlocks new and much-requested use cases for the web, such as
+implementing performant databases and gracefully managing large temporary files. With this new
+interface, developers can &quot;bring their own storage&quot; to the web, reducing the feature gap between web
+and platform-specific code.</p>
+<p>The Storage Foundation API is designed to resemble a very basic file system so it gives developers
+flexibility by providing generic, simple, and performant primitives on which they can build
+higher-level components. Applications can take advantage of the best tool for their needs, finding
+the right balance between usability, performance, and reliability.</p>
+<h2 id="why-does-the-web-need-another-storage-api">Why does the web need another storage API? <a class="w-headline-link" href="#why-does-the-web-need-another-storage-api">#</a></h2>
+<p>The web platform offers a number of storage options for developers, each of which is built with
+specific use-cases in mind.</p>
+<ul>
+<li>Some of these options clearly do not overlap with this proposal as they only allow very small
+amounts of data to be stored, like
+<a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies" rel="noopener">cookies</a>, or the
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API" rel="noopener">Web Storage API</a> consisting of
+the <code>sessionStorage</code> and the <code>localStorage</code> mechanisms.</li>
+<li>Other options are already deprecated for various reasons like the
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/File_and_Directory_Entries_API/Introduction" rel="noopener">File and Directory Entries API</a>
+or <a href="https://www.w3.org/TR/webdatabase/" rel="noopener">WebSQL</a>.</li>
+<li>The <a href="/file-system-access/">File System Access API</a> has a similar API surface, but its use is to
+interface with the client's file system and provide access to data that may be outside of the
+origin's or even the browser's ownership. This different focus comes with stricter security
+considerations and higher performance costs.</li>
+<li>The <a href="https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API" rel="noopener">IndexedDB API</a> can be used as
+a backend for some of the Storage Foundation API's use-cases. For example, Emscripten includes
+<a href="https://emscripten.org/docs/api_reference/Filesystem-API.html" rel="noopener">IDBFS</a>, an IndexedDB-based
+persistent file system. However, since IndexedDB is fundamentally a key-value store, it comes with
+significant performance limitations. Furthermore, directly accessing subsections of a file is even
+more difficult and slower under IndexedDB.</li>
+<li>Finally, the
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/CacheStorage" rel="noopener">CacheStorage interface</a> is widely
+supported and is tuned for storing large-sized data such as web application resources, but the
+values are immutable.</li>
+</ul>
+<p>The Storage Foundation API is an attempt at closing all the gaps of the previous storage options by
+allowing for the performant storage of mutable large files defined within the origin of the
+application.</p>
+<h3 id="use-cases">Suggested use cases for the Storage Foundation API <a class="w-headline-link" href="#use-cases">#</a></h3>
+<p>Examples of sites that may use this API include:</p>
+<ul>
+<li>Productivity or creativity apps that operate on large amounts of video, audio, or image data. Such
+apps can offload segments to disk instead of holding them in memory.</li>
+<li>Apps that rely on a persistent file system accessible from Wasm and that need more performance
+than what IDBFS can guarantee.</li>
+</ul>
+<h2 id="what">What is the Storage Foundation API? <a class="w-headline-link" href="#what">#</a></h2>
+<p>There are two main parts to the API:</p>
+<ul>
+<li><strong>File system calls</strong>, which provide basic functionality to interact with files and file paths.</li>
+<li><strong>File handles</strong>, which provide read and write access to an existing file.</li>
+</ul>
+<h3 id="file-system-calls">File system calls <a class="w-headline-link" href="#file-system-calls">#</a></h3>
+<p>The Storage Foundation API introduces a new object, <code>storageFoundation</code>, that lives on the <code>window</code>
+object and that includes a number of functions:</p>
+<div class="w-aside w-aside--note">
+<p>We are currently exploring the tradeoffs between providing a synchronous versus an
+asynchronous API. The interfaces are designed to be asynchronous as a temporary measure and will be
+updated once a decision has been reached. For more background on the tradeoffs, see the
+<a href="https://github.com/WICG/storage-foundation-api-explainer#sync-vs-async" rel="noopener">Explainer</a>. </div></p>
+<ul>
+<li><code>storageFoundation.open(name)</code>: Opens the file with the given name if it exists and otherwise
+creates a new file. Returns a promise that resolves with the the opened file.</li>
+</ul>
+<div class="w-aside w-aside--warning">
+<p><strong>Warning</strong>:  File names are restricted to lowercase alphanumeric characters and underscore
+(<code>a-z</code>, <code>0-9</code>, <code>_</code>). </div></p>
+<div class="w-aside w-aside--note">
+<p>A file can only be opened once. This means concurrent access from different tabs is
+currently not possible. </div></p>
+<ul>
+<li><code>storageFoundation.delete(name)</code>: Removes the file with the given name. Returns a promise that
+resolves when the file is deleted.</li>
+<li><code>storageFoundation.rename(oldName, newName)</code>: Renames the file from the old name to the new name
+atomically. Returns a promise that resolves when the file is renamed.</li>
+<li><code>storageFoundation.getAll()</code>: Returns a promise that resolves with an array of all existing file
+names.</li>
+<li><code>storageFoundation.requestCapacity(requestedCapacity)</code>: Requests new capacity (in bytes) for usage
+by the current execution context. Returns a promise that resolved with the remaining amount of
+capacity available.</li>
+</ul>
+<div class="w-aside w-aside--note">
+<p>The Storage Foundation API achieves fast and predictable performance by implementing its
+own quota management system. Web applications must explicitly ask for capacity before storing any
+new data. This request will be granted according to the browser's quota guidelines. Anytime an
+application starts a new JavaScript execution context (e.g., a new tab, a new worker, or when
+reloading the page), it must make sure it owns sufficient capacity before writing any data.</p>
+</div>
+<ul>
+<li><code>storageFoundation.releaseCapacity(toBeReleasedCapacity)</code>: Releases the specified number of bytes
+from the current execution context, and returns a promise that resolves with the remaining
+capacity.</li>
+<li><code>storageFoundation.getRemainingCapacity()</code>: Returns a promise that resolves with the capacity
+available for the current execution context.</li>
+</ul>
+<h3 id="file-handles">File handles <a class="w-headline-link" href="#file-handles">#</a></h3>
+<p>Working with files happens via the following functions:</p>
+<div class="w-aside w-aside--note">
+<p>The Storage Foundation API used to be called NativeIO. Some references to this name
+still remain and will be removed eventually. </div></p>
+<ul>
+<li><code>NativeIOFile.close()</code>: Closes a file, and returns a promise that resolves when the operation
+completes.</li>
+<li><code>NativeIOFile.flush()</code>: Synchronizes (that is, flushes) a file's in-memory state with the storage
+device, and returns a promise that resolves when the operation completes.</li>
+</ul>
+<div class="w-aside w-aside--note">
+<p>It is a known issue that <code>flush()</code> might be slow and we are exploring whether offering a
+faster, less reliable variant would be useful. </div></p>
+<ul>
+<li>
+<p><code>NativeIOFile.getLength()</code>: Returns a promise that resolves with the length of the file in bytes.</p>
+</li>
+<li>
+<p><code>NativeIOFile.setLength(length)</code>: Sets the length of the file in bytes, and returns a promise that
+resolves when the operation completes. If the new length is smaller than the current length, bytes
+are removed starting from the end of the file. Otherwise the file is extended with zero-valued
+bytes.</p>
+</li>
+<li>
+<p><code>NativeIOFile.read(buffer, offset)</code>: Reads the contents of the file at the given offset through a
+buffer that is the result of transferring the given buffer, which is then left detached. Returns a
+<code>NativeIOReadResult</code> with the transferred buffer and the the number of bytes that were
+successfully read.</p>
+<p>A <code>NativeIOReadResult</code> is an object that consists of two entries:</p>
+<ul>
+<li><code>buffer</code>: An
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/ArrayBufferView" rel="noopener"><code>ArrayBufferView</code></a>, which is
+the result of transferring the buffer passed to <code>read()</code>. It is of the same type and length as
+source buffer.</li>
+<li><code>readBytes</code>: The number of bytes that were successfully read into <code>buffer</code>. This may be less
+than the buffer size, if an error occurs or if the read range spans beyond the end of the file.
+It is set to zero if the read range is beyond the end of the file.</li>
+</ul>
+</li>
+<li>
+<p><code>NativeIOFile.write(buffer, offset)</code>: Writes the contents of the given buffer into the file at the
+given offset. The buffer is transferred before any data is written and is therefore left detached.
+Returns a <code>NativeIOWriteResult</code> with the transferred buffer and the number of bytes that were
+successfully written. The file will be extended if the write range exceeds its length.</p>
+<p>A <code>NativeIOWriteResult</code> is an object that consists of two entries:</p>
+<ul>
+<li><code>buffer</code>: An
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/ArrayBufferView" rel="noopener"><code>ArrayBufferView</code></a> which is
+the result of transferring the buffer passed to <code>write()</code>. It is of the same type and length as
+the source buffer.</li>
+<li><code>writtenBytes</code>: The number of bytes that were successfully written into <code>buffer</code>. This may be
+less than the buffer size if an error occurs.</li>
+</ul>
+</li>
+</ul>
+<div class="w-aside w-aside--note">
+<p>Calls to <code>NativeIOFile.write()</code> only guarantee that the data has been written to the
+file, but it does not guarantee that the data has been persisted to the underlying storage. To
+ensure that no data loss occurs on system crash, you must call <code>NativeIOFile.flush()</code> and wait for
+it to successfully return. </div></p>
+<h2 id="status">Current status <a class="w-headline-link" href="#status">#</a></h2>
+<div class="w-table-wrapper">
+<div class="w-table-wrapper">
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Create explainer</td>
+<td><a href="https://github.com/WICG/storage-foundation-api-explainer#readme" rel="noopener">Complete</a></td>
+</tr>
+<tr>
+<td>2. Create initial draft of specification</td>
+<td>Not started</td>
+</tr>
+<tr>
+<td>3. Gather feedback &amp; iterate on design</td>
+<td><a href="#feedback">In progress</a></td>
+</tr>
+<tr>
+<td>4. <strong>Origin trial</strong></td>
+<td><strong><a href="https://developer.chrome.com/origintrials/#/view_trial/2916080758722396161" rel="noopener">In progress</a></strong></td>
+</tr>
+<tr>
+<td>5. Launch</td>
+<td>Not started</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="w-aside w-aside--note">
+<p>There is currently an
+<a href="https://docs.google.com/document/d/1g7ZCqZ5NdiU7oqyCpsc2iZ7rRAY1ZXO-9VoG4LfP7fM/edit?usp=sharing" rel="noopener">ongoing effort</a>
+to augment the
+<a href="/file-system-access/#accessing-the-origin-private-file-system">origin private file system</a>
+of the <a href="/file-system-access/">File System Access API</a> as to not introduce yet another entry point
+for a storage system. This article will be updated as we make progress on this. </div></p>
+<h2 id="use">How to use the Storage Foundation API <a class="w-headline-link" href="#use">#</a></h2>
+<h3 id="enabling-via-about:flags">Enabling via about://flags <a class="w-headline-link" href="#enabling-via-about:flags">#</a></h3>
+<p>To experiment with the Storage Foundation API locally, without an origin trial token, enable the
+<code>#experimental-web-platform-features</code> flag in <code>about://flags</code>.</p>
+<h3 id="enabling-support-during-the-origin-trial-phase">Enabling support during the origin trial phase <a class="w-headline-link" href="#enabling-support-during-the-origin-trial-phase">#</a></h3>
+<p>Starting in Chromium 90, the Storage Foundation API is available as an origin trial in
+Chromium. The origin trial is expected to end in Chromium 95 (November 10, 2021).</p>
+<p>Origin trials allow you to try new features and give feedback on their
+usability, practicality, and effectiveness to the web standards community. For
+more information, see the <a href="https://github.com/GoogleChrome/OriginTrials/blob/gh-pages/developer-guide.md" rel="noopener">Origin Trials Guide for Web Developers</a>.
+To sign up for this or another origin trial, visit the <a href="https://developers.chrome.com/origintrials/#/trials/active" rel="noopener">registration page</a>.</p>
+<h3 id="register-for-ot">Register for the origin trial <a class="w-headline-link" href="#register-for-ot">#</a></h3>
+<ol>
+<li><a href="https://developer.chrome.com/origintrials/#/view_trial/2916080758722396161" rel="noopener">Request a token</a> for your origin.</li>
+<li>Add the token to your pages. There are two ways to do that:
+<ul>
+<li>Add an <code>origin-trial</code> <code>&lt;meta&gt;</code> tag to the head of each page. For example,
+this may look something like: <br>
+<code>&lt;meta http-equiv=&quot;origin-trial&quot; content=&quot;TOKEN_GOES_HERE&quot;&gt;</code></li>
+<li>If you can configure your server, you can also add the token
+using an <code>Origin-Trial</code> HTTP header. The resulting response header should
+look something like:<br>
+<code>Origin-Trial: TOKEN_GOES_HERE</code></li>
+</ul>
+</li>
+</ol>
+<h3 id="feature-detection">Feature detection <a class="w-headline-link" href="#feature-detection">#</a></h3>
+<p>To check if the Storage Foundation API is supported, use:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token string">'storageFoundation'</span> <span class="token keyword">in</span> window<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token comment">// The Storage Foundation API is supported.</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><h3 id="complete-examples">Complete examples <a class="w-headline-link" href="#complete-examples">#</a></h3>
+<p>To make the concepts introduced above clearer, here are two complete examples that walk you through
+the different stages in the lifecycle of Storage Foundation files.</p>
+<h4 id="opening-writing-reading-closing">Opening, writing, reading, closing <a class="w-headline-link" href="#opening-writing-reading-closing">#</a></h4>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token comment">// Open a file (creating it if needed).</span><br><span class="token keyword">const</span> file <span class="token operator">=</span> <span class="token keyword">await</span> storageFoundation<span class="token punctuation">.</span><span class="token function">open</span><span class="token punctuation">(</span><span class="token string">'test_file'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token keyword">try</span> <span class="token punctuation">{</span><br>  <span class="token comment">// Request 100 bytes of capacity for this context.</span><br>  <span class="token keyword">await</span> storageFoundation<span class="token punctuation">.</span><span class="token function">requestCapacity</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>  <span class="token keyword">const</span> writeBuffer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Uint8Array</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">64</span><span class="token punctuation">,</span> <span class="token number">65</span><span class="token punctuation">,</span> <span class="token number">66</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token comment">// Write the buffer at offset 0. After this operation, `result.buffer`</span><br>  <span class="token comment">// contains the transferred buffer and `result.writtenBytes` is 3,</span><br>  <span class="token comment">// the number of bytes written. `writeBuffer` is left detached.</span><br>  <span class="token keyword">let</span> result <span class="token operator">=</span> <span class="token keyword">await</span> file<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span>writeBuffer<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>  <span class="token keyword">const</span> readBuffer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Uint8Array</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token comment">// Read at offset 1. `result.buffer` contains the transferred buffer,</span><br>  <span class="token comment">// `result.readBytes` is 2, the number of bytes read. `readBuffer` is left</span><br>  <span class="token comment">// detached.</span><br>  result <span class="token operator">=</span> <span class="token keyword">await</span> file<span class="token punctuation">.</span><span class="token function">read</span><span class="token punctuation">(</span>readBuffer<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token comment">// `Uint8Array(3) [65, 66, 0]`</span><br>  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>result<span class="token punctuation">.</span>buffer<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span> <span class="token keyword">finally</span> <span class="token punctuation">{</span><br>  file<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><h4 id="opening-listing-deleting">Opening, listing, deleting <a class="w-headline-link" href="#opening-listing-deleting">#</a></h4>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token comment">// Open three different files (creating them if needed).</span><br><span class="token keyword">await</span> storageFoundation<span class="token punctuation">.</span><span class="token function">open</span><span class="token punctuation">(</span><span class="token string">'sunrise'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token keyword">await</span> storageFoundation<span class="token punctuation">.</span><span class="token function">open</span><span class="token punctuation">(</span><span class="token string">'noon'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token keyword">await</span> storageFoundation<span class="token punctuation">.</span><span class="token function">open</span><span class="token punctuation">(</span><span class="token string">'sunset'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token comment">// List all existing files.</span><br><span class="token comment">// `["sunset", "sunrise", "noon"]`</span><br><span class="token keyword">await</span> storageFoundation<span class="token punctuation">.</span><span class="token function">getAll</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token comment">// Delete one of the three files.</span><br><span class="token keyword">await</span> storageFoundation<span class="token punctuation">.</span><span class="token function">delete</span><span class="token punctuation">(</span><span class="token string">'noon'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token comment">// List all remaining existing files.</span><br><span class="token comment">// `["sunrise", "noon"]`</span><br><span class="token keyword">await</span> storageFoundation<span class="token punctuation">.</span><span class="token function">getAll</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><h2 id="demo">Demo <a class="w-headline-link" href="#demo">#</a></h2>
+<p>You can play with the <a href="https://storage-foundation.glitch.me/" rel="noopener">Storage Foundation API demo</a> in the embed below. Create, rename, write
+into, and read from files, and see the available capacity you have requested update as you make
+changes. You can find the <a href="https://glitch.com/edit/#!/storage-foundation" rel="noopener">source code</a> of the demo on Glitch.</p>
+<div class="glitch-embed-wrap" style="height: 420px; width: 100%;">
+  <iframe
+    allow="camera; clipboard-read; clipboard-write; encrypted-media; geolocation; microphone; midi"
+    loading="lazy"
+    src="https://glitch.com/embed/#!/embed/storage-foundation?attributionHidden=true&sidebarCollapsed=true&previewSize=100"
+    style="height: 100%; width: 100%; border: 0;"
+    title="storage-foundation on Glitch"
+  ></iframe>
+</div>
+<h2 id="security-and-permissions">Security and permissions <a class="w-headline-link" href="#security-and-permissions">#</a></h2>
+<p>The Chromium team has designed and implemented the Storage Foundation API using the core principles
+defined in <a href="https://chromium.googlesource.com/chromium/src/+/lkgr/docs/security/permissions-for-powerful-web-platform-features.md" rel="noopener">Controlling Access to Powerful Web Platform Features</a>, including user
+control, transparency, and ergonomics.</p>
+<p>Following the same pattern as other modern storage APIs on the web, access to the Storage Foundation
+API is origin-bound, meaning that an origin may only access self-created data. It is also limited to
+secure contexts.</p>
+<h3 id="user-control">User control <a class="w-headline-link" href="#user-control">#</a></h3>
+<p>Storage quota will be used to distribute access to disk space and to prevent abuse. Memory you want
+to occupy needs to be requested first. Like other storage APIs, users can clear the space taken by
+Storage Foundation API through their browser.</p>
+<h2 id="feedback">Feedback <a class="w-headline-link" href="#feedback">#</a></h2>
+<p>The Chromium team wants to hear about your experiences with the Storage Foundation API.</p>
+<h3 id="tell-us-about-the-api-design">Tell us about the API design <a class="w-headline-link" href="#tell-us-about-the-api-design">#</a></h3>
+<p>Is there something about the API that does not work like you expected? Or are there missing methods
+or properties that you need to implement your idea? Have a question or comment on the security
+model? File a spec issue on the corresponding <a href="https://github.com/WICG/storage-foundation-api-explainer/issues" rel="noopener">GitHub repo</a>, or add your thoughts to an
+existing issue.</p>
+<h3 id="report-a-problem-with-the-implementation">Report a problem with the implementation <a class="w-headline-link" href="#report-a-problem-with-the-implementation">#</a></h3>
+<p>Did you find a bug with Chromium's implementation? Or is the implementation different from the spec?
+File a bug at <a href="https://new.crbug.com" rel="noopener">new.crbug.com</a>. Be sure to include as much detail as you can,
+simple instructions for reproducing, and enter <code>Blink&gt;Storage</code> in the <strong>Components</strong> box.
+<a href="https://glitch.com/" rel="noopener">Glitch</a> works great for sharing quick and easy repros.</p>
+<h3 id="show-support-for-the-api">Show support for the API <a class="w-headline-link" href="#show-support-for-the-api">#</a></h3>
+<p>Are you planning to use the Storage Foundation API? Your public support helps the Chromium team
+prioritize features and shows other browser vendors how critical it is to support them.</p>
+<p>Send a tweet to <a href="https://twitter.com/ChromiumDev" rel="noopener">@ChromiumDev</a> using the hashtag
+<a href="https://twitter.com/search?q=%23StorageFoundation&amp;src=recent_search_click&amp;f=live" rel="noopener"><code>#StorageFoundation</code></a>
+and let us know where and how you are using it. Ask a question on StackOverflow with the hashtag
+<a href="https://stackoverflow.com/questions/tagged/file-system-access-api" rel="noopener"><code>#file-system-access-api</code></a>.</p>
+<h2 id="helpful">Helpful links <a class="w-headline-link" href="#helpful">#</a></h2>
+<ul>
+<li><a href="https://github.com/WICG/storage-foundation-api-explainer#readme" rel="noopener">Public explainer</a></li>
+<li><a href="https://storage-foundation.glitch.me/" rel="noopener">Storage Foundation API demo</a> | <a href="https://glitch.com/edit/#!/storage-foundation" rel="noopener">Storage Foundation API demo source</a></li>
+<li><a href="https://bugs.chromium.org/p/chromium/issues/detail?id=914488" rel="noopener">Chromium tracking bug</a></li>
+<li><a href="https://chromestatus.com/feature/5670244905385984" rel="noopener">ChromeStatus.com entry</a></li>
+<li>Blink Component: <a href="https://chromestatus.com/features#component%3ABlink%3EStorage" rel="noopener"><code>Blink&gt;Storage&gt;NativeIO</code></a></li>
+<li><a href="https://github.com/w3ctag/design-reviews/issues/566" rel="noopener">TAG Review</a></li>
+<li><a href="https://groups.google.com/a/chromium.org/g/blink-dev/c/gh0gTHO18YQ" rel="noopener">Intent to Prototype</a></li>
+<li><a href="https://lists.webkit.org/pipermail/webkit-dev/2021-February/031687.html" rel="noopener">WebKit thread</a></li>
+<li><a href="https://github.com/mozilla/standards-positions/issues/481" rel="noopener">Mozilla thread</a></li>
+</ul>
+<h2 id="acknowledgements">Acknowledgements <a class="w-headline-link" href="#acknowledgements">#</a></h2>
+<p>The Storage Foundation API was specified and implemented by
+<a href="https://github.com/fivedots" rel="noopener">Emanuel Krivoy</a> and <a href="https://github.com/rstz" rel="noopener">Richard Stotz</a>. This
+article was reviewed by <a href="https://github.com/petele" rel="noopener">Pete LePage</a> and
+<a href="https://github.com/jpmedley" rel="noopener">Joe Medley</a>.</p>
+<p>Hero image via <a href="https://unsplash.com/@markusspiske" rel="noopener">Markus Spiske</a> on
+<a href="https://unsplash.com/photos/iar-afB0QQw" rel="noopener">Unsplash</a>.</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/capabilities/">Capabilities</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Jun 30, 2021</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/storage-foundation/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

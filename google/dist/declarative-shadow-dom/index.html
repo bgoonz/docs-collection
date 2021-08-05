@@ -1,0 +1,887 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=40a7654a3549d">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Declarative Shadow DOM</title>
+<meta name="description" content="Declarative Shadow DOM is a new way to implement and use Shadow DOM directly in HTML. " />
+
+<link rel="canonical" href="https://web.dev/declarative-shadow-dom/" />
+
+<meta itemprop="name" content="Declarative Shadow DOM" />
+<meta itemprop="description" content="Declarative Shadow DOM is a new way to implement and use Shadow DOM directly in HTML. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/IIPe5m8edvp0XMPpzrz9.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/declarative-shadow-dom/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Declarative Shadow DOM" />
+<meta property="og:description" content="Declarative Shadow DOM is a new way to implement and use Shadow DOM directly in HTML. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/IIPe5m8edvp0XMPpzrz9.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="decorative shadow dome" />
+<meta property="tag" content="dom" />
+<meta property="tag" content="html" />
+<meta property="tag" content="javascript" />
+<meta property="tag" content="layout" />
+<meta property="tag" content="rendering" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Declarative Shadow DOM" />
+<meta name="twitter:description" content="Declarative Shadow DOM is a new way to implement and use Shadow DOM directly in HTML. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/IIPe5m8edvp0XMPpzrz9.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=12e87eb0fdc66', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=04460cac127ce', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="decorative shadow dome"     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/IIPe5m8edvp0XMPpzrz9.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/IIPe5m8edvp0XMPpzrz9.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/IIPe5m8edvp0XMPpzrz9.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/IIPe5m8edvp0XMPpzrz9.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/IIPe5m8edvp0XMPpzrz9.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/IIPe5m8edvp0XMPpzrz9.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/IIPe5m8edvp0XMPpzrz9.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/IIPe5m8edvp0XMPpzrz9.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/IIPe5m8edvp0XMPpzrz9.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/IIPe5m8edvp0XMPpzrz9.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/IIPe5m8edvp0XMPpzrz9.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/IIPe5m8edvp0XMPpzrz9.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/IIPe5m8edvp0XMPpzrz9.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/IIPe5m8edvp0XMPpzrz9.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/IIPe5m8edvp0XMPpzrz9.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/IIPe5m8edvp0XMPpzrz9.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/IIPe5m8edvp0XMPpzrz9.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/IIPe5m8edvp0XMPpzrz9.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#declarative-shadow-dom" class="w-toc__header--link">
+        Declarative Shadow DOM
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#building">Building a Declarative Shadow Root</a></li><li><a href="#serialization">Serialization</a></li><li><a href="#hydration">Component hydration</a></li><li><a href="#shadow-per-root">One shadow per root</a></li><li><a href="#timing">Timing is everything</a></li><li><a href="#parser-only">Parser-only</a></li><li><a href="#styling">Server-rendering with style</a></li><li><a href="#fouc">Avoiding the flash of unstyled content</a></li><li><a href="#detection-support">Feature detection and browser support</a></li><li><a href="#polyfill">Polyfill</a></li><li><a href="#further-reading">Further Reading</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@_developit | @Mfreed777"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="declarative-shadow-dom" class="w-article-header__headline">Declarative Shadow DOM</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          <p>A new way to implement and use Shadow DOM directly in HTML.</p>
+
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Sep 30, 2020</time>
+           <span class="w-author__separator">•</span> Updated <time>Apr 14, 2021</time> 
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/developit/"><img     alt="Jason Miller"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/bPCYfhUgxdCpXhKAWc9X.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/bPCYfhUgxdCpXhKAWc9X.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/bPCYfhUgxdCpXhKAWc9X.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/bPCYfhUgxdCpXhKAWc9X.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/bPCYfhUgxdCpXhKAWc9X.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/bPCYfhUgxdCpXhKAWc9X.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/developit/">Jason Miller</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/_developit"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/developit">GitHub</a>
+      </li>
+      
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://jasonformat.com">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+            <div class="w-author">
+  <a href="/authors/masonfreed/"><img     alt="Mason Freed"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/t7E3inN3orEPpDUXSkXR.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/t7E3inN3orEPpDUXSkXR.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/t7E3inN3orEPpDUXSkXR.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/t7E3inN3orEPpDUXSkXR.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/t7E3inN3orEPpDUXSkXR.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/t7E3inN3orEPpDUXSkXR.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/masonfreed/">Mason Freed</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/Mfreed777"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/mfreed7">GitHub</a>
+      </li>
+      
+      
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <div class="w-aside w-aside--note">
+<p>Declarative Shadow DOM is a proposed web platform feature that the Chrome team is looking for
+feedback on. Try it out using the <a href="#detection-support">experimental flag</a> or <a href="#polyfill">polyfill</a>.</p>
+</div>
+<p><a href="https://developers.google.com/web/fundamentals/web-components/shadowdom" rel="noopener">Shadow DOM</a>
+is one of the three Web Components standards, rounded out by
+<a href="https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_templates_and_slots" rel="noopener">HTML templates</a>
+and
+<a href="https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements" rel="noopener">Custom Elements</a>.
+Shadow DOM provides a way to scope CSS styles to a specific DOM subtree and isolate that subtree
+from the rest of the document. The <code>&lt;slot&gt;</code> element gives us a way to control where the children
+of a Custom Element should be inserted within its Shadow Tree. These features combined enable a
+system for building self-contained, reusable components that integrate seamlessly into existing
+applications just like a built-in HTML element.</p>
+<p>Until now, the only way to use Shadow DOM was to construct a shadow root using JavaScript:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> host <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">'host'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token keyword">const</span> shadowRoot <span class="token operator">=</span> host<span class="token punctuation">.</span><span class="token function">attachShadow</span><span class="token punctuation">(</span><span class="token punctuation">{</span>mode<span class="token operator">:</span> <span class="token string">'open'</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>shadowRoot<span class="token punctuation">.</span>innerHTML <span class="token operator">=</span> <span class="token string">'&lt;h1>Hello Shadow DOM&lt;/h1>'</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>An imperative API like this works fine for client-side rendering: the same JavaScript modules that
+define our Custom Elements also create their Shadow Roots and set their content. However, many web
+applications need to render content server-side or to static HTML at build time. This can be an
+important part of delivering a reasonable experience to visitors who may not be capable of running
+JavaScript.</p>
+<p>The justifications for
+<a href="https://developers.google.com/web/updates/2019/02/rendering-on-the-web" rel="noopener">Server-Side Rendering</a>
+(SSR) vary from project to project. Some websites must provide fully functional server-rendered
+HTML in order to meet accessibility guidelines, others choose to deliver a baseline no-JavaScript
+experience as a way to guarantee good performance on slow connections or devices.</p>
+<p>Historically, it has been difficult to use Shadow DOM in combination with Server-Side Rendering
+because there was no built-in way to express Shadow Roots in the server-generated HTML. There are
+also performance implications when attaching Shadow Roots to DOM elements that have already been
+rendered without them. This can cause layout shifting after the page has loaded, or temporarily
+show a flash of unstyled content (&quot;FOUC&quot;) while loading the Shadow Root's stylesheets.</p>
+<p><a href="https://github.com/mfreed7/declarative-shadow-dom/blob/master/README.md" rel="noopener">Declarative Shadow DOM</a>
+(DSD) removes this limitation, bringing Shadow DOM to the server.</p>
+<h2 id="building">Building a Declarative Shadow Root <a class="w-headline-link" href="#building">#</a></h2>
+<p>A Declarative Shadow Root is a <code>&lt;template&gt;</code> element with a <code>shadowroot</code> attribute:</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>host-element</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span> <span class="token attr-name">shadowroot</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>open<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><br>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>slot</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>slot</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h2</span><span class="token punctuation">></span></span>Light content<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h2</span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>host-element</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><p>A template element with the <code>shadowroot</code> attribute is detected by the HTML parser and immediately
+applied as the shadow root of its parent element. Loading the pure HTML markup from the above
+sample results in the following DOM tree:</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>host-element</span><span class="token punctuation">></span></span><br>  #shadow-root (open)<br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>slot</span><span class="token punctuation">></span></span><br>    ↳<br>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h2</span><span class="token punctuation">></span></span>Light content<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h2</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>slot</span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>host-element</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><div class="w-aside w-aside--note">
+<p>This code sample is following the Chrome DevTools Elements panel's conventions
+for displaying Shadow DOM content. For example, the <code>↳</code> character represents
+slotted Light DOM content.</p>
+</div>
+<p>This gives us the benefits of Shadow DOM's encapsulation and slot projection in static HTML. No
+JavaScript is needed to produce the entire tree, including the Shadow Root.</p>
+<h2 id="serialization">Serialization <a class="w-headline-link" href="#serialization">#</a></h2>
+<p>In addition to introducing the new <code>&lt;template&gt;</code> syntax for creating shadow roots and attaching
+them to elements, Declarative Shadow Dom also includes a new API for getting the HTML contents of
+an element. The new <code>getInnerHTML()</code> method works like <code>.innerHTML</code>, but provides an option to
+control whether shadow roots should be included in the returned HTML:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> html <span class="token operator">=</span> element<span class="token punctuation">.</span><span class="token function">getInnerHTML</span><span class="token punctuation">(</span><span class="token punctuation">{</span>includeShadowRoots<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">&lt;host-element><br>  &lt;template shadowroot="open">&lt;slot>&lt;/slot>&lt;/template><br>  &lt;h2>Light content&lt;/h2><br>&lt;/host-element></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>Passing the <code>includeShadowRoots:true</code> option serializes the entire subtree of an element,
+<strong>including its shadow roots</strong>. The included shadow roots are serialized using the
+<code>&lt;template shadowroot&gt;</code> syntax.</p>
+<p>In order to preserve encapsulation semantics, any
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/mode" rel="noopener">closed shadow roots</a> within an
+element will not be serialized by default. To include closed shadow roots in the serialized HTML,
+an array of references to those shadow roots can be passed via a new <code>closedRoots</code> option:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> html <span class="token operator">=</span> element<span class="token punctuation">.</span><span class="token function">getInnerHTML</span><span class="token punctuation">(</span><span class="token punctuation">{</span><br>  includeShadowRoots<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>  closedRoots<span class="token operator">:</span> <span class="token punctuation">[</span>shadowRoot1<span class="token punctuation">,</span> shadowRoot2<span class="token punctuation">,</span> <span class="token operator">...</span><span class="token punctuation">]</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>When serializing the HTML within an element, any closed shadow roots that are present in the
+<code>closedRoots</code> array will be serialized using the same template syntax as open shadow roots:</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>host-element</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span> <span class="token attr-name">shadowroot</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>closed<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><br>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>slot</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>slot</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h2</span><span class="token punctuation">></span></span>Light content<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h2</span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>host-element</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><p>Serialized closed shadow roots are indicated by a <code>shadowroot</code> attribute with a value of <code>closed</code>.</p>
+<h2 id="hydration">Component hydration <a class="w-headline-link" href="#hydration">#</a></h2>
+<p>Declarative Shadow DOM can be used on its own as a way to encapsulate styles or customize child
+placement, but it's most powerful when used with Custom Elements. Components built using Custom
+Elements get automatically upgraded from static HTML. With the introduction of Declarative Shadow
+DOM, it's now possible for a Custom Element to have a shadow root before it gets upgraded.</p>
+<p>A Custom Element being upgraded from HTML that includes a Declarative Shadow Root will already have
+that shadow root attached. This means the element will have a <code>shadowRoot</code> property already
+available when it is instantiated, without your code explicitly creating one. It's best to check
+<code>this.shadowRoot</code> for any existing shadow root in your element's constructor. If there is already
+a value, the HTML for this component included a Declarative Shadow Root. If the value is null,
+there was no Declarative Shadow Root present in the HTML or the browser doesn't support Declarative
+Shadow DOM.</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>menu-toggle</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span> <span class="token attr-name">shadowroot</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>open<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><br>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span><span class="token punctuation">></span></span><br>      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>slot</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>slot</span><span class="token punctuation">></span></span><br>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span><br>  Open Menu<br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>menu-toggle</span><span class="token punctuation">></span></span><br><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script"><span class="token language-javascript"><br>  <span class="token keyword">class</span> <span class="token class-name">MenuToggle</span> <span class="token keyword">extends</span> <span class="token class-name">HTMLElement</span> <span class="token punctuation">{</span><br>    <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>      <span class="token keyword">super</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>      <span class="token comment">// Detect whether we have SSR content already:</span><br>      <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>shadowRoot<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>        <span class="token comment">// A Declarative Shadow Root exists!</span><br>        <span class="token comment">// wire up event listeners, references, etc.:</span><br>        <span class="token keyword">const</span> button <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>shadowRoot<span class="token punctuation">.</span>firstElementChild<span class="token punctuation">;</span><br>        button<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'click'</span><span class="token punctuation">,</span> toggle<span class="token punctuation">)</span><span class="token punctuation">;</span><br>      <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span><br>        <span class="token comment">// A Declarative Shadow Root doesn't exist.</span><br>        <span class="token comment">// Create a new shadow root and populate it:</span><br>        <span class="token keyword">const</span> shadow <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">attachShadow</span><span class="token punctuation">(</span><span class="token punctuation">{</span>mode<span class="token operator">:</span> <span class="token string">'open'</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>        shadow<span class="token punctuation">.</span>innerHTML <span class="token operator">=</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">&lt;button>&lt;slot>&lt;/slot>&lt;/button></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span><br>        shadow<span class="token punctuation">.</span>firstChild<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'click'</span><span class="token punctuation">,</span> toggle<span class="token punctuation">)</span><span class="token punctuation">;</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">}</span><br><br>  customElements<span class="token punctuation">.</span><span class="token function">define</span><span class="token punctuation">(</span><span class="token string">'menu-toggle'</span><span class="token punctuation">,</span> MenuToggle<span class="token punctuation">)</span><span class="token punctuation">;</span><br></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><p>Custom Elements have been around for a while, and until now there was no reason to check for an
+existing shadow root before creating one using <code>attachShadow()</code>. Declarative Shadow DOM includes a
+small change that allows existing components to work despite this: calling the <code>attachShadow()</code>
+method on an element with an existing <strong>Declarative</strong> Shadow Root will <strong>not</strong> throw an error.
+Instead, the Declarative Shadow Root is emptied and returned. This allows older components not
+built for Declarative Shadow DOM to continue working, since declarative roots are preserved until
+an imperative replacement is created.</p>
+<p>For newly-created Custom Elements, a new
+<a href="https://github.com/w3c/webcomponents/issues/871" rel="noopener">ElementInternals.shadowRoot</a> property provides
+an explicit way to get a reference to an element's existing Declarative Shadow Root, both open and
+closed. This can be used to check for and use any Declarative Shadow Root, while still falling back
+to<code>attachShadow()</code> in cases where one was not provided.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">class</span> <span class="token class-name">MenuToggle</span> <span class="token keyword">extends</span> <span class="token class-name">HTMLElement</span> <span class="token punctuation">{</span><br>  <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token keyword">super</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>    <span class="token keyword">const</span> internals <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">attachInternals</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>    <span class="token comment">// check for a Declarative Shadow Root:</span><br>    <span class="token keyword">let</span> shadow <span class="token operator">=</span> internals<span class="token punctuation">.</span>shadowRoot<span class="token punctuation">;</span><br>    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>shadow<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>      <span class="token comment">// there wasn't one. create a new Shadow Root:</span><br>      shadow <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">attachShadow</span><span class="token punctuation">(</span><span class="token punctuation">{</span>mode<span class="token operator">:</span> <span class="token string">'open'</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>      shadow<span class="token punctuation">.</span>innerHTML <span class="token operator">=</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">&lt;button>&lt;slot>&lt;/slot>&lt;/button></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span><br>    <span class="token punctuation">}</span><br><br>    <span class="token comment">// in either case, wire up our event listener:</span><br>    shadow<span class="token punctuation">.</span>firstChild<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'click'</span><span class="token punctuation">,</span> toggle<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span><br>customElements<span class="token punctuation">.</span><span class="token function">define</span><span class="token punctuation">(</span><span class="token string">'menu-toggle'</span><span class="token punctuation">,</span> MenuToggle<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><h2 id="shadow-per-root">One shadow per root <a class="w-headline-link" href="#shadow-per-root">#</a></h2>
+<p>A Declarative Shadow Root is only associated with its parent element. This means shadow roots are
+always colocated with their associated element. This design decision ensures shadow roots are
+streamable like the rest of an HTML document. It's also convenient for authoring and generation,
+since adding a shadow root to an element does not require maintaining a registry of existing shadow
+roots.</p>
+<p>The tradeoff of associating shadow roots with their parent element is that it is not possible for
+multiple elements to be initialized from the same Declarative Shadow Root <code>&lt;template&gt;</code>. However,
+this is unlikely to matter in most cases where Declarative Shadow DOM is used, since the contents
+of each shadow root are seldom identical. While server-rendered HTML often contains repeated
+element structures, their content generally differs–slight variations in text, attributes, etc.
+Because the contents of a serialized Declarative Shadow Root are entirely static, upgrading
+multiple elements from a single Declarative Shadow Root would only work if the elements happened to
+be identical. Finally, the impact of repeated similar shadow roots on network transfer size is
+relatively small due to the effects of compression.</p>
+<p>In the future, it might be possible to revisit shared shadow roots. If the DOM gains support for
+<a href="https://w3c.github.io/webcomponents/proposals/Template-Instantiation.html" rel="noopener">built-in templating</a>,
+Declarative Shadow Roots could be treated as templates that are instantiated in order to construct
+the shadow root for a given element. The current Declarative Shadow DOM design allows for this
+possibility to exist in the future by limiting shadow root association to a single element.</p>
+<h2 id="timing">Timing is everything <a class="w-headline-link" href="#timing">#</a></h2>
+<p>Associating Declarative Shadow Roots directly with their parent element simplifies the process of
+upgrading and attaching them to that element. Declarative Shadow Roots are detected during HTML
+parsing, and attached immediately when their <strong>closing</strong> <code>&lt;/template&gt;</code> tag is encountered.</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>el<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script"><span class="token language-javascript"><br>    el<span class="token punctuation">.</span>shadowRoot<span class="token punctuation">;</span> <span class="token comment">// null</span><br>  </span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span><br><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span> <span class="token attr-name">shadowroot</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>open<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><br>    <span class="token comment">&lt;!-- shadow realm --></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span><br><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script"><span class="token language-javascript"><br>    el<span class="token punctuation">.</span>shadowRoot<span class="token punctuation">;</span> <span class="token comment">// ShadowRoot</span><br>  </span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><p>Prior to being attached, the contents of a <code>&lt;template&gt;</code> element with the <code>shadowroot</code> attribute
+are an inert Document Fragment and are not accessible via the <code>.content</code> property like a standard
+template. This security measure prevents JavaScript from being able to obtain a reference to closed
+shadow roots. As a result, the contents of a Declarative Shadow Root are not rendered until its
+closing <code>&lt;/template&gt;</code> tag is parsed.</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>shadow<span class="token punctuation">"</span></span> <span class="token attr-name">shadowroot</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>open<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><br>    shadow realm<br>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script"><span class="token language-javascript"><br>      shadow<span class="token punctuation">.</span>content<span class="token punctuation">;</span> <span class="token comment">// null</span><br>    </span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><h2 id="parser-only">Parser-only <a class="w-headline-link" href="#parser-only">#</a></h2>
+<p>Declarative Shadow DOM is a feature of the HTML parser. This means that a Declarative Shadow Root
+will only be parsed and attached for <code>&lt;template&gt;</code> tags with a <code>shadowroot</code> attribute that are
+present during HTML parsing. In other words, Declarative Shadow Roots can be constructed during
+initial HTML parsing:</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>some-element</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span> <span class="token attr-name">shadowroot</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>open<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><br>    shadow root content for some-element<br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>some-element</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><p>Setting the <code>shadowroot</code> attribute of a <code>&lt;template&gt;</code> element does nothing, and the template
+remains an ordinary template element:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> div <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">createElement</span><span class="token punctuation">(</span><span class="token string">'div'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token keyword">const</span> template <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">createElement</span><span class="token punctuation">(</span><span class="token string">'template'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>template<span class="token punctuation">.</span><span class="token function">setAttribute</span><span class="token punctuation">(</span><span class="token string">'shadowroot'</span><span class="token punctuation">,</span> <span class="token string">'open'</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// this does nothing</span><br>div<span class="token punctuation">.</span><span class="token function">appendChild</span><span class="token punctuation">(</span>template<span class="token punctuation">)</span><span class="token punctuation">;</span><br>div<span class="token punctuation">.</span>shadowRoot<span class="token punctuation">;</span> <span class="token comment">// null</span></code></pre>
+</web-copy-code><p>To avoid some important security considerations, Declarative Shadow Roots also can't be created
+using fragment parsing APIs like <code>innerHTML</code> or <code>insertAdjacentHTML()</code>. The only way to parse
+HTML with Declarative Shadow Roots applied is to pass a new <code>includeShadowRoots</code> option to
+<code>DOMParser</code>:</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script"><span class="token language-javascript"><br>  <span class="token keyword">const</span> html <span class="token operator">=</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string"><br>    &lt;div><br>      &lt;template shadowroot="open">&lt;/template><br>    &lt;/div><br>  </span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span><br>  <span class="token keyword">const</span> div <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">createElement</span><span class="token punctuation">(</span><span class="token string">'div'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  div<span class="token punctuation">.</span>innerHTML <span class="token operator">=</span> html<span class="token punctuation">;</span> <span class="token comment">// No shadow root here</span><br>  <span class="token keyword">const</span> fragment <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">DOMParser</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">parseFromString</span><span class="token punctuation">(</span>html<span class="token punctuation">,</span> <span class="token string">'text/html'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span><br>    includeShadowRoots<span class="token operator">:</span> <span class="token boolean">true</span><br>  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Shadow root here</span><br></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><h2 id="styling">Server-rendering with style <a class="w-headline-link" href="#styling">#</a></h2>
+<p>Inline and external stylesheets are fully supported inside Declarative Shadow Roots using the
+standard <code>&lt;style&gt;</code> and <code>&lt;link&gt;</code> tags:</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>nineties-button</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span> <span class="token attr-name">shadowroot</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>open<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><br>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>style</span><span class="token punctuation">></span></span><span class="token style"><span class="token language-css"><br>      <span class="token selector">button</span> <span class="token punctuation">{</span><br>        <span class="token property">color</span><span class="token punctuation">:</span> seagreen<span class="token punctuation">;</span><br>      <span class="token punctuation">}</span><br>    </span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>style</span><span class="token punctuation">></span></span><br>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>link</span> <span class="token attr-name">rel</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>stylesheet<span class="token punctuation">"</span></span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>/comicsans.css<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span><br>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span><span class="token punctuation">></span></span><br>      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>slot</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>slot</span><span class="token punctuation">></span></span><br>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span><br>  I'm Blue<br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>nineties-button</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><p>Styles specified this way are also highly optimized: if the same stylesheet is present in multiple
+Declarative Shadow Roots, it is only loaded and parsed once. The browser uses a single backing
+<code>CSSStyleSheet</code> that is shared by all of the shadow roots, eliminating duplicate memory overhead.</p>
+<p><a href="https://developers.google.com/web/updates/2019/02/constructable-stylesheets" rel="noopener">Constructable Stylesheets</a>
+are not supported in Declarative Shadow DOM. This is because there is currently no way to serialize
+constructable stylesheets in HTML, and no way to refer to them when populating <code>adoptedStyleSheets</code>.</p>
+<h2 id="fouc">Avoiding the flash of unstyled content <a class="w-headline-link" href="#fouc">#</a></h2>
+<p>One potential issue in browsers that do not yet support Declarative Shadow DOM
+is avoiding &quot;flash of unstyled content&quot; (FOUC), where the raw contents are shown
+for Custom Elements that have not yet been upgraded. Prior to Declarative Shadow
+DOM, one common technique for avoiding FOUC was to apply a <code>display:none</code> style
+rule to Custom Elements that haven't been loaded yet, since these have not had
+their shadow root attached and populated. In this way, content is not displayed
+until it is &quot;ready&quot;:</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>style</span><span class="token punctuation">></span></span><span class="token style"><span class="token language-css"><br>  <span class="token selector">x-foo:not(:defined) > *</span> <span class="token punctuation">{</span><br>    <span class="token property">display</span><span class="token punctuation">:</span> none<span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>style</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><p>With the introduction of Declarative Shadow DOM, Custom Elements can be rendered
+or authored in HTML such that their shadow content is in-place and ready before the
+client-side component implementation is loaded:</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>x-foo</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span> <span class="token attr-name">shadowroot</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>open<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><br>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>style</span><span class="token punctuation">></span></span><span class="token style"><span class="token language-css"><span class="token selector">h2</span> <span class="token punctuation">{</span> <span class="token property">color</span><span class="token punctuation">:</span> blue<span class="token punctuation">;</span> <span class="token punctuation">}</span></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>style</span><span class="token punctuation">></span></span><br>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h2</span><span class="token punctuation">></span></span>shadow content<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h2</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>x-foo</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><p>In this case, the <code>display:none</code> &quot;FOUC&quot; rule would prevent the declarative
+shadow root's content from showing. However, removing that rule would cause
+browsers without Declarative Shadow DOM support to show incorrect or unstyled
+content until the Declarative Shadow DOM <a href="#polyfill">polyfill</a> loads and
+converts the shadow root template into a real shadow root.</p>
+<p>Fortunately, this can be solved in CSS by modifying the FOUC style rule. In
+browsers that support Declarative Shadow DOM, the <code>&lt;template shadowroot&gt;</code>
+element is immediately converted into a shadow root, leaving no <code>&lt;template&gt;</code>
+element in the DOM tree. Browsers that don't support Declarative Shadow DOM
+preserve the <code>&lt;template&gt;</code> element, which we can use to prevent FOUC:</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>style</span><span class="token punctuation">></span></span><span class="token style"><span class="token language-css"><br>  <span class="token selector">x-foo:not(:defined) > template[shadowroot] ~ *</span>  <span class="token punctuation">{</span><br>    <span class="token property">display</span><span class="token punctuation">:</span> none<span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>style</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><p>Instead of hiding the not-yet-defined Custom Element, the revised &quot;FOUC&quot; rule
+hides its <em>children</em> when they follow a <code>&lt;template shadowroot&gt;</code> element. Once
+the Custom Element is defined, the rule no longer matches. The rule is ignored
+in browsers that support Declarative Shadow DOM because the
+<code>&lt;template shadowroot&gt;</code> child is removed during HTML parsing.</p>
+<h2 id="detection-support">Feature detection and browser support <a class="w-headline-link" href="#detection-support">#</a></h2>
+<p>Declarative Shadow DOM is available in Chrome 90 and Edge 91. It can also be enabled
+using the <strong>Experimental Web Platform Features</strong> flag in Chrome 85. Navigate to
+<code>about://flags/#enable-experimental-web-platform-features</code> to find that setting.</p>
+<p>As a new web platform API, Declarative Shadow DOM does not yet have widespread support across all
+browsers. Browser support can be detected by checking for the existence of a <code>shadowroot</code> property
+on the prototype of <code>HTMLTemplateElement</code>:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">supportsDeclarativeShadowDOM</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token keyword">return</span> <span class="token class-name">HTMLTemplateElement</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function">hasOwnProperty</span><span class="token punctuation">(</span><span class="token string">'shadowRoot'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><h2 id="polyfill">Polyfill <a class="w-headline-link" href="#polyfill">#</a></h2>
+<p>Building a simplified polyfill for Declarative Shadow DOM is relatively straightforward, since a
+polyfill doesn't need to perfectly replicate the timing semantics or parser-only characteristics
+that a browser implementation concerns itself with. To polyfill Declarative Shadow DOM, we can scan
+the DOM to find all <code>&lt;template shadowroot&gt;</code> elements, then convert them to attached Shadow Roots
+on their parent element. This process can be done once the document is ready, or triggered by more
+specific events like Custom Element lifecycles.</p>
+<web-copy-code><pre class="language-js"><code class="language-js">document<span class="token punctuation">.</span><span class="token function">querySelectorAll</span><span class="token punctuation">(</span><span class="token string">'template[shadowroot]'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token parameter">template</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token keyword">const</span> mode <span class="token operator">=</span> template<span class="token punctuation">.</span><span class="token function">getAttribute</span><span class="token punctuation">(</span><span class="token string">'shadowroot'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token keyword">const</span> shadowRoot <span class="token operator">=</span> template<span class="token punctuation">.</span>parentNode<span class="token punctuation">.</span><span class="token function">attachShadow</span><span class="token punctuation">(</span><span class="token punctuation">{</span> mode <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  shadowRoot<span class="token punctuation">.</span><span class="token function">appendChild</span><span class="token punctuation">(</span>template<span class="token punctuation">.</span>content<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  template<span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><h2 id="further-reading">Further Reading <a class="w-headline-link" href="#further-reading">#</a></h2>
+<ul>
+<li><a href="https://github.com/mfreed7/declarative-shadow-dom/blob/master/README.md" rel="noopener">Explainer with alternatives and performance analysis</a></li>
+<li><a href="https://www.chromestatus.com/feature/5191745052606464" rel="noopener">Chromestatus for Declarative Shadow DOM</a></li>
+<li><a href="https://groups.google.com/a/chromium.org/g/blink-dev/c/nJDc-1s3R9U/m/uCJKsEqpAwAJ" rel="noopener">Intent to Prototype</a></li>
+</ul>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/dom/">DOM</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/html/">HTML</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/javascript/">JavaScript</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/layout/">Layout</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/rendering/">Rendering</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Apr 14, 2021</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/declarative-shadow-dom/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions="api"></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

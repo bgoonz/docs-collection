@@ -1,0 +1,928 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=cd695f1b09fdc">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Managing several displays with the Multi-Screen Window Placement API</title>
+<meta name="description" content="The Multi-Screen Window Placement API allows you to enumerate the displays connected to your machine and to place windows on specific screens." />
+
+<link rel="canonical" href="https://web.dev/multi-screen-window-placement/" />
+
+<meta itemprop="name" content="Managing several displays with the Multi-Screen Window Placement API" />
+<meta itemprop="description" content="The Multi-Screen Window Placement API allows you to enumerate the displays connected to your machine and to place windows on specific screens." />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/9wQYJACMKOM6aUA0BPsW.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/multi-screen-window-placement/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Managing several displays with the Multi-Screen Window Placement API" />
+<meta property="og:description" content="The Multi-Screen Window Placement API allows you to enumerate the displays connected to your machine and to place windows on specific screens." />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/9wQYJACMKOM6aUA0BPsW.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="Simulated trading desk showing multiple fake cryptocurrencies and their price charts." />
+<meta property="tag" content="capabilities" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Managing several displays with the Multi-Screen Window Placement API" />
+<meta name="twitter:description" content="The Multi-Screen Window Placement API allows you to enumerate the displays connected to your machine and to place windows on specific screens." />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/9wQYJACMKOM6aUA0BPsW.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=d792d67f5e69c', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=e6809ff8f637a', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="Simulated trading desk showing multiple fake cryptocurrencies and their price charts."     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/9wQYJACMKOM6aUA0BPsW.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/9wQYJACMKOM6aUA0BPsW.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/9wQYJACMKOM6aUA0BPsW.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/9wQYJACMKOM6aUA0BPsW.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/9wQYJACMKOM6aUA0BPsW.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/9wQYJACMKOM6aUA0BPsW.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/9wQYJACMKOM6aUA0BPsW.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/9wQYJACMKOM6aUA0BPsW.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/9wQYJACMKOM6aUA0BPsW.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/9wQYJACMKOM6aUA0BPsW.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/9wQYJACMKOM6aUA0BPsW.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/9wQYJACMKOM6aUA0BPsW.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/9wQYJACMKOM6aUA0BPsW.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/9wQYJACMKOM6aUA0BPsW.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/9wQYJACMKOM6aUA0BPsW.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/9wQYJACMKOM6aUA0BPsW.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/9wQYJACMKOM6aUA0BPsW.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/9wQYJACMKOM6aUA0BPsW.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#managing-several-displays-with-the-multi-screen-window-placement-api" class="w-toc__header--link">
+        Managing several displays with the Multi-Screen Window Placement API
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#use-cases">Suggested use cases</a></li><li><a href="#status">Current status</a></li><li><a href="#use">How to use the Multi-Screen Window Placement API</a></li><li><a href="#enabling-via-about:flags">Enabling via about://flags</a></li><li><a href="#enabling-support-during-the-origin-trial-phase">Enabling support during the origin trial phase</a></li><li><a href="#register-for-ot">Register for the origin trial</a></li><li><a href="#the-problem">The problem</a></li><li><a href="#feature-detection">Feature detection</a></li><li><a href="#the-window-placement-permission">The window-placement permission</a></li><li><a href="#the-window.screen.isextended-property">The window.screen.isExtended property</a></li><li><a href="#the-getscreens()-method">The getScreens() method</a></li><li><a href="#the-screenschange-event">The screenschange event</a></li><li><a href="#the-currentscreenchange-event">The currentscreenchange event</a></li><li><a href="#the-change-event">The change event</a></li><li><a href="#new-fullscreen-options">New fullscreen options</a></li><li><a href="#polyfill">Polyfill</a></li><li><a href="#demo">Demo</a></li><li><a href="#security-and-permissions">Security and permissions</a></li><li><a href="#user-control">User control</a></li><li><a href="#transparency">Transparency</a></li><li><a href="#permission-persistence">Permission persistence</a></li><li><a href="#feedback">Feedback</a></li><li><a href="#tell-us-about-the-api-design">Tell us about the API design</a></li><li><a href="#report-a-problem-with-the-implementation">Report a problem with the implementation</a></li><li><a href="#show-support-for-the-api">Show support for the API</a></li><li><a href="#helpful">Helpful links</a></li><li><a href="#acknowledgements">Acknowledgements</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@tomayac"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="managing-several-displays-with-the-multi-screen-window-placement-api" class="w-article-header__headline">Managing several displays with the Multi-Screen Window Placement API</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          Get information about connected displays and position windows relative to those displays.
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Sep 14, 2020</time>
+           <span class="w-author__separator">•</span> Updated <time>Jul 19, 2021</time> 
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/thomassteiner/"><img     alt="Thomas Steiner"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/thomassteiner/">Thomas Steiner</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/tomayac"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/tomayac">GitHub</a>
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://glitch.com/@tomayac"
+          >Glitch</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://blog.tomayac.com/">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <div class="w-aside w-aside--note">
+<p>The Multi-Screen Window Placement API is part of the
+<a href="/fugu-status/">capabilities project</a> and is currently in development. This post will be updated as
+the implementation progresses. </div></p>
+<p>The Multi-Screen Window Placement API allows you to enumerate the displays connected to your machine
+and to place windows on specific screens.</p>
+<h3 id="use-cases">Suggested use cases <a class="w-headline-link" href="#use-cases">#</a></h3>
+<p>Examples of sites that may use this API include:</p>
+<ul>
+<li>Multi-window graphics editors à la
+<a href="https://www.gimp.org/release-notes/gimp-2.8.html#single-window-mode" rel="noopener">Gimp</a> can place various
+editing tools in accurately positioned windows.</li>
+<li>Virtual trading desks can show market trends in multiple windows any of which can be viewed in
+fullscreen mode.</li>
+<li>Slideshow apps can show speaker notes on the internal primary screen and the presentation on an
+external projector.</li>
+</ul>
+<h2 id="status">Current status <a class="w-headline-link" href="#status">#</a></h2>
+<div class="w-table-wrapper">
+<div class="w-table-wrapper">
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Create explainer</td>
+<td><a href="https://github.com/webscreens/window-placement/blob/main/EXPLAINER.md" rel="noopener">Complete</a></td>
+</tr>
+<tr>
+<td>2. Create initial draft of specification</td>
+<td><a href="https://webscreens.github.io/window-placement/" rel="noopener">Complete</a></td>
+</tr>
+<tr>
+<td>3. Gather feedback &amp; iterate on design</td>
+<td><a href="#feedback">In progress</a></td>
+</tr>
+<tr>
+<td>4. <strong>Origin trial</strong></td>
+<td><strong><a href="https://developer.chrome.com/origintrials/#/view_trial/-8087339030850568191" rel="noopener">In progress</a></strong></td>
+</tr>
+<tr>
+<td>5. Launch</td>
+<td>Not started</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<h2 id="use">How to use the Multi-Screen Window Placement API <a class="w-headline-link" href="#use">#</a></h2>
+<h3 id="enabling-via-about:flags">Enabling via about://flags <a class="w-headline-link" href="#enabling-via-about:flags">#</a></h3>
+<p>To experiment with the Multi-Screen Window Placement API locally, without an origin trial token,
+enable the <code>#enable-experimental-web-platform-features</code> flag in <code>about://flags</code>.</p>
+<h3 id="enabling-support-during-the-origin-trial-phase">Enabling support during the origin trial phase <a class="w-headline-link" href="#enabling-support-during-the-origin-trial-phase">#</a></h3>
+<p>A first origin trial ran from Chromium 86 to Chromium 88. After this origin trial, we made
+some <a href="https://github.com/webscreens/window-placement/blob/main/CHANGES.md" rel="noopener">changes</a> to the API. The
+article has been updated accordingly.</p>
+<p>Starting in Chromium 93, the Multi-Screen Window Placement API will again be available as an
+origin trial in Chromium. This second origin trial is expected to end in Chromium 95 (November
+10, 2021).</p>
+<p>Origin trials allow you to try new features and give feedback on their
+usability, practicality, and effectiveness to the web standards community. For
+more information, see the <a href="https://github.com/GoogleChrome/OriginTrials/blob/gh-pages/developer-guide.md" rel="noopener">Origin Trials Guide for Web Developers</a>.
+To sign up for this or another origin trial, visit the <a href="https://developers.chrome.com/origintrials/#/trials/active" rel="noopener">registration page</a>.</p>
+<h3 id="register-for-ot">Register for the origin trial <a class="w-headline-link" href="#register-for-ot">#</a></h3>
+<ol>
+<li><a href="https://developer.chrome.com/origintrials/#/view_trial/-8087339030850568191" rel="noopener">Request a token</a> for your origin.</li>
+<li>Add the token to your pages. There are two ways to do that:
+<ul>
+<li>Add an <code>origin-trial</code> <code>&lt;meta&gt;</code> tag to the head of each page. For example,
+this may look something like: <br>
+<code>&lt;meta http-equiv=&quot;origin-trial&quot; content=&quot;TOKEN_GOES_HERE&quot;&gt;</code></li>
+<li>If you can configure your server, you can also add the token
+using an <code>Origin-Trial</code> HTTP header. The resulting response header should
+look something like:<br>
+<code>Origin-Trial: TOKEN_GOES_HERE</code></li>
+</ul>
+</li>
+</ol>
+<h3 id="the-problem">The problem <a class="w-headline-link" href="#the-problem">#</a></h3>
+<p>The time-tested approach to controlling windows,
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/open" rel="noopener"><code>Window.open()</code></a>, is unfortunately
+unaware of additional screens. While some aspects of this API seem a little archaic, such as its
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/open#Parameters:~:text=title.-,windowFeatures" rel="noopener"><code>windowFeatures</code></a>
+<code>DOMString</code> parameter, it has nevertheless served us well over the years. To specify a window's
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/open#Position" rel="noopener">position</a>, you can pass the
+coordinates as <code>left</code> and <code>top</code> (or <code>screenX</code> and <code>screenY</code> respectively) and pass the desired
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/open#Size:~:text=well.-,Size" rel="noopener">size</a> as
+<code>width</code> and <code>height</code> (or <code>innerWidth</code> and <code>innerHeight</code> respectively). For example, to open a
+400×300 window at 50 pixels from the left and 50 pixels from the top, this is the code that you
+could use:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> popup <span class="token operator">=</span> window<span class="token punctuation">.</span><span class="token function">open</span><span class="token punctuation">(</span><br>  <span class="token string">'https://example.com/'</span><span class="token punctuation">,</span><br>  <span class="token string">'My Popup'</span><span class="token punctuation">,</span><br>  <span class="token string">'left=50,top=50,width=400,height=300'</span><span class="token punctuation">,</span><br><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>You can get information about the current screen by looking at the
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/screen" rel="noopener"><code>window.screen</code></a> property, which
+returns a <a href="https://developer.mozilla.org/en-US/docs/Web/API/Screen" rel="noopener"><code>Screen</code></a> object. This is the
+output on my MacBook Pro 13″:</p>
+<web-copy-code><pre class="language-js"><code class="language-js">window<span class="token punctuation">.</span>screen<span class="token punctuation">;</span><br><span class="token comment">/* Output from my MacBook Pro 13″:<br>  availHeight: 969<br>  availLeft: 0<br>  availTop: 25<br>  availWidth: 1680<br>  colorDepth: 30<br>  height: 1050<br>  id: ""<br>  internal: false<br>  isExtended: true<br>  left: 0<br>  onchange: null<br>  orientation: ScreenOrientation {angle: 0, type: "landscape-primary", onchange: null}<br>  pixelDepth: 30<br>  primary: false<br>  scaleFactor: 2<br>  top: 0<br>  touchSupport: false<br>  width: 1680<br>*/</span></code></pre>
+</web-copy-code><p>Like most people working in tech, I have had to adapt myself to the new work reality and set up my
+personal home office. Mine looks like on the photo below (if you are interested, you can read the
+<a href="https://blog.tomayac.com/2020/03/23/my-working-from-home-setup-during-covid-19/" rel="noopener">full details about my setup</a>).
+The iPad next to my MacBook is connected to the laptop via
+<a href="https://support.apple.com/en-us/HT210380" rel="noopener">Sidecar</a>, so whenever I need to, I can quickly turn the
+iPad into a second screen.</p>
+<figure class="w-figure">
+  <img     alt="School bench on two chairs. On top of the school bench are shoe boxes supporting a laptop and two iPads surrounding it."          decoding="async"     height="520"          loading="lazy"     sizes="(min-width: 558px) 558px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/Qt3SlHOLDzxpZ3l3bN5t.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/Qt3SlHOLDzxpZ3l3bN5t.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/Qt3SlHOLDzxpZ3l3bN5t.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/Qt3SlHOLDzxpZ3l3bN5t.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/Qt3SlHOLDzxpZ3l3bN5t.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/Qt3SlHOLDzxpZ3l3bN5t.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/Qt3SlHOLDzxpZ3l3bN5t.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/Qt3SlHOLDzxpZ3l3bN5t.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/Qt3SlHOLDzxpZ3l3bN5t.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/Qt3SlHOLDzxpZ3l3bN5t.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/Qt3SlHOLDzxpZ3l3bN5t.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/Qt3SlHOLDzxpZ3l3bN5t.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/Qt3SlHOLDzxpZ3l3bN5t.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/Qt3SlHOLDzxpZ3l3bN5t.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/Qt3SlHOLDzxpZ3l3bN5t.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/Qt3SlHOLDzxpZ3l3bN5t.jpg?auto=format&w=1116 1116w"          width="558"   />
+  <figcaption class="w-figcaption">A multi-screen setup.</figcaption>
+</figure>
+<p>If I want to take advantage of the bigger screen, I can put the popup from the
+<a href="/multi-screen-window-placement/#the-problem">code sample</a> above on to the second screen. I do it
+like this:</p>
+<web-copy-code><pre class="language-js"><code class="language-js">popup<span class="token punctuation">.</span><span class="token function">moveTo</span><span class="token punctuation">(</span><span class="token number">2500</span><span class="token punctuation">,</span> <span class="token number">50</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>This is a rough guess, since there is no way to know the dimensions of the second screen. The info
+from <code>window.screen</code> only covers the built-in screen, but not the iPad screen. The reported <code>width</code>
+of the built-in screen was <code>1680</code> pixels, so moving to <code>2500</code> pixels <em>might</em> work to shift the
+window over to the iPad, since <em>I</em> happen to know that it is located on the right of my MacBook. How
+can I do this in the general case? Turns out, there is a better way than guessing. That way is the
+Multi-Screen Window Placement API.</p>
+<h3 id="feature-detection">Feature detection <a class="w-headline-link" href="#feature-detection">#</a></h3>
+<p>To check if the Multi-Screen Window Placement API is supported, use:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token string">'getScreens'</span> <span class="token keyword">in</span> window<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token comment">// The Multi-Screen Window Placement API is supported.</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><h3 id="the-window-placement-permission">The <code>window-placement</code> permission <a class="w-headline-link" href="#the-window-placement-permission">#</a></h3>
+<p>Before I can use the Multi-Screen Window Placement API, I must ask the user for permission to do so.
+The new <code>window-placement</code> permission can be queried with the
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/Permissions_API" rel="noopener">Permissions API</a> like so:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">let</span> granted <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span><br><span class="token keyword">try</span> <span class="token punctuation">{</span><br>  <span class="token keyword">const</span> <span class="token punctuation">{</span> state <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">await</span> navigator<span class="token punctuation">.</span>permissions<span class="token punctuation">.</span><span class="token function">query</span><span class="token punctuation">(</span><span class="token punctuation">{</span> name<span class="token operator">:</span> <span class="token string">'window-placement'</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  granted <span class="token operator">=</span> state <span class="token operator">===</span> <span class="token string">'granted'</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">{</span><br>  <span class="token comment">// Nothing.</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>The browser
+<a href="https://webscreens.github.io/window-placement/#usage-overview-screen-information:~:text=This%20method%20may%20prompt%20the%20user%20for%20permission" rel="noopener">can</a>
+choose to show the permission prompt dynamically on the first attempt to use any of the methods of
+the new API. Read on to learn more.</p>
+<h3 id="the-window.screen.isextended-property">The <code>window.screen.isExtended</code> property <a class="w-headline-link" href="#the-window.screen.isextended-property">#</a></h3>
+<p>To find out if more than one screen is connected to my device, I access the
+<code>window.screen.isExtended</code> property. It returns <code>true</code> or <code>false</code>. For my setup, it returns <code>true</code>.</p>
+<web-copy-code><pre class="language-js"><code class="language-js">window<span class="token punctuation">.</span>screen<span class="token punctuation">.</span>isExtended<span class="token punctuation">;</span><br><span class="token comment">// Returns `true` or `false`.</span></code></pre>
+</web-copy-code><h3 id="the-getscreens()-method">The <code>getScreens()</code> method <a class="w-headline-link" href="#the-getscreens()-method">#</a></h3>
+<p>Now that I know that the current setup is multi-screen, I can obtain more information about the
+second screen using <code>Window.getScreens()</code>. Calling this function will show a permission prompt that
+asks me whether the site may open and place windows on my screen. The function returns a promise
+that resolves with an array of <code>ScreenAdvanced</code> objects. On my MacBook Pro 13 with a connected iPad,
+this returns an array of two <code>ScreenAdvanced</code> objects:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">await</span> window<span class="token punctuation">.</span><span class="token function">getScreens</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token comment">/* Output from my MacBook Pro 13″ with the iPad attached:<br>{<br>  currentScreen: ScreenAdvanced {left: 0, top: 0, isPrimary: true, isInternal: true, devicePixelRatio: 2, …}<br>  oncurrentscreenchange: null<br>  onscreenschange: null<br>  screens: [{<br>    // The MacBook Pro<br>    availHeight: 969<br>    availLeft: 0<br>    availTop: 25<br>    availWidth: 1680<br>    colorDepth: 30<br>    devicePixelRatio: 2<br>    height: 1050<br>    id: ""<br>    internal: false<br>    isExtended: true<br>    isInternal: true<br>    isPrimary: true<br>    label: ""<br>    left: 0<br>    onchange: null<br>    orientation: ScreenOrientation {angle: 0, type: "landscape-primary", onchange: null}<br>    pixelDepth: 30<br>    pointerTypes: []<br>    primary: false<br>    scaleFactor: 2<br>    top: 0<br>    touchSupport: false<br>    width: 1680<br>  },<br>  {<br>    // The iPad<br>    availHeight: 999<br>    availLeft: 1680<br>    availTop: 25<br>    availWidth: 1366<br>    colorDepth: 24<br>    devicePixelRatio: 2<br>    height: 1024<br>    id: ""<br>    internal: false<br>    isExtended: true<br>    isInternal: false<br>    isPrimary: false<br>    label: ""<br>    left: 1680<br>    onchange: null<br>    orientation: ScreenOrientation {angle: 0, type: "landscape-primary", onchange: null}<br>    pixelDepth: 24<br>    pointerTypes: []<br>    primary: false<br>    scaleFactor: 2<br>    top: 0<br>    touchSupport: false<br>  }]<br>}<br>*/</span></code></pre>
+</web-copy-code><p>Information about the connected screens is available in the <code>screens</code> array. Note how the value of
+<code>left</code> for the iPad starts at <code>1680</code>, which is exactly the <code>width</code> of the built-in display. This
+allows me to determine exactly how the screens are arranged logically (next to each other, on top of
+each other, etc.). There is also data now for each screen to show whether it is an <code>isInternal</code> one
+and whether it is an <code>isPrimary</code> one. Note that the built-in screen
+<a href="https://osxdaily.com/2010/04/27/set-the-primary-display-mac/#:~:text=Click%20on%20the%20Display%20icon,primary%20display%20for%20your%20Mac" rel="noopener">is not necessarily the primary screen</a>.
+Both also have a <code>label</code> and an <code>id</code>, which, if persisted across browser sessions, allows for window
+arrangements to be restored. Information about the possible input methods are available in the
+<code>pointerTypes</code> array.</p>
+<p>The <code>currentScreen</code> field is a live object corresponding to the current <code>window.screen</code>. The object
+is updated on cross-screen window placements or device changes.</p>
+<h3 id="the-screenschange-event">The <code>screenschange</code> event <a class="w-headline-link" href="#the-screenschange-event">#</a></h3>
+<p>The only thing missing now is a way to detect when my screen setup changes. A new event,
+<code>screenschange</code>, does exactly that: it fires whenever the screen constellation is modified. (Notice
+that &quot;screens&quot; is plural in the event name.) This means the event fires whenever a new screen or an
+existing screen is (physically or virtually in the case of Sidecar) plugged in or unplugged.</p>
+<p>Note that you need to look up the new screen details asynchronously, the <code>screenschange</code> event
+itself does not provide this data. To look up the screen details, use the live object from a cached
+<code>Screens</code> interface.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> screensInterface <span class="token operator">=</span> <span class="token keyword">await</span> window<span class="token punctuation">.</span><span class="token function">getScreens</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token keyword">let</span> cachedScreensLength <span class="token operator">=</span> screensInterface<span class="token punctuation">.</span>screens<span class="token punctuation">.</span>length<span class="token punctuation">;</span><br>screensInterface<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'screenschange'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token parameter">event</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token keyword">if</span> <span class="token punctuation">(</span>screensInterface<span class="token punctuation">.</span>screens<span class="token punctuation">.</span>length <span class="token operator">!==</span> cachedScreensLength<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><br>      <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">The screen count changed from </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>cachedScreensLength<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> to </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>screensInterface<span class="token punctuation">.</span>screens<span class="token punctuation">.</span>length<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">,</span><br>    <span class="token punctuation">)</span><span class="token punctuation">;</span><br>    cachedScreensLength <span class="token operator">=</span> screensInterface<span class="token punctuation">.</span>screens<span class="token punctuation">.</span>length<span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><h3 id="the-currentscreenchange-event">The <code>currentscreenchange</code> event <a class="w-headline-link" href="#the-currentscreenchange-event">#</a></h3>
+<p>If I am only interested in changes to the current screen (that is, the value of the live object
+<code>currentScreen</code>), I can listen for the <code>currentscreenchange</code> event.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> screensInterface <span class="token operator">=</span> <span class="token keyword">await</span> window<span class="token punctuation">.</span><span class="token function">getScreens</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>screensInterface<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'currentscreenchange'</span><span class="token punctuation">,</span> <span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token parameter">event</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token keyword">const</span> details <span class="token operator">=</span> screensInterface<span class="token punctuation">.</span>currentScreen<span class="token punctuation">;</span><br>  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'The current screen has changed.'</span><span class="token punctuation">,</span> event<span class="token punctuation">,</span> details<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><h3 id="the-change-event">The <code>change</code> event <a class="w-headline-link" href="#the-change-event">#</a></h3>
+<p>Finally, if I am only interested in changes to a concrete screen, I can listen to that screen's
+<code>change</code> event.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> firstScreen <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">await</span> window<span class="token punctuation">.</span><span class="token function">getScreens</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">;</span><br>firstScreen<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'change'</span><span class="token punctuation">,</span> <span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token parameter">event</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'The first screen has changed.'</span><span class="token punctuation">,</span> event<span class="token punctuation">,</span> firstScreen<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><h3 id="new-fullscreen-options">New fullscreen options <a class="w-headline-link" href="#new-fullscreen-options">#</a></h3>
+<p>Until now, you could request that elements be displayed in fullscreen mode via the aptly named
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/requestFullscreen" rel="noopener"><code>requestFullScreen()</code></a>
+method. The method takes an <code>options</code> parameter where you can pass
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/FullscreenOptions" rel="noopener"><code>FullscreenOptions</code></a>. So far,
+its only property has been
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/FullscreenOptions/navigationUI" rel="noopener"><code>navigationUI</code></a>.
+The Multi-Screen Window Placement API adds a new <code>screen</code> property that allows you to determine
+which screen to start the fullscreen view on. For example, if you want to make the primary screen
+fullscreen:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">try</span> <span class="token punctuation">{</span><br>  <span class="token keyword">const</span> primaryScreen <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">await</span> <span class="token function">getScreens</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">screen</span><span class="token punctuation">)</span> <span class="token operator">=></span> screen<span class="token punctuation">.</span>primary<span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">;</span><br>  <span class="token keyword">await</span> document<span class="token punctuation">.</span>body<span class="token punctuation">.</span><span class="token function">requestFullscreen</span><span class="token punctuation">(</span><span class="token punctuation">{</span> screen<span class="token operator">:</span> primaryScreen <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span>err<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  console<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span>err<span class="token punctuation">.</span>name<span class="token punctuation">,</span> err<span class="token punctuation">.</span>message<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><h3 id="polyfill">Polyfill <a class="w-headline-link" href="#polyfill">#</a></h3>
+<p>It is not possible to polyfill the Multi-Screen Window Placement API, but you can shim its shape so
+you can code exclusively against the new API:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token punctuation">(</span><span class="token string">'getScreens'</span> <span class="token keyword">in</span> window<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token comment">// Returning a one-element array with the current screen,</span><br>  <span class="token comment">// noting that there might be more.</span><br>  window<span class="token punctuation">.</span><span class="token function-variable function">getScreens</span> <span class="token operator">=</span> <span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">[</span>window<span class="token punctuation">.</span>screen<span class="token punctuation">]</span><span class="token punctuation">;</span><br>  <span class="token comment">// Set to `false`, noting that this might be a lie.</span><br>  window<span class="token punctuation">.</span>screen<span class="token punctuation">.</span>isExtended <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>The other aspects of the API, that is, the various screen change events and the <code>screen</code> property of
+the <code>FullscreenOptions</code>, would simply never fire or silently be ignored respectively by
+non-supporting browsers.</p>
+<h2 id="demo">Demo <a class="w-headline-link" href="#demo">#</a></h2>
+<p>If you are anything like me, you keep a close eye on the development of the various
+cryptocurrencies. (In reality I very much do not, but, for the sake of this article, just assume I
+do.) To keep track of the cryptocurrencies that I own, I have developed a web app that allows me to
+watch the markets in all life situations, such as from the comfort of my bed, where I have a decent
+single-screen setup.</p>
+<figure class="w-figure">
+  <img     alt="Massive TV screen at the end of a bed with the author&#x27;s legs partly visible. On the screen, a fake crypto currency trading desk."          decoding="async"     height="863"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/sSLkcAMHuqBaj4AmT5eP.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/sSLkcAMHuqBaj4AmT5eP.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/sSLkcAMHuqBaj4AmT5eP.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/sSLkcAMHuqBaj4AmT5eP.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/sSLkcAMHuqBaj4AmT5eP.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/sSLkcAMHuqBaj4AmT5eP.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/sSLkcAMHuqBaj4AmT5eP.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/sSLkcAMHuqBaj4AmT5eP.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/sSLkcAMHuqBaj4AmT5eP.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/sSLkcAMHuqBaj4AmT5eP.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/sSLkcAMHuqBaj4AmT5eP.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/sSLkcAMHuqBaj4AmT5eP.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/sSLkcAMHuqBaj4AmT5eP.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/sSLkcAMHuqBaj4AmT5eP.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/sSLkcAMHuqBaj4AmT5eP.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/sSLkcAMHuqBaj4AmT5eP.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/sSLkcAMHuqBaj4AmT5eP.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/sSLkcAMHuqBaj4AmT5eP.jpg?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">Relaxing and watching the markets.</figcaption>
+</figure>
+<p>This being about crypto, the markets can get hectic at any time. Should this happen, I can quickly
+move over to my desk where I have a multi-screen setup. I can click on any currency's window and
+quickly see the full details in a fullscreen view on the opposite screen. Below is a recent photo of
+me taken during the last <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" rel="noopener">YCY bloodbath</a>. It caught me
+completely off-guard and left me
+<a href="https://www.buzzfeednews.com/article/gavon/brokers-with-hands-on-their-faces" rel="noopener">with my hands on my face</a>.</p>
+<figure class="w-figure">
+  <img     alt="The author with his hands on his panicking face staring at the fake crypto currency trading desk."          decoding="async"     height="600"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/wFu8TBzOAqaKCgcERr3z.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/wFu8TBzOAqaKCgcERr3z.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/wFu8TBzOAqaKCgcERr3z.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/wFu8TBzOAqaKCgcERr3z.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/wFu8TBzOAqaKCgcERr3z.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/wFu8TBzOAqaKCgcERr3z.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/wFu8TBzOAqaKCgcERr3z.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/wFu8TBzOAqaKCgcERr3z.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/wFu8TBzOAqaKCgcERr3z.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/wFu8TBzOAqaKCgcERr3z.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/wFu8TBzOAqaKCgcERr3z.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/wFu8TBzOAqaKCgcERr3z.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/wFu8TBzOAqaKCgcERr3z.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/wFu8TBzOAqaKCgcERr3z.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/wFu8TBzOAqaKCgcERr3z.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/wFu8TBzOAqaKCgcERr3z.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/wFu8TBzOAqaKCgcERr3z.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/wFu8TBzOAqaKCgcERr3z.jpg?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">Panicky, witnessing the YCY bloodbath.</figcaption>
+</figure>
+<p>You can play with the <a href="https://window-placement.glitch.me/" rel="noopener">demo</a> embedded below, or see its <a href="https://glitch.com/edit/#!/window-placement" rel="noopener">source code</a> on glitch.</p>
+<!-- Copy and Paste Me -->
+<div class="glitch-embed-wrap" style="height: 800px; width: 100%;">
+  <iframe src="https://window-placement.glitch.me/"
+    title="window-placement on Glitch"
+    allow="fullscreen; window-placement" sandbox="allow-modals allow-popups allow-popups-to-escape-sandbox allow-scripts"
+    style="height: 100%; width: 100%; border: 0;">
+  </iframe>
+</div>
+<h2 id="security-and-permissions">Security and permissions <a class="w-headline-link" href="#security-and-permissions">#</a></h2>
+<p>The Chrome team has designed and implemented the Multi-Screen Window Placement API using the core
+principles defined in <a href="https://chromium.googlesource.com/chromium/src/+/lkgr/docs/security/permissions-for-powerful-web-platform-features.md" rel="noopener">Controlling Access to Powerful Web Platform Features</a>,
+including user control, transparency, and ergonomics. The Multi-Screen Window Placement API exposes
+new information about the screens connected to a device, increasing the fingerprinting surface of
+users, especially those with multiple screens consistently connected to their devices. As one
+mitigation of this privacy concern, the exposed screen properties are limited to the minimum needed
+for common placement use cases. User permission is required for sites to get multi-screen
+information and place windows on other screens.</p>
+<h3 id="user-control">User control <a class="w-headline-link" href="#user-control">#</a></h3>
+<p>The user is in full control of the exposure of their setup. They can accept or decline the
+permission prompt, and revoke a previously granted permission via the site information feature in
+the browser.</p>
+<h3 id="transparency">Transparency <a class="w-headline-link" href="#transparency">#</a></h3>
+<p>The fact whether the permission to use the Multi-Screen Window Placement API has been granted is
+exposed in the browser's site information and is also queryable via the Permissions API.</p>
+<h3 id="permission-persistence">Permission persistence <a class="w-headline-link" href="#permission-persistence">#</a></h3>
+<p>The browser persists permission grants. The permission can be revoked via the browser's site
+information.</p>
+<h2 id="feedback">Feedback <a class="w-headline-link" href="#feedback">#</a></h2>
+<p>The Chrome team wants to hear about your experiences with the Multi-Screen Window Placement API.</p>
+<h3 id="tell-us-about-the-api-design">Tell us about the API design <a class="w-headline-link" href="#tell-us-about-the-api-design">#</a></h3>
+<p>Is there something about the API that does not work like you expected? Or are there missing methods
+or properties that you need to implement your idea? Have a question or comment on the security
+model?</p>
+<ul>
+<li>File a spec issue on the corresponding <a href="https://github.com/webscreens/window-placement/issues" rel="noopener">GitHub repo</a>, or add your thoughts to an existing
+issue.</li>
+</ul>
+<h3 id="report-a-problem-with-the-implementation">Report a problem with the implementation <a class="w-headline-link" href="#report-a-problem-with-the-implementation">#</a></h3>
+<p>Did you find a bug with Chrome's implementation? Or is the implementation different from the spec?</p>
+<ul>
+<li>File a bug at <a href="https://new.crbug.com" rel="noopener">new.crbug.com</a>. Be sure to include as much detail as you
+can, simple instructions for reproducing, and enter <a href="https://bugs.chromium.org/p/chromium/issues/list?q=component:Blink%3EWindowDialog" rel="noopener"><code>Blink&gt;WindowDialog</code></a> in the
+<strong>Components</strong> box. <a href="https://glitch.com/" rel="noopener">Glitch</a> works great for sharing quick and easy repros.</li>
+</ul>
+<h3 id="show-support-for-the-api">Show support for the API <a class="w-headline-link" href="#show-support-for-the-api">#</a></h3>
+<p>Are you planning to use the Multi-Screen Window Placement API? Your public support helps the Chrome
+team to prioritize features and shows other browser vendors how critical it is to support them.</p>
+<ul>
+<li>Share how you plan to use it on the <a href="https://discourse.wicg.io/t/proposal-supporting-window-placement-on-multi-screen-devices/3948" rel="noopener">WICG Discourse thread</a>.</li>
+<li>Send a tweet to <a href="https://twitter.com/ChromiumDev" rel="noopener">@ChromiumDev</a> using the hashtag
+<a href="https://twitter.com/search?q=%23WindowPlacement&amp;src=typed_query&amp;f=live" rel="noopener"><code>#WindowPlacement</code></a> and
+let us know where and how you are using it.</li>
+<li>Ask other browser vendors to implement the API.</li>
+</ul>
+<h2 id="helpful">Helpful links <a class="w-headline-link" href="#helpful">#</a></h2>
+<ul>
+<li><a href="https://webscreens.github.io/window-placement/" rel="noopener">Spec draft</a></li>
+<li><a href="https://github.com/webscreens/window-placement/blob/main/EXPLAINER.md" rel="noopener">Public explainer</a></li>
+<li><a href="https://window-placement.glitch.me/" rel="noopener">Multi-Screen Window Placement API demo</a> | <a href="https://glitch.com/edit/#!/window-placement" rel="noopener">Multi-Screen Window Placement API demo
+source</a></li>
+<li><a href="https://crbug.com/897300" rel="noopener">Chromium tracking bug</a></li>
+<li><a href="https://chromestatus.com/feature/5252960583942144" rel="noopener">ChromeStatus.com entry</a></li>
+<li>Blink Component: <a href="https://bugs.chromium.org/p/chromium/issues/list?q=component:Blink%3EWindowDialog" rel="noopener"><code>Blink&gt;WindowDialog</code></a></li>
+<li><a href="https://github.com/w3ctag/design-reviews/issues/522" rel="noopener">TAG Review</a></li>
+<li><a href="https://groups.google.com/a/chromium.org/g/blink-dev/c/C6xw8i1ZIdE/m/TJsr0zXxBwAJ" rel="noopener">Intent to Experiment</a></li>
+</ul>
+<h2 id="acknowledgements">Acknowledgements <a class="w-headline-link" href="#acknowledgements">#</a></h2>
+<p>The Multi-Screen Window Placement API spec was edited by
+<a href="https://www.linkedin.com/in/pwnall" rel="noopener">Victor Costan</a> and
+<a href="https://www.linkedin.com/in/joshuaseanbell" rel="noopener">Joshua Bell</a>. The API was implemented by
+<a href="https://www.linkedin.com/in/mike-wasserman-9900a079/" rel="noopener">Mike Wasserman</a> and
+<a href="https://github.com/quisquous" rel="noopener">Adrienne Walker</a>. This article was reviewed by
+<a href="https://github.com/jpmedley" rel="noopener">Joe Medley</a>, <a href="https://github.com/beaufortfrancois" rel="noopener">François Beaufort</a>,
+and <a href="https://github.com/kaycebasques" rel="noopener">Kayce Basques</a>. Thanks to Laura Torrent Puig for the photos.</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/capabilities/">Capabilities</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Jul 19, 2021</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/multi-screen-window-placement/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions="api"></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

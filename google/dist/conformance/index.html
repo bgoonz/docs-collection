@@ -1,0 +1,816 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=5c2e73fa41f66">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Conformance for Frameworks</title>
+<meta name="description" content="This article describes Conformance, a methodology used in frameworks within Google, and how we plan on open-sourcing it to the JavaScript framework ecosystem" />
+
+<link rel="canonical" href="https://web.dev/conformance/" />
+
+<meta itemprop="name" content="Conformance for Frameworks" />
+<meta itemprop="description" content="This article describes Conformance, a methodology used in frameworks within Google, and how we plan on open-sourcing it to the JavaScript framework ecosystem" />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/tCzTPP3b6A0qk9y7rSzK.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/conformance/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Conformance for Frameworks" />
+<meta property="og:description" content="This article describes Conformance, a methodology used in frameworks within Google, and how we plan on open-sourcing it to the JavaScript framework ecosystem" />
+<meta property="og:image" content="https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/tCzTPP3b6A0qk9y7rSzK.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="Yellow and black warnings wall" />
+<meta property="tag" content="aurora" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Conformance for Frameworks" />
+<meta name="twitter:description" content="This article describes Conformance, a methodology used in frameworks within Google, and how we plan on open-sourcing it to the JavaScript framework ecosystem" />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/tCzTPP3b6A0qk9y7rSzK.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=43370f7b68bea', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=fee1f1c3f105b', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="Yellow and black warnings wall"     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/tCzTPP3b6A0qk9y7rSzK.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/tCzTPP3b6A0qk9y7rSzK.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/tCzTPP3b6A0qk9y7rSzK.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/tCzTPP3b6A0qk9y7rSzK.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/tCzTPP3b6A0qk9y7rSzK.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/tCzTPP3b6A0qk9y7rSzK.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/tCzTPP3b6A0qk9y7rSzK.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/tCzTPP3b6A0qk9y7rSzK.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/tCzTPP3b6A0qk9y7rSzK.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/tCzTPP3b6A0qk9y7rSzK.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/tCzTPP3b6A0qk9y7rSzK.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/tCzTPP3b6A0qk9y7rSzK.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/tCzTPP3b6A0qk9y7rSzK.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/tCzTPP3b6A0qk9y7rSzK.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/tCzTPP3b6A0qk9y7rSzK.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/tCzTPP3b6A0qk9y7rSzK.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/tCzTPP3b6A0qk9y7rSzK.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/tCzTPP3b6A0qk9y7rSzK.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#conformance-for-frameworks" class="w-toc__header--link">
+        Conformance for Frameworks
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#what-is-conformance">What is Conformance?</a></li><li><a href="#1.-strong-defaults">1. Strong defaults</a></li><li><a href="#2.-actionable-rules">2. Actionable rules</a></li><li><a href="#3.-authoring-time">3. Authoring time</a></li><li><a href="#conformance-in-frameworks">Conformance in Frameworks</a></li><li><a href="#conformance-in-next.js">Conformance in Next.js</a></li><li><a href="#surfacing-errors-with-toasts-and-overlays">Surfacing Errors With Toasts and Overlays</a></li><li><a href="#conformance-in-other-frameworks">Conformance in Other Frameworks</a></li><li><a href="#conclusion">Conclusion</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@shubhie | @hdjirdeh"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="conformance-for-frameworks" class="w-article-header__headline">Conformance for Frameworks</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          Conformance in the JavaScript framework ecosystem
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Jun 15, 2021</time>
+          
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/shubhie/"><img     alt="Shubhie Panicker"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/sInJ1hYQTzeVJUGaOjlk.jpeg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/sInJ1hYQTzeVJUGaOjlk.jpeg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/sInJ1hYQTzeVJUGaOjlk.jpeg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/sInJ1hYQTzeVJUGaOjlk.jpeg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/sInJ1hYQTzeVJUGaOjlk.jpeg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/sInJ1hYQTzeVJUGaOjlk.jpeg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/shubhie/">Shubhie Panicker</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/shubhie"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/spanicker">GitHub</a>
+      </li>
+      
+      
+    </ul>
+  </div>
+</div>
+          
+            <div class="w-author">
+  <a href="/authors/houssein/"><img     alt="Houssein Djirdeh"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/BibySYHD7JweNcHZCCOe.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/BibySYHD7JweNcHZCCOe.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/BibySYHD7JweNcHZCCOe.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/BibySYHD7JweNcHZCCOe.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/BibySYHD7JweNcHZCCOe.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/BibySYHD7JweNcHZCCOe.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/houssein/">Houssein Djirdeh</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/hdjirdeh"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/housseindjirdeh">GitHub</a>
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://glitch.com/@housseindjirdeh"
+          >Glitch</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://houssein.me/">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>In our <a href="/aurora">introductory blog post</a>, we covered how we've learned a lot while
+building and using frameworks and tools to develop and maintain large scale web applications such as
+Google Search, Maps, Photos, and so on. By safeguarding developers from writing code that can
+negatively affect user experience, we proved that frameworks can play a key role in shifting
+outcomes for performance and application quality.</p>
+<p>Internally at Google, we used the term &quot;<strong>Conformance</strong>&quot; to describe this methodology, and this
+article covers how we plan to open-source this concept to the JavaScript framework ecosystem.</p>
+<h2 id="what-is-conformance">What is Conformance? <a class="w-headline-link" href="#what-is-conformance">#</a></h2>
+<p>At Google, Conformance was an evolution. Teams relied on a small set of deeply experienced
+maintainers who did extensive code reviews, flagging things that impacted app quality and
+maintainability well beyond correctness issues. To scale this to growing teams of app developers, a
+Conformance system was developed to codify best practices in a way that is automated and
+enforceable. This ensured a consistently high bar for app quality and codebase maintainability
+regardless of the number of code contributors.</p>
+<p>Conformance is a system that ensures that developers stay on the well-lit path;
+it builds confidence and ensures predictable outcomes. It makes teams
+productive, and becomes crucial for <em>scale</em> -- as teams grow and more features
+are developed simultaneously. It empowers developers to focus on building
+product features, freeing them from minutiae and the changing landscape in
+various areas such as performance, accessibility, security, etc. Anyone can
+opt-out of Conformance at any time, and it should be customizable to the extent
+that teams will have the option to enforce whatever they decide to commit to.</p>
+<p>Conformance is founded on <strong>strong defaults</strong> and providing <strong>actionable rules</strong> that can be
+enforced at <strong>authoring time</strong>. This breaks down into the following 3 principles.</p>
+<div class="w-aside w-aside--note">
+<p>Conformance in this article focuses on coding best practices to achieve predictable loading
+performance &amp; <a href="/vitals/">Core Web Vital</a> scores, but the principles apply equally to
+other aspects such as security, accessibility, and so forth.</p>
+</div>
+<h3 id="1.-strong-defaults">1. Strong defaults <a class="w-headline-link" href="#1.-strong-defaults">#</a></h3>
+<p>A foundational aspect of conformance is ensuring that the tools developers use have strong defaults
+in place. This means solutions are not only baked into frameworks, but also framework design
+patterns make it easy to do the right thing and hard to follow anti-patterns. The framework supports
+developers with application design and code structure.</p>
+<p>For loading performance, every resource (fonts, CSS, JavaScript, images, etc.) should be optimized.
+This is a complex challenge involving trimming of bytes, reducing round trips, and separating out
+what is needed for the first render, visual readiness, and user interaction. For example, extracting
+critical CSS, and setting priority on important images.</p>
+<h3 id="2.-actionable-rules">2. Actionable rules <a class="w-headline-link" href="#2.-actionable-rules">#</a></h3>
+<p>Even with foundational optimizations in place, developers still have to make choices. There's a
+spectrum of possibilities for optimizations when it comes to how much developer input is needed:</p>
+<ul>
+<li>Defaults that require no developer input such as inlining critical CSS.</li>
+<li>Require developer opt-in. For example, using a framework-provided image component to size and
+scale images.</li>
+<li>Require developer opt-in and customization. For example, tagging important images to be loaded
+early.</li>
+<li>Not a specific feature but things that still require developer decision. For example, avoiding
+fonts or synchronous scripts that delay early rendering.</li>
+</ul>
+<img     alt="Diagram that shows a spectrum between automatic and manual developer optimizations"          decoding="async"     height="450"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/A4kWjuu0tExEsTC4PoHe.png?auto=format"     srcset="https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/A4kWjuu0tExEsTC4PoHe.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/A4kWjuu0tExEsTC4PoHe.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/A4kWjuu0tExEsTC4PoHe.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/A4kWjuu0tExEsTC4PoHe.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/A4kWjuu0tExEsTC4PoHe.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/A4kWjuu0tExEsTC4PoHe.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/A4kWjuu0tExEsTC4PoHe.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/A4kWjuu0tExEsTC4PoHe.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/A4kWjuu0tExEsTC4PoHe.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/A4kWjuu0tExEsTC4PoHe.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/A4kWjuu0tExEsTC4PoHe.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/A4kWjuu0tExEsTC4PoHe.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/A4kWjuu0tExEsTC4PoHe.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/A4kWjuu0tExEsTC4PoHe.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/A4kWjuu0tExEsTC4PoHe.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/A4kWjuu0tExEsTC4PoHe.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/A4kWjuu0tExEsTC4PoHe.png?auto=format&w=1600 1600w"          width="800"   />
+<p>Optimizations that require any decision by developers pose a risk to the performance of the
+application. As features are added and your team scales, even the most experienced developers cannot
+keep up with the constantly changing best practices, nor is it the best use of their time. For
+Conformance, appropriate actionable rules are as important as strong defaults to ensure that the
+application continues to meet a certain standard even when developers continue to make changes.</p>
+<h3 id="3.-authoring-time">3. Authoring time <a class="w-headline-link" href="#3.-authoring-time">#</a></h3>
+<p>It's important to catch and <em>preclude</em> performance problems early in the development lifecycle.
+Authoring time, before code is committed, is ideally suited to catching and addressing problems. The
+later a problem is caught in the development lifecycle, the harder and more expensive it is to
+address it. While this applies to correctness issues, it is also true for performance issues, as
+many of these issues will not be retroactively addressed once committed to the codebase.</p>
+<p>Today, most performance feedback is out-of-band via documentation, one-off audits, or it is surfaced
+too late via metrics regression after deployment to production. We want to bring this to authoring
+time.</p>
+<h2 id="conformance-in-frameworks">Conformance in Frameworks <a class="w-headline-link" href="#conformance-in-frameworks">#</a></h2>
+<p>To maintain a high bar of user experience for loading performance, the following questions need to
+be answered:</p>
+<ol>
+<li>What constitutes optimal loading, and what are the common issues that could impact it adversely?</li>
+<li>Which solutions can be baked in that do not need any developer input?</li>
+<li>How can we ensure that the developer uses these solutions and leverages them optimally?</li>
+<li>What other choices could the developer make that impact loading performance?</li>
+<li>What are the code patterns that can tell us about these choices (#3 and #4 above) early at
+authoring time?</li>
+<li>What rules can we formulate to assess these code patterns? How can they be surfaced to the
+developer at authoring time while seamlessly integrated into their workflow?</li>
+</ol>
+<p>To bring the Conformance model we have internally at Google to open-source frameworks, our team has
+experimented heavily in Next.js and we are excited to share our refined vision and plans. We've
+realized that the best set of rules that can assess code patterns will need to be a combination of
+<strong>static code analysis</strong> and <strong>dynamic checks.</strong> These rules can span multiple surfaces, including:</p>
+<ul>
+<li>ESLint</li>
+<li>TypeScript</li>
+<li>Dynamic checks in the user's development server (post DOM creation)</li>
+<li>Module bundler (webpack)</li>
+<li>CSS tooling (still exploratory)</li>
+</ul>
+<p>By taking advantage of providing rules through different tools, we can ensure they are cohesive but
+also encompass any user experience issues that directly impact loading performance. Additionally,
+these rules can also be surfaced to developers at different times:</p>
+<ul>
+<li>During local development in the development server, browser and user's IDE will surface warnings,
+prompting developers to make small code changes.</li>
+<li>At build time, unresolved issues will be resurfaced in the user's terminal</li>
+</ul>
+<p>In a nutshell, teams will choose outcomes they care about, such as Core Web Vitals or loading
+performance, and enable relevant rulesets for all code contributors to follow.</p>
+<p>While this works really well for new projects, it's not easy to upgrade large codebases to comply
+with full rulesets. At Google we have an extensive system for opting-out at different levels such as
+individual lines of source code, entire directories, legacy codebases or parts of the app that are
+not under active development. We are actively exploring effective strategies for bringing this to
+teams using open-source frameworks.</p>
+<h2 id="conformance-in-next.js">Conformance in Next.js <a class="w-headline-link" href="#conformance-in-next.js">#</a></h2>
+<p>ESLint is widely used among JavaScript developers. and over 50% of Next.js applications use ESLint
+in some part of their build workflow. Next.js v11 introduced out-of-the-box ESLint support that
+includes a <a href="https://nextjs.org/docs/basic-features/eslint#eslint-plugin" rel="noopener">custom plugin</a> and
+<a href="https://nextjs.org/docs/basic-features/eslint#base-configuration" rel="noopener">shareable configuration</a> to
+make it easier to catch common framework-specific issues during development and at build time. This
+can help developers fix significant problems at authoring time. Examples include when a certain
+component is used, or not used, in a way that could harm performance as in <a href="https://nextjs.org/docs/messages/no-html-link-for-pages" rel="noopener">No HTML link for
+page</a>). Or, if a certain font, stylesheet,
+or script can negatively affect resource loading on a page. For example, <a href="https://nextjs.org/docs/messages/no-sync-scripts" rel="noopener">No synchronous
+script</a>.</p>
+<p>In addition to ESLint, <a href="https://nextjs.org/blog/next-9#built-in-zero-config-typescript-support" rel="noopener">integrated
+type-checking</a> in both
+development and production has been supported in Next.js since v9 with TypeScript support. Multiple
+components provided by the framework (Image, Script, Link) have been built as an extension of HTML
+elements (<code>&lt;img&gt;</code>, <code>&lt;script&gt;</code>, <code>&lt;a&gt;</code>) to provide developers with a performant approach to adding
+content to a web page. Type-checking supports appropriate usage of these features by ensuring that
+properties and options assigned are in the acceptable scope of supported values and types. See
+<a href="https://nextjs.org/docs/api-reference/next/image#width" rel="noopener">required Image width and height</a> for an
+example.</p>
+<h3 id="surfacing-errors-with-toasts-and-overlays">Surfacing Errors With Toasts and Overlays <a class="w-headline-link" href="#surfacing-errors-with-toasts-and-overlays">#</a></h3>
+<p>As mentioned previously, Conformance rules can be surfaced in multiple areas. Toasts and overlays
+are currently being explored as a way to surface errors directly in the browser within the user's
+local development environment.</p>
+<img     alt="Errors surfaced via toasts"          decoding="async"     height="454"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/6euyc60GeSrmqpDprbQ7.png?auto=format"     srcset="https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/6euyc60GeSrmqpDprbQ7.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/6euyc60GeSrmqpDprbQ7.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/6euyc60GeSrmqpDprbQ7.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/6euyc60GeSrmqpDprbQ7.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/6euyc60GeSrmqpDprbQ7.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/6euyc60GeSrmqpDprbQ7.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/6euyc60GeSrmqpDprbQ7.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/6euyc60GeSrmqpDprbQ7.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/6euyc60GeSrmqpDprbQ7.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/6euyc60GeSrmqpDprbQ7.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/6euyc60GeSrmqpDprbQ7.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/6euyc60GeSrmqpDprbQ7.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/6euyc60GeSrmqpDprbQ7.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/6euyc60GeSrmqpDprbQ7.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/6euyc60GeSrmqpDprbQ7.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/6euyc60GeSrmqpDprbQ7.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/0SXGYLkliuPQY3aSy3zWvdv7RqG2/6euyc60GeSrmqpDprbQ7.png?auto=format&w=1600 1600w"          width="800"   />
+<p>Many error-checking and auditing tools that developers rely on (Lighthouse, Chrome DevTools Issues
+tab) are passive and require some form of user interaction to retrieve information. Developers are
+more likely to act when errors are surfaced directly within their existing tooling, and when they
+provide concrete and specific actions that should be taken to fix the problem.</p>
+<div class="w-aside w-aside--note">
+<p>Utilizing toasts and overlays as a UI surface for Conformance is still being explored in
+Next.js.</p>
+</div>
+<h3 id="conformance-in-other-frameworks">Conformance in Other Frameworks <a class="w-headline-link" href="#conformance-in-other-frameworks">#</a></h3>
+<p>Conformance is being explored in Next.js first with the goal of expanding to other frameworks
+(Nuxt, Angular, etc.). ESLint and TypeScript are already used in many frameworks in many
+different ways, but the concept of a cohesive, browser-level runtime system is being actively
+explored.</p>
+<h2 id="conclusion">Conclusion <a class="w-headline-link" href="#conclusion">#</a></h2>
+<p>Conformance codifies best practices into rulesets that are actionable for developers as simple code
+patterns. The Aurora team has focused on loading performance, but other best practices, such as
+accessibility and security, are just as applicable.</p>
+<p>Following Conformance rules should result in predictable outcomes, and achieving a high bar for user
+experience can become a side-effect of building on your tech stack. Conformance makes teams
+productive, and ensures a high quality bar for the application, even as teams and codebases grow
+over time.</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Jun 15, 2021</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/conformance/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

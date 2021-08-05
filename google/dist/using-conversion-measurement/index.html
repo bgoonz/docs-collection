@@ -1,0 +1,801 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=72c6387b3d3d7">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Using the Event Conversion Measurement API</title>
+<meta name="description" content="Our latest news, updates, and stories for developers" />
+
+<link rel="canonical" href="https://web.dev/using-conversion-measurement/" />
+
+<meta itemprop="name" content="Using the Event Conversion Measurement API" />
+<meta itemprop="description" content="Our latest news, updates, and stories for developers" />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/fyXjSb1sdmnCw3SoXUs2.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/using-conversion-measurement/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Using the Event Conversion Measurement API" />
+<meta property="og:description" content="Our latest news, updates, and stories for developers" />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/fyXjSb1sdmnCw3SoXUs2.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="" />
+<meta property="tag" content="privacy" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Using the Event Conversion Measurement API" />
+<meta name="twitter:description" content="Our latest news, updates, and stories for developers" />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/fyXjSb1sdmnCw3SoXUs2.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=762b9654f342f', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=333b706fadb85', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="Hero Image"     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/fyXjSb1sdmnCw3SoXUs2.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/fyXjSb1sdmnCw3SoXUs2.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/fyXjSb1sdmnCw3SoXUs2.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/fyXjSb1sdmnCw3SoXUs2.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/fyXjSb1sdmnCw3SoXUs2.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/fyXjSb1sdmnCw3SoXUs2.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/fyXjSb1sdmnCw3SoXUs2.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/fyXjSb1sdmnCw3SoXUs2.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/fyXjSb1sdmnCw3SoXUs2.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/fyXjSb1sdmnCw3SoXUs2.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/fyXjSb1sdmnCw3SoXUs2.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/fyXjSb1sdmnCw3SoXUs2.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/fyXjSb1sdmnCw3SoXUs2.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/fyXjSb1sdmnCw3SoXUs2.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/fyXjSb1sdmnCw3SoXUs2.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/fyXjSb1sdmnCw3SoXUs2.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/fyXjSb1sdmnCw3SoXUs2.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/fyXjSb1sdmnCw3SoXUs2.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#using-the-event-conversion-measurement-api" class="w-toc__header--link">
+        Using the Event Conversion Measurement API
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#demo">Demo</a></li><li><a href="#browser-support">Browser support</a></li><li><a href="#experiment-with-end-users">Experiment with end users</a></li><li><a href="#experiment-with-the-api-with-end-users">Experiment with the API, with end users</a></li><li><a href="#design-your-experiment">Design your experiment</a></li><li><a href="#set-up-your-experiment">Set up your experiment</a></li><li><a href="#run-your-experiment">Run your experiment</a></li><li><a href="#develop-locally">Develop locally</a></li><li><a href="#set-up-your-browser-for-local-development">Set up your browser for local development</a></li><li><a href="#debug">Debug</a></li><li><a href="#test-your-origin-trial-token(s)">Test your origin trial token(s)</a></li><li><a href="#share-your-feedback">Share your feedback</a></li><li><a href="#further-reading">Further reading</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@maudnals"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="using-the-event-conversion-measurement-api" class="w-article-header__headline">Using the Event Conversion Measurement API</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          Must-dos and tips to use the Event Conversion Measurement API.
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Nov 12, 2020</time>
+           <span class="w-author__separator">•</span> Updated <time>Feb 10, 2020</time> 
+        </div>
+      
+      <div class="w-layout-container--narrow w-post-signpost">
+  <span class="w-post-signpost__title">Appears in:</span>
+  <a
+          class="w-post-signpost__link"
+          href="/secure"
+          >Safe and secure</a
+        >
+</div>
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/maudn/"><img     alt="Maud Nalpas"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/F620GZorjY0JjKas3p3J.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/F620GZorjY0JjKas3p3J.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/F620GZorjY0JjKas3p3J.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/F620GZorjY0JjKas3p3J.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/F620GZorjY0JjKas3p3J.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/F620GZorjY0JjKas3p3J.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/maudn/">Maud Nalpas</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/maudnals"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/maudnals">GitHub</a>
+      </li>
+      
+      
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <div role="banner" class="w-banner w-banner--caution w-banner--body">
+   The Conversion Measurement API will be renamed to
+  <em>Attribution Reporting API</em> and offer more features.
+<ul>
+<li>If you're experimenting with (<a href="https://github.com/WICG/conversion-measurement-api/blob/3e0ef7d3cee8d7dc5a4b953e70cb027b0e13943b/README.md">Conversion
+Measurement API</a>)
+in <a href="https://chromestatus.com/features/schedule">Chrome 91</a> and below, read this post
+to find more details, use cases and instructions for how to use the API.</li>
+<li>If you're interested in the next iteration of this API (Attribution Reporting), which will be
+available for experimentation in Chrome (origin trial), <a href="https://groups.google.com/u/1/a/chromium.org/g/attribution-reporting-api-dev">join the mailing
+list</a> for updates
+on available experiments.</li>
+</ul>
+</div>
+<p>The <a href="/conversion-measurement">Event Conversion Measurement API</a> measures when an ad click leads to a
+conversion, without using cross-site identifiers. Here, you'll find must-dos and tips to use this
+API locally or as an experiment for your end users.</p>
+<h2 id="demo">Demo <a class="w-headline-link" href="#demo">#</a></h2>
+<p>If you're considering using the API, see the
+<a href="https://goo.gle/demo-event-level-conversion-measurement-api" rel="noopener">demo</a> and the corresponding
+<a href="https://github.com/GoogleChromeLabs/trust-safety-demo/tree/main/conversion-measurement" rel="noopener">code</a> for a
+simple end-to-end implementation example.</p>
+<h2 id="browser-support">Browser support <a class="w-headline-link" href="#browser-support">#</a></h2>
+<p>The Event Conversion Measurement API is supported:</p>
+<ul>
+<li>As an <a href="/origin-trials/">origin trial</a>, from Chrome 86 beta until Chrome 91 (April 2021). Origin
+trials enable the API for <strong>all visitors</strong> of a given <a href="/same-site-same-origin/#origin">origin</a>.
+<strong>You need to register your origin for the origin trial in order to try the API with end users</strong>.</li>
+<li>Or by turning on flags, in Chrome 86 and later. Flags enable the API on a <strong>single user</strong>'s browser.
+<strong>Flags are useful when <a href="#develop-locally">developing locally</a></strong>.</li>
+</ul>
+<p>See details about the Chrome versions where the API is active on the <a href="https://chromestatus.com/feature/6412002824028160" rel="noopener">Chrome feature
+entry</a>.</p>
+<h2 id="experiment-with-end-users">Experiment with end users <a class="w-headline-link" href="#experiment-with-end-users">#</a></h2>
+<h2 id="experiment-with-the-api-with-end-users">Experiment with the API, with end users <a class="w-headline-link" href="#experiment-with-the-api-with-end-users">#</a></h2>
+<p>To test the API with end users, you'll need to:</p>
+<ol>
+<li>Design your experiment.</li>
+<li>Set it up.</li>
+<li>Run it.</li>
+</ol>
+<h3 id="design-your-experiment">Design your experiment <a class="w-headline-link" href="#design-your-experiment">#</a></h3>
+<p>Defining your goal will help you outline your plan for your experiment.</p>
+<p>If your goal is to <strong>understand the API mechanics</strong>, run your experiment as follows:</p>
+<ul>
+<li>Track conversions.</li>
+<li>See how you can assign different values to conversion events.</li>
+<li>Look at the conversion reports you're receiving.</li>
+</ul>
+<p>If your goal is to <strong>see how well the API satisfies basic use cases</strong>, run your experiment as
+follows:</p>
+<ul>
+<li>Track conversions.</li>
+<li>Look at the aggregate count of conversions you're receiving.</li>
+<li>Recover the corrected count of conversions. See how in <a href="#(optional)-recover-the-corrected-conversion-count">Recover the corrected conversion
+count</a>.</li>
+<li>Optionally, if you want to try something more advanced: tweak the noise correction script. For
+example, try different groupings to see what sizes are necessary for the noise to be negligible.</li>
+<li>Compare the corrected count of conversions with source-of-truth data (cookie-based conversion
+data).</li>
+</ul>
+<h3 id="set-up-your-experiment">Set up your experiment <a class="w-headline-link" href="#set-up-your-experiment">#</a></h3>
+<h4 id="register-for-the-origin-trial">Register for the origin trial <a class="w-headline-link" href="#register-for-the-origin-trial">#</a></h4>
+<p>Registering for an <a href="/origin-trials/">origin trial</a> is the first step to activate the API for end
+users. Upon registering for an origin trial, you have two choices to make: what <strong>type of tokens</strong> you
+need, and how the <strong>API usage should be controlled</strong>.</p>
+<p><strong>Token type:</strong></p>
+<ul>
+<li>If you're planning to use the API directly on your own
+<a href="/same-site-same-origin/#origin">origin(s)</a>, register your origin(s) for a regular origin trial.</li>
+<li>If you're planning on using the API as a third-party—for example if you need to use the API in a
+script you wrote that is executed on origins you don't own—you may be eligible to register your
+origin for a <a href="/third-party-origin-trials">third-party origin trial</a>. This is convenient if you
+need to test at scale across different sites.</li>
+</ul>
+<p><strong>API usage control:</strong></p>
+<p>Origin trial features shouldn't exceed a small percentage of global page loads, because they're
+ephemeral. Because of this, sites that have registered for origin trials typically need to
+selectively enable API usage for small portions of their users. You can do this yourself, or let
+Chrome do this for you. In the dropdown <strong>How is (third-party) usage controlled?</strong>:</p>
+<ul>
+<li>Select <strong>Standard limit</strong> to activate the API for all end users on origins where a token is
+present. Pick this if you don't need to A/B Test (with/without the experiment) or if you want
+to selectively enable API usage for small portions of your users yourself.</li>
+<li>Select <strong>Exclude a subset of users</strong> to let Chrome selectively activate the API on a small subset
+of users on origins where a token is
+present. This consistently diverts a user into an experiment group across sites to avoid the
+usage limit. Pick this if you don't want to worry about implementing throttling for your API
+usage.</li>
+</ul>
+<div class="w-aside w-aside--gotchas"><strong>Gotchas!</strong>
+<p>If you pick <strong>Exclude a subset of users</strong>, the API won't be enabled for all users, even for origins
+that are registered for origin trials. This is the intended behaviour.</p>
+</div>
+<h4 id="add-your-origin-trial-tokens">Add your origin trial tokens <a class="w-headline-link" href="#add-your-origin-trial-tokens">#</a></h4>
+<p>Once your origin trial tokens are created, <a href="https://github.com/GoogleChrome/OriginTrials/blob/gh-pages/developer-guide.md#how-do-i-enable-an-experimental-feature-on-my-origin" rel="noopener">add them</a> where relevant.</p>
+<h4 id="adapt-your-code">Adapt your code <a class="w-headline-link" href="#adapt-your-code">#</a></h4>
+<p>If you've picked <strong>Exclude a subset of users</strong>, use client-side feature detection alongside the
+origin trial to check whether the API can be used.</p>
+<h3 id="run-your-experiment">Run your experiment <a class="w-headline-link" href="#run-your-experiment">#</a></h3>
+<p>You're now ready to run your experiment.</p>
+<h4 id="(optional)-recover-the-corrected-conversion-count">(Optional) Recover the corrected conversion count <a class="w-headline-link" href="#(optional)-recover-the-corrected-conversion-count">#</a></h4>
+<p>Even though the conversion data is <a href="/conversion-measurement/#noising-of-conversion-data">noised</a>,
+the reporting endpoint can recover the true count of reports that have a specific conversion value.
+See how in this <a href="https://github.com/WICG/conversion-measurement-api/blob/master/noise_corrector.py" rel="noopener">noise corrector example
+script</a>.</p>
+<p>User privacy isn't impacted by this technique, because you can't determine whether a specific
+event's conversion data was noised. But this gives you the correct conversion count at an
+<strong>aggregated</strong> level.</p>
+<h2 id="develop-locally">Develop locally <a class="w-headline-link" href="#develop-locally">#</a></h2>
+<p>A few tips when developing locally with the conversion measurement API.</p>
+<h3 id="set-up-your-browser-for-local-development">Set up your browser for local development <a class="w-headline-link" href="#set-up-your-browser-for-local-development">#</a></h3>
+<ul>
+<li>Use Chrome version 86 or later. You can check what version of Chrome you're using by typing
+<code>about://version</code> in the URL bar.</li>
+<li>To activate the feature locally (for example if you're developing on <code>localhost</code>), enable
+flags. Go to flags by typing <code>about://flags</code> in Chrome's URL bar. Turn on the <strong>two</strong> flags
+<code>#enable-experimental-web-platform-features</code> and <code>#conversion-measurement-api</code>.</li>
+<li>Disable third-party cookie blocking. In the long term, dedicated browser settings will be
+available to allow/block the API. Until then, third-party cookie blocking is used as the signal
+that users don't want to share data about their conversions—and hence that this API should be
+disabled.</li>
+<li>Don't use <strong>Incognito</strong> or <strong>Guest</strong> mode. The API is disabled on these profiles.</li>
+<li>Some ad-blocking browser extensions may block some of the API's functionality (e.g. script names
+containing <code>ad</code>). Deactivate ad-blocking extensions on the pages where you need to test the API,
+or create a fresh user profile without extensions.</li>
+</ul>
+<h3 id="debug">Debug <a class="w-headline-link" href="#debug">#</a></h3>
+<p>You can see the conversion reports the browser has scheduled to send at
+<code>about://conversion-internals/</code> &gt; <strong>Pending Reports</strong>. Reports are sent at scheduled times, but for
+debugging purposes you may want to get the reports immediately.</p>
+<ul>
+<li>To receive all of the scheduled reports now, click <strong>Send All Reports</strong> in
+<code>about://conversion-internals/</code> &gt; <strong>Pending Reports</strong>.</li>
+<li>To always receive reports <strong>immediately</strong> without having to click this button, enable the flag
+<code>about://flags/#conversion-measurement-debug-mode</code>.</li>
+</ul>
+<h3 id="test-your-origin-trial-token(s)">Test your origin trial token(s) <a class="w-headline-link" href="#test-your-origin-trial-token(s)">#</a></h3>
+<p>If you've chosen <strong>Exclude a subset of users</strong> in the dropdown <strong>How is usage controlled?</strong> when
+you've registered your token(s), the API is only enabled for a subset of Chrome users. You may not
+be part of this group. To test your origin trial tokens, enforce that your browser behave as if it
+was in the selected Chrome group by enabling the flag <code>#conversion-measurement-api</code>.</p>
+<h2 id="share-your-feedback">Share your feedback <a class="w-headline-link" href="#share-your-feedback">#</a></h2>
+<p>If you're experimenting with the API, your feedback is key in order to improve the API and support
+more use cases—please <a href="/conversion-measurement/#share-your-feedback">share it</a>!</p>
+<h2 id="further-reading">Further reading <a class="w-headline-link" href="#further-reading">#</a></h2>
+<ul>
+<li><a href="/third-party-origin-trials/">Origin trials developer guide</a></li>
+<li><a href="/origin-trials/">Getting started with Chrome's origin trials</a></li>
+<li><a href="https://github.com/GoogleChrome/OriginTrials/blob/gh-pages/developer-guide.md" rel="noopener">What are third-party origin
+trials?</a></li>
+</ul>
+<p><em>With many thanks to Jxck and John Delaney for their feedback on this article.</em></p>
+<p><em>Hero image by William Warby / @wawarby on <a href="https://unsplash.com/photos/WahfNoqbYnM" rel="noopener">Unsplash</a>,
+edited.</em></p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/privacy/">Privacy</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Feb 10, 2020</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/using-conversion-measurement/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

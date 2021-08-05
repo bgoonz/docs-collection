@@ -1,0 +1,732 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=de1632b6c78e9">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>How CommonJS is making your bundles larger</title>
+<meta name="description" content="CommonJS modules are very dynamic, which prevents JavaScript optimizers and bundles perform advanced optimizations over them." />
+
+<link rel="canonical" href="https://web.dev/commonjs-larger-bundles/" />
+
+<meta itemprop="name" content="How CommonJS is making your bundles larger" />
+<meta itemprop="description" content="CommonJS modules are very dynamic, which prevents JavaScript optimizers and bundles perform advanced optimizations over them." />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/S5JWmwRRW3rEXKwJR0JA.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/commonjs-larger-bundles/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="How CommonJS is making your bundles larger" />
+<meta property="og:description" content="CommonJS modules are very dynamic, which prevents JavaScript optimizers and bundles perform advanced optimizations over them." />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/S5JWmwRRW3rEXKwJR0JA.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="How CommonJS is making your bundles larger" />
+<meta property="tag" content="javascript" />
+<meta property="tag" content="modules" />
+<meta property="tag" content="commonjs" />
+<meta property="tag" content="tree-shaking" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="How CommonJS is making your bundles larger" />
+<meta name="twitter:description" content="CommonJS modules are very dynamic, which prevents JavaScript optimizers and bundles perform advanced optimizations over them." />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/S5JWmwRRW3rEXKwJR0JA.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=39f457bc3946b', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=5e3c4573bca7', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="How CommonJS is making your bundles larger"     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/S5JWmwRRW3rEXKwJR0JA.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/S5JWmwRRW3rEXKwJR0JA.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/S5JWmwRRW3rEXKwJR0JA.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/S5JWmwRRW3rEXKwJR0JA.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/S5JWmwRRW3rEXKwJR0JA.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/S5JWmwRRW3rEXKwJR0JA.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/S5JWmwRRW3rEXKwJR0JA.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/S5JWmwRRW3rEXKwJR0JA.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/S5JWmwRRW3rEXKwJR0JA.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/S5JWmwRRW3rEXKwJR0JA.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/S5JWmwRRW3rEXKwJR0JA.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/S5JWmwRRW3rEXKwJR0JA.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/S5JWmwRRW3rEXKwJR0JA.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/S5JWmwRRW3rEXKwJR0JA.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/S5JWmwRRW3rEXKwJR0JA.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/S5JWmwRRW3rEXKwJR0JA.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/S5JWmwRRW3rEXKwJR0JA.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/S5JWmwRRW3rEXKwJR0JA.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#how-commonjs-is-making-your-bundles-larger" class="w-toc__header--link">
+        How CommonJS is making your bundles larger
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#what's-commonjs">What's CommonJS?</a></li><li><a href="#how-does-commonjs-affect-your-final-bundle-size">How does CommonJS affect your final bundle size?</a></li><li><a href="#why-does-commonjs-make-your-app-larger">Why does CommonJS make your app larger?</a></li><li><a href="#tree-shaking-with-commonjs">Tree-shaking with CommonJS</a></li><li><a href="#conclusion">Conclusion</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@mgechev"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="how-commonjs-is-making-your-bundles-larger" class="w-article-header__headline">How CommonJS is making your bundles larger</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          Learn how CommonJS modules are impacting the tree-shaking of your application
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>May 8, 2020</time>
+           <span class="w-author__separator">•</span> Updated <time>May 26, 2020</time> 
+        </div>
+      
+      <div class="w-layout-container--narrow w-post-signpost">
+  <span class="w-post-signpost__title">Appears in:</span>
+  <a
+          class="w-post-signpost__link"
+          href="/fast"
+          >Fast load times</a
+        >
+</div>
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/mgechev/"><img     alt="Minko Gechev"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/OPpZ9x8KCVcxvqgdWXM5.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/OPpZ9x8KCVcxvqgdWXM5.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/OPpZ9x8KCVcxvqgdWXM5.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/OPpZ9x8KCVcxvqgdWXM5.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/OPpZ9x8KCVcxvqgdWXM5.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/OPpZ9x8KCVcxvqgdWXM5.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/mgechev/">Minko Gechev</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/mgechev"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/mgechev">GitHub</a>
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://glitch.com/@mgechev"
+          >Glitch</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://blog.mgechev.com/">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>In this post, we'll look into what CommonJS is and why it's making your JavaScript bundles larger than necessary.</p>
+<p>Summary: <strong>To ensure the bundler can successfully optimize your application, avoid depending on CommonJS modules, and use ECMAScript module syntax in your entire application.</strong></p>
+<h2 id="what's-commonjs">What's CommonJS? <a class="w-headline-link" href="#what's-commonjs">#</a></h2>
+<p>CommonJS is a standard from 2009 that established conventions for JavaScript modules. It was initially intended for use outside of the web browser, primarily for server-side applications.</p>
+<p>With CommonJS you can define modules, export functionality from them, and import them in other modules. For example, the snippet below defines a module which exports five functions: <code>add</code>, <code>subtract</code>, <code>multiply</code>, <code>divide</code>, and <code>max</code>:</p>
+<web-copy-code><pre class="language-javascript"><code class="language-javascript"><span class="token comment">// utils.js</span><br><span class="token keyword">const</span> <span class="token punctuation">{</span> maxBy <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'lodash-es'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token keyword">const</span> fns <span class="token operator">=</span> <span class="token punctuation">{</span><br>  <span class="token function-variable function">add</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token parameter">a<span class="token punctuation">,</span> b</span><span class="token punctuation">)</span> <span class="token operator">=></span> a <span class="token operator">+</span> b<span class="token punctuation">,</span><br>  <span class="token function-variable function">subtract</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token parameter">a<span class="token punctuation">,</span> b</span><span class="token punctuation">)</span> <span class="token operator">=></span> a <span class="token operator">-</span> b<span class="token punctuation">,</span><br>  <span class="token function-variable function">multiply</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token parameter">a<span class="token punctuation">,</span> b</span><span class="token punctuation">)</span> <span class="token operator">=></span> a <span class="token operator">*</span> b<span class="token punctuation">,</span><br>  <span class="token function-variable function">divide</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token parameter">a<span class="token punctuation">,</span> b</span><span class="token punctuation">)</span> <span class="token operator">=></span> a <span class="token operator">/</span> b<span class="token punctuation">,</span><br>  <span class="token function-variable function">max</span><span class="token operator">:</span> <span class="token parameter">arr</span> <span class="token operator">=></span> <span class="token function">maxBy</span><span class="token punctuation">(</span>arr<span class="token punctuation">)</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span><br><br>Object<span class="token punctuation">.</span><span class="token function">keys</span><span class="token punctuation">(</span>fns<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token parameter">fnName</span> <span class="token operator">=></span> module<span class="token punctuation">.</span>exports<span class="token punctuation">[</span>fnName<span class="token punctuation">]</span> <span class="token operator">=</span> fns<span class="token punctuation">[</span>fnName<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>Later on, another module can import and use some or all of these functions:</p>
+<web-copy-code><pre class="language-javascript"><code class="language-javascript"><span class="token comment">// index.js</span><br><span class="token keyword">const</span> <span class="token punctuation">{</span> add <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'./utils'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>Invoking <code>index.js</code> with <code>node</code> will output the number <code>3</code> in the console.</p>
+<p>Because of the lack of a standardized module system in the browser in the early 2010s, CommonJS became a popular module format for JavaScript client-side libraries as well.</p>
+<h2 id="how-does-commonjs-affect-your-final-bundle-size">How does CommonJS affect your final bundle size? <a class="w-headline-link" href="#how-does-commonjs-affect-your-final-bundle-size">#</a></h2>
+<p>The size of your server-side JavaScript application is not as critical as in the browser, that's why CommonJS was not designed with reducing the production bundle size in mind. At the same time, <a href="https://v8.dev/blog/cost-of-javascript-2019" rel="noopener">analysis</a> shows that the JavaScript bundle size is still the number one reason for making browser apps slower.</p>
+<p>JavaScript bundlers and minifiers, such as <code>webpack</code> and <code>terser</code>, perform different optimizations to reduce the size of your app. Analyzing your application at build time, they try to remove as much as possible from the source code you're not using.</p>
+<p>For example, in the snippet above, your final bundle should only include the <code>add</code> function since this is the only symbol from <code>utils.js</code> that you import in <code>index.js</code>.</p>
+<p>Let's build the app using the following <code>webpack</code> configuration:</p>
+<web-copy-code><pre class="language-javascript"><code class="language-javascript"><span class="token keyword">const</span> path <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'path'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">{</span><br>  entry<span class="token operator">:</span> <span class="token string">'index.js'</span><span class="token punctuation">,</span><br>  output<span class="token operator">:</span> <span class="token punctuation">{</span><br>    filename<span class="token operator">:</span> <span class="token string">'out.js'</span><span class="token punctuation">,</span><br>    path<span class="token operator">:</span> path<span class="token punctuation">.</span><span class="token function">resolve</span><span class="token punctuation">(</span>__dirname<span class="token punctuation">,</span> <span class="token string">'dist'</span><span class="token punctuation">)</span><span class="token punctuation">,</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span><br>  mode<span class="token operator">:</span> <span class="token string">'production'</span><span class="token punctuation">,</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>Here we specify that we want to use production mode optimizations and use <code>index.js</code> as an entry point. After invoking <code>webpack</code>, if we  explore the <a href="https://github.com/mgechev/commonjs-example/blob/master/commonjs/dist/out.js" rel="noopener">output</a> size, we'll see something like this:</p>
+<web-copy-code><pre class="language-shell"><code class="language-shell">$ <span class="token builtin class-name">cd</span> dist <span class="token operator">&amp;&amp;</span> <span class="token function">ls</span> -lah<br>625K Apr <span class="token number">13</span> <span class="token number">13</span>:04 out.js</code></pre>
+</web-copy-code><p>Notice that <strong>the bundle is 625KB</strong>. If we look into the output, we'll find all the functions from <code>utils.js</code> plus a lot of modules from <a href="https://lodash.com/" rel="noopener"><code>lodash</code></a><strong>. Although we do not use <code>lodash</code> in <code>index.js</code> it's part of the output</strong>, which adds a lot of extra weight to our production assets.</p>
+<p>Now let us change the module format to <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import" rel="noopener">ECMAScript modules</a> and try again. This time, <code>utils.js</code> would look like this:</p>
+<web-copy-code><pre class="language-javascript"><code class="language-javascript"><span class="token keyword">export</span> <span class="token keyword">const</span> <span class="token function-variable function">add</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">a<span class="token punctuation">,</span> b</span><span class="token punctuation">)</span> <span class="token operator">=></span> a <span class="token operator">+</span> b<span class="token punctuation">;</span><br><span class="token keyword">export</span> <span class="token keyword">const</span> <span class="token function-variable function">subtract</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">a<span class="token punctuation">,</span> b</span><span class="token punctuation">)</span> <span class="token operator">=></span> a <span class="token operator">-</span> b<span class="token punctuation">;</span><br><span class="token keyword">export</span> <span class="token keyword">const</span> <span class="token function-variable function">multiply</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">a<span class="token punctuation">,</span> b</span><span class="token punctuation">)</span> <span class="token operator">=></span> a <span class="token operator">*</span> b<span class="token punctuation">;</span><br><span class="token keyword">export</span> <span class="token keyword">const</span> <span class="token function-variable function">divide</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">a<span class="token punctuation">,</span> b</span><span class="token punctuation">)</span> <span class="token operator">=></span> a <span class="token operator">/</span> b<span class="token punctuation">;</span><br><br><span class="token keyword">import</span> <span class="token punctuation">{</span> maxBy <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'lodash-es'</span><span class="token punctuation">;</span><br><br><span class="token keyword">export</span> <span class="token keyword">const</span> <span class="token function-variable function">max</span> <span class="token operator">=</span> <span class="token parameter">arr</span> <span class="token operator">=></span> <span class="token function">maxBy</span><span class="token punctuation">(</span>arr<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>And <code>index.js</code> would import from <code>utils.js</code> using ECMAScript module syntax:</p>
+<web-copy-code><pre class="language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> add <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'./utils'</span><span class="token punctuation">;</span><br><br>console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>Using the same <code>webpack</code> configuration, we can build our application and open the output file. <strong>It is now 40 bytes</strong> with the following <a href="https://github.com/mgechev/commonjs-example/blob/master/esm/dist/out.js" rel="noopener">output</a>:</p>
+<web-copy-code><pre class="language-javascript"><code class="language-javascript"><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">=></span><span class="token punctuation">{</span><span class="token string">"use strict"</span><span class="token punctuation">;</span>console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token operator">+</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>Notice that the final bundle does not contain any of the functions from <code>utils.js</code> that we don't use, and there's no trace from <code>lodash</code>! Even further, <code>terser</code> (the JavaScript minifier that <code>webpack</code> uses) inlined the <code>add</code> function in <code>console.log</code>.</p>
+<p>A fair question you might ask is, <strong>why does using CommonJS cause the output bundle to be almost 16,000 times bigger</strong>? Of course, this is a toy example, in reality, the size difference might not be that large, but the chances are that CommonJS adds significant weight to your production build.</p>
+<p><strong>CommonJS modules are harder to optimize in the general case because they are much more dynamic than ES modules. To ensure your bundler and minifier can successfully optimize your application, avoid depending on CommonJS modules, and use ECMAScript module syntax in your entire application.</strong></p>
+<p>Notice that even if you're using ECMAScript modules in <code>index.js</code>, if the module you're consuming is a CommonJS module, your app's bundle size will suffer.</p>
+<h2 id="why-does-commonjs-make-your-app-larger">Why does CommonJS make your app larger? <a class="w-headline-link" href="#why-does-commonjs-make-your-app-larger">#</a></h2>
+<p>To answer this question, we'll look at the behavior of the <code>ModuleConcatenationPlugin</code> in <code>webpack</code> and, after that, discuss static analyzability. This plugin concatenates the scope of all your modules into one closure and allows for your code to have a faster execution time in the browser. Let's look at an example:</p>
+<web-copy-code><pre class="language-javascript"><code class="language-javascript"><span class="token comment">// utils.js</span><br><span class="token keyword">export</span> <span class="token keyword">const</span> <span class="token function-variable function">add</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">a<span class="token punctuation">,</span> b</span><span class="token punctuation">)</span> <span class="token operator">=></span> a <span class="token operator">+</span> b<span class="token punctuation">;</span><br><span class="token keyword">export</span> <span class="token keyword">const</span> <span class="token function-variable function">subtract</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">a<span class="token punctuation">,</span> b</span><span class="token punctuation">)</span> <span class="token operator">=></span> a <span class="token operator">-</span> b<span class="token punctuation">;</span></code></pre>
+</web-copy-code><web-copy-code><pre class="language-javascript"><code class="language-javascript"><span class="token comment">// index.js</span><br><span class="token keyword">import</span> <span class="token punctuation">{</span> add <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'./utils'</span><span class="token punctuation">;</span><br><span class="token keyword">const</span> <span class="token function-variable function">subtract</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">a<span class="token punctuation">,</span> b</span><span class="token punctuation">)</span> <span class="token operator">=></span> a <span class="token operator">-</span> b<span class="token punctuation">;</span><br><br>console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>Above, we have an ECMAScript module, which we import in <code>index.js</code>. We also define a <code>subtract</code> function. We can build the project using the same <code>webpack</code> configuration as above, but this time, we'll disable minimization:</p>
+<web-copy-code><pre class="language-javascript"><code class="language-javascript"><span class="token keyword">const</span> path <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'path'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">{</span><br>  entry<span class="token operator">:</span> <span class="token string">'index.js'</span><span class="token punctuation">,</span><br>  output<span class="token operator">:</span> <span class="token punctuation">{</span><br>    filename<span class="token operator">:</span> <span class="token string">'out.js'</span><span class="token punctuation">,</span><br>    path<span class="token operator">:</span> path<span class="token punctuation">.</span><span class="token function">resolve</span><span class="token punctuation">(</span>__dirname<span class="token punctuation">,</span> <span class="token string">'dist'</span><span class="token punctuation">)</span><span class="token punctuation">,</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span><br>  optimization<span class="token operator">:</span> <span class="token punctuation">{</span><br>    minimize<span class="token operator">:</span> <span class="token boolean">false</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span><br>  mode<span class="token operator">:</span> <span class="token string">'production'</span><span class="token punctuation">,</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>Let us look at the produced output:</p>
+<web-copy-code><pre class="language-javascript"><code class="language-javascript"><span class="token comment">/******/</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span> <span class="token comment">// webpackBootstrap</span><br><span class="token comment">/******/</span> 	<span class="token string">"use strict"</span><span class="token punctuation">;</span><br><br><span class="token comment">// CONCATENATED MODULE: ./utils.js**</span><br><span class="token keyword">const</span> <span class="token function-variable function">add</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">a<span class="token punctuation">,</span> b</span><span class="token punctuation">)</span> <span class="token operator">=></span> a <span class="token operator">+</span> b<span class="token punctuation">;</span><br><span class="token keyword">const</span> <span class="token function-variable function">subtract</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">a<span class="token punctuation">,</span> b</span><span class="token punctuation">)</span> <span class="token operator">=></span> a <span class="token operator">-</span> b<span class="token punctuation">;</span><br><br><span class="token comment">// CONCATENATED MODULE: ./index.js**</span><br><span class="token keyword">const</span> <span class="token function-variable function">index_subtract</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">a<span class="token punctuation">,</span> b</span><span class="token punctuation">)</span> <span class="token operator">=></span> a <span class="token operator">-</span> b<span class="token punctuation">;</span><span class="token operator">**</span><br>console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token operator">**</span><br><br><span class="token comment">/******/</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>In the output above, all the functions are inside the same namespace. To prevent collisions, webpack renamed the <code>subtract</code> function in <code>index.js</code> to <code>index_subtract</code>.</p>
+<p>If a minifier processes the source code above, it will:</p>
+<ul>
+<li>Remove the unused functions <code>subtract</code> and <code>index_subtract</code></li>
+<li>Remove all the comments and redundant whitespace</li>
+<li>Inline the body of the <code>add</code> function in the <code>console.log</code> call</li>
+</ul>
+<p>Often developers refer to this <strong>removal of unused imports as tree-shaking</strong>. Tree-shaking was only possible because webpack was able to statically (at build time) understand which symbols we are importing from <code>utils.js</code> and what symbols it exports.</p>
+<p>This behavior is enabled by default for <strong>ES modules</strong> because they <strong>are more statically analyzable</strong>, compared to CommonJS.</p>
+<p>Let us look at the exact same example, but this time change <code>utils.js</code> to use CommonJS instead of ES modules:</p>
+<web-copy-code><pre class="language-javascript"><code class="language-javascript"><span class="token comment">// utils.js</span><br><span class="token keyword">const</span> <span class="token punctuation">{</span> maxBy <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'lodash-es'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token keyword">const</span> fns <span class="token operator">=</span> <span class="token punctuation">{</span><br>  <span class="token function-variable function">add</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token parameter">a<span class="token punctuation">,</span> b</span><span class="token punctuation">)</span> <span class="token operator">=></span> a <span class="token operator">+</span> b<span class="token punctuation">,</span><br>  <span class="token function-variable function">subtract</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token parameter">a<span class="token punctuation">,</span> b</span><span class="token punctuation">)</span> <span class="token operator">=></span> a <span class="token operator">-</span> b<span class="token punctuation">,</span><br>  <span class="token function-variable function">multiply</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token parameter">a<span class="token punctuation">,</span> b</span><span class="token punctuation">)</span> <span class="token operator">=></span> a <span class="token operator">*</span> b<span class="token punctuation">,</span><br>  <span class="token function-variable function">divide</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token parameter">a<span class="token punctuation">,</span> b</span><span class="token punctuation">)</span> <span class="token operator">=></span> a <span class="token operator">/</span> b<span class="token punctuation">,</span><br>  <span class="token function-variable function">max</span><span class="token operator">:</span> <span class="token parameter">arr</span> <span class="token operator">=></span> <span class="token function">maxBy</span><span class="token punctuation">(</span>arr<span class="token punctuation">)</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span><br><br>Object<span class="token punctuation">.</span><span class="token function">keys</span><span class="token punctuation">(</span>fns<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token parameter">fnName</span> <span class="token operator">=></span> module<span class="token punctuation">.</span>exports<span class="token punctuation">[</span>fnName<span class="token punctuation">]</span> <span class="token operator">=</span> fns<span class="token punctuation">[</span>fnName<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>This small update will significantly change the output. Since it's too long to embed on this page, I've shared only a small portion of it:</p>
+<web-copy-code><pre class="language-javascript"><code class="language-javascript"><span class="token operator">...</span><br><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br><br><span class="token string">"use strict"</span><span class="token punctuation">;</span><br><span class="token comment">/* harmony import */</span> <span class="token keyword">var</span> _utils__WEBPACK_IMPORTED_MODULE_0__ <span class="token operator">=</span> <span class="token function">__webpack_require__</span><span class="token punctuation">(</span><span class="token number">288</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token keyword">const</span> <span class="token function-variable function">subtract</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">a<span class="token punctuation">,</span> b</span><span class="token punctuation">)</span> <span class="token operator">=></span> a <span class="token operator">-</span> b<span class="token punctuation">;</span><br>console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span>_utils__WEBPACK_IMPORTED_MODULE_0__<span class="token comment">/* .add */</span> <span class="token punctuation">.</span><span class="token constant">IH</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>Notice that the final bundle contains some <code>webpack</code> &quot;runtime&quot;: injected code that is responsible for importing/exporting functionality from the bundled modules. This time, instead of placing all the symbols from <code>utils.js</code> and <code>index.js</code> under the same namespace, we require dynamically, at runtime, the <code>add</code> function using <code>__webpack_require__</code>.</p>
+<p>This is necessary because with CommonJS we can get the export name from an arbitrary expression. For example, the code below is an absolutely valid construct:</p>
+<web-copy-code><pre class="language-javascript"><code class="language-javascript">module<span class="token punctuation">.</span>exports<span class="token punctuation">[</span>localStorage<span class="token punctuation">.</span><span class="token function">getItem</span><span class="token punctuation">(</span>Math<span class="token punctuation">.</span><span class="token function">random</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span> … <span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>There's no way for the bundler to know at build-time what the name of the exported symbol is since this requires information that's only available at runtime, in the context of the user's browser.</p>
+<p><strong>This way, the minifier is incapable of understanding what exactly <code>index.js</code> uses from its dependencies so it can't tree-shake it away.</strong> We'll observe the exact same behavior for third-party modules as well. <strong>If we import a CommonJS module from <code>node_modules</code>, your build toolchain will not be able to optimize it properly.</strong></p>
+<h2 id="tree-shaking-with-commonjs">Tree-shaking with CommonJS <a class="w-headline-link" href="#tree-shaking-with-commonjs">#</a></h2>
+<p>It's much harder to analyze CommonJS modules since they are dynamic by definition. For example, the import location in ES modules is always a string literal, compared to CommonJS, where it is an expression.</p>
+<p>In some cases, if the library you're using follows specific conventions on how it uses CommonJS, it's possible to remove unused exports at build time using a third-party <code>webpack</code> <a href="https://github.com/indutny/webpack-common-shake" rel="noopener">plugin</a>. Although this plugin adds support for tree-shaking, it does not cover all the different ways your dependencies could use CommonJS. This means that you're not getting the same guarantees as with ES modules. Additionally, it adds an extra cost as part of your build process on top of the default <code>webpack</code> behavior.</p>
+<h2 id="conclusion">Conclusion <a class="w-headline-link" href="#conclusion">#</a></h2>
+<p><strong>To ensure the bundler can successfully optimize your application, avoid depending on CommonJS modules, and use ECMAScript module syntax in your entire application.</strong></p>
+<p>Here are a few actionable tips to verify you're on the optimal path:</p>
+<ul>
+<li>Use Rollup.js's <a href="https://github.com/rollup/plugins/tree/master/packages/node-resolve" rel="noopener">node-resolve</a>
+plugin and set the <code>modulesOnly</code> flag to specify that you want to depend only on ECMAScript modules.</li>
+<li>Use the package <a href="https://github.com/mgechev/is-esm" rel="noopener"><code>is-esm</code></a>
+to verify that an npm package uses ECMAScript modules.</li>
+<li>If you're using Angular, by default you'll get a warning if you depend on non-tree-shakeable modules.</li>
+</ul>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/javascript/">JavaScript</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/modules/">Modules</a>
+      
+    
+      
+    
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>May 26, 2020</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/commonjs-larger-bundles/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

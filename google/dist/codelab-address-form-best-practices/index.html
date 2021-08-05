@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="/css/main.css?v=7891ecb38f73c" />
+
+    <link
+      rel="preload"
+      as="font"
+      crossorigin
+      href="/fonts/material-icons/regular.woff2"
+    />
+
+    <link
+      rel="preload"
+      as="font"
+      crossorigin
+      href="/fonts/google-sans/regular/latin.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      crossorigin
+      href="/fonts/google-sans/bold/latin.woff2"
+    />
+
+    <meta name="theme-color" content="#fff" />
+
+    <title>Address form best practices codelab</title>
+    <meta
+      name="description"
+      content="Learn best practices for address forms."
+    />
+
+    <link
+      rel="canonical"
+      href="https://web.dev/codelab-address-form-best-practices/"
+    />
+
+    <meta itemprop="name" content="Address form best practices codelab" />
+    <meta
+      itemprop="description"
+      content="Learn best practices for address forms."
+    />
+    <meta
+      itemprop="image"
+      content="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vU99HKzIf5EUPnzGVPf1.png?auto=format&fit=max&w=1200&fm=auto"
+    />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:type" content="article" />
+    <meta
+      property="og:url"
+      content="https://web.dev/codelab-address-form-best-practices/"
+    />
+    <meta property="og:site_name" content="web.dev" />
+    <meta property="og:title" content="Address form best practices codelab" />
+    <meta
+      property="og:description"
+      content="Learn best practices for address forms."
+    />
+    <meta
+      property="og:image"
+      content="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vU99HKzIf5EUPnzGVPf1.png?auto=format&fit=max&w=1200&fm=auto"
+    />
+    <meta property="og:image:alt" content="" />
+    <meta property="tag" content="ecommerce" />
+    <meta property="tag" content="forms" />
+    <meta property="tag" content="identity" />
+    <meta property="tag" content="layout" />
+    <meta property="tag" content="mobile" />
+    <meta property="tag" content="security" />
+    <meta property="tag" content="ux" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Address form best practices codelab" />
+    <meta
+      name="twitter:description"
+      content="Learn best practices for address forms."
+    />
+    <meta
+      name="twitter:image"
+      content="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vU99HKzIf5EUPnzGVPf1.png?auto=format&fit=max&w=1200&fm=auto"
+    />
+    <link
+      rel="alternate"
+      href="/feed.xml"
+      type="application/atom+xml"
+      data-title="web.dev feed"
+    />
+
+    <link rel="manifest" href="/manifest.webmanifest" />
+
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/images/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/images/favicon-16x16.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/images/apple-touch-icon.png"
+    />
+    <link
+      rel="mask-icon"
+      color="#0054ff"
+      href="/images/safari-pinned-tab.svg"
+    />
+
+    <script>
+      window.ga =
+        window.ga ||
+        function () {
+          (ga.q = ga.q || []).push(arguments);
+        };
+      ga.l = +new Date();
+      ga("create", "UA-126406676-2");
+      ga("set", "transport", "beacon");
+      ga("set", "anonymizeIp", true);
+      ga("set", "page", window.location.pathname);
+      ga("set", "dimension5", "4");
+      ga("send", "pageview");
+    </script>
+
+    <script>
+      function loadScript(url, type) {
+        const s = document.createElement("script");
+        s.src = url;
+        if (type) {
+          s.type = type;
+        }
+        if (type === "module") {
+          s.async = false; // Preserve load order.
+          const pre = document.createElement("link");
+          pre.rel = "modulepreload";
+          pre.href = url;
+          document.head.append(pre);
+          // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+          window.addEventListener("DOMContentLoaded", () => {
+            document.head.append(s);
+          });
+        } else {
+          document.head.append(s);
+        }
+      }
+      loadScript("/js/app.js?v=baa1decc8cf05", "module");
+
+      loadScript("/js/content.js?v=5f02bb3a65d0e", "module");
+
+      loadScript("https://www.google-analytics.com/analytics.js", null);
+    </script>
+  </head>
+  <body class="unresolved">
+    <web-snackbar-container></web-snackbar-container>
+
+    <web-header class="header-default" role="navigation">
+      <button
+        data-open-drawer-button
+        class="w-button--svg w-button--round"
+        aria-label="Open menu"
+      >
+        <svg
+          class="icon"
+          role="img"
+          aria-label="menu"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          height="24"
+          width="24"
+        >
+          <path d="M0 0h24v24H0z" fill="none" />
+          <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
+        </svg>
+
+        <span class="w-tooltip w-tooltip--left">Open menu</span>
+      </button>
+
+      <a
+        href="/"
+        class="header-default__logo-link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Site logo"
+      >
+        <img
+          class="header-default__logo"
+          width="125"
+          height="30"
+          src="/images/lockup.svg"
+          alt="web.dev"
+        />
+      </a>
+
+      <div class="header-default__middle">
+        <div class="header-default__links">
+          <a
+            href="/learn/"
+            class="header-default__link gc-analytics-event"
+            data-category="Site-Wide Custom Events"
+            data-label="Tab: Learn"
+          >
+            Learn
+          </a>
+
+          <a
+            href="/measure/"
+            class="header-default__link gc-analytics-event"
+            data-category="Site-Wide Custom Events"
+            data-label="Tab: Measure"
+          >
+            Measure
+          </a>
+
+          <a
+            href="/blog/"
+            class="header-default__link gc-analytics-event"
+            data-category="Site-Wide Custom Events"
+            data-label="Tab: Blog"
+          >
+            Blog
+          </a>
+
+          <a
+            href="/about/"
+            class="header-default__link gc-analytics-event"
+            data-category="Site-Wide Custom Events"
+            data-label="Tab: About"
+          >
+            About
+          </a>
+        </div>
+        <web-search results-id="search-main-results"></web-search>
+        <web-search-results id="search-main-results"></web-search-results>
+      </div>
+
+      <web-profile-switcher-container></web-profile-switcher-container>
+    </web-header>
+
+    <web-navigation-drawer class="drawer-default" type="modal">
+      <nav data-drawer-container>
+        <div class="drawer-default__contents">
+          <div class="drawer-default__header">
+            <button
+              data-drawer-close-button
+              class="drawer-default__hide w-button--svg w-button--round"
+              aria-label="Close"
+            >
+              <svg
+                class="icon"
+                role="img"
+                aria-label="close"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                height="24"
+                width="24"
+              >
+                <path d="M0 0h24v24H0z" fill="none" />
+                <path
+                  d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+                />
+              </svg>
+
+              <span class="w-tooltip">Close</span>
+            </button>
+            <a
+              href="/"
+              class="gc-analytics-event"
+              data-category="Site-Wide Custom Events"
+              data-label="Site logo"
+            >
+              <img
+                width="125"
+                height="30"
+                class="drawer-default__logo"
+                src="/images/lockup.svg"
+                alt="web.dev"
+              />
+            </a>
+          </div>
+          <a
+            href="/learn/"
+            class="drawer-default__link gc-analytics-event"
+            data-category="Site-Wide Custom Events"
+            data-label="SideNav: Learn"
+          >
+            Learn
+          </a>
+          <a
+            href="/measure/"
+            class="drawer-default__link gc-analytics-event"
+            data-category="Site-Wide Custom Events"
+            data-label="SideNav: Measure"
+          >
+            Measure
+          </a>
+          <a
+            href="/blog/"
+            class="drawer-default__link gc-analytics-event"
+            data-category="Site-Wide Custom Events"
+            data-label="SideNav: Blog"
+          >
+            Blog
+          </a>
+          <a
+            href="/about/"
+            class="drawer-default__link gc-analytics-event"
+            data-category="Site-Wide Custom Events"
+            data-label="SideNav: About"
+          >
+            About
+          </a>
+        </div>
+      </nav>
+    </web-navigation-drawer>
+
+    <main>
+      <div id="content">
+        <div class="codelab-landing-page">
+          <web-codelab glitch="address-form-codelab-0" path="index.html">
+            <div class="web-codelab__instructions">
+              <h1 class="w-headline w-headline--two web-codelab__headline">
+                Address form best practices codelab
+              </h1>
+
+              <div class="w-author__published">
+                <time>Dec 9, 2020</time>
+                <span class="w-author__separator">•</span> Updated
+                <time>Dec 9, 2020</time>
+              </div>
+
+              <div class="w-authors w-mt--xl w-pt--sm">
+                <div class="w-author">
+                  <a href="/authors/samdutton/"
+                    ><img
+                      alt="Sam Dutton"
+                      class="w-author__image"
+                      decoding="async"
+                      height="64"
+                      loading="lazy"
+                      sizes="(min-width: 64px) 64px, calc(100vw - 48px)"
+                      src="https://web-dev.imgix.net/image/admin/wPss4TJX9IJ1CJza7iFY.jpg?auto=format&fit=crop&h=64&w=64"
+                      srcset="
+                        https://web-dev.imgix.net/image/admin/wPss4TJX9IJ1CJza7iFY.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,
+                        https://web-dev.imgix.net/image/admin/wPss4TJX9IJ1CJza7iFY.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,
+                        https://web-dev.imgix.net/image/admin/wPss4TJX9IJ1CJza7iFY.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,
+                        https://web-dev.imgix.net/image/admin/wPss4TJX9IJ1CJza7iFY.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,
+                        https://web-dev.imgix.net/image/admin/wPss4TJX9IJ1CJza7iFY.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x
+                      "
+                      width="64"
+                  /></a>
+                  <div
+                    class="w-author__info"
+                    style="
+                      display: flex;
+                      flex-direction: column;
+                      justify-content: center;
+                    "
+                  >
+                    <cite class="w-author__name">
+                      <a class="w-author__name-link" href="/authors/samdutton/"
+                        >Sam Dutton</a
+                      >
+                    </cite>
+                    <ul class="w-author__link-list">
+                      <li class="w-author__link-listitem">
+                        <a
+                          class="w-author__link"
+                          href="https://twitter.com/sw12"
+                          >Twitter</a
+                        >
+                      </li>
+                      <li class="w-author__link-listitem">
+                        <a
+                          class="w-author__link"
+                          href="https://github.com/samdutton"
+                          >GitHub</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <p>
+                How can you design a form that works well for a variety of names
+                and address formats? Minor form glitches irritate users and can
+                cause them to leave your site or give up on completing a
+                purchase or sign-up.
+              </p>
+              <p>
+                This codelab shows you how to build an easy-to-use, accessible
+                form that works well for most users.
+              </p>
+              <h2 id="step-1:-make-the-most-of-html-elements-and-attributes">
+                Step 1: Make the most of HTML elements and attributes
+                <a
+                  class="w-headline-link"
+                  href="#step-1:-make-the-most-of-html-elements-and-attributes"
+                  >#</a
+                >
+              </h2>
+              <p>
+                You'll start this part of the codelab with an empty form, just a
+                heading and a button all on their own. Then you'll begin adding
+                inputs. (CSS and a little bit of JavaScript are already
+                included.)
+              </p>
+              <div class="glitch-embed-wrap" style="height: 300px; width: 100%">
+                <iframe
+                  allow="camera; clipboard-read; clipboard-write; encrypted-media; geolocation; microphone; midi"
+                  loading="lazy"
+                  src="https://glitch.com/embed/#!/embed/address-form-codelab-0?attributionHidden=true&sidebarCollapsed=true&path=css%2Fmain.css&previewSize=100"
+                  style="height: 100%; width: 100%; border: 0"
+                  title="address-form-codelab-0 on Glitch"
+                ></iframe>
+              </div>
+              <ul>
+                <li>
+                  Click <strong>Remix to Edit</strong> to make the project
+                  editable.
+                </li>
+              </ul>
+              <ul>
+                <li>
+                  Add a name field to your <code>&lt;form&gt;</code> element
+                  with the following code:
+                </li>
+              </ul>
+              <web-copy-code>
+                <pre
+                  class="language-html"
+                ><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>section</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>label</span> <span class="token attr-name">for</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>name<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Name<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>label</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>name<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>name<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>section</span><span class="token punctuation">></span></span></code></pre>
+              </web-copy-code>
+              <p>
+                That may look complicated and repetitive for just one name
+                field, but it already does a lot.
+              </p>
+              <p>
+                You associated the <code>label</code> with the
+                <code>input</code> by matching the <code>label</code>'s
+                <code>for</code> attribute with the <code>input</code>'s
+                <code>name</code> or <code>id</code>. A tap or click on a label
+                moves focus to its input, making a much bigger target than the
+                input on its own—which is good for fingers, thumbs and mouse
+                clicks! Screenreaders announce label text when the label or the
+                label's input gets focus.
+              </p>
+              <p>
+                What about <code>name=&quot;name&quot;</code>? This is the name
+                (which happens to be 'name'!) associated with the data from this
+                input which is sent to the server when the form is submitted.
+                Including a <code>name</code> attribute also means that the data
+                from this element can be accessed by the
+                <a
+                  href="https://developer.mozilla.org/en-US/docs/Web/API/FormData/Using_FormData_Objects"
+                  rel="noopener"
+                  >FormData API</a
+                >.
+              </p>
+              <h2 id="step-2:-add-attributes-to-help-users-enter-data">
+                Step 2: Add attributes to help users enter data
+                <a
+                  class="w-headline-link"
+                  href="#step-2:-add-attributes-to-help-users-enter-data"
+                  >#</a
+                >
+              </h2>
+              <p>
+                What happens when you tap or click in the
+                <strong>Name</strong> input in Chrome? You should see autofill
+                suggestions that the browser has stored and guesses are
+                appropriate for this input, given its <code>name</code> and
+                <code>id</code> values.
+              </p>
+              <p>
+                Now add <code>autocomplete=&quot;name&quot;</code> to your input
+                code so it looks like this:
+              </p>
+              <web-copy-code>
+                <pre
+                  class="language-html"
+                ><code class="language-html"><span class="highlight-line"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>section</span><span class="token punctuation">></span></span></span><br><span class="highlight-line">  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>label</span> <span class="token attr-name">for</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>name<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Name<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>label</span><span class="token punctuation">></span></span></span><br><mark class="highlight-line highlight-line-active">  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>name<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>name<span class="token punctuation">"</span></span> <span class="token attr-name">autocomplete</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>name<span class="token punctuation">"</span></span><span class="token punctuation">></span></span></mark><br><span class="highlight-line"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>section</span><span class="token punctuation">></span></span></span></code></pre>
+              </web-copy-code>
+              <p>
+                Reload the page in Chrome and tap or click in the
+                <strong>Name</strong> input. What differences do you see?
+              </p>
+              <div class="w-aside w-aside--note">
+                <p>
+                  Ever wondered how to delete autofill suggestions in Chrome?
+                </p>
+                <ul>
+                  <li>Windows: <code>Shift</code> + <code>delete</code></li>
+                  <li>
+                    Mac: <code>Shift</code> + <code>fn</code> +
+                    <code>delete</code>
+                  </li>
+                </ul>
+              </div>
+              <p>
+                You should notice a subtle change: with
+                <code>autocomplete=&quot;name&quot;</code>, the suggestions are
+                now specific values that were used previously in form inputs
+                that also had <code>autocomplete=&quot;name&quot;</code>. The
+                browser isn't just guessing what might be appropriate: you have
+                control. You'll also see the <strong>Manage…</strong> option to
+                view and edit the names and addresses stored by your browser.
+              </p>
+              <figure class="w-figure">
+                <img
+                  alt="Two screenshots of Chrome on an Android phone showing a form with a single input, with and without an autocomplete value. One shows browser UI heuristicically suggestions values; the other shows UI when there are stored autocomplete values."
+                  decoding="async"
+                  height="684"
+                  loading="lazy"
+                  sizes="(min-width: 800px) 800px, calc(100vw - 48px)"
+                  src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/uSc6aqRgHoL2qIDyj803.jpg?auto=format"
+                  srcset="
+                    https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/uSc6aqRgHoL2qIDyj803.jpg?auto=format&w=200   200w,
+                    https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/uSc6aqRgHoL2qIDyj803.jpg?auto=format&w=228   228w,
+                    https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/uSc6aqRgHoL2qIDyj803.jpg?auto=format&w=260   260w,
+                    https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/uSc6aqRgHoL2qIDyj803.jpg?auto=format&w=296   296w,
+                    https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/uSc6aqRgHoL2qIDyj803.jpg?auto=format&w=338   338w,
+                    https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/uSc6aqRgHoL2qIDyj803.jpg?auto=format&w=385   385w,
+                    https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/uSc6aqRgHoL2qIDyj803.jpg?auto=format&w=439   439w,
+                    https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/uSc6aqRgHoL2qIDyj803.jpg?auto=format&w=500   500w,
+                    https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/uSc6aqRgHoL2qIDyj803.jpg?auto=format&w=571   571w,
+                    https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/uSc6aqRgHoL2qIDyj803.jpg?auto=format&w=650   650w,
+                    https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/uSc6aqRgHoL2qIDyj803.jpg?auto=format&w=741   741w,
+                    https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/uSc6aqRgHoL2qIDyj803.jpg?auto=format&w=845   845w,
+                    https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/uSc6aqRgHoL2qIDyj803.jpg?auto=format&w=964   964w,
+                    https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/uSc6aqRgHoL2qIDyj803.jpg?auto=format&w=1098 1098w,
+                    https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/uSc6aqRgHoL2qIDyj803.jpg?auto=format&w=1252 1252w,
+                    https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/uSc6aqRgHoL2qIDyj803.jpg?auto=format&w=1428 1428w,
+                    https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/uSc6aqRgHoL2qIDyj803.jpg?auto=format&w=1600 1600w
+                  "
+                  width="800"
+                />
+                <figcaption class="w-figcaption">
+                  UI for autofill with guessed values, versus autocomplete.
+                </figcaption>
+              </figure>
+              <div class="w-aside w-aside--note">
+                <p>
+                  If an
+                  <a
+                    href="/payment-and-address-form-best-practices/#autocomplete-attribute"
+                    >appropriate autocomplete value</a
+                  >
+                  is available for an <code>input</code>, <code>select</code> or
+                  <code>textarea</code>, you should use it!
+                </p>
+              </div>
+              <p>
+                Now add
+                <a
+                  href="https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/Constraint_validation"
+                  rel="noopener"
+                  >constraint validation attributes</a
+                >
+                <code>maxlength</code>, <code>pattern</code> and
+                <code>required</code> so your input code looks like this:
+              </p>
+              <web-copy-code>
+                <pre
+                  class="language-html"
+                ><code class="language-html"><span class="highlight-line"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>section</span><span class="token punctuation">></span></span></span><br><span class="highlight-line">  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>label</span> <span class="token attr-name">for</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>name<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Name<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>label</span><span class="token punctuation">></span></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>name<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>name<span class="token punctuation">"</span></span> <span class="token attr-name">autocomplete</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>name<span class="token punctuation">"</span></span><br>    <span class="token attr-name">maxlength</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>100<span class="token punctuation">"</span></span> <span class="token attr-name">pattern</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>[\p{L} \-\.]+<span class="token punctuation">"</span></span> <span class="token attr-name">required</span><span class="token punctuation">></span></span><br><span class="highlight-line"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>section</span><span class="token punctuation">></span></span></span></code></pre>
+              </web-copy-code>
+              <ul>
+                <li>
+                  <p>
+                    <code>maxlength=&quot;100&quot;</code> means the browser
+                    won't allow any input longer than 100 characters.
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    <code>pattern=&quot;[\p{L} \-\.]+&quot;</code> uses a
+                    regular expression that allows
+                    <a
+                      href="https://javascript.info/regexp-unicode"
+                      rel="noopener"
+                      >Unicode letter characters</a
+                    >, hyphens and periods (full stops). That means names such
+                    as Françoise or Jörg aren't classed as 'invalid'. That isn't
+                    the case if you use the value <code>\w</code> which [only
+                    allows characters from the
+                    <a
+                      href="/payment-and-address-form-best-practices/#unicode-matching"
+                      >Latin alphabet</a
+                    >.
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    <code>required</code> means… required! The browser will not
+                    allow the form to be submitted without data for this field,
+                    and will warn and highlight the input if you attempt to
+                    submit it. No extra code required!
+                  </p>
+                </li>
+              </ul>
+              <div class="w-aside w-aside--caution">
+                <p>
+                  <strong>Caution</strong>: This codelab doesn't address (😜)
+                  localization or internationalization. Depending on where your
+                  users are located, you need to consider address
+                  <em>formats</em> as well as the different <em>names</em> used
+                  for address components, even within the same language: ZIP,
+                  postal code, Eircode or PIN? It may be necessary for your site
+                  to
+                  <a
+                    href="https://www.smashingmagazine.com/2020/11/internationalization-localization-static-sites#determining-user-s-language-and-region"
+                    rel="noopener"
+                    >customize for multiple locales</a
+                  >, but the address form in this codelab is designed for
+                  flexibility, and should work &quot;well enough&quot; for a
+                  range of addresses.
+                </p>
+              </div>
+              <p>
+                To test how the form works with and without these attributes,
+                try entering data:
+              </p>
+              <ul>
+                <li>
+                  Try entering values that don't fit the
+                  <code>pattern</code> attribute.
+                </li>
+                <li>
+                  Try submitting the form with an empty input. You'll see
+                  built-in browser functionality warning of the empty required
+                  field and setting focus on it.
+                </li>
+              </ul>
+              <h2 id="step-3:-add-a-flexible-address-field-to-your-form">
+                Step 3: Add a flexible address field to your form
+                <a
+                  class="w-headline-link"
+                  href="#step-3:-add-a-flexible-address-field-to-your-form"
+                  >#</a
+                >
+              </h2>
+              <p>
+                To add an address field, add the following code to your form:
+              </p>
+              <web-copy-code>
+                <pre
+                  class="language-html"
+                ><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>section</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>label</span> <span class="token attr-name">for</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>address<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Address<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>label</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>textarea</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>address<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>address<span class="token punctuation">"</span></span> <span class="token attr-name">autocomplete</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>address<span class="token punctuation">"</span></span><br>    <span class="token attr-name">maxlength</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>300<span class="token punctuation">"</span></span> <span class="token attr-name">required</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>textarea</span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>section</span><span class="token punctuation">></span></span></code></pre>
+              </web-copy-code>
+              <p>
+                A <code>textarea</code> is the most flexible way for your users
+                to enter their address, and it's great for cutting and pasting.
+              </p>
+              <p>
+                You should avoid splitting your address form into components
+                such as street name and number unless you really need to. Don't
+                force users to try to fit their address into fields that don't
+                make sense.
+              </p>
+              <div class="w-aside w-aside--note">
+                <p>
+                  Consider the way that address data from your form is being
+                  used. What's it for? Make sure to understand data requirements
+                  and who sets them.
+                </p>
+              </div>
+              <p>
+                Now add fields for <strong>ZIP or postal code</strong>, and
+                <strong>Country or region</strong>. For simplicity, only the
+                first five countries are included here. A full list is included
+                in the
+                <a href="https://address-form.glitch.me" rel="noopener"
+                  >completed address form</a
+                >.
+              </p>
+              <web-copy-code>
+                <pre
+                  class="language-html"
+                ><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>section</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>label</span> <span class="token attr-name">for</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>postal-code<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>ZIP or postal code (optional)<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>label</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>postal-code<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>postal-code<span class="token punctuation">"</span></span><br>    <span class="token attr-name">autocomplete</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>postal-code<span class="token punctuation">"</span></span> <span class="token attr-name">maxlength</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>20<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>section</span><span class="token punctuation">></span></span><br><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>section</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>country-region<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>label</span> <span class="token attr-name">for</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span><span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Country or region<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>label</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>select</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>country<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>country<span class="token punctuation">"</span></span> <span class="token attr-name">autocomplete</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>country<span class="token punctuation">"</span></span><br>    <span class="token attr-name">required</span><span class="token punctuation">></span></span><br>      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>option</span> <span class="token attr-name">selected</span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>SPACER<span class="token punctuation">"</span></span><span class="token punctuation">></span></span> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>option</span><span class="token punctuation">></span></span><br>      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>option</span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>AF<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Afghanistan<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>option</span><span class="token punctuation">></span></span><br>      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>option</span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>AX<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Åland Islands<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>option</span><span class="token punctuation">></span></span><br>      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>option</span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>AL<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Albania<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>option</span><span class="token punctuation">></span></span><br>      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>option</span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>DZ<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Algeria<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>option</span><span class="token punctuation">></span></span><br>      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>option</span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>AS<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>American Samoa<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>option</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>select</span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>section</span><span class="token punctuation">></span></span></code></pre>
+              </web-copy-code>
+              <p>
+                You'll see that <strong>Postal code</strong> is optional: that's
+                because
+                <a
+                  href="https://hellowahab.wordpress.com/2011/05/24/list-of-countries-without-postal-codes/"
+                  rel="noopener"
+                  >many countries don't use postal codes</a
+                >. (<a
+                  href="https://www.grcdi.nl/gsb/global%20sourcebook.html"
+                  rel="noopener"
+                  >Global Sourcebook</a
+                >
+                provides information about address formats for 194 different
+                countries, including sample addresses.) The label
+                <strong>Country or region</strong> is used instead of
+                <strong>Country</strong>, because some options from the full
+                list (such as the United Kingdom) are not single countries
+                (despite the <code>autocomplete</code> value).
+              </p>
+              <h2
+                id="step-4:-enable-customers-to-easily-enter-shipping-and-billing-addresses"
+              >
+                Step 4: Enable customers to easily enter shipping and billing
+                addresses
+                <a
+                  class="w-headline-link"
+                  href="#step-4:-enable-customers-to-easily-enter-shipping-and-billing-addresses"
+                  >#</a
+                >
+              </h2>
+              <p>
+                You've built a highly functional address form, but what if your
+                site requires more than one address, for shipping and billing,
+                for example? Try updating your form to enable customers to enter
+                shipping and billing addresses. How can you make data entry as
+                quick and easy as possible, especially if the two addresses are
+                the same? The article that goes with this codelab explains
+                <a
+                  href="/payment-and-address-form-best-practices#billing-address"
+                  >techniques for handling multiple addresses</a
+                >. Whatever you do, make sure to use the correct
+                <code>autocomplete</code> values!
+              </p>
+              <h2 id="step-5:-add-a-telephone-number-field">
+                Step 5: Add a telephone number field
+                <a
+                  class="w-headline-link"
+                  href="#step-5:-add-a-telephone-number-field"
+                  >#</a
+                >
+              </h2>
+              <p>
+                To add a telephone number input, add the following code to the
+                form:
+              </p>
+              <web-copy-code>
+                <pre
+                  class="language-html"
+                ><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>section</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>label</span> <span class="token attr-name">for</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>tel<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Telephone<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>label</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>tel<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>tel<span class="token punctuation">"</span></span> <span class="token attr-name">autocomplete</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>tel<span class="token punctuation">"</span></span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>tel<span class="token punctuation">"</span></span><br>    <span class="token attr-name">maxlength</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>30<span class="token punctuation">"</span></span> <span class="token attr-name">pattern</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>[\d \-\+]+<span class="token punctuation">"</span></span> <span class="token attr-name">enterkeyhint</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>done<span class="token punctuation">"</span></span><br>    <span class="token attr-name">required</span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>section</span><span class="token punctuation">></span></span></code></pre>
+              </web-copy-code>
+              <p>
+                For phone numbers use a single input: don't split the number
+                into parts. That makes it easier for users to enter data or copy
+                and paste, makes validation simpler, and enables browsers to
+                autofill.
+              </p>
+              <p>
+                There are two attributes that can improve the user experience of
+                entering a telephone number:
+              </p>
+              <ul>
+                <li>
+                  <code>type=&quot;tel&quot;</code> ensures mobile users get the
+                  right keyboard.
+                </li>
+                <li>
+                  <code>enterkeyhint=&quot;done&quot;</code> sets the mobile
+                  keyboard enter key label to show that this is the last field
+                  and the form can now be submitted (the default is
+                  <code>next</code>).
+                </li>
+              </ul>
+              <figure class="w-figure">
+                <img
+                  alt="Two screenshots of a form on Android showing how the enterkeyhint input attribute changes the enter key button icon."
+                  decoding="async"
+                  height="684"
+                  loading="lazy"
+                  sizes="(min-width: 800px) 800px, calc(100vw - 48px)"
+                  src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vReqMRQjLSI7e6UQ5WwX.png?auto=format"
+                  srcset="
+                    https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vReqMRQjLSI7e6UQ5WwX.png?auto=format&w=200   200w,
+                    https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vReqMRQjLSI7e6UQ5WwX.png?auto=format&w=228   228w,
+                    https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vReqMRQjLSI7e6UQ5WwX.png?auto=format&w=260   260w,
+                    https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vReqMRQjLSI7e6UQ5WwX.png?auto=format&w=296   296w,
+                    https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vReqMRQjLSI7e6UQ5WwX.png?auto=format&w=338   338w,
+                    https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vReqMRQjLSI7e6UQ5WwX.png?auto=format&w=385   385w,
+                    https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vReqMRQjLSI7e6UQ5WwX.png?auto=format&w=439   439w,
+                    https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vReqMRQjLSI7e6UQ5WwX.png?auto=format&w=500   500w,
+                    https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vReqMRQjLSI7e6UQ5WwX.png?auto=format&w=571   571w,
+                    https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vReqMRQjLSI7e6UQ5WwX.png?auto=format&w=650   650w,
+                    https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vReqMRQjLSI7e6UQ5WwX.png?auto=format&w=741   741w,
+                    https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vReqMRQjLSI7e6UQ5WwX.png?auto=format&w=845   845w,
+                    https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vReqMRQjLSI7e6UQ5WwX.png?auto=format&w=964   964w,
+                    https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vReqMRQjLSI7e6UQ5WwX.png?auto=format&w=1098 1098w,
+                    https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vReqMRQjLSI7e6UQ5WwX.png?auto=format&w=1252 1252w,
+                    https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vReqMRQjLSI7e6UQ5WwX.png?auto=format&w=1428 1428w,
+                    https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vReqMRQjLSI7e6UQ5WwX.png?auto=format&w=1600 1600w
+                  "
+                  width="800"
+                />
+                <figcaption class="w-figcaption">
+                  Use the enterkeyhint attribute to set the Enter button label:
+                  'next' and 'done'.
+                </figcaption>
+              </figure>
+              <div class="w-aside w-aside--gotchas">
+                <strong>Gotchas!</strong>
+                <p>
+                  Using <code>type=&quot;number&quot;</code> adds an up/down
+                  arrow to increment numbers, which makes no sense for data such
+                  as telephone, payment card, or account numbers. Instead, you
+                  should use <code>type=&quot;tel&quot;</code> for telephone
+                  numbers. For other numbers, use
+                  <code>type=&quot;text&quot;</code> (or leave off the
+                  attribute, since <code>text</code> is the default) and add
+                  <code>inputmode=&quot;numeric&quot;</code> to get a numeric
+                  keyboard on mobile.
+                </p>
+              </div>
+              <div class="w-aside w-aside--note">
+                <p>
+                  Can you see any problems with using a single input for
+                  telephone number? Do you store phone number parts (country and
+                  area code) separately? If so, why?
+                </p>
+              </div>
+              <p>Your complete address form should now look like this:</p>
+              <div class="glitch-embed-wrap" style="height: 970px; width: 100%">
+                <iframe
+                  allow="camera; clipboard-read; clipboard-write; encrypted-media; geolocation; microphone; midi"
+                  loading="lazy"
+                  src="https://glitch.com/embed/#!/embed/address-form?attributionHidden=true&sidebarCollapsed=true&path=index.html&previewSize=100"
+                  style="height: 100%; width: 100%; border: 0"
+                  title="address-form on Glitch"
+                ></iframe>
+              </div>
+              <ul>
+                <li>
+                  Try out your form on different devices. What devices and
+                  browsers are you targeting? How could the form be improved?
+                </li>
+              </ul>
+              <p id="different-devices">
+                There are several ways to test your form on different devices:
+              </p>
+              <ul>
+                <li>
+                  <a
+                    href="https://developers.google.com/web/tools/chrome-devtools/device-mode"
+                    rel="noopener"
+                    >Use Chrome DevTools Device Mode</a
+                  >
+                  to simulate mobile devices.
+                </li>
+                <li>
+                  <a
+                    href="https://support.google.com/chrome/answer/9430554"
+                    rel="noopener"
+                    >Send the URL from your computer to your phone</a
+                  >.
+                </li>
+                <li>
+                  Use a service such as
+                  <a
+                    href="https://www.browserstack.com/open-source"
+                    rel="noopener"
+                    >BrowserStack</a
+                  >
+                  to test on a range of devices and browsers.
+                </li>
+              </ul>
+              <div class="w-aside w-aside--note">
+                <p>
+                  Before you start building forms, make sure to understand what
+                  data is required and if that data is strictly necessary. Don't
+                  ask for data you don't need! The simplest way to reduce form
+                  complexity and improve privacy is to remove unnecessary
+                  fields. Storing less data also reduces back-end data cost and
+                  liability.
+                </p>
+              </div>
+              <h2 id="going-further">
+                Going further
+                <a class="w-headline-link" href="#going-further">#</a>
+              </h2>
+              <ul>
+                <li>
+                  <p>
+                    <a
+                      href="/payment-and-address-form-best-practices#analytics-rum"
+                      >Analytics and Real User Monitoring</a
+                    >: enable the performance and usability of your form design
+                    to be tested and monitored for real users, and to check if
+                    changes are successful. You should monitor load performance
+                    and other <a href="/vitals">Web Vitals</a>, as well as page
+                    analytics (what proportion of users bounce from your address
+                    form without completing it? how long do users spend on your
+                    address form pages?) and interaction analytics (which page
+                    components do users interact with, or not?)
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    Where are your users located? How do they format their
+                    address? What names do they use for address components, such
+                    as ZIP or postal code?
+                    <a
+                      href="http://www.columbia.edu/~fdc/postal/"
+                      rel="noopener"
+                      >Frank's Compulsive Guide to Postal Addresses</a
+                    >
+                    provides useful links and extensive guidance detailing
+                    address formats in over 200 countries.
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    Country selectors are notorious for
+                    <a
+                      href="https://www.smashingmagazine.com/2011/11/redesigning-the-country-selector/"
+                      rel="noopener"
+                      >poor usability</a
+                    >. It's
+                    <a
+                      href="https://baymard.com/blog/drop-down-usability#in-general-avoid-drop-downs-when-there-are-more-than-10-or-fewer-than-5-options"
+                      rel="noopener"
+                      >best to avoid select elements for a long list of items</a
+                    >
+                    and the ISO 3166 country-code standard
+                    <a
+                      href="https://www.iso.org/obp/ui/#search/code/"
+                      rel="noopener"
+                      >currently lists 249 countries</a
+                    >! Instead of a <code>&lt;select&gt;</code> you may want to
+                    consider an alternative such as the
+                    <a
+                      href="https://baymard.com/labs/country-selector"
+                      rel="noopener"
+                      >Baymard Institute country selector</a
+                    >.
+                  </p>
+                  <p>
+                    Can you design a better selector for lists with a lot of
+                    items? How would you ensure your design is accessible across
+                    a range of devices and platforms? (The
+                    <code>&lt;select&gt;</code> element doesn't work well for a
+                    large number of items, but at least it's usable on virtually
+                    all browsers and assistive devices!)
+                  </p>
+                  <p>
+                    The blog post
+                    <a
+                      href="https://shkspr.mobi/blog/2017/11/input-type-country/"
+                      rel="noopener"
+                      >&lt;input type=&quot;country&quot; /&gt;</a
+                    >
+                    discusses the complexity of standardizing a country
+                    selector. Localization of country names can also be
+                    problematic.
+                    <a
+                      href="http://www.countries-list.info/Download-List"
+                      rel="noopener"
+                      >Countries Lists</a
+                    >
+                    has a tool for downloading country codes and names in
+                    multiple languages, in multiple formats.
+                  </p>
+                </li>
+              </ul>
+
+              <nav class="w-article-navigation">
+                <a
+                  class="
+                    w-article-navigation__link
+                    w-article-navigation__link--back
+                    w-article-navigation__link--single
+                    gc-analytics-event
+                  "
+                  data-category="web.dev"
+                  data-label="navigation, go back"
+                  data-action="click"
+                  href="/payment-and-address-form-best-practices"
+                >
+                  Return to article
+                </a>
+              </nav>
+            </div>
+          </web-codelab>
+        </div>
+      </div>
+    </main>
+    <footer class="w-footer">
+      <nav class="w-footer__linkboxes">
+        <ul class="w-footer__linkboxes-list">
+          <li class="w-footer__linkbox">
+            <h3 class="w-footer__linkbox-heading">Contribute</h3>
+            <ul class="w-footer__linkbox-list">
+              <li class="w-footer__linkbox-item">
+                <a
+                  href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+                  class="w-footer__linkbox-link"
+                  data-category="Site-Wide Custom Events"
+                  data-label="Footer Link (index 1)"
+                >
+                  File a bug
+                </a>
+              </li>
+              <li class="w-footer__linkbox-item">
+                <a
+                  href="https://github.com/googlechrome/web.dev"
+                  class="w-footer__linkbox-link"
+                  data-category="Site-Wide Custom Events"
+                  data-label="Footer Link (index 2)"
+                >
+                  View source
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="w-footer__linkbox">
+            <h3 class="w-footer__linkbox-heading">Related content</h3>
+            <ul class="w-footer__linkbox-list">
+              <li class="w-footer__linkbox-item">
+                <a
+                  href="https://blog.chromium.org/"
+                  class="w-footer__linkbox-link"
+                  data-category="Site-Wide Custom Events"
+                  data-label="Footer Link (index 1)"
+                >
+                  Chrome updates
+                </a>
+              </li>
+              <li class="w-footer__linkbox-item">
+                <a
+                  href="https://developers.google.com/web/"
+                  class="w-footer__linkbox-link"
+                  data-category="Site-Wide Custom Events"
+                  data-label="Footer Link (index 2)"
+                >
+                  Web Fundamentals
+                </a>
+              </li>
+              <li class="w-footer__linkbox-item">
+                <a
+                  href="https://developers.google.com/web/showcase/"
+                  class="w-footer__linkbox-link"
+                  data-category="Site-Wide Custom Events"
+                  data-label="Footer Link (index 3)"
+                >
+                  Case studies
+                </a>
+              </li>
+              <li class="w-footer__linkbox-item">
+                <a
+                  href="https://devwebfeed.appspot.com/"
+                  class="w-footer__linkbox-link"
+                  data-category="Site-Wide Custom Events"
+                  data-label="Footer Link (index 4)"
+                >
+                  DevWeb Content Firehose
+                </a>
+              </li>
+              <li class="w-footer__linkbox-item">
+                <a
+                  href="/podcasts/"
+                  class="w-footer__linkbox-link"
+                  data-category="Podcasts"
+                  data-label="Footer Link (index 5)"
+                >
+                  Podcasts
+                </a>
+              </li>
+              <li class="w-footer__linkbox-item">
+                <a
+                  href="/shows/"
+                  class="w-footer__linkbox-link"
+                  data-category="Shows"
+                  data-label="Footer Link (index 6)"
+                >
+                  Shows
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="w-footer__linkbox">
+            <h3 class="w-footer__linkbox-heading">Connect</h3>
+            <ul class="w-footer__linkbox-list">
+              <li class="w-footer__linkbox-item">
+                <a
+                  href="https://www.twitter.com/@ChromiumDev"
+                  class="w-footer__linkbox-link"
+                  data-category="Site-Wide Custom Events"
+                  data-label="Footer Link (index 1)"
+                >
+                  Twitter
+                </a>
+              </li>
+              <li class="w-footer__linkbox-item">
+                <a
+                  href="https://www.youtube.com/user/ChromeDevelopers"
+                  class="w-footer__linkbox-link"
+                  data-category="Site-Wide Custom Events"
+                  data-label="Footer Link (index 2)"
+                >
+                  YouTube
+                </a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="w-footer__utility">
+        <nav class="w-footer__utility-nav">
+          <a
+            href="https://developers.google.com/"
+            class="w-footer__utility-logo-link"
+            data-category="Site-Wide Custom Events"
+            data-label="Footer Google Developers Link"
+          >
+            <img
+              loading="lazy"
+              width="185"
+              height="33"
+              class="w-footer__utility-logo"
+              src="/images/lockup-color.png"
+              alt="Google Developers"
+            />
+          </a>
+          <ul class="w-footer__utility-list">
+            <li class="w-footer__utility-item">
+              <a
+                class="w-footer__utility-link"
+                href="https://developer.chrome.com/home"
+                data-category="Site-Wide Custom Events"
+                data-label="Footer Chrome Link"
+              >
+                Chrome
+              </a>
+            </li>
+            <li class="w-footer__utility-item">
+              <a
+                class="w-footer__utility-link"
+                href="https://firebase.google.com/"
+                data-category="Site-Wide Custom Events"
+                data-label="Footer Firebase Link"
+              >
+                Firebase
+              </a>
+            </li>
+            <li class="w-footer__utility-item">
+              <a
+                class="w-footer__utility-link"
+                href="https://cloud.google.com/"
+                data-category="Site-Wide Custom Events"
+                data-label="Footer Google Cloud Platform Link"
+              >
+                Google Cloud Platform
+              </a>
+            </li>
+            <li class="w-footer__utility-item">
+              <a
+                class="w-footer__utility-link"
+                href="https://developers.google.com/products"
+                data-category="Site-Wide Custom Events"
+                data-label="Footer All products Link"
+              >
+                All products
+              </a>
+            </li>
+          </ul>
+          <web-language-select current="en"></web-language-select>
+        </nav>
+        <nav class="w-footer__utility-nav">
+          <ul class="w-footer__utility-list">
+            <li class="w-footer__utility-item">
+              <a
+                class="w-footer__utility-link"
+                href="https://policies.google.com/"
+                data-category="Site-Wide Custom Events"
+                data-label="Footer Terms and Privacy link"
+              >
+                Terms &amp; Privacy
+              </a>
+            </li>
+            <li class="w-footer__utility-item">
+              <a
+                class="w-footer__utility-link"
+                href="/community-guidelines/"
+                data-category="Site-Wide Custom Events"
+                data-label="Footer Community Guidelines link"
+              >
+                Community Guidelines
+              </a>
+            </li>
+          </ul>
+          <div class="w-footer__license">
+            <p>
+              Except as otherwise noted, the content of this page is licensed
+              under the
+              <a href="https://creativecommons.org/licenses/by/4.0/">
+                Creative Commons Attribution 4.0 License</a
+              >, and code samples are licensed under the
+              <a href="https://www.apache.org/licenses/LICENSE-2.0">
+                Apache 2.0 License</a
+              >. For details, see the
+              <a href="https://developers.google.com/site-policies">
+                Google Developers Site Policies</a
+              >.
+            </p>
+          </div>
+        </nav>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,856 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=c589cc516dfd4">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Profiling Web Audio apps in Chrome</title>
+<meta name="description" content="Learn how to profile the performance of Web Audio apps in Chrome using about://tracing and the **WebAudio** panel in DevTools. " />
+
+<link rel="canonical" href="https://web.dev/profiling-web-audio-apps-in-chrome/" />
+
+<meta itemprop="name" content="Profiling Web Audio apps in Chrome" />
+<meta itemprop="description" content="Learn how to profile the performance of Web Audio apps in Chrome using about://tracing and the **WebAudio** panel in DevTools. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/uXHdcVy0A8BFAdNr8bXu.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/profiling-web-audio-apps-in-chrome/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Profiling Web Audio apps in Chrome" />
+<meta property="og:description" content="Learn how to profile the performance of Web Audio apps in Chrome using about://tracing and the **WebAudio** panel in DevTools. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/uXHdcVy0A8BFAdNr8bXu.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="Artistic image of microphone and pop filter" />
+<meta property="tag" content="media" />
+<meta property="tag" content="webaudio" />
+<meta property="tag" content="memory" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Profiling Web Audio apps in Chrome" />
+<meta name="twitter:description" content="Learn how to profile the performance of Web Audio apps in Chrome using about://tracing and the **WebAudio** panel in DevTools. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/uXHdcVy0A8BFAdNr8bXu.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=9220b9faf07e3', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=4c6cde378b00d', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="Artistic image of microphone and pop filter"     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/uXHdcVy0A8BFAdNr8bXu.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/uXHdcVy0A8BFAdNr8bXu.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/uXHdcVy0A8BFAdNr8bXu.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/uXHdcVy0A8BFAdNr8bXu.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/uXHdcVy0A8BFAdNr8bXu.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/uXHdcVy0A8BFAdNr8bXu.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/uXHdcVy0A8BFAdNr8bXu.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/uXHdcVy0A8BFAdNr8bXu.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/uXHdcVy0A8BFAdNr8bXu.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/uXHdcVy0A8BFAdNr8bXu.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/uXHdcVy0A8BFAdNr8bXu.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/uXHdcVy0A8BFAdNr8bXu.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/uXHdcVy0A8BFAdNr8bXu.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/uXHdcVy0A8BFAdNr8bXu.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/uXHdcVy0A8BFAdNr8bXu.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/uXHdcVy0A8BFAdNr8bXu.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/uXHdcVy0A8BFAdNr8bXu.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/uXHdcVy0A8BFAdNr8bXu.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#profiling-web-audio-apps-in-chrome" class="w-toc__header--link">
+        Profiling Web Audio apps in Chrome
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#web-audio-profiling-tools">Web Audio profiling tools</a></li><li><a href="#when-do-you-use-about:tracing">When do you use about://tracing?</a></li><li><a href="#when-do-you-use-the-webaudio-tab">When do you use the WebAudio tab?</a></li><li><a href="#use-about:tracing">Use about://tracing</a></li><li><a href="#how-to-capture-tracing-data">How to capture tracing data</a></li><li><a href="#how-to-analyze-tracing-data">How to analyze tracing data</a></li><li><a href="#learning-from-real-world-examples">Learning from real-world examples</a></li><li><a href="#use-the-webaudio-tab-in-chrome-devtools">Use the WebAudio tab in Chrome DevTools</a></li><li><a href="#conclusion">Conclusion</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@hochsays"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="profiling-web-audio-apps-in-chrome" class="w-article-header__headline">Profiling Web Audio apps in Chrome</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          <p>Learn how to profile the performance of Web Audio apps in Chrome using <code>about://tracing</code> and the <strong>WebAudio</strong> tab in DevTools.</p>
+
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>May 4, 2020</time>
+          
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/hongchanchoi/"><img     alt="Hongchan Choi"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/YbudG6EUF3JjB7u1iLey.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/YbudG6EUF3JjB7u1iLey.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/YbudG6EUF3JjB7u1iLey.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/YbudG6EUF3JjB7u1iLey.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/YbudG6EUF3JjB7u1iLey.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/YbudG6EUF3JjB7u1iLey.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/hongchanchoi/">Hongchan Choi</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/hochsays"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/hoch">GitHub</a>
+      </li>
+      
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://hoch.io/">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>You reached this documentation probably because you're developing an app
+that uses the <a href="https://developer.mozilla.org/docs/Web/API/Web_Audio_API" rel="noopener">Web Audio API</a>
+and experienced some unexpected glitches such as popping noises from the
+output. You might already be involved in a <a href="https://crbug.com" rel="noopener">crbug.com</a>
+discussion and a Chrome engineer has asked you to upload &quot;tracing data&quot;. This
+guide shows how to obtain the data so you can help engineers triage, and
+eventually fix, the issue.</p>
+<h2 id="web-audio-profiling-tools">Web Audio profiling tools <a class="w-headline-link" href="#web-audio-profiling-tools">#</a></h2>
+<p>There are two tools that will help you when profiling Web Audio,
+<code>about://tracing</code> and the <strong>WebAudio</strong> tab in Chrome DevTools.</p>
+<h3 id="when-do-you-use-about:tracing">When do you use <code>about://tracing</code>? <a class="w-headline-link" href="#when-do-you-use-about:tracing">#</a></h3>
+<p>When mysterious &quot;glitches&quot; happen. Profiling the app with the tracing tools
+gives you insights on:</p>
+<ul>
+<li><strong>Time slices spent by specific function calls</strong> on different threads</li>
+<li><strong>Audio callback timing</strong> in the timeline view</li>
+</ul>
+<p>It usually shows the missed deadlines or the big garbage collection stops that
+might cause unexpected audio glitches. This information is useful for triaging
+a bug. Chromium engineers will ask for tracing data if a local reproduction of the issue
+is not feasible. See <a href="https://www.chromium.org/developers/how-tos/trace-event-profiling-tool" rel="noopener">The Trace Event Profiling Tool</a> for
+general instructions on how to trace.</p>
+<h3 id="when-do-you-use-the-webaudio-tab">When do you use the <strong>WebAudio</strong> tab? <a class="w-headline-link" href="#when-do-you-use-the-webaudio-tab">#</a></h3>
+<p>When you want to get a feel for how the application performs in the real world.
+DevTools shows you a running estimate of render capacity, which indicates
+how the web audio rendering engine is handling render tasks over a given
+render budget (for example, approximately 2.67ms @ 48KHz). If the capacity
+goes near 100%, that means your app is likely to produce glitches because the
+renderer is failing to finish the work in the render budget.</p>
+<h2 id="use-about:tracing">Use <code>about://tracing</code> <a class="w-headline-link" href="#use-about:tracing">#</a></h2>
+<h3 id="how-to-capture-tracing-data">How to capture tracing data <a class="w-headline-link" href="#how-to-capture-tracing-data">#</a></h3>
+<p><em>The instructions below written are for Chrome 80 and later.</em></p>
+<p>For best results, close all other tabs and windows, and disable extensions.
+Alternatively you can either <a href="https://developer.chrome.com/devtools/docs/clean-testing-environment" rel="noopener">launch a new instance of Chrome</a>
+or use other builds from <a href="https://www.chromium.org/getting-involved/dev-channel" rel="noopener">different release channels</a> (e.g.
+Beta or Canary). Once you have the browser ready, follow the steps below:</p>
+<ol>
+<li>
+<p>Open your application (web page) on a tab.</p>
+</li>
+<li>
+<p>Open another tab and go to <code>about://tracing</code>.</p>
+</li>
+<li>
+<p>Press the <strong>Record</strong> button and select <strong>Manually select settings</strong>.</p>
+</li>
+<li>
+<p>Press the <strong>None</strong> buttons on both the <strong>Record Categories</strong> and
+<strong>Disabled by Default Categories</strong> sections.</p>
+</li>
+<li>
+<p>In the <strong>Record Categories</strong> section, select the following:</p>
+<ul>
+<li><code>audio</code></li>
+<li><code>blink_gc</code></li>
+<li><code>media</code></li>
+<li><code>v8.execute</code> (if you're interested in <code>AudioWorklet</code> JS code performance)</li>
+<li><code>webaudio</code></li>
+</ul>
+</li>
+<li>
+<p>In the <strong>Disabled by Default Categories</strong> section, select the following:</p>
+<ul>
+<li><code>audio-worklet</code> (if you're interested in where the <code>AudioWorklet</code> thread starts)</li>
+<li><code>webaudio.audionode</code> (if you need the detailed trace for each <code>AudioNode</code>)</li>
+</ul>
+</li>
+<li>
+<p>Press the <strong>Record</strong> button at the bottom.</p>
+</li>
+<li>
+<p>Go back to your application tab and redo the steps that triggered the issue.</p>
+</li>
+<li>
+<p>When you have enough trace data, go back to the tracing tab and press <strong>Stop</strong>.</p>
+</li>
+<li>
+<p>The tracing tab will visualize the result.</p>
+<img     alt="Screen shot after tracing has completed."     class="w-screenshot w-screenshot--filled"     decoding="async"     height="525"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/3GqKLXTP7XzFp6ADztc4.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/3GqKLXTP7XzFp6ADztc4.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/3GqKLXTP7XzFp6ADztc4.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/3GqKLXTP7XzFp6ADztc4.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/3GqKLXTP7XzFp6ADztc4.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/3GqKLXTP7XzFp6ADztc4.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/3GqKLXTP7XzFp6ADztc4.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/3GqKLXTP7XzFp6ADztc4.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/3GqKLXTP7XzFp6ADztc4.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/3GqKLXTP7XzFp6ADztc4.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/3GqKLXTP7XzFp6ADztc4.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/3GqKLXTP7XzFp6ADztc4.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/3GqKLXTP7XzFp6ADztc4.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/3GqKLXTP7XzFp6ADztc4.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/3GqKLXTP7XzFp6ADztc4.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/3GqKLXTP7XzFp6ADztc4.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/3GqKLXTP7XzFp6ADztc4.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/3GqKLXTP7XzFp6ADztc4.jpg?auto=format&w=1600 1600w"          width="800"   />
+</li>
+<li>
+<p>Press <strong>Save</strong> to save the tracing data.</p>
+</li>
+</ol>
+<h3 id="how-to-analyze-tracing-data">How to analyze tracing data <a class="w-headline-link" href="#how-to-analyze-tracing-data">#</a></h3>
+<p>The tracing data visualizes how Chrome's web audio engine renders the audio.
+The renderer has two different render modes: <strong>Operating system mode</strong> and
+<strong>Worklet mode</strong>. Each mode uses a different threading model, so the tracing
+results also differ.</p>
+<h4 id="operating-system-mode">Operating system mode <a class="w-headline-link" href="#operating-system-mode">#</a></h4>
+<p>In operating system mode, the <a href="https://source.chromium.org/chromium/chromium/src/+/master:media/audio/audio_output_device.h" rel="noopener"><code>AudioOutputDevice</code></a> thread runs
+all the web audio code. The <code>AudioOutputDevice</code> is a real-time priority thread
+originating from the browser's Audio Service that is driven by the audio
+hardware clock. If you see irregularity from the trace data in this lane,
+it means the callback timing from the device may be jittery. The combination
+of Linux and Pulse Audio is known to have this problem. See the following Chromium issues
+for more details: <a href="https://crbug.com/825823" rel="noopener">#825823</a>,
+<a href="https://crbug.com/864463" rel="noopener">#864463</a>.</p>
+<img     alt="Screen shot of operating system mode tracing result."     class="w-screenshot w-screenshot--filled"     decoding="async"     height="398"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Mf64zHw10phOMhU3gXsJ.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Mf64zHw10phOMhU3gXsJ.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Mf64zHw10phOMhU3gXsJ.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Mf64zHw10phOMhU3gXsJ.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Mf64zHw10phOMhU3gXsJ.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Mf64zHw10phOMhU3gXsJ.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Mf64zHw10phOMhU3gXsJ.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Mf64zHw10phOMhU3gXsJ.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Mf64zHw10phOMhU3gXsJ.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Mf64zHw10phOMhU3gXsJ.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Mf64zHw10phOMhU3gXsJ.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Mf64zHw10phOMhU3gXsJ.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Mf64zHw10phOMhU3gXsJ.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Mf64zHw10phOMhU3gXsJ.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Mf64zHw10phOMhU3gXsJ.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Mf64zHw10phOMhU3gXsJ.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Mf64zHw10phOMhU3gXsJ.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/Mf64zHw10phOMhU3gXsJ.jpg?auto=format&w=1600 1600w"          width="800"   />
+<h4 id="worklet-mode">Worklet mode <a class="w-headline-link" href="#worklet-mode">#</a></h4>
+<p>In Worklet Mode, which is characterized by one thread jump from
+<code>AudioOutputDevice</code> to the <a href="https://source.chromium.org/chromium/chromium/src/+/master:third_party/blink/renderer/modules/webaudio/audio_worklet_thread.h" rel="noopener"><code>AudioWorklet</code> thread</a>, you
+should see well-aligned traces in two thread lanes as shown below.  When the
+worklet is activated all the web audio operations are rendered by the
+<code>AudioWorklet</code> thread. This thread is currently not a real-time priority one.
+The common irregularity here is a big block caused by the garbage collection
+or missed render deadlines. Both cases lead to glitches in the audio stream.</p>
+<img     alt="Screen shot of worklet mode tracing result."     class="w-screenshot w-screenshot--filled"     decoding="async"     height="449"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/2kSG5BoaXZ5CZIlVvIYI.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/2kSG5BoaXZ5CZIlVvIYI.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/2kSG5BoaXZ5CZIlVvIYI.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/2kSG5BoaXZ5CZIlVvIYI.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/2kSG5BoaXZ5CZIlVvIYI.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/2kSG5BoaXZ5CZIlVvIYI.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/2kSG5BoaXZ5CZIlVvIYI.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/2kSG5BoaXZ5CZIlVvIYI.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/2kSG5BoaXZ5CZIlVvIYI.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/2kSG5BoaXZ5CZIlVvIYI.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/2kSG5BoaXZ5CZIlVvIYI.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/2kSG5BoaXZ5CZIlVvIYI.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/2kSG5BoaXZ5CZIlVvIYI.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/2kSG5BoaXZ5CZIlVvIYI.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/2kSG5BoaXZ5CZIlVvIYI.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/2kSG5BoaXZ5CZIlVvIYI.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/2kSG5BoaXZ5CZIlVvIYI.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/2kSG5BoaXZ5CZIlVvIYI.png?auto=format&w=1600 1600w"          width="800"   />
+<p>In both cases, the ideal tracing data is characterized by well-aligned audio
+device callback invocations and render tasks being completed well within the
+given render budget. The two screenshots above are great examples of the ideal
+tracing data.</p>
+<h3 id="learning-from-real-world-examples">Learning from real-world examples <a class="w-headline-link" href="#learning-from-real-world-examples">#</a></h3>
+<h4 id="example-1:-render-tasks-going-beyond-render-budget">Example 1: Render tasks going beyond render budget <a class="w-headline-link" href="#example-1:-render-tasks-going-beyond-render-budget">#</a></h4>
+<p>The screenshot below (<a href="https://crbug.com/796330" rel="noopener">Chromium issue #796330</a>) is a
+typical example of when code in <code>AudioWorkletProcessor</code> takes too long and
+goes beyond a given render budget. The callback timing is well behaved but
+the audio processing function call of the Web Audio API failed to complete the
+work before the next device callback.</p>
+<img     alt="Diagram showing audio glitch due to render task overflowing budget."     class="w-screenshot w-screenshot--filled"     decoding="async"     height="362"          loading="lazy"     sizes="(min-width: 734px) 734px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/J3CkP24NupnqB1XDGH6w.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/J3CkP24NupnqB1XDGH6w.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/J3CkP24NupnqB1XDGH6w.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/J3CkP24NupnqB1XDGH6w.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/J3CkP24NupnqB1XDGH6w.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/J3CkP24NupnqB1XDGH6w.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/J3CkP24NupnqB1XDGH6w.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/J3CkP24NupnqB1XDGH6w.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/J3CkP24NupnqB1XDGH6w.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/J3CkP24NupnqB1XDGH6w.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/J3CkP24NupnqB1XDGH6w.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/J3CkP24NupnqB1XDGH6w.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/J3CkP24NupnqB1XDGH6w.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/J3CkP24NupnqB1XDGH6w.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/J3CkP24NupnqB1XDGH6w.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/J3CkP24NupnqB1XDGH6w.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/J3CkP24NupnqB1XDGH6w.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/J3CkP24NupnqB1XDGH6w.png?auto=format&w=1468 1468w"          width="734"   />
+<p><strong>Your options:</strong></p>
+<ul>
+<li>Reduce the workload of the audio graph by using fewer <code>AudioNode</code> instances.</li>
+<li>Reduce the workload of your code in the <code>AudioWorkletProcessor</code>.</li>
+<li>Increase the base latency of <code>AudioContext</code>.</li>
+</ul>
+<h4 id="example-2:-significant-garbage-collection-on-the-worklet-thread">Example 2: Significant garbage collection on the worklet thread <a class="w-headline-link" href="#example-2:-significant-garbage-collection-on-the-worklet-thread">#</a></h4>
+<p>Unlike on the operating system audio rendering thread, garbage collection is managed
+on the worklet thread. That means if your code does memory allocation/deallocation
+(e.g. new arrays) it eventually triggers a garbage collection which
+synchronously blocks the thread. If the workload of web audio operations and
+garbage collection is bigger than a given render budget, it results in
+glitches in the audio stream. The following screenshot is an extreme example of this
+case.</p>
+<img     alt="Audio glitches caused by garbage collection."     class="w-screenshot w-screenshot--filled"     decoding="async"     height="334"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ckdPwqnRtoHsRQkOVy8J.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ckdPwqnRtoHsRQkOVy8J.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ckdPwqnRtoHsRQkOVy8J.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ckdPwqnRtoHsRQkOVy8J.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ckdPwqnRtoHsRQkOVy8J.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ckdPwqnRtoHsRQkOVy8J.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ckdPwqnRtoHsRQkOVy8J.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ckdPwqnRtoHsRQkOVy8J.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ckdPwqnRtoHsRQkOVy8J.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ckdPwqnRtoHsRQkOVy8J.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ckdPwqnRtoHsRQkOVy8J.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ckdPwqnRtoHsRQkOVy8J.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ckdPwqnRtoHsRQkOVy8J.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ckdPwqnRtoHsRQkOVy8J.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ckdPwqnRtoHsRQkOVy8J.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ckdPwqnRtoHsRQkOVy8J.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ckdPwqnRtoHsRQkOVy8J.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ckdPwqnRtoHsRQkOVy8J.png?auto=format&w=1600 1600w"          width="800"   />
+<div class="w-aside w-aside--note">
+<p>Chrome's <code>AudioWorkletProcessor</code> implementation generates <code>Float32Array</code> instances for
+the input and output buffer every audio processing callback. This also
+slowly builds up the memory usage over time. The team has a plan to improve
+the design once the related specification is finalized.</p>
+</div>
+<p><strong>Your options:</strong></p>
+<ul>
+<li>Allocate the memory up front and reuse it whenever possible.</li>
+<li>Use different design patterns based on <code>SharedArrayBuffer</code>. Although this
+is not a perfect solution, several web audio apps use a similar pattern with
+<code>SharedArrayBuffer</code> to run the intensive audio code. Examples:
+<ul>
+<li><a href="https://developers.google.com/web/updates/2018/06/audio-worklet-design-pattern#webaudio_powerhouse_audio_worklet_and_sharedarraybuffer" rel="noopener">Audio Worklet Design Pattern (Web Audio Power House)</a></li>
+<li><a href="https://github.com/GoogleChromeLabs/audio-device-client-prototype" rel="noopener">Audio Device Client Prototype</a></li>
+</ul>
+</li>
+</ul>
+<h4 id="example-3:-jittery-audio-device-callback-from-audiooutputdevice">Example 3: Jittery audio device callback from <code>AudioOutputDevice</code> <a class="w-headline-link" href="#example-3:-jittery-audio-device-callback-from-audiooutputdevice">#</a></h4>
+<p>The precise timing of audio callback is the most important thing for web audio.
+This should be the most precise clock in your system. If the operating system
+or its audio subsystem cannot guarantee a solid callback timing, all the
+subsequent operations will be affected. The following image is an example
+of jittery audio callback. Compared to the previous two images, the interval
+between each callback varies significantly.</p>
+<img     alt="Screen shot comparing unstable vs stable callback timing."     class="w-screenshot w-screenshot--filled"     decoding="async"     height="252"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/1UN5udXOW56ooihw5M18.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/1UN5udXOW56ooihw5M18.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/1UN5udXOW56ooihw5M18.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/1UN5udXOW56ooihw5M18.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/1UN5udXOW56ooihw5M18.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/1UN5udXOW56ooihw5M18.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/1UN5udXOW56ooihw5M18.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/1UN5udXOW56ooihw5M18.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/1UN5udXOW56ooihw5M18.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/1UN5udXOW56ooihw5M18.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/1UN5udXOW56ooihw5M18.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/1UN5udXOW56ooihw5M18.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/1UN5udXOW56ooihw5M18.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/1UN5udXOW56ooihw5M18.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/1UN5udXOW56ooihw5M18.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/1UN5udXOW56ooihw5M18.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/1UN5udXOW56ooihw5M18.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/1UN5udXOW56ooihw5M18.png?auto=format&w=1600 1600w"          width="800"   />
+<p>This is a known issue on Linux, which uses Pulse Audio as an audio
+backend. This is still under investigation (<a href="https://crbug.com/825823" rel="noopener">Chromium issue #825823</a>).</p>
+<h2 id="use-the-webaudio-tab-in-chrome-devtools">Use the <strong>WebAudio</strong> tab in Chrome DevTools <a class="w-headline-link" href="#use-the-webaudio-tab-in-chrome-devtools">#</a></h2>
+<p>You also can use the DevTools tab specifically designed for web audio. This
+is less comprehensive compared to the tracing tool, but it is useful if you
+want to gauge the running performance of your application.</p>
+<p>Access the panel by opening the <strong>Main Menu</strong> of
+DevTools, then go to <strong>More tools</strong> &gt; <strong>WebAudio</strong>.</p>
+<img     alt="Screen shot showing how to open WebAudio panel in Chrome DevTools."     class="w-screenshot w-screenshot--filled"     decoding="async"     height="423"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/t2eX431PTio5oOFkmOtR.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/t2eX431PTio5oOFkmOtR.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/t2eX431PTio5oOFkmOtR.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/t2eX431PTio5oOFkmOtR.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/t2eX431PTio5oOFkmOtR.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/t2eX431PTio5oOFkmOtR.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/t2eX431PTio5oOFkmOtR.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/t2eX431PTio5oOFkmOtR.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/t2eX431PTio5oOFkmOtR.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/t2eX431PTio5oOFkmOtR.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/t2eX431PTio5oOFkmOtR.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/t2eX431PTio5oOFkmOtR.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/t2eX431PTio5oOFkmOtR.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/t2eX431PTio5oOFkmOtR.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/t2eX431PTio5oOFkmOtR.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/t2eX431PTio5oOFkmOtR.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/t2eX431PTio5oOFkmOtR.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/t2eX431PTio5oOFkmOtR.jpg?auto=format&w=1600 1600w"          width="800"   />
+<img     alt="Screen shot of WebAudio panel in Chrome DevTools."     class="w-screenshot w-screenshot--filled"     decoding="async"     height="299"          loading="lazy"     sizes="(min-width: 595px) 595px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/HBdc8LHEgIRHkHUJdtBq.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/HBdc8LHEgIRHkHUJdtBq.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/HBdc8LHEgIRHkHUJdtBq.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/HBdc8LHEgIRHkHUJdtBq.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/HBdc8LHEgIRHkHUJdtBq.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/HBdc8LHEgIRHkHUJdtBq.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/HBdc8LHEgIRHkHUJdtBq.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/HBdc8LHEgIRHkHUJdtBq.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/HBdc8LHEgIRHkHUJdtBq.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/HBdc8LHEgIRHkHUJdtBq.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/HBdc8LHEgIRHkHUJdtBq.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/HBdc8LHEgIRHkHUJdtBq.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/HBdc8LHEgIRHkHUJdtBq.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/HBdc8LHEgIRHkHUJdtBq.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/HBdc8LHEgIRHkHUJdtBq.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/HBdc8LHEgIRHkHUJdtBq.png?auto=format&w=1190 1190w"          width="595"   />
+<p>This tab shows information about running instances of <code>BaseAudioContext</code>.
+Use it to see how the web audio renderer is performing on the page.</p>
+<p>Since a page can have multiple <code>BaseAudioContext</code> instances, the <strong>Context Selector</strong>
+(which is the drop-down menu that says <code>realtime (4e1073)</code> in the last screenshot),
+allows you to choose what you want to inspect. The inspector
+view shows the properties (e.g. sample rate, buffer size, channel count, and
+context state) of a <code>BaseAudioContext</code> instance that you select, and it
+dynamically changes when properties change.</p>
+<p>The most useful thing in this view is the status bar at the bottom. It is only
+active when the selected <code>BaseAudioContext</code> is an <code>AudioContext</code>, which runs
+in real-time. This bar shows the instantaneous audio stream quality of a
+selected <code>AudioContext</code> and is updated every second. It provides the following
+information:</p>
+<ul>
+<li><strong>Callback interval</strong> (ms): Displays the weighted mean/variance of callback
+interval. Ideally the mean should be stable and the variance should be
+close to zero. Otherwise the operating system's audio infra might have
+problems in deeper layers.</li>
+<li><strong>Render Capacity</strong> (percent): Follows this formula: (<em>time spent in actual
+rendering / instantaneous callback interval</em>) × 100. When the capacity
+gets close to 100 percent, it means that the renderer is doing too much for a
+given render budget, so you should consider doing less in the web audio code.</li>
+</ul>
+<p>You can manually trigger a garbage collector by clicking the trash can icon.</p>
+<h2 id="conclusion">Conclusion <a class="w-headline-link" href="#conclusion">#</a></h2>
+<p>Debugging audio is hard. Debugging audio in the browser is even harder.
+However, these tools can ease the pain by providing you with useful insights
+on how the web audio code performs. In some cases, you may find that web
+audio does not behave as it should - then do not be afraid to
+<a href="https://bugs.chromium.org/p/chromium/issues/entry?components=Blink%3EWebAudio" rel="noopener">file a bug on Chromium Bug Tracker</a>. While filling out the information,
+you can follow the guideline above and submit the tracing data you captured
+with a reproducible test case. With this data the Chrome engineers will be able
+to fix your bug much faster.</p>
+<p>Photo by Jonathan Velasquez on <a href="https://unsplash.com/photos/c1ZN57GfDB0" rel="noopener">Unsplash</a></p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/media/">Media</a>
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/memory/">Memory</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>May 4, 2020</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/profiling-web-audio-apps-in-chrome/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

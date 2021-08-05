@@ -1,0 +1,870 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=96f32c26821b3">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Observing compute pressure</title>
+<meta name="description" content="An experimental API for reacting to changes in CPU use." />
+
+<link rel="canonical" href="https://web.dev/compute-pressure/" />
+
+<meta itemprop="name" content="Observing compute pressure" />
+<meta itemprop="description" content="An experimental API for reacting to changes in CPU use." />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/FNkVSAX8UDTTQWQkKftSgGe9clO2/H9cVTFMj4cYmoIfGYQqd.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/compute-pressure/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Observing compute pressure" />
+<meta property="og:description" content="An experimental API for reacting to changes in CPU use." />
+<meta property="og:image" content="https://web-dev.imgix.net/image/FNkVSAX8UDTTQWQkKftSgGe9clO2/H9cVTFMj4cYmoIfGYQqd.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="A pressure gauge and pipes." />
+<meta property="tag" content="capabilities" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Observing compute pressure" />
+<meta name="twitter:description" content="An experimental API for reacting to changes in CPU use." />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/FNkVSAX8UDTTQWQkKftSgGe9clO2/H9cVTFMj4cYmoIfGYQqd.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=08be46dcc3fc7', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=1341691a18998', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="A pressure gauge and pipes."     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/FNkVSAX8UDTTQWQkKftSgGe9clO2/H9cVTFMj4cYmoIfGYQqd.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/FNkVSAX8UDTTQWQkKftSgGe9clO2/H9cVTFMj4cYmoIfGYQqd.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/FNkVSAX8UDTTQWQkKftSgGe9clO2/H9cVTFMj4cYmoIfGYQqd.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/FNkVSAX8UDTTQWQkKftSgGe9clO2/H9cVTFMj4cYmoIfGYQqd.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/FNkVSAX8UDTTQWQkKftSgGe9clO2/H9cVTFMj4cYmoIfGYQqd.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/FNkVSAX8UDTTQWQkKftSgGe9clO2/H9cVTFMj4cYmoIfGYQqd.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/FNkVSAX8UDTTQWQkKftSgGe9clO2/H9cVTFMj4cYmoIfGYQqd.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/FNkVSAX8UDTTQWQkKftSgGe9clO2/H9cVTFMj4cYmoIfGYQqd.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/FNkVSAX8UDTTQWQkKftSgGe9clO2/H9cVTFMj4cYmoIfGYQqd.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/FNkVSAX8UDTTQWQkKftSgGe9clO2/H9cVTFMj4cYmoIfGYQqd.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/FNkVSAX8UDTTQWQkKftSgGe9clO2/H9cVTFMj4cYmoIfGYQqd.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/FNkVSAX8UDTTQWQkKftSgGe9clO2/H9cVTFMj4cYmoIfGYQqd.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/FNkVSAX8UDTTQWQkKftSgGe9clO2/H9cVTFMj4cYmoIfGYQqd.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/FNkVSAX8UDTTQWQkKftSgGe9clO2/H9cVTFMj4cYmoIfGYQqd.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/FNkVSAX8UDTTQWQkKftSgGe9clO2/H9cVTFMj4cYmoIfGYQqd.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/FNkVSAX8UDTTQWQkKftSgGe9clO2/H9cVTFMj4cYmoIfGYQqd.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/FNkVSAX8UDTTQWQkKftSgGe9clO2/H9cVTFMj4cYmoIfGYQqd.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/FNkVSAX8UDTTQWQkKftSgGe9clO2/H9cVTFMj4cYmoIfGYQqd.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#observing-compute-pressure" class="w-toc__header--link">
+        Observing compute pressure
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#background">Background</a></li><li><a href="#use-cases">Use cases</a></li><li><a href="#video-conferencing">Video conferencing</a></li><li><a href="#video-games">Video games</a></li><li><a href="#cpu-utilization">CPU utilization</a></li><li><a href="#cpu-clock-speed">CPU clock speed</a></li><li><a href="#using-the-api">Using the API</a></li><li><a href="#exposing-limited-information-via-thresholds-and-buckets">Exposing limited information via thresholds and buckets</a></li><li><a href="#try-a-demo">Try a demo</a></li><li><a href="#api-status">API status</a></li><li><a href="#api-availability">API Availability</a></li><li><a href="#ot">Enabling support during the origin trial phase</a></li><li><a href="#register-for-ot">Register for the origin trial</a></li><li><a href="#enabling-via-about:flags">Enabling via about://flags</a></li><li><a href="#feature-detection">Feature detection</a></li><li><a href="#acknowledgements">Acknowledgements</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@jeffposnick"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="observing-compute-pressure" class="w-article-header__headline">Observing compute pressure</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          An experimental API for reacting to changes in CPU use.
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Jun 3, 2021</time>
+           <span class="w-author__separator">•</span> Updated <time>Jun 7, 2021</time> 
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/jeffposnick/"><img     alt="Jeff Posnick"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/uskKSRCW1HyOTCjtdMdo.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/uskKSRCW1HyOTCjtdMdo.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/uskKSRCW1HyOTCjtdMdo.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/uskKSRCW1HyOTCjtdMdo.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/uskKSRCW1HyOTCjtdMdo.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/uskKSRCW1HyOTCjtdMdo.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/jeffposnick/">Jeff Posnick</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/jeffposnick"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/jeffposnick">GitHub</a>
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://glitch.com/@jeffposnick"
+          >Glitch</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/jeffposnick">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <div class="w-aside w-aside--note">
+<p>The Compute Pressure API is part of the
+<a href="https://web.dev/fugu-status/">capabilities project</a> and is currently in
+development. This post will be updated as the implementation progresses.</p>
+</div>
+<h2 id="background">Background <a class="w-headline-link" href="#background">#</a></h2>
+<p>The sound of fans revving up inside of a laptop's body, or a phone that's warm
+to the touch are unpleasant, if all too familiar, sensations. They're signs that
+the hardware inside of a device is being pushed to its limit, and the only
+options are dissipating the associated heat, or deliberately slowing down the
+speed of the processors so that they'll run cooler. Most installed applications
+are able to detect when a device is under this type of CPU stress, and can
+selectively disable features or reduce their workloads in response.
+Increasingly, there are web applications that would benefit from the same
+information.</p>
+<p><a href="https://github.com/oyiptong/compute-pressure/" rel="noopener">Compute Pressure</a> is a new,
+experimental API allows web applications to gain insight into the CPU
+utilization of the browser's device. The API provides a callback
+that receives periodic updates, allowing developers to observe changes in CPU
+utilization over time. A web app that uses this API can enable or
+disable heavyweight features in response to these
+observations. It's a feedback mechanism that unlocks new doors for adaptive
+behavior, which can in turn lead to smoother, cooler experiences across a range
+of hardware devices.</p>
+<h2 id="use-cases">Use cases <a class="w-headline-link" href="#use-cases">#</a></h2>
+<p>The motivating use cases are helping video conferencing and video game web
+applications adapt to CPU utilization. The initial experimental implementation
+of the API aims to support the decisions listed here.</p>
+<h3 id="video-conferencing">Video conferencing <a class="w-headline-link" href="#video-conferencing">#</a></h3>
+<ul>
+<li>Dynamically adjusting the number of live video feeds displayed on the screen at
+once.</li>
+<li>Adjusting the video resolution or frame rate.</li>
+<li>Skipping non-essential video processing, such as cosmetic filters.</li>
+<li>Disabling non-essential audio processing, such as noise suppression.</li>
+<li>Skewing the quality-vs-speed and size-vs-speed knobs towards &quot;speed&quot; in video and
+audio encoding.</li>
+</ul>
+<h3 id="video-games">Video games <a class="w-headline-link" href="#video-games">#</a></h3>
+<ul>
+<li>Using lower-quality video and audio assets as needed.</li>
+<li>Disabling optional effects like reflections, glare, or particle animations that
+don't affect gameplay.</li>
+<li>Tweaking quality-vs-speed knobs in the game's rendering engine, affecting areas
+like shadow quality, texture filtering, and view distance.</li>
+</ul>
+<p>The secondary use case is measuring the CPU resource consumption of a feature.
+This ultimately supports the main goal of avoiding driving user devices into
+high CPU utilization. The API helps developers make the types of decisions
+listed here.</p>
+<ul>
+<li>Comparing the CPU consumption of alternative implementations of the same
+feature to find out which is more efficient. The API supports measuring CPU
+utilization in the field via
+<a href="https://en.wikipedia.org/wiki/A/B_testing" rel="noopener">A/B tests</a> because a feature's
+CPU utilization depends on the hardware it's running on. Most developers
+cannot afford performance measurement labs covering all the devices owned by
+their users.</li>
+<li>Estimating the impact on CPU consumption of enabling a feature. This cost
+estimate feeds into the decisions outlined in the primary use case.</li>
+</ul>
+<h2 id="cpu-utilization">CPU utilization <a class="w-headline-link" href="#cpu-utilization">#</a></h2>
+<p>The CPU utilization of a device is the average of the utilization of all the
+device's <a href="https://en.wikipedia.org/wiki/Multi-core_processor" rel="noopener">CPU cores</a>,
+represented in the API as a number between <code>0.0</code> and <code>1.0</code>.</p>
+<p>A CPU core's utilization is the fraction of time that the core has been
+executing code belonging to a thread, as opposed to being in an idle state.</p>
+<p>A CPU utilization close to <code>0.0</code> indicates that the processor has been almost
+entirely idle. A CPU utilization close to <code>1.0</code> is very likely to
+generate excessive heat. Web applications can help avoiding bad
+user experiences by reducing their compute demands when the CPU utilization is
+high.</p>
+<h2 id="cpu-clock-speed">CPU clock speed <a class="w-headline-link" href="#cpu-clock-speed">#</a></h2>
+<p>Modern CPU cores support a set of clock speeds. The device's firmware or
+operating system can set the core clock speed in order to trade off the
+available CPU computational resources with power consumption.</p>
+<p>From a user experience standpoint, the following are the most interesting clock
+speeds:</p>
+<ul>
+<li>The minimum clock speed, which results in the lowest power consumption.</li>
+<li>The base clock speed, which results in a moderate level of power consumption
+and heat generation. This tends to be the speed advertised in marketing
+materials.</li>
+<li>The maximum clock speed, sometimes marketed as &quot;turbo boost.&quot; Running at this
+speed causes unsustainable amounts of heating. It can only be used for short
+periods of time, to satisfy bursts in demand for computing power.</li>
+</ul>
+<p>When a device's CPU utilization gets high, the device may increase clock speeds
+across its CPU cores, in an attempt to meet the demand for computing power. As
+the speeds exceed the base clock speed, the elevated power consumption increases
+the CPU's temperature. At some point, the device enters a
+<a href="https://en.wikipedia.org/wiki/Dynamic_frequency_scaling" rel="noopener">thermal throttling regime</a>,
+where the CPU clock speed is reduced in order to bring the temperature down.</p>
+<p>As with CPU utilization, values from <code>0.0</code> (minimal) to <code>1.0</code> (boosted) are used
+to normalize clock speeds. A value of <code>0.5</code> represents the base clock speed for
+a given CPU.</p>
+<h2 id="using-the-api">Using the API <a class="w-headline-link" href="#using-the-api">#</a></h2>
+<p>The following code creates a <code>ComputePressureObserver</code>, configured with specific
+triggering thresholds, along with an associated callback function that may be
+invoked when a threshold is crossed. The callback is intentionally rate-limited,
+with the current implementation maxing out at one invocation per second for a
+page in the foreground, and once per ten seconds for background pages.</p>
+<p>Inside the callback function, your web application can respond to the changing
+utilization and clock speed levels by enabling or disabling CPU-intensive
+functionality.</p>
+<web-copy-code><pre class="language-javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">callback</span><span class="token punctuation">(</span><span class="token parameter">update</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token keyword">if</span> <span class="token punctuation">(</span>update<span class="token punctuation">.</span>cpuSpeed <span class="token operator">></span> <span class="token number">0.5</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token comment">// The CPU is running at faster than base speed.</span><br>  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span><br>    <span class="token comment">// The CPU is running at normal or reduced speed.</span><br>  <span class="token punctuation">}</span><br><br>  <span class="token keyword">if</span> <span class="token punctuation">(</span>update<span class="token punctuation">.</span>cpuUtilization <span class="token operator">>=</span> <span class="token number">0.9</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token comment">// CPU utilization is over 90%.</span><br>  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>update<span class="token punctuation">.</span>cpuUtilization <span class="token operator">>=</span> <span class="token number">0.75</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token comment">// CPU utilization is over 75%.</span><br>  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>update<span class="token punctuation">.</span>cpuUtilization <span class="token operator">>=</span> <span class="token number">0.5</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token comment">// CPU utilization is over 50%.</span><br>  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span><br>    <span class="token comment">// CPU utilization is under 50%.</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span><br><br><span class="token keyword">const</span> observer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ComputePressureObserver</span><span class="token punctuation">(</span>callback<span class="token punctuation">,</span> <span class="token punctuation">{</span><br>  <span class="token comment">// Thresholds divide the interval [0.0 .. 1.0] into ranges.</span><br>  cpuUtilizationThresholds<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token number">0.5</span><span class="token punctuation">,</span> <span class="token number">0.75</span><span class="token punctuation">,</span> <span class="token number">0.9</span><span class="token punctuation">]</span><span class="token punctuation">,</span><br>  <span class="token comment">// The minimum clock speed is 0.0, and the maximum speed is 1.0.</span><br>  <span class="token comment">// 0.5 represents the base clock speed.</span><br>  cpuSpeedThresholds<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token number">0.5</span><span class="token punctuation">]</span><span class="token punctuation">,</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token comment">// Begin observing changes and triggering callbacks:</span><br>observer<span class="token punctuation">.</span><span class="token function">observe</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token comment">// ...later on, to stop observing changes:</span><br>observer<span class="token punctuation">.</span><span class="token function">unobserve</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><h3 id="exposing-limited-information-via-thresholds-and-buckets">Exposing limited information via thresholds and buckets <a class="w-headline-link" href="#exposing-limited-information-via-thresholds-and-buckets">#</a></h3>
+<p>One of the key API design goals is to provide enough information for an
+application to make useful decisions based on compute pressure, while not
+exposing information that might
+<a href="https://github.com/oyiptong/compute-pressure/blob/main/security-privacy-self-assessment.md" rel="noopener">harm a user's privacy</a>.</p>
+<p>With this in mind, the API reports normalized, unitless values between
+<code>0.0</code> and <code>1.0</code> instead of more identifiable values like clock speeds in GHz.
+The values passed to the callback fall into one of the &quot;buckets&quot; defined by the
+thresholds used to configure the observer. The actual value will be the midpoint
+between the upper and lower bounds for the bucket. In other words, they will be
+values determined by how you configure the observer, and not based on the actual
+device.</p>
+<p>To give an example, the configuration in the preceding section uses
+<code>cpuUtilizationThresholds: [0.5, 0.75, 0.9]</code>. This configuration sets up a total
+of four possible buckets that the reported values might fall into, covering the
+ranges 0.0 to 0.5, 0.5 to 0.75, 0.75 to 0.9, and 0.9 to 1.0. To represent bucket
+membership, the value reported to the callback is the average between
+the lower and upper bounds for the bucket.</p>
+<figure class="w-figure">
+  <img     alt="A diagram illustrating the bucketing for different actual CPU utilizations"          decoding="async"     height="549"          loading="lazy"          src="https://web-dev.imgix.net/image/FNkVSAX8UDTTQWQkKftSgGe9clO2/VUrr3MykViLDtHuTkjYG.svg"               width="800"   />
+  <figcaption class="w-figcaption">
+    This diagram illustrates the relationship between three thresholds and the
+    four buckets that they form.
+  </figcaption>
+</figure>
+<p>Here's how some &quot;real&quot; CPU utilization values, as reported by the operating
+system to the browser, would be represented as values passed to your callback:</p>
+<ul>
+<li>&quot;Real&quot; 0% utilization would map to the 0.0 to 0.5 bucket, and would be
+reported as <code>cpuUtilization: 0.25</code>, since 0.25 is the average of 0.0 and 0.5.</li>
+<li>&quot;Real&quot; 40% utilization would similarly map to the 0.0 to 0.5 bucket, and be
+reported as <code>cpuUtilization: 0.25</code></li>
+<li>&quot;Real&quot; 60% utilization would map to the 0.5 to 0.75 bucket, and be reported as
+<code>cpuUtilization: 0.625</code></li>
+<li>&quot;Real&quot; 80% utilization would map to the 0.75 to 0.9 bucket, and be reported as
+<code>cpuUtilization: 0.825</code></li>
+</ul>
+<p>The same threshold and bucket system applies to the exposed CPU speed values.</p>
+<div class="w-aside w-aside--note">
+<p>The values reported by the API reflect the overall state of the CPU,
+due to utilization across all applications currently running. Therefore, even if
+your own web application is almost entirely idle, you may see high utilization
+and clock speed values reported, due to the activities of other applications.</p>
+</div>
+<h2 id="try-a-demo">Try a demo <a class="w-headline-link" href="#try-a-demo">#</a></h2>
+<p>When accessed on a browser that supports the origin trial (currently Chrome 92
+or later), <a href="https://googlechrome.github.io/samples/compute-pressure/index.html" rel="noopener">this demo</a>
+will display an ongoing readout of your device's CPU utilization and speed.</p>
+<h2 id="api-status">API status <a class="w-headline-link" href="#api-status">#</a></h2>
+<div class="w-table-wrapper">
+<div class="w-table-wrapper">
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Create explainer</td>
+<td><a href="https://github.com/oyiptong/compute-pressure/blob/main/README.md" rel="noopener">Complete</a></td>
+</tr>
+<tr>
+<td>2. Create initial draft of specification</td>
+<td><a href="https://oyiptong.github.io/compute-pressure/" rel="noopener">In Progress</a></td>
+</tr>
+<tr>
+<td>3. Gather feedback &amp; iterate on design</td>
+<td>In progress</td>
+</tr>
+<tr>
+<td>4. <strong>Origin trial</strong></td>
+<td><a href="#ot">In progress</a></td>
+</tr>
+<tr>
+<td>5. Launch</td>
+<td>Not started</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<h2 id="api-availability">API Availability <a class="w-headline-link" href="#api-availability">#</a></h2>
+<h3 id="ot">Enabling support during the origin trial phase <a class="w-headline-link" href="#ot">#</a></h3>
+<p>Starting in Chrome 92, the Compute Pressure API can be used as part of an origin
+trial.</p>
+<p>Origin trials allow you to try new features and give feedback on their
+usability, practicality, and effectiveness to the web standards community. For
+more information, see the <a href="https://github.com/GoogleChrome/OriginTrials/blob/gh-pages/developer-guide.md" rel="noopener">Origin Trials Guide for Web Developers</a>.
+To sign up for this or another origin trial, visit the <a href="https://developers.chrome.com/origintrials/#/trials/active" rel="noopener">registration page</a>.</p>
+<h3 id="register-for-ot">Register for the origin trial <a class="w-headline-link" href="#register-for-ot">#</a></h3>
+<ol>
+<li><a href="https://developer.chrome.com/origintrials/#/view_trial/1838594547874004993" rel="noopener">Request a token</a> for your origin.</li>
+<li>Add the token to your pages. There are two ways to do that:
+<ul>
+<li>Add an <code>origin-trial</code> <code>&lt;meta&gt;</code> tag to the head of each page. For example,
+this may look something like: <br>
+<code>&lt;meta http-equiv=&quot;origin-trial&quot; content=&quot;TOKEN_GOES_HERE&quot;&gt;</code></li>
+<li>If you can configure your server, you can also add the token
+using an <code>Origin-Trial</code> HTTP header. The resulting response header should
+look something like:<br>
+<code>Origin-Trial: TOKEN_GOES_HERE</code></li>
+</ul>
+</li>
+</ol>
+<h3 id="enabling-via-about:flags">Enabling via about://flags <a class="w-headline-link" href="#enabling-via-about:flags">#</a></h3>
+<p>To experiment with the API locally, without an origin trial token, enable the
+<code>#enable-experimental-web-platform-features</code> flag in about://flags.</p>
+<h3 id="feature-detection">Feature detection <a class="w-headline-link" href="#feature-detection">#</a></h3>
+<p>You should check for the presence of <code>ComputePressureObserver</code> in the <code>window</code>
+scope to see if the feature is available:</p>
+<web-copy-code><pre class="language-javascript"><code class="language-javascript"><span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token string">'ComputePressureObserver'</span> <span class="token keyword">in</span> window<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token comment">// The Compute Pressure API is available.</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><h2 id="acknowledgements">Acknowledgements <a class="w-headline-link" href="#acknowledgements">#</a></h2>
+<p>This blog post is derived on the sample code and
+<a href="https://github.com/oyiptong/compute-pressure/blob/main/README.md" rel="noopener">API explainer</a>
+created by Olivier Yiptong and Victor Costan.</p>
+<p>The hero image was created by Robert Anasch on
+<a href="https://unsplash.com/photos/-C7IKRBZHrg" rel="noopener">Unsplash</a>. The diagram illustrating
+bucketing was created by <a href="/authors/adamargyle/">Adam Argyle</a>.</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/capabilities/">Capabilities</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Jun 7, 2021</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/compute-pressure/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

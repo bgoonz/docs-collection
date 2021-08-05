@@ -1,0 +1,851 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=487cf81ad8794">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Access USB Devices on the Web</title>
+<meta name="description" content="The WebUSB API makes USB safer and easier to use by bringing it to the Web. " />
+
+<link rel="canonical" href="https://web.dev/usb/" />
+
+<meta itemprop="name" content="Access USB Devices on the Web" />
+<meta itemprop="description" content="The WebUSB API makes USB safer and easier to use by bringing it to the Web. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/RyaGPB8fHCuuXUc9Wj9Z.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/usb/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Access USB Devices on the Web" />
+<meta property="og:description" content="The WebUSB API makes USB safer and easier to use by bringing it to the Web. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/RyaGPB8fHCuuXUc9Wj9Z.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="A photo of an Arduino Micro board" />
+<meta property="tag" content="capabilities" />
+<meta property="tag" content="devices" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Access USB Devices on the Web" />
+<meta name="twitter:description" content="The WebUSB API makes USB safer and easier to use by bringing it to the Web. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/RyaGPB8fHCuuXUc9Wj9Z.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=c9bb3b65f91d4', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=33213d65cd7d9', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="A photo of an Arduino Micro board"     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/hhnhxiNuRWMfGqy4NSaH.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/hhnhxiNuRWMfGqy4NSaH.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/hhnhxiNuRWMfGqy4NSaH.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/hhnhxiNuRWMfGqy4NSaH.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/hhnhxiNuRWMfGqy4NSaH.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/hhnhxiNuRWMfGqy4NSaH.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/hhnhxiNuRWMfGqy4NSaH.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/hhnhxiNuRWMfGqy4NSaH.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/hhnhxiNuRWMfGqy4NSaH.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/hhnhxiNuRWMfGqy4NSaH.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/hhnhxiNuRWMfGqy4NSaH.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/hhnhxiNuRWMfGqy4NSaH.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/hhnhxiNuRWMfGqy4NSaH.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/hhnhxiNuRWMfGqy4NSaH.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/hhnhxiNuRWMfGqy4NSaH.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/hhnhxiNuRWMfGqy4NSaH.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/hhnhxiNuRWMfGqy4NSaH.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/hhnhxiNuRWMfGqy4NSaH.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#access-usb-devices-on-the-web" class="w-toc__header--link">
+        Access USB Devices on the Web
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#before-i-start">Before I start</a></li><li><a href="#available-for-origin-trials">Available for origin trials</a></li><li><a href="#privacy-and-security">Privacy and security</a></li><li><a href="#https-only">HTTPS only</a></li><li><a href="#user-gesture-required">User gesture required</a></li><li><a href="#feature-policy">Feature Policy</a></li><li><a href="#let's-start-coding">Let's start coding</a></li><li><a href="#get-access-to-usb-devices">Get access to USB devices</a></li><li><a href="#talk-to-an-arduino-usb-board">Talk to an Arduino USB board</a></li><li><a href="#i-want-more">I want more</a></li><li><a href="#tips">Tips</a></li><li><a href="#resources">Resources</a></li><li><a href="#acknowledgements">Acknowledgements</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="i18n.authors.beaufortfrancois.title"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="access-usb-devices-on-the-web" class="w-article-header__headline">Access USB Devices on the Web</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          <p>The WebUSB API makes USB safer and easier to use by bringing it to the Web.</p>
+
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Mar 30, 2016</time>
+           <span class="w-author__separator">•</span> Updated <time>Feb 23, 2021</time> 
+        </div>
+      
+      <div class="w-layout-container--narrow w-post-signpost">
+  <span class="w-post-signpost__title">Appears in:</span>
+  <a
+          class="w-post-signpost__link"
+          href="/devices"
+          >Devices</a
+        >
+</div>
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/beaufortfrancois/"><img     alt="François Beaufort"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/mXjY3z3JmrispGtu9yn6.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/mXjY3z3JmrispGtu9yn6.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/mXjY3z3JmrispGtu9yn6.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/mXjY3z3JmrispGtu9yn6.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/mXjY3z3JmrispGtu9yn6.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/mXjY3z3JmrispGtu9yn6.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/beaufortfrancois/">François Beaufort</a>
+    </cite>
+    <ul class="w-author__link-list">
+      
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/beaufortfrancois">GitHub</a>
+      </li>
+      
+      
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>If I said plainly and simply &quot;USB&quot;, there is a good chance that you will
+immediately think of keyboards, mice, audio, video, and storage devices. You're
+right but you'll find other kinds of Universal Serial Bus (USB) devices out
+there.</p>
+<p>These non-standardized USB devices require hardware vendors to write platform-specific
+drivers and SDKs in order for you (the developer) to take advantage of them.
+Sadly this platform-specific code has historically prevented these devices from being used
+by the Web. And that's one of the reasons the WebUSB API has been created: to
+provide a way to expose USB device services to the Web. With this API, hardware
+manufacturers will be able to build cross-platform JavaScript SDKs for their
+devices.
+But most importantly this will <strong>make USB safer and easier to use by bringing
+it to the Web</strong>.</p>
+<p>Let's see the behavior you could expect with the WebUSB API:</p>
+<ol>
+<li>Buy a USB device.</li>
+<li>Plug it into your computer. A notification appears right away, with the right
+website to go to for this device.</li>
+<li>Click the notification. The website is there and ready to use!</li>
+<li>Click to connect and a USB device chooser shows up in Chrome where you can
+pick your device.</li>
+</ol>
+<p>Tada!</p>
+<p>What would this procedure be like without the WebUSB API?</p>
+<ol>
+<li>Install a platform-specific application.</li>
+<li>If it's even supported on my operating system, verify that I've downloaded
+the right thing.</li>
+<li>Install the thing. If you're lucky, you'll get no scary OS prompts or popups
+warning you about installing drivers/applications from the internet. If
+you're unlucky, the installed drivers or applications malfunction and harm
+your computer. (Remember, the web is built to <a href="https://www.youtube.com/watch?v=29e0CtgXZSI" rel="noopener">contain malfunctioning
+websites</a>).</li>
+<li>If you only use the feature once, the code stays on your computer until you
+think to remove it. (On the Web, the space for unused is eventually
+reclaimed.)</li>
+</ol>
+<h2 id="before-i-start">Before I start <a class="w-headline-link" href="#before-i-start">#</a></h2>
+<p>This article assumes you have some basic knowledge of how USB works. If not, I
+recommend reading <a href="http://www.beyondlogic.org/usbnutshell" rel="noopener">USB in a NutShell</a>. For background information about USB,
+check out the <a href="https://www.usb.org/" rel="noopener">official USB specifications</a>.</p>
+<p>The <a href="https://wicg.github.io/webusb/" rel="noopener">WebUSB API</a> is available in Chrome 61.</p>
+<h3 id="available-for-origin-trials">Available for origin trials <a class="w-headline-link" href="#available-for-origin-trials">#</a></h3>
+<p>In order to get as much feedback as possible from developers using the WebUSB
+API in the field, we've previously added this feature in Chrome 54 and Chrome
+57 as an <a href="https://github.com/GoogleChrome/OriginTrials/blob/gh-pages/developer-guide.md" rel="noopener">origin trial</a>.</p>
+<p>The latest trial has successfully ended in September 2017.</p>
+<h2 id="privacy-and-security">Privacy and security <a class="w-headline-link" href="#privacy-and-security">#</a></h2>
+<h3 id="https-only">HTTPS only <a class="w-headline-link" href="#https-only">#</a></h3>
+<p>Because of this feature's power, it only works on <a href="https://w3c.github.io/webappsec/specs/powerfulfeatures/#intro" rel="noopener">secure contexts</a>. This means
+you'll need to build with <a href="https://en.wikipedia.org/wiki/Transport_Layer_Security" rel="noopener">TLS</a> in mind.</p>
+<h3 id="user-gesture-required">User gesture required <a class="w-headline-link" href="#user-gesture-required">#</a></h3>
+<p>As a security precaution, <code>navigator.usb.requestDevice()</code> may only
+be called through a user gesture such as a touch or mouse click.</p>
+<h3 id="feature-policy">Feature Policy <a class="w-headline-link" href="#feature-policy">#</a></h3>
+<p>A <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Feature_Policy" rel="noopener">feature policy</a> is a mechanism that allows developers to selectively enable
+and disable various browser features and APIs. It can be defined via an HTTP
+header and/or an iframe &quot;allow&quot; attribute.</p>
+<p>You can define a feature policy that controls whether the usb attribute is
+exposed on the Navigator object, or in other words if you allow WebUSB.</p>
+<p>Below is an example of a header policy where WebUSB is not allowed:</p>
+<web-copy-code><pre class="language-http"><code class="language-http"><span class="token header-name keyword">Feature-Policy:</span> fullscreen "*"; usb "none"; payment "self" https://payment.example.com</code></pre>
+</web-copy-code><p>Below is another example of a container policy where USB is allowed:</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>iframe</span> <span class="token attr-name">allowpaymentrequest</span> <span class="token attr-name">allow</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>usb; fullscreen<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>iframe</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><h2 id="let's-start-coding">Let's start coding <a class="w-headline-link" href="#let's-start-coding">#</a></h2>
+<p>The WebUSB API relies heavily on JavaScript <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise" rel="noopener">Promises</a>. If you're not familiar
+with them, check out this great <a href="/promises">Promises tutorial</a>. One more thing, <code>() =&gt; {}</code>
+are simply ECMAScript 2015 <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Functions/Arrow_functions" rel="noopener">Arrow functions</a>.</p>
+<h3 id="get-access-to-usb-devices">Get access to USB devices <a class="w-headline-link" href="#get-access-to-usb-devices">#</a></h3>
+<p>You can either prompt the user to select a single connected USB device using
+<code>navigator.usb.requestDevice()</code> or call <code>navigator.usb.getDevices()</code> to get a
+list of all connected USB devices the origin has access to.</p>
+<p>The <code>navigator.usb.requestDevice()</code> function takes a mandatory JavaScript object
+that defines <code>filters</code>. These filters are used to match any USB device with the
+given vendor (<code>vendorId</code>) and, optionally, product (<code>productId</code>) identifiers.
+The <code>classCode</code>, <code>protocolCode</code>, <code>serialNumber</code>, and <code>subclassCode</code> keys can
+also be defined there as well.</p>
+<figure class="w-figure">
+  <img     alt="Screenshot of the USB device user prompt in Chrome"     class="w-screenshot"     decoding="async"     height="533"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/KIbPwUfEqgZZLxugxBOY.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/KIbPwUfEqgZZLxugxBOY.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/KIbPwUfEqgZZLxugxBOY.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/KIbPwUfEqgZZLxugxBOY.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/KIbPwUfEqgZZLxugxBOY.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/KIbPwUfEqgZZLxugxBOY.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/KIbPwUfEqgZZLxugxBOY.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/KIbPwUfEqgZZLxugxBOY.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/KIbPwUfEqgZZLxugxBOY.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/KIbPwUfEqgZZLxugxBOY.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/KIbPwUfEqgZZLxugxBOY.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/KIbPwUfEqgZZLxugxBOY.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/KIbPwUfEqgZZLxugxBOY.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/KIbPwUfEqgZZLxugxBOY.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/KIbPwUfEqgZZLxugxBOY.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/KIbPwUfEqgZZLxugxBOY.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/KIbPwUfEqgZZLxugxBOY.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/KIbPwUfEqgZZLxugxBOY.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">USB device user prompt.</figcaption>
+</figure>
+<p>For instance, here's how to get access to a connected Arduino device configured
+to allow the origin.</p>
+<web-copy-code><pre class="language-js"><code class="language-js">navigator<span class="token punctuation">.</span>usb<span class="token punctuation">.</span><span class="token function">requestDevice</span><span class="token punctuation">(</span><span class="token punctuation">{</span> filters<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">{</span> vendorId<span class="token operator">:</span> <span class="token number">0x2341</span> <span class="token punctuation">}</span><span class="token punctuation">]</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><br><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">device</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>device<span class="token punctuation">.</span>productName<span class="token punctuation">)</span><span class="token punctuation">;</span>      <span class="token comment">// "Arduino Micro"</span><br>  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>device<span class="token punctuation">.</span>manufacturerName<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// "Arduino LLC"</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><br><span class="token punctuation">.</span><span class="token function">catch</span><span class="token punctuation">(</span><span class="token parameter">error</span> <span class="token operator">=></span> <span class="token punctuation">{</span> console<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span>error<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>Before you ask, I didn't magically come up with this <code>0x2341</code> hexadecimal
+number. I simply searched for the word &quot;Arduino&quot; in this <a href="http://www.linux-usb.org/usb.ids" rel="noopener">List of USB ID's</a>.</p>
+<p>The USB <code>device</code> returned in the fulfilled promise above has some basic, yet
+important information about the device such as the supported USB version,
+maximum packet size, vendor, and product IDs, the number of possible
+configurations the device can have. Basically it contains all fields in the
+<a href="http://www.beyondlogic.org/usbnutshell/usb5.shtml#DeviceDescriptors" rel="noopener">device USB Descriptor</a>.</p>
+<p>By the way, if a USB device announces its <a href="https://wicg.github.io/webusb/#webusb-platform-capability-descriptor" rel="noopener">support for WebUSB</a>, as well as
+defining a landing page URL, Chrome will show a persistent notification when the
+USB device is plugged in. Clicking this notification will open the landing page.</p>
+<figure class="w-figure">
+  <img     alt="Screenshot of the WebUSB notification in Chrome"     class="w-screenshot"     decoding="async"     height="450"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/1gRIz2wY4LYofeFq5cc3.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/1gRIz2wY4LYofeFq5cc3.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/1gRIz2wY4LYofeFq5cc3.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/1gRIz2wY4LYofeFq5cc3.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/1gRIz2wY4LYofeFq5cc3.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/1gRIz2wY4LYofeFq5cc3.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/1gRIz2wY4LYofeFq5cc3.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/1gRIz2wY4LYofeFq5cc3.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/1gRIz2wY4LYofeFq5cc3.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/1gRIz2wY4LYofeFq5cc3.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/1gRIz2wY4LYofeFq5cc3.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/1gRIz2wY4LYofeFq5cc3.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/1gRIz2wY4LYofeFq5cc3.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/1gRIz2wY4LYofeFq5cc3.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/1gRIz2wY4LYofeFq5cc3.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/1gRIz2wY4LYofeFq5cc3.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/1gRIz2wY4LYofeFq5cc3.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/1gRIz2wY4LYofeFq5cc3.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">WebUSB notification.</figcaption>
+</figure>
+<p>From there, you can simply call <code>navigator.usb.getDevices()</code> and access your
+Arduino device as shown below.</p>
+<web-copy-code><pre class="language-js"><code class="language-js">navigator<span class="token punctuation">.</span>usb<span class="token punctuation">.</span><span class="token function">getDevices</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">devices</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  devices<span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token parameter">device</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>device<span class="token punctuation">.</span>productName<span class="token punctuation">)</span><span class="token punctuation">;</span>      <span class="token comment">// "Arduino Micro"</span><br>    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>device<span class="token punctuation">.</span>manufacturerName<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// "Arduino LLC"</span><br>  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span></code></pre>
+</web-copy-code><h3 id="talk-to-an-arduino-usb-board">Talk to an Arduino USB board <a class="w-headline-link" href="#talk-to-an-arduino-usb-board">#</a></h3>
+<p>Okay, now let's see how easy it is to communicate from a WebUSB compatible
+Arduino board over the USB port. Check out instructions at
+<a href="https://github.com/webusb/arduino" rel="noopener">https://github.com/webusb/arduino</a> to WebUSB-enable your <a href="http://www.arduino.cc/en/Tutorial/Sketch" rel="noopener">sketches</a>.</p>
+<p>Don't worry, I'll cover all the WebUSB device methods mentioned below later in
+this article.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">let</span> device<span class="token punctuation">;</span><br><br>navigator<span class="token punctuation">.</span>usb<span class="token punctuation">.</span><span class="token function">requestDevice</span><span class="token punctuation">(</span><span class="token punctuation">{</span> filters<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">{</span> vendorId<span class="token operator">:</span> <span class="token number">0x2341</span> <span class="token punctuation">}</span><span class="token punctuation">]</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><br><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">selectedDevice</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>    device <span class="token operator">=</span> selectedDevice<span class="token punctuation">;</span><br>    <span class="token keyword">return</span> device<span class="token punctuation">.</span><span class="token function">open</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Begin a session.</span><br>  <span class="token punctuation">}</span><span class="token punctuation">)</span><br><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> device<span class="token punctuation">.</span><span class="token function">selectConfiguration</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">// Select configuration #1 for the device.</span><br><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> device<span class="token punctuation">.</span><span class="token function">claimInterface</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">// Request exclusive control over interface #2.</span><br><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> device<span class="token punctuation">.</span><span class="token function">controlTransferOut</span><span class="token punctuation">(</span><span class="token punctuation">{</span><br>    requestType<span class="token operator">:</span> <span class="token string">'class'</span><span class="token punctuation">,</span><br>    recipient<span class="token operator">:</span> <span class="token string">'interface'</span><span class="token punctuation">,</span><br>    request<span class="token operator">:</span> <span class="token number">0x22</span><span class="token punctuation">,</span><br>    value<span class="token operator">:</span> <span class="token number">0x01</span><span class="token punctuation">,</span><br>    index<span class="token operator">:</span> <span class="token number">0x02</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">// Ready to receive data</span><br><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> device<span class="token punctuation">.</span><span class="token function">transferIn</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">64</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">// Waiting for 64 bytes of data from endpoint #5.</span><br><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">result</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token keyword">const</span> decoder <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">TextDecoder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'Received: '</span> <span class="token operator">+</span> decoder<span class="token punctuation">.</span><span class="token function">decode</span><span class="token punctuation">(</span>result<span class="token punctuation">.</span>data<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><br><span class="token punctuation">.</span><span class="token function">catch</span><span class="token punctuation">(</span><span class="token parameter">error</span> <span class="token operator">=></span> <span class="token punctuation">{</span> console<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span>error<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>Please keep in mind that the WebUSB library I'm using here is just implementing
+one example protocol (based on the standard USB serial protocol) and that
+manufacturers can create any set and types of endpoints they wish.
+Control transfers are especially nice for small configuration commands as
+they get bus priority and have a well defined structure.</p>
+<p>And here's the sketch that has been uploaded to the Arduino board.</p>
+<web-copy-code><pre class="language-arduino"><code class="language-arduino"><span class="token comment">// Third-party WebUSB Arduino library</span><br><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;WebUSB.h></span></span><br><br>WebUSB <span class="token function">WebUSBSerial</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token comment">/* https:// */</span><span class="token punctuation">,</span> <span class="token string">"webusb.github.io/arduino/demos"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name">Serial</span> <span class="token expression">WebUSBSerial</span></span><br><br><span class="token keyword">void</span> <span class="token keyword">setup</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token builtin">Serial</span><span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token number">9600</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token builtin">Serial</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token punctuation">;</span> <span class="token comment">// Wait for serial port to connect.</span><br>  <span class="token punctuation">}</span><br>  <span class="token builtin">Serial</span><span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span><span class="token string">"WebUSB FTW!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token builtin">Serial</span><span class="token punctuation">.</span><span class="token function">flush</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><br><br><span class="token keyword">void</span> <span class="token keyword">loop</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token comment">// Nothing here for now.</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>The third-party <a href="https://github.com/webusb/arduino/tree/gh-pages/library/WebUSB" rel="noopener">WebUSB Arduino library</a> used in the sample code above does
+basically two things:</p>
+<ul>
+<li>The device acts as a WebUSB device enabling Chrome to read the <a href="https://wicg.github.io/webusb/#webusb-platform-capability-descriptor" rel="noopener">landing page
+URL</a>.</li>
+<li>It exposes a WebUSB Serial API that you may use to override the default one.</li>
+</ul>
+<p>Look at the JavaScript code again. Once I get the <code>device</code> picked by the user,
+<code>device.open()</code> runs all platform-specific steps to start a session with the USB
+device. Then, I have to select an available USB Configuration with
+<code>device.selectConfiguration()</code>. Remember that a configuration specifies how the
+device is powered, its maximum power consumption and its number of interfaces.
+Speaking of interfaces, I also need to request exclusive access with
+<code>device.claimInterface()</code> since data can only be transferred to an interface or
+associated endpoints when the interface is claimed. Finally calling
+<code>device.controlTransferOut()</code> is needed to set up the Arduino device with the
+appropriate commands to communicate through the WebUSB Serial API.</p>
+<p>From there, <code>device.transferIn()</code> performs a bulk transfer onto the
+device to inform it that the host is ready to receive bulk data. Then, the
+promise is fulfilled with a <code>result</code> object containing a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView" rel="noopener">DataView</a> <code>data</code> that
+has to be parsed appropriately.</p>
+<p>If you're familiar with USB, all of this should look pretty familiar.</p>
+<h3 id="i-want-more">I want more <a class="w-headline-link" href="#i-want-more">#</a></h3>
+<p>The WebUSB API lets you interact with the all USB transfer/endpoint types:</p>
+<ul>
+<li>CONTROL transfers, used to send or receive configuration or command
+parameters to a USB device, are handled with <code>controlTransferIn(setup, length)</code> and <code>controlTransferOut(setup, data)</code>.</li>
+<li>INTERRUPT transfers, used for a small amount of time sensitive data, are
+handled with the same methods as BULK transfers with
+<code>transferIn(endpointNumber, length)</code> and <code>transferOut(endpointNumber, data)</code>.</li>
+<li>ISOCHRONOUS transfers, used for streams of data like video and sound, are
+handled with <code>isochronousTransferIn(endpointNumber, packetLengths)</code> and
+<code>isochronousTransferOut(endpointNumber, data, packetLengths)</code>.</li>
+<li>BULK transfers, used to transfer a large amount of non-time-sensitive data in
+a reliable way, are handled with <code>transferIn(endpointNumber, length)</code> and
+<code>transferOut(endpointNumber, data)</code>.</li>
+</ul>
+<p>You may also want to have a look at Mike Tsao's <a href="https://github.com/sowbug/weblight" rel="noopener">WebLight project</a> which
+provides a ground-up example of building a USB-controlled LED device designed
+for the WebUSB API (not using an Arduino here). You'll find hardware, software,
+and firmware.</p>
+<h2 id="tips">Tips <a class="w-headline-link" href="#tips">#</a></h2>
+<p>Debugging USB in Chrome is easier with the internal page <code>about://device-log</code>
+where you can see all USB device related events in one single place.</p>
+<figure class="w-figure">
+  <img     alt="Screenshot of the device log page to debug WebUSB in Chrome"     class="w-screenshot"     decoding="async"     height="442"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/ssq2mMZmxpWtALortfZx.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/ssq2mMZmxpWtALortfZx.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/ssq2mMZmxpWtALortfZx.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/ssq2mMZmxpWtALortfZx.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/ssq2mMZmxpWtALortfZx.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/ssq2mMZmxpWtALortfZx.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/ssq2mMZmxpWtALortfZx.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/ssq2mMZmxpWtALortfZx.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/ssq2mMZmxpWtALortfZx.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/ssq2mMZmxpWtALortfZx.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/ssq2mMZmxpWtALortfZx.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/ssq2mMZmxpWtALortfZx.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/ssq2mMZmxpWtALortfZx.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/ssq2mMZmxpWtALortfZx.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/ssq2mMZmxpWtALortfZx.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/ssq2mMZmxpWtALortfZx.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/ssq2mMZmxpWtALortfZx.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/ssq2mMZmxpWtALortfZx.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">Device log page in Chrome for debugging the WebUSB API.</figcaption>
+</figure>
+<p>The internal page <code>about://usb-internals</code> also comes in handy and allows you
+to simulate connection and disconnection of virtual WebUSB devices.
+This is be useful for doing UI testing without for real hardware.</p>
+<figure class="w-figure">
+  <img     alt="Screenshot of the internal page to debug WebUSB in Chrome"     class="w-screenshot"     decoding="async"     height="294"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/KB5z4p7fZRsvkfhVTNkb.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/KB5z4p7fZRsvkfhVTNkb.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/KB5z4p7fZRsvkfhVTNkb.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/KB5z4p7fZRsvkfhVTNkb.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/KB5z4p7fZRsvkfhVTNkb.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/KB5z4p7fZRsvkfhVTNkb.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/KB5z4p7fZRsvkfhVTNkb.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/KB5z4p7fZRsvkfhVTNkb.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/KB5z4p7fZRsvkfhVTNkb.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/KB5z4p7fZRsvkfhVTNkb.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/KB5z4p7fZRsvkfhVTNkb.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/KB5z4p7fZRsvkfhVTNkb.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/KB5z4p7fZRsvkfhVTNkb.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/KB5z4p7fZRsvkfhVTNkb.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/KB5z4p7fZRsvkfhVTNkb.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/KB5z4p7fZRsvkfhVTNkb.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/KB5z4p7fZRsvkfhVTNkb.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/KB5z4p7fZRsvkfhVTNkb.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">Internal page in Chrome for debugging the WebUSB API.</figcaption>
+</figure>
+<p>On most Linux systems, USB devices are mapped with read-only permissions by
+default. To allow Chrome to open a USB device, you will need to add a new <a href="https://www.freedesktop.org/software/systemd/man/udev.html" rel="noopener">udev
+rule</a>. Create a file at <code>/etc/udev/rules.d/50-yourdevicename.rules</code> with the
+following content:</p>
+<web-copy-code><pre class="language-vim"><code class="language-vim">SUBSYSTEM<span class="token operator">==</span><span class="token string">"usb"</span><span class="token punctuation">,</span> ATTR<span class="token punctuation">{</span>idVendor<span class="token punctuation">}</span><span class="token operator">==</span><span class="token string">"[yourdevicevendor]"</span><span class="token punctuation">,</span> MODE<span class="token operator">=</span><span class="token string">"0664"</span><span class="token punctuation">,</span> GROUP<span class="token operator">=</span><span class="token string">"plugdev"</span></code></pre>
+</web-copy-code><p>where <code>[yourdevicevendor]</code> is <code>2341</code> if your device is an Arduino for instance.
+<code>ATTR{idProduct}</code> can also be added for a more specific rule. Make sure your
+<code>user</code> is a <a href="https://wiki.debian.org/SystemGroups" rel="noopener">member</a> of the <code>plugdev</code> group.  Then, just reconnect your device.</p>
+<div class="w-aside w-aside--note">
+<p>Microsoft OS 2.0 Descriptors used by the Arduino examples only work on Windows
+8.1 and later. Without that Windows support still requires manual installation
+of an INF file.</p>
+</div>
+<h2 id="resources">Resources <a class="w-headline-link" href="#resources">#</a></h2>
+<ul>
+<li>Stack Overflow: <a href="https://stackoverflow.com/questions/tagged/webusb" rel="noopener">https://stackoverflow.com/questions/tagged/webusb</a></li>
+<li>WebUSB API Spec: <a href="https://wicg.github.io/webusb/" rel="noopener">http://wicg.github.io/webusb/</a></li>
+<li>Chrome Feature Status: <a href="https://www.chromestatus.com/feature/5651917954875392" rel="noopener">https://www.chromestatus.com/feature/5651917954875392</a></li>
+<li>Spec Issues: <a href="https://github.com/WICG/webusb/issues" rel="noopener">https://github.com/WICG/webusb/issues</a></li>
+<li>Implementation Bugs: <a href="http://crbug.com?q=component:Blink%3EUSB" rel="noopener">http://crbug.com?q=component:Blink&gt;USB</a></li>
+<li>WebUSB ❤ ️Arduino: <a href="https://github.com/webusb/arduino" rel="noopener">https://github.com/webusb/arduino</a></li>
+<li>IRC: <a href="irc://irc.w3.org:6665/#webusb" rel="noopener">#webusb</a> on W3C's IRC</li>
+<li>WICG Mailing list: <a href="https://lists.w3.org/Archives/Public/public-wicg/" rel="noopener">https://lists.w3.org/Archives/Public/public-wicg/</a></li>
+<li>WebLight project: <a href="https://github.com/sowbug/weblight" rel="noopener">https://github.com/sowbug/weblight</a></li>
+</ul>
+<p>Send a tweet to [@ChromiumDev][cr-dev-twitter] using the hashtag
+<a href="https://twitter.com/search?q=%23WebUSB&amp;src=typed_query&amp;f=live" rel="noopener"><code>#WebUSB</code></a>
+and let us know where and how you're using it.</p>
+<h2 id="acknowledgements">Acknowledgements <a class="w-headline-link" href="#acknowledgements">#</a></h2>
+<p>Thanks to <a href="https://github.com/jpmedley" rel="noopener">Joe Medley</a> for reviewing this article.</p>
+
+
+    
+      <div class="w-aside w-aside--note">Have a question about using this feature? You can get help by <a href="https://stackoverflow.com/questions/ask?tags=webusb">asking a question on Stack Overflow</a>, or <a href="https://stackoverflow.com/search?q=%5Bwebusb%5D+is%3Aquestion">browsing a list of questions</a> asked by other developers.</div>
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/capabilities/">Capabilities</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/devices/">Devices</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Feb 23, 2021</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/usb/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions="api"></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

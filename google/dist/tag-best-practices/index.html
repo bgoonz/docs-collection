@@ -1,0 +1,1015 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=cab518ae95a51">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Best practices for tags and tag managers</title>
+<meta name="description" content="Optimize tags for Core Web Vitals. " />
+
+<link rel="canonical" href="https://web.dev/tag-best-practices/" />
+
+<meta itemprop="name" content="Best practices for tags and tag managers" />
+<meta itemprop="description" content="Optimize tags for Core Web Vitals. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/aIZgX5qHUBalZz0dUNqN.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/tag-best-practices/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Best practices for tags and tag managers" />
+<meta property="og:description" content="Optimize tags for Core Web Vitals. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/aIZgX5qHUBalZz0dUNqN.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="" />
+<meta property="tag" content="performance" />
+<meta property="tag" content="web-vitals" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Best practices for tags and tag managers" />
+<meta name="twitter:description" content="Optimize tags for Core Web Vitals. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/aIZgX5qHUBalZz0dUNqN.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=b9d43723c154e', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=02ba6ce3b6f5e', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="Hero Image"     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/aIZgX5qHUBalZz0dUNqN.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/aIZgX5qHUBalZz0dUNqN.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/aIZgX5qHUBalZz0dUNqN.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/aIZgX5qHUBalZz0dUNqN.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/aIZgX5qHUBalZz0dUNqN.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/aIZgX5qHUBalZz0dUNqN.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/aIZgX5qHUBalZz0dUNqN.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/aIZgX5qHUBalZz0dUNqN.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/aIZgX5qHUBalZz0dUNqN.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/aIZgX5qHUBalZz0dUNqN.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/aIZgX5qHUBalZz0dUNqN.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/aIZgX5qHUBalZz0dUNqN.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/aIZgX5qHUBalZz0dUNqN.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/aIZgX5qHUBalZz0dUNqN.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/aIZgX5qHUBalZz0dUNqN.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/aIZgX5qHUBalZz0dUNqN.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/aIZgX5qHUBalZz0dUNqN.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/aIZgX5qHUBalZz0dUNqN.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#best-practices-for-tags-and-tag-managers" class="w-toc__header--link">
+        Best practices for tags and tag managers
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#tag-types">Tag types</a></li><li><a href="#not-all-scripts-should-be-loaded-using-a-tag-manager">Not all scripts should be loaded using a tag manager</a></li><li><a href="#be-careful-with-custom-html-tags">Be careful with Custom HTML tags</a></li><li><a href="#consider-using-custom-templates">Consider using Custom Templates</a></li><li><a href="#inject-scripts-correctly">Inject scripts correctly</a></li><li><a href="#use-pixels">Use pixels</a></li><li><a href="#get-clarification">Get clarification</a></li><li><a href="#triggers">Triggers</a></li><li><a href="#choose-an-appropriate-trigger-event">Choose an appropriate trigger event</a></li><li><a href="#use-custom-events">Use custom events</a></li><li><a href="#use-specific-trigger-conditions">Use specific trigger conditions</a></li><li><a href="#load-your-tag-manager-at-an-appropriate-time">Load your tag manager at an appropriate time</a></li><li><a href="#tag-management">Tag Management</a></li><li><a href="#use-the-data-layer">Use the data layer</a></li><li><a href="#remove-duplicate-and-unused-tags">Remove duplicate and unused tags</a></li><li><a href="#use-allow-and-deny-lists">Use allow and deny lists</a></li><li><a href="#consider-using-server-side-tagging">Consider using server-side tagging</a></li><li><a href="#containers">Containers</a></li><li><a href="#use-only-one-container-per-page">Use only one container per page</a></li><li><a href="#use-separate-containers-if-needed">Use separate containers if needed</a></li><li><a href="#keep-an-eye-on-container-size">Keep an eye on container size</a></li><li><a href="#name-your-container-versions">Name your container versions</a></li><li><a href="#tagging-workflows">Tagging workflows</a></li><li><a href="#test-tags-before-deploying">Test tags before deploying</a></li><li><a href="#monitor-tag-performance">Monitor tag performance</a></li><li><a href="#require-approval-for-container-changes">Require approval for container changes</a></li><li><a href="#periodically-audit-tag-usage">Periodically audit tag usage</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@katiehempenius"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="best-practices-for-tags-and-tag-managers" class="w-article-header__headline">Best practices for tags and tag managers</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          Optimize tags and tag managers for Core Web Vitals.
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Jul 29, 2021</time>
+          
+        </div>
+      
+      <div class="w-layout-container--narrow w-post-signpost">
+  <span class="w-post-signpost__title">Appears in:</span>
+  <a
+          class="w-post-signpost__link"
+          href="/learn-web-vitals"
+          >Web Vitals</a
+        >
+</div>
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/katiehempenius/"><img     alt="Katie Hempenius"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/fZo7BJGec2MNRt6cWpeh.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/fZo7BJGec2MNRt6cWpeh.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/fZo7BJGec2MNRt6cWpeh.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/fZo7BJGec2MNRt6cWpeh.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/fZo7BJGec2MNRt6cWpeh.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/fZo7BJGec2MNRt6cWpeh.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/katiehempenius/">Katie Hempenius</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/katiehempenius"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/khempenius">GitHub</a>
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://glitch.com/@khempenius"
+          >Glitch</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://katiehempenius.com/">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p><a href="https://support.google.com/tagmanager/answer/3281060?hl=en" rel="noopener">Tags</a> are snippets
+of third-party code that are inserted into a site, typically via a tag manager.
+Tags are most commonly used for marketing and analytics.</p>
+<div class="w-aside w-aside--note">
+<p>Although tags and third-party scripts are often fundamentally the exact same
+thing, the separate terminology reflects the different ways that these scripts
+are used: &quot;tags&quot; are typically owned by marketing departments and added via tag
+managers; whereas &quot;third-party scripts&quot; more commonly refer to resources added
+through code changes made by engineering departments.</p>
+</div>
+<p>The performance impact of tags and tag managers varies wildly from site to site.
+Tag managers can be compared to an envelope: the tag manager provides a
+vessel—but what you fill it with and how you use it is mostly up to you.</p>
+<p>This article discusses techniques for optimizing tags and tag managers for
+performance and Web Vitals. Although this article references Google Tag Manager,
+many of the ideas discussed are also applicable to other tag managers.</p>
+<h2 id="tag-types">Tag types <a class="w-headline-link" href="#tag-types">#</a></h2>
+<p>The impact of tags on performance varies by tag type. Generally speaking, image
+tags (&quot;pixels&quot;) are the most performant, followed by custom templates, and
+lastly, custom HTML tags.</p>
+<p>However, keep in mind that how you use a tag greatly influences its performance
+impact. &quot;Pixels&quot; are highly performant largely because the nature of this tag
+type imposes tight restrictions on how they can be used; custom HTML tags aren't
+necessarily always bad for performance, but due to the level of freedom they
+offer users, they can be easy to misuse in a way that is bad for performance.</p>
+<p>When thinking about tags, keep scale in mind: the performance impact of any
+single tag may be negligible—but can become significant when tens or hundreds of
+tags are used on the same page.</p>
+<h3 id="not-all-scripts-should-be-loaded-using-a-tag-manager">Not all scripts should be loaded using a tag manager <a class="w-headline-link" href="#not-all-scripts-should-be-loaded-using-a-tag-manager">#</a></h3>
+<p>Tag managers are typically not a good mechanism for loading resources that
+implement immediate visual or functional aspects of the user experience—for
+example, cookie notices, hero images, or site features. Using a tag manager to
+load these resources typically delays their delivery. This is bad for the user
+experience and can also increase metrics like LCP and CLS.  In addition, keep in
+mind that some users block tag managers. Using a tag manager to implement UX
+features may result in a broken website for some of your users.</p>
+<div class="w-aside w-aside--note">
+<p>Resources requested via tag manager will typically load later than resources
+requested directly. This is not always a bad thing. If a tag manager is
+primarily used to deliver non-essential resources, this delay can be used
+constructively by providing a mechanism for delaying non-essential requests.</p>
+</div>
+<h3 id="be-careful-with-custom-html-tags">Be careful with Custom HTML tags <a class="w-headline-link" href="#be-careful-with-custom-html-tags">#</a></h3>
+<p><a href="https://support.google.com/tagmanager/answer/6107167/custom-tags?hl=en#CustomHTML" rel="noopener">Custom HTML
+tags</a>
+have been around for many years and are heavily used on most sites. Custom HTML
+tags allow you to enter your own code with few restrictions. As a result, Custom
+HTML tags can be used in a wide variety of ways and their performance impact
+varies significantly. When measuring the performance of your site, be aware that
+most tools will attribute the performance impact of a Custom HTML tag to the tag
+manager that injected it—rather than the tag itself.</p>
+<img     alt="Screenshot of creating a custom tag in Google Tag Manager"     class="screenshot"     decoding="async"     height="470"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/cjLFJStmZvkQkr4DYPlk.png?auto=format"     srcset="https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/cjLFJStmZvkQkr4DYPlk.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/cjLFJStmZvkQkr4DYPlk.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/cjLFJStmZvkQkr4DYPlk.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/cjLFJStmZvkQkr4DYPlk.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/cjLFJStmZvkQkr4DYPlk.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/cjLFJStmZvkQkr4DYPlk.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/cjLFJStmZvkQkr4DYPlk.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/cjLFJStmZvkQkr4DYPlk.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/cjLFJStmZvkQkr4DYPlk.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/cjLFJStmZvkQkr4DYPlk.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/cjLFJStmZvkQkr4DYPlk.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/cjLFJStmZvkQkr4DYPlk.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/cjLFJStmZvkQkr4DYPlk.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/cjLFJStmZvkQkr4DYPlk.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/cjLFJStmZvkQkr4DYPlk.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/cjLFJStmZvkQkr4DYPlk.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/cjLFJStmZvkQkr4DYPlk.png?auto=format&w=1600 1600w"          width="800"   />
+<p>Custom HTML tags work by inserting an element into the surrounding page. The act
+of inserting elements into the page can be a source of performance issues, and
+in some cases, also cause layout shifts.</p>
+<ul>
+<li>In most situations, if an element is inserted into the page, the browser
+must recalculate the size and position of each item on the page—this process
+is known as
+<a href="https://developers.google.com/web/updates/2018/09/inside-browser-part3#layout" rel="noopener">layout</a>.
+The performance impact of a single layout is minimal, but when it occurs
+excessively it can become a source of performance issues. The impact of this
+phenomenon is larger on lower-end devices and pages with a high number of
+DOM elements.</li>
+<li>If a visible page element is inserted into the DOM after the surrounding
+area has already been rendered, it can cause a layout shift. This phenomenon
+is not unique to tag managers—however, because tags typically load later
+than other parts of the page, it's common for them to be inserted into the
+DOM after the surrounding page has already been rendered.</li>
+</ul>
+<div class="w-aside w-aside--note">
+<p>If you're adding or changing visible content on a page, keep in mind that search
+engines will need to be able to fetch and process the JavaScript used. For
+Google, you can <a href="https://developers.google.com/search/docs/advanced/javascript/dynamic-rendering#verify" rel="noopener">verify rendering of a
+page</a>
+for Search; other search engines may have similar testing tools available.</p>
+</div>
+<h3 id="consider-using-custom-templates">Consider using Custom Templates <a class="w-headline-link" href="#consider-using-custom-templates">#</a></h3>
+<p><a href="https://developers.google.com/tag-manager/templates" rel="noopener">Custom templates</a> support
+some of the same operations as Custom HTML tags but are built upon a sandboxed
+version of JavaScript that provides
+<a href="https://developers.google.com/tag-manager/templates/api" rel="noopener">APIs</a> for common use
+cases like script injection and pixel injection. Due to the greater restrictions
+imposed on custom templates, these tags are much less likely to exhibit
+performance or security issues; however, for these same reasons, custom
+templates will not work for all use cases.</p>
+<img     alt="Screenshot of using a custom template in Google Tag Manager"     class="screenshot"     decoding="async"     height="388"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/QRz6pn83YE6plVivynA7.png?auto=format"     srcset="https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/QRz6pn83YE6plVivynA7.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/QRz6pn83YE6plVivynA7.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/QRz6pn83YE6plVivynA7.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/QRz6pn83YE6plVivynA7.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/QRz6pn83YE6plVivynA7.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/QRz6pn83YE6plVivynA7.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/QRz6pn83YE6plVivynA7.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/QRz6pn83YE6plVivynA7.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/QRz6pn83YE6plVivynA7.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/QRz6pn83YE6plVivynA7.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/QRz6pn83YE6plVivynA7.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/QRz6pn83YE6plVivynA7.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/QRz6pn83YE6plVivynA7.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/QRz6pn83YE6plVivynA7.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/QRz6pn83YE6plVivynA7.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/QRz6pn83YE6plVivynA7.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/QRz6pn83YE6plVivynA7.png?auto=format&w=1600 1600w"          width="800"   />
+<h3 id="inject-scripts-correctly">Inject scripts correctly <a class="w-headline-link" href="#inject-scripts-correctly">#</a></h3>
+<p>Using a tag manager to inject a script is a very common use case. The
+recommended way to do this is to use a Custom Template and the
+<a href="https://developers.google.com/tag-manager/templates/api#injectscript" rel="noopener"><code>injectScript</code></a>
+API.</p>
+<p>For information on using the injectScript API to convert an existing Custom HTML
+tag, see <a href="https://developers.google.com/tag-manager/templates/convert-existing-tag" rel="noopener">Convert an existing
+tag</a>.</p>
+<p>If you must you use a Custom HTML tag, here are some things to keep in mind:</p>
+<ul>
+<li>Libraries and large third-party scripts should be loaded via a script tag
+that downloads an external file (for example, <code>&lt;script src=&quot;external-scripts.js&quot;&gt;</code>), rather than directly copy-pasting the script's
+contents into the tag. Although forgoing use of the <code>&lt;script&gt;</code> tag
+eliminates a separate round-trip to download the script's contents, this
+practice increases container size and prevents the script from being cached
+separately by the browser.</li>
+<li>Many vendors recommend placing their <code>&lt;script&gt;</code> tag at the top of the
+<code>&lt;head&gt;</code>. However, for scripts loaded via tag manager, this recommendation
+is usually unnecessary: in most situations, the browser has already finished
+parsing the <code>&lt;head&gt;</code> by the time that the tag manager executes.</li>
+</ul>
+<h3 id="use-pixels">Use pixels <a class="w-headline-link" href="#use-pixels">#</a></h3>
+<p>In some situations third-party scripts can be replaced with image or iframe
+&quot;pixels&quot;. Compared to their script-based counterparts, these pixels may support
+less functionality; however, because there is no JavaScript execution, they are
+also the most performant and secure type of tag. Pixels have a very small
+resource size (less than 1 KB) and do not cause layout shifts.</p>
+<p>Check with your third-party provider for more information on their support for
+pixels. Additionally, you can try inspecting their code for a <code>&lt;noscript&gt;</code> tag.
+If a vendor supports pixels, they will often include them within the
+<code>&lt;noscript&gt;</code> tag.</p>
+<img     alt="Screenshot of custom image tag in Google Tag Manager"          decoding="async"     height="295"          loading="lazy"     sizes="(min-width: 512px) 512px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/QMdKBiA8UYcX4V06Lt8V.png?auto=format"     srcset="https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/QMdKBiA8UYcX4V06Lt8V.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/QMdKBiA8UYcX4V06Lt8V.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/QMdKBiA8UYcX4V06Lt8V.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/QMdKBiA8UYcX4V06Lt8V.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/QMdKBiA8UYcX4V06Lt8V.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/QMdKBiA8UYcX4V06Lt8V.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/QMdKBiA8UYcX4V06Lt8V.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/QMdKBiA8UYcX4V06Lt8V.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/QMdKBiA8UYcX4V06Lt8V.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/QMdKBiA8UYcX4V06Lt8V.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/QMdKBiA8UYcX4V06Lt8V.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/QMdKBiA8UYcX4V06Lt8V.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/QMdKBiA8UYcX4V06Lt8V.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/QMdKBiA8UYcX4V06Lt8V.png?auto=format&w=1024 1024w"          width="512"   />
+<h4 id="alternatives-to-pixels">Alternatives to pixels <a class="w-headline-link" href="#alternatives-to-pixels">#</a></h4>
+<p>Pixels became popular largely because at one time they were one of the cheapest
+and most reliable ways to make a HTTP request in situations where the server
+response is not relevant ( for example, when sending data to analytics
+providers). The
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/Navigator/sendBeacon" rel="noopener"><code>navigator.sendBeacon()</code></a>
+and <a href="https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#parameters" rel="noopener"><code>fetch() keepalive</code></a>
+APIs are designed to address this same use case but are arguably more reliable
+than pixels.</p>
+<div class="w-aside w-aside--note">
+<p>The <code>sendBeacon()</code> and <code>fetch() keepalive</code> APIs will both still work in
+situations where the browser is
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/unload_event" rel="noopener">unloading</a>
+the page: for example, both of these APIs can be used to track outbound link
+clicks. By contrast, techniques like pixels and
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest" rel="noopener"><code>XMLHttpRequest</code></a>
+would likely fail in those cases.</p>
+</div>
+<p>There is nothing wrong with continuing to use pixels—they are well supported and
+have minimal performance impact. However, if you are building your own beacons,
+it is worth considering using one of these APIs.</p>
+<h5 id="sendbeacon()"><code>sendBeacon()</code> <a class="w-headline-link" href="#sendbeacon()">#</a></h5>
+<p>The
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/Navigator/sendBeacon" rel="noopener"><code>navigator.sendBeacon()</code></a>
+API is designed for sending small amounts of data to web servers in situations
+where the server response does not matter.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> url <span class="token operator">=</span> <span class="token string">"https://example.com/analytics"</span><span class="token punctuation">;</span><br><span class="token keyword">const</span> data <span class="token operator">=</span> <span class="token constant">JSON</span><span class="token punctuation">.</span><span class="token function">stringify</span><span class="token punctuation">(</span><span class="token punctuation">{</span><br>    event<span class="token operator">:</span> <span class="token string">"checkout"</span><span class="token punctuation">,</span><br>    time<span class="token operator">:</span> performance<span class="token punctuation">.</span><span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>navigator<span class="token punctuation">.</span><span class="token function">sendBeacon</span><span class="token punctuation">(</span>url<span class="token punctuation">,</span> data<span class="token punctuation">)</span><span class="token punctuation">;</span><br></code></pre>
+</web-copy-code><p><code>sendBeacon()</code> has a limited API: it only supports making POST requests and does
+not support setting custom headers. It is
+<a href="https://caniuse.com/beacon" rel="noopener">supported</a> by all modern browsers.</p>
+<h5 id="fetch()-keepalive"><code>fetch() keepalive</code> <a class="w-headline-link" href="#fetch()-keepalive">#</a></h5>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#parameters" rel="noopener"><code>keepalive</code></a>
+is a flag that allows the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch" rel="noopener">Fetch
+API</a> to
+be used to make non-blocking requests like event reporting and analytics. It is
+used by including <code>keepalive: true</code> in the parameters passed to <code>fetch()</code>.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> url <span class="token operator">=</span> <span class="token string">"https://example.com/analytics"</span><span class="token punctuation">;</span><br><span class="token keyword">const</span> data <span class="token operator">=</span> <span class="token constant">JSON</span><span class="token punctuation">.</span><span class="token function">stringify</span><span class="token punctuation">(</span><span class="token punctuation">{</span><br>  event<span class="token operator">:</span> <span class="token string">"checkout"</span><span class="token punctuation">,</span><br>  time<span class="token operator">:</span> performance<span class="token punctuation">.</span><span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token function">fetch</span><span class="token punctuation">(</span>url<span class="token punctuation">,</span> <span class="token punctuation">{</span><br>    method<span class="token operator">:</span> <span class="token string">'POST'</span><span class="token punctuation">,</span><br>    body<span class="token operator">:</span> data<span class="token punctuation">,</span><br>    keepalive<span class="token operator">:</span> <span class="token boolean">true</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>If <code>fetch() keepalive</code> and <code>sendBeacon()</code> seem very similar, it's because they
+are. In fact, in Chromium browsers, <code>sendBeacon()</code> is now built upon <code>fetch() keepalive</code>.</p>
+<p>When choosing between <code>fetch() keepalive</code> and <code>sendBeacon()</code>, it's important to
+consider the features and browser support that you need. The fetch() API is
+significantly more flexible; however, <code>keepalive</code> has less browser
+<a href="https://caniuse.com/?search=keepalive" rel="noopener">support</a> than <code>sendBeacon()</code>.</p>
+<h3 id="get-clarification">Get clarification <a class="w-headline-link" href="#get-clarification">#</a></h3>
+<p>Tags are often created by following guidance provided by a third-party vendor.
+If it is unclear what a vendor's code does—consider asking someone who knows.
+Getting a second opinion can help identify if a tag has the potential to create
+performance or security issues.</p>
+<h2 id="triggers">Triggers <a class="w-headline-link" href="#triggers">#</a></h2>
+<p>At a high-level, optimizing <a href="https://support.google.com/tagmanager/topic/7679108?hl=en&amp;ref_topic=7679384" rel="noopener">tag
+triggers</a>
+generally consists of making sure to not trigger tags more than necessary and
+choosing a trigger that balances business needs with performance costs.</p>
+<h3 id="choose-an-appropriate-trigger-event">Choose an appropriate trigger event <a class="w-headline-link" href="#choose-an-appropriate-trigger-event">#</a></h3>
+<p>The performance impact of a tag is not fixed: generally speaking, the earlier
+that a tag fires, the greater its impact on performance. Resources are typically
+constrained during the initial page load and therefore loading or executing a
+particular resource (or tag) takes resources away from something else.</p>
+<p>Although it is important to choose appropriate triggers for all tags, it is
+particularly important for tags that load large resources or execute long
+scripts.</p>
+<h3 id="use-custom-events">Use custom events <a class="w-headline-link" href="#use-custom-events">#</a></h3>
+<p><a href="https://support.google.com/tagmanager/answer/7679219?hl=en" rel="noopener">Custom events</a>
+allow you to fire triggers in response to page events that aren't covered by
+Google Tag Manager's built-in triggers. For example, many tags use <a href="https://support.google.com/tagmanager/answer/7679319?hl=en" rel="noopener">page view
+triggers</a>; however,
+the time period between <code>DOM Ready</code> and <code>Window Loaded</code> can be lengthy on many
+pages and this can make it difficult to fine-tune when a tag fires. Custom
+events provide a solution to this problem.</p>
+<p>To use custom events, first create a custom event trigger and update your tags
+to use this trigger.</p>
+<img     alt="Screenshot of a Custom Event trigger in Google Tag Manager"          decoding="async"     height="286"          loading="lazy"     sizes="(min-width: 512px) 512px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/BvkKSJi7PeAONrdKfIXq.png?auto=format"     srcset="https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/BvkKSJi7PeAONrdKfIXq.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/BvkKSJi7PeAONrdKfIXq.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/BvkKSJi7PeAONrdKfIXq.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/BvkKSJi7PeAONrdKfIXq.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/BvkKSJi7PeAONrdKfIXq.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/BvkKSJi7PeAONrdKfIXq.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/BvkKSJi7PeAONrdKfIXq.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/BvkKSJi7PeAONrdKfIXq.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/BvkKSJi7PeAONrdKfIXq.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/BvkKSJi7PeAONrdKfIXq.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/BvkKSJi7PeAONrdKfIXq.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/BvkKSJi7PeAONrdKfIXq.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/BvkKSJi7PeAONrdKfIXq.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/BvkKSJi7PeAONrdKfIXq.png?auto=format&w=1024 1024w"          width="512"   />
+<p>To fire the trigger, push the corresponding event to the data layer.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token comment">// Custom event trigger that fires after 2 seconds</span><br><span class="token function">setTimeout</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  dataLayer<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token punctuation">{</span><br>    <span class="token string">'event'</span> <span class="token operator">:</span> <span class="token string">'my-custom-event'</span><br>  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token number">2000</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><h3 id="use-specific-trigger-conditions">Use specific trigger conditions <a class="w-headline-link" href="#use-specific-trigger-conditions">#</a></h3>
+<p>Using specific trigger conditions helps avoid firing a tag unnecessarily.
+Although there are many ways to apply this concept, one of the simplest yet most
+useful things you can do is ensure that a tag only fires on pages where it is
+actually used.</p>
+<img     alt="Screenshot showing trigger conditions in Google Tag Manager"          decoding="async"     height="288"          loading="lazy"     sizes="(min-width: 512px) 512px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/G3MVBTGhNr560S6zEQu4.png?auto=format"     srcset="https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/G3MVBTGhNr560S6zEQu4.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/G3MVBTGhNr560S6zEQu4.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/G3MVBTGhNr560S6zEQu4.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/G3MVBTGhNr560S6zEQu4.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/G3MVBTGhNr560S6zEQu4.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/G3MVBTGhNr560S6zEQu4.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/G3MVBTGhNr560S6zEQu4.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/G3MVBTGhNr560S6zEQu4.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/G3MVBTGhNr560S6zEQu4.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/G3MVBTGhNr560S6zEQu4.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/G3MVBTGhNr560S6zEQu4.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/G3MVBTGhNr560S6zEQu4.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/G3MVBTGhNr560S6zEQu4.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/j2RDdG43oidUy6AL6LovThjeX9c2/G3MVBTGhNr560S6zEQu4.png?auto=format&w=1024 1024w"          width="512"   />
+<p><a href="https://support.google.com/tagmanager/answer/7182738" rel="noopener">Built-in variables</a> can
+also be incorporated into trigger conditions to limit tag firing.</p>
+<h3 id="load-your-tag-manager-at-an-appropriate-time">Load your tag manager at an appropriate time <a class="w-headline-link" href="#load-your-tag-manager-at-an-appropriate-time">#</a></h3>
+<p>Adjusting when you tag manager loads can have a significant impact on
+performance. Triggers, regardless of how they are configured, can't fire until
+after a tag manager loads. Although it is important to choose good triggers for
+individual tags (as explained above), experimenting with when you load your tag
+manager can often have an equal or greater impact given that this single
+decision will impact all tags on a page.</p>
+<h2 id="tag-management">Tag Management <a class="w-headline-link" href="#tag-management">#</a></h2>
+<h3 id="use-the-data-layer">Use the data layer <a class="w-headline-link" href="#use-the-data-layer">#</a></h3>
+<p>The <a href="https://developers.google.com/tag-manager/devguide" rel="noopener">data layer</a> &quot;contains
+all of the information that you want to pass to Google Tag Manager&quot;. More
+concretely, it is a JavaScript array of objects that contain information about
+the page. It can also be used to trigger tags.</p>
+<web-copy-code><pre class="language-javascript"><code class="language-javascript"><span class="token comment">// Contents of the data layer</span><br>window<span class="token punctuation">.</span>dataLayer <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">{</span><br>    <span class="token string">'pageCategory'</span><span class="token operator">:</span> <span class="token string">'signup'</span><span class="token punctuation">,</span><br>    <span class="token string">'visitorType'</span><span class="token operator">:</span> <span class="token string">'high-value'</span><br>  <span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">;</span><br><br><span class="token comment">// Pushing a variable to the data layer</span><br>window<span class="token punctuation">.</span>dataLayer<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token string">'variable\_name'</span><span class="token operator">:</span> <span class="token string">'variable\_value'</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token comment">// Pushing an event to the data layer</span><br>window<span class="token punctuation">.</span>dataLayer<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token string">'event'</span><span class="token operator">:</span> <span class="token string">'event\_name'</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>Although Google Tag Manager can be used without the data layer, its use is
+strongly recommended. The data layer provides a way to consolidate the data
+being accessed by third-party scripts into a single place thereby providing
+better visibility into its usage. Amongst other things, this can help reduce
+redundant variable calculations and script execution.</p>
+<div class="w-aside w-aside--note">
+<p>The performance benefits of the data layer might seem non-intuitive given that
+updating the data layer causes Google Tag Manager to reevaluate all container
+variables and potentially trigger tags—all of which entails JavaScript
+execution. Although it is possible to misuse the data layer, generally speaking,
+if working with the data layer is a source of performance issues, it probably
+indicates that the container itself has performance issues—the data layer is
+merely making these issues more apparent.</p>
+</div>
+<h3 id="remove-duplicate-and-unused-tags">Remove duplicate and unused tags <a class="w-headline-link" href="#remove-duplicate-and-unused-tags">#</a></h3>
+<p>Duplicate tags can occur when a tag is included in a page's HTML markup in
+addition to being injected through a tag manager.</p>
+<p>Unused tags should be paused or removed rather than blocked through use of a
+<a href="https://support.google.com/tagmanager/answer/7679318?hl=en" rel="noopener">trigger exception</a>.
+Pausing or removing a tag removes the code from the container; blocking does
+not.</p>
+<h3 id="use-allow-and-deny-lists">Use allow and deny lists <a class="w-headline-link" href="#use-allow-and-deny-lists">#</a></h3>
+<p><a href="https://developers.google.com/tag-manager/web/restrict" rel="noopener">Allow and deny lists</a>
+allow you to configure highly granular restrictions on the tags, triggers, and
+variables allowed on a page. This can be used to help enforce performance best
+practices and other policies.</p>
+<p>Allow and deny lists are configured through the data layer.</p>
+<web-copy-code><pre class="language-js"><code class="language-js">window<span class="token punctuation">.</span>dataLayer <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">{</span><br>  <span class="token string">'gtm.allowlist'</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">'&amp;lt;id>'</span><span class="token punctuation">,</span> <span class="token string">'&amp;lt;id>'</span><span class="token punctuation">,</span> <span class="token operator">...</span><span class="token punctuation">]</span><span class="token punctuation">,</span><br>  <span class="token string">'gtm.blocklist'</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">'customScripts'</span><span class="token punctuation">]</span><br><span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><h3 id="consider-using-server-side-tagging">Consider using server-side tagging <a class="w-headline-link" href="#consider-using-server-side-tagging">#</a></h3>
+<p>Switching to server-side tagging is not a trivial task, but it is worth
+considering - particularly for larger sites that want more control over their
+data. Server-side tagging removes vendor code from the client, and with it,
+offloads processing from the client to the server.</p>
+<p>For example, when using client-side tagging, sending data to multiple analytics
+accounts entails that the client initiates separate requests for each endpoint.
+By contrast, with server-side tagging, a single request is made by the client to
+the server-side container, and from there, this data is forwarded to different
+analytics accounts.</p>
+<p>Keep in mind that server-side tagging only works with some tags; tag
+compatibility varies depending on vendor.</p>
+<p>For more information, see <a href="https://developers.google.com/tag-manager/serverside/intro" rel="noopener">An introduction to server-side
+tagging</a>.</p>
+<h2 id="containers">Containers <a class="w-headline-link" href="#containers">#</a></h2>
+<h3 id="use-only-one-container-per-page">Use only one container per page <a class="w-headline-link" href="#use-only-one-container-per-page">#</a></h3>
+<p>Using multiple
+<a href="https://developers.google.com/tag-manager/api/v1/reference/accounts/containers" rel="noopener">containers</a>
+on a single page can create significant performance issues as it introduces
+additional overhead and script execution. It is rare for multiple containers to
+be used effectively.</p>
+<p>If you must use multiple containers per page, <a href="https://developers.google.com/tag-manager/devguide#multiple-containers" rel="noopener">follow Google Tag manager
+guidance for setting up multiple
+containers</a>.</p>
+<h3 id="use-separate-containers-if-needed">Use separate containers if needed <a class="w-headline-link" href="#use-separate-containers-if-needed">#</a></h3>
+<p>If you use a tag manager for multiple properties (for example, a web app and a
+mobile app)—the number of containers you use can help or hurt your workflow
+productivity. It can also impact performance.</p>
+<p>Generally speaking, a single container can effectively be used across multiple
+sites if the sites are similar in use and structure. For example, although a
+brand's mobile and web apps might serve similar functions, it's likely that the
+apps will be structured differently, and therefore more effectively managed
+through separate containers. Trying to reuse a single container too broadly
+typically unnecessarily increases the complexity and size of the container by
+forcing the adoption of complex logic to manage tags and triggers.</p>
+<h3 id="keep-an-eye-on-container-size">Keep an eye on container size <a class="w-headline-link" href="#keep-an-eye-on-container-size">#</a></h3>
+<p>The size of a container is determined by its tags, triggers, and variables.
+Although a small container may negatively impact page performance, a large
+container almost certainly will.</p>
+<p>Container size should not be your north-star metric when optimizing your tag
+usage; however, a large container size is often a warning sign that a container
+is not well maintained and possibly misused.</p>
+<p>Google Tag Manager
+<a href="https://support.google.com/tagmanager/answer/2772488?hl=en" rel="noopener">limits</a> container
+size to 200 KB and will warn about container size starting at 140 KB. However,
+most sites should aim to keep their containers far smaller than this. For
+perspective, the median site container is around 6 KB.</p>
+<p>To determine the size of your container, look at the size of the response
+returned by <code>https://www.googletagmanager.com/gtag/js?id=YOUR_ID</code>. This
+response contains the Google Tag Manager library plus the contents of the
+container. By itself, the Google Tag Manager library is around 33 KB.</p>
+<h3 id="name-your-container-versions">Name your container versions <a class="w-headline-link" href="#name-your-container-versions">#</a></h3>
+<p>A <a href="https://developers.google.com/tag-manager/api/v1/reference/accounts/containers/versions" rel="noopener">container
+version</a>
+is a snapshot of a container's content at a particular point in time. Using a
+meaningful name and along with including a short description of meaningful
+changes within can go a long way in making it easier to debug future performance
+issues.</p>
+<h2 id="tagging-workflows">Tagging workflows <a class="w-headline-link" href="#tagging-workflows">#</a></h2>
+<h3 id="test-tags-before-deploying">Test tags before deploying <a class="w-headline-link" href="#test-tags-before-deploying">#</a></h3>
+<p>Testing your tags before deployment can help catch issues (performance and
+otherwise) before they ship.</p>
+<p>Things to consider when testing a tag include:</p>
+<ul>
+<li>Is the tag working correctly?</li>
+<li>Does the tag cause any layout shifts?</li>
+<li>Does the tag load any resources? How large are these resources?</li>
+<li>Does the tag trigger a long-running script?</li>
+</ul>
+<h4 id="preview-mode">Preview mode <a class="w-headline-link" href="#preview-mode">#</a></h4>
+<p><a href="https://support.google.com/tagmanager/answer/6107056" rel="noopener">Preview mode</a> allows you
+to test tag changes on your actual site without having to deploy them to the
+public first. Preview mode includes a debugging console that provides
+information about tags.</p>
+<p>The execution time of Google Tag Manager will be different (slightly slower)
+when run in Preview mode due to the additional overhead required to expose
+information in the debugging console. Thus, comparing Web Vitals measurements
+collected in preview mode to those collected in production is not recommended.
+However, this discrepancy should not affect the execution behavior of the tags
+themselves.</p>
+<h4 id="standalone-testing">Standalone testing <a class="w-headline-link" href="#standalone-testing">#</a></h4>
+<p>An alternative approach to testing tags is to set up an empty page containing a
+container with a single tag—the tag you are testing. This testing setup is less
+realistic and won't catch some issues (for example, whether a tag causes layout
+shifts)—however it can make it easier to isolate and measure the impact of the
+tag on things like script execution. Check out how <a href="https://medium.com/the-telegraph-engineering/improving-third-party-web-performance-at-the-telegraph-a0a1000be5" rel="noopener">Telegraph uses this
+isolation approach to improve
+performance</a>
+of third-party code.</p>
+<h3 id="monitor-tag-performance">Monitor tag performance <a class="w-headline-link" href="#monitor-tag-performance">#</a></h3>
+<p>The Google Tag Manager <a href="https://developers.google.com/tag-manager/templates/monitoring" rel="noopener">Monitoring
+API</a> can be used
+to gather information about the <a href="https://developers.google.com/tag-manager/templates/monitoring#execution_times" rel="noopener">execution
+time</a>
+of a particular tag. This information is reported to an endpoint of your
+choosing.</p>
+<p>For more information, see <a href="https://www.simoahava.com/analytics/google-tag-manager-monitor/" rel="noopener">How to build a Google Tag Manager
+Monitor</a>.</p>
+<h3 id="require-approval-for-container-changes">Require approval for container changes <a class="w-headline-link" href="#require-approval-for-container-changes">#</a></h3>
+<p>First-party code typically goes through review and testing before deployment -
+treat your tags the same. Adding <a href="https://support.google.com/tagmanager/answer/4525539/tag-manager-and-2-step-verification?hl=en" rel="noopener">two-step
+verification</a>,
+which requires administrator approval for container changes, is one way to do
+this. Alternatively, if you don't want to require two-step verification but
+would still like to keep an eye on changes, you can set up <a href="https://support.google.com/tagmanager/answer/9713667?hl=en" rel="noopener">container
+notifications</a> to
+receive email alerts about container events of your choosing.</p>
+<h3 id="periodically-audit-tag-usage">Periodically audit tag usage <a class="w-headline-link" href="#periodically-audit-tag-usage">#</a></h3>
+<p>One of the challenges of working with tags is that they tend to accumulate over
+time: tags get added but are rarely removed. Auditing tags periodically is one
+way to reverse this trend. The ideal frequency for doing this will depend on how
+often your site's tags are updated.</p>
+<p>For more information, see <a href="/controlling-third-party-scripts/">Keeping third-party scripts under
+control</a>.</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/performance/">Performance</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/web-vitals/">Web Vitals</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Jul 29, 2021</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/tag-best-practices/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

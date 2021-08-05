@@ -1,0 +1,990 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=9822144b29e86">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Verify phone numbers on the web with the WebOTP API</title>
+<meta name="description" content="Finding, memorizing, and typing OTPs sent via SMS is cumbersome. The WebOTP API simplifies the OTP workflow for users. " />
+
+<link rel="canonical" href="https://web.dev/web-otp/" />
+
+<meta itemprop="name" content="Verify phone numbers on the web with the WebOTP API" />
+<meta itemprop="description" content="Finding, memorizing, and typing OTPs sent via SMS is cumbersome. The WebOTP API simplifies the OTP workflow for users. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/iVHsQYbBj8qNYZeSZKwK.png?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/web-otp/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Verify phone numbers on the web with the WebOTP API" />
+<meta property="og:description" content="Finding, memorizing, and typing OTPs sent via SMS is cumbersome. The WebOTP API simplifies the OTP workflow for users. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/iVHsQYbBj8qNYZeSZKwK.png?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="A drawing of a woman using OTP to log in to a web app." />
+<meta property="tag" content="identity" />
+<meta property="tag" content="capabilities" />
+<meta property="tag" content="otp" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Verify phone numbers on the web with the WebOTP API" />
+<meta name="twitter:description" content="Finding, memorizing, and typing OTPs sent via SMS is cumbersome. The WebOTP API simplifies the OTP workflow for users. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/iVHsQYbBj8qNYZeSZKwK.png?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=9ac8653be9cff', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=cee0279814af7', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="A drawing of a woman using OTP to log in to a web app."     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/iVHsQYbBj8qNYZeSZKwK.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/iVHsQYbBj8qNYZeSZKwK.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/iVHsQYbBj8qNYZeSZKwK.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/iVHsQYbBj8qNYZeSZKwK.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/iVHsQYbBj8qNYZeSZKwK.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/iVHsQYbBj8qNYZeSZKwK.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/iVHsQYbBj8qNYZeSZKwK.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/iVHsQYbBj8qNYZeSZKwK.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/iVHsQYbBj8qNYZeSZKwK.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/iVHsQYbBj8qNYZeSZKwK.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/iVHsQYbBj8qNYZeSZKwK.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/iVHsQYbBj8qNYZeSZKwK.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/iVHsQYbBj8qNYZeSZKwK.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/iVHsQYbBj8qNYZeSZKwK.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/iVHsQYbBj8qNYZeSZKwK.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/iVHsQYbBj8qNYZeSZKwK.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/iVHsQYbBj8qNYZeSZKwK.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/iVHsQYbBj8qNYZeSZKwK.png?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#verify-phone-numbers-on-the-web-with-the-webotp-api" class="w-toc__header--link">
+        Verify phone numbers on the web with the WebOTP API
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#what-is-the-webotp-api">What is the WebOTP API?</a></li><li><a href="#see-it-in-action">See it in action</a></li><li><a href="#annotate-an-lessinputgreater-tag">Annotate an &lt;input&gt; tag</a></li><li><a href="#use-the-webotp-api">Use the WebOTP API</a></li><li><a href="#feature-detection">Feature detection</a></li><li><a href="#process-the-otp">Process the OTP</a></li><li><a href="#aborting">Aborting the message</a></li><li><a href="#format">Format the SMS message</a></li><li><a href="#demos">Demos</a></li><li><a href="#use-webotp-from-a-cross-origin-iframe">Use WebOTP from a cross-origin iframe</a></li><li><a href="#annotate-bound-origins-to-the-sms-text-message">Annotate bound-origins to the SMS text message</a></li><li><a href="#configure-permissions-policy">Configure Permissions Policy</a></li><li><a href="#faq">FAQ</a></li><li><a href="#no-dialog">The dialog doesn't appear though I'm sending a properly formatted message. What's going wrong?</a></li><li><a href="#is-this-api-compatible-between-different-browsers">Is this API compatible between different browsers?</a></li><li><a href="#is-it-safe-to-use-sms-as-a-way-to-authenticate">Is it safe to use SMS as a way to authenticate?</a></li><li><a href="#where-do-i-report-bugs-in-chrome's-implementation">Where do I report bugs in Chrome's implementation?</a></li><li><a href="#how-can-i-help-this-feature">How can I help this feature?</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@agektmr"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="verify-phone-numbers-on-the-web-with-the-webotp-api" class="w-article-header__headline">Verify phone numbers on the web with the WebOTP API</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          Help users with OTPs received through SMS
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Oct 7, 2019</time>
+           <span class="w-author__separator">•</span> Updated <time>Jun 4, 2021</time> 
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/agektmr/"><img     alt="Eiji Kitamura"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/Mh9DRmQhjlroJM9JDqsu.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/Mh9DRmQhjlroJM9JDqsu.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/Mh9DRmQhjlroJM9JDqsu.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/Mh9DRmQhjlroJM9JDqsu.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/Mh9DRmQhjlroJM9JDqsu.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/Mh9DRmQhjlroJM9JDqsu.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/agektmr/">Eiji Kitamura</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/agektmr"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/agektmr">GitHub</a>
+      </li>
+      
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://blog.agektmr.com">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <div class="w-aside w-aside--gotchas"><strong>Gotchas!</strong>
+<p>If you want to learn more general SMS OTP form best practices including WebOTP
+API, checkout <a href="/sms-otp-form">SMS OTP form best practices</a>.</p>
+</div>
+<h2 id="what-is-the-webotp-api">What is the WebOTP API? <a class="w-headline-link" href="#what-is-the-webotp-api">#</a></h2>
+<p>These days, most people in the world own a mobile device and developers are
+commonly using phone numbers as an identifier for users of their services.</p>
+<p>There are a variety of ways to verify phone numbers, but a randomly generated
+one-time password (OTP) sent by SMS is one of the most common. Sending this code
+back to the developer's server demonstrates control of the phone number.</p>
+<p>This idea is already deployed in many scenarios to achieve:</p>
+<ul>
+<li><strong>Phone number as an identifier for the user.</strong> When signing up for a new
+service, some websites ask for a phone number instead of an email address and
+use it as an account identifier.</li>
+<li><strong>Two step verification.</strong> When signing in, a website asks for a one-time code
+sent via SMS on top of a password or other knowledge factor for extra
+security.</li>
+<li><strong>Payment confirmation.</strong> When a user is making a payment, asking for a
+one-time code sent via SMS can help verify the person's intent.</li>
+</ul>
+<p>The current process creates friction for users. Finding an OTP within an SMS
+message, then copying and pasting it to the form is cumbersome, lowering
+conversion rates in critical user journeys. Easing this has been a long standing
+request for the web from many of the largest global developers. Android has <a href="https://developers.google.com/identity/sms-retriever/" rel="noopener">an
+API that does exactly
+this</a>. So does
+<a href="https://developer.apple.com/documentation/security/password_autofill/about_the_password_autofill_workflow" rel="noopener">iOS</a>
+and
+<a href="https://developer.apple.com/documentation/security/password_autofill/enabling_password_autofill_on_an_html_input_element" rel="noopener">Safari</a>.</p>
+<p>The WebOTP API lets your app receive specially-formatted messages bound to
+your app's domain. From this, you can programmatically obtain an OTP from an SMS
+message and verify a phone number for the user more easily.</p>
+<div class="w-aside w-aside--warning">
+<p><strong>Warning</strong>:
+Attackers can spoof SMS and hijack a person's phone number. Carriers can also
+recycle phone numbers to new users after an account is closed. While SMS OTP is
+useful to verify a phone number for the use cases above, we recommend using
+additional and stronger forms of authentication (such as multiple factors and
+the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Authentication_API" rel="noopener">Web Authentication
+API</a> to
+establish new sessions for these users.</p>
+</div>
+<h2 id="see-it-in-action">See it in action <a class="w-headline-link" href="#see-it-in-action">#</a></h2>
+<p>Let's say a user wants to verify their phone number with a website. The website
+sends a text message to the user over SMS and the user enters the OTP from the
+message to verify the ownership of the phone number.</p>
+<p>With the WebOTP API, these steps are as easy as one tap for the user, as
+demonstrated in the video. When the text message arrives, a bottom sheet pops up
+and prompts the user to verify their phone number. After clicking the <strong>Verify</strong>
+button on the bottom sheet, the browser pastes the OTP into the form and the
+form is submitted without the user needing to press <strong>Continue</strong>.</p>
+<video autoplay loop muted playsinline>
+  <source src="https://storage.googleapis.com/web-dev-assets/web-otp/demo.mp4" type="video/mp4">
+  <source src="https://storage.googleapis.com/web-dev-assets/web-otp/demo.webm" type="video/webm">
+</video>
+<p>The whole process is diagrammed in the image below.</p>
+<figure class="w-figure">
+  <img     alt=""          decoding="async"     height="391"          loading="lazy"     sizes="(min-width: 494px) 494px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/GrFHzEg98jxCOguAQwHe.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/GrFHzEg98jxCOguAQwHe.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/GrFHzEg98jxCOguAQwHe.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/GrFHzEg98jxCOguAQwHe.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/GrFHzEg98jxCOguAQwHe.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/GrFHzEg98jxCOguAQwHe.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/GrFHzEg98jxCOguAQwHe.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/GrFHzEg98jxCOguAQwHe.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/GrFHzEg98jxCOguAQwHe.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/GrFHzEg98jxCOguAQwHe.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/GrFHzEg98jxCOguAQwHe.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/GrFHzEg98jxCOguAQwHe.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/GrFHzEg98jxCOguAQwHe.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/GrFHzEg98jxCOguAQwHe.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/GrFHzEg98jxCOguAQwHe.png?auto=format&w=988 988w"          width="494"   />
+  <figcaption class="w-figcaption w-figcaption--fullbleed">
+    WebOTP API diagram
+  </figcaption>
+</figure>
+<p>Try <a href="https://web-otp.glitch.me" rel="noopener">the demo</a> yourself. It doesn't ask for
+your phone number or send an SMS to your device, but you can send one from
+another device by copying the text displayed in the demo. This works because it
+doesn't matter who the sender is when using the WebOTP API.</p>
+<ol>
+<li>Go to <a href="https://web-otp.glitch.me" rel="noopener">https://web-otp.glitch.me</a> in Chrome 84 or
+later on an Android device.</li>
+<li>Send your phone the following SMS text message from the another phone.</li>
+</ol>
+<web-copy-code><pre class="language-text"><code class="language-text">Your OTP is: 123456.<br><br>@web-otp.glitch.me #12345</code></pre>
+</web-copy-code><p>Did you receive the SMS and see the prompt to enter the code to the input area?
+That is how the WebOTP API works for users.</p>
+<div class="w-aside w-aside--gotchas"><strong>Gotchas!</strong>
+<p>If the dialog doesn't appear for you, check out <a href="#no-dialog">the FAQ</a>.</p>
+</div>
+<p>Using the WebOTP API consists of three parts:</p>
+<ul>
+<li>A properly annotated <code>&lt;input&gt;</code> tag</li>
+<li>JavaScript in your web app</li>
+<li>Formatted message text sent via SMS.</li>
+</ul>
+<p>I'll cover the <code>&lt;input&gt;</code> tag first.</p>
+<h2 id="annotate-an-lessinputgreater-tag">Annotate an <code>&lt;input&gt;</code> tag <a class="w-headline-link" href="#annotate-an-lessinputgreater-tag">#</a></h2>
+<p>WebOTP itself works without any HTML annotation, but for cross-browser
+compatibility, I highly recommend that you add <code>autocomplete=&quot;one-time-code&quot;</code> to
+the <code>&lt;input&gt;</code> tag where you expect the user entering an OTP.</p>
+<p>This allows Safari 14 or later to suggest that the user to autofill the <code>&lt;input&gt;</code>
+field with an OTP when they receive an SMS with the format described in <a href="#format">Format
+the SMS message</a> even though it doesn't support WebOTP.</p>
+<p class="w-label">HTML</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>form</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">autocomplete</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>one-time-code<span class="token punctuation">"</span></span> <span class="token attr-name">required</span><span class="token punctuation">/></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>submit<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>form</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><h2 id="use-the-webotp-api">Use the WebOTP API <a class="w-headline-link" href="#use-the-webotp-api">#</a></h2>
+<p>Because WebOTP is simple, just copying and pasting the following code will do the
+job. I'll walk you through what's happening anyway.</p>
+<p class="w-label">JavaScript</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token string">'OTPCredential'</span> <span class="token keyword">in</span> window<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  window<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'DOMContentLoaded'</span><span class="token punctuation">,</span> <span class="token parameter">e</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>    <span class="token keyword">const</span> input <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">querySelector</span><span class="token punctuation">(</span><span class="token string">'input[autocomplete="one-time-code"]'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>input<span class="token punctuation">)</span> <span class="token keyword">return</span><span class="token punctuation">;</span><br>    <span class="token keyword">const</span> ac <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">AbortController</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token keyword">const</span> form <span class="token operator">=</span> input<span class="token punctuation">.</span><span class="token function">closest</span><span class="token punctuation">(</span><span class="token string">'form'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token keyword">if</span> <span class="token punctuation">(</span>form<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>      form<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'submit'</span><span class="token punctuation">,</span> <span class="token parameter">e</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>        ac<span class="token punctuation">.</span><span class="token function">abort</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>      <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token punctuation">}</span><br>    navigator<span class="token punctuation">.</span>credentials<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">{</span><br>      otp<span class="token operator">:</span> <span class="token punctuation">{</span> transport<span class="token operator">:</span><span class="token punctuation">[</span><span class="token string">'sms'</span><span class="token punctuation">]</span> <span class="token punctuation">}</span><span class="token punctuation">,</span><br>      signal<span class="token operator">:</span> ac<span class="token punctuation">.</span>signal<br>    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">otp</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>      input<span class="token punctuation">.</span>value <span class="token operator">=</span> otp<span class="token punctuation">.</span>code<span class="token punctuation">;</span><br>      <span class="token keyword">if</span> <span class="token punctuation">(</span>form<span class="token punctuation">)</span> form<span class="token punctuation">.</span><span class="token function">submit</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">catch</span><span class="token punctuation">(</span><span class="token parameter">err</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><h3 id="feature-detection">Feature detection <a class="w-headline-link" href="#feature-detection">#</a></h3>
+<p>Feature detection is the same as for many other APIs. Listening to
+<code>DOMContentLoaded</code> event will wait for the DOM tree to be ready to query.</p>
+<p class="w-label">JavaScript</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token string">'OTPCredential'</span> <span class="token keyword">in</span> window<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  window<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'DOMContentLoaded'</span><span class="token punctuation">,</span> <span class="token parameter">e</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>    <span class="token keyword">const</span> input <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">querySelector</span><span class="token punctuation">(</span><span class="token string">'input[autocomplete="one-time-code"]'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>input<span class="token punctuation">)</span> <span class="token keyword">return</span><span class="token punctuation">;</span><br>    …<br>    <span class="token keyword">const</span> form <span class="token operator">=</span> input<span class="token punctuation">.</span><span class="token function">closest</span><span class="token punctuation">(</span><span class="token string">'form'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    …<br>  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><div class="w-aside w-aside--caution">
+<p><strong>Caution</strong>:</p>
+<p>The WebOTP API requires a secure origin (HTTPS). The feature detection on an
+HTTP website will fail.</p>
+</div>
+<h3 id="process-the-otp">Process the OTP <a class="w-headline-link" href="#process-the-otp">#</a></h3>
+<p>The WebOTP API itself is simple enough. Use
+<a href="https://developer.mozilla.org/docs/Web/API/CredentialsContainer/get" rel="noopener"><code>navigator.credentials.get()</code></a>
+to obtain the OTP. WebOTP adds a new <code>otp</code> option to that method. It only has
+one property: <code>transport</code>, whose value must be an array with the string <code>'sms'</code>.</p>
+<p class="w-label">JavaScript</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="highlight-line">    …</span><br><mark class="highlight-line highlight-line-active">    navigator<span class="token punctuation">.</span>credentials<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">{</span></mark><br><mark class="highlight-line highlight-line-active">      otp<span class="token operator">:</span> <span class="token punctuation">{</span> transport<span class="token operator">:</span><span class="token punctuation">[</span><span class="token string">'sms'</span><span class="token punctuation">]</span> <span class="token punctuation">}</span></mark><br><span class="highlight-line">      …</span><br><span class="highlight-line">    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">otp</span> <span class="token operator">=></span> <span class="token punctuation">{</span></span><br><span class="highlight-line">    …</span></code></pre>
+</web-copy-code><p>This triggers the browser's permission flow when an SMS message arrives. If permission is
+granted, the returned promise resolves with an <code>OTPCredential</code> object.</p>
+<p class="w-label">Content of obtained <code>OTPCredential</code> object</p>
+<web-copy-code><pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  code<span class="token operator">:</span> <span class="token string">"123456"</span> <span class="token comment">// Obtained OTP</span><br>  type<span class="token operator">:</span> <span class="token string">"otp"</span>  <span class="token comment">// `type` is always "otp"</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>Next, pass the OTP value to the <code>&lt;input&gt;</code> field. Submitting the form directly
+will eliminate the step requiring the user to tap a button.</p>
+<p class="w-label">JavaScript</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="highlight-line">    …</span><br><span class="highlight-line">    navigator<span class="token punctuation">.</span>credentials<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">{</span></span><br><span class="highlight-line">      otp<span class="token operator">:</span> <span class="token punctuation">{</span> transport<span class="token operator">:</span><span class="token punctuation">[</span><span class="token string">'sms'</span><span class="token punctuation">]</span> <span class="token punctuation">}</span></span><br><span class="highlight-line">      …</span><br><span class="highlight-line">    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">otp</span> <span class="token operator">=></span> <span class="token punctuation">{</span></span><br><mark class="highlight-line highlight-line-active">      input<span class="token punctuation">.</span>value <span class="token operator">=</span> otp<span class="token punctuation">.</span>code<span class="token punctuation">;</span></mark><br><mark class="highlight-line highlight-line-active">      <span class="token keyword">if</span> <span class="token punctuation">(</span>form<span class="token punctuation">)</span> form<span class="token punctuation">.</span><span class="token function">submit</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></mark><br><span class="highlight-line">    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">catch</span><span class="token punctuation">(</span><span class="token parameter">err</span> <span class="token operator">=></span> <span class="token punctuation">{</span></span><br><span class="highlight-line">      console<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line">    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line">    …</span></code></pre>
+</web-copy-code><h3 id="aborting">Aborting the message <a class="w-headline-link" href="#aborting">#</a></h3>
+<p>In case the user manually enters an OTP and submits the form, you can cancel the
+<code>get()</code> call by using an <code>AbortController</code> instance in the <a href="https://developer.mozilla.org/docs/Web/API/CredentialsContainer/get#Parameters" rel="noopener"><code>options</code>
+object</a>.</p>
+<p class="w-label"> JavaScript </p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="highlight-line">    …</span><br><mark class="highlight-line highlight-line-active">    <span class="token keyword">const</span> ac <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">AbortController</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></mark><br><span class="highlight-line">    …</span><br><span class="highlight-line">    <span class="token keyword">if</span> <span class="token punctuation">(</span>form<span class="token punctuation">)</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">      form<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'submit'</span><span class="token punctuation">,</span> <span class="token parameter">e</span> <span class="token operator">=></span> <span class="token punctuation">{</span></span><br><mark class="highlight-line highlight-line-active">        ac<span class="token punctuation">.</span><span class="token function">abort</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></mark><br><span class="highlight-line">      <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line">    <span class="token punctuation">}</span></span><br><span class="highlight-line">    …</span><br><span class="highlight-line">    navigator<span class="token punctuation">.</span>credentials<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">{</span></span><br><span class="highlight-line">      otp<span class="token operator">:</span> <span class="token punctuation">{</span> transport<span class="token operator">:</span><span class="token punctuation">[</span><span class="token string">'sms'</span><span class="token punctuation">]</span> <span class="token punctuation">}</span><span class="token punctuation">,</span></span><br><mark class="highlight-line highlight-line-active">      signal<span class="token operator">:</span> ac<span class="token punctuation">.</span>signal</mark><br><span class="highlight-line">    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">otp</span> <span class="token operator">=></span> <span class="token punctuation">{</span></span><br><span class="highlight-line">    …</span></code></pre>
+</web-copy-code><h2 id="format">Format the SMS message <a class="w-headline-link" href="#format">#</a></h2>
+<p>The API itself should look simple enough, but there are a few things you should
+know before using it. The message must be sent after
+<code>navigator.credentials.get()</code> is called and it must be received on the device
+where <code>get()</code> was called. Finally, the message must adhere to the following
+formatting:</p>
+<ul>
+<li>The message begins with (optional) human-readable text that contains a four to ten
+character alphanumeric string with at least one number leaving the last line
+for the URL and the OTP.</li>
+<li>The domain part of the URL of the website that invoked the API must be preceded
+by <code>@</code>.</li>
+<li>The URL must contain a pound sign ('<code>#</code>') followed by the OTP.</li>
+</ul>
+<p>For example:</p>
+<web-copy-code><pre class="language-text"><code class="language-text">Your OTP is: 123456.<br><br>@www.example.com #123456</code></pre>
+</web-copy-code><p>Here are bad examples:</p>
+<div class="w-table-wrapper">
+<table>
+<thead>
+<tr>
+<th>Example malformed SMS Text</th>
+<th>Why this won't work</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Here is your code for @example.com #123456</code></td>
+<td><code>@</code> is expected to be the first character of the last line.</td>
+</tr>
+<tr>
+<td><code>Your code for @example.com is #123456</code></td>
+<td><code>@</code> is expected to be the first character of the last line.</td>
+</tr>
+<tr>
+<td><code>Your verification code is 123456</code><br/><br/><code>@example.com\t#123456</code></td>
+<td>A single space is expected between <code>@host</code> and <code>#code</code>.</td>
+</tr>
+<tr>
+<td><code>Your verification code is 123456</code><br/><br/><code>@example.com</code><code>  </code><code>#123456</code></td>
+<td>A single space is expected between <code>@host</code> and <code>#code</code>.</td>
+</tr>
+<tr>
+<td><code>Your verification code is 123456</code><br/><br/><code>@ftp://example.com #123456</code></td>
+<td>URL scheme cannot be included.</td>
+</tr>
+<tr>
+<td><code>Your verification code is 123456</code><br/><br/><code>@https://example.com #123456</code></td>
+<td>URL scheme cannot be included.</td>
+</tr>
+<tr>
+<td><code>Your verification code is 123456</code><br/><br/><code>@example.com:8080 #123456</code></td>
+<td>Port cannot be included.</td>
+</tr>
+<tr>
+<td><code>Your verification code is 123456</code><br/><br/><code>@example.com/foobar #123456</code></td>
+<td>Path cannot be included.</td>
+</tr>
+<tr>
+<td><code>Your verification code is 123456</code><br/><br/><code>@example .com #123456</code></td>
+<td>No whitespace in domain.</td>
+</tr>
+<tr>
+<td><code>Your verification code is 123456</code><br/><br/><code>@domain-forbiden-chars-#%/:&lt;&gt;?@[] #123456</code></td>
+<td>No <a href="https://url.spec.whatwg.org/#forbidden-host-code-point" rel="noopener">forbidden chars</a> in domain.</td>
+</tr>
+<tr>
+<td><code>@example.com #123456</code><br/><br/><code>Mambo Jumbo</code></td>
+<td><code>@host</code> and <code>#code</code> are expected to be the last line.</td>
+</tr>
+<tr>
+<td><code>@example.com #123456</code><br/><br/><code>App hash #oudf08lkjsdf834</code></td>
+<td><code>@host</code> and <code>#code</code> are expected to be the last line.</td>
+</tr>
+<tr>
+<td><code>Your verification code is 123456</code><br/><br/><code>@example.com 123456</code></td>
+<td>Missing <code>#</code>.</td>
+</tr>
+<tr>
+<td><code>Your verification code is 123456</code><br/><br/><code>example.com #123456</code></td>
+<td>Missing <code>@</code>.</td>
+</tr>
+<tr>
+<td><code>Hi mom, did you receive my last text</code></td>
+<td>Missing <code>@</code> and <code>#</code>.</td>
+</tr>
+</tbody>
+</table>
+</div><h2 id="demos">Demos <a class="w-headline-link" href="#demos">#</a></h2>
+<p>Try various messages with the demo:
+<a href="https://web-otp.glitch.me" rel="noopener">https://web-otp.glitch.me</a></p>
+<p>You may also fork it and create your version:
+<a href="https://glitch.com/edit/#!/web-otp" rel="noopener">https://glitch.com/edit/#!/web-otp</a>.</p>
+<div class="glitch-embed-wrap" style="height: 420px; width: 100%;">
+  <iframe
+    allow="camera; clipboard-read; clipboard-write; encrypted-media; geolocation; microphone; midi"
+    loading="lazy"
+    src="https://glitch.com/embed/#!/embed/web-otp?attributionHidden=true&sidebarCollapsed=true&path=views%2Findex.html&previewSize=0"
+    style="height: 100%; width: 100%; border: 0;"
+    title="web-otp on Glitch"
+  ></iframe>
+</div>
+<h2 id="use-webotp-from-a-cross-origin-iframe">Use WebOTP from a cross-origin iframe <a class="w-headline-link" href="#use-webotp-from-a-cross-origin-iframe">#</a></h2>
+<p>Entering an SMS OTP to a cross-origin iframe is typically used for payment
+confirmation, especially with 3D Secure. Having the common format to support
+cross-origin iframes, WebOTP API delivers OTPs bound to nested origins. For
+example:</p>
+<ul>
+<li>A user visits <code>shop.example</code> to purchase a pair of shoes with a credit card.</li>
+<li>After entering the credit card number, the integrated payment provider shows a
+form from <code>bank.example</code> within an iframe asking the user to verify their
+phone number for fast checkout.</li>
+<li><code>bank.example</code> sends an SMS that contains an OTP to the user so that they can
+enter it to verify their identity.</li>
+</ul>
+<p>To use WebOTP API from within a cross-origin iframe, you need to do two things:</p>
+<ul>
+<li>Annotate both the top-frame origin and the iframe origin in the SMS text
+message.</li>
+<li>Configure permissions policy to allow the cross-origin iframe to receive OTP
+from the user directly.</li>
+</ul>
+<figure class="w-figure">
+<video      autoplay            class="w-screenshot"      controls            height="600"            loop      muted                  preload="auto"      width="300"    >      <source src="https://storage.googleapis.com/web-dev-uploads/video/YLflGBAPWecgtKJLqCJHSzHqe2J2/Ba3OSkSsB4NwFkHGOuvc.mp4" type="video/mp4" />    </video>
+  <figcaption class="w-figcaption">
+    WebOTP API within an iframe in action.
+  </figcaption>
+</figure>
+<p>You can try the demo at
+<a href="https://web-otp-iframe-demo.stackblitz.io" rel="noopener">https://web-otp-iframe-demo.stackblitz.io</a>.</p>
+<h3 id="annotate-bound-origins-to-the-sms-text-message">Annotate bound-origins to the SMS text message <a class="w-headline-link" href="#annotate-bound-origins-to-the-sms-text-message">#</a></h3>
+<p>When WebOTP API is called from within an iframe, the SMS text message must
+include the top-frame origin preceded by <code>@</code> followed by the OTP preceded by <code>#</code>
+and the iframe origin preceded by <code>@</code> at the last line.</p>
+<web-copy-code><pre class="language-text"><code class="language-text">Your verification code is 123456<br><br>@shop.example #123456 @bank.exmple</code></pre>
+</web-copy-code><h3 id="configure-permissions-policy">Configure Permissions Policy <a class="w-headline-link" href="#configure-permissions-policy">#</a></h3>
+<p>To use WebOTP in a cross-origin iframe, the embedder must grant access to this
+API via otp-credentials <a href="https://www.w3.org/TR/permissions-policy-1" rel="noopener">permissions
+policy</a> to avoid unintended
+behavior. In general there are two ways to achieve this goal:</p>
+<p class="w-label">via HTTP Header:</p>
+<web-copy-code><pre class="language-http"><code class="language-http"><span class="token header-name keyword">Permissions-Policy:</span> otp-credentials=(self "https://bank.example")</code></pre>
+</web-copy-code><p class="w-label">via iframe <code>allow</code> attribute:</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>iframe</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>https://bank.example/…<span class="token punctuation">"</span></span> <span class="token attr-name">allow</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>otp-credentials<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>iframe</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><p>See <a href="https://github.com/w3c/webappsec-permissions-policy/blob/master/permissions-policy-explainer.md#how-is-a-policy-specified" rel="noopener">more examples on how to specify a permission policy
+</a>.</p>
+<div class="w-aside w-aside--note">
+<p>At the moment Chrome only supports WebOTP API calls from cross-origin iframes
+that have <strong>no more than one</strong> unique origin in its ancestor chain. In the
+following scenarios:</p>
+<ul>
+<li><code>a.com</code> -&gt; <code>b.com</code></li>
+<li><code>a.com</code> -&gt; <code>b.com</code> -&gt; <code>b.com</code></li>
+<li><code>a.com</code> -&gt; <code>a.com</code> -&gt; <code>b.com</code></li>
+<li><code>a.com</code> -&gt; <code>b.com</code> -&gt; <code>c.com</code></li>
+</ul>
+<p>using WebOTP in <code>b.com</code> is supported but using it in <code>c.com</code> is not.</p>
+<p>Note that the following scenario is also not supported because of lack of demand
+and UX complexities.</p>
+<ul>
+<li><code>a.com</code> -&gt; <code>b.com</code> -&gt; <code>a.com</code> (calls WebOTP API)</li>
+</ul>
+</div>
+<h2 id="faq">FAQ <a class="w-headline-link" href="#faq">#</a></h2>
+<h3 id="no-dialog">The dialog doesn't appear though I'm sending a properly formatted message. What's going wrong? <a class="w-headline-link" href="#no-dialog">#</a></h3>
+<p>There are a couple of caveats when testing the API:</p>
+<ul>
+<li>If the sender's phone number is included in the receiver's contact list, this
+API will not be triggered due to the design of the underlying <a href="https://developers.google.com/identity/sms-retriever/user-consent/request#2_start_listening_for_incoming_messages" rel="noopener">SMS User
+Consent
+API</a>.</li>
+<li>If you are using a work profile on your Android device and the WebOTP does
+not work, try installing and using Chrome on your personal profile instead
+(i.e. the same profile in which you receive SMS messages).</li>
+</ul>
+<p>Check back at <a href="#format">the format</a> to see if your SMS is correctly formatted.</p>
+<h3 id="is-this-api-compatible-between-different-browsers">Is this API compatible between different browsers? <a class="w-headline-link" href="#is-this-api-compatible-between-different-browsers">#</a></h3>
+<p>Chromium and WebKit agreed on <a href="https://wicg.github.io/sms-one-time-codes" rel="noopener">the SMS text message
+format</a> and <a href="https://developer.apple.com/news/?id=z0i801mg" rel="noopener">Apple announced Safari's
+support for it</a> starting in iOS 14
+and macOS Big Sur. Though Safari doesn't support the WebOTP JavaScript API, by
+annotating <code>input</code> element with <code>autocomplete=[&quot;one-time-code&quot;]</code>, the default
+keyboard automatically suggests that you enter the OTP if the SMS message complies
+with the format.</p>
+<h3 id="is-it-safe-to-use-sms-as-a-way-to-authenticate">Is it safe to use SMS as a way to authenticate? <a class="w-headline-link" href="#is-it-safe-to-use-sms-as-a-way-to-authenticate">#</a></h3>
+<p>While SMS OTP is useful to verify a phone number when the number is first
+provided, phone number verification via SMS must be used carefully for
+re-authentication since phone numbers can be hijacked and recycled by carriers.
+WebOTP is a convenient re-auth and recovery mechanism, but services should
+combine it with additional factors, such as a knowledge challenge, or use the
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Authentication_API" rel="noopener">Web Authentication
+API</a>
+for strong authentication.</p>
+<h3 id="where-do-i-report-bugs-in-chrome's-implementation">Where do I report bugs in Chrome's implementation? <a class="w-headline-link" href="#where-do-i-report-bugs-in-chrome's-implementation">#</a></h3>
+<p>Did you find a bug with Chrome's implementation?</p>
+<ul>
+<li>File a bug at
+<a href="https://bugs.chromium.org/p/chromium/issues/entry?components=Blink%3ESMS" rel="noopener">https://new.crbug.com</a>.
+Include as much detail as you can, simple instructions for reproducing, and
+set <strong>Components</strong> to <code>Blink&gt;WebOTP</code>.</li>
+</ul>
+<h3 id="how-can-i-help-this-feature">How can I help this feature? <a class="w-headline-link" href="#how-can-i-help-this-feature">#</a></h3>
+<p>Are you planning to use the WebOTP API? Your public support helps us prioritize
+features, and shows other browser vendors how critical it is to support them.
+Send a tweet to <a href="https://twitter.com/chromiumdev" rel="noopener">@ChromiumDev</a> using the hashtag
+<a href="https://twitter.com/search?q=%23WebOTP&amp;src=typed_query&amp;f=live" rel="noopener"><code>#WebOTP</code></a>
+and let us know where and how you're using it.</p>
+<div class="w-aside w-aside--note">
+<p>Find more questions at <a href="https://github.com/WICG/WebOTP/blob/master/FAQ.md" rel="noopener">the FAQ section in the explainer</a>.</p>
+</div>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/identity/">Identity</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/capabilities/">Capabilities</a>
+      
+    
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Jun 4, 2021</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/web-otp/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions="api"></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

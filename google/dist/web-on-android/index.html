@@ -1,0 +1,759 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=741df6ec283e9">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Web on Android</title>
+<meta name="description" content="Learn how different components can be used to render web content inside Android apps. " />
+
+<link rel="canonical" href="https://web.dev/web-on-android/" />
+
+<meta itemprop="name" content="Web on Android" />
+<meta itemprop="description" content="Learn how different components can be used to render web content inside Android apps. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/874Rka3L44UJd5zLIyR5.svg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/web-on-android/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Web on Android" />
+<meta property="og:description" content="Learn how different components can be used to render web content inside Android apps. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/874Rka3L44UJd5zLIyR5.svg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="Android robot" />
+<meta property="tag" content="android" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Web on Android" />
+<meta name="twitter:description" content="Learn how different components can be used to render web content inside Android apps. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/874Rka3L44UJd5zLIyR5.svg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=a8b0e1ed29bcf', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=5400fb115b04d', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="Android robot"     class="w-hero w-hero--cover"     decoding="auto"     height="480"                    src="https://web-dev.imgix.net/image/admin/874Rka3L44UJd5zLIyR5.svg"               width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#web-on-android" class="w-toc__header--link">
+        Web on Android
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#android-webview">Android WebView</a></li><li><a href="#the-in-app-browser-challenge">The in-app browser challenge</a></li><li><a href="#custom-tabs-as-a-solution-for-in-app-browsers">Custom Tabs as a solution for in-app browsers</a></li><li><a href="#open-progressive-web-apps-using-trusted-web-activity">Open Progressive Web Apps using Trusted Web Activity</a></li><li><a href="#limitations-of-the-current-solutions">Limitations of the current solutions</a></li><li><a href="#summary">Summary</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@andreban"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="web-on-android" class="w-article-header__headline">Web on Android</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          How different components can be used to render web content inside Android apps.
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Jul 30, 2020</time>
+           <span class="w-author__separator">•</span> Updated <time>Aug 5, 2020</time> 
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/andreban/"><img     alt="André Cipriani Bandarra"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/XVGMhdOgHJhch3EBcw89.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/XVGMhdOgHJhch3EBcw89.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/XVGMhdOgHJhch3EBcw89.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/XVGMhdOgHJhch3EBcw89.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/XVGMhdOgHJhch3EBcw89.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/XVGMhdOgHJhch3EBcw89.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/andreban/">André Cipriani Bandarra</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/andreban"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/andreban">GitHub</a>
+      </li>
+      
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://bandarra.me/">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>The Android platform has been around for more than ten years, and since its early days it has had
+great support for the Web. It shipped with WebView, a component that allows developers to use the
+web inside their own Android Apps. More than that, Android allows developers to bring their own
+browser engine into the platform, fostering competition and innovation.</p>
+<p>Developers can include the web in their Android applications in many ways. WebView is frequently
+used to render ads, as a layout component used along with Android UI elements, or for packaging HTML 5
+games. Custom Tabs allows developers to build in-app browsers and provide a seamless navigation
+experience to third-party web content, and Trusted Web Activity allows developers to use their
+Progressive Web Apps (PWAs) in Android apps, which can be downloaded from the Play Store.</p>
+<h3 id="android-webview">Android WebView <a class="w-headline-link" href="#android-webview">#</a></h3>
+<p>WebView gives developers access to modern HTML, CSS, and JavaScript inside their Android apps, and
+allows content to be shipped inside the APK or hosted on the internet. It's one of Android's most
+flexible and powerful components, which can be used for most of the use-cases where web content is
+included in an Android app. From powering ad services like AdMob to building and shipping complete
+HTML5 games that use modern APIs such as WebGL.</p>
+<p>But, when used to create an in-app-browser or including a PWA in an Android application, WebView
+lacks the security, features, and capabilities of the web platform.</p>
+<h3 id="the-in-app-browser-challenge">The in-app browser challenge <a class="w-headline-link" href="#the-in-app-browser-challenge">#</a></h3>
+<p>Over time, more and more developers have built browser experiences
+incorporating third-party content into their Android application, with the goal
+of creating a more seamless experience for their users when navigating to
+third-party websites. Those experiences became known
+as in-app browsers.</p>
+<p>WebView has extensive support for the modern web tech stack and supports many modern web APIs, like
+WebGL. But WebView is primarily a web UI toolkit. It
+<a href="https://research.google/pubs/pub46739/" rel="noopener">is not meant to - and does not - support all features of the web platform</a>. When an API already
+has an OS-level alternative, like Web Bluetooth, or it requires browser UI to be implemented, like
+push notifications, it may not be supported. As the web platform evolves and adds more features
+that were only available to Android apps, this gap will become even larger. As app developers don't
+control which features are used when opening third-party content, it makes WebView a poor choice
+for in-app browsers or opening Progressive Web Apps. Even if WebView implemented support for all
+web platform features, developers would still need to write code and implement their own UI for
+functionality like permissions or push notifications, making it hard to achieve consistency for
+users.</p>
+<h4 id="security-considerations-for-using-webview-as-an-in-app-browser">Security Considerations for using WebView as an in-app browser <a class="w-headline-link" href="#security-considerations-for-using-webview-as-an-in-app-browser">#</a></h4>
+<p>WebView gives the embedder application full access to the rendered content, including cookies and
+the DOM. Those are powerful features that require a high level of trust from users.</p>
+<p>Since WebView is not intended as a framework for building browsers, it lacks security features
+available in modern browsers.</p>
+<h5 id="multi-process-architecture-and-site-isolation">Multi-process architecture and site isolation <a class="w-headline-link" href="#multi-process-architecture-and-site-isolation">#</a></h5>
+<p>Browsers are designed to be secure while rendering and executing content that is untrusted. To
+ensure the user stays safe while navigating content that is potentially untrustworthy or even
+malicious, modern browsers employ techniques such as using <a href="https://blog.chromium.org/2008/09/multi-process-architecture.html" rel="noopener">multi-process architecture</a> and
+<a href="https://www.chromium.org/Home/chromium-security/site-isolation" rel="noopener">site isolation</a>.</p>
+<p>Without the multi-process architecture, a crash caused by the web page can crash the entire browser app, or
+a vulnerability can be exploited to take control of the entire device. Site isolation adds another
+layer of security that makes it harder for untrustworthy sites to access and steal information from
+other sites.</p>
+<p>Until Android 8.0 Oreo, the WebView renderer used the same process as the embedder application. On
+newer versions of the OS, and when devices are capable enough, the renderer runs in a different
+process. However, a single process is still shared between all pages and WebView instances running
+them, making it impossible to fully implement site isolation.</p>
+<p>The lack of a multi-process architecture and site isolation is not an issue for applications that
+render content that they own and trust, but can be a problem for applications running untrusted
+third-party content, like in-app browsers, and leaves users exposed to vulnerabilities like
+<a href="https://en.wikipedia.org/wiki/Meltdown_(security_vulnerability)" rel="noopener">Meltdown</a> and <a href="https://en.wikipedia.org/wiki/Spectre_(security_vulnerability)" rel="noopener">Spectre</a>, which could be used for stealing cookies, banking details,
+personal information, and more.</p>
+<h5 id="secure-ui-indicators">Secure UI Indicators <a class="w-headline-link" href="#secure-ui-indicators">#</a></h5>
+<p>It is also important to provide good security indicators to users, and browsers put a lot of effort
+and are <a href="https://blog.chromium.org/2018/05/evolving-chromes-security-indicators.html" rel="noopener">always evolving</a> in this area. However, the WebView lacks an API for checking if a
+site's connection is secure that allows application developers to build trustworthy security
+indicators. The lack of such an API could cause, for instance, a URL displayed in the address bar to
+not match the page displayed to the user, even over secure HTTPS connections.</p>
+<p>Another option available to developers is embedding a browser engine in their application. Besides
+leading to increased application size, this approach is both complex and time-consuming.</p>
+<h3 id="custom-tabs-as-a-solution-for-in-app-browsers">Custom Tabs as a solution for in-app browsers <a class="w-headline-link" href="#custom-tabs-as-a-solution-for-in-app-browsers">#</a></h3>
+<p>Custom Tabs was <a href="https://android-developers.googleblog.com/2015/09/chrome-custom-tabs-smooth-transition.html" rel="noopener">introduced in Chrome 45</a> and allows developers to use a tab from the user's
+default browser as part of their application. Custom Tabs was originally launched by Chrome, and
+was therefore known as &quot;Chrome Custom Tabs&quot;. Today it's an <a href="https://developer.android.com/reference/androidx/browser/customtabs/package-summary" rel="noopener">Android API</a> and most popular
+browsers support Custom Tabs, including Chrome, Firefox, Edge, and Samsung Internet, so it's more
+appropriate to just call it &quot;Custom Tabs&quot;.</p>
+<p>Custom Tabs helps developers seamlessly integrate web content into their app experience. They also
+allow developers to customise the activity in which web content is shown by allowing them to
+customize the toolbar color, action buttons, transition animation, and more.</p>
+<p>They also offer features that were previously unavailable when using WebView or embedding a browser
+engine. Since the in-app browser is powered by the user's browser, Custom Tabs shares storage
+with the browser, so users don't need to re-login to their favourite websites every time one of
+their installed apps starts an In-App browsing session.</p>
+<p>Unlike WebViews, Custom Tabs supports all web platform features and APIs that are supported by the
+browser powering it.</p>
+<h3 id="open-progressive-web-apps-using-trusted-web-activity">Open Progressive Web Apps using Trusted Web Activity <a class="w-headline-link" href="#open-progressive-web-apps-using-trusted-web-activity">#</a></h3>
+<p><a href="/progressive-web-apps/">Progressive Web Apps</a> bring many behaviors and capabilities that were once only available to
+platform-specific apps to the web. With the introduction of app-like behaviour, the desire from developers to
+re-use those experiences on Android increased, and developers started asking for ways to integrate
+PWAs into their apps.</p>
+<p>Custom Tabs has support for all modern web capabilities and APIs but, since it was primarily
+designed to open third-party content, it has a toolbar on the top that tells the users which URL
+they are visiting, as well as the lock icon indicating whether the site is secure. When opening an app's
+own experience, the toolbar prevents the application from feeling like it is integrated with the
+operating system.</p>
+<p><a href="https://developers.google.com/web/android/trusted-web-activity/" rel="noopener">Trusted Web Activities</a> was introduced in Chrome 72 and allows developers to
+<a href="/using-a-pwa-in-your-android-app/">use their PWA inside an Android</a> app. Its protocol is similar to the Custom Tabs protocol,
+but introduces APIs that allow developers to verify (through <a href="https://developers.google.com/digital-asset-links" rel="noopener">Digital Asset Links</a>) that they
+control both the Android app and the URL being opened and remove the URL bar when both are true.</p>
+<p>They also introduced APIs for creating splash screens when opening the PWA or delegating web
+notifications to be handled by Android code. More features like support for Play Billing are coming
+soon.</p>
+<p>Since URLs opened in Trusted Web Activities are expected to be PWAs and have a set of behaviors and
+performance characteristics, Trusted Web Activities introduces <a href="/using-a-pwa-in-your-android-app/#quality-criteria">quality criteria</a> for PWAs
+being opened inside it.</p>
+<h3 id="limitations-of-the-current-solutions">Limitations of the current solutions <a class="w-headline-link" href="#limitations-of-the-current-solutions">#</a></h3>
+<p>Developer feedback showed a need for the platform compatibility of Custom Tabs combined with the
+flexibility of WebView so they could, for instance, access the DOM or inject JavaScript, into their
+in-app browsers.</p>
+<p>Custom Tabs is effectively a tab rendered by the user's browser, with a custom UI or with no UI
+at all. This means that the browser needs to honour the user's expectations around privacy and
+security towards the browser, making some of those features impossible.</p>
+<p>The Web on Android team at Google is looking into alternatives and experimenting with solutions
+to solve those use-cases. Stay tuned for details!</p>
+<h3 id="summary">Summary <a class="w-headline-link" href="#summary">#</a></h3>
+<p>WebView is useful when an application needs HTML, CSS, and JavaScript inside their Android app, but
+doesn't use more advanced features and capabilities available on the modern web such as Push
+Notifications, Web Bluetooth and others. It is not recommended when opening content that has been
+designed for the modern web platform, as it may not be displayed in the way the developer intended.
+WebView is not recommended for creating in-app browsers. On the other hand displaying first-party
+web content is an area where WebViews really shine.</p>
+<p>Trusted Web Activity should be used when the developers want to render their own Progressive Web
+App in fullscreen inside their Android application. It can be used as the only activity in the app
+or used along with other Android activities.</p>
+<p>Custom Tabs is the recommended way for opening third-party content that is designed for the web
+platform, also known as in-app browsers.</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Aug 5, 2020</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/web-on-android/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions="api"></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

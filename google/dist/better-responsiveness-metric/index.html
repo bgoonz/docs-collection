@@ -1,0 +1,1091 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=859e7899f9de5">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Towards a better responsiveness metric</title>
+<meta name="description" content="Learn about our thoughts on measuring responsiveness and give us feedback." />
+
+<link rel="canonical" href="https://web.dev/better-responsiveness-metric/" />
+
+<meta itemprop="name" content="Towards a better responsiveness metric" />
+<meta itemprop="description" content="Learn about our thoughts on measuring responsiveness and give us feedback." />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/TwRpOuLV9Z5GEZkGmAXi.jpeg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/better-responsiveness-metric/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Towards a better responsiveness metric" />
+<meta property="og:description" content="Learn about our thoughts on measuring responsiveness and give us feedback." />
+<meta property="og:image" content="https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/TwRpOuLV9Z5GEZkGmAXi.jpeg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="Hand about to press a key in a keyboard" />
+<meta property="tag" content="performance" />
+<meta property="tag" content="web-vitals" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Towards a better responsiveness metric" />
+<meta name="twitter:description" content="Learn about our thoughts on measuring responsiveness and give us feedback." />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/TwRpOuLV9Z5GEZkGmAXi.jpeg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=c102006b773fe', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=f498c9600927d', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="Hand about to press a key in a keyboard"     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/TwRpOuLV9Z5GEZkGmAXi.jpeg?auto=format"     srcset="https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/TwRpOuLV9Z5GEZkGmAXi.jpeg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/TwRpOuLV9Z5GEZkGmAXi.jpeg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/TwRpOuLV9Z5GEZkGmAXi.jpeg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/TwRpOuLV9Z5GEZkGmAXi.jpeg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/TwRpOuLV9Z5GEZkGmAXi.jpeg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/TwRpOuLV9Z5GEZkGmAXi.jpeg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/TwRpOuLV9Z5GEZkGmAXi.jpeg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/TwRpOuLV9Z5GEZkGmAXi.jpeg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/TwRpOuLV9Z5GEZkGmAXi.jpeg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/TwRpOuLV9Z5GEZkGmAXi.jpeg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/TwRpOuLV9Z5GEZkGmAXi.jpeg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/TwRpOuLV9Z5GEZkGmAXi.jpeg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/TwRpOuLV9Z5GEZkGmAXi.jpeg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/TwRpOuLV9Z5GEZkGmAXi.jpeg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/TwRpOuLV9Z5GEZkGmAXi.jpeg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/TwRpOuLV9Z5GEZkGmAXi.jpeg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/TwRpOuLV9Z5GEZkGmAXi.jpeg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#towards-a-better-responsiveness-metric" class="w-toc__header--link">
+        Towards a better responsiveness metric
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#what-is-first-input-delay">What is First Input Delay?</a></li><li><a href="#why-did-we-choose-fid">Why did we choose FID?</a></li><li><a href="#what-improvements-are-we-considering">What improvements are we considering?</a></li><li><a href="#capture-the-full-event-duration">Capture the full event duration</a></li><li><a href="#group-events-into-interactions">Group events into interactions</a></li><li><a href="#aggregate-all-interactions-per-page">Aggregate all interactions per page</a></li><li><a href="#how-does-this-look-like-on-web-performance-apis">How does this look like on web performance APIs?</a></li><li><a href="#what's-missing-from-event-timing">What's missing from Event Timing?</a></li><li><a href="#what-can-you-try-right-now">What can you try right now?</a></li><li><a href="#feedback">Feedback</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@NicPenaM | @anniesullie | @HongboSong"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="towards-a-better-responsiveness-metric" class="w-article-header__headline">Towards a better responsiveness metric</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          Learn about our thoughts on measuring responsiveness and give us feedback.
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Jun 21, 2021</time>
+          
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/npm/"><img     alt="Nicolás Peña Moreno"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/SCSIEb0Qtv6tPWel5tfd.jpeg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/SCSIEb0Qtv6tPWel5tfd.jpeg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/SCSIEb0Qtv6tPWel5tfd.jpeg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/SCSIEb0Qtv6tPWel5tfd.jpeg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/SCSIEb0Qtv6tPWel5tfd.jpeg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/SCSIEb0Qtv6tPWel5tfd.jpeg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/npm/">Nicolás Peña Moreno</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/NicPenaM"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/npm1">GitHub</a>
+      </li>
+      
+      
+    </ul>
+  </div>
+</div>
+          
+            <div class="w-author">
+  <a href="/authors/anniesullie/"><img     alt="Annie Sullivan"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/Elo3rfkiDHm148ov4IZU.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/Elo3rfkiDHm148ov4IZU.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/Elo3rfkiDHm148ov4IZU.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/Elo3rfkiDHm148ov4IZU.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/Elo3rfkiDHm148ov4IZU.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/Elo3rfkiDHm148ov4IZU.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/anniesullie/">Annie Sullivan</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/anniesullie"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/anniesullie">GitHub</a>
+      </li>
+      
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://anniesullie.com">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+            <div class="w-author">
+  <a href="/authors/hbsong/"><img     alt="Hongbo Song"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/MZfwZ8oVW8U6tzo5CXffcER0jR83/ieAP4AO0so7own9kFVW4.png?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/MZfwZ8oVW8U6tzo5CXffcER0jR83/ieAP4AO0so7own9kFVW4.png?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/MZfwZ8oVW8U6tzo5CXffcER0jR83/ieAP4AO0so7own9kFVW4.png?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/MZfwZ8oVW8U6tzo5CXffcER0jR83/ieAP4AO0so7own9kFVW4.png?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/MZfwZ8oVW8U6tzo5CXffcER0jR83/ieAP4AO0so7own9kFVW4.png?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/MZfwZ8oVW8U6tzo5CXffcER0jR83/ieAP4AO0so7own9kFVW4.png?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/hbsong/">Hongbo Song</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/HongboSong"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/debugtive0517">GitHub</a>
+      </li>
+      
+      
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>On the Chrome Speed Metrics team, we're working on deepening our understanding of how quickly web
+pages respond to user input. We'd like to share some ideas for improving responsiveness metrics and
+hear your feedback.</p>
+<p>This post will cover two main topics:</p>
+<ol>
+<li>Review our current responsiveness metric, First Input Delay (FID), and explain why we chose FID
+rather than some of the alternatives.</li>
+<li>Present some improvements we've been considering that should better capture the end-to-end
+latency of individual events. These improvements also aim to capture a more
+holistic picture of the overall responsiveness of a page throughout its lifetime.</li>
+</ol>
+<h2 id="what-is-first-input-delay">What is First Input Delay? <a class="w-headline-link" href="#what-is-first-input-delay">#</a></h2>
+<p>The <a href="/fid/">First Input Delay (FID)</a> metric measures how long it takes the browser to begin
+processing the first user interaction on a page. In particular, it measures the difference between
+the time when the user interacts with the device and the time when the browser is actually able to
+begin processing event handlers. FID is just measured for taps and key presses, which means that it
+only considers the very first occurrence of the following events:</p>
+<ul>
+<li><code>click</code></li>
+<li><code>keydown</code></li>
+<li><code>mousedown</code></li>
+<li><code>pointerdown</code> (only if it is followed by <code>pointerup</code>)</li>
+</ul>
+<p>The following diagram illustrates FID:</p>
+<img     alt="First Input Delay measures from when input occurs to when input can be handled"          decoding="async"     height="330"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/Jn1Xkxxf03O1llwutAq2.jpeg?auto=format"     srcset="https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/Jn1Xkxxf03O1llwutAq2.jpeg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/Jn1Xkxxf03O1llwutAq2.jpeg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/Jn1Xkxxf03O1llwutAq2.jpeg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/Jn1Xkxxf03O1llwutAq2.jpeg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/Jn1Xkxxf03O1llwutAq2.jpeg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/Jn1Xkxxf03O1llwutAq2.jpeg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/Jn1Xkxxf03O1llwutAq2.jpeg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/Jn1Xkxxf03O1llwutAq2.jpeg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/Jn1Xkxxf03O1llwutAq2.jpeg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/Jn1Xkxxf03O1llwutAq2.jpeg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/Jn1Xkxxf03O1llwutAq2.jpeg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/Jn1Xkxxf03O1llwutAq2.jpeg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/Jn1Xkxxf03O1llwutAq2.jpeg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/Jn1Xkxxf03O1llwutAq2.jpeg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/Jn1Xkxxf03O1llwutAq2.jpeg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/Jn1Xkxxf03O1llwutAq2.jpeg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/Jn1Xkxxf03O1llwutAq2.jpeg?auto=format&w=1600 1600w"          width="800"   />
+<p>FID does not include the time spent running those event handlers, nor any work done by the browser
+afterwards to update the screen. It measures the amount of time the main thread was busy before
+having the chance to handle an input. This blocking time is usually caused by long JavaScript tasks,
+as these can't just be stopped at any time, so the current task must complete before the browser can
+start processing the input.</p>
+<h3 id="why-did-we-choose-fid">Why did we choose FID? <a class="w-headline-link" href="#why-did-we-choose-fid">#</a></h3>
+<p>We believe it is important to measure actual user experience in order to ensure that improvements on
+the metric result in real benefits to the user. We chose to measure FID because it represents the
+part of the user experience when the user decides to interact with a site that has just been loaded.
+FID captures some of the time that the user has to wait in order to see a response from their
+interaction with a site. In other words, FID is a lower bound on the amount of time a user waits
+after interacting.</p>
+<p>Other metrics like <a href="/tbt/">Total Blocking Time (TBT)</a> and <a href="/tti/">Time To Interactive (TTI)</a> are based
+on <a href="https://developer.mozilla.org/en-US/docs/Web/API/Long_Tasks_API" rel="noopener">long tasks</a> and, like FID, also
+measure main thread blocking time during load. Since these metrics can be measured in both the field
+and the lab, many developers have asked why we don't prefer one of these over FID.</p>
+<p>There are several reasons for this. Perhaps the most important reason is that these metrics do not
+measure the user experience directly. All of these metrics measure how much JavaScript runs on the
+page. While long running JavaScript does tend to cause problems to sites, these tasks don't
+necessarily impact the user experience if the user is not interacting with the page when they occur.
+A page can have a great score on TBT and TTI but feel slow or it can have a poor score while feeling
+fast for users. In our experience, these indirect measurements result in metrics that work great for
+some sites but not for most sites. In short, the fact that long tasks and TTI are not user-centric
+makes these weaker candidates.</p>
+<p>While <a href="/user-centric-performance-metrics/#in-the-lab">lab measurement</a> is certainly important and an
+invaluable tool for diagnostics, what really matters is how users experience sites. By having a
+user-centric metric that reflects real-user conditions, you are guaranteed to capture something
+meaningful about the experience. We decided to start with a small portion of that experience, even
+though we know this portion is not representative of the full experience. This is why we're working
+on capturing a larger chunk of the time a user waits for their inputs to be handled.</p>
+<div class="w-aside w-aside--note">
+<p>If you're interested in a deeper dive into some of the metrics we looked into, here is a
+<a href="https://docs.google.com/document/d/1xCERB_X7PiP5RAZDwyIkODnIXoBk-Oo7Mi9266aEdGg/edit#heading=h.ypzsa9g2mv2g" rel="noopener">study about
+TBT</a>
+and a <a href="https://docs.google.com/document/d/1sHy6R58olikMTwk5hkJL4jd9S1jbksdMY5ve3Shdg-g/edit" rel="noopener">study about
+TTI</a>. </div></p>
+<details class="w-details" >
+<summary class="w-details__summary">
+  <h4 class="w-details__header">
+    A note on measuring TTI in the field
+  </h4>
+</summary>
+<p>Measuring TTI on real users in the field is problematic because it occurs very late in the page
+load. A 5-second network quiet window is required before TTI can even be computed. In the lab, you
+can choose to unload the page whenever you have all the data that you need, but that's not the case
+with real-user monitoring in the field. A user may choose to leave the page or interact with it at
+any time. In particular, users may choose to leave pages that take a long time to load, and an
+accurate TTI will not be recorded in those cases. When we measured TTI for real users in Chrome, we
+found that only about half of page loads reached TTI. </details></p>
+<h2 id="what-improvements-are-we-considering">What improvements are we considering? <a class="w-headline-link" href="#what-improvements-are-we-considering">#</a></h2>
+<p>We would like to develop a new metric that extends what FID measures today yet still retains its
+strong connection to user experience.</p>
+<p>We want the new metric to:</p>
+<ol>
+<li>Consider the responsiveness of all user inputs (not just the first one)</li>
+<li>Capture each event's full duration (not just the delay).</li>
+<li>Group events together that occur as part of the same logical user interaction and define that
+interaction's latency as the max duration of all its events.</li>
+<li>Create an aggregate score for all interactions that occur on a page, throughout its full
+lifecycle.</li>
+</ol>
+<p>To be successful, we should be able to say with high confidence that if a site scores poorly on this
+new metric, it is not responding quickly to user interactions.</p>
+<h3 id="capture-the-full-event-duration">Capture the full event duration <a class="w-headline-link" href="#capture-the-full-event-duration">#</a></h3>
+<p>The first obvious improvement is to try to capture broader end-to-end latency of an event. As
+mentioned above, FID only captures the delay portion of the input event. It does not account for the
+time it takes the browser to actually process the event handlers.</p>
+<p>There are various stages in the lifecycle of an event, as illustrated in this diagram:</p>
+<img     alt="Five steps in the lifecycle of an event"          decoding="async"     height="383"          loading="lazy"     sizes="(min-width: 610px) 610px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/l9CfiUoTxQQ7KmOzzXWn.jpeg?auto=format"     srcset="https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/l9CfiUoTxQQ7KmOzzXWn.jpeg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/l9CfiUoTxQQ7KmOzzXWn.jpeg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/l9CfiUoTxQQ7KmOzzXWn.jpeg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/l9CfiUoTxQQ7KmOzzXWn.jpeg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/l9CfiUoTxQQ7KmOzzXWn.jpeg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/l9CfiUoTxQQ7KmOzzXWn.jpeg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/l9CfiUoTxQQ7KmOzzXWn.jpeg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/l9CfiUoTxQQ7KmOzzXWn.jpeg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/l9CfiUoTxQQ7KmOzzXWn.jpeg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/l9CfiUoTxQQ7KmOzzXWn.jpeg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/l9CfiUoTxQQ7KmOzzXWn.jpeg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/l9CfiUoTxQQ7KmOzzXWn.jpeg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/l9CfiUoTxQQ7KmOzzXWn.jpeg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/l9CfiUoTxQQ7KmOzzXWn.jpeg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/l9CfiUoTxQQ7KmOzzXWn.jpeg?auto=format&w=1220 1220w"          width="610"   />
+<p>The following are steps Chrome takes to process an input:</p>
+<ol>
+<li>The input from the user occurs. The time at which this occurs is the event's <code>timeStamp</code>.</li>
+<li>The browser performs hit testing to decide which HTML frame (main frame or some iframe) an event
+belongs to. Then the browser sends the event to the appropriate renderer process in charge of
+that HTML frame.</li>
+<li>The renderer receives the event and queues it so that it can process when it becomes available to
+do so.</li>
+<li>The renderer processes the event by running its handlers. These handlers may queue additional
+asynchronous work, such as <code>setTimeout</code> and fetches, that are part of the input handling. But at
+this point, the synchronous work is complete.</li>
+<li>A frame is painted to the screen that reflects the result of event handlers running. Note that
+any asynchronous tasks queued by the event handlers may still be unfinished.</li>
+</ol>
+<p>The time between steps (1) and (3) above is an event's <em>delay</em>, which is what FID measures.</p>
+<p>The time between steps (1) and (5) above is an event's <em>duration</em>. This is what our new metric will
+measure.</p>
+<p>The event's duration includes the delay, but it also includes the work occurring in event handlers
+and the work the browser needs to do to paint the next frame after those handlers have run. The
+duration of an event is currently available in the <a href="/custom-metrics/#event-timing-api">Event Timing API</a> via the
+entry's <a href="https://w3c.github.io/performance-timeline/#dom-performanceentry-duration" rel="noopener">duration</a>
+attribute.</p>
+<details class="w-details" >
+<summary class="w-details__summary">
+  <h4 class="w-details__header">
+    A note on asynchronous tasks
+  </h4>
+</summary>
+<p>Ideally we would love to also capture asynchronous work triggered by the event. But the problem is
+that the definition of asynchronous work triggered by the event is extremely tricky to get right. As
+an example, a developer may choose to begin some animation on event handlers and use a <code>setTimeout</code>
+to begin such animation. If we captured all tasks posted on the handlers, the animation would delay
+the completion time for as long as the animation runs. We believe it is worthwhile to investigate
+options on how to use heuristics to capture work that is asynchronous and which should be completed
+ASAP. However, we want to be really careful when doing so because we don't want to penalize work
+that is meant to take a long time to be finished. Thus, our initial effort will look at step 5 as
+the end point: it will only consider synchronous work and the amount of time it takes to paint after
+such work is completed. That is, we're not going to apply heuristics to guess the work that would be
+kicked off asynchronously in step 4 in our initial effort.</p>
+<p>It's worth noting that, in many cases, work should be executed synchronously. In fact, this may be
+unavoidable because events are sometimes dispatched one after the other and the event handlers need
+to be executed in order. That said, we will still miss important work, like events which trigger
+fetching or which rely on important work to be done at the next <code>requestAnimationFrame</code> callback,
+for example. </details></p>
+<h3 id="group-events-into-interactions">Group events into interactions <a class="w-headline-link" href="#group-events-into-interactions">#</a></h3>
+<p>Extending the metric measurement from <em>delay</em> to <em>duration</em> is a good first step, but it still
+leaves a critical gap in the metric: it focuses on individual events and not the user experience of
+interacting with the page.</p>
+<p>Many different events can fire as a result of a single user interaction, and separately measuring
+each doesn't build a clear picture of what the user experiences. We want to make sure our metric
+captures the full amount of time a user has to wait for a response when tapping, pressing keys,
+scrolling, and dragging as accurately as possible. So we're introducing the concept of
+<em><strong>interactions</strong></em> to measure the latency of each.</p>
+<h4 id="interaction-types">Interaction types <a class="w-headline-link" href="#interaction-types">#</a></h4>
+<p>The following table lists the four interactions we want to define along with the DOM events that
+they're associated with. Note that this is not quite the same as the set of all events that are
+dispatched when such user interaction occurs. For instance, when a user scrolls, a scroll event is
+dispatched, but it happens after the screen has been updated to reflect the scrolling, so we don't
+consider it part of the interaction latency.</p>
+<div class="w-table-wrapper">
+  <table>
+    <thead>
+      <tr>
+        <th>Interaction</th>
+        <th>Start / end</th>
+        <th>Desktop events</th>
+        <th>Mobile events</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td rowspan="3">Keyboard</td>
+        <td rowspan="2">Key pressed</td>
+        <td><code>keydown</code></td>
+        <td><code>keydown</code></td>
+      </tr>
+      <tr>
+        <td><code>keypress</code></td>
+        <td><code>keypress</code></td>
+      </tr>
+      <tr>
+        <td>Key released</td>
+        <td><code>keyup</code></td>
+        <td><code>keyup</code></td>
+      </tr>
+      <tr>
+        <td rowspan="7">Tap or drag</td>
+        <td rowspan="2">Tap start or drag start</td>
+        <td><code>pointerdown</code></td>
+        <td><code>pointerdown</code></td>
+      </tr>
+      <tr>
+        <td><code>mousedown</code></td>
+        <td><code>touchstart</code></td>
+      </tr>
+      <tr>
+        <td rowspan="5">Tap up or drag end</td>
+        <td><code>pointerup</code></td>
+        <td><code>pointerup</code></td>
+      </tr>
+      <tr>
+        <td><code>mouseup</code></td>
+        <td><code>touchend</code></td>
+      </tr>
+      <tr>
+        <td><code>click</code></td>
+        <td><code>mousedown</code></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><code>mouseup</code></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><code>click</code></td>
+      </tr>
+      <tr>
+        <td>Scroll</td>
+        <td colspan="3">N/A</td>
+      </tr>
+    </tbody>
+    <caption>DOM events for each interaction type.</caption>
+  </table>
+</div>
+<p>The first three interactions listed above (keyboard, tap, and drag) are currently covered by FID.
+For our new responsiveness metric, we want to include scrolling as well, since scrolling is
+extremely common on the web and is a critical aspect of how responsive a page feels to users.</p>
+<details class="w-details" >
+<summary class="w-details__summary">
+  <h5 class="w-details__header">
+    A note on start and end
+  </h5>
+</summary>
+<p>Note that each of these interactions has two parts: when the user presses the mouse, finger, or key
+down and when they lift it up. We need to ensure our metric doesn't count time the user spends
+holding the finger down between these two actions as part of the page's latency! </details></p>
+<h5 id="keyboard">Keyboard <a class="w-headline-link" href="#keyboard">#</a></h5>
+<p>A keyboard interaction has two parts to it: when the user presses the key and when they release it.
+There are three associated events with this user interaction: <code>keydown</code>, <code>keyup</code>, and <code>keypress</code>.
+The following diagram illustrates the <code>keydown</code> and <code>keyup</code> delays and durations for a keyboard
+interaction:</p>
+<img     alt="Keyboard interaction with disjoint event durations"          decoding="async"     height="286"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/zjRipPR9ioi551DUa3pj.jpeg?auto=format"     srcset="https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/zjRipPR9ioi551DUa3pj.jpeg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/zjRipPR9ioi551DUa3pj.jpeg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/zjRipPR9ioi551DUa3pj.jpeg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/zjRipPR9ioi551DUa3pj.jpeg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/zjRipPR9ioi551DUa3pj.jpeg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/zjRipPR9ioi551DUa3pj.jpeg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/zjRipPR9ioi551DUa3pj.jpeg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/zjRipPR9ioi551DUa3pj.jpeg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/zjRipPR9ioi551DUa3pj.jpeg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/zjRipPR9ioi551DUa3pj.jpeg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/zjRipPR9ioi551DUa3pj.jpeg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/zjRipPR9ioi551DUa3pj.jpeg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/zjRipPR9ioi551DUa3pj.jpeg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/zjRipPR9ioi551DUa3pj.jpeg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/zjRipPR9ioi551DUa3pj.jpeg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/zjRipPR9ioi551DUa3pj.jpeg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/zjRipPR9ioi551DUa3pj.jpeg?auto=format&w=1600 1600w"          width="800"   />
+<p>In the diagram above, the durations are disjoint because the frame from <code>keydown</code> updates is
+presented before the <code>keyup</code> occurs, but this does not need to be the case always. In addition, note
+that a frame can be presented in the middle of a task in the renderer process since the last steps
+required to produce the frame are done outside of the renderer process.</p>
+<p>The <code>keydown</code> and <code>keypress</code> occur when the user presses the key, while the <code>keyup</code> occurs when the
+user releases the key. Generally the main content update occurs when the key is pressed: text
+appears on the screen, or the modifier effect is applied. That said, we want to capture the more
+rare cases where <code>keyup</code> would also present interesting UI updates, so we want to look at the
+overall time taken.</p>
+<p>In order to capture the overall time taken by the keyboard interaction, we can compute the maximum
+of the duration of the <code>keydown</code> and the <code>keyup</code> events.</p>
+<div class="w-aside w-aside--note">
+<p>The <code>keypress</code> event is deprecated, and it should be fired in the same task as the <code>keydown</code> event,
+so its duration will always overlap with the duration of the<code>keydown</code>.</p>
+</div>
+<details class="w-details" >
+<summary class="w-details__summary">
+  <h6 class="w-details__header">
+    A note on repeating keypresses
+  </h6>
+</summary>
+<p>There is an edge case here worth mentioning: there may be cases where the user presses a key and
+takes a while to release it. In this case, the sequence of events dispatched can
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent#auto-repeat_handling" rel="noopener">vary</a>. In
+these cases, we would consider there to be one interaction per <code>keydown</code>, which may or may not have
+a corresponding <code>keyup</code>. </details></p>
+<h5 id="tap">Tap <a class="w-headline-link" href="#tap">#</a></h5>
+<p>Another important user interaction is when the user taps or clicks on a website. Similar to
+<code>keypress</code>, some events are fired as the user presses down, and others as they release, as shown in
+the diagram above, Note the events associated with a tap are a little different on desktop vs
+mobile.</p>
+<p>For a tap or click, the release is generally the one which triggers the majority of reactions, but,
+as with keyboard interactions, we want to capture the full interaction. And in this case it's more
+important to do so because having some UI updates upon tap press is not actually that uncommon.</p>
+<p>We'd like to include the event durations for all of these events, but as many of them overlap
+completely, we need to measure just <code>pointerdown</code>, <code>pointerup</code>, and <code>click</code> to cover the full
+interaction.</p>
+<details class="w-details" >
+<summary class="w-details__summary">
+  <h6 class="w-details__header">
+    Can we narrow further to just <code>pointerdown</code> and <code>pointerup</code>?
+  </h6>
+</summary>
+<p>One initial thought would be to use the <code>pointerdown</code> and <code>pointerup</code> events and assume that they
+cover all of the durations that we're interested in. Sadly, this is not the case, as this <a href="https://output.jsbin.com/buyiyew/quiet" rel="noopener">edge
+case</a> shows. Try opening this site on mobile, or with mobile
+emulation, and tapping where it says &quot;Click me&quot;. This site triggers the <a href="https://developers.google.com/web/updates/2013/12/300ms-tap-delay-gone-away" rel="noopener">browser tap
+delay</a>. It can be seen
+that the <code>pointerdown</code>, <code>pointerup</code>, and <code>touchend</code> are dispatched quickly, whereas the <code>mousedown</code>,
+<code>mouseup</code>, and <code>click</code> wait for the delay before being dispatched. This means that if we only looked
+at <code>pointerdown</code> and <code>pointerup</code> then we'd miss the duration from the synthetic events, which is
+large due to the browser tap delay and should be included. So we should measure <code>pointerdown</code>,
+<code>pointerup</code>, and <code>click</code> to cover the full interaction. </details></p>
+<h5 id="drag">Drag <a class="w-headline-link" href="#drag">#</a></h5>
+<p>We decided to include dragging as well since it has similar associated events and since it generally
+causes important UI updates to sites. But for our metric we intend to only consider the drag start
+and the drag end - the initial and final parts of the drag. This is to make it easier to reason
+about as well as make the latencies comparable with the other interactions considered. This is
+consistent with our decision to exclude continuous events such as <code>mouseover</code>.</p>
+<p>We're also not considering drags implemented via the <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API" rel="noopener">Drag and Drop
+API</a> because they only work
+on desktop.</p>
+<h5 id="scrolling">Scrolling <a class="w-headline-link" href="#scrolling">#</a></h5>
+<p>One of the most common forms of interacting with a site is via scrolling. For our new metric, we'd
+like to measure the latency for the initial scrolling interaction of the user. In particular, we
+care about the initial reaction of the browser to the fact that the user requested a scroll. We will
+not cover the whole scrolling experience. That is, scrolling produces many frames, and we'll focus
+our attention on the initial frame produced as a reaction to the scroll.</p>
+<p>Why just the first one? For one, subsequent frames may be captured by a separate smoothness
+<a href="https://docs.google.com/presentation/d/1VwGIzypntWNosCTXWMsUI6ifw4sEKSRQgnwx3P_wqVg/edit#slide=id.p" rel="noopener">proposal</a>.
+That is, once the user has been shown the first result of scrolling, the rest should be measured in
+terms of how smooth the scrolling experience feels. Therefore, we think that the smoothness effort
+could better capture this. So, as with FID, we choose to stick to discrete user experiences: user
+experiences that have clear points in time associated with them and for which we can easily compute
+their latency. Scrolling as a whole is a continuous experience, so we do not intend to measure all
+of it in this metric.</p>
+<p>So why measure scrolls? The scrolling performance we've gathered in Chrome shows that scrolling is
+generally very fast. That said, we still want to include initial scroll latencies in our new metric
+for various reasons. First, scrolling is fast only because it has been optimized so much, because it
+is so important. But there are still ways for a website to bypass some of the performance gains that
+the browser offers. The most common one in Chrome is to force scrolling to happen on the main
+thread. So our metric should be able to say when this happens and causes poor scrolling performance
+for users. Second, scrolling is just too important to ignore. We worry that if we exclude scrolling
+then we'll have a big blindspot, and scrolling performance could decrease over time without web
+developers properly noticing.</p>
+<p>There are several events that are dispatched when a user scrolls, such as <code>touchstart</code>, <code>touchmove</code>,
+and <code>scroll</code>. Except for the scroll event, this is largely dependent on the device used for
+scrolling: touch events are dispatched when scrolling with the finger on mobile devices, while wheel
+events occur when scrolling with a mouse wheel. The scroll events are fired after initial scrolling
+has completed. And in general, no DOM event blocks scrolling, unless the website uses <a href="/uses-passive-event-listeners/">non-passive
+event listeners</a>. So we think of scrolling as decoupled from DOM
+Events altogether. What we want to measure is the time from when the user moves enough to produce a
+scroll gesture until the first frame that shows that scrolling happened.</p>
+<h4 id="how-to-define-the-latency-of-an-interaction">How to define the latency of an interaction? <a class="w-headline-link" href="#how-to-define-the-latency-of-an-interaction">#</a></h4>
+<p>As we noted above, interactions that have a &quot;down&quot; and &quot;up&quot; component need to be considered
+separately in order to avoid attributing the time the user spent holding their finger down.</p>
+<p>For these types of interactions, we'd like the latency to involve the durations of all events
+associated with them. Since event durations for each &quot;down&quot; and &quot;up&quot; part of the interaction can
+overlap, the simplest definition of interaction latency that achieves this is the maximum duration
+of any event associated with it. Referring back to the keyboard diagram from earlier, this would be
+the <code>keydown</code> duration, as it is longer than the <code>keyup</code>:</p>
+<img     alt="Keyboard interaction with maximum duration highlighted"          decoding="async"     height="311"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/WFPm4W86CqhFsNc1UZuW.jpeg?auto=format"     srcset="https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/WFPm4W86CqhFsNc1UZuW.jpeg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/WFPm4W86CqhFsNc1UZuW.jpeg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/WFPm4W86CqhFsNc1UZuW.jpeg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/WFPm4W86CqhFsNc1UZuW.jpeg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/WFPm4W86CqhFsNc1UZuW.jpeg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/WFPm4W86CqhFsNc1UZuW.jpeg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/WFPm4W86CqhFsNc1UZuW.jpeg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/WFPm4W86CqhFsNc1UZuW.jpeg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/WFPm4W86CqhFsNc1UZuW.jpeg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/WFPm4W86CqhFsNc1UZuW.jpeg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/WFPm4W86CqhFsNc1UZuW.jpeg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/WFPm4W86CqhFsNc1UZuW.jpeg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/WFPm4W86CqhFsNc1UZuW.jpeg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/WFPm4W86CqhFsNc1UZuW.jpeg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/WFPm4W86CqhFsNc1UZuW.jpeg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/WFPm4W86CqhFsNc1UZuW.jpeg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/WFPm4W86CqhFsNc1UZuW.jpeg?auto=format&w=1600 1600w"          width="800"   />
+<p>The <code>keydown</code> and <code>keyup</code> durations may overlap as well. This may happen for instance when the frame
+presented for both events is the same, as in the following diagram:</p>
+<img     alt="Keyboard interaction where press and release occur in the same frame"          decoding="async"     height="311"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/e7htYAZb44AW4UeplBwJ.jpeg?auto=format"     srcset="https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/e7htYAZb44AW4UeplBwJ.jpeg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/e7htYAZb44AW4UeplBwJ.jpeg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/e7htYAZb44AW4UeplBwJ.jpeg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/e7htYAZb44AW4UeplBwJ.jpeg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/e7htYAZb44AW4UeplBwJ.jpeg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/e7htYAZb44AW4UeplBwJ.jpeg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/e7htYAZb44AW4UeplBwJ.jpeg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/e7htYAZb44AW4UeplBwJ.jpeg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/e7htYAZb44AW4UeplBwJ.jpeg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/e7htYAZb44AW4UeplBwJ.jpeg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/e7htYAZb44AW4UeplBwJ.jpeg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/e7htYAZb44AW4UeplBwJ.jpeg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/e7htYAZb44AW4UeplBwJ.jpeg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/e7htYAZb44AW4UeplBwJ.jpeg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/e7htYAZb44AW4UeplBwJ.jpeg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/e7htYAZb44AW4UeplBwJ.jpeg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/kns0INkO77RkiEStzHWYrugyWj32/e7htYAZb44AW4UeplBwJ.jpeg?auto=format&w=1600 1600w"          width="800"   />
+<p>There's are pros and cons to this approach of using the maximum, and we're interested in <a href="#feedback">hearing
+your feedback</a>:</p>
+<ul>
+<li><strong>Pro</strong>: It is aligned with how we intend to measure scroll in that it only measures a single
+duration value.</li>
+<li><strong>Pro</strong>: It aims to reduce noise for cases like keyboard interactions, where the <code>keyup</code> usually
+does nothing and where the user may execute the key press and release quickly or slowly.</li>
+<li><strong>Con</strong>: It does not capture the full wait time of the user. For instance, it will capture the
+start or end of a drag, but not both.</li>
+</ul>
+<p>For scrolling (which just has a single associated event) we'd like to define its latency as the time
+it takes for the browser to produce the first frame as a result of scrolling. That is, the latency
+is the delta between the event <code>timeStamp</code> of the first DOM event (like <code>touchmove</code>, if using a
+finger) that is large enough to trigger a scroll and the first paint which reflects the scrolling
+taking place.</p>
+<h3 id="aggregate-all-interactions-per-page">Aggregate all interactions per page <a class="w-headline-link" href="#aggregate-all-interactions-per-page">#</a></h3>
+<p>Once we've defined what the latency of an interaction is, we'll need to compute an aggregate value
+for a page load, which may have many user interactions. Having an aggregated value enables us to:</p>
+<ul>
+<li>Form correlations with business metrics.</li>
+<li>Evaluate correlations with other performance metrics. Ideally, our new metric will be sufficiently
+independent that it adds value to the existing metrics.</li>
+<li>Easily expose values in tooling in ways that are easy to digest.</li>
+</ul>
+<p>In order to perform this aggregation we need to solve two questions:</p>
+<ol>
+<li>What numbers do we try to aggregate?</li>
+<li>How do we aggregate those numbers?</li>
+</ol>
+<p>We're exploring and evaluating several options. We welcome your thoughts on this aggregation.</p>
+<p>One option is to define a budget for the latency of an interaction, which may depend on the type
+(scroll, keyboard, tap, or drag). So for example if the budget for taps is 100 ms and the
+latency of a tap is 150 ms then the amount over budget for that interaction would be
+50 ms. Then we could compute the maximum amount of latency that goes over the budget for any
+user interaction in the page.</p>
+<p>Another option is to compute the average or median latency of the interactions throughout the life
+of the page. So if we had latencies of 80 ms, 90 ms, and 100 ms, then the average
+latency for the page would be 90 ms. We could also consider the average or median &quot;over budget&quot;
+to account for different expectations depending on the type of interaction.</p>
+<h2 id="how-does-this-look-like-on-web-performance-apis">How does this look like on web performance APIs? <a class="w-headline-link" href="#how-does-this-look-like-on-web-performance-apis">#</a></h2>
+<h3 id="what's-missing-from-event-timing">What's missing from Event Timing? <a class="w-headline-link" href="#what's-missing-from-event-timing">#</a></h3>
+<p>Unfortunately not all of the ideas presented in this post can be captured using the Event Timing
+API. In particular, there's no simple way to know the events associated with a given user
+interaction with the API. In order to do this, we've <a href="https://docs.google.com/presentation/d/1nxNFwsGqYy7WmIZ3uv_0HsSIQMSXQA9_PqlOD3V74Us/edit#slide=id.p" rel="noopener">proposed adding an <code>interactionID</code> to the
+API</a>.</p>
+<p>Another shortcoming of the Event Timing API is that there is no way to measure the scroll
+interaction, so we're <a href="https://docs.google.com/presentation/d/1qVdMlqgi9uuyx9imCauzMjLGHQK6TGOIZV_RnlGBKis/edit" rel="noopener">working on enabling these
+measurements</a>
+(via Event Timing or a separate API).</p>
+<h3 id="what-can-you-try-right-now">What can you try right now? <a class="w-headline-link" href="#what-can-you-try-right-now">#</a></h3>
+<p>Right now, it is still possible to compute the maximum latency for taps/drags and for keyboard
+interactions. The following code snippet would produce these two metrics.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">let</span> maxTapOrDragDuration <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span><br><span class="token keyword">let</span> maxKeyboardDuration <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span><br><span class="token keyword">const</span> observer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">PerformanceObserver</span><span class="token punctuation">(</span><span class="token parameter">list</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  list<span class="token punctuation">.</span><span class="token function">getEntries</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token parameter">entry</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>    <span class="token keyword">switch</span><span class="token punctuation">(</span>entry<span class="token punctuation">.</span>name<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>      <span class="token keyword">case</span> <span class="token string">"keydown"</span><span class="token operator">:</span><br>      <span class="token keyword">case</span> <span class="token string">"keyup"</span><span class="token operator">:</span><br>        maxKeyboardDuration <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">max</span><span class="token punctuation">(</span>maxKeyboardDuration<span class="token punctuation">,</span><br>            entry<span class="token punctuation">.</span>duration<span class="token punctuation">)</span><span class="token punctuation">;</span><br>        <span class="token keyword">break</span><span class="token punctuation">;</span><br>      <span class="token keyword">case</span> <span class="token string">"pointerdown"</span><span class="token operator">:</span><br>      <span class="token keyword">case</span> <span class="token string">"pointerup"</span><span class="token operator">:</span><br>      <span class="token keyword">case</span> <span class="token string">"click"</span><span class="token operator">:</span><br>        maxTapOrDragDuration <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">max</span><span class="token punctuation">(</span>maxTapOrDragDuration<span class="token punctuation">,</span><br>            entry<span class="token punctuation">.</span>duration<span class="token punctuation">)</span><span class="token punctuation">;</span><br>        <span class="token keyword">break</span><span class="token punctuation">;</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>observer<span class="token punctuation">.</span><span class="token function">observe</span><span class="token punctuation">(</span><span class="token punctuation">{</span>type<span class="token operator">:</span> <span class="token string">"event"</span><span class="token punctuation">,</span> minDuration<span class="token operator">:</span> <span class="token number">16</span><span class="token punctuation">,</span> buffered<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token comment">// We can report maxTapDragDuration and maxKeyboardDuration when sending</span><br><span class="token comment">// metrics to analytics.</span></code></pre>
+</web-copy-code><h2 id="feedback">Feedback <a class="w-headline-link" href="#feedback">#</a></h2>
+<p>Let us know what you think about these ideas by emailing: web-vitals-feedback@googlegroups.com!</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/performance/">Performance</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/web-vitals/">Web Vitals</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Jun 21, 2021</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/better-responsiveness-metric/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

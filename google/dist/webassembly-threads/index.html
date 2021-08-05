@@ -1,0 +1,912 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=70212d8bc2fc9">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Using WebAssembly threads from C, C++ and Rust</title>
+<meta name="description" content="Learn how to bring multithreaded applications written in other languages to WebAssembly." />
+
+<link rel="canonical" href="https://web.dev/webassembly-threads/" />
+
+<meta itemprop="name" content="Using WebAssembly threads from C, C++ and Rust" />
+<meta itemprop="description" content="Learn how to bring multithreaded applications written in other languages to WebAssembly." />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/YrOqDnzjHFqmZdiNBmbw.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/webassembly-threads/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Using WebAssembly threads from C, C++ and Rust" />
+<meta property="og:description" content="Learn how to bring multithreaded applications written in other languages to WebAssembly." />
+<meta property="og:image" content="https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/YrOqDnzjHFqmZdiNBmbw.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="A needle acting as a prism—splitting a single white thread into multiple colourful ones." />
+<meta property="tag" content="webassembly" />
+<meta property="tag" content="performance" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Using WebAssembly threads from C, C++ and Rust" />
+<meta name="twitter:description" content="Learn how to bring multithreaded applications written in other languages to WebAssembly." />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/YrOqDnzjHFqmZdiNBmbw.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=2f11ea902f0f9', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=782e4e4e3d4d8', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="A needle acting as a prism—splitting a single white thread into multiple colourful ones."     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/YrOqDnzjHFqmZdiNBmbw.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/YrOqDnzjHFqmZdiNBmbw.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/YrOqDnzjHFqmZdiNBmbw.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/YrOqDnzjHFqmZdiNBmbw.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/YrOqDnzjHFqmZdiNBmbw.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/YrOqDnzjHFqmZdiNBmbw.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/YrOqDnzjHFqmZdiNBmbw.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/YrOqDnzjHFqmZdiNBmbw.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/YrOqDnzjHFqmZdiNBmbw.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/YrOqDnzjHFqmZdiNBmbw.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/YrOqDnzjHFqmZdiNBmbw.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/YrOqDnzjHFqmZdiNBmbw.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/YrOqDnzjHFqmZdiNBmbw.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/YrOqDnzjHFqmZdiNBmbw.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/YrOqDnzjHFqmZdiNBmbw.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/YrOqDnzjHFqmZdiNBmbw.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/YrOqDnzjHFqmZdiNBmbw.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/YrOqDnzjHFqmZdiNBmbw.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#using-webassembly-threads-from-c-c++-and-rust" class="w-toc__header--link">
+        Using WebAssembly threads from C, C++ and Rust
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#how-webassembly-threads-work">How WebAssembly threads work</a></li><li><a href="#web-workers">Web Workers</a></li><li><a href="#sharedarraybuffer">SharedArrayBuffer</a></li><li><a href="#webassembly-atomics">WebAssembly atomics</a></li><li><a href="#how-to-use-webassembly-threads">How to use WebAssembly threads</a></li><li><a href="#feature-detection">Feature detection</a></li><li><a href="#c">C</a></li><li><a href="#c++">C++</a></li><li><a href="#rust">Rust</a></li><li><a href="#real-world-use-cases">Real-world use cases</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@RReverser"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="using-webassembly-threads-from-c-c++-and-rust" class="w-article-header__headline">Using WebAssembly threads from C, C++ and Rust</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          Learn how to bring multithreaded applications written in other languages to WebAssembly.
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Jul 12, 2021</time>
+          
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/rreverser/"><img     alt="Ingvar Stepanyan"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/Ma3ckXmLV7aj1rVgVT1I.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/Ma3ckXmLV7aj1rVgVT1I.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/Ma3ckXmLV7aj1rVgVT1I.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/Ma3ckXmLV7aj1rVgVT1I.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/Ma3ckXmLV7aj1rVgVT1I.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/Ma3ckXmLV7aj1rVgVT1I.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/rreverser/">Ingvar Stepanyan</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/RReverser"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/RReverser">GitHub</a>
+      </li>
+      
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://rreverser.com/">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>WebAssembly threads support is one of the most important performance additions to WebAssembly. It
+allows you to either run parts of your code in parallel on separate cores, or the same code over
+independent parts of the input data, scaling it to as many cores as the user has and significantly
+reducing the overall execution time.</p>
+<p>In this article you will learn how to use WebAssembly threads to bring multithreaded applications
+written in languages like C, C++, and Rust to the web.</p>
+<h2 id="how-webassembly-threads-work">How WebAssembly threads work <a class="w-headline-link" href="#how-webassembly-threads-work">#</a></h2>
+<p>WebAssembly threads is not a separate feature, but a combination of several components that allows
+WebAssembly apps to use traditional multithreading paradigms on the web.</p>
+<h3 id="web-workers">Web Workers <a class="w-headline-link" href="#web-workers">#</a></h3>
+<p>First component is the regular
+<a href="https://developer.mozilla.org/docs/Web/API/Web_Workers_API/Using_web_workers" rel="noopener">Workers</a> you know and
+love from JavaScript. WebAssembly threads use the <code>new Worker</code> constructor to create new underlying
+threads. Each thread loads a JavaScript glue, and then the main thread uses
+<a href="https://developer.mozilla.org/docs/Web/API/Worker/postMessage" rel="noopener"><code>Worker#postMessage</code></a> method to
+share the compiled
+<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly/Module" rel="noopener"><code>WebAssembly.Module</code></a>
+as well as a shared
+<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly/Memory" rel="noopener"><code>WebAssembly.Memory</code></a>
+(see below) with those other threads. This establishes communication and allows all those threads to
+run the same WebAssembly code on the same shared memory without going through JavaScript again.</p>
+<p>Web Workers have been around for over a decade now, are widely supported, and don't require any
+special flags.</p>
+<h3 id="sharedarraybuffer"><code>SharedArrayBuffer</code> <a class="w-headline-link" href="#sharedarraybuffer">#</a></h3>
+<p>WebAssembly memory is represented by a
+<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly/Memory" rel="noopener"><code>WebAssembly.Memory</code></a>
+object in the JavaScript API. By default <code>WebAssembly.Memory</code> is a wrapper around an
+<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer" rel="noopener"><code>ArrayBuffer</code></a>—a
+raw byte buffer that can be accessed only by a single thread.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token operator">></span> <span class="token keyword">new</span> <span class="token class-name">WebAssembly<span class="token punctuation">.</span>Memory</span><span class="token punctuation">(</span><span class="token punctuation">{</span> initial<span class="token operator">:</span><span class="token number">1</span><span class="token punctuation">,</span> maximum<span class="token operator">:</span><span class="token number">10</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span>buffer<br>ArrayBuffer <span class="token punctuation">{</span> … <span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>To support multithreading, <code>WebAssembly.Memory</code> gained a shared variant too. When created with a
+<code>shared</code> flag via the JavaScript API, or by the WebAssembly binary itself, it becomes a wrapper
+around a
+<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer" rel="noopener"><code>SharedArrayBuffer</code></a>
+instead. It's a variation of <code>ArrayBuffer</code> that can be shared with other threads and read or
+modified simultaneously from either side.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token operator">></span> <span class="token keyword">new</span> <span class="token class-name">WebAssembly<span class="token punctuation">.</span>Memory</span><span class="token punctuation">(</span><span class="token punctuation">{</span> initial<span class="token operator">:</span><span class="token number">1</span><span class="token punctuation">,</span> maximum<span class="token operator">:</span><span class="token number">10</span><span class="token punctuation">,</span> shared<span class="token operator">:</span><span class="token boolean">true</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span>buffer<br>SharedArrayBuffer <span class="token punctuation">{</span> … <span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>Unlike <a href="https://developer.mozilla.org/docs/Web/API/Worker/postMessage" rel="noopener"><code>postMessage</code></a>, normally used
+for communication between main thread and Web Workers,
+<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer" rel="noopener"><code>SharedArrayBuffer</code></a>
+doesn't require copying data or even waiting for the event loop to send and receive messages.
+Instead, any changes are seen by all threads nearly instantly, which makes it a much better
+compilation target for traditional synchronisation primitives.</p>
+<p><code>SharedArrayBuffer</code> has a complicated history. It was initially shipped in several browsers
+mid-2017, but had to be disabled in the beginning of 2018 due to discovery of <a href="https://developers.google.com/web/updates/2018/02/meltdown-spectre" rel="noopener">Spectre
+vulnerabilities</a>. The particular
+reason was that data extraction in Spectre relies on timing attacks—measuring execution time of a
+particular piece of code. To make this kind of attack harder, browsers reduced precision of standard
+timing APIs like <code>Date.now</code> and <code>performance.now</code>. However, shared memory, combined with a simple
+counter loop running in a separate thread <a href="https://github.com/tc39/security/issues/3" rel="noopener">is also a very reliable way to get high-precision
+timing</a>, and it's much harder to mitigate without
+significantly throttling runtime performance.</p>
+<p>Instead, Chrome 68 (mid-2018) re-enabled <code>SharedArrayBuffer</code> again by leveraging <a href="https://developers.google.com/web/updates/2018/07/site-isolation" rel="noopener">Site
+Isolation</a>—a feature that puts
+different websites into different processes and makes it much more difficult to use side-channel
+attacks like Spectre. However, this mitigation was still limited only to Chrome desktop, as Site
+Isolation is a fairly expensive feature, and couldn't be enabled by default for all sites on
+low-memory mobile devices nor was it yet implemented by other vendors.</p>
+<p>Fast-forward to 2020, Chrome and Firefox both have implementations of Site Isolation, and a standard
+way for websites to opt-in to the feature with <a href="/coop-coep/">COOP and COEP headers</a>. An opt-in
+mechanism allows to use Site Isolation even on low-powered devices where enabling it for all the
+websites would be too expensive. To opt-in, add the following headers to the main document in your
+server configuration:</p>
+<web-copy-code><pre class="language-http"><code class="language-http"><span class="token header-name keyword">Cross-Origin-Embedder-Policy:</span> require-corp<br><span class="token header-name keyword">Cross-Origin-Opener-Policy:</span> same-origin</code></pre>
+</web-copy-code><p>Once you opt-in, you get access to <code>SharedArrayBuffer</code> (including <code>WebAssembly.Memory</code> backed by a
+<code>SharedArrayBuffer</code>), precise timers, memory measurement and other APIs that require an isolated
+origin for security reasons. Check out the <a href="/coop-coep/">Making your website &quot;cross-origin isolated&quot; using COOP
+and COEP</a> for more details.</p>
+<h3 id="webassembly-atomics">WebAssembly atomics <a class="w-headline-link" href="#webassembly-atomics">#</a></h3>
+<p>While <code>SharedArrayBuffer</code> allows each thread to read and write to the same memory, for correct
+communication you want to make sure they don't perform conflicting operations at the same time. For example, it's
+possible for one thread to start reading data from a shared address, while another thread is writing
+to it, so the first thread will now get a corrupted result. This category of bugs is known as race
+conditions. In order to prevent race conditions, you need to somehow synchronize those accesses.
+This is where atomic operations come in.</p>
+<p><a href="https://webassembly.github.io/threads/core/syntax/instructions.html#atomic-memory-instructions" rel="noopener">WebAssembly
+atomics</a>
+is an extension to the WebAssembly instruction set that allow to read and write small cells of data
+(usually 32- and 64-bit integers) &quot;atomically&quot;. That is, in a way that guarantees that no two
+threads are reading or writing to the same cell at the same time, preventing such conflicts at a low
+level. Additionally, WebAssembly atomics contain two more instruction kinds—&quot;wait&quot; and &quot;notify&quot;—that
+allow one thread to sleep (&quot;wait&quot;) on a given address in a shared memory until another thread wakes
+it up via &quot;notify&quot;.</p>
+<p>All the higher-level synchronisation primitives, including channels, mutexes, and read-write locks
+build upon those instructions.</p>
+<h2 id="how-to-use-webassembly-threads">How to use WebAssembly threads <a class="w-headline-link" href="#how-to-use-webassembly-threads">#</a></h2>
+<h3 id="feature-detection">Feature detection <a class="w-headline-link" href="#feature-detection">#</a></h3>
+<p>WebAssembly atomics and <code>SharedArrayBuffer</code> are relatively new features and aren't yet available in
+all browsers with WebAssembly support. You can find which browsers support new WebAssembly features
+on the <a href="https://webassembly.org/roadmap/" rel="noopener">webassembly.org roadmap</a>.</p>
+<p>To ensure that all users can load your application, you'll need to implement progressive enhancement
+by building two different versions of Wasm—one with multithreading support and one without it. Then
+load the supported version depending on feature detection results. To detect WebAssembly threads
+support at runtime, use <a href="https://github.com/GoogleChromeLabs/wasm-feature-detect" rel="noopener">wasm-feature-detect
+library</a> and load the module like this:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">import</span> <span class="token punctuation">{</span> threads <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wasm-feature-detect'</span><span class="token punctuation">;</span><br><br><span class="token keyword">const</span> hasThreads <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">threads</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token keyword">const</span> module <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token punctuation">(</span><br>  hasThreads<br>    <span class="token operator">?</span> <span class="token keyword">import</span><span class="token punctuation">(</span><span class="token string">'./module-with-threads.js'</span><span class="token punctuation">)</span><br>    <span class="token operator">:</span> <span class="token keyword">import</span><span class="token punctuation">(</span><span class="token string">'./module-without-threads.js'</span><span class="token punctuation">)</span><br><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token comment">// …now use `module` as you normally would</span></code></pre>
+</web-copy-code><p>Now let's take a look at how to build a multithreaded version of the WebAssembly module.</p>
+<h3 id="c">C <a class="w-headline-link" href="#c">#</a></h3>
+<p>In C, particularly on Unix-like systems, the common way to use threads is via <a href="https://en.wikipedia.org/wiki/POSIX_Threads" rel="noopener">POSIX
+Threads</a> provided by the <code>pthread</code> library. Emscripten
+<a href="https://emscripten.org/docs/porting/pthreads.html" rel="noopener">provides an API-compatible implementation</a> of
+the <code>pthread</code> library built atop Web Workers, shared memory and atomics, so that the same code can
+work on the web without changes.</p>
+<p>Let's take a look at an example:</p>
+<p class="w-label">example.c:</p>
+<web-copy-code><pre class="language-c"><code class="language-c"><span class="highlight-line"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h></span></span></span><br><span class="highlight-line"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h></span></span></span><br><mark class="highlight-line highlight-line-active"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;pthread.h></span></span></mark><br><span class="highlight-line"></span><br><span class="highlight-line"><span class="token keyword">void</span> <span class="token operator">*</span><span class="token function">thread_callback</span><span class="token punctuation">(</span><span class="token keyword">void</span> <span class="token operator">*</span>arg<span class="token punctuation">)</span></span><br><span class="highlight-line"><span class="token punctuation">{</span></span><br><span class="highlight-line">    <span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line">    <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Inside the thread: %d\n"</span><span class="token punctuation">,</span> <span class="token operator">*</span><span class="token punctuation">(</span><span class="token keyword">int</span> <span class="token operator">*</span><span class="token punctuation">)</span>arg<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line">    <span class="token keyword">return</span> <span class="token constant">NULL</span><span class="token punctuation">;</span></span><br><span class="highlight-line"><span class="token punctuation">}</span></span><br><span class="highlight-line"></span><br><span class="highlight-line"><span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span></span><br><span class="highlight-line"><span class="token punctuation">{</span></span><br><span class="highlight-line">    <span class="token function">puts</span><span class="token punctuation">(</span><span class="token string">"Before the thread"</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line"></span><br><span class="highlight-line">    <span class="token class-name">pthread_t</span> thread_id<span class="token punctuation">;</span></span><br><span class="highlight-line">    <span class="token keyword">int</span> arg <span class="token operator">=</span> <span class="token number">42</span><span class="token punctuation">;</span></span><br><mark class="highlight-line highlight-line-active">    <span class="token function">pthread_create</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>thread_id<span class="token punctuation">,</span> <span class="token constant">NULL</span><span class="token punctuation">,</span> thread_callback<span class="token punctuation">,</span> <span class="token operator">&amp;</span>arg<span class="token punctuation">)</span><span class="token punctuation">;</span></mark><br><span class="highlight-line"></span><br><mark class="highlight-line highlight-line-active">    <span class="token function">pthread_join</span><span class="token punctuation">(</span>thread_id<span class="token punctuation">,</span> <span class="token constant">NULL</span><span class="token punctuation">)</span><span class="token punctuation">;</span></mark><br><span class="highlight-line"></span><br><span class="highlight-line">    <span class="token function">puts</span><span class="token punctuation">(</span><span class="token string">"After the thread"</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line"></span><br><span class="highlight-line">    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span></span><br><span class="highlight-line"><span class="token punctuation">}</span></span></code></pre>
+</web-copy-code><p>Here the headers for the <code>pthread</code> library are included via <code>pthread.h</code>. You can also see a couple
+of crucial functions for dealing with threads.</p>
+<p><a href="https://man7.org/linux/man-pages/man3/pthread_create.3.html" rel="noopener"><code>pthread_create</code></a> will create a
+background thread. It takes a destination to store a thread handle in, some thread creation
+attributes (here not passing any, so it's just <code>NULL</code>), the callback to be executed in the new
+thread (here <code>thread_callback</code>), and an optional argument pointer to pass to that callback in case
+you want to share some data from the main thread—in this example we're sharing a pointer to a
+variable <code>arg</code>.</p>
+<p><a href="https://man7.org/linux/man-pages/man3/pthread_join.3.html" rel="noopener"><code>pthread_join</code></a> can be called later at
+any time to wait for the thread to finish the execution, and get the result returned from the
+callback. It accepts the earlier assigned thread handle as well as a pointer to store the result. In
+this case, there aren't any results so the function takes a <code>NULL</code> as an argument.</p>
+<p>To compile code using threads with Emscripten, you need to invoke <code>emcc</code> and pass a <code>-pthread</code>
+parameter, as when compiling the same code with Clang or GCC on other platforms:</p>
+<web-copy-code><pre class="language-shell"><code class="language-shell">emcc -pthread example.c -o example.js</code></pre>
+</web-copy-code><p>However, when you try to run it in a browser or Node.js, you'll see a warning and then the program
+will hang:</p>
+<web-copy-code><pre class="language-text"><code class="language-text">Before the thread<br>Tried to spawn a new thread, but the thread pool is exhausted.<br>This might result in a deadlock unless some threads eventually exit or the code<br>explicitly breaks out to the event loop.<br>If you want to increase the pool size, use setting `-s PTHREAD_POOL_SIZE=...`.<br>If you want to throw an explicit error instead of the risk of deadlocking in those<br>cases, use setting `-s PTHREAD_POOL_SIZE_STRICT=2`.<br>[…hangs here…]</code></pre>
+</web-copy-code><p>What happened? The problem is, most of the time-consuming APIs on the web are asynchronous and rely
+on the event loop to execute. This limitation is an important distinction compared to traditional
+environments, where applications normally run I/O in synchronous, blocking manner. Check out the
+blog post about <a href="/asyncify/">Using asynchronous web APIs from WebAssembly</a> if you'd like to learn
+more.</p>
+<p>In this case, the code synchronously invokes <code>pthread_create</code> to create a background thread, and
+follows up by another synchronous call to <code>pthread_join</code> that waits for the background thread to
+finish execution. However, Web Workers, that are used behind the scenes when this code is compiled
+with Emscripten, are asynchronous. So what happens is, <code>pthread_create</code> only <em>schedules</em> a new
+Worker thread to be created on the next event loop run, but then <code>pthread_join</code> immediately blocks
+the event loop to wait for that Worker, and by doing so prevents it from ever being created. It's a
+classic example of a <a href="https://en.wikipedia.org/wiki/Deadlock" rel="noopener">deadlock</a>.</p>
+<p>One way to solve this problem is to create a pool of Workers ahead of time, before the program has
+even started. When <code>pthread_create</code> is invoked, it can take a ready-to-use Worker from the pool, run
+the provided callback on its background thread, and return the Worker back to the pool. All of this
+can be done synchronously, so there won't be any deadlocks as long as the pool is sufficiently
+large.</p>
+<p>This is exactly what Emscripten allows with the <a href="https://emsettings.surma.technology/#PTHREAD_POOL_SIZE" rel="noopener"><code>-s PTHREAD_POOL_SIZE=...</code></a> option. It allows to
+specify a number of threads—either a fixed number, or a JavaScript expression like
+<a href="https://developer.mozilla.org/docs/Web/API/NavigatorConcurrentHardware/hardwareConcurrency" rel="noopener"><code>navigator.hardwareConcurrency</code></a>
+to create as many threads as there are cores on the CPU. The latter option is helpful when your code
+can scale to an arbitrary number of threads.</p>
+<p>In the example above, there is only one thread being created, so instead of reserving all cores it's
+sufficient to use <code>-s PTHREAD_POOL_SIZE=1</code>:</p>
+<web-copy-code><pre class="language-shell"><code class="language-shell">emcc -pthread -s <span class="token assign-left variable">PTHREAD_POOL_SIZE</span><span class="token operator">=</span><span class="token number">1</span> example.c -o example.js</code></pre>
+</web-copy-code><p>This time, when you execute it, things work successfully:</p>
+<web-copy-code><pre class="language-text"><code class="language-text">Before the thread<br>Inside the thread: 42<br>After the thread<br>Pthread 0x701510 exited.</code></pre>
+</web-copy-code><p>There is another problem though: see that <code>sleep(1)</code> in the code example? It executes in the thread
+callback, meaning off the main thread, so it should be fine, right? Well, it isn't.</p>
+<p>When <code>pthread_join</code> is called, it has to wait for the thread execution to finish, meaning that if
+the created thread is performing long-running tasks—in this case, sleeping 1 second—then the main
+thread will also have to block for the same amount of time till the results are back. When this JS
+is executed in the browser, it will block the UI thread for 1 second until the thread callback
+returns. This leads to poor user experience.</p>
+<p>There are few solutions to this:</p>
+<ul>
+<li><code>pthread_detach</code></li>
+<li><code>-s PROXY_TO_PTHREAD</code></li>
+<li>Custom Worker and Comlink</li>
+</ul>
+<h4 id="pthread_detach">pthread_detach <a class="w-headline-link" href="#pthread_detach">#</a></h4>
+<p>First, if you only need to run some tasks off the main thread, but don't need to wait for the
+results, you can use <a href="https://man7.org/linux/man-pages/man3/pthread_detach.3.html" rel="noopener"><code>pthread_detach</code></a>
+instead of <code>pthread_join</code>. This will leave the thread callback running in the background. If you're
+using this option, you can switch off the warning with <a href="https://emsettings.surma.technology/#PTHREAD_POOL_SIZE_STRICT" rel="noopener"><code>-s PTHREAD_POOL_SIZE_STRICT=0</code></a>.</p>
+<h4 id="proxy_to_pthread">PROXY_TO_PTHREAD <a class="w-headline-link" href="#proxy_to_pthread">#</a></h4>
+<p>Second, if you're compiling a C application rather than a library, you can use <a href="https://emsettings.surma.technology/#PROXY_TO_PTHREAD" rel="noopener"><code>-s PROXY_TO_PTHREAD</code></a> option, which will offload
+the main application code to a separate thread in addition to any nested threads created by the
+application itself. This way, main code can block safely at any time without freezing the UI.
+Incidentally, when using this option, you don't have to precreate the thread pool either—instead,
+Emscripten can leverage the main thread for creating new underlying Workers, and then block the
+helper thread in <code>pthread_join</code> without deadlocking.</p>
+<h4 id="comlink">Comlink <a class="w-headline-link" href="#comlink">#</a></h4>
+<p>Third, if you're working on a library and still need to block, you can create your own Worker,
+import the Emscripten-generated code and expose it with
+<a href="https://github.com/GoogleChromeLabs/comlink" rel="noopener">Comlink</a> to the main thread. Main thread will be able
+to invoke any exported methods as asynchronous functions, and that way will also avoid blocking the
+UI.</p>
+<p>In a simple application such as the previous example <code>-s PROXY_TO_PTHREAD</code> is the best option:</p>
+<web-copy-code><pre class="language-shell"><code class="language-shell">emcc -pthread -s PROXY_TO_PTHREAD example.c -o example.js</code></pre>
+</web-copy-code><h3 id="c++">C++ <a class="w-headline-link" href="#c++">#</a></h3>
+<p>All the same caveats and logic apply in the same way to C++. The only new thing you gain is access
+to higher-level APIs like <a href="https://en.cppreference.com/w/cpp/thread/thread" rel="noopener"><code>std::thread</code></a> and
+<a href="https://en.cppreference.com/w/cpp/thread/async" rel="noopener"><code>std::async</code></a>, which use the previously discussed
+<code>pthread</code> library under the hood.</p>
+<p>So the example above can be rewritten in more idiomatic C++ like this:</p>
+<p class="w-label">example.cpp:</p>
+<web-copy-code><pre class="language-cpp"><code class="language-cpp"><span class="highlight-line"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;iostream></span></span></span><br><mark class="highlight-line highlight-line-active"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;thread></span></span></mark><br><span class="highlight-line"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;chrono></span></span></span><br><span class="highlight-line"></span><br><span class="highlight-line"><span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span></span><br><span class="highlight-line"><span class="token punctuation">{</span></span><br><span class="highlight-line">    <span class="token function">puts</span><span class="token punctuation">(</span><span class="token string">"Before the thread"</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line"></span><br><span class="highlight-line">    <span class="token keyword">int</span> arg <span class="token operator">=</span> <span class="token number">42</span><span class="token punctuation">;</span></span><br><mark class="highlight-line highlight-line-active">    std<span class="token double-colon punctuation">::</span>thread <span class="token function">thread</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token operator">&amp;</span><span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span></mark><br><span class="highlight-line">        std<span class="token double-colon punctuation">::</span>this_thread<span class="token double-colon punctuation">::</span><span class="token function">sleep_for</span><span class="token punctuation">(</span>std<span class="token double-colon punctuation">::</span>chrono<span class="token double-colon punctuation">::</span><span class="token function">seconds</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line">        std<span class="token double-colon punctuation">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"Inside the thread: "</span> <span class="token operator">&lt;&lt;</span> arg <span class="token operator">&lt;&lt;</span> std<span class="token double-colon punctuation">::</span>endl<span class="token punctuation">;</span></span><br><span class="highlight-line">    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line"></span><br><mark class="highlight-line highlight-line-active">    thread<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></mark><br><span class="highlight-line"></span><br><span class="highlight-line">    std<span class="token double-colon punctuation">::</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"After the thread"</span> <span class="token operator">&lt;&lt;</span> std<span class="token double-colon punctuation">::</span>endl<span class="token punctuation">;</span></span><br><span class="highlight-line"></span><br><span class="highlight-line">    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span></span><br><span class="highlight-line"><span class="token punctuation">}</span></span></code></pre>
+</web-copy-code><p>When compiled and executed with similar parameters, it will behave in the same way as the C example:</p>
+<web-copy-code><pre class="language-shell"><code class="language-shell">emcc -std<span class="token operator">=</span>c++11 -pthread -s PROXY_TO_PTHREAD example.cpp -o example.js</code></pre>
+</web-copy-code><p>Output:</p>
+<web-copy-code><pre class="language-text"><code class="language-text">Before the thread<br>Inside the thread: 42<br>Pthread 0xc06190 exited.<br>After the thread<br>Proxied main thread 0xa05c18 finished with return code 0. EXIT_RUNTIME=0 set, so<br>keeping main thread alive for asynchronous event operations.<br>Pthread 0xa05c18 exited.</code></pre>
+</web-copy-code><h3 id="rust">Rust <a class="w-headline-link" href="#rust">#</a></h3>
+<p>Unlike Emscripten, Rust doesn't have a specialized end-to-end web target, but instead provides a
+generic <code>wasm32-unknown-unknown</code> target for generic WebAssembly output.</p>
+<p>If Wasm is intended to be used in a web environment, any interaction with JavaScript APIs is left to
+external libraries and tooling like <a href="https://rustwasm.github.io/docs/wasm-bindgen/" rel="noopener">wasm-bindgen</a>
+and <a href="https://rustwasm.github.io/docs/wasm-pack/" rel="noopener">wasm-pack</a>. Unfortunately, this means that the
+standard library is not aware of Web Workers and standard APIs such as
+<a href="https://doc.rust-lang.org/std/thread/" rel="noopener"><code>std::thread</code></a> won't work when compiled to WebAssembly.</p>
+<p>Luckily, the majority of the ecosystem depends on higher-level libraries to take care of
+multithreading. At that level it's much easier to abstract away all the platform differences.</p>
+<p>In particular, <a href="https://crates.io/crates/rayon" rel="noopener">Rayon</a> is the most popular choice for
+data-parallelism in Rust. It allows you to take method chains on regular iterators and, usually with
+a single line change, convert them in a way where they'd run in parallel on all available threads
+instead of sequentially. For example:</p>
+<web-copy-code><pre class="language-rust"><code class="language-rust"><span class="highlight-line"><span class="token keyword">pub</span> <span class="token keyword">fn</span> <span class="token function-definition function">sum_of_squares</span><span class="token punctuation">(</span>numbers<span class="token punctuation">:</span> <span class="token operator">&amp;</span><span class="token punctuation">[</span><span class="token keyword">i32</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">-></span> <span class="token keyword">i32</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">  numbers</span><br><del class="highlight-line highlight-line-remove">  <span class="token punctuation">.</span><span class="token function">iter</span><span class="token punctuation">(</span><span class="token punctuation">)</span></del><br><ins class="highlight-line highlight-line-add">  <span class="token punctuation">.</span><span class="token function">par_iter</span><span class="token punctuation">(</span><span class="token punctuation">)</span></ins><br><span class="highlight-line">  <span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span><span class="token closure-params"><span class="token closure-punctuation punctuation">|</span>x<span class="token closure-punctuation punctuation">|</span></span> x <span class="token operator">*</span> x<span class="token punctuation">)</span></span><br><span class="highlight-line">  <span class="token punctuation">.</span><span class="token function">sum</span><span class="token punctuation">(</span><span class="token punctuation">)</span></span><br><span class="highlight-line"><span class="token punctuation">}</span></span></code></pre>
+</web-copy-code><p>With this small change, the code will split up the input data, calculate <code>x * x</code> and partial sums in
+parallel threads, and in the end add up those partial results together.</p>
+<p>To accommodate for platforms without working <code>std::thread</code>, Rayon provides hooks that allow to
+define custom logic for spawning and exiting threads.</p>
+<p><a href="https://github.com/GoogleChromeLabs/wasm-bindgen-rayon" rel="noopener">wasm-bindgen-rayon</a> taps into those hooks
+to spawn WebAssembly threads as Web Workers. To use it, you need to add it as a dependency and
+follow the configuration steps described in the
+<a href="https://github.com/GoogleChromeLabs/wasm-bindgen-rayon#setting-up" rel="noopener">docs</a>. The example above will
+end up looking like this:</p>
+<web-copy-code><pre class="language-rust"><code class="language-rust"><ins class="highlight-line highlight-line-add"><span class="token keyword">pub</span> <span class="token keyword">use</span> <span class="token namespace">wasm_bindgen_rayon<span class="token punctuation">::</span></span>init_thread_pool<span class="token punctuation">;</span></ins><br><ins class="highlight-line highlight-line-add"></ins><br><ins class="highlight-line highlight-line-add"><span class="token attribute attr-name">#[wasm_bindgen]</span></ins><br><span class="highlight-line"><span class="token keyword">pub</span> <span class="token keyword">fn</span> <span class="token function-definition function">sum_of_squares</span><span class="token punctuation">(</span>numbers<span class="token punctuation">:</span> <span class="token operator">&amp;</span><span class="token punctuation">[</span><span class="token keyword">i32</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">-></span> <span class="token keyword">i32</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">  numbers</span><br><span class="highlight-line">  <span class="token punctuation">.</span><span class="token function">par_iter</span><span class="token punctuation">(</span><span class="token punctuation">)</span></span><br><span class="highlight-line">  <span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span><span class="token closure-params"><span class="token closure-punctuation punctuation">|</span>x<span class="token closure-punctuation punctuation">|</span></span> x <span class="token operator">*</span> x<span class="token punctuation">)</span></span><br><span class="highlight-line">  <span class="token punctuation">.</span><span class="token function">sum</span><span class="token punctuation">(</span><span class="token punctuation">)</span></span><br><span class="highlight-line"><span class="token punctuation">}</span></span></code></pre>
+</web-copy-code><p>Once done, the generated JavaScript will export an extra <code>initThreadPool</code> function. This function
+will create a pool of Workers and reuse them throughout the lifetime of the program for any
+multithreaded operations done by Rayon.</p>
+<p>This pool mechanism is similar to the <code>-s PTHREAD_POOL_SIZE=...</code> option in Emscripten explained
+earlier, and also needs to be initialized before the main code to avoid deadlocks:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><mark class="highlight-line highlight-line-active"><span class="token keyword">import</span> init<span class="token punctuation">,</span> <span class="token punctuation">{</span> initThreadPool<span class="token punctuation">,</span> sum_of_squares <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'./pkg/index.js'</span><span class="token punctuation">;</span></mark><br><span class="highlight-line"></span><br><span class="highlight-line"><span class="token comment">// Regular wasm-bindgen initialization.</span></span><br><span class="highlight-line"><span class="token keyword">await</span> <span class="token function">init</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line"></span><br><mark class="highlight-line highlight-line-active"><span class="token comment">// Thread pool initialization with the given number of threads</span></mark><br><mark class="highlight-line highlight-line-active"><span class="token comment">// (pass `navigator.hardwareConcurrency` if you want to use all cores).</span></mark><br><mark class="highlight-line highlight-line-active"><span class="token keyword">await</span> <span class="token function">initThreadPool</span><span class="token punctuation">(</span>navigator<span class="token punctuation">.</span>hardwareConcurrency<span class="token punctuation">)</span><span class="token punctuation">;</span></mark><br><span class="highlight-line"></span><br><span class="highlight-line"><span class="token comment">// ...now you can invoke any exported functions as you normally would</span></span><br><span class="highlight-line">console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token function">sum_of_squares</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Int32Array</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 14</span></span></code></pre>
+</web-copy-code><p>Note that the same <a href="https://github.com/GoogleChromeLabs/wasm-bindgen-rayon#caveats" rel="noopener">caveats</a> about
+blocking the main thread apply here too. Even the <code>sum_of_squares</code> example still needs to block the
+main thread to wait for the partial results from other threads.</p>
+<p>It might be a very short wait or a long one, depending on the complexity of iterators and number of
+available threads, but, to be on the safe side, browser engines actively prevent blocking the main
+thread altogether and such code will throw an error. Instead, you should create a Worker, import the
+<code>wasm-bindgen</code>-generated code there, and expose its API with a library like
+<a href="https://github.com/GoogleChromeLabs/comlink" rel="noopener">Comlink</a> to the main thread.</p>
+<p>Check out <a href="https://github.com/GoogleChromeLabs/wasm-bindgen-rayon/tree/main/demo" rel="noopener">the wasm-bindgen-rayon
+example</a> for an end-to-end
+demo showing:</p>
+<ul>
+<li><a href="https://github.com/GoogleChromeLabs/wasm-bindgen-rayon/blob/e13485d6d64a062b890f5bb3a842b1fe609eb3c1/demo/wasm-worker.js#L27" rel="noopener">Feature detection of
+threads.</a></li>
+<li><a href="https://github.com/GoogleChromeLabs/wasm-bindgen-rayon/blob/e13485d6d64a062b890f5bb3a842b1fe609eb3c1/demo/package.json#L4-L5" rel="noopener">Building single- and multi-threaded versions of the same Rust
+app.</a></li>
+<li><a href="https://github.com/GoogleChromeLabs/wasm-bindgen-rayon/blob/e13485d6d64a062b890f5bb3a842b1fe609eb3c1/demo/wasm-worker.js#L28-L31" rel="noopener">Loading the JS+Wasm generated by wasm-bindgen in a
+Worker.</a></li>
+<li><a href="https://github.com/GoogleChromeLabs/wasm-bindgen-rayon/blob/e13485d6d64a062b890f5bb3a842b1fe609eb3c1/demo/wasm-worker.js#L32" rel="noopener">Using wasm-bindgen-rayon to initialize a thread
+pool.</a></li>
+<li>Using Comlink to <a href="https://github.com/GoogleChromeLabs/wasm-bindgen-rayon/blob/e13485d6d64a062b890f5bb3a842b1fe609eb3c1/demo/wasm-worker.js#L44-L46" rel="noopener">expose Worker's
+API</a>
+to <a href="https://github.com/GoogleChromeLabs/wasm-bindgen-rayon/blob/e13485d6d64a062b890f5bb3a842b1fe609eb3c1/demo/index.js#L25-L29" rel="noopener">the main
+thread</a>.</li>
+</ul>
+<h2 id="real-world-use-cases">Real-world use cases <a class="w-headline-link" href="#real-world-use-cases">#</a></h2>
+<p>We actively use WebAssembly threads in <a href="https://squoosh.app/" rel="noopener">Squoosh.app</a> for client-side image
+compression—in particular, for formats like AVIF (C++), JPEG-XL (C++), OxiPNG (Rust) and WebP v2
+(C++). Thanks to the multithreading alone, we've seen consistent 1.5x-3x speed-ups (exact ratio
+differs per codec), and were able to push those numbers even further by combining WebAssembly threads
+with <a href="https://v8.dev/features/simd" rel="noopener">WebAssembly SIMD</a>!</p>
+<p>Google Earth is another notable service that's using WebAssembly threads for its <a href="https://earth.google.com/web/" rel="noopener">web
+version</a>.</p>
+<p><a href="https://ffmpegwasm.github.io/" rel="noopener">FFMPEG.WASM</a> is a WebAssembly version of a popular
+<a href="https://www.ffmpeg.org/" rel="noopener">FFmpeg</a> multimedia toolchain that uses WebAssembly threads to efficiently
+encode videos directly in the browser.</p>
+<p>There are many more exciting examples using WebAssembly threads out there. Be sure to check out
+the demos and bring your own multithreaded applications and libraries to the web!</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/webassembly/">WebAssembly</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/performance/">Performance</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Jul 12, 2021</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/webassembly-threads/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

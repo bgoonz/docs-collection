@@ -1,0 +1,892 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=17a4171967435">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Building a Stories component</title>
+<meta name="description" content="A foundational overview of how to build an experience similar to Instagram Stories on the web." />
+
+<link rel="canonical" href="https://web.dev/building-a-stories-component/" />
+
+<meta itemprop="name" content="Building a Stories component" />
+<meta itemprop="description" content="A foundational overview of how to build an experience similar to Instagram Stories on the web." />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/7FsH2ngtBgEZsXVGSv0q.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/building-a-stories-component/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Building a Stories component" />
+<meta property="og:description" content="A foundational overview of how to build an experience similar to Instagram Stories on the web." />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/7FsH2ngtBgEZsXVGSv0q.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="" />
+<meta property="tag" content="css" />
+<meta property="tag" content="dom" />
+<meta property="tag" content="javascript" />
+<meta property="tag" content="layout" />
+<meta property="tag" content="mobile" />
+<meta property="tag" content="ux" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Building a Stories component" />
+<meta name="twitter:description" content="A foundational overview of how to build an experience similar to Instagram Stories on the web." />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/7FsH2ngtBgEZsXVGSv0q.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=884c69eb5c7e', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=4171ebbd33b53', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="Hero Image"     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/OghwTxMrgwyEpzqQeuCa.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/OghwTxMrgwyEpzqQeuCa.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/OghwTxMrgwyEpzqQeuCa.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/OghwTxMrgwyEpzqQeuCa.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/OghwTxMrgwyEpzqQeuCa.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/OghwTxMrgwyEpzqQeuCa.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/OghwTxMrgwyEpzqQeuCa.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/OghwTxMrgwyEpzqQeuCa.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/OghwTxMrgwyEpzqQeuCa.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/OghwTxMrgwyEpzqQeuCa.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/OghwTxMrgwyEpzqQeuCa.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/OghwTxMrgwyEpzqQeuCa.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/OghwTxMrgwyEpzqQeuCa.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/OghwTxMrgwyEpzqQeuCa.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/OghwTxMrgwyEpzqQeuCa.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/OghwTxMrgwyEpzqQeuCa.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/OghwTxMrgwyEpzqQeuCa.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/OghwTxMrgwyEpzqQeuCa.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#building-a-stories-component" class="w-toc__header--link">
+        Building a Stories component
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#overview">Overview</a></li><li><a href="#features">Picking the right tools for the job</a></li><li><a href="#grid">CSS Grid</a></li><li><a href="#scroll-snap-points">CSS Scroll Snap Points</a></li><li><a href="#compatibility">Cross-browser compatibility</a></li><li><a href="#scroll-snap-stop">scroll-snap-stop</a></li><li><a href="#overscroll-behavior">overscroll-behavior</a></li><li><a href="#scrollintoview">scrollIntoView({behavior: 'smooth'})</a></li><li><a href="#hands-on">Hands-on</a></li><li><a href="#remixes">Community remixes</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@argyleink"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="building-a-stories-component" class="w-article-header__headline">Building a Stories component</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          A foundational overview of how to build an experience similar to Instagram Stories on the web.
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Nov 25, 2020</time>
+          
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/adamargyle/"><img     alt="Adam Argyle"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/adamargyle/">Adam Argyle</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/argyleink"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/argyleink">GitHub</a>
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://glitch.com/@argyleink"
+          >Glitch</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://nerdy.dev">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>In this post I want to share thinking on building a Stories component for
+the web that is responsive, supports keyboard navigation, and works across
+browsers.</p>
+<figure class="w-figure w-figure--fullbleed">
+  <video playsinline controls autoplay loop muted class="w-screenshot">
+    <!-- <source src="https://storage.googleapis.com/web-dev-assets/macos-system-ui/system-ui_wght.webm" type="video/webm"> -->
+    <source src="https://storage.googleapis.com/web-dev-assets/gui-challenges/stories-desktop-demo.mp4">
+  </video>
+  <figcaption class="w-figure">
+    <a href="https://gui-challenges-stories.glitch.me/">Demo</a>
+  </figcaption>
+</figure>
+<p>If you would prefer a hands-on demonstration of building this Stories component yourself,
+check out the <a href="/codelab-building-a-stories-component">Stories component codelab</a>.</p>
+<p>If you prefer video, here's a YouTube version of this post:</p>
+<div class="youtube">  <lite-youtube    videoid="PzvdREGR0Xw"      >  </lite-youtube></div>
+<h2 id="overview">Overview <a class="w-headline-link" href="#overview">#</a></h2>
+<p>Two popular examples of the Stories UX are Snapchat Stories and Instagram Stories (not to mention fleets).
+In general UX terms, Stories are usually a mobile-only, tap-centric pattern for navigating
+multiple subscriptions. For example, on Instagram, users open a friend's story
+and go through the pictures in it. They generally do this many friends at a
+time. By tapping on the right side of the device, a user skips ahead to that friend's
+next story. By swiping right, a user skips ahead to a different friend.
+A Story component is fairly similar to a carousel, but allows navigating a
+multi-dimensional array as opposed to a single-dimensional array. It's as if there's a carousel inside
+each carousel. 🤯</p>
+<figure class="w-figure">
+  <img     alt="Visualized multi-dimensional array using cards. Left to right is a stack of purple borders cards, and inside each card is 1-many cyan bordered cards. List in a list."     class="w-screenshot w-screenshot--filled"     decoding="async"     height="255"          loading="lazy"     sizes="(min-width: 716px) 716px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/0yVm8NC0TiAsl6hcDxys.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/0yVm8NC0TiAsl6hcDxys.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/0yVm8NC0TiAsl6hcDxys.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/0yVm8NC0TiAsl6hcDxys.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/0yVm8NC0TiAsl6hcDxys.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/0yVm8NC0TiAsl6hcDxys.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/0yVm8NC0TiAsl6hcDxys.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/0yVm8NC0TiAsl6hcDxys.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/0yVm8NC0TiAsl6hcDxys.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/0yVm8NC0TiAsl6hcDxys.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/0yVm8NC0TiAsl6hcDxys.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/0yVm8NC0TiAsl6hcDxys.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/0yVm8NC0TiAsl6hcDxys.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/0yVm8NC0TiAsl6hcDxys.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/0yVm8NC0TiAsl6hcDxys.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/0yVm8NC0TiAsl6hcDxys.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/0yVm8NC0TiAsl6hcDxys.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/0yVm8NC0TiAsl6hcDxys.png?auto=format&w=1432 1432w"          width="716"   />
+  <figcaption class="w-figcaption">
+    <span style="width: 1rem; height: 1rem; background: #EB00FF; display: inline-block; border-radius: 3px; position: relative; top: .2em;"></span> 1st carousel of friends
+    <br><span style="width: 1rem; height: 1rem; background: #00D8FF; display: inline-block; border-radius: 3px; position: relative; top: .2em;"></span> 2nd "stacked" carousel of stories
+    <br>👍 List in a list, aka: a multi-dimensional array
+  </figcaption>
+</figure>
+<h2 id="features">Picking the right tools for the job <a class="w-headline-link" href="#features">#</a></h2>
+<p>All in all I found this component pretty straightforward to build, thanks to a few
+critical web platform features. Let's cover them!</p>
+<h3 id="grid">CSS Grid <a class="w-headline-link" href="#grid">#</a></h3>
+<p>Our layout turned out to be no tall order for CSS Grid as it's equipped with some
+powerful ways to wrangle content.</p>
+<h4 id="friends-layout">Friends layout <a class="w-headline-link" href="#friends-layout">#</a></h4>
+<p>Our primary <code>.stories</code> component wrapper is a mobile-first horizontal scrollview:</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="highlight-line"><span class="token selector">.stories</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">  <span class="token property">inline-size</span><span class="token punctuation">:</span> 100vw<span class="token punctuation">;</span></span><br><span class="highlight-line">  <span class="token property">block-size</span><span class="token punctuation">:</span> 100vh<span class="token punctuation">;</span></span><br><span class="highlight-line"></span><br><mark class="highlight-line highlight-line-active">  <span class="token property">display</span><span class="token punctuation">:</span> grid<span class="token punctuation">;</span></mark><br><mark class="highlight-line highlight-line-active">  <span class="token property">grid</span><span class="token punctuation">:</span> 1fr / auto-flow 100%<span class="token punctuation">;</span></mark><br><mark class="highlight-line highlight-line-active">  <span class="token property">gap</span><span class="token punctuation">:</span> 1ch<span class="token punctuation">;</span></mark><br><span class="highlight-line"></span><br><span class="highlight-line">  <span class="token property">overflow-x</span><span class="token punctuation">:</span> auto<span class="token punctuation">;</span></span><br><span class="highlight-line">  <span class="token property">scroll-snap-type</span><span class="token punctuation">:</span> x mandatory<span class="token punctuation">;</span></span><br><span class="highlight-line">  <span class="token property">overscroll-behavior</span><span class="token punctuation">:</span> contain<span class="token punctuation">;</span></span><br><span class="highlight-line">  <span class="token property">touch-action</span><span class="token punctuation">:</span> pan-x<span class="token punctuation">;</span></span><br><span class="highlight-line"><span class="token punctuation">}</span></span><br><span class="highlight-line"></span><br><span class="highlight-line"><span class="token comment">/* desktop constraint */</span></span><br><span class="highlight-line"><span class="token atrule"><span class="token rule">@media</span> <span class="token punctuation">(</span><span class="token property">hover</span><span class="token punctuation">:</span> hover<span class="token punctuation">)</span> <span class="token keyword">and</span> <span class="token punctuation">(</span><span class="token property">min-width</span><span class="token punctuation">:</span> 480px<span class="token punctuation">)</span></span> <span class="token punctuation">{</span></span><br><span class="highlight-line">  <span class="token property">max-inline-size</span><span class="token punctuation">:</span> 480px<span class="token punctuation">;</span></span><br><span class="highlight-line">  <span class="token property">max-block-size</span><span class="token punctuation">:</span> 848px<span class="token punctuation">;</span></span><br><span class="highlight-line"><span class="token punctuation">}</span></span></code></pre>
+</web-copy-code><figure class="w-figure">
+  <video playsinline controls autoplay loop muted class="w-screenshot">
+    <source src="https://storage.googleapis.com/web-dev-assets/gui-challenges/stories-overflow-columns.webm" type="video/webm">
+    <source src="https://storage.googleapis.com/web-dev-assets/gui-challenges/stories-overflow-columns.mp4">
+  </video>
+  <figcaption class="w-figcaption">
+    Using Chrome DevTools'
+    <a href="https://developers.google.com/web/tools/chrome-devtools/device-mode">Device Mode</a>
+    to highlight the columns created by Grid
+  </figcaption>
+</figure>
+<p>Let's breakdown that <code>grid</code> layout:</p>
+<ul>
+<li>We explicitly fill the viewport on mobile with <code>100vh</code> and <code>100vw</code> and constrain the size on desktop</li>
+<li><code>/</code> separates our row and column templates</li>
+<li><code>auto-flow</code> translates to <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/grid-auto-flow" rel="noopener"><code>grid-auto-flow: column</code></a></li>
+<li>The autoflow template is <code>100%</code>, which in this case is whatever the scroll window width is</li>
+</ul>
+<div class="w-aside w-aside--note">
+<p>Note that the location of the <code>/</code> separator relative to <code>auto-flow</code> is important.
+If <code>auto-flow</code> came before <code>/</code> it would be shorthand for <code>grid-auto-flow: row</code>.</p>
+</div>
+<p>On a mobile phone, think of this like the row size being the viewport height and
+each column being the viewport width. Continuing with the Snapchat Stories and
+Instagram Stories example, each column will be a friend's story. We want friends
+stories to continue outside of the viewport so we have somewhere to scroll to.
+Grid will make however many columns it needs to layout your HTML for each friend
+story, creating a dynamic and responsive scrolling container for us. Grid
+enabled us to centralize the whole effect.</p>
+<h4 id="stacking">Stacking <a class="w-headline-link" href="#stacking">#</a></h4>
+<p>For each friend we need their stories in a pagination-ready state.
+In preparation for animation and other fun patterns, I chose a stack.
+When I say stack, I mean like you're looking down on a
+sandwich, not like you're looking from the side.</p>
+<p>With CSS grid, we can define a single-cell grid (i.e. a square), where the rows
+and columns share an alias (<code>[story]</code>), and then each child gets assigned to that
+aliased single-cell space:</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="highlight-line"><span class="token selector">.user</span> <span class="token punctuation">{</span></span><br><mark class="highlight-line highlight-line-active">  <span class="token property">display</span><span class="token punctuation">:</span> grid<span class="token punctuation">;</span></mark><br><mark class="highlight-line highlight-line-active">  <span class="token property">grid</span><span class="token punctuation">:</span> [story] 1fr / [story] 1fr<span class="token punctuation">;</span></mark><br><span class="highlight-line">  <span class="token property">scroll-snap-align</span><span class="token punctuation">:</span> start<span class="token punctuation">;</span></span><br><span class="highlight-line">  <span class="token property">scroll-snap-stop</span><span class="token punctuation">:</span> always<span class="token punctuation">;</span></span><br><span class="highlight-line"><span class="token punctuation">}</span></span></code></pre>
+</web-copy-code><web-copy-code><pre class="language-css"><code class="language-css"><span class="highlight-line"><span class="token selector">.story</span> <span class="token punctuation">{</span></span><br><mark class="highlight-line highlight-line-active">  <span class="token property">grid-area</span><span class="token punctuation">:</span> story<span class="token punctuation">;</span></mark><br><span class="highlight-line">  <span class="token property">background-size</span><span class="token punctuation">:</span> cover<span class="token punctuation">;</span></span><br><span class="highlight-line">  …</span><br><span class="highlight-line"><span class="token punctuation">}</span></span></code></pre>
+</web-copy-code><p>This puts our HTML in control of the stacking order and also keeps all elements
+in flow. Notice how we didn't need to do anything with <code>absolute</code> positioning or <code>z-index</code> and
+we didn't need to box correct with <code>height: 100%</code> or <code>width: 100%</code>. The parent grid
+already defined the size of the story picture viewport, so none of these story components
+needed to be told to fill it!</p>
+<h3 id="scroll-snap-points">CSS Scroll Snap Points <a class="w-headline-link" href="#scroll-snap-points">#</a></h3>
+<p>The <a href="https://www.w3.org/TR/css-scroll-snap-1/" rel="noopener">CSS Scroll Snap Points spec</a> makes it
+a cinch to lock elements into the viewport on scroll. Before these CSS properties existed,
+you had to use JavaScript, and it was… tricky, to say the least. Check out
+<a href="https://css-tricks.com/introducing-css-scroll-snap-points/" rel="noopener">Introducing CSS Scroll Snap Points</a>
+by Sarah Drasner for a great breakdown of how to use them.</p>
+<figure class="w-figure">
+  <video playsinline controls autoplay loop muted class="w-screenshot">
+    <!-- <source src="https://storage.googleapis.com/web-dev-assets/macos-system-ui/system-ui_wght.webm" type="video/webm"> -->
+    <source src="https://storage.googleapis.com/web-dev-assets/gui-challenges/scroll-snap-example.mp4">
+  </video>
+  <figcaption class="w-figcaption">
+    Horizontal scrolling without and with <code>scroll-snap-points</code> styles.
+    Without it, users can free scroll as normal. With it, the browser rests gently on each item.
+  </figcaption>
+</figure>
+<div class="w-columns">
+<figure class="w-compare"><p class="w-compare__label w-compare__label--better">parent</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="highlight-line"><span class="token selector">.stories</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">  <span class="token property">display</span><span class="token punctuation">:</span> grid<span class="token punctuation">;</span></span><br><span class="highlight-line">  <span class="token property">grid</span><span class="token punctuation">:</span> 1fr / auto-flow 100%<span class="token punctuation">;</span></span><br><span class="highlight-line">  <span class="token property">gap</span><span class="token punctuation">:</span> 1ch<span class="token punctuation">;</span></span><br><mark class="highlight-line highlight-line-active">  <span class="token property">overflow-x</span><span class="token punctuation">:</span> auto<span class="token punctuation">;</span></mark><br><mark class="highlight-line highlight-line-active">  <span class="token property">scroll-snap-type</span><span class="token punctuation">:</span> x mandatory<span class="token punctuation">;</span></mark><br><span class="highlight-line">  <span class="token property">overscroll-behavior</span><span class="token punctuation">:</span> contain<span class="token punctuation">;</span></span><br><span class="highlight-line">  <span class="token property">touch-action</span><span class="token punctuation">:</span> pan-x<span class="token punctuation">;</span></span><br><span class="highlight-line"><span class="token punctuation">}</span></span></code></pre>
+</web-copy-code><figcaption class="w-compare__caption">
+<p>Parent with overscroll defines snap behavior.</p>
+</figcaption>
+</figure>
+<figure class="w-compare"><p class="w-compare__label w-compare__label--better">child</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="highlight-line"><span class="token selector">.user</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">  <span class="token property">display</span><span class="token punctuation">:</span> grid<span class="token punctuation">;</span></span><br><span class="highlight-line">  <span class="token property">grid</span><span class="token punctuation">:</span> [story] 1fr / [story] 1fr<span class="token punctuation">;</span></span><br><mark class="highlight-line highlight-line-active">  <span class="token property">scroll-snap-align</span><span class="token punctuation">:</span> start<span class="token punctuation">;</span></mark><br><mark class="highlight-line highlight-line-active">  <span class="token property">scroll-snap-stop</span><span class="token punctuation">:</span> always<span class="token punctuation">;</span></mark><br><span class="highlight-line"><span class="token punctuation">}</span></span></code></pre>
+</web-copy-code><figcaption class="w-compare__caption">
+<p>Children opt into being a snap target.</p>
+</figcaption>
+</figure>
+</div>
+<p>I chose Scroll Snap Points for a few reasons:</p>
+<ul>
+<li><strong>Free accessibility</strong>. The Scroll Snap Points spec states that pressing the
+<kbd>Left Arrow</kbd> and <kbd>Right Arrow</kbd> keys should move through the snap points
+by default.</li>
+<li><strong>A growing spec</strong>. The Scroll Snap Points spec is getting new features and improvements
+all the time, which means that my Stories component will probably only get better from
+here on out.</li>
+<li><strong>Ease of implementation</strong>. Scroll Snap Points are practically built for the
+touch-centric horizontal-pagination use case.</li>
+<li><strong>Free platform-style inertia</strong>. Every platform will scroll and rest in its style, as opposed to
+normalized inertia which can have an uncanny scrolling and resting style.</li>
+</ul>
+<h2 id="compatibility">Cross-browser compatibility <a class="w-headline-link" href="#compatibility">#</a></h2>
+<!-- TODO(kayce): Clear up what browsers were tested on what operating systems. -->
+<p>We tested on Opera, Firefox, Safari, and Chrome, plus Android and iOS. Here's
+a brief rundown of the web features where we found differences in capabilities and support.</p>
+<div class="w-aside w-aside--success">
+<p><strong>Success</strong>:
+All of the features chosen were supported and none were buggy.</p>
+</div>
+<p>We did though have some CSS not apply, so some platforms are currently missing out on UX
+optimizations. I did enjoy not needing to manage these features and feel confident
+that they'll eventually reach other browsers and platforms.</p>
+<h3 id="scroll-snap-stop"><code>scroll-snap-stop</code> <a class="w-headline-link" href="#scroll-snap-stop">#</a></h3>
+<p>Carousels were one of the major UX use cases that prompted the creation of the
+CSS Scroll Snap Points spec. Unlike Stories, a carousel doesn't always need to stop
+on each image after a user interacts with it. It might be fine or encouraged to
+quickly cycle through the carousel. Stories, on the other hand, are best navigated one-by-one,
+and that's exactly what <code>scroll-snap-stop</code> provides.</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="highlight-line"><span class="token selector">.user</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">  <span class="token property">scroll-snap-align</span><span class="token punctuation">:</span> start<span class="token punctuation">;</span></span><br><mark class="highlight-line highlight-line-active">  <span class="token property">scroll-snap-stop</span><span class="token punctuation">:</span> always<span class="token punctuation">;</span></mark><br><span class="highlight-line"><span class="token punctuation">}</span></span></code></pre>
+</web-copy-code><p>At the time of writing this post, <code>scroll-snap-stop</code> is only supported on Chromium-based
+browsers. Check out
+<a href="https://developer.mozilla.org/docs/Web/CSS/scroll-snap-stop#Browser_compatibility" rel="noopener">Browser compatibility</a>
+for updates. It's not a blocker, though. It just means that on unsupported browsers
+users can accidentally skip a friend. So users will just have to be more careful, or
+we'll need to write JavaScript to ensure that a skipped friend isn't marked as viewed.</p>
+<p>Read more in <a href="https://www.w3.org/TR/css-scroll-snap-1/#scroll-snap-stop" rel="noopener">the
+spec</a> if you're
+interested.</p>
+<h3 id="overscroll-behavior"><code>overscroll-behavior</code> <a class="w-headline-link" href="#overscroll-behavior">#</a></h3>
+<!-- TODO(kayce): Video would be helpful. -->
+<p>Have you ever been scrolling through a modal when all of a sudden you
+start scrolling the content behind the modal?
+<a href="https://developer.mozilla.org/docs/Web/CSS/overscroll-behavior" rel="noopener"><code>overscroll-behavior</code></a>
+lets the developer trap that scroll and never let it
+leave. It's nice for all sorts of occasions. My Stories component uses it
+to prevent additional swipes and scrolling gestures from leaving the
+component.</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">.stories</span> <span class="token punctuation">{</span><br>  <span class="token property">overflow-x</span><span class="token punctuation">:</span> auto<span class="token punctuation">;</span><br>  <span class="token property">overscroll-behavior</span><span class="token punctuation">:</span> contain<span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>Safari and Opera were the 2 browsers that didn't
+<a href="https://caniuse.com/#search=overscroll-behavior" rel="noopener">support</a> this, and that's
+totally OK. Those users will get an overscroll experience like they're used to
+and may never notice this enhancement. I'm personally a big fan and like
+including it as part of nearly every overscroll feature I implement. It's a
+harmless addition that can only lead to improved UX.</p>
+<!-- TODO(kayce): Describe what Safari and Opera users will see. -->
+<h3 id="scrollintoview"><code>scrollIntoView({behavior: 'smooth'})</code> <a class="w-headline-link" href="#scrollintoview">#</a></h3>
+<p>When a user taps or clicks and has reached the end of a friend's set of stories,
+it's time to move to the next friend in the scroll snap point set. With
+JavaScript, we were able to reference the next friend and request for it to be
+scrolled into view. The support for the basics of this are great; every browser
+scrolled it into view. But, not every browser did it <code>'smooth'</code>. This just means
+it's scrolled into view instead of snapped.</p>
+<web-copy-code><pre class="language-js"><code class="language-js">element<span class="token punctuation">.</span><span class="token function">scrollIntoView</span><span class="token punctuation">(</span><span class="token punctuation">{</span><br>  behavior<span class="token operator">:</span> <span class="token string">'smooth'</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span></code></pre>
+</web-copy-code><p>Safari was the only browser not to support <code>behavior: 'smooth'</code> here. Check out
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView#Browser_compatibility" rel="noopener">Browser compatibility</a>
+for updates.</p>
+<h2 id="hands-on">Hands-on <a class="w-headline-link" href="#hands-on">#</a></h2>
+<p>Now that you know how I did it, how would you?! Let's diversify our
+approaches and learn all the ways to build on the web. Create a <a href="https://glitch.com" rel="noopener">Glitch</a>,
+<a href="https://twitter.com/argyleink" rel="noopener">tweet me</a> your version, and I'll add it to
+the <a href="#community-remixes">Community remixes</a> section below.</p>
+<h2 id="remixes">Community remixes <a class="w-headline-link" href="#remixes">#</a></h2>
+<!-- TODO(kayce): Add a warning that this is community content that may change over time. -->
+<ul>
+<li><a href="https://twitter.com/geoffrich_" rel="noopener">@geoffrich_</a> with <a href="https://svelte.dev" rel="noopener">Svelte</a>: <a href="https://svelte-stories.glitch.me" rel="noopener">demo</a> &amp; <a href="https://github.com/geoffrich/svelte-stories" rel="noopener">code</a></li>
+<li><a href="https://twitter.com/GauteMeekOlsen" rel="noopener">@GauteMeekOlsen</a> with <a href="https://vuejs.org/" rel="noopener">Vue</a>: <a href="https://stackblitz.com/edit/stories" rel="noopener">demo + code</a></li>
+<li><a href="https://twitter.com/AnaestheticsApp" rel="noopener">@AnaestheticsApp</a> with <a href="https://lit-element.polymer-project.org/" rel="noopener">Lit</a>: <a href="https://lit-stories.glitch.me/" rel="noopener">demo</a> &amp; <a href="https://github.com/anaestheticsapp/web-stories" rel="noopener">code</a></li>
+</ul>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/css/">CSS</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/dom/">DOM</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/javascript/">JavaScript</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/layout/">Layout</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/mobile/">Mobile</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/ux/">UX</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Nov 25, 2020</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/building-a-stories-component/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+      <div class="w-callout w-callout--2col">
+      <div class="w-callout__header">
+        <h2 class="w-callout__lockup w-callout__lockup--codelab">Codelabs</h2>
+        <div class="w-callout__headline">See it in action</div>
+        <div class="w-callout__blurb">
+          Learn more and put this guide into action.
+        </div>
+      </div>
+      <ul class="w-unstyled-list w-callout__list">
+        <li class="w-callout__listitem">
+  <a
+    class="w-callout__link w-callout__link--codelab"
+    href="/codelab-building-a-stories-component/"
+  >
+    Codelab: Building a Stories component
+  </a>
+</li>
+      </ul>
+    </div>
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

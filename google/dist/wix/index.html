@@ -1,0 +1,943 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=2ffd052e46867">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>How Wix improved website performance by evolving their infrastructure</title>
+<meta name="description" content="A case study of some major changes introduced at Wix to improve website loading performance for millions of sites, clearing the path for them to receive good PageSpeed Insights and Core Web Vitals scores. " />
+
+<link rel="canonical" href="https://web.dev/wix/" />
+
+<meta itemprop="name" content="How Wix improved website performance by evolving their infrastructure" />
+<meta itemprop="description" content="A case study of some major changes introduced at Wix to improve website loading performance for millions of sites, clearing the path for them to receive good PageSpeed Insights and Core Web Vitals scores. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/HNGPDotyTYOuPE0YxLQ9.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/wix/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="How Wix improved website performance by evolving their infrastructure" />
+<meta property="og:description" content="A case study of some major changes introduced at Wix to improve website loading performance for millions of sites, clearing the path for them to receive good PageSpeed Insights and Core Web Vitals scores. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/HNGPDotyTYOuPE0YxLQ9.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="A fast train (source: https://unsplash.com/photos/60VrGk-bfeA)" />
+<meta property="tag" content="fast" />
+<meta property="tag" content="performance" />
+<meta property="tag" content="web-vitals" />
+<meta property="tag" content="case-study" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="How Wix improved website performance by evolving their infrastructure" />
+<meta name="twitter:description" content="A case study of some major changes introduced at Wix to improve website loading performance for millions of sites, clearing the path for them to receive good PageSpeed Insights and Core Web Vitals scores. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/HNGPDotyTYOuPE0YxLQ9.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=543f41ec303', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=a86587a74ffd2', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="A fast train (source: https://unsplash.com/photos/60VrGk-bfeA)"     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/HNGPDotyTYOuPE0YxLQ9.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/HNGPDotyTYOuPE0YxLQ9.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/HNGPDotyTYOuPE0YxLQ9.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/HNGPDotyTYOuPE0YxLQ9.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/HNGPDotyTYOuPE0YxLQ9.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/HNGPDotyTYOuPE0YxLQ9.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/HNGPDotyTYOuPE0YxLQ9.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/HNGPDotyTYOuPE0YxLQ9.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/HNGPDotyTYOuPE0YxLQ9.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/HNGPDotyTYOuPE0YxLQ9.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/HNGPDotyTYOuPE0YxLQ9.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/HNGPDotyTYOuPE0YxLQ9.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/HNGPDotyTYOuPE0YxLQ9.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/HNGPDotyTYOuPE0YxLQ9.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/HNGPDotyTYOuPE0YxLQ9.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/HNGPDotyTYOuPE0YxLQ9.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/HNGPDotyTYOuPE0YxLQ9.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/HNGPDotyTYOuPE0YxLQ9.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#how-wix-improved-website-performance-by-evolving-their-infrastructure" class="w-toc__header--link">
+        How Wix improved website performance by evolving their infrastructure
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#overview">Overview</a></li><li><a href="#speaking-in-a-common-language">Speaking in a common language</a></li><li><a href="#site-complexity-and-performance-scores">Site complexity and performance scores</a></li><li><a href="#the-journey">The journey</a></li><li><a href="#in-the-beginning-there-was-html">In the beginning, there was HTML</a></li><li><a href="#introducing-caching-in-multiple-locations">Introducing caching in multiple locations</a></li><li><a href="#browser-caching-(and-preparations-for-cdns)">Browser caching (and preparations for CDNs)</a></li><li><a href="#dns-ssl-and-http2">DNS, SSL and HTTP/2</a></li><li><a href="#brotli-compression-(vs.-gzip)">Brotli compression (vs. gzip)</a></li><li><a href="#content-delivery-networks-(cdns)">Content delivery networks (CDNs)</a></li><li><a href="#dynamic-cdn-selection">Dynamic CDN selection</a></li><li><a href="#coming-soon...-user-domains-served-by-cdns">Coming soon… user domains served by CDNs</a></li><li><a href="#a-few-words-on-performance-monitoring">A few words on performance monitoring</a></li><li><a href="#conclusion">Conclusion</a></li><li><a href="#so-how-does-your-recent-wix-site-performance-look-like">So, how does your recent Wix site performance look like?</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@alonkochba"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="how-wix-improved-website-performance-by-evolving-their-infrastructure" class="w-article-header__headline">How Wix improved website performance by evolving their infrastructure</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          <p>A case study of some major changes introduced at Wix to improve website loading performance for millions of sites, clearing the path for them to receive good PageSpeed Insights and Core Web Vitals scores.</p>
+
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Mar 10, 2021</time>
+          
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/alonko/"><img     alt="Alon Kochba"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/9zVJ5KLkDStLNSz2ZxPE.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/9zVJ5KLkDStLNSz2ZxPE.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/9zVJ5KLkDStLNSz2ZxPE.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/9zVJ5KLkDStLNSz2ZxPE.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/9zVJ5KLkDStLNSz2ZxPE.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/9zVJ5KLkDStLNSz2ZxPE.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/alonko/">Alon Kochba</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/alonkochba"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/alonkochba">GitHub</a>
+      </li>
+      
+      
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <div class="w-aside w-aside--note">
+<p>Alon leads the core backend team at <a href="https://www.wix.com" rel="noopener">Wix</a>.</p>
+</div>
+<p>Thanks to leveraging industry standards, cloud providers, and CDN capabilities,
+combined with a major rewrite of our website runtime, the percentage of Wix
+sites reaching good 75th percentile scores on all Core Web Vitals (CWV) metrics
+<strong>more than tripled</strong> year over year, according to data from
+<a href="https://developers.google.com/web/tools/chrome-user-experience-report" rel="noopener">CrUX</a>
+and
+<a href="https://httparchive.org/faq#how-do-i-use-bigquery-to-write-custom-queries-over-the-data" rel="noopener">HTTPArchive</a>.</p>
+<p>Wix adopted a performance-oriented culture, and further improvements will
+continue rolling out to users. As we focus on performance KPIs, we expect to see
+the number of sites passing CWV thresholds grow.</p>
+<h2 id="overview">Overview <a class="w-headline-link" href="#overview">#</a></h2>
+<p>The world of performance is <a href="https://youtu.be/ctavZT87syI" rel="noopener">beautifully complex</a>,
+with many variables and intricacies. Research shows that site <a href="/milliseconds-make-millions">speed has a
+direct impact on conversion rates and revenues</a> for
+businesses. In recent years, the industry has put more emphasis on performance
+visibility and <a href="/fast">making the web faster</a>. Starting in May 2021, <a href="https://developers.google.com/search/blog/2020/11/timing-for-page-experience" rel="noopener">page
+experience
+signals</a>
+will be included in Google Search ranking.</p>
+<p>The unique challenge at Wix is supporting <strong>millions</strong> of sites, some of which
+were built <em>many years ago</em> and have not been updated since. We have various
+<a href="https://support.wix.com/en/performance-and-technical-issues/site-performance" rel="noopener">tools and
+articles</a>
+to assist our users on what they can do to analyze and improve the performance
+of their sites.</p>
+<p>Wix is a managed environment and not everything is in the hands of the user.
+Sharing common infrastructures presents many challenges for all these sites, but
+also opens opportunities for major enhancements across the board, i.e.
+leveraging the economies of scale.</p>
+<div class="w-aside w-aside--note">
+<p><em>In this post I will focus on enhancements done around serving the initial HTML, which
+initiates the page loading process.</em></p>
+</div>
+<h3 id="speaking-in-a-common-language">Speaking in a common language <a class="w-headline-link" href="#speaking-in-a-common-language">#</a></h3>
+<p>One of the core difficulties with performance is finding a common terminology to
+discuss different aspects of the user experience, while considering both the
+technical and perceived performance. Using a well-defined, common language
+within the organization enabled us to easily discuss and categorize the
+different technical parts and trade-offs, clarified our performance reports and
+tremendously helped to understand what aspects we should focus on improving
+first.</p>
+<p>We adjusted all our monitoring and internal discussions to include industry
+standard metrics such as <a href="/vitals/">Web Vitals</a>, which include:</p>
+<figure class="w-figure">
+  <img     alt="A diagram of the 2020 Core Web Vitals: LCP, FID, and CLS."          decoding="async"     height="215"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/PLF62sx8lHkpKbnvYKKR.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/PLF62sx8lHkpKbnvYKKR.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/PLF62sx8lHkpKbnvYKKR.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/PLF62sx8lHkpKbnvYKKR.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/PLF62sx8lHkpKbnvYKKR.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/PLF62sx8lHkpKbnvYKKR.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/PLF62sx8lHkpKbnvYKKR.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/PLF62sx8lHkpKbnvYKKR.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/PLF62sx8lHkpKbnvYKKR.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/PLF62sx8lHkpKbnvYKKR.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/PLF62sx8lHkpKbnvYKKR.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/PLF62sx8lHkpKbnvYKKR.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/PLF62sx8lHkpKbnvYKKR.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/PLF62sx8lHkpKbnvYKKR.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/PLF62sx8lHkpKbnvYKKR.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/PLF62sx8lHkpKbnvYKKR.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/PLF62sx8lHkpKbnvYKKR.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/PLF62sx8lHkpKbnvYKKR.jpg?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">Core Web Vitals</figcaption>
+</figure>
+<h3 id="site-complexity-and-performance-scores">Site complexity and performance scores <a class="w-headline-link" href="#site-complexity-and-performance-scores">#</a></h3>
+<p>It's pretty easy to create a site that loads instantly so long as you
+<a href="https://justinjackson.ca/words.html" rel="noopener">make it very simple</a> using only
+HTML and serve it via a CDN.</p>
+<figure class="w-figure w-figure--inline-left">
+  <img     alt="PageSpeed Insights Example"          decoding="async"     height="647"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/xMUN9CUVvgnHofImPcV5.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/xMUN9CUVvgnHofImPcV5.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/xMUN9CUVvgnHofImPcV5.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/xMUN9CUVvgnHofImPcV5.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/xMUN9CUVvgnHofImPcV5.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/xMUN9CUVvgnHofImPcV5.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/xMUN9CUVvgnHofImPcV5.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/xMUN9CUVvgnHofImPcV5.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/xMUN9CUVvgnHofImPcV5.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/xMUN9CUVvgnHofImPcV5.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/xMUN9CUVvgnHofImPcV5.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/xMUN9CUVvgnHofImPcV5.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/xMUN9CUVvgnHofImPcV5.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/xMUN9CUVvgnHofImPcV5.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/xMUN9CUVvgnHofImPcV5.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/xMUN9CUVvgnHofImPcV5.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/xMUN9CUVvgnHofImPcV5.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/xMUN9CUVvgnHofImPcV5.jpg?auto=format&w=1600 1600w"          width="800"   />
+</figure>
+<p>However, the reality is that sites are getting more and more complex and
+sophisticated, operating more like applications rather than documents, and
+supporting functionalities such as blogs, e-commerce solutions, custom code,
+etc.</p>
+<p>Wix offers a very large <a href="https://www.wix.com/website/templates" rel="noopener">variety of
+templates</a>, enabling its users to easily
+build a site with many business capabilities. Those additional features often
+come with <em>some</em> performance costs.</p>
+<h2 id="the-journey">The journey <a class="w-headline-link" href="#the-journey">#</a></h2>
+<h3 id="in-the-beginning-there-was-html">In the beginning, there was HTML <a class="w-headline-link" href="#in-the-beginning-there-was-html">#</a></h3>
+<p>Every time a webpage is loaded, it always starts with an initial request to a
+URL in order to retrieve the HTML document. This HTML response triggers all the
+additional client requests and browser logic to run and render your site. This
+is the most important part of the page loading, because nothing happens until
+the beginning of the response arrives (known as TTFB - time to first byte).</p>
+<figure class="w-figure">
+  <img     alt="WebPageTest First View"          decoding="async"     height="411"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/b1KKSlUQQTuNCDj4ndyJ.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/b1KKSlUQQTuNCDj4ndyJ.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/b1KKSlUQQTuNCDj4ndyJ.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/b1KKSlUQQTuNCDj4ndyJ.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/b1KKSlUQQTuNCDj4ndyJ.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/b1KKSlUQQTuNCDj4ndyJ.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/b1KKSlUQQTuNCDj4ndyJ.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/b1KKSlUQQTuNCDj4ndyJ.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/b1KKSlUQQTuNCDj4ndyJ.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/b1KKSlUQQTuNCDj4ndyJ.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/b1KKSlUQQTuNCDj4ndyJ.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/b1KKSlUQQTuNCDj4ndyJ.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/b1KKSlUQQTuNCDj4ndyJ.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/b1KKSlUQQTuNCDj4ndyJ.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/b1KKSlUQQTuNCDj4ndyJ.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/b1KKSlUQQTuNCDj4ndyJ.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/b1KKSlUQQTuNCDj4ndyJ.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/b1KKSlUQQTuNCDj4ndyJ.jpg?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">WebPageTest First View</figcaption>
+</figure>
+<h4 id="the-past:-client-side-rendering-(csr)">The past: client-side rendering (CSR) <a class="w-headline-link" href="#the-past:-client-side-rendering-(csr)">#</a></h4>
+<p>When operating large scale systems, you always have trade-offs you need to
+consider, such as performance, reliability and costs. Up to a few years ago, Wix
+used client-side rendering (CSR), in which the actual HTML content was generated
+via JavaScript on the client side (i.e. in the browser) allowing us to support a
+high scale of sites without having huge backend operational costs.</p>
+<p>CSR enabled us to use a common HTML document, which was essentially empty. All
+it did was trigger the download of the required code and data which was then
+used to generate the full HTML on the client device.</p>
+<h4 id="today:-server-side-rendering-(ssr)">Today: server-side rendering (SSR) <a class="w-headline-link" href="#today:-server-side-rendering-(ssr)">#</a></h4>
+<p>A few years ago we transitioned to server-side rendering (SSR), as that was
+beneficial both to SEO and performance, improving initial page visibility times
+and ensuring better indexing for search engines that do not have full support
+for running JavaScript.</p>
+<p>This approach improved the visibility experience, especially on slower
+devices/connections, and opened the door for further performance optimizations.
+However, it also meant that for each web page request, a unique HTML response
+was generated on the fly, which is <strong>far</strong> from optimal, especially for sites
+with a large amount of views.</p>
+<h3 id="introducing-caching-in-multiple-locations">Introducing caching in multiple locations <a class="w-headline-link" href="#introducing-caching-in-multiple-locations">#</a></h3>
+<p>The HTML for each site was mostly static, but it had a few caveats:</p>
+<ol>
+<li>It frequently changes. Each time a user edits their site, or makes changes in site data,
+such as on the website store inventory.</li>
+<li>It had certain data and cookies that were <strong>visitor specific</strong>,
+meaning two people visiting the same site would see somewhat different HTML. For example,
+to support products features such as remembering what items a visitor put in the cart,
+or the chat the visitor started with the business earlier, and more.</li>
+<li>Not all pages are cacheable. For example a page with custom user code on it,
+that displays the current time as part of the document, is not eligible for caching.</li>
+</ol>
+<p>Initially, we took the relatively safe approach of caching the HTML <span
+style="text-decoration:underline;">without</span> visitor data, and then only
+modified specific parts of the HTML response on the fly for each visitor, for
+each cache hit.</p>
+<h4 id="in-house-cdn-solution">In-house CDN solution <a class="w-headline-link" href="#in-house-cdn-solution">#</a></h4>
+<p>We did this by deploying an in-house solution: Using <a href="https://varnish-cache.org/" rel="noopener">Varnish HTTP
+Cache</a> for proxying and caching, Kafka for
+invalidation messages, and a Scala/Netty-based service which proxies these HTML
+responses, but mutates the HTML and adds visitor-specific data and cookies to
+the cached response.</p>
+<p>This solution enabled us to deploy these <strong>slim</strong> components in many more
+geographic locations and multiple cloud provider regions, which are spread
+across the world. In 2019, we introduced <strong>over 15 new regions</strong>, and gradually
+enabled caching for over 90% of our page views that were eligible for caching.
+Serving sites from additional locations reduced the <a href="https://www.cloudping.co/grid" rel="noopener">network
+latency</a> between the clients and the servers
+serving the HTML response, by bringing the content closer to the website's
+visitors.</p>
+<p>We also started caching certain read-only API responses by using the same
+solution and invalidating the cache on any change to the site content. For
+example, the list of blog posts on the site is cached and invalidated when a
+post is published/modified.</p>
+<h4 id="reducing-complexities">Reducing complexities <a class="w-headline-link" href="#reducing-complexities">#</a></h4>
+<p>Implementing caching improved performance substantially, mostly on the
+<a href="/time-to-first-byte/">TTFB</a> and <a href="/fcp/">FCP</a> phases, and improved our
+reliability by serving the content from a location closer to the end user.</p>
+<p>However, the need to modify the HTML for each response introduced an unnecessary
+complexity that, if removed, presented an opportunity for further performance
+improvements.</p>
+<h3 id="browser-caching-(and-preparations-for-cdns)">Browser caching (and preparations for CDNs) <a class="w-headline-link" href="#browser-caching-(and-preparations-for-cdns)">#</a></h3>
+<div class="w-figure">
+  <div class="w-stats">
+    <div class="w-stat">
+     <p class="w-stat__figure">~ 13<sub class="w-stat__sub">%</sub></p>
+     <p class="w-stat__desc">HTML requests served directly from the browser cache,
+     saving much bandwidth and reducing loading times for repeat views</p>
+    </div>
+  </div>
+</div>
+<p>The next step was to actually remove this visitor-specific data from the HTML
+<span style="text-decoration:underline;">entirely</span>, and retrieve it from a
+separate endpoint, called by the client for this purpose, after the HTML has
+arrived.</p>
+<p>We carefully migrated this data and cookies to a new endpoint, which is called
+on each page load, but returns a slim JSON, which is required only for the
+<a href="https://reactjs.org/docs/react-dom.html#hydrate" rel="noopener">hydration process</a>, to reach
+full page interactivity.</p>
+<p>This allowed us to enable browser caching of the HTML, which means that browsers
+now save the HTML response for repeating visits, and only call the server to
+validate that the content hasn't changed. This is done using <a href="https://en.wikipedia.org/wiki/HTTP_ETag" rel="noopener">HTTP
+ETag</a>, which is basically an identifier
+assigned to a specific version of an HTML resource. If the content is still the
+same, a <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/304" rel="noopener">304 Not
+Modified</a> response
+is sent by our servers to the client, without a body.</p>
+<figure class="w-figure">
+  <img     alt="ALT_TEXT_HERE"          decoding="async"     height="410"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/hr1xnQccJEkHTBGxS5wF.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/hr1xnQccJEkHTBGxS5wF.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/hr1xnQccJEkHTBGxS5wF.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/hr1xnQccJEkHTBGxS5wF.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/hr1xnQccJEkHTBGxS5wF.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/hr1xnQccJEkHTBGxS5wF.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/hr1xnQccJEkHTBGxS5wF.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/hr1xnQccJEkHTBGxS5wF.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/hr1xnQccJEkHTBGxS5wF.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/hr1xnQccJEkHTBGxS5wF.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/hr1xnQccJEkHTBGxS5wF.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/hr1xnQccJEkHTBGxS5wF.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/hr1xnQccJEkHTBGxS5wF.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/hr1xnQccJEkHTBGxS5wF.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/hr1xnQccJEkHTBGxS5wF.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/hr1xnQccJEkHTBGxS5wF.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/hr1xnQccJEkHTBGxS5wF.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/hr1xnQccJEkHTBGxS5wF.jpg?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">WebPageTest Repeat View</figcaption>
+</figure>
+<p>In addition, this change means that our HTML is no longer visitor-specific and
+contains no cookies. In other words it can basically be cached anywhere, opening
+the door to using CDN providers that have much better geo presence in hundreds
+of locations around the world.</p>
+<h3 id="dns-ssl-and-http2">DNS, SSL and HTTP/2 <a class="w-headline-link" href="#dns-ssl-and-http2">#</a></h3>
+<p>With caching enabled, wait times were reduced and other important parts of the
+initial connection became more substantial. Enhancing our networking
+infrastructure and monitoring enabled us to improve our DNS, connection, and SSL
+times.</p>
+<figure class="w-figure w-figure--inline-right">
+  <img     alt="A response time graph."          decoding="async"     height="441"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/Uuvh9xTItQ8wMA9s13RP.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/Uuvh9xTItQ8wMA9s13RP.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/Uuvh9xTItQ8wMA9s13RP.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/Uuvh9xTItQ8wMA9s13RP.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/Uuvh9xTItQ8wMA9s13RP.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/Uuvh9xTItQ8wMA9s13RP.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/Uuvh9xTItQ8wMA9s13RP.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/Uuvh9xTItQ8wMA9s13RP.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/Uuvh9xTItQ8wMA9s13RP.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/Uuvh9xTItQ8wMA9s13RP.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/Uuvh9xTItQ8wMA9s13RP.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/Uuvh9xTItQ8wMA9s13RP.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/Uuvh9xTItQ8wMA9s13RP.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/Uuvh9xTItQ8wMA9s13RP.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/Uuvh9xTItQ8wMA9s13RP.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/Uuvh9xTItQ8wMA9s13RP.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/Uuvh9xTItQ8wMA9s13RP.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/Uuvh9xTItQ8wMA9s13RP.jpg?auto=format&w=1600 1600w"          width="800"   />
+</figure>
+<p><a href="https://en.wikipedia.org/wiki/HTTP/2" rel="noopener">HTTP/2</a> was enabled for all user domains,
+reducing both the amount of connections required and the overhead that comes
+with each new connection. This was a relatively easy change to deploy, while
+taking advantage of the <a href="https://developers.google.com/web/fundamentals/performance/http2" rel="noopener">performance and resilience
+benefits</a> that
+come with HTTP/2.</p>
+<h3 id="brotli-compression-(vs.-gzip)">Brotli compression (vs. gzip) <a class="w-headline-link" href="#brotli-compression-(vs.-gzip)">#</a></h3>
+<div class="w-figure">
+  <div class="w-stats">
+    <div class="w-stat">
+     <p class="w-stat__figure">21 - 25<sub class="w-stat__sub">%</sub></p>
+     <p class="w-stat__desc">Reduction of median file transfer size</p>
+    </div>
+  </div>
+</div>
+<p>Traditionally, all our files were compressed using <a href="https://en.wikipedia.org/wiki/Gzip" rel="noopener">gzip
+compression</a>, which is the most prevalent
+HTML compression option on the web. This compression protocol was initially
+implemented almost 30 years ago!</p>
+<figure class="w-figure w-figure--inline-right">
+  <img     alt="Brotli compression"          decoding="async"     height="805"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/h7KzeAfg2THMdDGMYvlR.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/h7KzeAfg2THMdDGMYvlR.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/h7KzeAfg2THMdDGMYvlR.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/h7KzeAfg2THMdDGMYvlR.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/h7KzeAfg2THMdDGMYvlR.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/h7KzeAfg2THMdDGMYvlR.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/h7KzeAfg2THMdDGMYvlR.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/h7KzeAfg2THMdDGMYvlR.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/h7KzeAfg2THMdDGMYvlR.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/h7KzeAfg2THMdDGMYvlR.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/h7KzeAfg2THMdDGMYvlR.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/h7KzeAfg2THMdDGMYvlR.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/h7KzeAfg2THMdDGMYvlR.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/h7KzeAfg2THMdDGMYvlR.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/h7KzeAfg2THMdDGMYvlR.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/h7KzeAfg2THMdDGMYvlR.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/h7KzeAfg2THMdDGMYvlR.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/h7KzeAfg2THMdDGMYvlR.jpg?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">
+    <a href="https://tools.paulcalvano.com/compression.php">Brotli Compression Level Estimator</a>
+  </figcaption>
+</figure>
+<p>The newer <a href="https://en.wikipedia.org/wiki/Brotli" rel="noopener">Brotli compression</a> introduces
+compression improvements with almost no trade-offs, and is slowly becoming more
+popular, as described in the yearly Web Almanac <a href="https://almanac.httparchive.org/en/2020/compression#what-type-of-content-should-we-compress" rel="noopener">Compression
+chapter</a>.
+It has been supported by <a href="https://caniuse.com/brotli" rel="noopener">all the major browsers</a>
+for a while.</p>
+<p>We enabled Brotli support on our nginx proxies in the edges, for all clients
+that support it.</p>
+<p>Moving to use Brotli compression reduced our median file transfer sizes by
+<strong>21% to 25%</strong> resulting in a reduced bandwidth usage and improved loading times.</p>
+<figure class="w-figure">
+  <img     alt="Mobile and Desktop Median Response Sizes"          decoding="async"     height="173"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/392RWYamrwkdFozk91LC.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/392RWYamrwkdFozk91LC.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/392RWYamrwkdFozk91LC.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/392RWYamrwkdFozk91LC.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/392RWYamrwkdFozk91LC.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/392RWYamrwkdFozk91LC.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/392RWYamrwkdFozk91LC.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/392RWYamrwkdFozk91LC.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/392RWYamrwkdFozk91LC.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/392RWYamrwkdFozk91LC.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/392RWYamrwkdFozk91LC.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/392RWYamrwkdFozk91LC.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/392RWYamrwkdFozk91LC.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/392RWYamrwkdFozk91LC.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/392RWYamrwkdFozk91LC.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/392RWYamrwkdFozk91LC.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/392RWYamrwkdFozk91LC.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/392RWYamrwkdFozk91LC.jpg?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">Median Response Sizes</figcaption>
+</figure>
+<h2 id="content-delivery-networks-(cdns)">Content delivery networks (CDNs) <a class="w-headline-link" href="#content-delivery-networks-(cdns)">#</a></h2>
+<h3 id="dynamic-cdn-selection">Dynamic CDN selection <a class="w-headline-link" href="#dynamic-cdn-selection">#</a></h3>
+<p>At Wix, we have always used <a href="/content-delivery-networks/">CDNs</a> to serve all the
+JavaScript code and images on user websites.</p>
+<p>Recently, we integrated with a solution by our DNS provider, to automatically
+select the best performing CDN according to the client's network and origin.
+This enables us to serve the static files from the best location for each
+visitor, and avoid availability issues on a certain CDN.</p>
+<h3 id="coming-soon...-user-domains-served-by-cdns">Coming soon… user domains served by CDNs <a class="w-headline-link" href="#coming-soon...-user-domains-served-by-cdns">#</a></h3>
+<p>The final piece of the puzzle is serving the last, and most critical part,
+through a CDN: the HTML from the user domain.</p>
+<p>As described above, we created our own in-house solution to cache and serve the
+site-specific HTML and API results. Maintaining this solution in so many new
+regions also has its operational costs, and adding new locations becomes a
+process we need to manage and continually optimize.</p>
+<p>We are currently integrating with various CDN providers to support serving the
+entire Wix site directly from CDN locations to improve the distribution of our
+servers across the globe and thus further improve response times. This is a
+challenge due to the large amount of domains we serve, which require SSL
+termination at the edge.</p>
+<p>Integrating with CDNs brings Wix websites closer than ever to the customer and
+comes with more improvements to the loading experience, including newer
+technologies such as HTTP/3 without added effort on our side.</p>
+<hr>
+<h3 id="a-few-words-on-performance-monitoring">A few words on performance monitoring <a class="w-headline-link" href="#a-few-words-on-performance-monitoring">#</a></h3>
+<p>If you run a Wix site, you're probably wondering how this translates to your Wix
+site performance results, and how we compare against other website platforms.</p>
+<p>Most of the work done above has been deployed in the past year, and some is
+still being rolled out.</p>
+<p>The Web Almanac by HTTPArchive recently published the <a href="https://almanac.httparchive.org/en/2020" rel="noopener">2020
+edition</a> which includes an excellent
+chapter on <a href="https://almanac.httparchive.org/en/2020/cms" rel="noopener">CMS user experience</a>.
+Keep in mind that many of the numbers described in this article are from the
+middle of 2020.</p>
+<p>We look forward to seeing the updated report in 2021, and are actively
+monitoring
+<a href="https://developers.google.com/web/tools/chrome-user-experience-report/" rel="noopener">CrUX</a>
+reports for our sites as well as our internal performance metrics.</p>
+<p>We are committed to continuously improve loading times and provide our users
+with a platform where they can build sites as they imagine, without compromising
+on performance.</p>
+<figure class="w-figure">
+  <img     alt="LCP, Speed Index and FCP for a mobile site over time"          decoding="async"     height="259"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/AADz7d1yVOWZlq0iSb6P.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/AADz7d1yVOWZlq0iSb6P.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/AADz7d1yVOWZlq0iSb6P.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/AADz7d1yVOWZlq0iSb6P.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/AADz7d1yVOWZlq0iSb6P.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/AADz7d1yVOWZlq0iSb6P.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/AADz7d1yVOWZlq0iSb6P.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/AADz7d1yVOWZlq0iSb6P.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/AADz7d1yVOWZlq0iSb6P.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/AADz7d1yVOWZlq0iSb6P.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/AADz7d1yVOWZlq0iSb6P.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/AADz7d1yVOWZlq0iSb6P.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/AADz7d1yVOWZlq0iSb6P.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/AADz7d1yVOWZlq0iSb6P.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/AADz7d1yVOWZlq0iSb6P.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/AADz7d1yVOWZlq0iSb6P.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/AADz7d1yVOWZlq0iSb6P.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/BrQidfK9jaQyIHwdw91aVpkPiib2/AADz7d1yVOWZlq0iSb6P.jpg?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">LCP, Speed Index and FCP for a mobile site over time</figcaption>
+</figure>
+<p>DebugBear recently released a very interesting <a href="https://www.debugbear.com/blog/website-builder-performance-review" rel="noopener">Website Builder Performance
+Review</a>,
+which touches on some of the areas I mentioned above and examines the
+performance of very simple sites built on each platform. This
+<a href="https://matt05041.wixsite.com/bizsolutions" rel="noopener">site</a> was built almost two years
+ago, and not modified since, but the platform is continually improving, and the
+site performance along with it, which can be witnessed by <a href="https://www.debugbear.com/project/175/pageLoad/873/overview?dateRange=2019-03-31T21%3A00Z-to-2021-03-31T21%3A59Z" rel="noopener">viewing its
+data</a>
+over the past year and a half.</p>
+<h2 id="conclusion">Conclusion <a class="w-headline-link" href="#conclusion">#</a></h2>
+<p>We hope our experience inspires you to adopt a performance-oriented culture at
+your organisation and that the details above are helpful and applicable to your
+platform or site.</p>
+<p>To sum up:</p>
+<ul>
+<li>Pick a set of metrics that you can track consistently using tools endorsed by
+the industry. We recommend Core Web Vitals.</li>
+<li>Leverage browser caching and CDNs.</li>
+<li>Migrate to HTTP/2 (or HTTP/3 if possible).</li>
+<li>Use Brotli compression.</li>
+</ul>
+<p>Thanks for learning our story and we invite you to ask questions, share ideas on
+<a href="https://twitter.com/alonkochba" rel="noopener">Twitter</a> and
+<a href="https://github.com/alonkochba" rel="noopener">GitHub</a> and join the web performance
+conversation on your favorite channels.</p>
+<h2 id="so-how-does-your-recent-wix-site-performance-look-like">So, how does <strong>your</strong> recent Wix site performance look like? <a class="w-headline-link" href="#so-how-does-your-recent-wix-site-performance-look-like">#</a></h2>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/performance/">Performance</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/web-vitals/">Web Vitals</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/case-study/">Case Study</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Mar 10, 2021</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/wix/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

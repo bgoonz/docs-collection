@@ -1,0 +1,756 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=71e65c29bde98">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Persistent storage</title>
+<meta name="description" content="Persistent storage can help protect critical data from eviction, and reduce the chance of data loss." />
+
+<link rel="canonical" href="https://web.dev/persistent-storage/" />
+
+<meta itemprop="name" content="Persistent storage" />
+<meta itemprop="description" content="Persistent storage can help protect critical data from eviction, and reduce the chance of data loss." />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/0TWeS0GZhDTpPzQVhDVS.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/persistent-storage/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Persistent storage" />
+<meta property="og:description" content="Persistent storage can help protect critical data from eviction, and reduce the chance of data loss." />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/0TWeS0GZhDTpPzQVhDVS.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="Printed circuit board" />
+<meta property="tag" content="storage" />
+<meta property="tag" content="progressive-web-apps" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Persistent storage" />
+<meta name="twitter:description" content="Persistent storage can help protect critical data from eviction, and reduce the chance of data loss." />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/0TWeS0GZhDTpPzQVhDVS.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=7baa4734ecee4', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=2c4f5c4c0684d', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="Printed circuit board"     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/0TWeS0GZhDTpPzQVhDVS.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/0TWeS0GZhDTpPzQVhDVS.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/0TWeS0GZhDTpPzQVhDVS.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/0TWeS0GZhDTpPzQVhDVS.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/0TWeS0GZhDTpPzQVhDVS.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/0TWeS0GZhDTpPzQVhDVS.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/0TWeS0GZhDTpPzQVhDVS.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/0TWeS0GZhDTpPzQVhDVS.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/0TWeS0GZhDTpPzQVhDVS.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/0TWeS0GZhDTpPzQVhDVS.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/0TWeS0GZhDTpPzQVhDVS.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/0TWeS0GZhDTpPzQVhDVS.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/0TWeS0GZhDTpPzQVhDVS.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/0TWeS0GZhDTpPzQVhDVS.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/0TWeS0GZhDTpPzQVhDVS.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/0TWeS0GZhDTpPzQVhDVS.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/0TWeS0GZhDTpPzQVhDVS.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/0TWeS0GZhDTpPzQVhDVS.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#persistent-storage" class="w-toc__header--link">
+        Persistent storage
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#check-if-your-site's-storage-has-been-marked-as-persistent">Check if your site's storage has been marked as persistent</a></li><li><a href="#when-should-i-ask-for-persistent-storage">When should I ask for persistent storage?</a></li><li><a href="#request-persistent-storage">Request persistent storage</a></li><li><a href="#how-is-permission-granted">How is permission granted?</a></li><li><a href="#what-storage-is-protected-by-persistent-storage">What storage is protected by persistent storage?</a></li><li><a href="#how-to-turn-off-persistent-storage">How to turn off persistent storage</a></li><li><a href="#conclusion">Conclusion</a></li><li><a href="#thanks">Thanks</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@petele"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="persistent-storage" class="w-article-header__headline">Persistent storage</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          Persistent storage can help protect critical data from eviction, and reduce the chance of data loss.
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>May 12, 2020</time>
+           <span class="w-author__separator">•</span> Updated <time>May 12, 2020</time> 
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/petelepage/"><img     alt="Pete LePage"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/0g2WvpbGRGdVs0aAPc6ObG7gkud2/3rFbsLsMMk1VveHfBRSu.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/0g2WvpbGRGdVs0aAPc6ObG7gkud2/3rFbsLsMMk1VveHfBRSu.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/0g2WvpbGRGdVs0aAPc6ObG7gkud2/3rFbsLsMMk1VveHfBRSu.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/0g2WvpbGRGdVs0aAPc6ObG7gkud2/3rFbsLsMMk1VveHfBRSu.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/0g2WvpbGRGdVs0aAPc6ObG7gkud2/3rFbsLsMMk1VveHfBRSu.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/0g2WvpbGRGdVs0aAPc6ObG7gkud2/3rFbsLsMMk1VveHfBRSu.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/petelepage/">Pete LePage</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/petele"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/petele">GitHub</a>
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://glitch.com/@petele"
+          >Glitch</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://petelepage.com">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>When faced with storage pressure like low disk space, browsers will
+typically <a href="/storage-for-the-web/#eviction">evict data</a>, including from the Cache API and IndexedDB,
+from the least recently used origin. This may cause data loss if the app
+hasn't synced data with the server, and reduce the reliability of the app by
+removing resources required for the app to work, both of which lead to
+negative user experiences.</p>
+<p>Thankfully, research by the Chrome team shows that data is very rarely
+cleared automatically by Chrome. It is far more common for users to manually
+clear storage. Thus if a user visits your site regularly, the chances are
+small that your data will be evicted. To prevent the browser from deleting
+your data, you can request that your entire site's storage be marked
+persistent.</p>
+<div class="w-aside w-aside--note">
+<p>Requesting that all your site's data be marked as persistent should only
+be done for critical data (for example, end-to-end encryption keys) that
+if not backed up to the cloud, could result in significant data loss if
+not saved. Persistent storage is not deleted by the browser, even if
+storage is running low. It will only be deleted if the user chooses to
+remove it via their site settings.</p>
+</div>
+<p>Persistent storage is <a href="https://caniuse.com/#feat=mdn-api_permissions_persistent-storage_permission" rel="noopener">supported in many modern</a> browsers.
+To learn more about eviction, how much you can store, and how to handle quota
+limitations, see <a href="/storage-for-the-web/">Storage for the web</a>.</p>
+<h2 id="check-if-your-site's-storage-has-been-marked-as-persistent">Check if your site's storage has been marked as persistent <a class="w-headline-link" href="#check-if-your-site's-storage-has-been-marked-as-persistent">#</a></h2>
+<p>You can use JavaScript to determine if your site's storage has been marked
+as persistent. Calling <code>navigator.storage.persisted()</code> returns a Promise that
+resolves with a boolean, indicating whether storage has been marked as
+persisted.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token comment">// Check if site's storage has been marked as persistent</span><br><span class="token keyword">if</span> <span class="token punctuation">(</span>navigator<span class="token punctuation">.</span>storage <span class="token operator">&amp;&amp;</span> navigator<span class="token punctuation">.</span>storage<span class="token punctuation">.</span>persist<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token keyword">const</span> isPersisted <span class="token operator">=</span> <span class="token keyword">await</span> navigator<span class="token punctuation">.</span>storage<span class="token punctuation">.</span><span class="token function">persisted</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">Persisted storage granted: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>isPersisted<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><h2 id="when-should-i-ask-for-persistent-storage">When should I ask for persistent storage? <a class="w-headline-link" href="#when-should-i-ask-for-persistent-storage">#</a></h2>
+<p>The best time to request your storage be marked as persistent is when you
+save critical user data, and the request should ideally be wrapped in a user
+gesture. Do not ask for persistent storage on page load, or in other bootstrap
+code, the browser may prompt the user for permission. If the user
+isn't doing anything that they think needs to be saved, the prompt may be
+confusing, and they'll likely reject the request. Additionally, don't prompt
+too frequently. If the user decided not to grant permission, don't immediately
+prompt again on the next save.</p>
+<h2 id="request-persistent-storage">Request persistent storage <a class="w-headline-link" href="#request-persistent-storage">#</a></h2>
+<p>To request persistent storage for your site's data, call
+<code>navigator.storage.persist()</code>. It returns a Promise that resolves with a
+boolean, indicating whether the persistent storage permission was granted.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token comment">// Request persistent storage for site</span><br><span class="token keyword">if</span> <span class="token punctuation">(</span>navigator<span class="token punctuation">.</span>storage <span class="token operator">&amp;&amp;</span> navigator<span class="token punctuation">.</span>storage<span class="token punctuation">.</span>persist<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token keyword">const</span> isPersisted <span class="token operator">=</span> <span class="token keyword">await</span> navigator<span class="token punctuation">.</span>storage<span class="token punctuation">.</span><span class="token function">persist</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">Persisted storage granted: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>isPersisted<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><div class="w-aside w-aside--note">
+<p>The API names to <em>check</em> if your site's storage has already been marked
+persistent, and to <em>request</em> persistent storage are very similar. The way
+I remember the difference is <code>persisted()</code> is past-tense, and is used to
+check if it's already persist<strong>ed</strong>. Whereas <code>persist()</code> is present-tense
+and asks for it now.</p>
+</div>
+<h3 id="how-is-permission-granted">How is permission granted? <a class="w-headline-link" href="#how-is-permission-granted">#</a></h3>
+<p>Persistent storage is treated as a <a href="https://storage.spec.whatwg.org/#persistence" rel="noopener">permission</a>. Browsers use
+different factors to decide whether to grant persistent storage permissions.</p>
+<h4 id="chrome-and-other-chromium-based-browsers">Chrome and other Chromium-based browsers <a class="w-headline-link" href="#chrome-and-other-chromium-based-browsers">#</a></h4>
+<p>Chrome, and most other Chromium-based browsers automatically handle the
+permission request, and do not show any prompts to the user. Instead, if a
+site is considered important, the persistent storage permission is
+automatically granted, otherwise it is silently denied.</p>
+<p>The heuristics to determine if a site is important include:</p>
+<ul>
+<li>How high is the level of site engagement?</li>
+<li>Has the site been installed or bookmarked?</li>
+<li>Has the site been granted permission to show notifications?</li>
+</ul>
+<p>If the request was denied, it can be requested again later and will be
+evaluated using the same heuristics.</p>
+<h4 id="firefox">Firefox <a class="w-headline-link" href="#firefox">#</a></h4>
+<p>Firefox delegates the permission request to the user. When persistent storage
+is requested, it prompts the user with a UI popup asking if they will allow
+the site to store data in persistent storage.</p>
+<figure class="w-figure">
+  <img     alt="A popup shown by Firefox when a site requests persistent storage."          decoding="async"     height="177"          loading="lazy"     sizes="(min-width: 428px) 428px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/o8W7pNTZ5dFKeDg2cmvA.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/o8W7pNTZ5dFKeDg2cmvA.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/o8W7pNTZ5dFKeDg2cmvA.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/o8W7pNTZ5dFKeDg2cmvA.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/o8W7pNTZ5dFKeDg2cmvA.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/o8W7pNTZ5dFKeDg2cmvA.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/o8W7pNTZ5dFKeDg2cmvA.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/o8W7pNTZ5dFKeDg2cmvA.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/o8W7pNTZ5dFKeDg2cmvA.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/o8W7pNTZ5dFKeDg2cmvA.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/o8W7pNTZ5dFKeDg2cmvA.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/o8W7pNTZ5dFKeDg2cmvA.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/o8W7pNTZ5dFKeDg2cmvA.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/o8W7pNTZ5dFKeDg2cmvA.jpg?auto=format&w=856 856w"          width="428"   />
+  <figcaption class="w-figcaption">
+    A popup shown by Firefox when a site requests persistent storage.
+  </figcaption>
+</figure>
+<h2 id="what-storage-is-protected-by-persistent-storage">What storage is protected by persistent storage? <a class="w-headline-link" href="#what-storage-is-protected-by-persistent-storage">#</a></h2>
+<p>If the persistent storage permission is granted, the browser will not evict
+data stored in:</p>
+<ul>
+<li>Cache API</li>
+<li>Cookies</li>
+<li>DOM Storage (Local Storage)</li>
+<li>File System API (browser-provided and sandboxed file system)</li>
+<li>IndexedDB</li>
+<li>Service workers</li>
+<li>App Cache (deprecated, should not be used)</li>
+<li>WebSQL (deprecated, should not be used)</li>
+</ul>
+<h2 id="how-to-turn-off-persistent-storage">How to turn off persistent storage <a class="w-headline-link" href="#how-to-turn-off-persistent-storage">#</a></h2>
+<p>At this time, there is no programmatic way to tell the browser you no longer
+need persistent storage.</p>
+<h2 id="conclusion">Conclusion <a class="w-headline-link" href="#conclusion">#</a></h2>
+<p>Research from the Chrome team shows that although possible, stored data is
+rarely cleared automatically by Chrome. To protect critical data that may
+not be stored in the cloud, or will result in significant data loss,
+persistent storage can be a helpful tool to ensure that your data is not
+removed by the browser when the local device is faced with storage pressure.
+And remember, only request persistent storage when the user is most likely to
+want it.</p>
+<h3 id="thanks">Thanks <a class="w-headline-link" href="#thanks">#</a></h3>
+<p>Special thanks to Victor Costan, and Joe Medley for reviewing this article.
+Thanks to Chris Wilson who wrote the original version of this article that
+first appeared on WebFundamentals.</p>
+<p>Hero image by Umberto on <a href="https://unsplash.com/photos/jXd2FSvcRr8" rel="noopener">Unsplash</a></p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/storage/">Storage</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/progressive-web-apps/">Progressive Web Apps</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>May 12, 2020</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/persistent-storage/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions="api"></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

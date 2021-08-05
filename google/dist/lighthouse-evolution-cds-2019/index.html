@@ -1,0 +1,753 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=e3d9ace6a0bd9">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Lighthouse evolution: continuous integration, new performance score formula, and more</title>
+<meta name="description" content="Read about the latest Lighthouse updates announced at Chrome Developer Summit 2019. " />
+
+<link rel="canonical" href="https://web.dev/lighthouse-evolution-cds-2019/" />
+
+<meta itemprop="name" content="Lighthouse evolution: continuous integration, new performance score formula, and more" />
+<meta itemprop="description" content="Read about the latest Lighthouse updates announced at Chrome Developer Summit 2019. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/mQ77SlZ6Y8ailMClzaCs.svg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/lighthouse-evolution-cds-2019/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Lighthouse evolution: continuous integration, new performance score formula, and more" />
+<meta property="og:description" content="Read about the latest Lighthouse updates announced at Chrome Developer Summit 2019. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/mQ77SlZ6Y8ailMClzaCs.svg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="Lighthouse logo." />
+<meta property="tag" content="performance" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Lighthouse evolution: continuous integration, new performance score formula, and more" />
+<meta name="twitter:description" content="Read about the latest Lighthouse updates announced at Chrome Developer Summit 2019. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/mQ77SlZ6Y8ailMClzaCs.svg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=ce1549d14d3ce', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=5f7c62e56122', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="Lighthouse logo."     class="w-hero w-hero--cover"     decoding="auto"     height="480"                    src="https://web-dev.imgix.net/image/admin/mQ77SlZ6Y8ailMClzaCs.svg"               width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#lighthouse-evolution:-continuous-integration-new-performance-score-formula-and-more" class="w-toc__header--link">
+        Lighthouse evolution: continuous integration, new performance score formula, and more
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#lighthouse-ci-alpha-release">Lighthouse CI alpha release</a></li><li><a href="#coming-soon:-performance-score-updates">Coming soon: Performance score updates</a></li><li><a href="#lighthouse-stack-packs">Lighthouse Stack Packs</a></li><li><a href="#coming-soon:-lighthouse-plugins-as-chrome-extensions">Coming soon: Lighthouse plugins as Chrome Extensions</a></li><li><a href="#learn-more">Learn more</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@egsweeny"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="lighthouse-evolution:-continuous-integration-new-performance-score-formula-and-more" class="w-article-header__headline">Lighthouse evolution: continuous integration, new performance score formula, and more</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          <p>Get the latest Lighthouse updates and insights from Chrome Developer Summit 2019.</p>
+
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Dec 16, 2019</time>
+          
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/egsweeny/"><img     alt="Elizabeth Sweeny"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/IyB0bE6NGAvhRJkD6wRz.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/IyB0bE6NGAvhRJkD6wRz.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/IyB0bE6NGAvhRJkD6wRz.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/IyB0bE6NGAvhRJkD6wRz.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/IyB0bE6NGAvhRJkD6wRz.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/IyB0bE6NGAvhRJkD6wRz.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/egsweeny/">Elizabeth Sweeny</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/egsweeny"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/egsweeny">GitHub</a>
+      </li>
+      
+      
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>In the <a href="https://youtu.be/iaWLXf1FgI0" rel="noopener">Speed Tooling Evolutions</a> talk at Chrome
+Developer Summit (CDS), Paul Irish and I presented the newest products and
+features coming from Google that can help you build and maintain an exceptionally fast experience for all your users. At the center of that story
+are additions to the <a href="https://developers.google.com/web/tools/lighthouse" rel="noopener">Lighthouse</a> family of performance monitoring tools.</p>
+<h2 id="lighthouse-ci-alpha-release">Lighthouse CI alpha release <a class="w-headline-link" href="#lighthouse-ci-alpha-release">#</a></h2>
+<p>The Lighthouse team has launched the alpha version of <a href="https://github.com/GoogleChrome/lighthouse-ci" rel="noopener">Lighthouse
+CI</a> the new continuous
+integration product that enables you to run Lighthouse on every commit before
+pushing to production. Lighthouse CI runs Lighthouse multiple times, asserts
+static audit or metric thresholds, and then uploads Lighthouse reports to a
+server for visual diffing and basic category score history. Existing
+<a href="/use-lighthouse-for-performance-budgets">budgets.json configurations</a> work
+seamlessly alongside the new expressive syntax for asserting <em>any</em> Lighthouse
+audit or category result.</p>
+<figure class="w-figure">
+  <img     alt="Lighthouse CI report."     class="w-screenshot"     decoding="async"     height="356"          loading="lazy"     sizes="(min-width: 400px) 400px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xvyxLU5J0bap6s0LdrD3.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xvyxLU5J0bap6s0LdrD3.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xvyxLU5J0bap6s0LdrD3.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xvyxLU5J0bap6s0LdrD3.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xvyxLU5J0bap6s0LdrD3.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xvyxLU5J0bap6s0LdrD3.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xvyxLU5J0bap6s0LdrD3.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xvyxLU5J0bap6s0LdrD3.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xvyxLU5J0bap6s0LdrD3.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xvyxLU5J0bap6s0LdrD3.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xvyxLU5J0bap6s0LdrD3.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xvyxLU5J0bap6s0LdrD3.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/xvyxLU5J0bap6s0LdrD3.png?auto=format&w=800 800w"          width="400"   />
+</figure>
+<p>Lighthouse CI supports <a href="https://travis-ci.com/" rel="noopener">Travis CI</a>, <a href="https://circleci.com/" rel="noopener">Circle
+CI</a>, and <a href="https://github.com/features/actions" rel="noopener">GitHub
+Actions</a> out-of-the-box and any Ubuntu or
+container-based CI service with some configuration. You can install the
+Lighthouse CI server on-premise or use a <a href="https://github.com/GoogleChrome/lighthouse-ci/blob/master/docs/recipes/docker-server/README.md" rel="noopener">docker image for instant
+setup</a>.
+Free, public, temporary Lighthouse report storage is available as an alternative
+to get started right away.</p>
+<h2 id="coming-soon:-performance-score-updates">Coming soon: Performance score updates <a class="w-headline-link" href="#coming-soon:-performance-score-updates">#</a></h2>
+<p>Changes are coming to the Lighthouse Performance score version 6! In version 5
+(as of November 2019), Lighthouse has five metrics that are <a href="/performance-scoring/#weightings">weighted and
+blended</a> to form the 0-100 Performance score:
+<a href="/fcp/">First Contentful Paint</a>, <a href="/speed-index/">Speed Index</a>, <a href="/first-meaningful-paint/">First Meaningful
+Paint</a>, <a href="/interactive/">Time to Interactive</a>, and
+<a href="/first-cpu-idle/">First CPU Idle</a>.</p>
+<figure class="w-figure">
+  <img     alt="Comparison of Lighthouse performance score formulas in versions 5 and 6."     class="w-screenshot"     decoding="async"     height="211"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/X0u1YQC63JaPfE0DWgz8.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/X0u1YQC63JaPfE0DWgz8.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/X0u1YQC63JaPfE0DWgz8.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/X0u1YQC63JaPfE0DWgz8.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/X0u1YQC63JaPfE0DWgz8.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/X0u1YQC63JaPfE0DWgz8.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/X0u1YQC63JaPfE0DWgz8.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/X0u1YQC63JaPfE0DWgz8.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/X0u1YQC63JaPfE0DWgz8.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/X0u1YQC63JaPfE0DWgz8.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/X0u1YQC63JaPfE0DWgz8.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/X0u1YQC63JaPfE0DWgz8.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/X0u1YQC63JaPfE0DWgz8.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/X0u1YQC63JaPfE0DWgz8.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/X0u1YQC63JaPfE0DWgz8.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/X0u1YQC63JaPfE0DWgz8.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/X0u1YQC63JaPfE0DWgz8.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/X0u1YQC63JaPfE0DWgz8.png?auto=format&w=1600 1600w"          width="800"   />
+</figure>
+<p>See <a href="/performance-scoring/">Lighthouse performance scoring</a> for detailed
+information.</p>
+<p>In Lighthouse version 6, new metrics, <a href="/lcp/">Largest Contentful Paint (LCP)</a>
+and <a href="/tbt/">Total Blocking Time (TBT)</a>, are replacing First CPU Idle (FCI) and
+First Meaningful Paint (FMP). The weights of each of the five metrics will be
+adjusted to better balance different phases of load and interactivity measures.</p>
+<div class="w-aside w-aside--note">
+<p><a href="/cls/">Cumulative Layout Shift (CLS)</a> is another new metric that's
+still being finessed and should become a part of the Lighthouse Performance
+score eventually. </div></p>
+<p>The Lighthouse team is still working to ensure that all scoring curves are
+fine-tuned, and the metrics are mature and thoroughly tested. They aim to ship
+the Lighthouse v6 Performance score in January 2020.</p>
+<div class="w-aside w-aside--note">
+<p>Performance engineers sometimes find speed tools results difficult
+to reproduce due to two discrete challenges--variability and cross-environment
+inconsistency. Variability is the issue of seeing numbers change even when the
+testing environment remains the same. Cross-environment inconsistency is the
+issue of getting different results when running tests on the same page, but in
+differing environments (for example, DevTools and PageSpeed Insights). While the
+Lighthouse team is working on ways to mitigate variability, it's helpful to
+understand <a href="https://developers.google.com/web/tools/lighthouse/variability#sources_of_variability" rel="noopener">sources of
+variability</a>
+and <a href="https://developers.google.com/web/tools/lighthouse/variability#strategies_for_dealing_with_variance" rel="noopener">how you can deal with
+it</a>.
+The Lighthouse team is also investigating calibration methods to reduce
+differences between environments, but it's fair to expect that different
+conditions and hardware lead to different measurements—at least for now.</p>
+</div>
+<h2 id="lighthouse-stack-packs">Lighthouse Stack Packs <a class="w-headline-link" href="#lighthouse-stack-packs">#</a></h2>
+<p>Lighthouse can automatically detect if sites use a framework or a <a href="https://en.wikipedia.org/wiki/Content_management_system" rel="noopener">content
+management system
+(CMS)</a> and include
+stack-specific advice in the report. <a href="https://github.com/GoogleChrome/lighthouse-stack-packs" rel="noopener">Stack
+Packs</a> add customized
+recommendations, curated by community experts (like you!), on top of Lighthouse
+report core audits.</p>
+<figure class="w-figure">
+  <img     alt="Lighthouse report recommendation for deferring offscreen images in React applications."     class="w-screenshot"     decoding="async"     height="194"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/qdhyyYLFj0avPPHgx8in.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/qdhyyYLFj0avPPHgx8in.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/qdhyyYLFj0avPPHgx8in.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/qdhyyYLFj0avPPHgx8in.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/qdhyyYLFj0avPPHgx8in.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/qdhyyYLFj0avPPHgx8in.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/qdhyyYLFj0avPPHgx8in.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/qdhyyYLFj0avPPHgx8in.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/qdhyyYLFj0avPPHgx8in.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/qdhyyYLFj0avPPHgx8in.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/qdhyyYLFj0avPPHgx8in.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/qdhyyYLFj0avPPHgx8in.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/qdhyyYLFj0avPPHgx8in.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/qdhyyYLFj0avPPHgx8in.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/qdhyyYLFj0avPPHgx8in.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/qdhyyYLFj0avPPHgx8in.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/qdhyyYLFj0avPPHgx8in.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/qdhyyYLFj0avPPHgx8in.png?auto=format&w=1600 1600w"          width="800"   />
+</figure>
+<p>At the moment, there are Stack Packs for Angular, WordPress, Magento, React, and
+AMP. To create your own Stack Pack, visit the <a href="https://github.com/GoogleChrome/lighthouse-stack-packs/blob/master/CONTRIBUTING.md" rel="noopener">GitHub
+repo</a>
+or <a href="https://github.com/GoogleChrome/lighthouse-stack-packs/issues" rel="noopener">contact the Lighthouse team</a>.</p>
+<h2 id="coming-soon:-lighthouse-plugins-as-chrome-extensions">Coming soon: Lighthouse plugins as Chrome Extensions <a class="w-headline-link" href="#coming-soon:-lighthouse-plugins-as-chrome-extensions">#</a></h2>
+<figure class="w-figure">
+  <img     alt="Lighthouse plugin icon."          decoding="async"     height="220"          loading="lazy"     sizes="(min-width: 250px) 250px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/pPFz27fWWNVyT42ptr7a.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/pPFz27fWWNVyT42ptr7a.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/pPFz27fWWNVyT42ptr7a.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/pPFz27fWWNVyT42ptr7a.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/pPFz27fWWNVyT42ptr7a.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/pPFz27fWWNVyT42ptr7a.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/pPFz27fWWNVyT42ptr7a.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/pPFz27fWWNVyT42ptr7a.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/pPFz27fWWNVyT42ptr7a.png?auto=format&w=500 500w"          width="250"   />
+</figure>
+<p><a href="https://github.com/GoogleChrome/lighthouse/blob/master/docs/plugins.md" rel="noopener">Lighthouse
+Plugins</a>
+are another way you can take advantage of Lighthouse's extensibility. There
+are a lot of quality checks that Lighthouse core audits currently don't cover,
+either because they are only applicable to a subset of developers or because the
+team hasn't had the bandwidth to create the audits yet.</p>
+<p>Lighthouse plugins allow community experts to implement a new set of checks that
+Lighthouse can run and add to the report as a new category. Right now, plugins
+only work in <a href="https://developers.google.com/web/tools/lighthouse#cli" rel="noopener">Lighthouse
+CLI</a>, but the goal is to
+enable running them in the DevTools <strong>Audits</strong> panel too.</p>
+<figure class="w-figure">
+  <img     alt="Chrome DevTools Audits panel with options for running Lighthouse plugins for Google Publisher Ads and User Experience."     class="w-screenshot"     decoding="async"     height="753"          loading="lazy"     sizes="(min-width: 400px) 400px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/I6WOZkh3Wdbb6vk2sE4z.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/I6WOZkh3Wdbb6vk2sE4z.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/I6WOZkh3Wdbb6vk2sE4z.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/I6WOZkh3Wdbb6vk2sE4z.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/I6WOZkh3Wdbb6vk2sE4z.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/I6WOZkh3Wdbb6vk2sE4z.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/I6WOZkh3Wdbb6vk2sE4z.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/I6WOZkh3Wdbb6vk2sE4z.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/I6WOZkh3Wdbb6vk2sE4z.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/I6WOZkh3Wdbb6vk2sE4z.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/I6WOZkh3Wdbb6vk2sE4z.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/I6WOZkh3Wdbb6vk2sE4z.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/I6WOZkh3Wdbb6vk2sE4z.png?auto=format&w=800 800w"          width="400"   />
+  <figcaption class="w-figcaption">Community Plugins in DevTools Audits panel (beta)</figcaption>
+</figure>
+<p>When users install Lighthouse plugin extensions from the <a href="https://chrome.google.com/webstore/category/extensions" rel="noopener">Chrome Web
+Store</a>, DevTools will
+identify installed plugins and offer them as an option in the <strong>Audits</strong> panel.
+The Lighthouse team will be building the support for the plugin approach in the
+coming months, so stay tuned. In the meantime, you can create a plugin today as
+a node module and make it accessible to all Lighthouse users via the CLI!</p>
+<h2 id="learn-more">Learn more <a class="w-headline-link" href="#learn-more">#</a></h2>
+<p>For more details about Lighthouse and other performance tooling updates from
+CDS 2019, watch the Speed tooling evolutions talk:</p>
+<div class="youtube">  <lite-youtube    videoid="iaWLXf1FgI0"      >  </lite-youtube></div>
+<p>Your feedback is invaluable in making Lighthouse better, so go on and try out
+<a href="http://bit.ly/lhci" rel="noopener">Lighthouse CI</a>, write a <a href="http://bit.ly/lh-stackpacks" rel="noopener">Stack
+Pack</a>, or create a <a href="http://bit.ly/lh-plugins" rel="noopener">Lighthouse
+Plugin</a> and <a href="https://github.com/GoogleChrome/lighthouse/issues" rel="noopener">let us
+know</a> what you think.</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/performance/">Performance</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Dec 16, 2019</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/lighthouse-evolution-cds-2019/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

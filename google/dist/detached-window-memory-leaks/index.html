@@ -1,0 +1,960 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=f151842691493">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Detached window memory leaks</title>
+<meta name="description" content="Detached windows are a common type of memory leak that is particularly difficult to find and fix. " />
+
+<link rel="canonical" href="https://web.dev/detached-window-memory-leaks/" />
+
+<meta itemprop="name" content="Detached window memory leaks" />
+<meta itemprop="description" content="Detached windows are a common type of memory leak that is particularly difficult to find and fix. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/Dnk2j14tUTNqqSYN8FHj.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/detached-window-memory-leaks/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Detached window memory leaks" />
+<meta property="og:description" content="Detached windows are a common type of memory leak that is particularly difficult to find and fix. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/Dnk2j14tUTNqqSYN8FHj.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="Cat contemplating how to fix a leak" />
+<meta property="tag" content="memory" />
+<meta property="tag" content="dom" />
+<meta property="tag" content="javascript" />
+<meta property="tag" content="performance" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Detached window memory leaks" />
+<meta name="twitter:description" content="Detached windows are a common type of memory leak that is particularly difficult to find and fix. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/Dnk2j14tUTNqqSYN8FHj.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=6a467f05cc4ca', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=c5399c89ef609', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="Cat contemplating how to fix a leak"     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/Dnk2j14tUTNqqSYN8FHj.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/Dnk2j14tUTNqqSYN8FHj.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/Dnk2j14tUTNqqSYN8FHj.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/Dnk2j14tUTNqqSYN8FHj.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/Dnk2j14tUTNqqSYN8FHj.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/Dnk2j14tUTNqqSYN8FHj.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/Dnk2j14tUTNqqSYN8FHj.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/Dnk2j14tUTNqqSYN8FHj.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/Dnk2j14tUTNqqSYN8FHj.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/Dnk2j14tUTNqqSYN8FHj.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/Dnk2j14tUTNqqSYN8FHj.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/Dnk2j14tUTNqqSYN8FHj.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/Dnk2j14tUTNqqSYN8FHj.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/Dnk2j14tUTNqqSYN8FHj.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/Dnk2j14tUTNqqSYN8FHj.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/Dnk2j14tUTNqqSYN8FHj.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/Dnk2j14tUTNqqSYN8FHj.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/Dnk2j14tUTNqqSYN8FHj.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#detached-window-memory-leaks" class="w-toc__header--link">
+        Detached window memory leaks
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#whats-a-memory-leak">What's a memory leak in JavaScript?</a></li><li><a href="#whats-a-detached-window">What's a detached window?</a></li><li><a href="#how-detached-windows-cause-leaks">How detached windows cause memory leaks</a></li><li><a href="#detect-leaks">Detecting memory leaks caused by detached windows</a></li><li><a href="#measure-memory">Measure memory programmatically</a></li><li><a href="#solutions">Solutions for avoiding detached window leaks</a></li><li><a href="#solution-example">Example: Closing a popup</a></li><li><a href="#solution-unset-references">Solution: Unset references</a></li><li><a href="#solution-monitor-dispose">Solution: Monitor and dispose</a></li><li><a href="#solution-weakref">Solution: Use WeakRef</a></li><li><a href="#solution-postmessage">Solution: Communicate over postMessage</a></li><li><a href="#solution-noopener">Solution: Avoid references using noopener</a></li><li><a href="#feedback">Feedback</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@_developit | i18n.authors.bartekn.title"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="detached-window-memory-leaks" class="w-article-header__headline">Detached window memory leaks</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          <p>Find and fix tricky memory leaks caused by detached windows.</p>
+
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Sep 29, 2020</time>
+          
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/developit/"><img     alt="Jason Miller"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/bPCYfhUgxdCpXhKAWc9X.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/bPCYfhUgxdCpXhKAWc9X.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/bPCYfhUgxdCpXhKAWc9X.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/bPCYfhUgxdCpXhKAWc9X.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/bPCYfhUgxdCpXhKAWc9X.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/bPCYfhUgxdCpXhKAWc9X.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/developit/">Jason Miller</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/_developit"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/developit">GitHub</a>
+      </li>
+      
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://jasonformat.com">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+            <div class="w-author">
+  <a href="/authors/bartekn/"><img     alt="Bartek Nowierski"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/T5PegmVyKW3nxjuHZF14.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/T5PegmVyKW3nxjuHZF14.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/T5PegmVyKW3nxjuHZF14.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/T5PegmVyKW3nxjuHZF14.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/T5PegmVyKW3nxjuHZF14.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/T5PegmVyKW3nxjuHZF14.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/bartekn/">Bartek Nowierski</a>
+    </cite>
+    
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <h2 id="whats-a-memory-leak">What's a memory leak in JavaScript? <a class="w-headline-link" href="#whats-a-memory-leak">#</a></h2>
+<p>A memory leak is an unintentional increase in the amount of memory used by an application over time.
+In JavaScript, memory leaks happen when objects are no longer needed, but are still referenced by
+functions or other objects. These references prevent the unneeded objects from being reclaimed by
+the garbage collector.</p>
+<p>The job of the garbage collector is to identify and reclaim objects that are no longer reachable
+from the application. This works even when objects reference themselves, or cyclically reference
+each other–once there are no remaining references through which an application could access a
+group of objects, it can be garbage collected.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">let</span> <span class="token constant">A</span> <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">;</span><br>console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token constant">A</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// local variable reference</span><br><br><span class="token keyword">let</span> <span class="token constant">B</span> <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token constant">A</span><span class="token punctuation">}</span><span class="token punctuation">;</span> <span class="token comment">// B.A is a second reference to A</span><br><br><span class="token constant">A</span> <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span> <span class="token comment">// unset local variable reference</span><br><br>console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token constant">B</span><span class="token punctuation">.</span><span class="token constant">A</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// A can still be referenced by B</span><br><br><span class="token constant">B</span><span class="token punctuation">.</span><span class="token constant">A</span> <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span> <span class="token comment">// unset B's reference to A</span><br><br><span class="token comment">// No references to A are left. It can be garbage collected.</span></code></pre>
+</web-copy-code><p>A particularly tricky class of memory leak occurs when an application references objects that have
+their own lifecycle, like DOM elements or popup windows. It's possible for these types of objects
+to become unused without the application knowing, which means application code may have the only
+remaining references to an object that could otherwise be garbage collected.</p>
+<h2 id="whats-a-detached-window">What's a detached window? <a class="w-headline-link" href="#whats-a-detached-window">#</a></h2>
+<p>In the following example, a slideshow viewer application includes buttons to open and close a
+presenter notes popup. Imagine a user clicks <strong>Show Notes</strong>, then closes the popup window directly
+instead of clicking the <strong>Hide Notes</strong> button–the <code>notesWindow</code> variable still holds a reference
+to the popup that could be accessed, even though the popup is no longer in use.</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>show<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Show Notes<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>hide<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Hide Notes<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>module<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token script"><span class="token language-javascript"><br>  <span class="token keyword">let</span> notesWindow<span class="token punctuation">;</span><br>  document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">'show'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function-variable function">onclick</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>    notesWindow <span class="token operator">=</span> window<span class="token punctuation">.</span><span class="token function">open</span><span class="token punctuation">(</span><span class="token string">'/presenter-notes.html'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><span class="token punctuation">;</span><br>  document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">'hide'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function-variable function">onclick</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>    <span class="token keyword">if</span> <span class="token punctuation">(</span>notesWindow<span class="token punctuation">)</span> notesWindow<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><span class="token punctuation">;</span><br></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><p>This is an example of a detached window. The popup window was closed, but our code has a reference
+to it that prevents the browser from being able to destroy it and reclaim that memory.</p>
+<p>When a page calls <code>window.open()</code> to create a new browser window or tab, a
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/Window" rel="noopener"><code>Window</code></a> object is returned that
+represents the window or tab. Even after such a window has been closed or the user has navigated it
+away, the <code>Window</code> object returned from <code>window.open()</code> can still be used to access information
+about it. This is one type of detached window: because JavaScript code can still potentially access
+properties on the closed <code>Window</code> object, it must be kept in memory. If the window included a lot of
+JavaScript objects or iframes, that memory can't be reclaimed until there are no remaining
+JavaScript references to the window's properties.</p>
+<figure class="w-figure">
+  <video controls autoplay loop muted playsinline width="878" class="w-screenshot">
+    <source src="https://storage.googleapis.com/web-dev-assets/detached-window-memory-leaks/example-detached-window.webm" type="video/webm">
+    <source src="https://storage.googleapis.com/web-dev-assets/detached-window-memory-leaks/example-detached-window.mp4" type="video/mp4">
+  </video>
+  <figcaption class="w-figcaption">
+    Using Chrome DevTools to demonstrate how it's possible to retain a document after a window has
+    been closed.
+  </figcaption>
+</figure>
+<p>The same issue can also occur when using <code>&lt;iframe&gt;</code> elements. Iframes behave like nested windows
+that contain documents, and their <code>contentWindow</code> property provides access to the contained <code>Window</code>
+object, much like the value returned by <code>window.open()</code>. JavaScript code can keep a reference to an
+iframe's <code>contentWindow</code> or <code>contentDocument</code> even if the iframe is removed from the DOM or its URL
+changes, which prevents the document from being garbage collected since its properties can still be
+accessed.</p>
+<figure class="w-figure">
+  <video controls autoplay loop muted playsinline width="615" class="w-screenshot">
+    <source src="https://storage.googleapis.com/web-dev-assets/detached-window-memory-leaks/example-detached-iframe.webm" type="video/webm">
+    <source src="https://storage.googleapis.com/web-dev-assets/detached-window-memory-leaks/example-detached-iframe.mp4" type="video/mp4">
+  </video>
+  <figcaption class="w-figcaption">
+    Demonstration of how an event handler can retain an iframe's document, even after navigating the
+    iframe to a different URL.
+  </figcaption>
+</figure>
+<p>In cases where a reference to the <code>document</code> within a window or iframe is retained from JavaScript,
+that document will be kept in-memory even if the containing window or iframe navigates to a new
+URL. This can be particularly troublesome when the JavaScript holding that reference doesn't detect
+that the window/frame has navigated to a new URL, since it doesn't know when it becomes the last
+reference keeping a document in memory.</p>
+<h2 id="how-detached-windows-cause-leaks">How detached windows cause memory leaks <a class="w-headline-link" href="#how-detached-windows-cause-leaks">#</a></h2>
+<p>When working with windows and iframes on the same domain as the primary page, it's common to listen
+for events or access properties across document boundaries. For example, let's revisit a variation
+on the presentation viewer example from the beginning of this guide. The viewer opens a second
+window for displaying speaker notes. The speaker notes window listens for<code>click</code> events as its cue
+to move to the next slide. If the user closes this notes window, the JavaScript running in the
+original parent window still has full access to the speaker notes document:</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>notes<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Show Presenter Notes<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>module<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token script"><span class="token language-javascript"><br>  <span class="token keyword">let</span> notesWindow<span class="token punctuation">;</span><br>  <span class="token keyword">function</span> <span class="token function">showNotes</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    notesWindow <span class="token operator">=</span> window<span class="token punctuation">.</span><span class="token function">open</span><span class="token punctuation">(</span><span class="token string">'/presenter-notes.html'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    notesWindow<span class="token punctuation">.</span>document<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'click'</span><span class="token punctuation">,</span> nextSlide<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br>  document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">'notes'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>onclick <span class="token operator">=</span> showNotes<span class="token punctuation">;</span><br><br>  <span class="token keyword">let</span> slide <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span><br>  <span class="token keyword">function</span> <span class="token function">nextSlide</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    slide <span class="token operator">+=</span> <span class="token number">1</span><span class="token punctuation">;</span><br>    notesWindow<span class="token punctuation">.</span>document<span class="token punctuation">.</span>title <span class="token operator">=</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">Slide  </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>slide<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br>  document<span class="token punctuation">.</span>body<span class="token punctuation">.</span>onclick <span class="token operator">=</span> nextSlide<span class="token punctuation">;</span><br></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><p>Imagine we close the browser window created by <code>showNotes()</code> above. There's no event handler
+listening to detect that the window has been closed, so nothing is informing our code that it should
+clean up any references to the document. The <code>nextSlide()</code> function is still &quot;live&quot; because it is
+bound as a click handler in our main page, and the fact that <code>nextSlide</code> contains a reference to
+<code>notesWindow</code> means the window is still referenced and can't be garbage collected.</p>
+<figure class="w-figure">
+  <video controls autoplay loop muted playsinline>
+    <source src="https://storage.googleapis.com/web-dev-assets/detached-window-memory-leaks/animation.webm" type="video/webm">
+    <source src="https://storage.googleapis.com/web-dev-assets/detached-window-memory-leaks/animation.mp4" type="video/mp4">
+  </video>
+  <figcaption class="w-figcaption">
+    Illustration of how references to a window prevent it from being garbage collected once closed.
+  </figcaption>
+</figure>
+<div class="w-aside w-aside--note">
+<p>See <a href="#solution-communicate-over-postmessage">Solution: communicate over postMessage</a> to
+learn how to fix this particular memory leak.</p>
+</div>
+<p>There are a number of other scenarios where references are accidentally retained that prevent
+detached windows from being eligible for garbage collection:</p>
+<ul>
+<li>
+<p>Event handlers can be registered on an iframe's initial document prior to the frame
+navigating to its intended URL, resulting in accidental references to the document and the
+iframe persisting after other references have been cleaned up.</p>
+</li>
+<li>
+<p>A memory-heavy document loaded in a window or iframe can be accidentally kept in-memory long
+after navigating to a new URL. This is often caused by the parent page retaining references to
+the document in order to allow for listener removal.</p>
+</li>
+<li>
+<p>When passing a JavaScript object to another window or iframe, the Object's prototype chain
+includes references to the environment it was created in, including the window that created it.
+This means it's just as important to avoid holding references to objects from other windows as
+it is to avoid holding references to the windows themselves.</p>
+<p class="w-label">index.html:</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script"><span class="token language-javascript"><br>  <span class="token keyword">let</span> currentFiles<span class="token punctuation">;</span><br>  <span class="token keyword">function</span> <span class="token function">load</span><span class="token punctuation">(</span><span class="token parameter">files</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token comment">// this retains the popup:</span><br>    currentFiles <span class="token operator">=</span> files<span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br>  window<span class="token punctuation">.</span><span class="token function">open</span><span class="token punctuation">(</span><span class="token string">'upload.html'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><p class="w-label">upload.html:</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>file<span class="token punctuation">"</span></span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>file<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script"><span class="token language-javascript"><br>  file<span class="token punctuation">.</span><span class="token function-variable function">onchange</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>    parent<span class="token punctuation">.</span><span class="token function">load</span><span class="token punctuation">(</span>file<span class="token punctuation">.</span>files<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><span class="token punctuation">;</span><br></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code></li>
+</ul>
+<h2 id="detect-leaks">Detecting memory leaks caused by detached windows <a class="w-headline-link" href="#detect-leaks">#</a></h2>
+<p>Tracking down memory leaks can be tricky. It is often difficult to construct isolated reproductions
+of these issues, particularly when multiple documents or windows are involved. To make things more
+complicated, inspecting potential leaked references can end up creating additional references that
+prevent the inspected objects from being garbage collected. To that end, it's useful to start with
+tools that specifically avoid introducing this possibility.</p>
+<p>A great place to start debugging memory problems is to
+<a href="https://developers.google.com/web/tools/chrome-devtools/memory-problems#discover_detached_dom_tree_memory_leaks_with_heap_snapshots" rel="noopener">take a heap snapshot</a>.
+This provides a point-in-time view into the memory currently used by an application - all the
+objects that have been created but not yet garbage-collected. Heap snapshots contain useful
+information about objects, including their size and a list of the variables and closures that
+reference them.</p>
+<figure class="w-figure">
+  <img     alt="A screenshot of a heap snapshot in Chrome DevTools showing the references that retain a large object."     class="w-screenshot"     decoding="async"     height="419"          loading="lazy"     sizes="(min-width: 762px) 762px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/4tBcZ7lZEqkmonijrOGa.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/4tBcZ7lZEqkmonijrOGa.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/4tBcZ7lZEqkmonijrOGa.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/4tBcZ7lZEqkmonijrOGa.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/4tBcZ7lZEqkmonijrOGa.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/4tBcZ7lZEqkmonijrOGa.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/4tBcZ7lZEqkmonijrOGa.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/4tBcZ7lZEqkmonijrOGa.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/4tBcZ7lZEqkmonijrOGa.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/4tBcZ7lZEqkmonijrOGa.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/4tBcZ7lZEqkmonijrOGa.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/4tBcZ7lZEqkmonijrOGa.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/4tBcZ7lZEqkmonijrOGa.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/4tBcZ7lZEqkmonijrOGa.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/4tBcZ7lZEqkmonijrOGa.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/4tBcZ7lZEqkmonijrOGa.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/4tBcZ7lZEqkmonijrOGa.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/4tBcZ7lZEqkmonijrOGa.png?auto=format&w=1524 1524w"          width="762"   />
+  <figcaption class="w-figcaption">
+    A heap snapshot showing the references that retain a large object.
+  </figcaption>
+</figure>
+<p>To record a heap snapshot, head over to the <strong>Memory</strong> tab in Chrome DevTools and select <strong>Heap
+Snapshot</strong> in the list of available profiling types. Once the recording has finished, the
+<strong>Summary</strong> view shows current objects in-memory, grouped by constructor.</p>
+<figure class="w-figure">
+  <video controls autoplay loop muted playsinline width="640" class="w-screenshot">
+    <source src="https://storage.googleapis.com/web-dev-assets/detached-window-memory-leaks/take-heap-snapshot.webm" type="video/webm">
+    <source src="https://storage.googleapis.com/web-dev-assets/detached-window-memory-leaks/take-heap-snapshot.mp4" type="video/mp4">
+  </video>
+  <figcaption class="w-figcaption">
+    Demonstration of taking a heap snapshot in Chrome DevTools.
+  </figcaption>
+</figure>
+<div class="w-aside w-aside--codelab">
+<p><strong>Try it</strong>!
+Open this <a href="https://detached-windows-test.glitch.me" rel="noopener">step-by-step walk through</a> in a new window.</p>
+</div>
+<p>Analyzing heap dumps can be a daunting task, and it can be quite difficult to find the right
+information as part of debugging. To help with this, Chromium engineers
+<a href="https://github.com/ykahlon" rel="noopener">yossik@</a> and <a href="https://github.com/peledni" rel="noopener">peledni@</a> developed a
+standalone <a href="https://github.com/ykahlon/heap-cleaner" rel="noopener">Heap Cleaner</a> tool that can help highlight a
+specific node like a detached window. Running Heap Cleaner on a trace removes other unnecessary
+information from the retention graph, which makes the trace cleaner and much easier to read.</p>
+<h3 id="measure-memory">Measure memory programmatically <a class="w-headline-link" href="#measure-memory">#</a></h3>
+<p>Heap snapshots provide a high level of detail and are excellent for figuring out where leaks occur,
+but taking a heap snapshot is a manual process. Another way to check for memory leaks is to obtain
+the currently used JavaScript heap size from the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Performance/memory" rel="noopener"><code>performance.memory</code> API</a>:</p>
+<figure class="w-figure">
+  <img     alt="A screenshot of a section of the Chrome DevTools user interface."          decoding="async"     height="394"          loading="lazy"     sizes="(min-width: 621px) 621px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/TIypz58ucRgAnnNu1LwR.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/TIypz58ucRgAnnNu1LwR.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/TIypz58ucRgAnnNu1LwR.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/TIypz58ucRgAnnNu1LwR.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/TIypz58ucRgAnnNu1LwR.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/TIypz58ucRgAnnNu1LwR.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/TIypz58ucRgAnnNu1LwR.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/TIypz58ucRgAnnNu1LwR.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/TIypz58ucRgAnnNu1LwR.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/TIypz58ucRgAnnNu1LwR.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/TIypz58ucRgAnnNu1LwR.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/TIypz58ucRgAnnNu1LwR.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/TIypz58ucRgAnnNu1LwR.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/TIypz58ucRgAnnNu1LwR.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/TIypz58ucRgAnnNu1LwR.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/TIypz58ucRgAnnNu1LwR.png?auto=format&w=1242 1242w"          width="621"   />
+  <figcaption class="w-figcaption">
+    Checking the used JS heap size in DevTools as a popup is created, closed and unreferenced.
+  </figcaption>
+</figure>
+<p>The <code>performance.memory</code> API only provides information about the JavaScript heap size, which means
+it doesn't include memory used by the popup's document and resources. To get the full picture, we'd
+need to use the new <a href="/monitor-total-page-memory-usage/"><code>performance.measureUserAgentSpecificMemory()</code> API</a> currently being
+trialled in Chrome.</p>
+<h2 id="solutions">Solutions for avoiding detached window leaks <a class="w-headline-link" href="#solutions">#</a></h2>
+<p>The two most common cases where detached windows cause memory leaks are when the parent document
+retains references to a closed popup or removed iframe, and when unexpected navigation of a window
+or iframe results in event handlers never being unregistered.</p>
+<h3 id="solution-example">Example: Closing a popup <a class="w-headline-link" href="#solution-example">#</a></h3>
+<div class="w-aside w-aside--note">
+<p>The <a href="#solution-unset-references">unset references</a>,
+<a href="#solution-monitor-dispose">monitor and dispose</a>, and <a href="#solution-weakref">WeakRef</a> solutions are
+all based off of this example.</p>
+</div>
+<p>In the following example, two buttons are used to open and close a popup window. In order for the
+<strong>Close Popup</strong> button to work, a reference to the opened popup window is stored in a variable:</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>open<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Open Popup<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>close<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Close Popup<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script"><span class="token language-javascript"><br>  <span class="token keyword">let</span> popup<span class="token punctuation">;</span><br>  open<span class="token punctuation">.</span><span class="token function-variable function">onclick</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>    popup <span class="token operator">=</span> window<span class="token punctuation">.</span><span class="token function">open</span><span class="token punctuation">(</span><span class="token string">'/login.html'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><span class="token punctuation">;</span><br>  close<span class="token punctuation">.</span><span class="token function-variable function">onclick</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>    popup<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><span class="token punctuation">;</span><br></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><p>At first glance, it seems like the above code avoids common pitfalls: no references to the popup's
+document are retained, and no event handlers are registered on the popup window. However, once the
+<strong>Open Popup</strong> button is clicked the <code>popup</code> variable now references the opened window, and that
+variable is accessible from the scope of the <strong>Close Popup</strong> button click handler. Unless <code>popup</code> is
+reassigned or the click handler removed, that handler's enclosed reference to <code>popup</code> means it can't
+be garbage-collected.</p>
+<h3 id="solution-unset-references">Solution: Unset references <a class="w-headline-link" href="#solution-unset-references">#</a></h3>
+<p>Variables that reference another window or its document cause it to be retained in memory. Since
+objects in JavaScript are always references, assigning a new value to variables removes their
+reference to the original object. To &quot;unset&quot; references to an object, we can reassign those
+variables to the value <code>null</code>.</p>
+<p>Applying this to the previous <a href="#solution-example">popup example</a>, we can modify the close button
+handler to make it &quot;unset&quot; its reference to the popup window:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="highlight-line"><span class="token keyword">let</span> popup<span class="token punctuation">;</span></span><br><span class="highlight-line">open<span class="token punctuation">.</span><span class="token function-variable function">onclick</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span></span><br><span class="highlight-line">  popup <span class="token operator">=</span> window<span class="token punctuation">.</span><span class="token function">open</span><span class="token punctuation">(</span><span class="token string">'/login.html'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line"><span class="token punctuation">}</span><span class="token punctuation">;</span></span><br><span class="highlight-line">close<span class="token punctuation">.</span><span class="token function-variable function">onclick</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span></span><br><span class="highlight-line">  popup<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><ins class="highlight-line highlight-line-add">  popup <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span></ins><br><span class="highlight-line"><span class="token punctuation">}</span><span class="token punctuation">;</span></span></code></pre>
+</web-copy-code><p>This helps, but reveals a further problem specific to windows created using <code>open()</code>: what if the
+user closes the window instead of clicking our custom close button? Further still, what if the user
+starts browsing to other websites in the window we opened? While it originally seemed sufficient to
+unset the <code>popup</code> reference when clicking our close button, there is still a memory leak when users
+don't use that particular button to close the window. Solving this requires detecting these cases in
+order to unset lingering references when they occur.</p>
+<h3 id="solution-monitor-dispose">Solution: Monitor and dispose <a class="w-headline-link" href="#solution-monitor-dispose">#</a></h3>
+<p>In many situations, the JavaScript responsible for opening windows or creating frames does not have
+exclusive control over their lifecycle. Popups can be closed by the user, or navigation to a new
+document can cause the document previously contained by a window or frame to become detached. In
+both cases, the browser fires an <code>pagehide</code> event to signal that the document is being unloaded.</p>
+<div class="w-aside w-aside--caution">
+<p><strong>Caution</strong>:
+There's another event called<code>unload</code> which is similar to<code>pagehide</code> but is considered harmful and
+should be avoided as much as possible. See
+<a href="https://developers.google.com/web/updates/2018/07/page-lifecycle-api#the-unload-event" rel="noopener">Legacy lifecycle APIs to avoid: the unload event</a>
+for details.</p>
+</div>
+<p>The <code>pagehide</code> event can be used to detect closed windows and navigation away from the current
+document. However, there is one important caveat: all newly-created windows and iframes contain an
+empty document, then asynchronously navigate to the given URL if provided. As a result, an initial
+<code>pagehide</code> event is fired shortly after creating the window or frame, just before the target
+document has loaded. Since our reference cleanup code needs to run when the <em>target</em> document is
+unloaded, we need to ignore this first <code>pagehide</code> event. There are a number of techniques for doing
+so, the simplest of which is to ignore pagehide events originating from the initial document's
+<code>about:blank</code> URL. Here's how it would look in our <a href="#solution-example">popup example</a>:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">let</span> popup<span class="token punctuation">;</span><br>open<span class="token punctuation">.</span><span class="token function-variable function">onclick</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  popup <span class="token operator">=</span> window<span class="token punctuation">.</span><span class="token function">open</span><span class="token punctuation">(</span><span class="token string">'/login.html'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>  <span class="token comment">// listen for the popup being closed/exited:</span><br>  popup<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'pagehide'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>    <span class="token comment">// ignore initial event fired on "about:blank":</span><br>    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>popup<span class="token punctuation">.</span>location<span class="token punctuation">.</span>host<span class="token punctuation">)</span> <span class="token keyword">return</span><span class="token punctuation">;</span><br><br>    <span class="token comment">// remove our reference to the popup window:</span><br>    popup <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>It's important to note that this technique only works for windows and frames that have the same
+effective origin as the parent page where our code is running. When loading content from a different
+origin, both <code>location.host</code> and the <code>pagehide</code> event are unavailable for security reasons. While
+it's generally best to avoid keeping references to other origins, in the rare cases where this is
+required it is possible to monitor the <code>window.closed</code> or <code>frame.isConnected</code> properties. When these
+properties change to indicate a closed window or removed iframe, it's a good idea to unset any
+references to it.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">let</span> popup <span class="token operator">=</span> window<span class="token punctuation">.</span><span class="token function">open</span><span class="token punctuation">(</span><span class="token string">'https://example.com'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token keyword">let</span> timer <span class="token operator">=</span> <span class="token function">setInterval</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token keyword">if</span> <span class="token punctuation">(</span>popup<span class="token punctuation">.</span>closed<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    popup <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span><br>    <span class="token function">clearInterval</span><span class="token punctuation">(</span>timer<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><h3 id="solution-weakref">Solution: Use WeakRef <a class="w-headline-link" href="#solution-weakref">#</a></h3>
+<div class="w-aside w-aside--note">
+<p><code>WeakRef</code> is a new feature of the JavaScript language,
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakRef#Browser_compatibility" rel="noopener">available in desktop Firefox since version 79</a>
+and
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakRef#Browser_compatibility" rel="noopener">Chromium-based browsers since version 84</a>.
+Since it's not yet widely-supported, this solution is better suited to tracking down and debugging
+issues rather than fixing them for production.</p>
+</div>
+<p>JavaScript recently gained support for a new way to reference objects that allows garbage collection
+to take place, called <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakRef" rel="noopener"><code>WeakRef</code></a>. A <code>WeakRef</code> created for an object is not a direct
+reference, but rather a separate object that provides a special <code>.deref()</code> method that returns a
+reference to the object as long as it has not been garbage-collected. With <code>WeakRef</code>, it is
+possible to access the current value of a window or document while still allowing it to be garbage
+collected. Instead of retaining a reference to the window that must be manually unset in response
+to events like <code>pagehide</code> or properties like <code>window.closed</code>, access to the window is obtained
+as-needed. When the window is closed, it can be garbage collected, causing the <code>.deref()</code> method
+to begin returning <code>undefined</code>.</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>open<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Open Popup<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>close<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Close Popup<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script"><span class="token language-javascript"><br>  <span class="token keyword">let</span> popup<span class="token punctuation">;</span><br>  open<span class="token punctuation">.</span><span class="token function-variable function">onclick</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>    popup <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">WeakRef</span><span class="token punctuation">(</span>window<span class="token punctuation">.</span><span class="token function">open</span><span class="token punctuation">(</span><span class="token string">'/login.html'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><span class="token punctuation">;</span><br>  close<span class="token punctuation">.</span><span class="token function-variable function">onclick</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>    <span class="token keyword">const</span> win <span class="token operator">=</span> popup<span class="token punctuation">.</span><span class="token function">deref</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token keyword">if</span> <span class="token punctuation">(</span>win<span class="token punctuation">)</span> win<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><span class="token punctuation">;</span><br></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><p>One interesting detail to consider when using <code>WeakRef</code> to access windows or documents is that the
+reference generally remains available for a short period of time after the window is closed or
+iframe removed. This is because <code>WeakRef</code> continues returning a value until its associated object
+has been garbage-collected, which happens asynchronously in JavaScript and generally during idle
+time. Thankfully, when checking for detached windows in the Chrome DevTools <strong>Memory</strong> panel, taking
+a heap snapshot actually triggers garbage collection and disposes the weakly-referenced window. It's
+also possible to check that an object referenced via <code>WeakRef</code> has been disposed from JavaScript,
+either by detecting when <code>deref()</code> returns <code>undefined</code> or using the new
+<a href="https://v8.dev/features/weak-references#:~:text=FinalizationRegistry" rel="noopener"><code>FinalizationRegistry</code> API</a>:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">let</span> popup <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">WeakRef</span><span class="token punctuation">(</span>window<span class="token punctuation">.</span><span class="token function">open</span><span class="token punctuation">(</span><span class="token string">'/login.html'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token comment">// Polling deref():</span><br><span class="token keyword">let</span> timer <span class="token operator">=</span> <span class="token function">setInterval</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token keyword">if</span> <span class="token punctuation">(</span>popup<span class="token punctuation">.</span><span class="token function">deref</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">===</span> <span class="token keyword">undefined</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'popup was garbage-collected'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token function">clearInterval</span><span class="token punctuation">(</span>timer<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token comment">// FinalizationRegistry API:</span><br><span class="token keyword">let</span> finalizers <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FinalizationRegistry</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'popup was garbage-collected'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>finalizers<span class="token punctuation">.</span><span class="token function">register</span><span class="token punctuation">(</span>popup<span class="token punctuation">.</span><span class="token function">deref</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><h3 id="solution-postmessage">Solution: Communicate over <code>postMessage</code> <a class="w-headline-link" href="#solution-postmessage">#</a></h3>
+<p>Detecting when windows are closed or navigation unloads a document gives us a way to remove
+handlers and unset references so that detached windows can be garbage collected. However, these
+changes are specific fixes for what can sometimes be a more fundamental concern: direct coupling
+between pages.</p>
+<p>A more holistic alternative approach is available that avoids stale references between windows and
+documents: establishing separation by limiting cross-document communication to
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage" rel="noopener"><code>postMessage()</code></a>. Thinking back to our original presenter notes example, functions
+like <code>nextSlide()</code> updated the notes window directly by referencing it and manipulating its
+content. Instead, the primary page could pass the necessary information to the notes window
+asynchronously and indirectly over <code>postMessage()</code>.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">let</span> updateNotes<span class="token punctuation">;</span><br><span class="token keyword">function</span> <span class="token function">showNotes</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token comment">// keep the popup reference in a closure to prevent outside references:</span><br>  <span class="token keyword">let</span> win <span class="token operator">=</span> window<span class="token punctuation">.</span><span class="token function">open</span><span class="token punctuation">(</span><span class="token string">'/presenter-view.html'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  win<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'pagehide'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>win <span class="token operator">||</span> <span class="token operator">!</span>win<span class="token punctuation">.</span>location<span class="token punctuation">.</span>host<span class="token punctuation">)</span> <span class="token keyword">return</span><span class="token punctuation">;</span> <span class="token comment">// ignore initial "about:blank"</span><br>    win <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token comment">// other functions must interact with the popup through this API:</span><br>  <span class="token function-variable function">updateNotes</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">data</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>win<span class="token punctuation">)</span> <span class="token keyword">return</span><span class="token punctuation">;</span><br>    win<span class="token punctuation">.</span><span class="token function">postMessage</span><span class="token punctuation">(</span>data<span class="token punctuation">,</span> location<span class="token punctuation">.</span>origin<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><span class="token punctuation">;</span><br>  <span class="token comment">// listen for messages from the notes window:</span><br>  <span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'message'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token parameter">event</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>    <span class="token keyword">if</span> <span class="token punctuation">(</span>event<span class="token punctuation">.</span>source <span class="token operator">!==</span> win<span class="token punctuation">)</span> <span class="token keyword">return</span><span class="token punctuation">;</span><br>    <span class="token keyword">if</span> <span class="token punctuation">(</span>event<span class="token punctuation">.</span>data<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">===</span> <span class="token string">'nextSlide'</span><span class="token punctuation">)</span> <span class="token function">nextSlide</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><br><span class="token keyword">let</span> slide <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span><br><span class="token keyword">function</span> <span class="token function">nextSlide</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  slide <span class="token operator">+=</span> <span class="token number">1</span><span class="token punctuation">;</span><br>  <span class="token comment">// if the popup is open, tell it to update without referencing it:</span><br>  <span class="token keyword">if</span> <span class="token punctuation">(</span>updateNotes<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token function">updateNotes</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'setSlide'</span><span class="token punctuation">,</span> slide<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span><br>document<span class="token punctuation">.</span>body<span class="token punctuation">.</span>onclick <span class="token operator">=</span> nextSlide<span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>While this still requires the windows to reference each other, neither retains a reference to the
+current <em>document</em> from another window. A message-passing approach also encourages designs where
+window references are held in a single place, meaning only a single reference needs to be unset when
+windows are closed or navigate away. In the above example, only <code>showNotes()</code> retains a reference to
+the notes window, and it uses the <code>pagehide</code> event to ensure that reference is cleaned up.</p>
+<h3 id="solution-noopener">Solution: Avoid references using <code>noopener</code> <a class="w-headline-link" href="#solution-noopener">#</a></h3>
+<p>In cases where a popup window is opened that your page doesn't need to communicate with or control,
+you may be able to avoid ever obtaining a reference to the window. This is particularly useful
+when creating windows or iframes that will load content from another site. For these cases,
+<code>window.open()</code> accepts a <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/open#noopener" rel="noopener"><code>&quot;noopener&quot;</code> option</a> that works just like the
+<a href="/external-anchors-use-rel-noopener/"><code>rel=&quot;noopener&quot;</code> attribute</a> for HTML links:</p>
+<web-copy-code><pre class="language-js"><code class="language-js">window<span class="token punctuation">.</span><span class="token function">open</span><span class="token punctuation">(</span><span class="token string">'https://example.com/share'</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token string">'noopener'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>The <code>&quot;noopener&quot;</code> option causes <code>window.open()</code> to return <code>null</code>, making it impossible to
+accidentally store a reference to the popup. It also prevents the popup window from getting a
+reference to its parent window, since the <code>window.opener</code> property will be <code>null</code>.</p>
+<h2 id="feedback">Feedback <a class="w-headline-link" href="#feedback">#</a></h2>
+<p>Hopefully some of the suggestions in this article help with finding and fixing memory leaks. If you
+have another technique for debugging detached windows or this article helped uncover leaks in your
+app, I'd love to know! You can find me on Twitter <a href="https://twitter.com/_developit" rel="noopener">@_developit</a>.</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/memory/">Memory</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/dom/">DOM</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/javascript/">JavaScript</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/performance/">Performance</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Sep 29, 2020</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/detached-window-memory-leaks/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

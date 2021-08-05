@@ -1,0 +1,727 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=1cec2ea2e1d74">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Establish network connections early to improve perceived page speed</title>
+<meta name="description" content="Learn about rel=preconnect and rel=dns-prefetch resource hints and how to use them. " />
+
+<link rel="canonical" href="https://web.dev/preconnect-and-dns-prefetch/" />
+
+<meta itemprop="name" content="Establish network connections early to improve perceived page speed" />
+<meta itemprop="description" content="Learn about rel=preconnect and rel=dns-prefetch resource hints and how to use them. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/Dyccd1RLN0fzhjPXswmL.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/preconnect-and-dns-prefetch/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Establish network connections early to improve perceived page speed" />
+<meta property="og:description" content="Learn about rel=preconnect and rel=dns-prefetch resource hints and how to use them. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/Dyccd1RLN0fzhjPXswmL.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="Adam's Creation by Michelangelo on Sistine Chapel ceiling" />
+<meta property="tag" content="performance" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Establish network connections early to improve perceived page speed" />
+<meta name="twitter:description" content="Learn about rel=preconnect and rel=dns-prefetch resource hints and how to use them. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/Dyccd1RLN0fzhjPXswmL.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=1a82ac8b4b1b9', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=7d0e34f6c16bd', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="Adam&#x27;s Creation by Michelangelo on Sistine Chapel ceiling"     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/Dyccd1RLN0fzhjPXswmL.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/Dyccd1RLN0fzhjPXswmL.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/Dyccd1RLN0fzhjPXswmL.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/Dyccd1RLN0fzhjPXswmL.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/Dyccd1RLN0fzhjPXswmL.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/Dyccd1RLN0fzhjPXswmL.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/Dyccd1RLN0fzhjPXswmL.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/Dyccd1RLN0fzhjPXswmL.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/Dyccd1RLN0fzhjPXswmL.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/Dyccd1RLN0fzhjPXswmL.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/Dyccd1RLN0fzhjPXswmL.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/Dyccd1RLN0fzhjPXswmL.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/Dyccd1RLN0fzhjPXswmL.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/Dyccd1RLN0fzhjPXswmL.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/Dyccd1RLN0fzhjPXswmL.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/Dyccd1RLN0fzhjPXswmL.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/Dyccd1RLN0fzhjPXswmL.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/Dyccd1RLN0fzhjPXswmL.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#establish-network-connections-early-to-improve-perceived-page-speed" class="w-toc__header--link">
+        Establish network connections early to improve perceived page speed
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#establish-early-connections-with-relpreconnect">Establish early connections with rel=preconnect</a></li><li><a href="#use-cases-for-relpreconnect">Use-cases for rel=preconnect</a></li><li><a href="#knowing-where-from-but-not-what-you're-fetching">Knowing where from, but not what you're fetching</a></li><li><a href="#streaming-media">Streaming media</a></li><li><a href="#how-to-implement-relpreconnect">How to implement rel=preconnect</a></li><li><a href="#resolve-domain-name-early-with-reldns-prefetch">Resolve domain name early with rel=dns-prefetch</a></li><li><a href="#conclusion">Conclusion</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@bibydigital"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="establish-network-connections-early-to-improve-perceived-page-speed" class="w-article-header__headline">Establish network connections early to improve perceived page speed</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          <p>Learn about rel=preconnect and rel=dns-prefetch resource hints and how to use them.</p>
+
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Jul 30, 2019</time>
+          
+        </div>
+      
+      <div class="w-layout-container--narrow w-post-signpost">
+  <span class="w-post-signpost__title">Appears in:</span>
+  <a
+          class="w-post-signpost__link"
+          href="/fast"
+          >Fast load times</a
+        >
+</div>
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/mihajlija/"><img     alt="Milica Mihajlija"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/WkMOiDtaDgiAA2YkRZ5H.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/WkMOiDtaDgiAA2YkRZ5H.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/WkMOiDtaDgiAA2YkRZ5H.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/WkMOiDtaDgiAA2YkRZ5H.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/WkMOiDtaDgiAA2YkRZ5H.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/WkMOiDtaDgiAA2YkRZ5H.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/mihajlija/">Milica Mihajlija</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/bibydigital"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/mihajlija">GitHub</a>
+      </li>
+      
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://mihajlija.github.io/">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>Before the browser can request a resource from a server, it must establish a connection. Establishing a secure connection involves three steps:</p>
+<ul>
+<li>
+<p>Look up the domain name and resolve it to an IP address.</p>
+</li>
+<li>
+<p>Set up a connection to the server.</p>
+</li>
+<li>
+<p>Encrypt the connection for security.</p>
+</li>
+</ul>
+<p>In each of these steps the browser sends a piece of data to a server, and the server sends back a response. That journey, from origin to destination and back, is called a <a href="https://developer.mozilla.org/en-US/docs/Glossary/Round_Trip_Time_(RTT)" rel="noopener">round trip</a>.</p>
+<p>Depending on network conditions, a single round trip might take a significant amount of time. The connection setup process might involve up to three round trips—and more in unoptimized cases.</p>
+<p>Taking care of all that ahead of time makes applications feel much faster. This post explains how to achieve that with two resource hints: <code>&lt;link rel=preconnect&gt;</code> and <code>&lt;link rel=dns-prefetch&gt;</code>.</p>
+<h2 id="establish-early-connections-with-relpreconnect">Establish early connections with <code>rel=preconnect</code> <a class="w-headline-link" href="#establish-early-connections-with-relpreconnect">#</a></h2>
+<p>Modern browsers <a href="https://www.igvita.com/posa/high-performance-networking-in-google-chrome/#tcp-pre-connect" rel="noopener">try their best to anticipate</a> what connections a page will need, but they cannot reliably predict them all. The good news is that you can give them a (resource 😉) hint.</p>
+<p>Adding <code>rel=preconnect</code> to a <code>&lt;link&gt;</code> informs the browser that your page intends to establish a connection to another domain, and that you'd like the process to start as soon as possible. Resources will load more quickly because the setup process has already been completed by the time the browser requests them.</p>
+<p>Resource hints get their name because they are not mandatory instructions. They provide the information about what you'd like to happen, but it's ultimately up to the browser to decide whether to execute them. Setting up and keeping a connection open is a lot of work, so the browser might choose to ignore resource hints or execute them partially depending on the situation.</p>
+<p>Informing the browser of your intention is as simple as adding a <code>&lt;link&gt;</code> tag to your page:</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>link</span> <span class="token attr-name">rel</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>preconnect<span class="token punctuation">"</span></span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>https://example.com<span class="token punctuation">"</span></span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><img     alt="A diagram showing how the download doesn&#x27;t start for a while after the connection is established."          decoding="async"     height="539"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/988BgvmiVEAp2YVKt2jq.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/988BgvmiVEAp2YVKt2jq.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/988BgvmiVEAp2YVKt2jq.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/988BgvmiVEAp2YVKt2jq.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/988BgvmiVEAp2YVKt2jq.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/988BgvmiVEAp2YVKt2jq.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/988BgvmiVEAp2YVKt2jq.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/988BgvmiVEAp2YVKt2jq.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/988BgvmiVEAp2YVKt2jq.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/988BgvmiVEAp2YVKt2jq.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/988BgvmiVEAp2YVKt2jq.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/988BgvmiVEAp2YVKt2jq.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/988BgvmiVEAp2YVKt2jq.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/988BgvmiVEAp2YVKt2jq.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/988BgvmiVEAp2YVKt2jq.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/988BgvmiVEAp2YVKt2jq.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/988BgvmiVEAp2YVKt2jq.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/988BgvmiVEAp2YVKt2jq.png?auto=format&w=1600 1600w"          width="800"   />
+<p>You can speed up the load time by 100–500 ms by establishing early connections to important third-party origins. These numbers might seem small, but they make a difference in how <a href="https://developers.google.com/web/fundamentals/performance/rail#ux" rel="noopener">users perceive web page performance</a>.</p>
+<div class="w-aside w-aside--note">
+<p>chrome.com <a href="https://twitter.com/addyosmani/status/1090874825286000640" rel="noopener">improved Time To Interactive</a> by almost 1 s by pre-connecting to important origins.</p>
+</div>
+<h2 id="use-cases-for-relpreconnect">Use-cases for <code>rel=preconnect</code> <a class="w-headline-link" href="#use-cases-for-relpreconnect">#</a></h2>
+<h3 id="knowing-where-from-but-not-what-you're-fetching">Knowing <em>where from</em>, but not <em>what</em> you're fetching <a class="w-headline-link" href="#knowing-where-from-but-not-what-you're-fetching">#</a></h3>
+<p>Due to versioned dependencies, you sometimes end up in a situation where you know you'll be requesting a resource from a particular CDN, but not the exact path for it.</p>
+<figure class="w-figure">
+<img     alt="A url of a script with the version name."          decoding="async"     height="50"          loading="lazy"     sizes="(min-width: 450px) 450px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/PsP4qymb1gIp8Ip2sD9W.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/PsP4qymb1gIp8Ip2sD9W.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/PsP4qymb1gIp8Ip2sD9W.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/PsP4qymb1gIp8Ip2sD9W.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/PsP4qymb1gIp8Ip2sD9W.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/PsP4qymb1gIp8Ip2sD9W.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/PsP4qymb1gIp8Ip2sD9W.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/PsP4qymb1gIp8Ip2sD9W.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/PsP4qymb1gIp8Ip2sD9W.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/PsP4qymb1gIp8Ip2sD9W.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/PsP4qymb1gIp8Ip2sD9W.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/PsP4qymb1gIp8Ip2sD9W.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/PsP4qymb1gIp8Ip2sD9W.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/PsP4qymb1gIp8Ip2sD9W.png?auto=format&w=900 900w"          width="450"   />
+<figcaption>An example of a versioned URL.</figcaption>
+</figure>
+<p>The other common case is loading images from an <a href="/image-cdns">image CDN</a>, where the exact path for an image depends on media queries or runtime feature checks on the user's browser.</p>
+<figure class="w-figure">
+<img     alt="An image CDN URL with the parameters size=300x400 and quality=auto."          decoding="async"     height="52"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/Xx4ai7tzSq12DJsQXaL1.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/Xx4ai7tzSq12DJsQXaL1.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/Xx4ai7tzSq12DJsQXaL1.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/Xx4ai7tzSq12DJsQXaL1.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/Xx4ai7tzSq12DJsQXaL1.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/Xx4ai7tzSq12DJsQXaL1.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/Xx4ai7tzSq12DJsQXaL1.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/Xx4ai7tzSq12DJsQXaL1.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/Xx4ai7tzSq12DJsQXaL1.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/Xx4ai7tzSq12DJsQXaL1.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/Xx4ai7tzSq12DJsQXaL1.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/Xx4ai7tzSq12DJsQXaL1.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/Xx4ai7tzSq12DJsQXaL1.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/Xx4ai7tzSq12DJsQXaL1.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/Xx4ai7tzSq12DJsQXaL1.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/Xx4ai7tzSq12DJsQXaL1.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/Xx4ai7tzSq12DJsQXaL1.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/Xx4ai7tzSq12DJsQXaL1.png?auto=format&w=1600 1600w"          width="800"   />
+<figcaption>An example of an image CDN URL.</figcaption>
+</figure>
+<p>In these situations, if the resource you'll be fetching is important, you want to save as much time as possible by pre-connecting to the server. The browser won't download the file until your page requests it, but at least it can handle the connection aspects ahead of time, saving the user from waiting for several round trips.</p>
+<h3 id="streaming-media">Streaming media <a class="w-headline-link" href="#streaming-media">#</a></h3>
+<p>Another example where you may want to save some time in the connection phase, but not necessarily start retrieving content right away, is when streaming media from a different origin.</p>
+<p>Depending on how your page handles the streamed content, you may want to wait until your scripts have loaded and are ready to process the stream. Pre-connecting helps you cut the waiting time to a single round trip once you're ready to start fetching.</p>
+<h2 id="how-to-implement-relpreconnect">How to implement <code>rel=preconnect</code> <a class="w-headline-link" href="#how-to-implement-relpreconnect">#</a></h2>
+<p>One way of initiating a <code>preconnect</code> is adding a <code>&lt;link&gt;</code> tag to the <code>&lt;head&gt;</code> of the document.</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">></span></span><br>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>link</span> <span class="token attr-name">rel</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>preconnect<span class="token punctuation">"</span></span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>https://example.com<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>head</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><p>Preconnecting is only effective for domains other than the origin domain, so you shouldn't use it for your site.</p>
+<div class="w-aside w-aside--caution">
+<p><strong>Caution</strong>:
+Only preconnect to critical domains you will use soon because the browser closes any connection that isn't used within 10 seconds. Unnecessary preconnecting can delay other important resources, so limit the number of preconnected domains and <a href="https://andydavies.me/blog/2019/08/07/experimenting-with-link-rel-equals-preconnect-using-custom-script-injection-in-webpagetest/" rel="noopener">test the impact preconnecting makes</a>.</p>
+</div>
+<p>You can also initiate a preconnect via the <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Link" rel="noopener"><code>Link</code> HTTP header</a>:</p>
+<p><code>Link: &lt;https://example.com/&gt;; rel=preconnect</code></p>
+<div class="w-aside w-aside--note">
+<p>A benefit of specifying a preconnect hint in the HTTP header is that it doesn't rely on markup being parsed, and it can be triggered by requests for stylesheets, scripts, and more. For example, Google Fonts sends a <code>Link</code> header in the stylesheet response to preconnect to the domain that hosts the font files.</p>
+</div>
+<p>Some types of resources, such as fonts, are loaded in <a href="https://www.w3.org/TR/css-fonts-3/#font-fetching-requirements" rel="noopener">anonymous mode</a>. For those you must set the <code>crossorigin</code> attribute with the <code>preconnect</code> hint:</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>link</span> <span class="token attr-name">rel</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>preconnect<span class="token punctuation">"</span></span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>https://example.com/ComicSans<span class="token punctuation">"</span></span> <span class="token attr-name">crossorigin</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><p>If you omit the <code>crossorigin</code> attribute, the browser only performs the DNS lookup.</p>
+<h2 id="resolve-domain-name-early-with-reldns-prefetch">Resolve domain name early with <code>rel=dns-prefetch</code> <a class="w-headline-link" href="#resolve-domain-name-early-with-reldns-prefetch">#</a></h2>
+<p>You remember sites by their names, but servers remember them by IP addresses. This is why the domain name system (DNS) exists. The browser uses DNS to convert the site name to an IP address. This process—<a href="https://hacks.mozilla.org/2018/05/a-cartoon-intro-to-dns-over-https/" rel="noopener">domain name resolution</a>— is the first step in establishing a connection.</p>
+<p>If a page needs to make connections to many third-party domains, preconnecting all of them is counterproductive. The <code>preconnect</code> hint is best used for only the most critical connections. For all the rest, use <code>&lt;link rel=dns-prefetch&gt;</code> to save time on the first step, the DNS lookup, which usually takes around <a href="https://www.keycdn.com/support/reduce-dns-lookups" rel="noopener">20–120 ms</a>.</p>
+<p>DNS resolution is initiated similarly to <code>preconnect</code>: by adding a <code>&lt;link&gt;</code> tag to the <code>&lt;head&gt;</code> of the document.</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>link</span> <span class="token attr-name">rel</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>dns-prefetch<span class="token punctuation">"</span></span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>http://example.com<span class="token punctuation">"</span></span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><p><a href="https://caniuse.com/#search=dns-prefetch" rel="noopener">Browser support for <code>dns-prefetch</code></a> is slightly different from <a href="https://caniuse.com/#search=preconnect" rel="noopener"><code>preconnect</code></a> <a href="https://caniuse.com/#search=preconnect" rel="noopener">support</a>, so <code>dns-prefetch</code> can serve as a fallback for browsers that don't support <code>preconnect</code>.</p>
+<figure class="w-compare"><p class="w-compare__label w-compare__label--better">Do</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>link</span> <span class="token attr-name">rel</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>preconnect<span class="token punctuation">"</span></span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>http://example.com<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>link</span> <span class="token attr-name">rel</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>dns-prefetch<span class="token punctuation">"</span></span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>http://example.com<span class="token punctuation">"</span></span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><figcaption class="w-compare__caption">
+<p>To safely implement the fallback technique, use separate link tags.</p>
+</figcaption>
+</figure>
+<figure class="w-compare"><p class="w-compare__label w-compare__label--worse">Don't</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>link</span> <span class="token attr-name">rel</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>preconnect dns-prefetch<span class="token punctuation">"</span></span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>http://example.com<span class="token punctuation">"</span></span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><figcaption class="w-compare__caption">
+<p>Implementing <code>dns-prefetch</code> fallback in the same <code>&lt;link&gt;</code> tag causes a bug in Safari where <code>preconnect</code> gets cancelled.</p>
+</figcaption>
+</figure>
+<h2 id="conclusion">Conclusion <a class="w-headline-link" href="#conclusion">#</a></h2>
+<p>These two resource hints are helpful for improving page speed when you know you'll download something from a third-party domain soon, but you don't know the exact URL for the resource. Examples include CDNs that distribute JavaScript libraries, images or fonts. Be mindful of constraints, use <code>preconnect</code> only for the most important resources, rely on <code>dns-prefetch</code> for the rest, and always measure the impact in the real-world.</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/performance/">Performance</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Jul 30, 2019</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/preconnect-and-dns-prefetch/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

@@ -1,0 +1,901 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=17dfc6cddaadd">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Is your app installed? getInstalledRelatedApps() will tell you!</title>
+<meta name="description" content="The getInstalledRelatedApps() API is a web platform API that allows you to check whether your iOS/Android/desktop app or PWA is installed on the user's device. " />
+
+<link rel="canonical" href="https://web.dev/get-installed-related-apps/" />
+
+<meta itemprop="name" content="Is your app installed? getInstalledRelatedApps() will tell you!" />
+<meta itemprop="description" content="The getInstalledRelatedApps() API is a web platform API that allows you to check whether your iOS/Android/desktop app or PWA is installed on the user's device. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/v9t93rXITPqFe3L0qlTN.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/get-installed-related-apps/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Is your app installed? getInstalledRelatedApps() will tell you!" />
+<meta property="og:description" content="The getInstalledRelatedApps() API is a web platform API that allows you to check whether your iOS/Android/desktop app or PWA is installed on the user's device. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/v9t93rXITPqFe3L0qlTN.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="mobile device with app panel open" />
+<meta property="tag" content="capabilities" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Is your app installed? getInstalledRelatedApps() will tell you!" />
+<meta name="twitter:description" content="The getInstalledRelatedApps() API is a web platform API that allows you to check whether your iOS/Android/desktop app or PWA is installed on the user's device. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/v9t93rXITPqFe3L0qlTN.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=c186089a2bbc7', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=fa22be58f6362', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="mobile device with app panel open"     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/v9t93rXITPqFe3L0qlTN.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/v9t93rXITPqFe3L0qlTN.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/v9t93rXITPqFe3L0qlTN.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/v9t93rXITPqFe3L0qlTN.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/v9t93rXITPqFe3L0qlTN.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/v9t93rXITPqFe3L0qlTN.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/v9t93rXITPqFe3L0qlTN.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/v9t93rXITPqFe3L0qlTN.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/v9t93rXITPqFe3L0qlTN.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/v9t93rXITPqFe3L0qlTN.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/v9t93rXITPqFe3L0qlTN.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/v9t93rXITPqFe3L0qlTN.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/v9t93rXITPqFe3L0qlTN.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/v9t93rXITPqFe3L0qlTN.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/v9t93rXITPqFe3L0qlTN.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/v9t93rXITPqFe3L0qlTN.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/v9t93rXITPqFe3L0qlTN.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/v9t93rXITPqFe3L0qlTN.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#is-your-app-installed-getinstalledrelatedapps()-will-tell-you!" class="w-toc__header--link">
+        Is your app installed? getInstalledRelatedApps() will tell you!
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#what">What is the getInstalledRelatedApps() API?</a></li><li><a href="#supported-app-types-you-can-check">Supported app types you can check</a></li><li><a href="#check-android">Check if your Android app is installed</a></li><li><a href="#tell-your-android-app-about-your-website">Tell your Android app about your website</a></li><li><a href="#tell-your-website-about-your-android-app">Tell your website about your Android app</a></li><li><a href="#check-if-your-app-is-installed">Check if your app is installed</a></li><li><a href="#check-windows">Check if your Windows (UWP) app is installed</a></li><li><a href="#tell-your-windows-app-about-your-website">Tell your Windows app about your website</a></li><li><a href="#tell-your-website-about-your-windows-app">Tell your website about your Windows app</a></li><li><a href="#check-if-your-app-is-installed-2">Check if your app is installed</a></li><li><a href="#check-pwa-in-scope">Check if your Progressive Web App is already installed (in scope)</a></li><li><a href="#tell-your-pwa-about-itself">Tell your PWA about itself</a></li><li><a href="#check-if-your-pwa-is-installed">Check if your PWA is installed</a></li><li><a href="#check-pwa-out-of-scope">Check if your Progressive Web App is installed (out of scope) </a></li><li><a href="#tell-your-pwa-about-your-website">Tell your PWA about your website</a></li><li><a href="#tell-your-website-about-your-pwa">Tell your website about your PWA</a></li><li><a href="#check-if-your-pwa-is-installed-2">Check if your PWA is installed</a></li><li><a href="#use">Calling getInstalledRelatedApps()</a></li><li><a href="#questions">Still have questions?</a></li><li><a href="#feedback">Feedback</a></li><li><a href="#show-support-for-the-api">Show support for the API</a></li><li><a href="#helpful">Helpful links</a></li><li><a href="#thanks">Thanks</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@petele"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="is-your-app-installed-getinstalledrelatedapps()-will-tell-you!" class="w-article-header__headline">Is your app installed? getInstalledRelatedApps() will tell you!</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          <p>The <code>getInstalledRelatedApps()</code> method allows your website to check whether
+your iOS/Android/desktop app or PWA is installed on a user's device.</p>
+
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Dec 20, 2018</time>
+           <span class="w-author__separator">•</span> Updated <time>Feb 23, 2021</time> 
+        </div>
+      
+      <div class="w-layout-container--narrow w-post-signpost">
+  <span class="w-post-signpost__title">Appears in:</span>
+  <a
+          class="w-post-signpost__link"
+          href="/progressive-web-apps"
+          >Progressive Web Apps</a
+        >
+</div>
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/petelepage/"><img     alt="Pete LePage"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/0g2WvpbGRGdVs0aAPc6ObG7gkud2/3rFbsLsMMk1VveHfBRSu.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/0g2WvpbGRGdVs0aAPc6ObG7gkud2/3rFbsLsMMk1VveHfBRSu.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/0g2WvpbGRGdVs0aAPc6ObG7gkud2/3rFbsLsMMk1VveHfBRSu.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/0g2WvpbGRGdVs0aAPc6ObG7gkud2/3rFbsLsMMk1VveHfBRSu.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/0g2WvpbGRGdVs0aAPc6ObG7gkud2/3rFbsLsMMk1VveHfBRSu.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/0g2WvpbGRGdVs0aAPc6ObG7gkud2/3rFbsLsMMk1VveHfBRSu.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/petelepage/">Pete LePage</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/petele"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/petele">GitHub</a>
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://glitch.com/@petele"
+          >Glitch</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://petelepage.com">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <h2 id="what">What is the getInstalledRelatedApps() API? <a class="w-headline-link" href="#what">#</a></h2>
+<figure class="w-figure w-figure--inline-right">
+  <img     alt=""          decoding="async"     height="486"          loading="lazy"     sizes="(min-width: 550px) 550px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vjamv2uyz6NxBPxPIm11.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vjamv2uyz6NxBPxPIm11.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vjamv2uyz6NxBPxPIm11.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vjamv2uyz6NxBPxPIm11.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vjamv2uyz6NxBPxPIm11.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vjamv2uyz6NxBPxPIm11.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vjamv2uyz6NxBPxPIm11.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vjamv2uyz6NxBPxPIm11.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vjamv2uyz6NxBPxPIm11.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vjamv2uyz6NxBPxPIm11.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vjamv2uyz6NxBPxPIm11.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vjamv2uyz6NxBPxPIm11.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vjamv2uyz6NxBPxPIm11.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vjamv2uyz6NxBPxPIm11.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vjamv2uyz6NxBPxPIm11.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vjamv2uyz6NxBPxPIm11.jpg?auto=format&w=1100 1100w"          width="550"   />
+  <figcaption class="w-figcaption">
+    A website using <code>getInstalledRelatedApps()</code> to determine if its
+    Android app is already installed.
+  </figcaption>
+</figure>
+<p>The <a href="https://wicg.github.io/get-installed-related-apps/spec/" rel="noopener"><code>getInstalledRelatedApps()</code></a> makes it possible for <em>your</em> page to
+check if <em>your</em> mobile or desktop app, or in some cases, if your Progressive
+Web App (PWA) is already installed on a user's device, and allows you to
+customize the user experience if it is.</p>
+<p>For example, if your app is already installed:</p>
+<ul>
+<li>Redirecting the user from a product marketing page directly into your app.</li>
+<li>Centralizing some functionality like notifications in the other app to
+prevent duplicate notifications.</li>
+<li>Not <a href="/customize-install/">promoting the installation</a> of your PWA if your
+other app is already installed.</li>
+</ul>
+<div class="w-clearfix"></div>
+<p>To use the <code>getInstalledRelatedApps()</code> API, you need to tell your app about
+your site, then tell your site about your app. Once you've defined the
+relationship between the two, you can check if the app is installed.</p>
+<h3 id="supported-app-types-you-can-check">Supported app types you can check <a class="w-headline-link" href="#supported-app-types-you-can-check">#</a></h3>
+<div class="w-table-wrapper">
+  <table class="w-table--top-align">
+    <thead>
+      <tr>
+        <th>App type</th>
+        <th>Checkable from</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <a href="#check-android">Android app</a>
+        </td>
+        <td>
+          Android only<br>
+          Chrome 80 or later
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <a href="#check-windows">Windows (UWP) app</a>
+        </td>
+        <td>
+          Windows only<br>
+          Chrome 85 or later<br>
+          Edge 85 or later
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Progressive Web App<br>
+          Installed in the <a href="#check-pwa-in-scope">same scope</a> or a
+          <a href="#check-pwa-out-of-scope">different scope</a>.
+        </td>
+        <td>
+          Android only<br>
+          Chrome 84 or later
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div class="w-aside w-aside--note">
+<p>The <code>getInstalledRelatedApps()</code> API only allows you to check if <em>your</em> apps
+are installed. You cannot get a list of all installed apps, or check if other
+3rd party apps are installed.</p>
+</div>
+<!--  Android App -->
+<h2 id="check-android">Check if your Android app is installed <a class="w-headline-link" href="#check-android">#</a></h2>
+<p>Your website can check if your Android app is installed.</p>
+<figure class="w-compare"><p class="w-compare__label w-compare__label--better">Supported on</p>
+<p>Android: Chrome 80 or later</p>
+</figure>
+<h3 id="tell-your-android-app-about-your-website">Tell your Android app about your website <a class="w-headline-link" href="#tell-your-android-app-about-your-website">#</a></h3>
+<p>First, you'll need to update your Android app to define the relationship
+between your website and Android application using the
+<a href="https://developers.google.com/digital-asset-links/v1/getting-started" rel="noopener">Digital Asset Links system</a>. This ensures that only your
+website can check if your Android app is installed.</p>
+<p>In the <code>AndroidManifest.xml</code> of your Android app, add an <code>asset_statements</code>
+entry:</p>
+<web-copy-code><pre class="language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>manifest</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>application</span><span class="token punctuation">></span></span><br>   …<br>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta-data</span> <span class="token attr-name"><span class="token namespace">android:</span>name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>asset_statements<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">android:</span>resource</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>@string/asset_statements<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span><br>   …<br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>application</span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>manifest</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><p>Then, in <code>strings.xml</code>, add the following asset statement, updating <code>site</code> with
+your domain. Be sure to include the escaping characters.</p>
+<web-copy-code><pre class="language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>string</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>asset_statements<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><br>  [{<br>    \"relation\": [\"delegate_permission/common.handle_all_urls\"],<br>    \"target\": {<br>      \"namespace\": \"web\",<br>      \"site\": \"https://example.com\"<br>    }<br>  }]<br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>string</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><p>Once completed, publish your updated Android app to the Play store.</p>
+<h3 id="tell-your-website-about-your-android-app">Tell your website about your Android app <a class="w-headline-link" href="#tell-your-website-about-your-android-app">#</a></h3>
+<p>Next, tell your website about your Android app by
+<a href="/add-manifest/">adding a web app manifest</a> to your page. The manifest must
+include the <code>related_applications</code> property, an array that provides the details
+about your app, including <code>platform</code> and <code>id</code>.</p>
+<ul>
+<li><code>platform</code> must be <code>play</code></li>
+<li><code>id</code> is the GooglePlay application ID for your Android app</li>
+</ul>
+<web-copy-code><pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"related_applications"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">{</span><br>    <span class="token property">"platform"</span><span class="token operator">:</span> <span class="token string">"play"</span><span class="token punctuation">,</span><br>    <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"com.android.chrome"</span><span class="token punctuation">,</span><br>  <span class="token punctuation">}</span><span class="token punctuation">]</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><h3 id="check-if-your-app-is-installed">Check if your app is installed <a class="w-headline-link" href="#check-if-your-app-is-installed">#</a></h3>
+<p>Finally, call <a href="#use"><code>navigator.getInstalledRelatedApps()</code></a> to check if your
+Android app is installed.</p>
+<p>Try the <a href="https://get-installed-apps.glitch.me/" rel="noopener">demo</a></p>
+<!--  Windows App -->
+<h2 id="check-windows">Check if your Windows (UWP) app is installed <a class="w-headline-link" href="#check-windows">#</a></h2>
+<p>Your website can check if your Windows app (built using UWP) is installed.</p>
+<figure class="w-compare"><p class="w-compare__label w-compare__label--better">Supported on</p>
+<p>Windows: Chrome 85 or later, Edge 85 or later</p>
+</figure>
+<h3 id="tell-your-windows-app-about-your-website">Tell your Windows app about your website <a class="w-headline-link" href="#tell-your-windows-app-about-your-website">#</a></h3>
+<p>You'll need to update your Windows app to define the relationship between your
+website and Windows application using <a href="https://docs.microsoft.com/en-us/windows/uwp/launch-resume/web-to-app-linking" rel="noopener">URI Handlers</a>. This
+ensures that only your website can check if your Windows app is installed.</p>
+<p>Add the <code>Windows.appUriHandler</code> extension registration to your app's manifest
+file <code>Package.appxmanifest</code>. For example, if your website's address is
+<code>example.com</code> you would add the following entry in your app's manifest:</p>
+<web-copy-code><pre class="language-xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>Applications</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>Application</span> <span class="token attr-name">Id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>App<span class="token punctuation">"</span></span> <span class="token attr-name">...</span> <span class="token punctuation">></span></span><br>      ...<br>      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>Extensions</span><span class="token punctuation">></span></span><br>         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">uap3:</span>Extension</span> <span class="token attr-name">Category</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>windows.appUriHandler<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><br>          <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">uap3:</span>AppUriHandler</span><span class="token punctuation">></span></span><br>            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">uap3:</span>Host</span> <span class="token attr-name">Name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>example.com<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span><br>          <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token namespace">uap3:</span>AppUriHandler</span><span class="token punctuation">></span></span><br>        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token namespace">uap3:</span>Extension</span><span class="token punctuation">></span></span><br>      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>Extensions</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>Application</span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>Applications</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><p>Note, you may need to add the <a href="https://docs.microsoft.com/en-us/uwp/schemas/appxpackage/uapmanifestschema/element-uap3-extension-manual#examples" rel="noopener"><code>uap3</code> namespace</a> to your
+<code>&lt;Package&gt;</code> attribute.</p>
+<p>Then, create a JSON file (without the <code>.json</code> file extension) named
+<code>windows-app-web-link</code> and provide your app's package family name. Place
+that file either on your server root, or in the <code>/.well-known/</code> directory. You
+can find the package family name in the Packaging section in the app manifest
+designer.</p>
+<web-copy-code><pre class="language-json"><code class="language-json"><span class="token punctuation">[</span><span class="token punctuation">{</span><br>  <span class="token property">"packageFamilyName"</span><span class="token operator">:</span> <span class="token string">"MyApp_9jmtgj1pbbz6e"</span><span class="token punctuation">,</span><br>  <span class="token property">"paths"</span><span class="token operator">:</span> <span class="token punctuation">[</span> <span class="token string">"*"</span> <span class="token punctuation">]</span><br><span class="token punctuation">}</span><span class="token punctuation">]</span></code></pre>
+</web-copy-code><p>See <a href="https://docs.microsoft.com/en-us/windows/uwp/launch-resume/web-to-app-linking" rel="noopener">Enable apps for websites using app URI handlers</a> for
+complete details on setting up URI handlers.</p>
+<h3 id="tell-your-website-about-your-windows-app">Tell your website about your Windows app <a class="w-headline-link" href="#tell-your-website-about-your-windows-app">#</a></h3>
+<p>Next, tell your website about your Windows app by
+<a href="/add-manifest/">adding a web app manifest</a> to your page. The manifest must
+include <code>related_applications</code> property, an array that provides the details
+about your app, including <code>platform</code> and <code>id</code>.</p>
+<ul>
+<li><code>platform</code> must be <code>windows</code></li>
+<li><code>id</code> is your app's package family name, appended by the <code>&lt;Application&gt;</code> <code>Id</code>
+value in your <code>Package.appxmanifest</code> file.</li>
+</ul>
+<web-copy-code><pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"related_applications"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">{</span><br>    <span class="token property">"platform"</span><span class="token operator">:</span> <span class="token string">"windows"</span><span class="token punctuation">,</span><br>    <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"MyApp_9jmtgj1pbbz6e!App"</span><span class="token punctuation">,</span><br>  <span class="token punctuation">}</span><span class="token punctuation">]</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><h3 id="check-if-your-app-is-installed-2">Check if your app is installed <a class="w-headline-link" href="#check-if-your-app-is-installed-2">#</a></h3>
+<p>Finally, call <a href="#use"><code>navigator.getInstalledRelatedApps()</code></a> to check if your
+Windows app is installed.</p>
+<!--  PWA - in scope -->
+<h2 id="check-pwa-in-scope">Check if your Progressive Web App is already installed (in scope) <a class="w-headline-link" href="#check-pwa-in-scope">#</a></h2>
+<p>Your PWA can check to see if it is already installed. In this case, the page
+making the request must be on the same domain, and within the <a href="/add-manifest/#scope">scope</a>
+of your PWA, as defined by the scope in the web app manifest.</p>
+<figure class="w-compare"><p class="w-compare__label w-compare__label--better">Supported on</p>
+<p>Android: Chrome 84 or later</p>
+</figure>
+<h3 id="tell-your-pwa-about-itself">Tell your PWA about itself <a class="w-headline-link" href="#tell-your-pwa-about-itself">#</a></h3>
+<p>Tell your PWA about itself by adding a <code>related_applications</code> entry in your
+PWAs <a href="/add-manifest/">web app manifest</a>.</p>
+<ul>
+<li><code>platform</code> must be <code>webapp</code></li>
+<li><code>url</code> is the full path to the web app manifest of your PWA</li>
+</ul>
+<web-copy-code><pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  …<br>  <span class="token property">"scope"</span><span class="token operator">:</span> <span class="token string">"/"</span><span class="token punctuation">,</span><br>  <span class="token property">"start_url"</span><span class="token operator">:</span> <span class="token string">"/"</span><span class="token punctuation">,</span><br>  <span class="token property">"related_applications"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">{</span><br>    <span class="token property">"platform"</span><span class="token operator">:</span> <span class="token string">"webapp"</span><span class="token punctuation">,</span><br>    <span class="token property">"url"</span><span class="token operator">:</span> <span class="token string">"https://example.com/manifest.json"</span><span class="token punctuation">,</span><br>  <span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">,</span><br>  …<br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><h3 id="check-if-your-pwa-is-installed">Check if your PWA is installed <a class="w-headline-link" href="#check-if-your-pwa-is-installed">#</a></h3>
+<p>Finally, call <a href="#use"><code>navigator.getInstalledRelatedApps()</code></a> from within the
+<a href="/add-manifest/#scope">scope</a> of your PWA to check if it is installed. If
+<code>getInstalledRelatedApps()</code> is called outside the scope of your PWA, it will
+return false. See the next section for details.</p>
+<p>Try the <a href="https://gira-same-domain.glitch.me/pwa/" rel="noopener">demo</a></p>
+<!--  PWA - NOT in scope -->
+<h2 id="check-pwa-out-of-scope">Check if your Progressive Web App is installed (out of scope)  <a class="w-headline-link" href="#check-pwa-out-of-scope">#</a></h2>
+<p>Your website can check if your PWA is installed, even if the page is outside
+the <a href="/add-manifest/#scope">scope</a> of your PWA. For example, a landing page served from
+<code>/landing/</code> can check if the PWA served from <code>/pwa/</code> is installed, or if your
+landing page is served from <code>www.example.com</code> and your PWA is served from
+<code>app.example.com</code>.</p>
+<figure class="w-compare"><p class="w-compare__label w-compare__label--better">Supported on</p>
+<p>Android: Chrome 84 or later</p>
+</figure>
+<h3 id="tell-your-pwa-about-your-website">Tell your PWA about your website <a class="w-headline-link" href="#tell-your-pwa-about-your-website">#</a></h3>
+<p>First, you'll need to add digital asset links to the server where your PWA is
+served from. This will help define the relationship between your website and
+your PWA, and ensures that only your website can check if your PWA is installed.</p>
+<p>Add an <code>assetlinks.json</code> file to the <a href="https://tools.ietf.org/html/rfc5785" rel="noopener"><code>/.well-known/</code></a> directory
+of the domain where the PWA lives, for example <code>app.example.com</code>. In the <code>site</code>
+property, provide the full path to the web app manifest that will perform
+the check (not the web app manifest of your PWA).</p>
+<web-copy-code><pre class="language-json"><code class="language-json"><span class="token comment">// Served from https://app.example.com/.well-known/assetlinks.json</span><br><span class="token punctuation">[</span><br>  <span class="token punctuation">{</span><br>    <span class="token property">"relation"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"delegate_permission/common.query_webapk"</span><span class="token punctuation">]</span><span class="token punctuation">,</span><br>    <span class="token property">"target"</span><span class="token operator">:</span> <span class="token punctuation">{</span><br>      <span class="token property">"namespace"</span><span class="token operator">:</span> <span class="token string">"web"</span><span class="token punctuation">,</span><br>      <span class="token property">"site"</span><span class="token operator">:</span> <span class="token string">"https://www.example.com/manifest.json"</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">]</span></code></pre>
+</web-copy-code><div class="w-aside w-aside--note">
+<p>Double check the file name when you create your <code>assetlinks.json</code> file,
+I've wasted many hours debugging, only to realize I'd added an extra 's' in
+the file name.</p>
+</div>
+<h3 id="tell-your-website-about-your-pwa">Tell your website about your PWA <a class="w-headline-link" href="#tell-your-website-about-your-pwa">#</a></h3>
+<p>Next, tell your website about your PWA app by
+<a href="/add-manifest/">adding a web app manifest</a> to your page. The manifest must
+include the <code>related_applications</code> property, an array that provides the details
+about your PWA, including <code>platform</code> and <code>url</code>.</p>
+<ul>
+<li><code>platform</code> must be <code>webapp</code></li>
+<li><code>url</code> is the full path to the web app manifest of your PWA</li>
+</ul>
+<web-copy-code><pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"related_applications"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">{</span><br>    <span class="token property">"platform"</span><span class="token operator">:</span> <span class="token string">"webapp"</span><span class="token punctuation">,</span><br>    <span class="token property">"url"</span><span class="token operator">:</span> <span class="token string">"https://app.example.com/manifest.json"</span><span class="token punctuation">,</span><br>  <span class="token punctuation">}</span><span class="token punctuation">]</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><h3 id="check-if-your-pwa-is-installed-2">Check if your PWA is installed <a class="w-headline-link" href="#check-if-your-pwa-is-installed-2">#</a></h3>
+<p>Finally, call <a href="#use"><code>navigator.getInstalledRelatedApps()</code></a> to check if your
+PWA is installed.</p>
+<p>Try the <a href="https://gira-same-domain.glitch.me/" rel="noopener">demo</a></p>
+<!--  Use the API-->
+<h2 id="use">Calling getInstalledRelatedApps() <a class="w-headline-link" href="#use">#</a></h2>
+<p>Calling <code>navigator.getInstalledRelatedApps()</code> returns a promise that
+resolves with an array of your apps that are installed on the user's device.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> relatedApps <span class="token operator">=</span> <span class="token keyword">await</span> navigator<span class="token punctuation">.</span><span class="token function">getInstalledRelatedApps</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>relatedApps<span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">app</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>app<span class="token punctuation">.</span>id<span class="token punctuation">,</span> app<span class="token punctuation">.</span>platform<span class="token punctuation">,</span> app<span class="token punctuation">.</span>url<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>To prevent sites from testing an overly broad set of their own apps,
+only the first three apps declared in the web app manifest will be
+taken into account.</p>
+<p>Like most other powerful web APIs, the <code>getInstalledRelatedApps()</code> API is
+only available when served over <strong>HTTPS</strong>.</p>
+<h2 id="questions">Still have questions? <a class="w-headline-link" href="#questions">#</a></h2>
+<p>Still have questions? Check the <a href="https://stackoverflow.com/search?q=getinstalledrelatedapps" rel="noopener"><code>getInstalledRelatedApps</code> tag on StackOverflow</a>
+to see if anyone else has had similar questions. If not, ask your
+<a href="https://stackoverflow.com/questions/tagged/progressive-web-apps" rel="noopener">question</a> there, and be sure to tag it with the
+<a href="https://stackoverflow.com/questions/tagged/progressive-web-apps" rel="noopener"><code>progressive-web-apps</code></a> tag. Our team frequently monitors
+that tag and tries to answer your questions.</p>
+<h2 id="feedback">Feedback <a class="w-headline-link" href="#feedback">#</a></h2>
+<p>Did you find a bug with Chrome's implementation? Or is the implementation
+different from the spec?</p>
+<ul>
+<li>File a bug at <a href="https://bugs.chromium.org/p/chromium/issues/entry?components=Mobile%3EWebAPKs" rel="noopener">https://new.crbug.com</a>. Include as much
+detail as you can, provide simple instructions for reproducing the bug, and
+enter <code>Mobile&gt;WebAPKs</code> in the <strong>Components</strong> box. <a href="https://glitch.com" rel="noopener">Glitch</a>
+works great for sharing quick and easy repros.</li>
+</ul>
+<h2 id="show-support-for-the-api">Show support for the API <a class="w-headline-link" href="#show-support-for-the-api">#</a></h2>
+<p>Are you planning to use the <code>getInstalledRelatedApps()</code> API? Your public
+support helps the Chrome team to prioritize features and shows other
+browser vendors how critical it is to support them.</p>
+<ul>
+<li>Share how you plan to use the API on the <a href="https://discourse.wicg.io/t/proposal-get-installed-related-apps-api/1602" rel="noopener">WICG Discourse thread</a>.</li>
+<li>Send a tweet to <a href="https://twitter.com/chromiumdev" rel="noopener">@ChromiumDev</a> using the hashtag
+<a href="https://twitter.com/search?q=%23getInstalledRelatedApps&amp;src=typed_query&amp;f=live" rel="noopener"><code>#getInstalledRelatedApps</code></a>
+and let us know where and how you're using it.</li>
+</ul>
+<h2 id="helpful">Helpful links <a class="w-headline-link" href="#helpful">#</a></h2>
+<ul>
+<li><a href="https://github.com/WICG/get-installed-related-apps/blob/master/EXPLAINER.md" rel="noopener">Public explainer for <code>getInstalledRelatedApps()</code> API</a></li>
+<li><a href="https://bugs.chromium.org/p/chromium/issues/detail?id=895854" rel="noopener">Tracking bug</a></li>
+<li><a href="https://www.chromestatus.com/feature/5695378309513216" rel="noopener">ChromeStatus.com entry</a></li>
+<li>Blink Component: <a href="https://chromestatus.com/features#component%3A%20Mobile%3EWebAPKs" rel="noopener"><code>Mobile&gt;WebAPKs</code></a></li>
+</ul>
+<h2 id="thanks">Thanks <a class="w-headline-link" href="#thanks">#</a></h2>
+<p>Special thanks to Sunggook Chue at Microsoft for helping with the details
+for testing Windows apps, and Rayan Kanso for help with the Chrome details.</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/capabilities/">Capabilities</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Feb 23, 2021</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/get-installed-related-apps/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions="api"></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

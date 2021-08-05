@@ -1,0 +1,936 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=b6f1f7b776bd5">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Read from and write to a serial port</title>
+<meta name="description" content="The Web Serial API bridges the web and the physical world by allowing websites to communicate with serial devices. " />
+
+<link rel="canonical" href="https://web.dev/serial/" />
+
+<meta itemprop="name" content="Read from and write to a serial port" />
+<meta itemprop="description" content="The Web Serial API bridges the web and the physical world by allowing websites to communicate with serial devices. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/8diipQ5aHdP03xNuFNp7.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/serial/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Read from and write to a serial port" />
+<meta property="og:description" content="The Web Serial API bridges the web and the physical world by allowing websites to communicate with serial devices. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/8diipQ5aHdP03xNuFNp7.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="Old modems, routers, network equipment. Serial, phone, audio, ethernet connectors. " />
+<meta property="tag" content="capabilities" />
+<meta property="tag" content="devices" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Read from and write to a serial port" />
+<meta name="twitter:description" content="The Web Serial API bridges the web and the physical world by allowing websites to communicate with serial devices. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/8diipQ5aHdP03xNuFNp7.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=0a9a7797001e5', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=eafa44ad23357', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="Old modems, routers, network equipment. Serial, phone, audio, ethernet connectors."     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/PMOws2Au6GPLq9sXSSqw.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/PMOws2Au6GPLq9sXSSqw.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/PMOws2Au6GPLq9sXSSqw.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/PMOws2Au6GPLq9sXSSqw.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/PMOws2Au6GPLq9sXSSqw.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/PMOws2Au6GPLq9sXSSqw.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/PMOws2Au6GPLq9sXSSqw.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/PMOws2Au6GPLq9sXSSqw.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/PMOws2Au6GPLq9sXSSqw.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/PMOws2Au6GPLq9sXSSqw.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/PMOws2Au6GPLq9sXSSqw.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/PMOws2Au6GPLq9sXSSqw.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/PMOws2Au6GPLq9sXSSqw.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/PMOws2Au6GPLq9sXSSqw.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/PMOws2Au6GPLq9sXSSqw.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/PMOws2Au6GPLq9sXSSqw.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/PMOws2Au6GPLq9sXSSqw.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/PMOws2Au6GPLq9sXSSqw.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#read-from-and-write-to-a-serial-port" class="w-toc__header--link">
+        Read from and write to a serial port
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#what">What is the Web Serial API?</a></li><li><a href="#use-cases">Suggested use cases</a></li><li><a href="#status">Current status</a></li><li><a href="#use">Using the Web Serial API</a></li><li><a href="#feature-detection">Feature detection</a></li><li><a href="#open-port">Open a serial port</a></li><li><a href="#read-port">Read from a serial port</a></li><li><a href="#write-port">Write to a serial port</a></li><li><a href="#close-port">Close a serial port</a></li><li><a href="#connection-disconnection">Listen to connection and disconnection</a></li><li><a href="#signals">Handle signals</a></li><li><a href="#transforming-streams">Transforming streams</a></li><li><a href="#dev-tips">Dev Tips</a></li><li><a href="#codelab">Codelab</a></li><li><a href="#browser-support">Browser support</a></li><li><a href="#polyfill">Polyfill</a></li><li><a href="#security-privacy">Security and privacy</a></li><li><a href="#feedback">Feedback</a></li><li><a href="#tell-us-about-the-api-design">Tell us about the API design</a></li><li><a href="#report-a-problem-with-the-implementation">Report a problem with the implementation</a></li><li><a href="#show-support">Show support</a></li><li><a href="#helpful">Helpful links</a></li><li><a href="#demos">Demos</a></li><li><a href="#acknowledgements">Acknowledgements</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="i18n.authors.beaufortfrancois.title"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="read-from-and-write-to-a-serial-port" class="w-article-header__headline">Read from and write to a serial port</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          The Web Serial API allows websites to communicate with serial devices.
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Aug 12, 2020</time>
+           <span class="w-author__separator">•</span> Updated <time>Mar 3, 2021</time> 
+        </div>
+      
+      <div class="w-layout-container--narrow w-post-signpost">
+  <span class="w-post-signpost__title">Appears in:</span>
+  <a
+          class="w-post-signpost__link"
+          href="/devices"
+          >Devices</a
+        >
+</div>
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/beaufortfrancois/"><img     alt="François Beaufort"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/mXjY3z3JmrispGtu9yn6.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/mXjY3z3JmrispGtu9yn6.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/mXjY3z3JmrispGtu9yn6.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/mXjY3z3JmrispGtu9yn6.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/mXjY3z3JmrispGtu9yn6.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/mXjY3z3JmrispGtu9yn6.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/beaufortfrancois/">François Beaufort</a>
+    </cite>
+    <ul class="w-author__link-list">
+      
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/beaufortfrancois">GitHub</a>
+      </li>
+      
+      
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <div class="w-aside w-aside--success">
+<p><strong>Success</strong>:
+The Web Serial API, part of the <a href="/fugu-status/">capabilities project</a>, launched
+in Chrome 89.</p>
+</div>
+<h2 id="what">What is the Web Serial API? <a class="w-headline-link" href="#what">#</a></h2>
+<p>A serial port is a bidirectional communication interface that allows sending and
+receiving data byte by byte.</p>
+<p>The Web Serial API provides a way for websites to read from and write to a
+serial device with JavaScript. Serial devices are connected either through a
+serial port on the user's system or through removable USB and Bluetooth devices
+that emulate a serial port.</p>
+<p>In other words, the Web Serial API bridges the web and the physical world by
+allowing websites to communicate with serial devices, such as microcontrollers
+and 3D printers.</p>
+<p>This API is also a great companion to <a href="https://developers.google.com/web/updates/2016/03/access-usb-devices-on-the-web" rel="noopener">WebUSB</a> as operating systems require
+applications to communicate with some serial ports using their higher-level
+serial API rather than the low-level USB API.</p>
+<h2 id="use-cases">Suggested use cases <a class="w-headline-link" href="#use-cases">#</a></h2>
+<p>In the educational, hobbyist, and industrial sectors, users connect peripheral
+devices to their computers. These devices are often controlled by
+microcontrollers via a serial connection used by custom software. Some custom
+software to control these devices is built with web technology:</p>
+<ul>
+<li><a href="https://create.arduino.cc/" rel="noopener">Arduino Create</a></li>
+<li><a href="https://github.com/betaflight/betaflight-configurator" rel="noopener">Betaflight Configurator</a></li>
+<li><a href="http://espruino.com/ide" rel="noopener">Espruino Web IDE</a></li>
+<li><a href="https://www.microsoft.com/en-us/makecode" rel="noopener">Microsoft MakeCode</a></li>
+</ul>
+<p>In some cases, websites communicate with the device through an agent
+application that users installed manually. In others, the application is
+delivered in a packaged application through a framework such as Electron.
+And in others, the user is required to perform an additional step such as
+copying a compiled application to the device via a USB flash drive.</p>
+<p>In all these cases, the user experience will be improved by providing direct
+communication between the website and the device that it is controlling.</p>
+<h2 id="status">Current status <a class="w-headline-link" href="#status">#</a></h2>
+<div class="w-table-wrapper">
+<div class="w-table-wrapper">
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Create explainer</td>
+<td><a href="https://github.com/reillyeon/serial/blob/gh-pages/EXPLAINER.md" rel="noopener">Complete</a></td>
+</tr>
+<tr>
+<td>2. Create initial draft of specification</td>
+<td><a href="https://reillyeon.github.io/serial/" rel="noopener">Complete</a></td>
+</tr>
+<tr>
+<td>3. Gather feedback &amp; iterate on design</td>
+<td><a href="#feedback">Complete</a></td>
+</tr>
+<tr>
+<td>4. Origin trial</td>
+<td><a href="https://developers.chrome.com/origintrials/#/view_trial/2992641952387694593" rel="noopener">Complete</a></td>
+</tr>
+<tr>
+<td><strong>5. Launch</strong></td>
+<td><strong>Complete</strong></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<h2 id="use">Using the Web Serial API <a class="w-headline-link" href="#use">#</a></h2>
+<h3 id="feature-detection">Feature detection <a class="w-headline-link" href="#feature-detection">#</a></h3>
+<p>To check if the Web Serial API is supported, use:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token string">"serial"</span> <span class="token keyword">in</span> navigator<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token comment">// The Web Serial API is supported.</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><h3 id="open-port">Open a serial port <a class="w-headline-link" href="#open-port">#</a></h3>
+<p>The Web Serial API is asynchronous by design. This prevents the website UI from
+blocking when awaiting input, which is important because serial data can be
+received at any time, requiring a way to listen to it.</p>
+<p>To open a serial port, first access a <code>SerialPort</code> object. For this, you can
+either prompt the user to select a single serial port by calling
+<code>navigator.serial.requestPort()</code>, or pick one from <code>navigator.serial.getPorts()</code>
+which returns a list of serial ports the website has been granted access to
+previously.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token comment">// Prompt user to select any serial port.</span><br><span class="token keyword">const</span> port <span class="token operator">=</span> <span class="token keyword">await</span> navigator<span class="token punctuation">.</span>serial<span class="token punctuation">.</span><span class="token function">requestPort</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><web-copy-code><pre class="language-js"><code class="language-js"><span class="token comment">// Get all serial ports the user has previously granted the website access to.</span><br><span class="token keyword">const</span> ports <span class="token operator">=</span> <span class="token keyword">await</span> navigator<span class="token punctuation">.</span>serial<span class="token punctuation">.</span><span class="token function">getPorts</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>The <code>navigator.serial.requestPort()</code> function takes an optional object literal
+that defines filters. Those are used to match any serial device connected over
+USB with a mandatory USB vendor (<code>usbVendorId</code>) and optional USB product
+identifiers (<code>usbProductId</code>).</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token comment">// Filter on devices with the Arduino Uno USB Vendor/Product IDs.</span><br><span class="token keyword">const</span> filters <span class="token operator">=</span> <span class="token punctuation">[</span><br>  <span class="token punctuation">{</span> usbVendorId<span class="token operator">:</span> <span class="token number">0x2341</span><span class="token punctuation">,</span> usbProductId<span class="token operator">:</span> <span class="token number">0x0043</span> <span class="token punctuation">}</span><span class="token punctuation">,</span><br>  <span class="token punctuation">{</span> usbVendorId<span class="token operator">:</span> <span class="token number">0x2341</span><span class="token punctuation">,</span> usbProductId<span class="token operator">:</span> <span class="token number">0x0001</span> <span class="token punctuation">}</span><br><span class="token punctuation">]</span><span class="token punctuation">;</span><br><br><span class="token comment">// Prompt user to select an Arduino Uno device.</span><br><span class="token keyword">const</span> port <span class="token operator">=</span> <span class="token keyword">await</span> navigator<span class="token punctuation">.</span>serial<span class="token punctuation">.</span><span class="token function">requestPort</span><span class="token punctuation">(</span><span class="token punctuation">{</span> filters <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token keyword">const</span> <span class="token punctuation">{</span> usbProductId<span class="token punctuation">,</span> usbVendorId <span class="token punctuation">}</span> <span class="token operator">=</span> port<span class="token punctuation">.</span><span class="token function">getInfo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><figure class="w-figure">
+  <img     alt="Screenshot of a serial port prompt on a website"     class="w-screenshot"     decoding="async"     height="513"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/BT9OxLREXfb0vcnHlYu8.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/BT9OxLREXfb0vcnHlYu8.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/BT9OxLREXfb0vcnHlYu8.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/BT9OxLREXfb0vcnHlYu8.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/BT9OxLREXfb0vcnHlYu8.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/BT9OxLREXfb0vcnHlYu8.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/BT9OxLREXfb0vcnHlYu8.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/BT9OxLREXfb0vcnHlYu8.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/BT9OxLREXfb0vcnHlYu8.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/BT9OxLREXfb0vcnHlYu8.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/BT9OxLREXfb0vcnHlYu8.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/BT9OxLREXfb0vcnHlYu8.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/BT9OxLREXfb0vcnHlYu8.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/BT9OxLREXfb0vcnHlYu8.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/BT9OxLREXfb0vcnHlYu8.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/BT9OxLREXfb0vcnHlYu8.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/BT9OxLREXfb0vcnHlYu8.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/BT9OxLREXfb0vcnHlYu8.jpg?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">User prompt for selecting a BBC micro:bit</figcaption>
+</figure>
+<p>Calling <code>requestPort()</code> prompts the user to select a device and returns a
+<code>SerialPort</code> object. Once you have a <code>SerialPort</code> object, calling <code>port.open()</code>
+with the desired baud rate will open the serial port. The <code>baudRate</code> dictionary
+member specifies how fast data is sent over a serial line. It is expressed in
+units of bits-per-second (bps). Check your device's documentation for the
+correct value as all the data you send and receive will be gibberish if this is
+specified incorrectly. For some USB and Bluetooth devices that emulate a serial
+port this value may be safely set to any value as it is ignored by the
+emulation.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token comment">// Prompt user to select any serial port.</span><br><span class="token keyword">const</span> port <span class="token operator">=</span> <span class="token keyword">await</span> navigator<span class="token punctuation">.</span>serial<span class="token punctuation">.</span><span class="token function">requestPort</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token comment">// Wait for the serial port to open.</span><br><span class="token keyword">await</span> port<span class="token punctuation">.</span><span class="token function">open</span><span class="token punctuation">(</span><span class="token punctuation">{</span> baudRate<span class="token operator">:</span> <span class="token number">9600</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>You can also specify any of the options below when opening a serial port. These
+options are optional and have convenient <a href="https://reillyeon.github.io/serial/#dom-serialoptions" rel="noopener">default values</a>.</p>
+<ul>
+<li><code>dataBits</code>: The number of data bits per frame (either 7 or 8).</li>
+<li><code>stopBits</code>: The number of stop bits at the end of a frame (either 1 or 2).</li>
+<li><code>parity</code>: The parity mode (either <code>&quot;none&quot;</code>, <code>&quot;even&quot;</code> or <code>&quot;odd&quot;</code>).</li>
+<li><code>bufferSize</code>: The size of the read and write buffers that should be created
+(must be less than 16MB).</li>
+<li><code>flowControl</code>: The flow control mode (either <code>&quot;none&quot;</code> or <code>&quot;hardware&quot;</code>).</li>
+</ul>
+<h3 id="read-port">Read from a serial port <a class="w-headline-link" href="#read-port">#</a></h3>
+<p>Input and output streams in the Web Serial API are handled by the Streams API.</p>
+<div class="w-aside w-aside--note">
+<p>If streams are new to you, check out <a href="https://developer.mozilla.org/en-US/docs/Web/API/Streams_API/Concepts" rel="noopener">Streams API
+concepts</a>.
+This article barely scratches the surface of streams and stream handling.</p>
+</div>
+<p>After the serial port connection is established, the <code>readable</code> and <code>writable</code>
+properties from the <code>SerialPort</code> object return a <a href="https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream" rel="noopener">ReadableStream</a> and a
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/WritableStream" rel="noopener">WritableStream</a>. Those will be used to receive data from and send data to the
+serial device. Both use <code>Uint8Array</code> instances for data transfer.</p>
+<p>When new data arrives from the serial device, <code>port.readable.getReader().read()</code>
+returns two properties asynchronously: the <code>value</code> and a <code>done</code> boolean. If
+<code>done</code> is true, the serial port has been closed or there is no more data coming
+in. Calling <code>port.readable.getReader()</code> creates a reader and locks <code>readable</code> to
+it. While <code>readable</code> is <a href="https://streams.spec.whatwg.org/#lock" rel="noopener">locked</a>, the serial port can't be closed.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> reader <span class="token operator">=</span> port<span class="token punctuation">.</span>readable<span class="token punctuation">.</span><span class="token function">getReader</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token comment">// Listen to data coming from the serial device.</span><br><span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token keyword">const</span> <span class="token punctuation">{</span> value<span class="token punctuation">,</span> done <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">await</span> reader<span class="token punctuation">.</span><span class="token function">read</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token keyword">if</span> <span class="token punctuation">(</span>done<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token comment">// Allow the serial port to be closed later.</span><br>    reader<span class="token punctuation">.</span><span class="token function">releaseLock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token keyword">break</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br>  <span class="token comment">// value is a Uint8Array.</span><br>  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>Some non-fatal serial port read errors can happen under some conditions such as
+buffer overflow, framing errors, or parity errors. Those are thrown as
+exceptions and can be caught by adding another loop on top of the previous one
+that checks <code>port.readable</code>. This works because as long as the errors are
+non-fatal, a new <a href="https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream" rel="noopener">ReadableStream</a> is created automatically. If a fatal error
+occurs, such as the serial device being removed, then <code>port.readable</code> becomes
+null.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><mark class="highlight-line highlight-line-active"><span class="token keyword">while</span> <span class="token punctuation">(</span>port<span class="token punctuation">.</span>readable<span class="token punctuation">)</span> <span class="token punctuation">{</span></mark><br><span class="highlight-line">  <span class="token keyword">const</span> reader <span class="token operator">=</span> port<span class="token punctuation">.</span>readable<span class="token punctuation">.</span><span class="token function">getReader</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line"></span><br><mark class="highlight-line highlight-line-active">  <span class="token keyword">try</span> <span class="token punctuation">{</span></mark><br><span class="highlight-line">    <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">      <span class="token keyword">const</span> <span class="token punctuation">{</span> value<span class="token punctuation">,</span> done <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">await</span> reader<span class="token punctuation">.</span><span class="token function">read</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line">      <span class="token keyword">if</span> <span class="token punctuation">(</span>done<span class="token punctuation">)</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">        <span class="token comment">// Allow the serial port to be closed later.</span></span><br><span class="highlight-line">        reader<span class="token punctuation">.</span><span class="token function">releaseLock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line">        <span class="token keyword">break</span><span class="token punctuation">;</span></span><br><span class="highlight-line">      <span class="token punctuation">}</span></span><br><span class="highlight-line">      <span class="token keyword">if</span> <span class="token punctuation">(</span>value<span class="token punctuation">)</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line">      <span class="token punctuation">}</span></span><br><span class="highlight-line">    <span class="token punctuation">}</span></span><br><mark class="highlight-line highlight-line-active">  <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span>error<span class="token punctuation">)</span> <span class="token punctuation">{</span></mark><br><mark class="highlight-line highlight-line-active">    <span class="token comment">// TODO: Handle non-fatal read error.</span></mark><br><mark class="highlight-line highlight-line-active">  <span class="token punctuation">}</span></mark><br><mark class="highlight-line highlight-line-active"><span class="token punctuation">}</span></mark></code></pre>
+</web-copy-code><p>If the serial device sends text back, you can pipe <code>port.readable</code> through a
+<code>TextDecoderStream</code> as shown below. A <code>TextDecoderStream</code> is a <a href="https://developer.mozilla.org/en-US/docs/Web/API/TransformStream" rel="noopener">transform stream</a>
+that grabs all <code>Uint8Array</code> chunks and converts them to strings.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><mark class="highlight-line highlight-line-active"><span class="token keyword">const</span> textDecoder <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">TextDecoderStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></mark><br><mark class="highlight-line highlight-line-active"><span class="token keyword">const</span> readableStreamClosed <span class="token operator">=</span> port<span class="token punctuation">.</span>readable<span class="token punctuation">.</span><span class="token function">pipeTo</span><span class="token punctuation">(</span>textDecoder<span class="token punctuation">.</span>writable<span class="token punctuation">)</span><span class="token punctuation">;</span></mark><br><mark class="highlight-line highlight-line-active"><span class="token keyword">const</span> reader <span class="token operator">=</span> textDecoder<span class="token punctuation">.</span>readable<span class="token punctuation">.</span><span class="token function">getReader</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></mark><br><span class="highlight-line"></span><br><span class="highlight-line"><span class="token comment">// Listen to data coming from the serial device.</span></span><br><span class="highlight-line"><span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">  <span class="token keyword">const</span> <span class="token punctuation">{</span> value<span class="token punctuation">,</span> done <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">await</span> reader<span class="token punctuation">.</span><span class="token function">read</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line">  <span class="token keyword">if</span> <span class="token punctuation">(</span>done<span class="token punctuation">)</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">    <span class="token comment">// Allow the serial port to be closed later.</span></span><br><span class="highlight-line">    reader<span class="token punctuation">.</span><span class="token function">releaseLock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line">    <span class="token keyword">break</span><span class="token punctuation">;</span></span><br><span class="highlight-line">  <span class="token punctuation">}</span></span><br><mark class="highlight-line highlight-line-active">  <span class="token comment">// value is a string.</span></mark><br><span class="highlight-line">  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line"><span class="token punctuation">}</span></span></code></pre>
+</web-copy-code><h3 id="write-port">Write to a serial port <a class="w-headline-link" href="#write-port">#</a></h3>
+<p>To send data to a serial device, pass data to
+<code>port.writable.getWriter().write()</code>. Calling <code>releaseLock()</code> on
+<code>port.writable.getWriter()</code> is required for the serial port to be closed later.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> writer <span class="token operator">=</span> port<span class="token punctuation">.</span>writable<span class="token punctuation">.</span><span class="token function">getWriter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token keyword">const</span> data <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Uint8Array</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">104</span><span class="token punctuation">,</span> <span class="token number">101</span><span class="token punctuation">,</span> <span class="token number">108</span><span class="token punctuation">,</span> <span class="token number">108</span><span class="token punctuation">,</span> <span class="token number">111</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// hello</span><br><span class="token keyword">await</span> writer<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><br><span class="token comment">// Allow the serial port to be closed later.</span><br>writer<span class="token punctuation">.</span><span class="token function">releaseLock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>Send text to the device through a <code>TextEncoderStream</code> piped to <code>port.writable</code>
+as shown below.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> textEncoder <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">TextEncoderStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token keyword">const</span> writableStreamClosed <span class="token operator">=</span> textEncoder<span class="token punctuation">.</span>readable<span class="token punctuation">.</span><span class="token function">pipeTo</span><span class="token punctuation">(</span>port<span class="token punctuation">.</span>writable<span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token keyword">const</span> writer <span class="token operator">=</span> textEncoder<span class="token punctuation">.</span>writable<span class="token punctuation">.</span><span class="token function">getWriter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token keyword">await</span> writer<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span><span class="token string">"hello"</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><h3 id="close-port">Close a serial port <a class="w-headline-link" href="#close-port">#</a></h3>
+<p><code>port.close()</code> closes the serial port if its <code>readable</code> and <code>writable</code> members
+are <a href="https://streams.spec.whatwg.org/#lock" rel="noopener">unlocked</a>, meaning <code>releaseLock()</code> has been called for their respective
+reader and writer.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">await</span> port<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>However, when continuously reading data from a serial device using a loop,
+<code>port.readable</code> will always be locked until it encounters an error. In this
+case, calling <code>reader.cancel()</code> will force <code>reader.read()</code> to resolve
+immediately with <code>{ value: undefined, done: true }</code> and therefore allowing the
+loop to call <code>reader.releaseLock()</code>.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token comment">// Without transform streams.</span><br><br><span class="token keyword">let</span> keepReading <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span><br><span class="token keyword">let</span> reader<span class="token punctuation">;</span><br><br><span class="token keyword">async</span> <span class="token keyword">function</span> <span class="token function">readUntilClosed</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token keyword">while</span> <span class="token punctuation">(</span>port<span class="token punctuation">.</span>readable <span class="token operator">&amp;&amp;</span> keepReading<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    reader <span class="token operator">=</span> port<span class="token punctuation">.</span>readable<span class="token punctuation">.</span><span class="token function">getReader</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token keyword">try</span> <span class="token punctuation">{</span><br>      <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>        <span class="token keyword">const</span> <span class="token punctuation">{</span> value<span class="token punctuation">,</span> done <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">await</span> reader<span class="token punctuation">.</span><span class="token function">read</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>        <span class="token keyword">if</span> <span class="token punctuation">(</span>done<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>          <span class="token comment">// reader.cancel() has been called.</span><br>          <span class="token keyword">break</span><span class="token punctuation">;</span><br>        <span class="token punctuation">}</span><br>        <span class="token comment">// value is a Uint8Array.</span><br>        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span>error<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>      <span class="token comment">// Handle error...</span><br>    <span class="token punctuation">}</span> <span class="token keyword">finally</span> <span class="token punctuation">{</span><br>      <span class="token comment">// Allow the serial port to be closed later.</span><br>      reader<span class="token punctuation">.</span><span class="token function">releaseLock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">}</span><br><br>  <span class="token keyword">await</span> port<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><br><br><span class="token keyword">const</span> closedPromise <span class="token operator">=</span> <span class="token function">readUntilClosed</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>document<span class="token punctuation">.</span><span class="token function">querySelector</span><span class="token punctuation">(</span><span class="token string">'button'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'click'</span><span class="token punctuation">,</span> <span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token comment">// User clicked a button to close the serial port.</span><br>  keepReading <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span><br>  <span class="token comment">// Force reader.read() to resolve immediately and subsequently</span><br>  <span class="token comment">// call reader.releaseLock() in the loop example above.</span><br>  reader<span class="token punctuation">.</span><span class="token function">cancel</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token keyword">await</span> closedPromise<span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>Closing a serial port is more complicated when using <a href="https://developer.mozilla.org/en-US/docs/Web/API/TransformStream" rel="noopener">transform streams</a> (like
+<code>TextDecoderStream</code> and <code>TextEncoderStream</code>). Call <code>reader.cancel()</code> as before.
+Then call <code>writer.close()</code> and <code>port.close()</code>.  This propagates errors through
+the transform streams to the underlying serial port. Because error propagation
+doesn't happen immediately, you need to use the <code>readableStreamClosed</code> and
+<code>writableStreamClosed</code> promises created earlier to detect when <code>port.readable</code>
+and <code>port.writable</code> have been unlocked. Cancelling the <code>reader</code> causes the
+stream to be aborted; this is why you must catch and ignore the resulting error.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="highlight-line"><span class="token comment">// With transform streams.</span></span><br><span class="highlight-line"></span><br><span class="highlight-line"><span class="token keyword">const</span> textDecoder <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">TextDecoderStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line"><span class="token keyword">const</span> readableStreamClosed <span class="token operator">=</span> port<span class="token punctuation">.</span>readable<span class="token punctuation">.</span><span class="token function">pipeTo</span><span class="token punctuation">(</span>textDecoder<span class="token punctuation">.</span>writable<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line"><span class="token keyword">const</span> reader <span class="token operator">=</span> textDecoder<span class="token punctuation">.</span>readable<span class="token punctuation">.</span><span class="token function">getReader</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line"></span><br><span class="highlight-line"><span class="token comment">// Listen to data coming from the serial device.</span></span><br><span class="highlight-line"><span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">  <span class="token keyword">const</span> <span class="token punctuation">{</span> value<span class="token punctuation">,</span> done <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">await</span> reader<span class="token punctuation">.</span><span class="token function">read</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line">  <span class="token keyword">if</span> <span class="token punctuation">(</span>done<span class="token punctuation">)</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">    reader<span class="token punctuation">.</span><span class="token function">releaseLock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line">    <span class="token keyword">break</span><span class="token punctuation">;</span></span><br><span class="highlight-line">  <span class="token punctuation">}</span></span><br><span class="highlight-line">  <span class="token comment">// value is a string.</span></span><br><span class="highlight-line">  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line"><span class="token punctuation">}</span></span><br><span class="highlight-line"></span><br><span class="highlight-line"><span class="token keyword">const</span> textEncoder <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">TextEncoderStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line"><span class="token keyword">const</span> writableStreamClosed <span class="token operator">=</span> textEncoder<span class="token punctuation">.</span>readable<span class="token punctuation">.</span><span class="token function">pipeTo</span><span class="token punctuation">(</span>port<span class="token punctuation">.</span>writable<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line"></span><br><mark class="highlight-line highlight-line-active">reader<span class="token punctuation">.</span><span class="token function">cancel</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></mark><br><mark class="highlight-line highlight-line-active"><span class="token keyword">await</span> readableStreamClosed<span class="token punctuation">.</span><span class="token function">catch</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span> <span class="token comment">/* Ignore the error */</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></mark><br><mark class="highlight-line highlight-line-active"></mark><br><mark class="highlight-line highlight-line-active">writer<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></mark><br><mark class="highlight-line highlight-line-active"><span class="token keyword">await</span> writableStreamClosed<span class="token punctuation">;</span></mark><br><mark class="highlight-line highlight-line-active"></mark><br><mark class="highlight-line highlight-line-active"><span class="token keyword">await</span> port<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></mark></code></pre>
+</web-copy-code><h3 id="connection-disconnection">Listen to connection and disconnection <a class="w-headline-link" href="#connection-disconnection">#</a></h3>
+<p>If a serial port is provided by a USB device then that device may be connected
+or disconnected from the system. When the website has been granted permission to
+access a serial port, it should monitor the <code>connect</code> and <code>disconnect</code> events.</p>
+<web-copy-code><pre class="language-js"><code class="language-js">navigator<span class="token punctuation">.</span>serial<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">"connect"</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token parameter">event</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token comment">// TODO: Automatically open event.target or warn user a port is available.</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>navigator<span class="token punctuation">.</span>serial<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">"disconnect"</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token parameter">event</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token comment">// TODO: Remove |event.target| from the UI.</span><br>  <span class="token comment">// If the serial port was opened, a stream error would be observed as well.</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><div class="w-aside w-aside--note">
+<p>Prior to Chrome 89 the <code>connect</code> and <code>disconnect</code> events fired a custom
+<code>SerialConnectionEvent</code> object with the affected <code>SerialPort</code> interface
+available as the <code>port</code> attribute. You may want to use <code>event.port || event.target</code> to handle the transition.</p>
+</div>
+<h3 id="signals">Handle signals <a class="w-headline-link" href="#signals">#</a></h3>
+<p>After establishing the serial port connection, you can explicitly query and set
+signals exposed by the serial port for device detection and flow control. These
+signals are defined as boolean values. For example, some devices such as Arduino
+will enter a programming mode if the Data Terminal Ready (DTR) signal is
+toggled.</p>
+<p>Setting <a href="https://reillyeon.github.io/serial/#serialoutputsignals-dictionary" rel="noopener">output signals</a> and getting <a href="https://reillyeon.github.io/serial/#serialinputsignals-dictionary" rel="noopener">input signals</a> are respectively done by
+calling <code>port.setSignals()</code> and <code>port.getSignals()</code>. See usage examples below.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token comment">// Turn off Serial Break signal.</span><br><span class="token keyword">await</span> port<span class="token punctuation">.</span><span class="token function">setSignals</span><span class="token punctuation">(</span><span class="token punctuation">{</span> <span class="token keyword">break</span><span class="token operator">:</span> <span class="token boolean">false</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token comment">// Turn on Data Terminal Ready (DTR) signal.</span><br><span class="token keyword">await</span> port<span class="token punctuation">.</span><span class="token function">setSignals</span><span class="token punctuation">(</span><span class="token punctuation">{</span> dataTerminalReady<span class="token operator">:</span> <span class="token boolean">true</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token comment">// Turn off Request To Send (RTS) signal.</span><br><span class="token keyword">await</span> port<span class="token punctuation">.</span><span class="token function">setSignals</span><span class="token punctuation">(</span><span class="token punctuation">{</span> requestToSend<span class="token operator">:</span> <span class="token boolean">false</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> signals <span class="token operator">=</span> <span class="token keyword">await</span> port<span class="token punctuation">.</span><span class="token function">getSignals</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">Clear To Send:       </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>signals<span class="token punctuation">.</span>clearToSend<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">Data Carrier Detect: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>signals<span class="token punctuation">.</span>dataCarrierDetect<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">Data Set Ready:      </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>signals<span class="token punctuation">.</span>dataSetReady<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">Ring Indicator:      </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>signals<span class="token punctuation">.</span>ringIndicator<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><h3 id="transforming-streams">Transforming streams <a class="w-headline-link" href="#transforming-streams">#</a></h3>
+<p>When you receive data from the serial device, you won't necessarily get all of
+the data at once. It may be arbitrarily chunked. For more information, see
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/Streams_API/Concepts" rel="noopener">Streams API concepts</a>.</p>
+<p>To deal with this, you can use some built-in transform streams such as
+<code>TextDecoderStream</code> or create your own transform stream which allows you to
+parse the incoming stream and return parsed data. The transform stream sits
+between the serial device and the read loop that is consuming the stream. It can
+apply an arbitrary transform before the data is consumed. Think of it like an
+assembly line: as a widget comes down the line, each step in the line modifies
+the widget, so that by the time it gets to its final destination, it's a fully
+functioning widget.</p>
+<figure class="w-figure">
+  <img     alt="Photo of an aeroplane factory"          decoding="async"     height="519"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/seICV1jfxA6NfFRt9iVL.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/seICV1jfxA6NfFRt9iVL.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/seICV1jfxA6NfFRt9iVL.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/seICV1jfxA6NfFRt9iVL.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/seICV1jfxA6NfFRt9iVL.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/seICV1jfxA6NfFRt9iVL.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/seICV1jfxA6NfFRt9iVL.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/seICV1jfxA6NfFRt9iVL.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/seICV1jfxA6NfFRt9iVL.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/seICV1jfxA6NfFRt9iVL.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/seICV1jfxA6NfFRt9iVL.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/seICV1jfxA6NfFRt9iVL.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/seICV1jfxA6NfFRt9iVL.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/seICV1jfxA6NfFRt9iVL.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/seICV1jfxA6NfFRt9iVL.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/seICV1jfxA6NfFRt9iVL.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/seICV1jfxA6NfFRt9iVL.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/seICV1jfxA6NfFRt9iVL.jpg?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">World War II Castle Bromwich Aeroplane Factory</figcaption>
+</figure>
+<p>For example, consider how to create a transform stream class that consumes a
+stream and chunks it based on line breaks. Its <code>transform()</code> method is called
+every time new data is received by the stream. It can either enqueue the data or
+save it for later. The <code>flush()</code> method is called when the stream is closed, and
+it handles any data that hasn't been processed yet.</p>
+<p>To use the transform stream class, you need to pipe an incoming stream through
+it. In the third code example under <a href="#read-port">Read from a serial port</a>,
+the original input stream was only piped through a <code>TextDecoderStream</code>, so we
+need to call <code>pipeThrough()</code> to pipe it through our new <code>LineBreakTransformer</code>.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">class</span> <span class="token class-name">LineBreakTransformer</span> <span class="token punctuation">{</span><br>  <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token comment">// A container for holding stream data until a new line.</span><br>    <span class="token keyword">this</span><span class="token punctuation">.</span>chunks <span class="token operator">=</span> <span class="token string">""</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><br>  <span class="token function">transform</span><span class="token punctuation">(</span><span class="token parameter">chunk<span class="token punctuation">,</span> controller</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token comment">// Append new chunks to existing chunks.</span><br>    <span class="token keyword">this</span><span class="token punctuation">.</span>chunks <span class="token operator">+=</span> chunk<span class="token punctuation">;</span><br>    <span class="token comment">// For each line breaks in chunks, send the parsed lines out.</span><br>    <span class="token keyword">const</span> lines <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>chunks<span class="token punctuation">.</span><span class="token function">split</span><span class="token punctuation">(</span><span class="token string">"\r\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token keyword">this</span><span class="token punctuation">.</span>chunks <span class="token operator">=</span> lines<span class="token punctuation">.</span><span class="token function">pop</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    lines<span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">line</span><span class="token punctuation">)</span> <span class="token operator">=></span> controller<span class="token punctuation">.</span><span class="token function">enqueue</span><span class="token punctuation">(</span>line<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><br>  <span class="token function">flush</span><span class="token punctuation">(</span><span class="token parameter">controller</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token comment">// When the stream is closed, flush any remaining chunks out.</span><br>    controller<span class="token punctuation">.</span><span class="token function">enqueue</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>chunks<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><web-copy-code><pre class="language-js"><code class="language-js"><span class="highlight-line"><span class="token keyword">const</span> textDecoder <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">TextDecoderStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line"><span class="token keyword">const</span> readableStreamClosed <span class="token operator">=</span> port<span class="token punctuation">.</span>readable<span class="token punctuation">.</span><span class="token function">pipeTo</span><span class="token punctuation">(</span>textDecoder<span class="token punctuation">.</span>writable<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><mark class="highlight-line highlight-line-active"><span class="token keyword">const</span> reader <span class="token operator">=</span> textDecoder<span class="token punctuation">.</span>readable</mark><br><mark class="highlight-line highlight-line-active">  <span class="token punctuation">.</span><span class="token function">pipeThrough</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">TransformStream</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">LineBreakTransformer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span></mark><br><mark class="highlight-line highlight-line-active">  <span class="token punctuation">.</span><span class="token function">getReader</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></mark></code></pre>
+</web-copy-code><p>For debugging serial device communication issues, use the <code>tee()</code> method of
+<code>port.readable</code> to split the streams going to or from the serial device. The two
+streams created can be consumed independently and this allows you to print one
+to the console for inspection.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> <span class="token punctuation">[</span>appReadable<span class="token punctuation">,</span> devReadable<span class="token punctuation">]</span> <span class="token operator">=</span> port<span class="token punctuation">.</span>readable<span class="token punctuation">.</span><span class="token function">tee</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token comment">// You may want to update UI with incoming data from appReadable</span><br><span class="token comment">// and log incoming data in JS console for inspection from devReadable.</span></code></pre>
+</web-copy-code><h2 id="dev-tips">Dev Tips <a class="w-headline-link" href="#dev-tips">#</a></h2>
+<p>Debugging the Web Serial API in Chrome is easy with the internal page,
+<code>about://device-log</code> where you can see all serial device related events in one
+single place.</p>
+<figure class="w-figure">
+  <img     alt="Screenshot of the internal page for debugging the Web Serial API."     class="w-screenshot"     decoding="async"     height="547"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/p2T9gxxLsDWsS1GaqoXj.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/p2T9gxxLsDWsS1GaqoXj.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/p2T9gxxLsDWsS1GaqoXj.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/p2T9gxxLsDWsS1GaqoXj.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/p2T9gxxLsDWsS1GaqoXj.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/p2T9gxxLsDWsS1GaqoXj.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/p2T9gxxLsDWsS1GaqoXj.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/p2T9gxxLsDWsS1GaqoXj.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/p2T9gxxLsDWsS1GaqoXj.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/p2T9gxxLsDWsS1GaqoXj.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/p2T9gxxLsDWsS1GaqoXj.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/p2T9gxxLsDWsS1GaqoXj.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/p2T9gxxLsDWsS1GaqoXj.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/p2T9gxxLsDWsS1GaqoXj.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/p2T9gxxLsDWsS1GaqoXj.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/p2T9gxxLsDWsS1GaqoXj.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/p2T9gxxLsDWsS1GaqoXj.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/p2T9gxxLsDWsS1GaqoXj.jpg?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">Internal page in Chrome for debugging the Web Serial API.</figcaption>
+</figure>
+<h2 id="codelab">Codelab <a class="w-headline-link" href="#codelab">#</a></h2>
+<p>In the <a href="https://codelabs.developers.google.com/codelabs/web-serial" rel="noopener">Google Developer codelab</a>, you'll use the Web Serial API to interact
+with a <a href="https://microbit.org/" rel="noopener">BBC micro:bit</a> board to show images on its 5x5 LED matrix.</p>
+<h2 id="browser-support">Browser support <a class="w-headline-link" href="#browser-support">#</a></h2>
+<p>The Web Serial API is available on all desktop platforms (Chrome OS, Linux, macOS,
+and Windows) in Chrome 89.</p>
+<h2 id="polyfill">Polyfill <a class="w-headline-link" href="#polyfill">#</a></h2>
+<p>On Android, support for USB-based serial ports is possible using the WebUSB API
+and the <a href="https://github.com/google/web-serial-polyfill" rel="noopener">Serial API polyfill</a>. This polyfill is limited to hardware and
+platforms where the device is accessible via the WebUSB API because it has not
+been claimed by a built-in device driver.</p>
+<h2 id="security-privacy">Security and privacy <a class="w-headline-link" href="#security-privacy">#</a></h2>
+<p>The spec authors have designed and implemented the Web Serial API using the core
+principles defined in <a href="https://chromium.googlesource.com/chromium/src/+/lkgr/docs/security/permissions-for-powerful-web-platform-features.md" rel="noopener">Controlling Access to Powerful Web Platform Features</a>,
+including user control, transparency, and ergonomics. The ability to use this
+API is primarily gated by a permission model that grants access to only a single
+serial device at a time. In response to a user prompt, the user must take active
+steps to select a particular serial device.</p>
+<p>To understand the security tradeoffs, check out the <a href="https://github.com/reillyeon/serial/blob/gh-pages/EXPLAINER.md#security-considerations" rel="noopener">security</a> and <a href="https://github.com/reillyeon/serial/blob/gh-pages/EXPLAINER.md#privacy-considerations" rel="noopener">privacy</a>
+sections of the Web Serial API Explainer.</p>
+<h2 id="feedback">Feedback <a class="w-headline-link" href="#feedback">#</a></h2>
+<p>The Chrome team would love to hear about your thoughts and experiences with the
+Web Serial API.</p>
+<h3 id="tell-us-about-the-api-design">Tell us about the API design <a class="w-headline-link" href="#tell-us-about-the-api-design">#</a></h3>
+<p>Is there something about the API that doesn't work as expected? Or are there
+missing methods or properties that you need to implement your idea?</p>
+<p>File a spec issue on the <a href="https://github.com/wicg/serial/issues" rel="noopener">Web Serial API GitHub repo</a> or add your
+thoughts to an existing issue.</p>
+<h3 id="report-a-problem-with-the-implementation">Report a problem with the implementation <a class="w-headline-link" href="#report-a-problem-with-the-implementation">#</a></h3>
+<p>Did you find a bug with Chrome's implementation? Or is the implementation
+different from the spec?</p>
+<p>File a bug at <a href="https://bugs.chromium.org/p/chromium/issues/entry?components=Blink%3ESerial" rel="noopener">https://new.crbug.com</a>. Be sure to include as much
+detail as you can, provide simple instructions for reproducing the bug, and have
+<em>Components</em> set to <code>Blink&gt;Serial</code>. <a href="https://glitch.com" rel="noopener">Glitch</a> works great for
+sharing quick and easy repros.</p>
+<h3 id="show-support">Show support <a class="w-headline-link" href="#show-support">#</a></h3>
+<p>Are you planning to use the Web Serial API? Your public support helps the Chrome
+team prioritize features and shows other browser vendors how critical it is to
+support them.</p>
+<p>Send a tweet to <a href="https://twitter.com/chromiumdev" rel="noopener">@ChromiumDev</a> using the hashtag
+<a href="https://twitter.com/search?q=%23SerialAPI&amp;src=typed_query&amp;f=live" rel="noopener"><code>#SerialAPI</code></a>
+and let us know where and how you're using it.</p>
+<h2 id="helpful">Helpful links <a class="w-headline-link" href="#helpful">#</a></h2>
+<ul>
+<li><a href="https://reillyeon.github.io/serial/" rel="noopener">Specification</a></li>
+<li><a href="https://crbug.com/884928" rel="noopener">Tracking bug</a></li>
+<li><a href="https://chromestatus.com/feature/6577673212002304" rel="noopener">ChromeStatus.com entry</a></li>
+<li>Blink Component: <a href="https://chromestatus.com/features#component%3ABlink%3ESerial" rel="noopener"><code>Blink&gt;Serial</code></a></li>
+</ul>
+<h2 id="demos">Demos <a class="w-headline-link" href="#demos">#</a></h2>
+<ul>
+<li><a href="https://googlechromelabs.github.io/serial-terminal/" rel="noopener">Serial Terminal</a></li>
+<li><a href="https://www.espruino.com/ide/" rel="noopener">Espruino Web IDE</a></li>
+</ul>
+<h2 id="acknowledgements">Acknowledgements <a class="w-headline-link" href="#acknowledgements">#</a></h2>
+<p>Thanks to <a href="https://twitter.com/reillyeon" rel="noopener">Reilly Grant</a> and <a href="https://github.com/jpmedley" rel="noopener">Joe Medley</a> for their reviews of this article.
+Aeroplane factory photo by <a href="https://unsplash.com/@birminghammuseumstrust" rel="noopener">Birmingham Museums Trust</a> on <a href="https://unsplash.com/photos/E1PSU-7aWcY" rel="noopener">Unsplash</a>.</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/capabilities/">Capabilities</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/devices/">Devices</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Mar 3, 2021</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/serial/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions="api"></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

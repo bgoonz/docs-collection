@@ -1,0 +1,854 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=76c91197d637b">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Play the Chrome dino game with your gamepad</title>
+<meta name="description" content="Learn to control web games with the Gamepad API. " />
+
+<link rel="canonical" href="https://web.dev/gamepad/" />
+
+<meta itemprop="name" content="Play the Chrome dino game with your gamepad" />
+<meta itemprop="description" content="Learn to control web games with the Gamepad API. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/nnmBquEmUtTIh89pkhvp.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/gamepad/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Play the Chrome dino game with your gamepad" />
+<meta property="og:description" content="Learn to control web games with the Gamepad API. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/nnmBquEmUtTIh89pkhvp.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="The hands of a person playing the Chrome dino game on a game console." />
+<meta property="tag" content="capabilities" />
+<meta property="tag" content="gamepad" />
+<meta property="tag" content="devices" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Play the Chrome dino game with your gamepad" />
+<meta name="twitter:description" content="Learn to control web games with the Gamepad API. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/nnmBquEmUtTIh89pkhvp.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=0b9d68cb1fa2c', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=d43fdd52d7354', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="The hands of a person playing the Chrome dino game on a game console."     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/nnmBquEmUtTIh89pkhvp.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/nnmBquEmUtTIh89pkhvp.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/nnmBquEmUtTIh89pkhvp.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/nnmBquEmUtTIh89pkhvp.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/nnmBquEmUtTIh89pkhvp.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/nnmBquEmUtTIh89pkhvp.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/nnmBquEmUtTIh89pkhvp.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/nnmBquEmUtTIh89pkhvp.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/nnmBquEmUtTIh89pkhvp.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/nnmBquEmUtTIh89pkhvp.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/nnmBquEmUtTIh89pkhvp.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/nnmBquEmUtTIh89pkhvp.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/nnmBquEmUtTIh89pkhvp.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/nnmBquEmUtTIh89pkhvp.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/nnmBquEmUtTIh89pkhvp.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/nnmBquEmUtTIh89pkhvp.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/nnmBquEmUtTIh89pkhvp.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/nnmBquEmUtTIh89pkhvp.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#play-the-chrome-dino-game-with-your-gamepad" class="w-toc__header--link">
+        Play the Chrome dino game with your gamepad
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#using-the-gamepad-api">Using the Gamepad API</a></li><li><a href="#feature-detection-and-browser-support">Feature detection and browser support</a></li><li><a href="#how-the-browser-represents-a-gamepad">How the browser represents a gamepad</a></li><li><a href="#being-notified-when-a-gamepad-gets-connected">Being notified when a gamepad gets connected</a></li><li><a href="#being-notified-when-a-gamepad-gets-disconnected">Being notified when a gamepad gets disconnected</a></li><li><a href="#the-gamepad-in-your-game-loop">The gamepad in your game loop</a></li><li><a href="#making-use-of-the-vibration-actuator">Making use of the vibration actuator</a></li><li><a href="#integration-with-permissions-policy">Integration with Permissions Policy</a></li><li><a href="#demo">Demo</a></li><li><a href="#bonus:-play-chrome-dino-on-web.dev">Bonus: play Chrome dino on web.dev</a></li><li><a href="#useful-links">Useful links</a></li><li><a href="#acknowledgements">Acknowledgements</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@tomayac"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="play-the-chrome-dino-game-with-your-gamepad" class="w-article-header__headline">Play the Chrome dino game with your gamepad</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          Learn how to use the Gamepad API to push your web games to the next level.
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Nov 3, 2020</time>
+           <span class="w-author__separator">•</span> Updated <time>Nov 4, 2020</time> 
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/thomassteiner/"><img     alt="Thomas Steiner"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/thomassteiner/">Thomas Steiner</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/tomayac"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/tomayac">GitHub</a>
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://glitch.com/@tomayac"
+          >Glitch</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://blog.tomayac.com/">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>Chrome's offline page easter egg is one of the worst-kept secrets in history
+(<code>[citation needed]</code>, but claim made for the dramatic effect).
+If you press the <kbd>space</kbd> key or, on mobile devices, tap the dinosaur,
+the offline page becomes a playable arcade game.
+You might be aware that you do not actually have to go offline
+when you feel like playing: in Chrome, you can just navigate to <code>about://dino</code>, or,
+for the geek in you, browse to
+<code>about://network-error/-106</code>.
+But did you know that there are currently
+<a href="https://www.blog.google/products/chrome/chrome-dino#jump-content:~:text=There%20are%20currently%20270%20million%20games%20played%20every%20month" rel="noopener">270 million Chrome dino games played every month</a>?</p>
+<figure class="w-figure">
+  <img     alt="Chrome&#x27;s offline page with the Chrome dino game."     class="w-screenshot w-screenshot--filled"     decoding="async"     height="647"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/BQ9zVNGfI0PjH6LTwxj5.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/BQ9zVNGfI0PjH6LTwxj5.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/BQ9zVNGfI0PjH6LTwxj5.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/BQ9zVNGfI0PjH6LTwxj5.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/BQ9zVNGfI0PjH6LTwxj5.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/BQ9zVNGfI0PjH6LTwxj5.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/BQ9zVNGfI0PjH6LTwxj5.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/BQ9zVNGfI0PjH6LTwxj5.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/BQ9zVNGfI0PjH6LTwxj5.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/BQ9zVNGfI0PjH6LTwxj5.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/BQ9zVNGfI0PjH6LTwxj5.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/BQ9zVNGfI0PjH6LTwxj5.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/BQ9zVNGfI0PjH6LTwxj5.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/BQ9zVNGfI0PjH6LTwxj5.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/BQ9zVNGfI0PjH6LTwxj5.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/BQ9zVNGfI0PjH6LTwxj5.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/BQ9zVNGfI0PjH6LTwxj5.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/BQ9zVNGfI0PjH6LTwxj5.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">
+    Press the space bar to play!
+  </figcaption>
+</figure>
+<p>Another fact that arguably is more useful to know and that you might not be aware of
+is that in arcade mode you can play the game with a gamepad.
+Gamepad support was added roughly one year ago as of the time of this writing in a
+<a href="https://github.com/chromium/chromium/commit/fcafd36b23c535e307da4213b7d639f8c13b8da2" rel="noopener">commit</a>
+by <a href="https://github.com/reillyeon" rel="noopener">Reilly Grant</a>.
+As you can see, the game, just like the rest of the Chromium project,
+is fully
+<a href="https://github.com/chromium/chromium/tree/master/components/neterror/resources" rel="noopener">open source</a>.
+In this post, I want to show you how to use the Gamepad API.</p>
+<h2 id="using-the-gamepad-api">Using the Gamepad API <a class="w-headline-link" href="#using-the-gamepad-api">#</a></h2>
+<div class="w-aside w-aside--note">
+<p>The <a href="https://w3c.github.io/gamepad/" rel="noopener">Gamepad API</a> has been around for a long time.
+This post disregards all the legacy features and vendor prefixes.</p>
+</div>
+<h3 id="feature-detection-and-browser-support">Feature detection and browser support <a class="w-headline-link" href="#feature-detection-and-browser-support">#</a></h3>
+<p>The Gamepad API has universally great <a href="https://caniuse.com/gamepad" rel="noopener">browser support</a>
+across both desktop and mobile.
+You can detect if the Gamepad API is supported using the snippet below:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token string">'getGamepads'</span> <span class="token keyword">in</span> navigator<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token comment">// The API is supported!</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><h3 id="how-the-browser-represents-a-gamepad">How the browser represents a gamepad <a class="w-headline-link" href="#how-the-browser-represents-a-gamepad">#</a></h3>
+<p>The browser represents gamepads as <code>Gamepad</code> objects.
+A <code>Gamepad</code> has the following fields:</p>
+<ul>
+<li><code>id</code>:
+An identification string for the gamepad.
+This string identifies the brand or style of connected gamepad device.</li>
+<li><code>index</code>:
+The index of the gamepad in the navigator.</li>
+<li><code>connected</code>:
+Indicates whether the gamepad is still connected to the system.</li>
+<li><code>timestamp</code>: The last time the data for this gamepad was updated.</li>
+<li><code>mapping</code>: The button and axes mapping in use for this device. Currently the only mapping is <code>&quot;standard&quot;</code>.</li>
+<li><code>axes</code>: An array of values for all axes of the gamepad, linearly normalized to the range of
+<code>-1.0</code>–<code>1.0</code>.</li>
+<li><code>buttons</code>: An array of button states for all buttons of the gamepad.</li>
+</ul>
+<p>Note that buttons can be digital (pressed or not pressed) or analog (for example, 78% pressed).
+This is why buttons are reported as <code>GamepadButton</code> objects, with the following attributes:</p>
+<ul>
+<li><code>pressed</code>: The pressed state of the button (<code>true</code> if the button is currently pressed,
+and <code>false</code> if it is not pressed.</li>
+<li><code>touched</code>: The touched state of the button. If the button is capable of detecting touch,
+this property is <code>true</code> if the button is currently being touched, and <code>false</code> otherwise.</li>
+<li><code>value</code>: For buttons that have an analog sensor, this property represents the amount by
+which the button has been pressed, linearly normalized to the range of <code>0.0</code>–<code>1.0</code>.</li>
+</ul>
+<p>One additional thing that you might encounter, depending on your browser and the gamepad you have,
+is a <code>vibrationActuator</code> property.
+This field is currently implemented in Chrome and earmarked for
+<a href="https://github.com/w3c/gamepad/pull/68" rel="noopener">merging</a> into the
+<a href="https://w3c.github.io/gamepad/extensions.html" rel="noopener">Gamepad Extensions</a> spec.</p>
+<p>The schematic overview below, taken
+<a href="https://w3c.github.io/gamepad/#fig-visual-representation-of-a-standard-gamepad-layout:~:text=Figure%201%20Visual%20representation%20of%20a%20standard%20gamepad%20layout." rel="noopener">straight from the spec</a>,
+shows the mapping and the arrangement of the buttons and axes on a generic gamepad.</p>
+<figure class="w-figure">
+  <img     alt="Schematic overview of the button and axes mappings of a common gamepad."          decoding="async"     height="566"          loading="lazy"          src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/qy6OxKmPAE5dpfLCMhZt.svg"               width="800"   />
+  <figcaption class="w-figcaption">
+    Visual representation of a standard gamepad layout
+    (<a href="https://w3c.github.io/gamepad/#fig-visual-representation-of-a-standard-gamepad-layout:~:text=Figure%201%20Visual%20representation%20of%20a%20standard%20gamepad%20layout.">Source</a>).
+  </figcaption>
+</figure>
+<h3 id="being-notified-when-a-gamepad-gets-connected">Being notified when a gamepad gets connected <a class="w-headline-link" href="#being-notified-when-a-gamepad-gets-connected">#</a></h3>
+<p>To learn when a gamepad is connected, listen for the <code>gamepadconnected</code>
+event that triggers on the <code>window</code> object.
+When the user connects a gamepad, which can either happen via USB or via Bluetooth,
+a <code>GamepadEvent</code> is fired that has the gamepad's details in an aptly named <code>gamepad</code> property.
+Below, you can see an example from an Xbox 360 controller that I had lying around
+(yes, I am into retro gaming).</p>
+<web-copy-code><pre class="language-js"><code class="language-js">window<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'gamepadconnected'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token parameter">event</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'✅ 🎮 A gamepad was connected:'</span><span class="token punctuation">,</span> event<span class="token punctuation">.</span>gamepad<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token comment">/*<br>    gamepad: Gamepad<br>    axes: (4) [0, 0, 0, 0]<br>    buttons: (17) [GamepadButton, GamepadButton, GamepadButton, GamepadButton, GamepadButton, GamepadButton, GamepadButton, GamepadButton, GamepadButton, GamepadButton, GamepadButton, GamepadButton, GamepadButton, GamepadButton, GamepadButton, GamepadButton, GamepadButton]<br>    connected: true<br>    id: "Xbox 360 Controller (STANDARD GAMEPAD Vendor: 045e Product: 028e)"<br>    index: 0<br>    mapping: "standard"<br>    timestamp: 6563054.284999998<br>    vibrationActuator: GamepadHapticActuator {type: "dual-rumble"}<br>  */</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><h3 id="being-notified-when-a-gamepad-gets-disconnected">Being notified when a gamepad gets disconnected <a class="w-headline-link" href="#being-notified-when-a-gamepad-gets-disconnected">#</a></h3>
+<p>Being notified of gamepad disconnects happens analogously to the way connections are detected.
+This time the app listens for the <code>gamepaddisconnected</code> event.
+Note how in the example below <code>connected</code> is now <code>false</code>
+when I unplug the Xbox 360 controller.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="highlight-line">window<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'gamepaddisconnected'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token parameter">event</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span></span><br><span class="highlight-line">  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'❌ 🎮 A gamepad was disconnected:'</span><span class="token punctuation">,</span> event<span class="token punctuation">.</span>gamepad<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br>  <span class="token comment">/*<br><span class="highlight-line">    gamepad: Gamepad</span><br><span class="highlight-line">    axes: (4) [0, 0, 0, 0]</span><br><span class="highlight-line">    buttons: (17) [GamepadButton, GamepadButton, GamepadButton, GamepadButton, GamepadButton, GamepadButton, GamepadButton, GamepadButton, GamepadButton, GamepadButton, GamepadButton, GamepadButton, GamepadButton, GamepadButton, GamepadButton, GamepadButton, GamepadButton]</span><br><mark class="highlight-line highlight-line-active">    connected: false</mark><br><span class="highlight-line">    id: "Xbox 360 Controller (STANDARD GAMEPAD Vendor: 045e Product: 028e)"</span><br><span class="highlight-line">    index: 0</span><br><span class="highlight-line">    mapping: "standard"</span><br><span class="highlight-line">    timestamp: 6563054.284999998</span><br><span class="highlight-line">    vibrationActuator: null</span><br>  */</span><br><span class="highlight-line"><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span></code></pre>
+</web-copy-code><h3 id="the-gamepad-in-your-game-loop">The gamepad in your game loop <a class="w-headline-link" href="#the-gamepad-in-your-game-loop">#</a></h3>
+<p>Getting a hold of a gamepad starts with a call to <code>navigator.getGamepads()</code>,
+which returns a <code>GamepadList</code> object with <code>Gamepad</code> items.
+The <code>GamepadList</code> object in Chrome <em>always</em> has a fixed length of four items.
+If zero or less than four gamepads are connected, an item may just be <code>null</code>.
+Always be sure to check all items of the <code>GamepadList</code> and be aware that
+gamepads &quot;remember&quot; their slot and may not always be present at the first available slot.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token comment">// When no gamepads are connected:</span><br>navigator<span class="token punctuation">.</span><span class="token function">getGamepads</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token comment">// GamepadList {0: null, 1: null, 2: null, 3: null, length: 4}</span></code></pre>
+</web-copy-code><p>If one or several gamepads are connected,
+but <code>navigator.getGamepads()</code> still reports <code>null</code> items,
+you may need to &quot;wake&quot; each gamepad by pressing any of its buttons.
+You can then poll the gamepad states in your game loop as shown below.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> <span class="token function-variable function">pollGamepad</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token comment">// Always call `navigator.getGamepads()` inside of</span><br>  <span class="token comment">// the game loop, not outside.</span><br>  <span class="token keyword">const</span> gamepads <span class="token operator">=</span> navigator<span class="token punctuation">.</span><span class="token function">getGamepads</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">const</span> gamepad <span class="token keyword">of</span> gamepads<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token comment">// Disregard empty slots.</span><br>    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>gamepad<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>      <span class="token keyword">continue</span><span class="token punctuation">;</span><br>    <span class="token punctuation">}</span><br>    <span class="token comment">// Process the gamepad state.</span><br>    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>gamepad<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br>  <span class="token comment">// Call yourself upon the next animation frame.</span><br>  <span class="token comment">// (Typically this happens every 60 times per second.)</span><br>  window<span class="token punctuation">.</span><span class="token function">requestAnimationFrame</span><span class="token punctuation">(</span>pollGamepad<span class="token punctuation">)</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span><br><span class="token comment">// Kick off the initial game loop iteration.</span><br><span class="token function">pollGamepad</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><div class="w-aside w-aside--gotchas"><strong>Gotchas!</strong>
+<p>Do not store a lasting reference to the <code>GamepadList</code> result <em>outside</em> of the game loop,
+since the method returns a static snapshot, not a live object.
+Call <code>navigator.getGamepads()</code> each time anew <em>in your game loop</em>.</p>
+</div>
+<h3 id="making-use-of-the-vibration-actuator">Making use of the vibration actuator <a class="w-headline-link" href="#making-use-of-the-vibration-actuator">#</a></h3>
+<p>The <code>vibrationActuator</code> property returns a <code>GamepadHapticActuator</code>
+object, which corresponds to a configuration of motors or other actuators
+that can apply a force for the purposes of haptic feedback.
+Haptic effects can be played by calling <code>Gamepad.vibrationActuator.playEffect()</code>.
+The only currently valid effect type is <code>'dual-rumble'</code>.
+Dual-rumble describes a haptic configuration with an eccentric rotating mass vibration motor
+in each handle of a standard gamepad.
+In this configuration, either motor is capable of vibrating the whole gamepad.
+The two masses are unequal so that the effects of each can be combined
+to create more complex haptic effects.
+Dual-rumble effects are defined by four parameters:</p>
+<ul>
+<li><code>duration</code>:
+Sets the duration of the vibration effect in milliseconds.</li>
+<li><code>startDelay</code>:
+Sets the duration of the delay until the vibration is started.</li>
+<li><code>strongMagnitude</code> and <code>weakMagnitude</code>:
+Set the vibration intensity levels for the heavier and lighter eccentric rotating mass
+motors, normalized to the range <code>0.0</code>–<code>1.0</code>.</li>
+</ul>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token comment">// This assumes a `Gamepad` as the value of the `gamepad` variable.</span><br><span class="token keyword">const</span> <span class="token function-variable function">vibrate</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">gamepad<span class="token punctuation">,</span> delay <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> duration <span class="token operator">=</span> <span class="token number">100</span><span class="token punctuation">,</span> weak <span class="token operator">=</span> <span class="token number">1.0</span><span class="token punctuation">,</span> strong <span class="token operator">=</span> <span class="token number">1.0</span></span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token punctuation">(</span><span class="token string">'vibrationActuator'</span> <span class="token keyword">in</span> gamepad<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token keyword">return</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br>  gamepad<span class="token punctuation">.</span>vibrationActuator<span class="token punctuation">.</span><span class="token function">playEffect</span><span class="token punctuation">(</span><span class="token string">'dual-rumble'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span><br>    <span class="token comment">// Start delay in ms.</span><br>    startDelay<span class="token operator">:</span> delay<span class="token punctuation">,</span><br>    <span class="token comment">// Duration is ms.</span><br>    duration<span class="token operator">:</span> duration<span class="token punctuation">,</span><br>    <span class="token comment">// The magnitude of the weak actuator (between 0 and 1).</span><br>    weakMagnitude<span class="token operator">:</span> weak<span class="token punctuation">,</span><br>    <span class="token comment">// The magnitude of the strong actuator (between 0 and 1).</span><br>    strongMagnitude<span class="token operator">:</span> strong<span class="token punctuation">,</span><br>  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><h3 id="integration-with-permissions-policy">Integration with Permissions Policy <a class="w-headline-link" href="#integration-with-permissions-policy">#</a></h3>
+<p>The Gamepad API spec defines a
+<a href="https://w3c.github.io/webappsec-permissions-policy/" rel="noopener">policy-controlled feature</a>
+identified by the string <code>&quot;gamepad&quot;</code>. Its default <code>allowlist</code> is <code>&quot;self&quot;</code>.
+A document's permissions policy determines whether any content in that document is allowed
+to access <code>navigator.getGamepads()</code>.
+If disabled in any document, no content in the document will be allowed to use
+<code>navigator.getGamepads()</code>, nor will the <code>gamepadconnected</code> and
+<code>gamepaddisconnected</code> events fire.</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>iframe</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>index.html<span class="token punctuation">"</span></span> <span class="token attr-name">allow</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>gamepad<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>iframe</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><h2 id="demo">Demo <a class="w-headline-link" href="#demo">#</a></h2>
+<p>A simple <a href="https://gamepad-demo.glitch.me/" rel="noopener">gamepad tester demo</a> is embedded below.
+The source code is available <a href="https://glitch.com/edit/#!/gamepad-demo" rel="noopener">on Glitch</a>.
+Try the demo by connecting a gamepad via USB or Bluetooth and pressing any of its buttons
+or moving any of its axis.</p>
+<div class="glitch-embed-wrap" style="height: 1000px; width: 100%;">
+  <iframe
+    allow="camera; clipboard-read; clipboard-write; encrypted-media; geolocation; microphone; midi; gamepad"
+    loading="lazy"
+    src="https://glitch.com/embed/#!/embed/gamepad-demo?attributionHidden=true&sidebarCollapsed=true&path=script.js&previewSize=100"
+    style="height: 100%; width: 100%; border: 0;"
+    title="gamepad-demo on Glitch"
+  ></iframe>
+</div>
+<h2 id="bonus:-play-chrome-dino-on-web.dev">Bonus: play Chrome dino on web.dev <a class="w-headline-link" href="#bonus:-play-chrome-dino-on-web.dev">#</a></h2>
+<p>You can play
+<a href="https://tomayac.github.io/chrome-dino-gamepad/" rel="noopener">Chrome dino</a>
+with your gamepad on this very site.
+The source code is available
+<a href="https://github.com/tomayac/chrome-dino-gamepad" rel="noopener">on GitHub</a>.
+Check out the gamepad polling implementation in
+<a href="https://github.com/tomayac/chrome-dino-gamepad/blob/885eb6134805345bf31eeb9971830adeb84747ab/trex-runner.js#L529-L571" rel="noopener"><code>trex-runner.js</code></a>
+and note how it is emulating key presses.</p>
+<div style="height: 420px; width: 100%;">
+  <iframe
+    src="https://tomayac.github.io/chrome-dino-gamepad/"
+    title="Chrome dino gamepad"
+    allow="gamepad; fullscreen"
+    style="height: 100%; width: 100%; border: 0;"
+    loading="lazy">
+  </iframe>
+</div>
+<p>For the <a href="https://tomayac.github.io/chrome-dino-gamepad/" rel="noopener">Chrome dino gamepad</a> demo to work,
+I have ripped out the Chrome dino game from the core Chromium project
+(updating an <a href="https://github.com/arnellebalane/trex-runner" rel="noopener">earlier effort</a> by
+<a href="https://arnellebalane.com/" rel="noopener">Arnelle Ballane</a>),
+placed it on a standalone site, extended the existing gamepad API implementation by adding ducking
+and vibration effects, created a full screen mode,
+and <a href="https://github.com/mehulsatardekar" rel="noopener">Mehul Satardekar</a>
+contributed a dark mode implementation.
+Happy gaming!</p>
+<h2 id="useful-links">Useful links <a class="w-headline-link" href="#useful-links">#</a></h2>
+<ul>
+<li><a href="https://w3c.github.io/gamepad/" rel="noopener">Gamepad API spec</a></li>
+<li><a href="https://w3c.github.io/gamepad/extensions.html" rel="noopener">Gamepad API extensions spec</a></li>
+<li><a href="https://github.com/w3c/gamepad/" rel="noopener">GitHub repository</a></li>
+</ul>
+<h2 id="acknowledgements">Acknowledgements <a class="w-headline-link" href="#acknowledgements">#</a></h2>
+<p>This article was reviewed by <a href="https://github.com/beaufortfrancois" rel="noopener">François Beaufort</a>
+and <a href="https://github.com/jpmedley" rel="noopener">Joe Medley</a>.
+The Gamepad API spec is currently edited by
+<a href="https://github.com/sagoston" rel="noopener">Steve Agoston</a>,
+<a href="https://www.linkedin.com/in/james-hollyer-981110a3/" rel="noopener">James Hollyer</a>, and
+<a href="https://github.com/nondebug" rel="noopener">Matt Reynolds</a>. The former spec editors are
+<a href="https://blog.tojicode.com/" rel="noopener">Brandon Jones</a>,
+<a href="https://h4ck3r.net/" rel="noopener">Scott Graham</a>, and
+<a href="http://ted.mielczarek.org/" rel="noopener">Ted Mielczarek</a>.
+The Gamepad Extensions spec is edited by <a href="https://blog.tojicode.com/" rel="noopener">Brandon Jones</a>.
+Hero image by Laura Torrent Puig.</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/capabilities/">Capabilities</a>
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/devices/">Devices</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Nov 4, 2020</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/gamepad/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

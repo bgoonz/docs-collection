@@ -1,0 +1,797 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=435ea6b918c61">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>More variable font options for the macOS system-ui font in Chromium 83</title>
+<meta name="description" content="Chromium 80 had a system-ui font weight regression on macOS. The reason it broke, and the new super powers post-resolution, are worth the wait in Chromium 83." />
+
+<link rel="canonical" href="https://web.dev/more-variable-font-options-in-chromium-83/" />
+
+<meta itemprop="name" content="More variable font options for the macOS system-ui font in Chromium 83" />
+<meta itemprop="description" content="Chromium 80 had a system-ui font weight regression on macOS. The reason it broke, and the new super powers post-resolution, are worth the wait in Chromium 83." />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/h1iXgLXRrxjunx2PhoPB.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/more-variable-font-options-in-chromium-83/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="More variable font options for the macOS system-ui font in Chromium 83" />
+<meta property="og:description" content="Chromium 80 had a system-ui font weight regression on macOS. The reason it broke, and the new super powers post-resolution, are worth the wait in Chromium 83." />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/h1iXgLXRrxjunx2PhoPB.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="A bright pink and purple gradient with "macOS Catalina system-ui" going from thin to think from left to right, demonstrating some of the new variation settings" />
+<meta property="tag" content="css" />
+<meta property="tag" content="fonts" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="More variable font options for the macOS system-ui font in Chromium 83" />
+<meta name="twitter:description" content="Chromium 80 had a system-ui font weight regression on macOS. The reason it broke, and the new super powers post-resolution, are worth the wait in Chromium 83." />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/h1iXgLXRrxjunx2PhoPB.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=185108cdd8296', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=522c681247d7c', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="A bright pink and purple gradient with &quot;macOS Catalina system-ui&quot; going from thin to think from left to right, demonstrating some of the new variation settings"     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/RgpA9x73j3OnnrC8z97g.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/RgpA9x73j3OnnrC8z97g.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/RgpA9x73j3OnnrC8z97g.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/RgpA9x73j3OnnrC8z97g.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/RgpA9x73j3OnnrC8z97g.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/RgpA9x73j3OnnrC8z97g.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/RgpA9x73j3OnnrC8z97g.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/RgpA9x73j3OnnrC8z97g.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/RgpA9x73j3OnnrC8z97g.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/RgpA9x73j3OnnrC8z97g.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/RgpA9x73j3OnnrC8z97g.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/RgpA9x73j3OnnrC8z97g.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/RgpA9x73j3OnnrC8z97g.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/RgpA9x73j3OnnrC8z97g.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/RgpA9x73j3OnnrC8z97g.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/RgpA9x73j3OnnrC8z97g.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/RgpA9x73j3OnnrC8z97g.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/RgpA9x73j3OnnrC8z97g.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#more-variable-font-options-for-the-macos-lesscodegreatersystem-uilesscodegreater-font-in-chromium-83" class="w-toc__header--link">
+        More variable font options for the macOS <code>system-ui</code> font in Chromium 83
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#browser-compatibility">Browser compatibility</a></li><li><a href="#new-powers">New powers</a></li><li><a href="#wght">wght </a></li><li><a href="#opsz">opsz</a></li><li><a href="#grad">GRAD</a></li><li><a href="#yaxs">YAXS</a></li><li><a href="#combining-the-options">Combining the options</a></li><li><a href="#playground">Playground</a></li><li><a href="#regression">Appendix: The system-ui regression</a></li><li><a href="#background">Background</a></li><li><a href="#not-done-yet">Not done yet</a></li><li><a href="#the-fix">The fix</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@argyleink | @abrax5"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="more-variable-font-options-for-the-macos-lesscodegreatersystem-uilesscodegreater-font-in-chromium-83" class="w-article-header__headline">More variable font options for the macOS <code>system-ui</code> font in Chromium 83</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          Catalina brings a new united variable system font to macOS.
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>May 21, 2020</time>
+           <span class="w-author__separator">•</span> Updated <time>May 26, 2020</time> 
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/adamargyle/"><img     alt="Adam Argyle"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/adamargyle/">Adam Argyle</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/argyleink"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/argyleink">GitHub</a>
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://glitch.com/@argyleink"
+          >Glitch</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://nerdy.dev">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+            <div class="w-author">
+  <a href="/authors/drott/"><img     alt="Dominik Röttsches"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/xb7jK8lMyvbHQrBJzlxv.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/xb7jK8lMyvbHQrBJzlxv.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/xb7jK8lMyvbHQrBJzlxv.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/xb7jK8lMyvbHQrBJzlxv.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/xb7jK8lMyvbHQrBJzlxv.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/xb7jK8lMyvbHQrBJzlxv.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/drott/">Dominik Röttsches</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/abrax5"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/drott">GitHub</a>
+      </li>
+      
+      
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>The <a href="https://drafts.csswg.org/css-fonts-4/#system-ui-def" rel="noopener">'system-ui' section</a> of the CSS Fonts Module Level 4 spec defines a <code>system-ui</code> font keyword that allows developers to use the built-in, turbo-optimized, localized, mega-high-quality, no-download-needed, default operating system font right in their sites and apps.</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">body</span> <span class="token punctuation">{</span><br>  <span class="token property">font-family</span><span class="token punctuation">:</span> system-ui<span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>This typography choice is akin to saying &quot;use the default system font for the current locale of this user.&quot;</p>
+<p>On macOS, the <code>system-ui</code> font is San Francisco, a font that a design team vetted, tested, and… recently upgraded! First we'll cover the <a href="#new-powers">new exciting variable font features in Catalina</a>, then we'll cover a couple of <a href="#regression">bugs and how Chromium engineers resolved them</a>.</p>
+<p>This post assumes that you're already familiar with variable fonts. If not, check out <a href="/variable-fonts/">Introduction to variable fonts on the web</a> and the video below.</p>
+<div class="youtube">  <lite-youtube    videoid="B42rUMdcB7c"      >  </lite-youtube></div>
+<h3 id="browser-compatibility">Browser compatibility <a class="w-headline-link" href="#browser-compatibility">#</a></h3>
+<p>At the time of writing, <code>system-ui</code> has support from Chromium (since 56), Edge (since 79), Safari (since 11), and from Firefox (since 43) but with the <code>-apple-system</code> keyword. See <a href="https://caniuse.com/#feat=variable-fonts" rel="noopener">Can I use variable fonts?</a> for updates.</p>
+<h2 id="new-powers">New powers <a class="w-headline-link" href="#new-powers">#</a></h2>
+<p>The new abilities that Catalina brought to the system font are now available to web developers as of Chromium 83. The <code>system-ui</code> font now <strong>has more variable settings</strong>: optical sizing and 2 unique weight adjustments:</p>
+<figure class="w-compare"><p class="w-compare__label w-compare__label--worse">Mojave</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">h1</span> <span class="token punctuation">{</span><br>  <span class="token property">font-family</span><span class="token punctuation">:</span> system-ui<span class="token punctuation">;</span><br>  <span class="token property">font-weight</span><span class="token punctuation">:</span> 700<span class="token punctuation">;</span><br>  <span class="token property">font-variation-settings</span><span class="token punctuation">:</span><br>    <span class="token string">'wght'</span> 750<br>  <span class="token punctuation">;</span><br><span class="token punctuation">}</span><br></code></pre>
+</web-copy-code></figure>
+<figure class="w-compare"><p class="w-compare__label w-compare__label--better">Catalina</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="highlight-line"><span class="token selector">h1</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">  <span class="token property">font-family</span><span class="token punctuation">:</span> system-ui<span class="token punctuation">;</span></span><br><span class="highlight-line">  <span class="token property">font-weight</span><span class="token punctuation">:</span> 700<span class="token punctuation">;</span></span><br><span class="highlight-line">  <span class="token property">font-variation-settings</span><span class="token punctuation">:</span></span><br><span class="highlight-line">    <span class="token string">'wght'</span> 750<span class="token punctuation">,</span></span><br><mark class="highlight-line highlight-line-active">    <span class="token string">'opsz'</span> 20<span class="token punctuation">,</span></mark><br><mark class="highlight-line highlight-line-active">    <span class="token string">'GRAD'</span> 400<span class="token punctuation">,</span></mark><br><mark class="highlight-line highlight-line-active">    <span class="token string">'YAXS'</span> 400</mark><br><span class="highlight-line">  <span class="token punctuation">;</span></span><br><span class="highlight-line"><span class="token punctuation">}</span></span><br><span class="highlight-line"></span></code></pre>
+</web-copy-code></figure>
+<div class="w-aside w-aside--gotchas"><strong>Gotchas!</strong>
+<p>These variant features are only available for macOS Catalina users.</p>
+</div>
+<p>On Mojave, <code>system-ui</code> is a variable font with only <code>wght</code> settings. While <code>system-ui</code> on Catalina is a variable font with <code>wght</code>, <code>opsz</code>, <code>GRAD</code>, and <code>YAXS</code> settings.</p>
+<p>Looks like some neat progressive enhancement design opportunities to me! Really dig into the subtleties of the system font if you want.</p>
+<h3 id="wght"><code>wght</code>  <a class="w-headline-link" href="#wght">#</a></h3>
+<p>Accepts a font weight between <code>0</code> and <code>900</code> and is applied equally to all characters.</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token comment">/* 0-900 */</span><br><span class="token property">font-variation-settings</span><span class="token punctuation">:</span> <span class="token string">'wght'</span> 750<span class="token punctuation">;</span></code></pre>
+</web-copy-code><figure class="w-figure">
+  <video playsinline controls autoplay loop muted class="w-screenshot">
+    <source src="https://storage.googleapis.com/web-dev-assets/macos-system-ui/system-ui_wght.webm" type="video/webm">
+    <source src="https://storage.googleapis.com/web-dev-assets/macos-system-ui/system-ui_wght.mp4">
+  </video>
+</figure>
+<h3 id="opsz"><code>opsz</code> <a class="w-headline-link" href="#opsz">#</a></h3>
+<p>Optical sizing is similar to kerning or letter-spacing, but the spacing is done by a human eye instead of math. A value of <code>19</code> or below is intended for text and body copy spacing, while <code>20</code> or above is for spacing display headers and titles.</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token comment">/* 19 or 20 */</span><br><span class="token property">font-variation-settings</span><span class="token punctuation">:</span> <span class="token string">'opsz'</span> 20<span class="token punctuation">;</span></code></pre>
+</web-copy-code><figure class="w-figure">
+  <video playsinline controls autoplay loop muted class="w-screenshot">
+    <source src="https://storage.googleapis.com/web-dev-assets/macos-system-ui/system-ui_opsz_v2.webm" type="video/webm">
+    <source src="https://storage.googleapis.com/web-dev-assets/macos-system-ui/system-ui_opsz_v2.mp4">
+  </video>
+</figure>
+<h3 id="grad"><code>GRAD</code> <a class="w-headline-link" href="#grad">#</a></h3>
+<p>Similar to weight, but without touching horizontal spacing. It accepts values between <code>400</code> and <code>1000</code>.</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token comment">/* 400-1000 */</span><br><span class="token property">font-variation-settings</span><span class="token punctuation">:</span> <span class="token string">'GRAD'</span> 500<span class="token punctuation">;</span></code></pre>
+</web-copy-code><figure class="w-figure">
+  <video playsinline controls autoplay loop muted class="w-screenshot">
+    <source src="https://storage.googleapis.com/web-dev-assets/macos-system-ui/system-ui_grad_v2.webm" type="video/webm">
+    <source src="https://storage.googleapis.com/web-dev-assets/macos-system-ui/system-ui_grad_v2.mp4">
+  </video>
+</figure>
+<h3 id="yaxs"><code>YAXS</code> <a class="w-headline-link" href="#yaxs">#</a></h3>
+<p>Stretches the glyph vertically. It accepts values between <code>400</code> and <code>1000</code>.</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token comment">/* 400-1000 */</span><br><span class="token property">font-variation-settings</span><span class="token punctuation">:</span> <span class="token string">'YAXS'</span> 500<span class="token punctuation">;</span></code></pre>
+</web-copy-code><figure class="w-figure">
+  <video playsinline controls autoplay loop muted class="w-screenshot">
+    <source src="https://storage.googleapis.com/web-dev-assets/macos-system-ui/system-ui_yaxs_v2.webm" type="video/webm">
+    <source src="https://storage.googleapis.com/web-dev-assets/macos-system-ui/system-ui_yaxs_v2.mp4">
+  </video>
+</figure>
+<h3 id="combining-the-options">Combining the options <a class="w-headline-link" href="#combining-the-options">#</a></h3>
+<p>With a few lines of CSS, we can tweak the font settings into a bold of our choice or try out other interesting combinations:</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token property">font-weight</span><span class="token punctuation">:</span> 700<span class="token punctuation">;</span><br><span class="token property">font-weight</span><span class="token punctuation">:</span> bold<span class="token punctuation">;</span><br><span class="token property">font-variation-settings</span><span class="token punctuation">:</span> <span class="token string">'wght'</span> 750<span class="token punctuation">,</span> <span class="token string">'YAXS'</span> 600<span class="token punctuation">,</span> <span class="token string">'GRAD'</span> 500<span class="token punctuation">,</span> <span class="token string">'opsz'</span> 20<span class="token punctuation">;</span></code></pre>
+</web-copy-code><figure class="w-figure">
+  <video playsinline controls autoplay loop muted class="w-screenshot">
+    <source src="https://storage.googleapis.com/web-dev-assets/macos-system-ui/system-ui_combined_v2.webm" type="video/webm">
+    <source src="https://storage.googleapis.com/web-dev-assets/macos-system-ui/system-ui_combined_v2.mp4">
+  </video>
+</figure>
+<p>And just like that, Chromium users on macOS see your upgraded, custom 750 weight with some fun other tweaks 👍</p>
+<h2 id="playground">Playground <a class="w-headline-link" href="#playground">#</a></h2>
+<p>Click <strong>Remix to Edit</strong> in the Glitch below to get an editable copy of the Glitch, and then edit the new <code>font-variation-settings</code> options to see how it affects your font. Remember that this Glitch will only work if you're using a macOS Catalina device.</p>
+<div class="glitch-embed-wrap" style="height: 480px; width: 100%;">
+  <iframe
+    allow="camera; clipboard-read; clipboard-write; encrypted-media; geolocation; microphone; midi"
+    loading="lazy"
+    src="https://glitch.com/embed/#!/embed/macos-system-ui?attributionHidden=true&sidebarCollapsed=true&path=style.css&previewSize=50"
+    style="height: 100%; width: 100%; border: 0;"
+    title="macos-system-ui on Glitch"
+  ></iframe>
+</div>
+<p>macOS 10.15 added new features to its system font, and in macOS 10.15 a tricky <code>system-ui</code> bug was logged in the Chromium bug tracker. I wonder if they are related!?</p>
+<div role="banner" class="w-banner w-banner--neutral w-banner--body">
+  The image for this article was made with CSS and <code>system-ui</code>. Here's the <a href="https://codepen.io/argyleink/pen/eYpbwWd">codepen</a>.
+</div>
+<h2 id="regression">Appendix: The <code>system-ui</code> regression <a class="w-headline-link" href="#regression">#</a></h2>
+<div class="w-aside w-aside--note">
+<p>The rest of this blog post explains how <code>system-ui</code> broke in Chromium 80 and how the Chromium engineers fixed it. If this isn't interesting or relevant for you, you can stop reading now.</p>
+</div>
+<p>This story starts with a different bug: <a href="https://crbug.com/1005969" rel="noopener">#1005969</a>. This was reported against macOS 10.15 because the <code>system-ui</code> font spacing looked narrow and crammed.</p>
+<figure class="w-figure">
+  <img     alt="A comparison of two paragraphs from a Facebook group page. On the left is Chrome and the right is Safari, and Chrome is subtle but slightly tighter in spacing"          decoding="async"     height="417"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/f0xi5DBj1M6v72VcKNUx.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/f0xi5DBj1M6v72VcKNUx.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/f0xi5DBj1M6v72VcKNUx.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/f0xi5DBj1M6v72VcKNUx.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/f0xi5DBj1M6v72VcKNUx.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/f0xi5DBj1M6v72VcKNUx.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/f0xi5DBj1M6v72VcKNUx.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/f0xi5DBj1M6v72VcKNUx.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/f0xi5DBj1M6v72VcKNUx.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/f0xi5DBj1M6v72VcKNUx.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/f0xi5DBj1M6v72VcKNUx.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/f0xi5DBj1M6v72VcKNUx.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/f0xi5DBj1M6v72VcKNUx.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/f0xi5DBj1M6v72VcKNUx.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/f0xi5DBj1M6v72VcKNUx.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/f0xi5DBj1M6v72VcKNUx.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/f0xi5DBj1M6v72VcKNUx.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/f0xi5DBj1M6v72VcKNUx.jpg?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">Chrome on left (tighter tracking), Safari on right (better optical spacing)</figcaption>
+</figure>
+<h3 id="background">Background <a class="w-headline-link" href="#background">#</a></h3>
+<p>Did you ever notice on macOS 10.14 how your paragraphs or headers &quot;snapped&quot; to a different looking font when the size went up or down?</p>
+<figure class="w-figure">
+  <video playsinline controls autoplay loop muted class="w-screenshot">
+    <source src="https://storage.googleapis.com/web-dev-assets/macos-system-ui/system-ui_20to19.webm" type="video/webm">
+    <source src="https://storage.googleapis.com/web-dev-assets/macos-system-ui/system-ui_20to19.mp4">
+  </video>
+</figure>
+<p>On Mojave (macOS 10.14), the <code>system-ui</code> font switched between two fonts depending on the target font size. When text was under <code>20px</code>, macOS used &quot;San Francisco Text&quot;. When text was <code>20px</code> or over, macOS used &quot;San Francisco Display&quot;. Optical sizing was built statically into two separate fonts.</p>
+<p>Catalina (macOS 10.15) shipped a new united variable font for San Francisco. No more managing &quot;Text&quot; and &quot;Display&quot;. It also gained the new variation setting <a href="#opsz"><code>opsz</code></a> described earlier.</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">h1</span> <span class="token punctuation">{</span><br>  <span class="token property">font-variation-settings</span><span class="token punctuation">:</span> <span class="token string">'opsz'</span> 20<span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>Unfortunately, the default <code>opsz</code> value in the new Catalina font is <code>20</code>, and Chromium engineers were not prepared to apply <code>opsz</code> to the system font. This led to smaller sizes displaying too narrow.</p>
+<p>To fix that, Chromium needed to apply <code>opsz</code> correctly to the system font. This led to <a href="https://crbug.com/1005969" rel="noopener">Issue #1005969</a> getting fixed. Victory! Or was it…?</p>
+<h3 id="not-done-yet">Not done yet <a class="w-headline-link" href="#not-done-yet">#</a></h3>
+<p>This is where it got tricky: Chromium applied <code>opsz</code> but something did not look right still. System fonts on Mac have an additional font table called <a href="https://developer.apple.com/fonts/TrueType-Reference-Manual/RM06/Chap6trak.html" rel="noopener"><code>trak</code></a>, which tweaks horizontal spacing. While working on the fix, Chromium engineers noticed that on macOS, when retrieving horizontal metrics from a <code>CTFontRef</code> object, the <code>trak</code> metrics were already getting factored into the metrics results. Chromium's shaping library <a href="https://github.com/harfbuzz/harfbuzz" rel="noopener"><code>HarfBuzz</code></a> needs metrics where the <code>trak</code> values are not yet factored in.</p>
+<figure class="w-figure">
+  <img     alt="A display of system-ui and all of it&#x27;s font weight and variations in a list. Half of them have no weight differences applied."          decoding="async"     height="481"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/rq7Vpi6ZfUzFNKEOVACk.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/rq7Vpi6ZfUzFNKEOVACk.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/rq7Vpi6ZfUzFNKEOVACk.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/rq7Vpi6ZfUzFNKEOVACk.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/rq7Vpi6ZfUzFNKEOVACk.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/rq7Vpi6ZfUzFNKEOVACk.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/rq7Vpi6ZfUzFNKEOVACk.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/rq7Vpi6ZfUzFNKEOVACk.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/rq7Vpi6ZfUzFNKEOVACk.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/rq7Vpi6ZfUzFNKEOVACk.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/rq7Vpi6ZfUzFNKEOVACk.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/rq7Vpi6ZfUzFNKEOVACk.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/rq7Vpi6ZfUzFNKEOVACk.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/rq7Vpi6ZfUzFNKEOVACk.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/rq7Vpi6ZfUzFNKEOVACk.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/rq7Vpi6ZfUzFNKEOVACk.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/rq7Vpi6ZfUzFNKEOVACk.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/rq7Vpi6ZfUzFNKEOVACk.jpg?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">Left: Bold weights applied to font sizes 19 and below. Right: Font sizes 20 and up lose bold styling</figcaption>
+</figure>
+<p>Internally, <a href="https://skia.org/" rel="noopener">Skia</a> (the graphics library, not the typeface of the same name) uses both the <code>CGFontRef</code> class from <a href="https://developer.apple.com/documentation/coregraphics" rel="noopener"><code>CoreGraphics</code></a> and the <code>CTFontRef</code> class from <a href="https://developer.apple.com/documentation/coretext" rel="noopener"><code>CoreText</code></a>. Due to required internal conversions between those objects (used for keeping backwards compatibility and accessing needed APIs on both classes), Skia would lose weight information in certain circumstances and bold fonts would stop working. This was tracked in <a href="https://crbug.com/1057654" rel="noopener">Issue #1057654</a>.</p>
+<p>Skia still needs to support macOS 10.11 because Chromium still supports it. On 10.11 the &quot;San Francisco Text&quot; and &quot;San Francisco Display&quot; fonts weren't even variable fonts. Rather, each was a family of separate fonts for every weight available. At some point their glyph IDs became out of sync with each other. So if Skia did text shaping (converting text into glyphs that can be drawn) with &quot;San Francisco Text&quot;, it would be gibberish if drawn with &quot;San Francisco Display&quot;, and vice versa. And even if Skia just asked for a different size macOS might switch to the other. It should be possible to always use one of the fonts and just scale it (using a matrix to scale it up instead of asking for a larger size) but <code>CoreText</code> has an issue where it will not scale sbix (color emoji) glyphs up (only down). It's a bit more complex than that. <code>CoreText</code> actually seems to cap the vertical extent after matrix application, which seems to be related to it not being able to draw emoji at 45 degree angles. In any event, if you want your emoji to be shown big, you need to make a copy of the font to get a big version.</p>
+<p>So in order to create copies of <code>CTFont</code> objects at different sizes internally while ensuring that the same underlying font data is used, Chromium pulled the <code>CGFont</code> off the <code>CTFont</code>, then made a new <code>CTFont</code> from the <code>CGFont</code> (<code>CGFont</code> objects are size independent, the magic switching happens at the <code>CoreText</code> level). This worked fine until 10.154. In 10.15 this round trip ended up losing too much information, resulting in the weight issue. <a href="https://github.com/flutter/flutter/issues/49492" rel="noopener">Flutter noticed the weight issue</a> and an alternate fix for resizing was made to create the new <code>CTFont</code> directly from the original <code>CTFont</code> while controlling the optical size directly using an old but undocumented attribute in <code>CoreText</code>. This keeps things working on 10.11 and fixes other issues (like explicitly setting the optical size to the default value).</p>
+<p>However, this preserves more of the <code>CoreText</code> 'magic' in the font. One of these seems to be that it still tweaks the glyph advances in some way other than just the <code>trak</code> table (the application of which Chromium was already trying to suppress through yet another undocumented attribute).</p>
+<p><code>CGFont</code> doesn't do any of this 'magic' so maybe Chromium could get the <code>CGFont</code> off the <code>CTFont</code> and just use it to get advances? Unfortunately this wouldn't work because <code>CoreText</code> is known to muck with fonts in other ways as well. For example, it makes small emoji slightly bigger than you actually requested (boosting their size a bit). <code>CGFont</code> doesn't know about this, so you'd end up with your sbix-based emoji too close to each other since you'd be measuring at one size but <code>CoreText</code> would draw them bigger by some amount. Chromium does want the <code>CTFont</code> advances, but it wants them without tracking, and preferably without any other mucking about.</p>
+<p>Since the fix for the spacing issue required a set of interconnected Blink and Skia fixes, the Chromium engineers could not &quot;just revert&quot; to fix the problem. The Chromium engineers also tried using a different build flag for changing a font-related codepath in Skia, which fixed the bold fonts problem, but regressed the spacing problem.</p>
+<h2 id="the-fix">The fix <a class="w-headline-link" href="#the-fix">#</a></h2>
+<p>In the end, of course Chromium wanted to fix both things. Chromium now resorts to using HarfBuzz built-in font OpenType font metrics functions for retrieving horizontal metrics directly from the binary data in the system font's font tables. Using this, Chromium is sidestepping <code>CoreText</code> and Skia when the font has a <code>trak</code> table (except when it's the emoji font).</p>
+<figure class="w-figure">
+  <img     alt="A display of system-ui and all of it&#x27;s font weight and variations in a list. The half previously not working looks great now."          decoding="async"     height="481"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/9KOCF5Gh0tEWETkmDEVo.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/9KOCF5Gh0tEWETkmDEVo.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/9KOCF5Gh0tEWETkmDEVo.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/9KOCF5Gh0tEWETkmDEVo.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/9KOCF5Gh0tEWETkmDEVo.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/9KOCF5Gh0tEWETkmDEVo.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/9KOCF5Gh0tEWETkmDEVo.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/9KOCF5Gh0tEWETkmDEVo.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/9KOCF5Gh0tEWETkmDEVo.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/9KOCF5Gh0tEWETkmDEVo.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/9KOCF5Gh0tEWETkmDEVo.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/9KOCF5Gh0tEWETkmDEVo.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/9KOCF5Gh0tEWETkmDEVo.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/9KOCF5Gh0tEWETkmDEVo.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/9KOCF5Gh0tEWETkmDEVo.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/9KOCF5Gh0tEWETkmDEVo.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/9KOCF5Gh0tEWETkmDEVo.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/9KOCF5Gh0tEWETkmDEVo.jpg?auto=format&w=1600 1600w"          width="800"   />
+</figure>
+<p>In the meantime there's still <a href="https://bugs.chromium.org/p/skia/issues/detail?id=10123" rel="noopener">Skia Issue #10123</a> to track fixing this fully in Skia, and to go back to using Skia to retrieve the system font metrics from there, instead of the current fix that goes through <code>HarfBuzz</code>.</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/css/">CSS</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/fonts/">Fonts</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>May 26, 2020</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/more-variable-font-options-in-chromium-83/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions="api"></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

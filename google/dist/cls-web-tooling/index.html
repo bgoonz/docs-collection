@@ -1,0 +1,819 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=e037f3df05632">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Evolving Cumulative Layout Shift in web tooling</title>
+<meta name="description" content="Starting today, a change to CLS has been rolled out across a number of Chrome's web tooling surfaces including Lighthouse, PageSpeed Insights, and Chrome UX Report. " />
+
+<link rel="canonical" href="https://web.dev/cls-web-tooling/" />
+
+<meta itemprop="name" content="Evolving Cumulative Layout Shift in web tooling" />
+<meta itemprop="description" content="Starting today, a change to CLS has been rolled out across a number of Chrome's web tooling surfaces including Lighthouse, PageSpeed Insights, and Chrome UX Report. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/ENrTmCSZl69N9gmf0twL.jpeg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/cls-web-tooling/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Evolving Cumulative Layout Shift in web tooling" />
+<meta property="og:description" content="Starting today, a change to CLS has been rolled out across a number of Chrome's web tooling surfaces including Lighthouse, PageSpeed Insights, and Chrome UX Report. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/ENrTmCSZl69N9gmf0twL.jpeg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="The Lighthouse Scoring Calculator" />
+<meta property="tag" content="web-vitals" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Evolving Cumulative Layout Shift in web tooling" />
+<meta name="twitter:description" content="Starting today, a change to CLS has been rolled out across a number of Chrome's web tooling surfaces including Lighthouse, PageSpeed Insights, and Chrome UX Report. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/ENrTmCSZl69N9gmf0twL.jpeg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=9a351bf402dbb', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=f8d46905ad781', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="The Lighthouse Scoring Calculator"     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/ENrTmCSZl69N9gmf0twL.jpeg?auto=format"     srcset="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/ENrTmCSZl69N9gmf0twL.jpeg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/ENrTmCSZl69N9gmf0twL.jpeg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/ENrTmCSZl69N9gmf0twL.jpeg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/ENrTmCSZl69N9gmf0twL.jpeg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/ENrTmCSZl69N9gmf0twL.jpeg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/ENrTmCSZl69N9gmf0twL.jpeg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/ENrTmCSZl69N9gmf0twL.jpeg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/ENrTmCSZl69N9gmf0twL.jpeg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/ENrTmCSZl69N9gmf0twL.jpeg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/ENrTmCSZl69N9gmf0twL.jpeg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/ENrTmCSZl69N9gmf0twL.jpeg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/ENrTmCSZl69N9gmf0twL.jpeg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/ENrTmCSZl69N9gmf0twL.jpeg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/ENrTmCSZl69N9gmf0twL.jpeg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/ENrTmCSZl69N9gmf0twL.jpeg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/ENrTmCSZl69N9gmf0twL.jpeg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/ENrTmCSZl69N9gmf0twL.jpeg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#evolving-cumulative-layout-shift-in-web-tooling" class="w-toc__header--link">
+        Evolving Cumulative Layout Shift in web tooling
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#rolling-out-the-windowing-adjustment-to-cls">Rolling out the windowing adjustment to CLS</a></li><li><a href="#"old"-cls">&quot;Old&quot; CLS</a></li><li><a href="#updating-the-cls-weighting-in-lighthouse">Updating the CLS weighting in Lighthouse</a></li><li><a href="#measuring-in-the-field-yourself">Measuring in the field yourself</a></li><li><a href="#additional-updates">Additional updates</a></li><li><a href="#conclusions">Conclusions</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@addyosmani | @egsweeny"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="evolving-cumulative-layout-shift-in-web-tooling" class="w-article-header__headline">Evolving Cumulative Layout Shift in web tooling</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          <p>Starting today, a change to CLS has been rolled out across a number of Chrome's web tooling surfaces including Lighthouse, PageSpeed Insights, and Chrome UX Report.</p>
+
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Jun 2, 2021</time>
+          
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/addyosmani/"><img     alt="Addy Osmani"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LJyNTOzyWbowv2mrlzPS.jpeg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LJyNTOzyWbowv2mrlzPS.jpeg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LJyNTOzyWbowv2mrlzPS.jpeg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LJyNTOzyWbowv2mrlzPS.jpeg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LJyNTOzyWbowv2mrlzPS.jpeg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LJyNTOzyWbowv2mrlzPS.jpeg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/addyosmani/">Addy Osmani</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/addyosmani"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/addyosmani">GitHub</a>
+      </li>
+      
+      
+    </ul>
+  </div>
+</div>
+          
+            <div class="w-author">
+  <a href="/authors/egsweeny/"><img     alt="Elizabeth Sweeny"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/IyB0bE6NGAvhRJkD6wRz.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/IyB0bE6NGAvhRJkD6wRz.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/IyB0bE6NGAvhRJkD6wRz.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/IyB0bE6NGAvhRJkD6wRz.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/IyB0bE6NGAvhRJkD6wRz.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/IyB0bE6NGAvhRJkD6wRz.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/egsweeny/">Elizabeth Sweeny</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/egsweeny"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/egsweeny">GitHub</a>
+      </li>
+      
+      
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>Today we would like to share how we are evolving measurement of the
+<a href="/cls">Cumulative Layout Shift</a> (CLS)
+metric across a number of Chrome's web tooling surfaces.
+For developers, these changes will better reflect the user-experience for
+<a href="/evolving-cls/">long-lived pages</a>
+(such as those with infinite scroll or single-page apps).
+These updates to CLS will be rolling out to tools including Lighthouse,
+PageSpeed Insights, and Chrome UX Report.</p>
+<p>We all wish we saw fewer layout shifts on the web.
+This is where the CLS metric has proved useful in measuring the visual stability of a web page.
+It helps to encourage sites to better set dimensions for content,
+such as images or ads,
+that may contribute to surprising jumps of content for their users.</p>
+<p>The metric is named &quot;cumulative&quot;
+because the score of each individual shift is summed throughout the lifespan of a page.
+While all layout shifts on the web cause poor user experiences,
+long-lived pages like Single-Page Apps (SPAs) or infinite scroll apps naturally accumulate more CLS over time.
+By capping the aggregation to the worst 'window' of shifts,
+CLS can now be more consistently measured regardless of session duration.</p>
+<p>As we announced in <a href="/evolving-cls/">Evolving the CLS metric</a>, we are adjusting the CLS metric to a
+<a href="/evolving-cls/">maximum session window with a 1 second gap, capped at 5 seconds</a>,
+this update better reflects the user experience for long lived pages.
+With this change in place,
+70% of origins should not expect to see any CLS change at the 75th percentile,
+and the remaining 30% of origins will see an improvement.</p>
+<h2 id="rolling-out-the-windowing-adjustment-to-cls">Rolling out the windowing adjustment to CLS <a class="w-headline-link" href="#rolling-out-the-windowing-adjustment-to-cls">#</a></h2>
+<p>We've talked about the updated CLS definition being a max session window with a 1 second gap,
+capped at 5 seconds. What does that mean for tools?</p>
+<p>Starting today,
+this change to CLS has been rolled out across a number of Chrome's web tooling surfaces including
+Lighthouse, PageSpeed Insights, and Chrome UX Report.
+Below you can see a summary of the CLS windowing adjustment rollout,
+as well as which tools still provide the ability to benchmark against the original implementation.</p>
+<div class="w-table-wrapper">
+  <table>
+    <thead>
+      <tr>
+        <th>Tool</th>
+        <th>CLS windowing adjustment  'live'</th>
+        <th>"Old" CLS Availability</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Lighthouse DevTools Panel</td>
+        <td>Canary channel, 2 June 2021</td>
+        <td>N/A</td>
+      </tr>
+      <tr>
+        <td><a href="https://developers.google.com/web/tools/lighthouse#cli">
+        Lighthouse CLI</a></td>
+        <td>v8, released 1 June 2021</td>
+        <td>Available as totalCumulativeLayoutShift in Lighthouse v8</td>
+      </tr>
+      <tr>
+        <td><a href="https://github.com/GoogleChrome/lighthouse-ci">Lighthouse CI</a></td>
+        <td>v0.7.3, 3 June 2021</td>
+        <td>N/A</td>
+      </tr>
+      <tr>
+        <td><a href="https://developers.google.com/speed/pagespeed/insights/">
+        PageSpeed Insights</a> (PSI)</td>
+        <td>1 June 2021</td>
+        <td>NA</td>
+      </tr>
+      <tr>
+        <td><a href="https://developers.google.com/speed/docs/insights/v5/get-started">
+        PSI API</a></td>
+        <td>1 June 2021</td>
+        <td>Available in the <code>lighthouseResult</code> as <code>totalCumulativeLayoutShift</code>. Not available in the field <code>loadingExperience</code> data</td>
+      </tr>
+      <tr>
+        <td><a href="https://web.dev/chrome-ux-report-bigquery/">
+        Chrome UX Report (CrUX) - BigQuery</a></td>
+        <td>202105 dataset, published 8 June 2021</td>
+        <td>Available as <code>experimental.uncapped_cumulative_layout_shift</code> through 202111</td>
+      </tr>
+      <tr>
+        <td><a href="https://developers.google.com/web/tools/chrome-user-experience-report/api/reference">
+        Chrome UX Report (CrUX) - API</a></td>
+        <td>1 June 2021</td>
+        <td>After 1 June 2021, available as
+        <code>experimental_uncapped_cumulative_layout_shift</code>
+        December 14th, 2021</td>
+      </tr>
+      <tr>
+    </tbody>
+  </table>
+</div>
+<p>Chrome DevTools will also be updated to support the windowing adjustment shortly. The update to CLS has also been made to <a href="https://search.google.com/search-console/about" rel="noopener">Search Console</a> and will be reflective from 1 June, 2021.</p>
+<p>For most developers,
+this change is expected to happen seamlessly with no action needed to take advantage of data from the fix.</p>
+<h2 id="&quot;old&quot;-cls">&quot;Old&quot; CLS <a class="w-headline-link" href="#&quot;old&quot;-cls">#</a></h2>
+<p>As a reminder, the &quot;old&quot; CLS measures layout shift over the entire lifespan of the page. As some developers may wish to monitor the older definition of CLS alongside the windowing-adjustment,
+we have good news to share: we are exposing &quot;old CLS&quot; in Lighthouse and CrUX.</p>
+<p>In Lighthouse v8,
+it's available in the JSON as
+<code>audits['cumulative-layout-shift'].details.items[0].totalCumulativeLayoutShift</code>.</p>
+<p>You'll find it as
+<code>experimental_uncapped_cumulative_layout_shift</code>
+in the CrUX API and as
+<code>experimental.uncapped_cumulative_layout_shift</code> in CrUX BigQuery.</p>
+<p>After June 1st,
+<a href="https://developers.google.com/web/tools/chrome-user-experience-report/api/reference/rest/v1/records/queryRecord?apix_params=%7B%22resource%22%3A%7B%22origin%22%3A%22https%3A%2F%2Fweb.dev%22%2C%22metrics%22%3A%5B%22experimental_uncapped_cumulative_layout_shift%22%5D%7D%7D" rel="noopener">the following CrUX API request</a>
+will return the &quot;old CLS&quot; metric:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token punctuation">{</span><br>  <span class="token string">"origin"</span><span class="token operator">:</span> <span class="token string">"https://web.dev"</span><span class="token punctuation">,</span><br>  <span class="token string">"metrics"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token string">"experimental_uncapped_cumulative_layout_shift"</span><br>  <span class="token punctuation">]</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>After June 8, the following
+<a href="https://developers.google.com/web/tools/chrome-user-experience-report/bigquery/getting-started" rel="noopener">CrUX BigQuery</a>
+will compare old and new CLS:</p>
+<web-copy-code><pre class="language-sql"><code class="language-sql"><span class="token keyword">WITH</span><br>  new_data <span class="token keyword">AS</span> <span class="token punctuation">(</span><br>  <span class="token keyword">SELECT</span><br>    cls<br>  <span class="token keyword">FROM</span><br>    <span class="token punctuation">`</span>chrome<span class="token operator">-</span>ux<span class="token operator">-</span>report<span class="token punctuation">.</span><span class="token keyword">all</span><span class="token number">.202105</span><span class="token punctuation">`</span><span class="token punctuation">,</span><br>    UNNEST<span class="token punctuation">(</span>layout_instability<span class="token punctuation">.</span>cumulative_layout_shift<span class="token punctuation">.</span>histogram<span class="token punctuation">.</span>bin<span class="token punctuation">)</span> <span class="token keyword">AS</span> cls<br>  <span class="token keyword">WHERE</span><br>    origin <span class="token operator">=</span> <span class="token string">'https://web.dev'</span><br>    <span class="token operator">AND</span> effective_connection_type<span class="token punctuation">.</span>name <span class="token operator">=</span> <span class="token string">'4G'</span><br>    <span class="token operator">AND</span> form_factor<span class="token punctuation">.</span>name <span class="token operator">=</span> <span class="token string">'phone'</span><span class="token punctuation">)</span><span class="token punctuation">,</span><br>  old_data <span class="token keyword">AS</span> <span class="token punctuation">(</span><br>  <span class="token keyword">SELECT</span><br>    uncapped_cls<br>  <span class="token keyword">FROM</span><br>    <span class="token punctuation">`</span>chrome<span class="token operator">-</span>ux<span class="token operator">-</span>report<span class="token punctuation">.</span><span class="token keyword">all</span><span class="token number">.202105</span><span class="token punctuation">`</span><span class="token punctuation">,</span><br>    UNNEST<span class="token punctuation">(</span>experimental<span class="token punctuation">.</span>uncapped_cumulative_layout_shift<span class="token punctuation">.</span>histogram<span class="token punctuation">.</span>bin<span class="token punctuation">)</span> <span class="token keyword">AS</span> uncapped_cls<br>  <span class="token keyword">WHERE</span><br>    origin <span class="token operator">=</span> <span class="token string">'https://web.dev'</span><br>    <span class="token operator">AND</span> effective_connection_type<span class="token punctuation">.</span>name <span class="token operator">=</span> <span class="token string">'4G'</span><br>    <span class="token operator">AND</span> form_factor<span class="token punctuation">.</span>name <span class="token operator">=</span> <span class="token string">'phone'</span><span class="token punctuation">)</span><br><span class="token keyword">SELECT</span><br>  cls<span class="token punctuation">.</span><span class="token keyword">start</span> <span class="token keyword">AS</span> <span class="token keyword">start</span><span class="token punctuation">,</span><br>  cls<span class="token punctuation">.</span><span class="token punctuation">`</span><span class="token keyword">END</span><span class="token punctuation">`</span> <span class="token keyword">AS</span> <span class="token punctuation">`</span><span class="token keyword">end</span><span class="token punctuation">`</span><span class="token punctuation">,</span><br>  cls<span class="token punctuation">.</span>density <span class="token keyword">AS</span> cls_density<span class="token punctuation">,</span><br>  uncapped_cls<span class="token punctuation">.</span>density <span class="token keyword">AS</span> uncapped_cls_density<br><span class="token keyword">FROM</span><br>  new_data<br><span class="token keyword">INNER</span> <span class="token keyword">JOIN</span><br>  old_data<br><span class="token keyword">ON</span><br>  new_data<span class="token punctuation">.</span>cls<span class="token punctuation">.</span><span class="token keyword">start</span> <span class="token operator">=</span> old_data<span class="token punctuation">.</span>uncapped_cls<span class="token punctuation">.</span><span class="token keyword">start</span></code></pre>
+</web-copy-code><p>You will be able to continue relying on this data to be present for a period of up to 6 months,
+with &quot;old CLS&quot; being retired on December 14th, 2021.</p>
+<h2 id="updating-the-cls-weighting-in-lighthouse">Updating the CLS weighting in Lighthouse <a class="w-headline-link" href="#updating-the-cls-weighting-in-lighthouse">#</a></h2>
+<p>When CLS was first introduced in Lighthouse,
+it was a brand new sparkly metric.
+As such, in order to make sure developers had time to test, benchmark,
+and optimize against it, CLS was weighed less heavily in the performance score.</p>
+<p>Now, after having had some time in the hands of developers,
+the Lighthouse score has increased the weight of CLS from 5% to 15%,
+consistent with the methodology of having Core Web Vitals
+be the most heavily weighted metrics in the Lighthouse score.</p>
+<p>You can find the updated weightings of metrics in Lighthouse v8 in the
+<a href="https://googlechrome.github.io/lighthouse/scorecalc/" rel="noopener">scoring calculator</a>.</p>
+<img     alt="Lighthouse scoring calculator"          decoding="async"     height="405"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/ZDZVuXt6QqfXtxkpXcPGfnygYjd2/UAslFmRMON2y5qtY1TZE.png?auto=format"     srcset="https://web-dev.imgix.net/image/ZDZVuXt6QqfXtxkpXcPGfnygYjd2/UAslFmRMON2y5qtY1TZE.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/ZDZVuXt6QqfXtxkpXcPGfnygYjd2/UAslFmRMON2y5qtY1TZE.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/ZDZVuXt6QqfXtxkpXcPGfnygYjd2/UAslFmRMON2y5qtY1TZE.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/ZDZVuXt6QqfXtxkpXcPGfnygYjd2/UAslFmRMON2y5qtY1TZE.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/ZDZVuXt6QqfXtxkpXcPGfnygYjd2/UAslFmRMON2y5qtY1TZE.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/ZDZVuXt6QqfXtxkpXcPGfnygYjd2/UAslFmRMON2y5qtY1TZE.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/ZDZVuXt6QqfXtxkpXcPGfnygYjd2/UAslFmRMON2y5qtY1TZE.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/ZDZVuXt6QqfXtxkpXcPGfnygYjd2/UAslFmRMON2y5qtY1TZE.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/ZDZVuXt6QqfXtxkpXcPGfnygYjd2/UAslFmRMON2y5qtY1TZE.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/ZDZVuXt6QqfXtxkpXcPGfnygYjd2/UAslFmRMON2y5qtY1TZE.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/ZDZVuXt6QqfXtxkpXcPGfnygYjd2/UAslFmRMON2y5qtY1TZE.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/ZDZVuXt6QqfXtxkpXcPGfnygYjd2/UAslFmRMON2y5qtY1TZE.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/ZDZVuXt6QqfXtxkpXcPGfnygYjd2/UAslFmRMON2y5qtY1TZE.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/ZDZVuXt6QqfXtxkpXcPGfnygYjd2/UAslFmRMON2y5qtY1TZE.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/ZDZVuXt6QqfXtxkpXcPGfnygYjd2/UAslFmRMON2y5qtY1TZE.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/ZDZVuXt6QqfXtxkpXcPGfnygYjd2/UAslFmRMON2y5qtY1TZE.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/ZDZVuXt6QqfXtxkpXcPGfnygYjd2/UAslFmRMON2y5qtY1TZE.png?auto=format&w=1600 1600w"          width="800"   />
+<p>Lighthouse 8.0's CLS implementation includes both windowing and CLS contribution from subframes. Prior to 8.0, CLS in Lighthouse didn't include subframes' CLS in the metric calculation, but now does. And just for confirmation, field CLS measured by CrUX also handles windowing and subframes similarly.</p>
+<p>Still, the primary difference between lab and field CLS is that lab CLS's window of observation ends at &quot;fully loaded&quot; as determined under lab conditions, whereas in the field, the window of observation extends to the entire page lifetime, including post-load activity. That said, the windowing adjustment does mitigate this difference substantially.</p>
+<h2 id="measuring-in-the-field-yourself">Measuring in the field yourself <a class="w-headline-link" href="#measuring-in-the-field-yourself">#</a></h2>
+<p>Should you wish to measure the latest CLS implementation,
+you can also record this for your field data via RUM using the <a href="/cls/#measure-cls-in-javascript">following</a> PerformanceObserver snippet.</p>
+<p>Or by relying directly on the
+<a href="https://github.com/GoogleChrome/web-vitals" rel="noopener">Web Vitals JavaScript library</a>,
+which has also been updated with this change.</p>
+<h2 id="additional-updates">Additional updates <a class="w-headline-link" href="#additional-updates">#</a></h2>
+<p>Outside of the updates to Cumulative Layout Shift,
+the following metrics-related updates have also been made to our web tooling:</p>
+<ul>
+<li>We're updating to
+<a href="https://chromium.googlesource.com/chromium/src/+/refs/heads/main/docs/speed/metrics_changelog/2020_11_lcp.md" rel="noopener">the most recent definition of the Largest Contentful Paint metric</a>.
+CrUX API, PSI, PSI API, Search Console will update on June 1, 2021. CrUX BigQuery will update on June 8, 2021.</li>
+<li>In CrUX, First Contentful Paint tri-binning thresholds have been updated to be,
+Good: [0-1.8s], Needs Improvement: (1.8s-3s), Poor: [3s-∞]</li>
+</ul>
+<h2 id="conclusions">Conclusions <a class="w-headline-link" href="#conclusions">#</a></h2>
+<p>We expect this change to reflect a smooth transition for most sites and encourage you to check out
+<a href="/vitals/">Web Vitals</a> and
+<a href="optimize-cls">Optimize CLS</a>
+for tips and tricks on how to measure and optimize your layout shifts away.
+As always, feel free to reach out on the
+<a href="https://groups.google.com/g/web-vitals-feedback" rel="noopener">web-vitals-feedback group</a>
+for feedback about the metrics and our tooling specific feedback forums for
+<a href="https://github.com/GoogleChrome/lighthouse" rel="noopener">Lighthouse</a>, and
+<a href="https://groups.google.com/a/chromium.org/g/chrome-ux-report" rel="noopener">Chrome UX Report</a>
+for tooling issues. Cheers!</p>
+<p><em>With thanks to Johannes Henkel, Rick Viscomi, Vivek Sekhar, Rachel Andrew, Milica Mihajlija, Jeff Jose and Paul Irish for their feedback.</em></p>
+<p><em>Hero image by Barn Images / @barnimages on <a href="https://unsplash.com/photos/t5YUoHW6zRo" rel="noopener">Unsplash</a></em></p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/web-vitals/">Web Vitals</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Jun 2, 2021</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/cls-web-tooling/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

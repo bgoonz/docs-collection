@@ -1,0 +1,876 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=b704725f68389">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Video processing with WebCodecs</title>
+<meta name="description" content="Work with components of a video stream, such as frames and unmuxed chunks of encoded video or audio. " />
+
+<link rel="canonical" href="https://web.dev/webcodecs/" />
+
+<meta itemprop="name" content="Video processing with WebCodecs" />
+<meta itemprop="description" content="Work with components of a video stream, such as frames and unmuxed chunks of encoded video or audio. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/I09h0la9qLPSRLZs1ruB.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/webcodecs/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Video processing with WebCodecs" />
+<meta property="og:description" content="Work with components of a video stream, such as frames and unmuxed chunks of encoded video or audio. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/I09h0la9qLPSRLZs1ruB.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="A roll of film." />
+<meta property="tag" content="media" />
+<meta property="tag" content="video" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Video processing with WebCodecs" />
+<meta name="twitter:description" content="Work with components of a video stream, such as frames and unmuxed chunks of encoded video or audio. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/I09h0la9qLPSRLZs1ruB.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=5ff92c1efe32', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=85fe80da0755e', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="A roll of film."     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/I09h0la9qLPSRLZs1ruB.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/I09h0la9qLPSRLZs1ruB.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/I09h0la9qLPSRLZs1ruB.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/I09h0la9qLPSRLZs1ruB.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/I09h0la9qLPSRLZs1ruB.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/I09h0la9qLPSRLZs1ruB.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/I09h0la9qLPSRLZs1ruB.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/I09h0la9qLPSRLZs1ruB.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/I09h0la9qLPSRLZs1ruB.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/I09h0la9qLPSRLZs1ruB.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/I09h0la9qLPSRLZs1ruB.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/I09h0la9qLPSRLZs1ruB.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/I09h0la9qLPSRLZs1ruB.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/I09h0la9qLPSRLZs1ruB.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/I09h0la9qLPSRLZs1ruB.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/I09h0la9qLPSRLZs1ruB.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/I09h0la9qLPSRLZs1ruB.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/I09h0la9qLPSRLZs1ruB.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#video-processing-with-webcodecs" class="w-toc__header--link">
+        Video processing with WebCodecs
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#status">Current status</a></li><li><a href="#video-processing-workflow">Video processing workflow</a></li><li><a href="#webcodecs-in-action">WebCodecs in action</a></li><li><a href="#encoding">Encoding</a></li><li><a href="#decoding">Decoding</a></li><li><a href="#demo">Demo</a></li><li><a href="#feature-detection">Feature detection</a></li><li><a href="#use">Using the WebCodecs API</a></li><li><a href="#enabling-via-a-command-line-flag">Enabling via a command line flag</a></li><li><a href="#enabling-support-during-the-origin-trial-phase">Enabling support during the origin trial phase</a></li><li><a href="#ot">Register for the origin trial</a></li><li><a href="#feedback">Feedback</a></li><li><a href="#tell-us-about-the-api-design">Tell us about the API design</a></li><li><a href="#report-a-problem-with-the-implementation">Report a problem with the implementation</a></li><li><a href="#show-support-for-the-api">Show support for the API</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="i18n.authors.djuffin.title"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="video-processing-with-webcodecs" class="w-article-header__headline">Video processing with WebCodecs</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          Manipulating video stream components.
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Oct 13, 2020</time>
+           <span class="w-author__separator">•</span> Updated <time>Oct 16, 2020</time> 
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/djuffin/"><img     alt="Eugene Zemtsov"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/MWYHP293xzaBdw30G3Ts.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/MWYHP293xzaBdw30G3Ts.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/MWYHP293xzaBdw30G3Ts.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/MWYHP293xzaBdw30G3Ts.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/MWYHP293xzaBdw30G3Ts.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/MWYHP293xzaBdw30G3Ts.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/djuffin/">Eugene Zemtsov</a>
+    </cite>
+    <ul class="w-author__link-list">
+      
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/djuffin">GitHub</a>
+      </li>
+      
+      
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>Modern web technologies provide ample ways to work with video.
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/MediaStream_Recording_API" rel="noopener">Media Stream API</a>,
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/MediaStream_Recording_API" rel="noopener">Media Recording API</a>,
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/Media_Source_Extensions_API" rel="noopener">Media Source API</a>,
+and <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API" rel="noopener">WebRTC API</a> add up
+to a rich tool set for recording, transferring, and playing video streams.
+While solving certain high-level tasks, these APIs don't let web
+programmers work with individual components of a video stream such as frames
+and unmuxed chunks of encoded video or audio.
+To get low-level access to these basic components, developers have been using
+WebAssembly to bring <a href="https://en.wikipedia.org/wiki/Video_codec" rel="noopener">video and audio
+codecs</a> into the browser. But given
+that modern browsers already ship with a variety of codecs (which are often
+accelerated by hardware), repackaging them as WebAssembly seems like a waste of
+human and computer resources.</p>
+<p><a href="https://wicg.github.io/web-codecs/" rel="noopener">WebCodecs API</a> eliminates this inefficiency
+by giving programmers a way to use media components that are already present in
+the browser. Specifically:</p>
+<ul>
+<li>Video and audio decoders</li>
+<li>Video and audio encoders</li>
+<li>Raw video frames</li>
+<li>Image decoders</li>
+</ul>
+<p>The WebCodecs API is useful for web applications that require full control over the
+way media content is processed, such as video editors, video conferencing, video
+streaming, etc.</p>
+<h2 id="status">Current status <a class="w-headline-link" href="#status">#</a></h2>
+<div class="w-table-wrapper">
+<div class="w-table-wrapper">
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Create explainer</td>
+<td><a href="https://github.com/WICG/web-codecs/blob/master/explainer.md" rel="noopener">Complete</a></td>
+</tr>
+<tr>
+<td>2. Create initial draft of specification</td>
+<td><a href="https://wicg.github.io/web-codecs/" rel="noopener">Complete</a></td>
+</tr>
+<tr>
+<td><strong>3. Gather feedback &amp; iterate on design</strong></td>
+<td><a href="#feedback"><strong>In Progress</strong></a></td>
+</tr>
+<tr>
+<td><strong>4. Origin trial</strong></td>
+<td><a href="#ot"><strong>In Progress</strong></a></td>
+</tr>
+<tr>
+<td>5. Launch</td>
+<td>Not started</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<h2 id="video-processing-workflow">Video processing workflow <a class="w-headline-link" href="#video-processing-workflow">#</a></h2>
+<p>Frames are the centerpiece in video processing. Thus in WebCodecs most classes
+either consume or produce frames. Video encoders convert frames into encoded
+chunks. Video decoders do the opposite. Track readers turn video tracks into a
+sequence of frames. By design all these transformations happen asynchronously.
+WebCodecs API tries to keep the web responsive by keeping the heavy lifting of
+video processing off the main thread.</p>
+<p>Currently in WebCodecs the only way to show a frame on the page is to convert it
+into an
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/ImageBitmap" rel="noopener"><code>ImageBitmap</code></a>
+and either draw the bitmap on a canvas or convert it into a
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/WebGLTexture" rel="noopener"><code>WebGLTexture</code></a>.</p>
+<h2 id="webcodecs-in-action">WebCodecs in action <a class="w-headline-link" href="#webcodecs-in-action">#</a></h2>
+<h3 id="encoding">Encoding <a class="w-headline-link" href="#encoding">#</a></h3>
+<p>It all starts with a <code>VideoFrame</code>. There are two ways to convert existing
+pictures into <code>VideoFrame</code> objects.</p>
+<p>The first is to create a frame directly from an
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/ImageBitmap" rel="noopener"><code>ImageBitmap</code></a>.
+Just call the <code>VideoFrame()</code> constructor and give it a bitmap and a presentation
+timestamp.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">let</span> cnv <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">createElement</span><span class="token punctuation">(</span><span class="token string">'canvas'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token comment">// draw something on the canvas</span><br>…<br><span class="token keyword">let</span> bitmap <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">createImageBitmap</span><span class="token punctuation">(</span>cnv<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token keyword">let</span> frame_from_bitmap <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">VideoFrame</span><span class="token punctuation">(</span>bitmap<span class="token punctuation">,</span> <span class="token punctuation">{</span> timestamp<span class="token operator">:</span> <span class="token number">0</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><figure class="w-figure">
+  <img     alt="The path from ImageBitmap to the network or to storage."          decoding="async"     height="291"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/7LNdjNlwCUB1csF9DDl8.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/7LNdjNlwCUB1csF9DDl8.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/7LNdjNlwCUB1csF9DDl8.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/7LNdjNlwCUB1csF9DDl8.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/7LNdjNlwCUB1csF9DDl8.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/7LNdjNlwCUB1csF9DDl8.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/7LNdjNlwCUB1csF9DDl8.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/7LNdjNlwCUB1csF9DDl8.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/7LNdjNlwCUB1csF9DDl8.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/7LNdjNlwCUB1csF9DDl8.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/7LNdjNlwCUB1csF9DDl8.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/7LNdjNlwCUB1csF9DDl8.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/7LNdjNlwCUB1csF9DDl8.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/7LNdjNlwCUB1csF9DDl8.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/7LNdjNlwCUB1csF9DDl8.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/7LNdjNlwCUB1csF9DDl8.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/7LNdjNlwCUB1csF9DDl8.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/7LNdjNlwCUB1csF9DDl8.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">The path from <code>ImageBitmap</code> to the network or to storage.</figcaption>
+</figure>
+<p>The second is to use <code>VideoTrackReader</code> to set a function that will be called
+each time a new frame appears in a
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack" rel="noopener"><code>MediaStreamTrack</code></a>.
+This is useful when you need to capture a video stream from a camera or the
+screen.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">let</span> frames_from_stream <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span><br><span class="token keyword">let</span> stream <span class="token operator">=</span> <span class="token keyword">await</span> navigator<span class="token punctuation">.</span>mediaDevices<span class="token punctuation">.</span><span class="token function">getUserMedia</span><span class="token punctuation">(</span><span class="token punctuation">{</span> … <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token keyword">let</span> vtr <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">VideoTrackReader</span><span class="token punctuation">(</span>stream<span class="token punctuation">.</span><span class="token function">getVideoTracks</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>vtr<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">frame</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  frames_from_stream<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>frame<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><figure class="w-figure">
+  <img     alt="The path from MediaStreamTrack to the network or to storage."          decoding="async"     height="389"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/f3IxThFMnEnfj4aBExHk.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/f3IxThFMnEnfj4aBExHk.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/f3IxThFMnEnfj4aBExHk.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/f3IxThFMnEnfj4aBExHk.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/f3IxThFMnEnfj4aBExHk.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/f3IxThFMnEnfj4aBExHk.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/f3IxThFMnEnfj4aBExHk.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/f3IxThFMnEnfj4aBExHk.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/f3IxThFMnEnfj4aBExHk.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/f3IxThFMnEnfj4aBExHk.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/f3IxThFMnEnfj4aBExHk.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/f3IxThFMnEnfj4aBExHk.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/f3IxThFMnEnfj4aBExHk.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/f3IxThFMnEnfj4aBExHk.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/f3IxThFMnEnfj4aBExHk.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/f3IxThFMnEnfj4aBExHk.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/f3IxThFMnEnfj4aBExHk.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/f3IxThFMnEnfj4aBExHk.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">The path from <code>MediaStreamTrack</code> to the network or to storage.</figcaption>
+</figure>
+<p>No matter where they are coming from, frames can be encoded into
+<code>EncodedVideoChunk</code> objects with a <code>VideoEncoder</code>.</p>
+<p>Before encoding, <code>VideoEncoder</code> needs to be given two JavaScript objects:</p>
+<ul>
+<li>Init dictionary with two functions for handling encoded chunks and
+errors. These functions are developer-defined and can't be changed after
+they're passed to the <code>VideoEncoder</code> constructor.</li>
+<li>Encoder configuration object, which contains parameters for the output
+video stream. You can change these parameters later  by calling <code>configure()</code>.</li>
+</ul>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> init <span class="token operator">=</span> <span class="token punctuation">{</span><br>  output<span class="token operator">:</span> handleChunk<span class="token punctuation">,</span><br>  <span class="token function-variable function">error</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token parameter">e</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>e<span class="token punctuation">.</span>message<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span><br><br><span class="token keyword">let</span> config <span class="token operator">=</span> <span class="token punctuation">{</span><br>  codec<span class="token operator">:</span> <span class="token string">'vp8'</span><span class="token punctuation">,</span><br>  width<span class="token operator">:</span> <span class="token number">640</span><span class="token punctuation">,</span><br>  height<span class="token operator">:</span> <span class="token number">480</span><span class="token punctuation">,</span><br>  bitrate<span class="token operator">:</span> <span class="token number">8_000_000</span><span class="token punctuation">,</span>     <span class="token comment">// 8 Mbps</span><br>  framerate<span class="token operator">:</span> <span class="token number">30</span><span class="token punctuation">,</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span><br><br><span class="token keyword">let</span> encoder <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">VideoEncoder</span><span class="token punctuation">(</span>init<span class="token punctuation">)</span><span class="token punctuation">;</span><br>encoder<span class="token punctuation">.</span><span class="token function">configure</span><span class="token punctuation">(</span>config<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>After the encoder has been set up,  it's ready to start accepting frames. When
+frames are coming from a media stream, the callback given to <code>VideoTrackReader.start()</code> will pump frames into
+the encoder, periodically inserting
+<a href="https://en.wikipedia.org/wiki/Key_frame#Video_compression" rel="noopener">keyframes</a> and
+checking that the encoder is not overwhelmed with incoming frames.
+Both <code>configure()</code> and <code>encode()</code> return immediately without waiting for the
+actual work to complete. It allows several frames to queue for encoding at the
+same time. But it makes error reporting somewhat cumbersome. Errors are reported
+either by immediately throwing exceptions or by calling the <code>error()</code>
+callback. Some errors are easy to detect immediately, others become evident
+only during encoding. If encoding completes successfully the <code>output()</code>
+callback is called with a new encoded chunk as an argument.
+Another important detail here is that <code>encode()</code> consumes the frame, if the
+frame is needed later (for example, to encode with another encoder) it needs to
+be duplicated by calling <code>clone()</code>.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">let</span> frame_counter <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span><br><span class="token keyword">let</span> pending_outputs <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span><br><span class="token keyword">let</span> vtr <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">VideoTrackReader</span><span class="token punctuation">(</span>stream<span class="token punctuation">.</span><span class="token function">getVideoTracks</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>vtr<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">frame</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token keyword">if</span> <span class="token punctuation">(</span>pending_outputs <span class="token operator">></span> <span class="token number">30</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token comment">// Too many frames in flight, encoder is overwhelmed</span><br>    <span class="token comment">// let's drop this frame.</span><br>    <span class="token keyword">return</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br>  frame_counter<span class="token operator">++</span><span class="token punctuation">;</span><br>  pending_outputs<span class="token operator">++</span><span class="token punctuation">;</span><br>  <span class="token keyword">const</span> insert_keyframe <span class="token operator">=</span> <span class="token punctuation">(</span>frame_counter <span class="token operator">%</span> <span class="token number">150</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">;</span><br>  encoder<span class="token punctuation">.</span><span class="token function">encode</span><span class="token punctuation">(</span>frame<span class="token punctuation">,</span> <span class="token punctuation">{</span> keyFrame<span class="token operator">:</span> insert_keyframe <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>Finally it's time to finish encoding code by writing a function that handles
+chunks of encoded video as they come out of the encoder.
+Usually this function would be sending data chunks over the network or <a href="https://en.wikipedia.org/wiki/Multiplexing#Video_processing" rel="noopener">muxing
+</a>them into a media
+container for storage.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">handleChunk</span><span class="token punctuation">(</span><span class="token parameter">chunk</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Uint8Array</span><span class="token punctuation">(</span>chunk<span class="token punctuation">.</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">// actual bytes of encoded data</span><br>  <span class="token keyword">let</span> timestamp <span class="token operator">=</span> chunk<span class="token punctuation">.</span>timestamp<span class="token punctuation">;</span>        <span class="token comment">// media time in microseconds</span><br>  <span class="token keyword">let</span> is_key <span class="token operator">=</span> chunk<span class="token punctuation">.</span>type <span class="token operator">==</span> <span class="token string">'key'</span><span class="token punctuation">;</span>       <span class="token comment">// can also be 'delta'</span><br>  pending_outputs<span class="token operator">--</span><span class="token punctuation">;</span><br>  <span class="token function">fetch</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">/upload_chunk?timestamp=</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>timestamp<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">&amp;type=</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>chunk<span class="token punctuation">.</span>type<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">,</span><br>  <span class="token punctuation">{</span><br>    method<span class="token operator">:</span> <span class="token string">'POST'</span><span class="token punctuation">,</span><br>    headers<span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token string">'Content-Type'</span><span class="token operator">:</span> <span class="token string">'application/octet-stream'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span><br>    body<span class="token operator">:</span> data<br>  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>If at some point you'd need to make sure that all pending encoding requests have
+been completed, you can call <code>flush()</code> and wait for its promise.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">await</span> encoder<span class="token punctuation">.</span><span class="token function">flush</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><h3 id="decoding">Decoding <a class="w-headline-link" href="#decoding">#</a></h3>
+<p>Setting up a <code>VideoDecoder</code> is similar to what's been done for the
+<code>VideoEncoder</code>: two functions are passed when the decoder is created, and codec
+parameters are given to <code>configure()</code>. The set of codec parameters can vary from
+codec to codec, for example for H264 you currently need to specify a
+<a href="https://wicg.github.io/web-codecs/#dom-audiodecoderconfig-description" rel="noopener">binary blob</a>
+with AVCC extradata.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> init <span class="token operator">=</span> <span class="token punctuation">{</span><br>  output<span class="token operator">:</span> handleFrame<span class="token punctuation">,</span><br>  <span class="token function-variable function">error</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token parameter">e</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>e<span class="token punctuation">.</span>message<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span><br><br><span class="token keyword">const</span> config <span class="token operator">=</span> <span class="token punctuation">{</span><br>  codec<span class="token operator">:</span> <span class="token string">'vp8'</span><span class="token punctuation">,</span><br>  codedWidth<span class="token operator">:</span> <span class="token number">640</span><span class="token punctuation">,</span><br>  codedHeight<span class="token operator">:</span> <span class="token number">480</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span><br><br><span class="token keyword">let</span> decoder <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">VideoDecoder</span><span class="token punctuation">(</span>init<span class="token punctuation">)</span><span class="token punctuation">;</span><br>decoder<span class="token punctuation">.</span><span class="token function">configure</span><span class="token punctuation">(</span>config<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>Once the decoder is initialized, you can start feeding it with
+<code>EncodedVideoChunk</code> objects. Creating a chunk just takes a
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/BufferSource" rel="noopener"><code>BufferSource</code></a>of
+data and a frame timestamp in microseconds. Any chunks emitted by the encoder
+are ready for the decoder as is, although it's hard to imagine a real-world use
+case for decoding newly encoded chunks (except for the demo below). All of the things
+said above about the asynchronous nature of encoder's methods are equally true
+for decoders.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">let</span> responses <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">downloadVideoChunksFromServer</span><span class="token punctuation">(</span>timestamp<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> responses<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token keyword">let</span> chunk <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">EncodedVideoChunk</span><span class="token punctuation">(</span><span class="token punctuation">{</span><br>    timestamp<span class="token operator">:</span> responses<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>timestamp<span class="token punctuation">,</span><br>    data<span class="token operator">:</span> <span class="token keyword">new</span> <span class="token class-name">Uint8Array</span> <span class="token punctuation">(</span> responses<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>body <span class="token punctuation">)</span><br>  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  decoder<span class="token punctuation">.</span><span class="token function">decode</span><span class="token punctuation">(</span>chunk<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><br><span class="token keyword">await</span> decoder<span class="token punctuation">.</span><span class="token function">flush</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><figure class="w-figure">
+  <img     alt="The path from the network or storage to an ImageBitmap."          decoding="async"     height="295"          loading="lazy"     sizes="(min-width: 675px) 675px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/dOekoTYsgE2j6WrHi4TV.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/dOekoTYsgE2j6WrHi4TV.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/dOekoTYsgE2j6WrHi4TV.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/dOekoTYsgE2j6WrHi4TV.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/dOekoTYsgE2j6WrHi4TV.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/dOekoTYsgE2j6WrHi4TV.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/dOekoTYsgE2j6WrHi4TV.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/dOekoTYsgE2j6WrHi4TV.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/dOekoTYsgE2j6WrHi4TV.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/dOekoTYsgE2j6WrHi4TV.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/dOekoTYsgE2j6WrHi4TV.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/dOekoTYsgE2j6WrHi4TV.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/dOekoTYsgE2j6WrHi4TV.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/dOekoTYsgE2j6WrHi4TV.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/dOekoTYsgE2j6WrHi4TV.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/dOekoTYsgE2j6WrHi4TV.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/dOekoTYsgE2j6WrHi4TV.png?auto=format&w=1350 1350w"          width="675"   />
+  <figcaption class="w-figcaption">The path from the network or storage to an <code>ImageBitmap</code>.</figcaption>
+</figure>
+<p>Now it's time to show how a freshly decoded frame can be shown on the page. It's
+better to make sure that the decoder output callback  (<code>handleFrame()</code>)
+quickly returns. In the example below, it only adds a frame to the queue of
+frames ready for rendering.
+Rendering happens separately, and consists of three steps:</p>
+<ol>
+<li>Converting the <code>VideoFrame</code> into an
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/ImageBitmap" rel="noopener"><code>ImageBitmap</code></a>.</li>
+<li>Waiting for the right time to show the frame.</li>
+<li>Drawing the image on the canvas.</li>
+</ol>
+<p>Once a frame is no longer needed, call <code>destroy()</code> to release underlying memory
+before the garbage collector gets to it, this will reduce the average amount of
+memory used by the web application.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">let</span> cnv <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">'canvas_to_render'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token keyword">let</span> ctx <span class="token operator">=</span> cnv<span class="token punctuation">.</span><span class="token function">getContext</span><span class="token punctuation">(</span><span class="token string">'2d'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> alpha<span class="token operator">:</span> <span class="token boolean">false</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token keyword">let</span> ready_frames <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span><br><span class="token keyword">let</span> underflow <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span><br><span class="token keyword">let</span> time_base <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span><br><br><span class="token keyword">function</span> <span class="token function">handleFrame</span><span class="token punctuation">(</span><span class="token parameter">frame</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  ready_frames<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>frame<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token keyword">if</span> <span class="token punctuation">(</span>underflow<span class="token punctuation">)</span><br>    <span class="token function">setTimeout</span><span class="token punctuation">(</span>render_frame<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><br><br><span class="token keyword">function</span> <span class="token function">delay</span><span class="token punctuation">(</span><span class="token parameter">time_ms</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Promise</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">resolve</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>    <span class="token function">setTimeout</span><span class="token punctuation">(</span>resolve<span class="token punctuation">,</span> time_ms<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><br><br><span class="token keyword">function</span> <span class="token function">calculateTimeTillNextFrame</span><span class="token punctuation">(</span><span class="token parameter">timestamp</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token keyword">if</span> <span class="token punctuation">(</span>time_base <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span><br>    time_base <span class="token operator">=</span> performance<span class="token punctuation">.</span><span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token keyword">let</span> media_time <span class="token operator">=</span> performance<span class="token punctuation">.</span><span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> time_base<span class="token punctuation">;</span><br>  <span class="token keyword">return</span> Math<span class="token punctuation">.</span><span class="token function">max</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>timestamp <span class="token operator">/</span> <span class="token number">1000</span><span class="token punctuation">)</span> <span class="token operator">-</span> media_time<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><br><br><span class="token keyword">async</span> <span class="token keyword">function</span> <span class="token function">render_frame</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token keyword">if</span> <span class="token punctuation">(</span>ready_frames<span class="token punctuation">.</span>length <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    underflow <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span><br>    <span class="token keyword">return</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br>  <span class="token keyword">let</span> frame <span class="token operator">=</span> ready_frames<span class="token punctuation">.</span><span class="token function">shift</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  underflow <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span><br><br>  <span class="token keyword">let</span> bitmap <span class="token operator">=</span> <span class="token keyword">await</span> frame<span class="token punctuation">.</span><span class="token function">createImageBitmap</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token comment">// Based on the frame's timestamp calculate how much of real time waiting</span><br>  <span class="token comment">// is needed before showing the next frame.</span><br>  <span class="token keyword">let</span> time_till_next_frame <span class="token operator">=</span> <span class="token function">calculateTimeTillNextFrame</span><span class="token punctuation">(</span>frame<span class="token punctuation">.</span>timestamp<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token keyword">await</span> <span class="token function">delay</span><span class="token punctuation">(</span>time_till_next_frame<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  ctx<span class="token punctuation">.</span><span class="token function">drawImage</span><span class="token punctuation">(</span>bitmap<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>  <span class="token comment">// Immediately schedule rendering of the next frame</span><br>  <span class="token function">setTimeout</span><span class="token punctuation">(</span>render_frame<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  frame<span class="token punctuation">.</span><span class="token function">destroy</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><h2 id="demo">Demo <a class="w-headline-link" href="#demo">#</a></h2>
+<p>The demo below shows two canvases, the first one is animated at the refresh rate
+of your display, the second one shows a sequence of frames captured by
+<code>VideoTrackReader</code> at 30 FPS, encoded  and decoded using WebCodecs API.</p>
+<div class="glitch-embed-wrap" style="height: 420px; width: 100%;">
+  <iframe
+    allow="camera; clipboard-read; clipboard-write; encrypted-media; geolocation; microphone; midi"
+    loading="lazy"
+    src="https://glitch.com/embed/#!/embed/webcodecs-blogpost-demo?attributionHidden=true&sidebarCollapsed=true&previewSize=100"
+    style="height: 100%; width: 100%; border: 0;"
+    title="webcodecs-blogpost-demo on Glitch"
+  ></iframe>
+</div>
+<h2 id="feature-detection">Feature detection <a class="w-headline-link" href="#feature-detection">#</a></h2>
+<p>To check for WebCodecs support:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token string">'VideoEncoder'</span> <span class="token keyword">in</span> window<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token comment">// WebCodecs API is supported.</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><h2 id="use">Using the WebCodecs API <a class="w-headline-link" href="#use">#</a></h2>
+<h3 id="enabling-via-a-command-line-flag">Enabling via a command line flag <a class="w-headline-link" href="#enabling-via-a-command-line-flag">#</a></h3>
+<p>To experiment with the WebCodecs API locally on all desktop platforms, without an
+origin trial token, start Chrome with a command line flag:</p>
+<web-copy-code><pre class="language-bash"><code class="language-bash">--enable-blink-features<span class="token operator">=</span>WebCodecs</code></pre>
+</web-copy-code><h3 id="enabling-support-during-the-origin-trial-phase">Enabling support during the origin trial phase <a class="w-headline-link" href="#enabling-support-during-the-origin-trial-phase">#</a></h3>
+<p>The WebCodecs API is available on all desktop platforms (Chrome OS, Linux, macOS,
+and Windows) as an origin trial in Chrome 86. The origin trial is expected
+to end just before Chrome 88 moves to stable in February 2021. The API can
+also be enabled using a flag.</p>
+<p>Origin trials allow you to try new features and give feedback on their
+usability, practicality, and effectiveness to the web standards community. For
+more information, see the <a href="https://github.com/GoogleChrome/OriginTrials/blob/gh-pages/developer-guide.md" rel="noopener">Origin Trials Guide for Web Developers</a>.
+To sign up for this or another origin trial, visit the <a href="https://developers.chrome.com/origintrials/#/trials/active" rel="noopener">registration page</a>.</p>
+<h3 id="ot">Register for the origin trial <a class="w-headline-link" href="#ot">#</a></h3>
+<ol>
+<li><a href="https://developers.chrome.com/origintrials/#/view_trial/-7811493553674125311" rel="noopener">Request a token</a> for your origin.</li>
+<li>Add the token to your pages. There are two ways to do that:
+<ul>
+<li>Add an <code>origin-trial</code> <code>&lt;meta&gt;</code> tag to the head of each page. For example,
+this may look something like: <br>
+<code>&lt;meta http-equiv=&quot;origin-trial&quot; content=&quot;TOKEN_GOES_HERE&quot;&gt;</code></li>
+<li>If you can configure your server, you can also add the token
+using an <code>Origin-Trial</code> HTTP header. The resulting response header should
+look something like:<br>
+<code>Origin-Trial: TOKEN_GOES_HERE</code></li>
+</ul>
+</li>
+</ol>
+<h2 id="feedback">Feedback <a class="w-headline-link" href="#feedback">#</a></h2>
+<p>The Chrome team wants to hear about your experiences with the Idle Detection API.</p>
+<h3 id="tell-us-about-the-api-design">Tell us about the API design <a class="w-headline-link" href="#tell-us-about-the-api-design">#</a></h3>
+<p>Is there something about the API that doesn't work like you expected? Or are
+there missing methods or properties that you need to implement your idea? Have a
+question or comment on the security model? File a spec issue on the
+corresponding <a href="https://github.com/WICG/web-codecs/issues" rel="noopener">GitHub repo</a>, or add
+your thoughts to an existing issue.</p>
+<h3 id="report-a-problem-with-the-implementation">Report a problem with the implementation <a class="w-headline-link" href="#report-a-problem-with-the-implementation">#</a></h3>
+<p>Did you find a bug with Chrome's implementation? Or is the implementation
+different from the spec? File a bug at <a href="https://bugs.chromium.org/p/chromium/issues/entry?components=Blink%3EMedia%3EWebCodecs" rel="noopener">new.crbug.com</a>.
+Be sure to include as much detail as you can, simple instructions for
+reproducing, and enter <code>Blink&gt;Media&gt;WebCodecs</code> in the <strong>Components</strong> box.
+<a href="https://glitch.com/" rel="noopener">Glitch</a> works great for sharing quick and easy repros.</p>
+<h3 id="show-support-for-the-api">Show support for the API <a class="w-headline-link" href="#show-support-for-the-api">#</a></h3>
+<p>Are you planning to use the WebCodecs API? Your public support helps the
+Chrome team to prioritize features and shows other browser vendors how critical
+it is to support them.</p>
+<p>Send emails to <a href="mailto:media-dev@chromium.org" rel="noopener">media-dev@chromium.org</a> or send a tweet
+to [@ChromiumDev][cr-dev-twitter] using the hashtag
+<a href="https://twitter.com/search?q=%23WebCodecs&amp;src=typed_query&amp;f=live" rel="noopener"><code>#WebCodecs</code></a>
+and let us know where and how you're using it.</p>
+<p><a href="https://unsplash.com/photos/8eQOBtgn9Qo" rel="noopener">Hero image</a> by
+<a href="https://unsplash.com/@dmjdenise" rel="noopener">Denise Jans</a>
+on <a href="https://unsplash.com" rel="noopener">Unsplash</a>.</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/media/">Media</a>
+      
+    
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Oct 16, 2020</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/webcodecs/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions="api"></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

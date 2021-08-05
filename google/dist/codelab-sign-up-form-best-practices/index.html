@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="/css/main.css?v=f5021c2142162" />
+
+    <link
+      rel="preload"
+      as="font"
+      crossorigin
+      href="/fonts/material-icons/regular.woff2"
+    />
+
+    <link
+      rel="preload"
+      as="font"
+      crossorigin
+      href="/fonts/google-sans/regular/latin.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      crossorigin
+      href="/fonts/google-sans/bold/latin.woff2"
+    />
+
+    <meta name="theme-color" content="#fff" />
+
+    <title>Sign-up form best practices codelab</title>
+    <meta
+      name="description"
+      content="Use cross-platform browser features to build a simple sign-up form that's secure, accessible, and easy to use."
+    />
+
+    <link
+      rel="canonical"
+      href="https://web.dev/codelab-sign-up-form-best-practices/"
+    />
+
+    <meta itemprop="name" content="Sign-up form best practices codelab" />
+    <meta
+      itemprop="description"
+      content="Use cross-platform browser features to build a simple sign-up form that's secure, accessible, and easy to use."
+    />
+    <meta
+      itemprop="image"
+      content="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vU99HKzIf5EUPnzGVPf1.png?auto=format&fit=max&w=1200&fm=auto"
+    />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:type" content="article" />
+    <meta
+      property="og:url"
+      content="https://web.dev/codelab-sign-up-form-best-practices/"
+    />
+    <meta property="og:site_name" content="web.dev" />
+    <meta property="og:title" content="Sign-up form best practices codelab" />
+    <meta
+      property="og:description"
+      content="Use cross-platform browser features to build a simple sign-up form that's secure, accessible, and easy to use."
+    />
+    <meta
+      property="og:image"
+      content="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vU99HKzIf5EUPnzGVPf1.png?auto=format&fit=max&w=1200&fm=auto"
+    />
+    <meta property="og:image:alt" content="" />
+    <meta property="tag" content="forms" />
+    <meta property="tag" content="identity" />
+    <meta property="tag" content="layout" />
+    <meta property="tag" content="mobile" />
+    <meta property="tag" content="security" />
+    <meta property="tag" content="ux" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Sign-up form best practices codelab" />
+    <meta
+      name="twitter:description"
+      content="Use cross-platform browser features to build a simple sign-up form that's secure, accessible, and easy to use."
+    />
+    <meta
+      name="twitter:image"
+      content="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vU99HKzIf5EUPnzGVPf1.png?auto=format&fit=max&w=1200&fm=auto"
+    />
+    <link
+      rel="alternate"
+      href="/feed.xml"
+      type="application/atom+xml"
+      data-title="web.dev feed"
+    />
+
+    <link rel="manifest" href="/manifest.webmanifest" />
+
+    <link rel="shortcut icon" href="/images/favicon.ico" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/images/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/images/favicon-16x16.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/images/apple-touch-icon.png"
+    />
+    <link
+      rel="mask-icon"
+      color="#0054ff"
+      href="/images/safari-pinned-tab.svg"
+    />
+
+    <script>
+      window.ga =
+        window.ga ||
+        function () {
+          (ga.q = ga.q || []).push(arguments);
+        };
+      ga.l = +new Date();
+      ga("create", "UA-126406676-2");
+      ga("set", "transport", "beacon");
+      ga("set", "anonymizeIp", true);
+      ga("set", "page", window.location.pathname);
+      ga("set", "dimension5", "4");
+      ga("send", "pageview");
+    </script>
+
+    <script>
+      function loadScript(url, type) {
+        const s = document.createElement("script");
+        s.src = url;
+        if (type) {
+          s.type = type;
+        }
+        if (type === "module") {
+          s.async = false; // Preserve load order.
+          const pre = document.createElement("link");
+          pre.rel = "modulepreload";
+          pre.href = url;
+          document.head.append(pre);
+          // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+          window.addEventListener("DOMContentLoaded", () => {
+            document.head.append(s);
+          });
+        } else {
+          document.head.append(s);
+        }
+      }
+      loadScript("/js/app.js?v=09d25b47a552c", "module");
+
+      loadScript("/js/content.js?v=672ad337f5d47", "module");
+
+      loadScript("https://www.google-analytics.com/analytics.js", null);
+    </script>
+  </head>
+  <body class="unresolved">
+    <web-snackbar-container></web-snackbar-container>
+
+    <web-header class="header-default" role="navigation">
+      <button
+        data-open-drawer-button
+        class="w-button--svg w-button--round"
+        aria-label="Open menu"
+      >
+        <svg
+          class="icon"
+          role="img"
+          aria-label="menu"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          height="24"
+          width="24"
+        >
+          <path d="M0 0h24v24H0z" fill="none" />
+          <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
+        </svg>
+
+        <span class="w-tooltip w-tooltip--left">Open menu</span>
+      </button>
+
+      <a
+        href="/"
+        class="header-default__logo-link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Site logo"
+      >
+        <img
+          class="header-default__logo"
+          width="125"
+          height="30"
+          src="/images/lockup.svg"
+          alt="web.dev"
+        />
+      </a>
+
+      <div class="header-default__middle">
+        <div class="header-default__links">
+          <a
+            href="/learn/"
+            class="header-default__link gc-analytics-event"
+            data-category="Site-Wide Custom Events"
+            data-label="Tab: Learn"
+          >
+            Learn
+          </a>
+
+          <a
+            href="/measure/"
+            class="header-default__link gc-analytics-event"
+            data-category="Site-Wide Custom Events"
+            data-label="Tab: Measure"
+          >
+            Measure
+          </a>
+
+          <a
+            href="/blog/"
+            class="header-default__link gc-analytics-event"
+            data-category="Site-Wide Custom Events"
+            data-label="Tab: Blog"
+          >
+            Blog
+          </a>
+
+          <a
+            href="/about/"
+            class="header-default__link gc-analytics-event"
+            data-category="Site-Wide Custom Events"
+            data-label="Tab: About"
+          >
+            About
+          </a>
+        </div>
+        <web-search results-id="search-main-results"></web-search>
+        <web-search-results id="search-main-results"></web-search-results>
+      </div>
+
+      <web-profile-switcher-container></web-profile-switcher-container>
+    </web-header>
+
+    <web-navigation-drawer class="drawer-default" type="modal">
+      <nav data-drawer-container>
+        <div class="drawer-default__contents">
+          <div class="drawer-default__header">
+            <button
+              data-drawer-close-button
+              class="drawer-default__hide w-button--svg w-button--round"
+              aria-label="Close"
+            >
+              <svg
+                class="icon"
+                role="img"
+                aria-label="close"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                height="24"
+                width="24"
+              >
+                <path d="M0 0h24v24H0z" fill="none" />
+                <path
+                  d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+                />
+              </svg>
+
+              <span class="w-tooltip">Close</span>
+            </button>
+            <a
+              href="/"
+              class="gc-analytics-event"
+              data-category="Site-Wide Custom Events"
+              data-label="Site logo"
+            >
+              <img
+                width="125"
+                height="30"
+                class="drawer-default__logo"
+                src="/images/lockup.svg"
+                alt="web.dev"
+              />
+            </a>
+          </div>
+          <a
+            href="/learn/"
+            class="drawer-default__link gc-analytics-event"
+            data-category="Site-Wide Custom Events"
+            data-label="SideNav: Learn"
+          >
+            Learn
+          </a>
+          <a
+            href="/measure/"
+            class="drawer-default__link gc-analytics-event"
+            data-category="Site-Wide Custom Events"
+            data-label="SideNav: Measure"
+          >
+            Measure
+          </a>
+          <a
+            href="/blog/"
+            class="drawer-default__link gc-analytics-event"
+            data-category="Site-Wide Custom Events"
+            data-label="SideNav: Blog"
+          >
+            Blog
+          </a>
+          <a
+            href="/about/"
+            class="drawer-default__link gc-analytics-event"
+            data-category="Site-Wide Custom Events"
+            data-label="SideNav: About"
+          >
+            About
+          </a>
+        </div>
+      </nav>
+    </web-navigation-drawer>
+
+    <main>
+      <div id="content">
+        <div class="codelab-landing-page">
+          <web-codelab glitch="sign-up-form-codelab-1" path="index.html">
+            <div class="web-codelab__instructions">
+              <h1 class="w-headline w-headline--two web-codelab__headline">
+                Sign-up form best practices codelab
+              </h1>
+
+              <div class="w-author__published">
+                <time>Dec 9, 2020</time>
+                <span class="w-author__separator">•</span> Updated
+                <time>Dec 9, 2020</time>
+              </div>
+
+              <div class="w-authors w-mt--xl w-pt--sm">
+                <div class="w-author">
+                  <a href="/authors/samdutton/"
+                    ><img
+                      alt="Sam Dutton"
+                      class="w-author__image"
+                      decoding="async"
+                      height="64"
+                      loading="lazy"
+                      sizes="(min-width: 64px) 64px, calc(100vw - 48px)"
+                      src="https://web-dev.imgix.net/image/admin/wPss4TJX9IJ1CJza7iFY.jpg?auto=format&fit=crop&h=64&w=64"
+                      srcset="
+                        https://web-dev.imgix.net/image/admin/wPss4TJX9IJ1CJza7iFY.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,
+                        https://web-dev.imgix.net/image/admin/wPss4TJX9IJ1CJza7iFY.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,
+                        https://web-dev.imgix.net/image/admin/wPss4TJX9IJ1CJza7iFY.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,
+                        https://web-dev.imgix.net/image/admin/wPss4TJX9IJ1CJza7iFY.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,
+                        https://web-dev.imgix.net/image/admin/wPss4TJX9IJ1CJza7iFY.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x
+                      "
+                      width="64"
+                  /></a>
+                  <div
+                    class="w-author__info"
+                    style="
+                      display: flex;
+                      flex-direction: column;
+                      justify-content: center;
+                    "
+                  >
+                    <cite class="w-author__name">
+                      <a class="w-author__name-link" href="/authors/samdutton/"
+                        >Sam Dutton</a
+                      >
+                    </cite>
+                    <ul class="w-author__link-list">
+                      <li class="w-author__link-listitem">
+                        <a
+                          class="w-author__link"
+                          href="https://twitter.com/sw12"
+                          >Twitter</a
+                        >
+                      </li>
+                      <li class="w-author__link-listitem">
+                        <a
+                          class="w-author__link"
+                          href="https://github.com/samdutton"
+                          >GitHub</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <p>
+                This codelab shows you how to build a sign-up form that's
+                secure, accessible, and easy to use.
+              </p>
+              <h2 id="step-1:-use-meaningful-html">
+                Step 1: Use meaningful HTML
+                <a class="w-headline-link" href="#step-1:-use-meaningful-html"
+                  >#</a
+                >
+              </h2>
+              <p>
+                In this step you'll learn how to use form elements to make the
+                most of built-in browser features.
+              </p>
+              <ul>
+                <li>
+                  Click <strong>Remix to Edit</strong> to make the project
+                  editable.
+                </li>
+              </ul>
+              <p>
+                Take a look at the HTML for your form in
+                <code>index.html</code>. You'll see there are inputs for name,
+                email and password. Each is in a section, and each has a label.
+                The <strong>Sign up</strong> button is… a
+                <code>&lt;button&gt;</code>! Later in this codelab, you'll learn
+                the special powers of all these elements.
+              </p>
+              <div class="w-aside w-aside--note">
+                <p>
+                  <code>&lt;input&gt;</code> elements don't have closing tags.
+                  That's because they are
+                  <a
+                    href="https://www.w3.org/TR/2011/WD-html-markup-20110113/syntax.html#syntax-elements"
+                    rel="noopener"
+                    >void</a
+                  >
+                  (empty) elements: they don't have any content in themselves. A
+                  &quot;/&quot; character at the end of a void element is
+                  optional: either <code>&lt;input&gt;</code> or
+                  <code>&lt;input /&gt;</code> is OK.
+                </p>
+              </div>
+              <web-copy-code>
+                <pre
+                  class="language-html"
+                ><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>form</span> <span class="token attr-name">action</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>#<span class="token punctuation">"</span></span> <span class="token attr-name">method</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>post<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><br>        <br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h1</span><span class="token punctuation">></span></span>Sign up<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h1</span><span class="token punctuation">></span></span><br>  <br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>section</span><span class="token punctuation">></span></span><br>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>label</span><span class="token punctuation">></span></span>Full name<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>label</span><span class="token punctuation">></span></span><br>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>section</span><span class="token punctuation">></span></span><br>  <br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>section</span><span class="token punctuation">></span></span><br>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>label</span><span class="token punctuation">></span></span>Email<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>label</span><span class="token punctuation">></span></span><br>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>section</span><span class="token punctuation">></span></span><br>  <br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>section</span><span class="token punctuation">></span></span><br>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>label</span><span class="token punctuation">></span></span>Password<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>label</span><span class="token punctuation">></span></span><br>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>section</span><span class="token punctuation">></span></span><br>  <br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>sign-up<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Sign up<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span><br>  <br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>form</span><span class="token punctuation">></span></span></code></pre>
+              </web-copy-code>
+              <p>
+                Click <strong>View App</strong> to preview your sign-up form.
+                This shows you what a form looks like with no CSS other than the
+                <a
+                  href="https://bitsofco.de/a-look-at-css-resets-in-2018"
+                  rel="noopener"
+                  >default browser styles</a
+                >.
+              </p>
+              <ul>
+                <li>
+                  Do the default styles <em>look</em> OK? What would you change
+                  to make the form look better?
+                </li>
+                <li>
+                  Do the default styles <em>work</em> OK? What problems might be
+                  encountered using your form as it is? What about on mobile?
+                  What about for screenreaders or other
+                  <a href="/a11y-tips-for-web-dev">assistive technologies</a>?
+                </li>
+                <li>
+                  Who are your users, and what devices and browsers are you
+                  targeting?
+                </li>
+              </ul>
+              <div class="w-aside w-aside--note">
+                <p>
+                  <a href="https://browserdefaultstyles.com" rel="noopener"
+                    >Browser Default Styles</a
+                  >
+                  lists default CSS for HTML elements.
+                </p>
+              </div>
+              <h3 id="test-your-form">
+                Test your form
+                <a class="w-headline-link" href="#test-your-form">#</a>
+              </h3>
+              <p>
+                You could acquire a lot of hardware and set up a
+                <a
+                  href="https://www.smashingmagazine.com/2016/11/worlds-best-open-device-labs/"
+                  rel="noopener"
+                  >device lab</a
+                >, but there are cheaper and simpler ways to try out your form
+                on a range of browsers, platforms and devices:
+              </p>
+              <ul>
+                <li>
+                  <a
+                    href="https://developers.google.com/web/tools/chrome-devtools/device-mode"
+                    rel="noopener"
+                    >Use Chrome DevTools Device Mode</a
+                  >
+                  to simulate mobile devices.
+                </li>
+                <li>
+                  <a
+                    href="https://support.google.com/chrome/answer/9430554"
+                    rel="noopener"
+                    >Send the URL from your computer to your phone</a
+                  >.
+                </li>
+                <li>
+                  Use a service such as
+                  <a
+                    href="https://www.browserstack.com/open-source"
+                    rel="noopener"
+                    >BrowserStack</a
+                  >
+                  to test on a range of devices and browsers.
+                </li>
+                <li>
+                  Try out the form using a screenreader tool such as the
+                  <a
+                    href="https://chrome.google.com/webstore/detail/chromevox-classic-extensi/kgejglhpjiefppelpmljglcjbhoiplfn?hl=en"
+                    rel="noopener"
+                    >ChromeVox</a
+                  >
+                  Chrome extension.
+                </li>
+              </ul>
+              <div class="w-aside w-aside--warning">
+                <p>
+                  <strong>Warning</strong>: Testing your site on a range of
+                  devices and browsers is especially important for forms,
+                  because
+                  <a
+                    href="https://baymard.com/checkout-usability"
+                    rel="noopener"
+                    >small problems can cause high bounce rates</a
+                  >
+                  and cause users to give up on creating an account or
+                  completing a purchase.
+                </p>
+              </div>
+              <p>
+                Click <strong>View App</strong> to preview your sign-up form.
+              </p>
+              <ul>
+                <li>
+                  Try out your form on different devices using Chrome DevTools
+                  Device Mode.
+                </li>
+                <li>
+                  Now open the form on a phone or other real devices. What
+                  differences do you see?
+                </li>
+              </ul>
+              <h2 id="step-2:-add-css-to-make-the-form-work-better">
+                Step 2: Add CSS to make the form work better
+                <a
+                  class="w-headline-link"
+                  href="#step-2:-add-css-to-make-the-form-work-better"
+                  >#</a
+                >
+              </h2>
+              <p>
+                Click <strong>View Source</strong> to return to your source
+                code.
+              </p>
+              <p>
+                There's nothing wrong with the HTML so far, but you need to make
+                sure your form works well for a range of users on mobile and
+                desktop.
+              </p>
+              <p>In this step you'll add CSS to make the form easier to use.</p>
+              <p>
+                Copy and paste all the following CSS into
+                <code>css/main.css</code> file:
+              </p>
+              <div class="glitch-embed-wrap" style="height: 400px; width: 100%">
+                <iframe
+                  allow="camera; clipboard-read; clipboard-write; encrypted-media; geolocation; microphone; midi"
+                  loading="lazy"
+                  src="https://glitch.com/embed/#!/embed/sign-up-form-codelab-2?attributionHidden=true&sidebarCollapsed=true&path=css%2Fmain.css&previewSize=0"
+                  style="height: 100%; width: 100%; border: 0"
+                  title="sign-up-form-codelab-2 on Glitch"
+                ></iframe>
+              </div>
+              <p>
+                Click <strong>View App</strong> to see your styled sign-up form.
+                Then click <strong>View Source</strong> to return to
+                <code>css/main.css</code>.
+              </p>
+              <ul>
+                <li>
+                  <p>
+                    Does this CSS work for a variety of browsers and screen
+                    sizes?
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    Try adjusting <code>padding</code>, <code>margin</code>, and
+                    <code>font-size</code> to suit your test devices.
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    The CSS is mobile-first.
+                    <a
+                      href="https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Media_queries"
+                      rel="noopener"
+                      >Media queries</a
+                    >
+                    are used to apply CSS rules for viewports that are at least
+                    <code>400px</code> wide, and then again for viewports that
+                    are at least <code>500px</code> wide. Are these
+                    <a
+                      href="https://www.browserstack.com/guide/responsive-design-breakpoints"
+                      rel="noopener"
+                      >breakpoints</a
+                    >
+                    adequate? How should you choose breakpoints for forms?
+                  </p>
+                </li>
+              </ul>
+              <div class="w-aside w-aside--note">
+                <p>
+                  <strong>Viewport</strong> in this context means the display
+                  area available for your page. Mobile phones have a smaller
+                  viewport than laptops, and a small browser window on a desktop
+                  monitor has a smaller viewport than a maximized browser
+                  window.
+                </p>
+              </div>
+              <h2 id="step-3:-add-attributes-to-help-users-enter-data">
+                Step 3: Add attributes to help users enter data
+                <a
+                  class="w-headline-link"
+                  href="#step-3:-add-attributes-to-help-users-enter-data"
+                  >#</a
+                >
+              </h2>
+              <p>
+                In this step you add attributes to your input elements to enable
+                the browser to store and autofill form field values, and warn of
+                fields with missing or invalid data.
+              </p>
+              <p>
+                Update your <code>index.html</code> file so the form code looks
+                like this:
+              </p>
+              <web-copy-code>
+                <pre
+                  class="language-html"
+                ><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>form</span> <span class="token attr-name">action</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>#<span class="token punctuation">"</span></span> <span class="token attr-name">method</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>post<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><br>        <br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h1</span><span class="token punctuation">></span></span>Sign up<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h1</span><span class="token punctuation">></span></span><br>  <br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>section</span><span class="token punctuation">></span></span>        <br>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>label</span> <span class="token attr-name">for</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>name<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Full name<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>label</span><span class="token punctuation">></span></span><br>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>name<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>name<span class="token punctuation">"</span></span> <span class="token attr-name">autocomplete</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>name<span class="token punctuation">"</span></span> <br>           <span class="token attr-name">pattern</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>[\p{L}\.\- ]+<span class="token punctuation">"</span></span> <span class="token attr-name">required</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>section</span><span class="token punctuation">></span></span><br><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>section</span><span class="token punctuation">></span></span>        <br>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>label</span> <span class="token attr-name">for</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>email<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Email<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>label</span><span class="token punctuation">></span></span><br>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>email<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>email<span class="token punctuation">"</span></span> <span class="token attr-name">autocomplete</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>username<span class="token punctuation">"</span></span><br>           <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>email<span class="token punctuation">"</span></span> <span class="token attr-name">required</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>section</span><span class="token punctuation">></span></span><br>  <br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>section</span><span class="token punctuation">></span></span><br>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>label</span> <span class="token attr-name">for</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>password<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Password<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>label</span><span class="token punctuation">></span></span><br>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>password<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>password<span class="token punctuation">"</span></span> <span class="token attr-name">autocomplete</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>new-password<span class="token punctuation">"</span></span> <br>           <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>password<span class="token punctuation">"</span></span> <span class="token attr-name">minlength</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>8<span class="token punctuation">"</span></span> <span class="token attr-name">required</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>section</span><span class="token punctuation">></span></span><br>  <br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>sign-up<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Sign up<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span><br>  <br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>form</span><span class="token punctuation">></span></span></code></pre>
+              </web-copy-code>
+              <p>The <code>type</code> values do a lot:</p>
+              <ul>
+                <li>
+                  <code>type=&quot;password&quot;</code> obscures text as it's
+                  entered and enables the browser's
+                  <a href="https://passwords.google.com/" rel="noopener"
+                    >password manager</a
+                  >
+                  to suggest a strong password.
+                </li>
+                <li>
+                  <code>type=&quot;email&quot;</code> provides basic validation
+                  and ensures mobile users get an appropriate keyboard. Try it
+                  out!
+                </li>
+              </ul>
+              <p>
+                Click <strong>View App</strong> and then click the
+                <strong>Email</strong> label. What happens? Focus moves to the
+                email input because the label has a <code>for</code> value that
+                matches the email input's <code>id</code>. The other labels and
+                inputs work the same way. Screenreaders also announce label text
+                when the label (or the label's associated input) gets focus. You
+                can try that using the
+                <a
+                  href="https://chrome.google.com/webstore/detail/chromevox-classic-extensi/kgejglhpjiefppelpmljglcjbhoiplfn?hl=en"
+                  rel="noopener"
+                  >ChromeVox extension</a
+                >.
+              </p>
+              <p>
+                Try submitting the form with an empty field. The browser won't
+                submit the form, and it prompts to complete missing data and
+                sets focus. That's because you added the
+                <code>require</code> attribute to all the inputs. Now try
+                submitting with a password that has less than eight characters.
+                The browser warns that the password isn't long enough and sets
+                focus on the password input because of the
+                <code>minlength=&quot;8&quot;</code> attribute. The same works
+                for <code>pattern</code> (used for the name input) and other
+                <a
+                  href="https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/Constraint_validation"
+                  rel="noopener"
+                  >validation constraints</a
+                >. The browser does all this automatically, without needing any
+                extra code.
+              </p>
+              <p>
+                Using the <code>autocomplete</code> value <code>name</code> for
+                the <strong>Full name</strong> input makes sense, but what about
+                the other inputs?
+              </p>
+              <ul>
+                <li>
+                  <code>autocomplete=&quot;username&quot;</code> for the
+                  <strong>Email</strong> input means the browser's password
+                  manager will store the email address as the 'name' for this
+                  user (the username!) to go with the password.
+                </li>
+                <li>
+                  <code>autocomplete=&quot;new-password&quot;</code> for
+                  <strong>Password</strong> is a hint to the password manager
+                  that it should offer to store this value as the password for
+                  the current site. You can then use
+                  <code>autocomplete=&quot;current-password&quot;</code> to
+                  enable autofill in a sign-in form (remember, this is
+                  <em>sign-up</em> form).
+                </li>
+              </ul>
+              <div class="w-aside w-aside--note">
+                <p>
+                  <a href="/sign-in-form-best-practices"
+                    >Sign-in form best practices</a
+                  >
+                  has more tips for improving form design, layout, and
+                  accessibility.
+                </p>
+              </div>
+              <h2 id="step-4:-help-users-enter-secure-passwords">
+                Step 4: Help users enter secure passwords
+                <a
+                  class="w-headline-link"
+                  href="#step-4:-help-users-enter-secure-passwords"
+                  >#</a
+                >
+              </h2>
+              <p>
+                With the form as it is, did you notice anything wrong with the
+                password input?
+              </p>
+              <p>There are two issues:</p>
+              <ul>
+                <li>
+                  There's no way to know if there are constraints on the
+                  password value.
+                </li>
+                <li>
+                  You can't see the password to check if you got it right.
+                </li>
+              </ul>
+              <p>Don't make users guess!</p>
+              <p>
+                Update the password section of <code>index.html</code> with the
+                following code:
+              </p>
+              <web-copy-code>
+                <pre
+                  class="language-html"
+                ><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>section</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>label</span> <span class="token attr-name">for</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>password<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Password<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>label</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>toggle-password<span class="token punctuation">"</span></span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>button<span class="token punctuation">"</span></span> <span class="token attr-name">aria-label</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>Show password as plain text. <br>          Warning: this will display your password on the screen.<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Show password<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>password<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>password<span class="token punctuation">"</span></span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>password<span class="token punctuation">"</span></span> <span class="token attr-name">autocomplete</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>new-password<span class="token punctuation">"</span></span> <br>         <span class="token attr-name">minlength</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>8<span class="token punctuation">"</span></span> <span class="token attr-name">aria-describedby</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>password-constraints<span class="token punctuation">"</span></span> <span class="token attr-name">required</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>password-constraints<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Eight or more characters.<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>section</span><span class="token punctuation">></span></span></code></pre>
+              </web-copy-code>
+              <p>This adds new features to help users enter passwords:</p>
+              <ul>
+                <li>
+                  A button (actually just text) to toggle password display. (The
+                  button functionality will be added with JavaScript.)
+                </li>
+                <li>
+                  An <code>aria-label</code> attribute for the password-toggle
+                  button.
+                </li>
+                <li>
+                  An <code>aria-describedby</code> attribute for the password
+                  input. Screenreaders read the label text, the input type
+                  (password), and then the description.
+                </li>
+              </ul>
+              <p>
+                To enable the password-toggle button and show users information
+                about password constraints, copy all the JavaScript below and
+                paste it into your own <code>js/main.js</code> file.
+              </p>
+              <div class="glitch-embed-wrap" style="height: 400px; width: 100%">
+                <iframe
+                  allow="camera; clipboard-read; clipboard-write; encrypted-media; geolocation; microphone; midi"
+                  loading="lazy"
+                  src="https://glitch.com/embed/#!/embed/sign-up-form-codelab-4?attributionHidden=true&sidebarCollapsed=true&path=js%2Fmain.js&previewSize=0"
+                  style="height: 100%; width: 100%; border: 0"
+                  title="sign-up-form-codelab-4 on Glitch"
+                ></iframe>
+              </div>
+              <p>
+                (The CSS is already in place from step 2. Take a look, to see
+                how the password-toggle button is styled and positioned.)
+              </p>
+              <ul>
+                <li>
+                  <p>
+                    Would an
+                    <a
+                      href="(https://material.io/resources/icons/?icon=visibility)"
+                      >icon</a
+                    >
+                    work better than text to toggle password display? Try
+                    <a
+                      href="https://www.nngroup.com/articles/discount-usability-20-years/"
+                      rel="noopener"
+                      >Discount Usability Testing</a
+                    >
+                    with a small group of friends or colleagues.
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    To experience how screenreaders work with forms, install the
+                    <a
+                      href="https://chrome.google.com/webstore/detail/chromevox-classic-extensi/kgejglhpjiefppelpmljglcjbhoiplfn?hl=en"
+                      rel="noopener"
+                      >ChromeVox extension</a
+                    >
+                    and navigate through the form. Could you complete the form
+                    using ChromeVox only? If not, what would you change?
+                  </p>
+                </li>
+              </ul>
+              <p>Here's how your form should look at this point:</p>
+              <div class="glitch-embed-wrap" style="height: 690px; width: 100%">
+                <iframe
+                  allow="camera; clipboard-read; clipboard-write; encrypted-media; geolocation; microphone; midi"
+                  loading="lazy"
+                  src="https://glitch.com/embed/#!/embed/sign-up-form-codelab-4?attributionHidden=true&sidebarCollapsed=true&previewSize=100"
+                  style="height: 100%; width: 100%; border: 0"
+                  title="sign-up-form-codelab-4 on Glitch"
+                ></iframe>
+              </div>
+              <h2 id="going-further">
+                Going further
+                <a class="w-headline-link" href="#going-further">#</a>
+              </h2>
+              <p>This codelab doesn't cover several important features:</p>
+              <ul>
+                <li>
+                  <p>
+                    Checking for compromised passwords. You should never allow
+                    passwords that have been compromised. You can (and should)
+                    <a
+                      href="/sign-up-form-best-practices/#no-compromised-passwords"
+                      >use a password-checking service to catch compromised
+                      passwords</a
+                    >. You can use an existing service or run one yourself on
+                    your own servers. Try it out! Add password checking to your
+                    form.
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    Link to your Terms of Service and privacy policy documents:
+                    make it clear to users how you safeguard their data.
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    Style and branding: make sure these match the rest of your
+                    site. When entering names and addresses and making payment,
+                    users need to feel comfortable, trusting that they're still
+                    in the right place.
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    <a
+                      href="/payment-and-address-form-best-practices#analytics-rum"
+                      >Analytics and Real User Monitoring</a
+                    >: enable the performance and usability of your form design
+                    to be tested and monitored for real users.
+                  </p>
+                </li>
+              </ul>
+
+              <nav class="w-article-navigation">
+                <a
+                  class="
+                    w-article-navigation__link
+                    w-article-navigation__link--back
+                    w-article-navigation__link--single
+                    gc-analytics-event
+                  "
+                  data-category="web.dev"
+                  data-label="navigation, go back"
+                  data-action="click"
+                  href="/sign-up-form-best-practices"
+                >
+                  Return to article
+                </a>
+              </nav>
+            </div>
+          </web-codelab>
+        </div>
+      </div>
+    </main>
+    <footer class="w-footer">
+      <nav class="w-footer__linkboxes">
+        <ul class="w-footer__linkboxes-list">
+          <li class="w-footer__linkbox">
+            <h3 class="w-footer__linkbox-heading">Contribute</h3>
+            <ul class="w-footer__linkbox-list">
+              <li class="w-footer__linkbox-item">
+                <a
+                  href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+                  class="w-footer__linkbox-link"
+                  data-category="Site-Wide Custom Events"
+                  data-label="Footer Link (index 1)"
+                >
+                  File a bug
+                </a>
+              </li>
+              <li class="w-footer__linkbox-item">
+                <a
+                  href="https://github.com/googlechrome/web.dev"
+                  class="w-footer__linkbox-link"
+                  data-category="Site-Wide Custom Events"
+                  data-label="Footer Link (index 2)"
+                >
+                  View source
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="w-footer__linkbox">
+            <h3 class="w-footer__linkbox-heading">Related content</h3>
+            <ul class="w-footer__linkbox-list">
+              <li class="w-footer__linkbox-item">
+                <a
+                  href="https://blog.chromium.org/"
+                  class="w-footer__linkbox-link"
+                  data-category="Site-Wide Custom Events"
+                  data-label="Footer Link (index 1)"
+                >
+                  Chrome updates
+                </a>
+              </li>
+              <li class="w-footer__linkbox-item">
+                <a
+                  href="https://developers.google.com/web/"
+                  class="w-footer__linkbox-link"
+                  data-category="Site-Wide Custom Events"
+                  data-label="Footer Link (index 2)"
+                >
+                  Web Fundamentals
+                </a>
+              </li>
+              <li class="w-footer__linkbox-item">
+                <a
+                  href="https://developers.google.com/web/showcase/"
+                  class="w-footer__linkbox-link"
+                  data-category="Site-Wide Custom Events"
+                  data-label="Footer Link (index 3)"
+                >
+                  Case studies
+                </a>
+              </li>
+              <li class="w-footer__linkbox-item">
+                <a
+                  href="https://devwebfeed.appspot.com/"
+                  class="w-footer__linkbox-link"
+                  data-category="Site-Wide Custom Events"
+                  data-label="Footer Link (index 4)"
+                >
+                  DevWeb Content Firehose
+                </a>
+              </li>
+              <li class="w-footer__linkbox-item">
+                <a
+                  href="/podcasts/"
+                  class="w-footer__linkbox-link"
+                  data-category="Podcasts"
+                  data-label="Footer Link (index 5)"
+                >
+                  Podcasts
+                </a>
+              </li>
+              <li class="w-footer__linkbox-item">
+                <a
+                  href="/shows/"
+                  class="w-footer__linkbox-link"
+                  data-category="Shows"
+                  data-label="Footer Link (index 6)"
+                >
+                  Shows
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="w-footer__linkbox">
+            <h3 class="w-footer__linkbox-heading">Connect</h3>
+            <ul class="w-footer__linkbox-list">
+              <li class="w-footer__linkbox-item">
+                <a
+                  href="https://www.twitter.com/@ChromiumDev"
+                  class="w-footer__linkbox-link"
+                  data-category="Site-Wide Custom Events"
+                  data-label="Footer Link (index 1)"
+                >
+                  Twitter
+                </a>
+              </li>
+              <li class="w-footer__linkbox-item">
+                <a
+                  href="https://www.youtube.com/user/ChromeDevelopers"
+                  class="w-footer__linkbox-link"
+                  data-category="Site-Wide Custom Events"
+                  data-label="Footer Link (index 2)"
+                >
+                  YouTube
+                </a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="w-footer__utility">
+        <nav class="w-footer__utility-nav">
+          <a
+            href="https://developers.google.com/"
+            class="w-footer__utility-logo-link"
+            data-category="Site-Wide Custom Events"
+            data-label="Footer Google Developers Link"
+          >
+            <img
+              loading="lazy"
+              width="185"
+              height="33"
+              class="w-footer__utility-logo"
+              src="/images/lockup-color.png"
+              alt="Google Developers"
+            />
+          </a>
+          <ul class="w-footer__utility-list">
+            <li class="w-footer__utility-item">
+              <a
+                class="w-footer__utility-link"
+                href="https://developer.chrome.com/home"
+                data-category="Site-Wide Custom Events"
+                data-label="Footer Chrome Link"
+              >
+                Chrome
+              </a>
+            </li>
+            <li class="w-footer__utility-item">
+              <a
+                class="w-footer__utility-link"
+                href="https://firebase.google.com/"
+                data-category="Site-Wide Custom Events"
+                data-label="Footer Firebase Link"
+              >
+                Firebase
+              </a>
+            </li>
+            <li class="w-footer__utility-item">
+              <a
+                class="w-footer__utility-link"
+                href="https://cloud.google.com/"
+                data-category="Site-Wide Custom Events"
+                data-label="Footer Google Cloud Platform Link"
+              >
+                Google Cloud Platform
+              </a>
+            </li>
+            <li class="w-footer__utility-item">
+              <a
+                class="w-footer__utility-link"
+                href="https://developers.google.com/products"
+                data-category="Site-Wide Custom Events"
+                data-label="Footer All products Link"
+              >
+                All products
+              </a>
+            </li>
+          </ul>
+          <web-language-select current="en"></web-language-select>
+        </nav>
+        <nav class="w-footer__utility-nav">
+          <ul class="w-footer__utility-list">
+            <li class="w-footer__utility-item">
+              <a
+                class="w-footer__utility-link"
+                href="https://policies.google.com/"
+                data-category="Site-Wide Custom Events"
+                data-label="Footer Terms and Privacy link"
+              >
+                Terms &amp; Privacy
+              </a>
+            </li>
+            <li class="w-footer__utility-item">
+              <a
+                class="w-footer__utility-link"
+                href="/community-guidelines/"
+                data-category="Site-Wide Custom Events"
+                data-label="Footer Community Guidelines link"
+              >
+                Community Guidelines
+              </a>
+            </li>
+          </ul>
+          <div class="w-footer__license">
+            <p>
+              Except as otherwise noted, the content of this page is licensed
+              under the
+              <a href="https://creativecommons.org/licenses/by/4.0/">
+                Creative Commons Attribution 4.0 License</a
+              >, and code samples are licensed under the
+              <a href="https://www.apache.org/licenses/LICENSE-2.0">
+                Apache 2.0 License</a
+              >. For details, see the
+              <a href="https://developers.google.com/site-policies">
+                Google Developers Site Policies</a
+              >.
+            </p>
+          </div>
+        </nav>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,731 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=a264885e8107f">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Disable mouse acceleration to provide a better FPS gaming experience</title>
+<meta name="description" content="Web apps can now disable mouse acceleration when capturing pointer events. " />
+
+<link rel="canonical" href="https://web.dev/disable-mouse-acceleration/" />
+
+<meta itemprop="name" content="Disable mouse acceleration to provide a better FPS gaming experience" />
+<meta itemprop="description" content="Web apps can now disable mouse acceleration when capturing pointer events. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/kA7qbVPt0ovuNzReFanO.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/disable-mouse-acceleration/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Disable mouse acceleration to provide a better FPS gaming experience" />
+<meta property="og:description" content="Web apps can now disable mouse acceleration when capturing pointer events. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/kA7qbVPt0ovuNzReFanO.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="Gamer girl is playing FPS online video game on her computer" />
+<meta property="tag" content="capabilities" />
+<meta property="tag" content="games" />
+<meta property="tag" content="devices" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Disable mouse acceleration to provide a better FPS gaming experience" />
+<meta name="twitter:description" content="Web apps can now disable mouse acceleration when capturing pointer events. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/kA7qbVPt0ovuNzReFanO.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=bfb0d1b1dbedc', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=4e26b2a7e5cb1', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="Gamer girl is playing FPS online video game on her computer"     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/8cpTXMJGUfcdNXLc6obE.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/8cpTXMJGUfcdNXLc6obE.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/8cpTXMJGUfcdNXLc6obE.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/8cpTXMJGUfcdNXLc6obE.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/8cpTXMJGUfcdNXLc6obE.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/8cpTXMJGUfcdNXLc6obE.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/8cpTXMJGUfcdNXLc6obE.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/8cpTXMJGUfcdNXLc6obE.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/8cpTXMJGUfcdNXLc6obE.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/8cpTXMJGUfcdNXLc6obE.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/8cpTXMJGUfcdNXLc6obE.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/8cpTXMJGUfcdNXLc6obE.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/8cpTXMJGUfcdNXLc6obE.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/8cpTXMJGUfcdNXLc6obE.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/8cpTXMJGUfcdNXLc6obE.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/8cpTXMJGUfcdNXLc6obE.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/8cpTXMJGUfcdNXLc6obE.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/8cpTXMJGUfcdNXLc6obE.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#disable-mouse-acceleration-to-provide-a-better-fps-gaming-experience" class="w-toc__header--link">
+        Disable mouse acceleration to provide a better FPS gaming experience
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#use">Using the API</a></li><li><a href="#request">Request a pointer lock</a></li><li><a href="#disable-mouse-acceleration">Disable mouse acceleration</a></li><li><a href="#browser-support">Browser support</a></li><li><a href="#os-support">Operating system support</a></li><li><a href="#sample">Sample </a></li><li><a href="#helpful">Helpful links</a></li><li><a href="#acknowledgements">Acknowledgements</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="i18n.authors.beaufortfrancois.title"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="disable-mouse-acceleration-to-provide-a-better-fps-gaming-experience" class="w-article-header__headline">Disable mouse acceleration to provide a better FPS gaming experience</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          <p>Web apps can now disable mouse acceleration when capturing pointer events.</p>
+
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Nov 26, 2020</time>
+          
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/beaufortfrancois/"><img     alt="François Beaufort"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/mXjY3z3JmrispGtu9yn6.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/mXjY3z3JmrispGtu9yn6.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/mXjY3z3JmrispGtu9yn6.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/mXjY3z3JmrispGtu9yn6.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/mXjY3z3JmrispGtu9yn6.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/mXjY3z3JmrispGtu9yn6.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/beaufortfrancois/">François Beaufort</a>
+    </cite>
+    <ul class="w-author__link-list">
+      
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/beaufortfrancois">GitHub</a>
+      </li>
+      
+      
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>Accelerated movement is an ergonomic feature when using a mouse or trackpad to
+move the pointer on screen. It allows precise movement by moving slowly while
+also allowing the pointer to cross the entire screen with a quick short motion.
+Specifically, for the same physical distance that you move the mouse, the
+pointer on screen travels further if the distance was traveled faster.</p>
+<p>Operating systems enable mouse acceleration by default. For some <a href="https://en.wikipedia.org/wiki/First-person_(video_games)" rel="noopener">first-party
+perspective</a> games, commonly first party shooters (FPS), raw mouse input data is
+used to control camera rotation without an acceleration adjustment. The same
+physical motion, slow or fast, results in the same rotation. This results in a
+better gaming experience and higher accuracy according to professional gamers.</p>
+<figure class="w-figure">
+  <img     alt="Screenshot of the pointer motion control in Windows 10 settings."     class="w-screenshot"     decoding="async"     height="260"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/4x9YZ7nC3SJMN9FI46zN.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/4x9YZ7nC3SJMN9FI46zN.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/4x9YZ7nC3SJMN9FI46zN.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/4x9YZ7nC3SJMN9FI46zN.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/4x9YZ7nC3SJMN9FI46zN.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/4x9YZ7nC3SJMN9FI46zN.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/4x9YZ7nC3SJMN9FI46zN.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/4x9YZ7nC3SJMN9FI46zN.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/4x9YZ7nC3SJMN9FI46zN.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/4x9YZ7nC3SJMN9FI46zN.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/4x9YZ7nC3SJMN9FI46zN.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/4x9YZ7nC3SJMN9FI46zN.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/4x9YZ7nC3SJMN9FI46zN.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/4x9YZ7nC3SJMN9FI46zN.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/4x9YZ7nC3SJMN9FI46zN.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/4x9YZ7nC3SJMN9FI46zN.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/4x9YZ7nC3SJMN9FI46zN.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/4x9YZ7nC3SJMN9FI46zN.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">Pointer motion control in Windows 10 settings.</figcaption>
+</figure>
+<p>Starting in Chrome 88, web apps can switch back and forth between accelerated
+and non-accelerated mouse movement data thanks to the <a href="https://github.com/w3c/pointerlock/pull/49" rel="noopener">updated Pointer Lock
+API</a>.</p>
+<p>Web-based gaming platforms such as <a href="https://en.wikipedia.org/wiki/Google_Stadia" rel="noopener">Google Stadia</a> and <a href="https://en.wikipedia.org/wiki/GeForce_Now" rel="noopener">Nvidia GeForce Now</a>
+already use these new capabilities to please FPS gamers.</p>
+<h2 id="use">Using the API <a class="w-headline-link" href="#use">#</a></h2>
+<h3 id="request">Request a pointer lock <a class="w-headline-link" href="#request">#</a></h3>
+<p>A pointer lock is the canonical term for when a desktop application hides the
+pointer icon and interprets mouse motion for something else, e.g. looking around
+in a 3D world.</p>
+<p>The  <code>movementX</code> and <code>movementY</code> attributes from the <code>mousemove</code> document events
+tell you how much the mouse pointer moved since the last move event. However,
+those are not updated when the pointer moves outside of the web page.</p>
+<web-copy-code><pre class="language-js"><code class="language-js">document<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">"mousemove"</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token parameter">event</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">movementX: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>event<span class="token punctuation">.</span>movementX<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> movementY: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>event<span class="token punctuation">.</span>movementY<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>Capturing the mouse pointer (or requesting a pointer lock) allows you to not
+worry about the pointer moving outside anymore. This is especially useful for
+immersive web games. When the pointer is locked, all mouse events go to the
+target element of the pointer lock.</p>
+<p>Call <code>requestPointerLock()</code> on the target element to request a pointer lock, and
+listen to <code>pointerlockchange</code> and <code>pointerlockerror</code> events to monitor pointer
+lock changes.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> myTargetElement <span class="token operator">=</span> document<span class="token punctuation">.</span>body<span class="token punctuation">;</span><br><br><span class="token comment">// Call this function to request a pointer lock.</span><br><span class="token keyword">function</span> <span class="token function">requestPointerLock</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  myTargetElement<span class="token punctuation">.</span><span class="token function">requestPointerLock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><br><br>document<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">"pointerlockchange"</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token keyword">if</span> <span class="token punctuation">(</span>document<span class="token punctuation">.</span>pointerLockElement<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">pointer is locked on </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>document<span class="token punctuation">.</span>pointerLockElement<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span><br>    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"pointer is unlocked"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>document<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">"pointerlockerror"</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"pointer lock error"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><h3 id="disable-mouse-acceleration">Disable mouse acceleration <a class="w-headline-link" href="#disable-mouse-acceleration">#</a></h3>
+<p>Call <code>requestPointerLock()</code> with  <code>{ unadjustedMovement: true }</code> to disable
+OS-level adjustment for mouse acceleration, and access raw mouse input.
+This way, mouse movement data from <code>mousemove</code> events won't include mouse
+acceleration when the pointer is locked.</p>
+<p>Use the new returned promise from <code>requestPointerLock()</code> to know if the request
+was successful.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">requestPointerLockWithUnadjustedMovement</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token keyword">const</span> promise <span class="token operator">=</span> myTargetElement<span class="token punctuation">.</span><span class="token function">requestPointerLock</span><span class="token punctuation">(</span><span class="token punctuation">{</span><br>    unadjustedMovement<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span><br>  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>promise<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"disabling mouse acceleration is not supported"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token keyword">return</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><br>  <span class="token keyword">return</span> promise<br>    <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"pointer is locked"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><br>    <span class="token punctuation">.</span><span class="token function">catch</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">error</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>      <span class="token keyword">if</span> <span class="token punctuation">(</span>error<span class="token punctuation">.</span>name <span class="token operator">===</span> <span class="token string">"NotSupportedError"</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>        <span class="token comment">// Some platforms may not support unadjusted movement.</span><br>        <span class="token comment">// You can request again a regular pointer lock.</span><br>        <span class="token keyword">return</span> myTargetElement<span class="token punctuation">.</span><span class="token function">requestPointerLock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>      <span class="token punctuation">}</span><br>    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>It is possible to toggle between accelerated and non-accelerated mouse movement
+data without releasing the pointer lock. Simply request the pointer lock again
+with the desired option. If that request fails, the original lock will remain
+intact and the returned promise will reject. No pointer lock events will fire
+for a failed change request.</p>
+<h3 id="browser-support">Browser support <a class="w-headline-link" href="#browser-support">#</a></h3>
+<p>The Pointer Lock API is <a href="https://caniuse.com/?search=pointerlock" rel="noopener">well supported across browsers</a>. However Chromium-based
+browsers (e.g. Chrome, Edge, etc.) are the only ones to support disabling
+OS-level adjustment for mouse acceleration as of October 2020.
+See MDN's <a href="https://developer.mozilla.org/en-US/docs/Web/API/Pointer_Lock_API#Browser_compatibility" rel="noopener">Browser compatibility</a> table for updates.</p>
+<h3 id="os-support">Operating system support <a class="w-headline-link" href="#os-support">#</a></h3>
+<p>Disabling OS-level adjustment for mouse acceleration is supported on Chrome OS,
+macOS Catalina 10.15.1, and Windows. Linux will follow.</p>
+<h2 id="sample">Sample  <a class="w-headline-link" href="#sample">#</a></h2>
+<p>You can play with the Pointer Lock API by running the <a href="https://unadjusted-movement.glitch.me/" rel="noopener">sample</a> on Glitch. Be
+sure to <a href="https://glitch.com/edit/#!/unadjusted-movement?path=script.js" rel="noopener">check out the source code</a>.</p>
+<div class="glitch-embed-wrap" style="height: 420px; width: 100%;">
+  <iframe
+    allow="camera; clipboard-read; clipboard-write; encrypted-media; geolocation; microphone; midi"
+    loading="lazy"
+    src="https://glitch.com/embed/#!/embed/unadjusted-movement?attributionHidden=true&sidebarCollapsed=true&path=script.js&previewSize=100"
+    style="height: 100%; width: 100%; border: 0;"
+    title="unadjusted-movement on Glitch"
+  ></iframe>
+</div>
+<h2 id="helpful">Helpful links <a class="w-headline-link" href="#helpful">#</a></h2>
+<ul>
+<li><a href="https://github.com/slightlyoff/unadjusted_pointer_lock_explainer" rel="noopener">Explainer</a></li>
+<li><a href="https://github.com/w3c/pointerlock/pull/49" rel="noopener">Specification PR</a></li>
+<li><a href="https://github.com/w3c/pointerlock" rel="noopener">GitHub repository</a></li>
+<li><a href="https://www.chromestatus.com/feature/5723553087356928" rel="noopener">ChromeStatus entry</a></li>
+<li><a href="https://bugs.chromium.org/p/chromium/issues/detail?id=982379" rel="noopener">Chrome tracking bug</a></li>
+<li><a href="https://groups.google.com/a/chromium.org/d/msg/blink-dev/cQn7OwcMQ64/OWmA9KMKBQAJ" rel="noopener">Intent to ship</a></li>
+<li><a href="https://github.com/mozilla/standards-positions/issues/448" rel="noopener">Mozilla's position</a></li>
+<li><a href="https://lists.webkit.org/pipermail/webkit-dev/2020-October/031473.html" rel="noopener">WebKit's position</a></li>
+</ul>
+<h2 id="acknowledgements">Acknowledgements <a class="w-headline-link" href="#acknowledgements">#</a></h2>
+<p>Thanks to <a href="https://github.com/jameshollyergoogle" rel="noopener">James Hollyer</a>, <a href="https://github.com/tomayac" rel="noopener">Thomas Steiner</a>, <a href="https://github.com/jpmedley" rel="noopener">Joe Medley</a>, <a href="https://github.com/kaycebasques" rel="noopener">Kayce Basques</a>, and
+<a href="https://github.com/scheib" rel="noopener">Vincent Scheib</a> for their reviews of this article.</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/capabilities/">Capabilities</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/games/">Games</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/devices/">Devices</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Nov 26, 2020</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/disable-mouse-acceleration/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions="api"></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

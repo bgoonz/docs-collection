@@ -1,0 +1,858 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=80a0772c1c1cc">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Deprecating Excalidraw Electron in favor of the web version</title>
+<meta name="description" content="Excalidraw is a virtual collaborative whiteboard that lets you easily sketch diagrams that feel hand-drawn. On the Excalidraw project, we decided to deprecate Excalidraw Desktop, an Electron wrapper for Excalidraw, in favor of the web version that you can—and always could—find at excalidraw.com. After a careful analysis, we decided that Progressive Web App (PWA) is the future we want to build upon. " />
+
+<link rel="canonical" href="https://web.dev/deprecating-excalidraw-electron/" />
+
+<meta itemprop="name" content="Deprecating Excalidraw Electron in favor of the web version" />
+<meta itemprop="description" content="Excalidraw is a virtual collaborative whiteboard that lets you easily sketch diagrams that feel hand-drawn. On the Excalidraw project, we decided to deprecate Excalidraw Desktop, an Electron wrapper for Excalidraw, in favor of the web version that you can—and always could—find at excalidraw.com. After a careful analysis, we decided that Progressive Web App (PWA) is the future we want to build upon. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/qfK9zbKBQalqq5zdr1P1.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/deprecating-excalidraw-electron/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Deprecating Excalidraw Electron in favor of the web version" />
+<meta property="og:description" content="Excalidraw is a virtual collaborative whiteboard that lets you easily sketch diagrams that feel hand-drawn. On the Excalidraw project, we decided to deprecate Excalidraw Desktop, an Electron wrapper for Excalidraw, in favor of the web version that you can—and always could—find at excalidraw.com. After a careful analysis, we decided that Progressive Web App (PWA) is the future we want to build upon. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/qfK9zbKBQalqq5zdr1P1.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="Excalidraw drawing with a stylized Electron logo. " />
+<meta property="tag" content="capabilities" />
+<meta property="tag" content="case-study" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Deprecating Excalidraw Electron in favor of the web version" />
+<meta name="twitter:description" content="Excalidraw is a virtual collaborative whiteboard that lets you easily sketch diagrams that feel hand-drawn. On the Excalidraw project, we decided to deprecate Excalidraw Desktop, an Electron wrapper for Excalidraw, in favor of the web version that you can—and always could—find at excalidraw.com. After a careful analysis, we decided that Progressive Web App (PWA) is the future we want to build upon. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/qfK9zbKBQalqq5zdr1P1.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=717bb3eb3b147', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=2fab83bce07f1', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="Excalidraw drawing with a stylized Electron logo."     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/qfK9zbKBQalqq5zdr1P1.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/qfK9zbKBQalqq5zdr1P1.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/qfK9zbKBQalqq5zdr1P1.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/qfK9zbKBQalqq5zdr1P1.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/qfK9zbKBQalqq5zdr1P1.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/qfK9zbKBQalqq5zdr1P1.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/qfK9zbKBQalqq5zdr1P1.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/qfK9zbKBQalqq5zdr1P1.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/qfK9zbKBQalqq5zdr1P1.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/qfK9zbKBQalqq5zdr1P1.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/qfK9zbKBQalqq5zdr1P1.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/qfK9zbKBQalqq5zdr1P1.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/qfK9zbKBQalqq5zdr1P1.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/qfK9zbKBQalqq5zdr1P1.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/qfK9zbKBQalqq5zdr1P1.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/qfK9zbKBQalqq5zdr1P1.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/qfK9zbKBQalqq5zdr1P1.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/qfK9zbKBQalqq5zdr1P1.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#deprecating-excalidraw-electron-in-favor-of-the-web-version" class="w-toc__header--link">
+        Deprecating Excalidraw Electron in favor of the web version
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#how-excalidraw-desktop-came-into-being">How Excalidraw Desktop came into being</a></li><li><a href="#what-is-electron">What is Electron?</a></li><li><a href="#where-excalidraw-desktop-left-off">Where Excalidraw Desktop left off</a></li><li><a href="#how-the-web-serves-us-today-and-in-the-future">How the web serves us today and in the future</a></li><li><a href="#installable-progressive-web-app">Installable Progressive Web App</a></li><li><a href="#file-system-access">File system access</a></li><li><a href="#drag-and-drop-support">Drag and drop support</a></li><li><a href="#clipboard-access">Clipboard access</a></li><li><a href="#file-handling">File handling</a></li><li><a href="#declarative-link-capturing">Declarative link capturing</a></li><li><a href="#conclusion">Conclusion</a></li><li><a href="#acknowledgements">Acknowledgements</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@tomayac"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="deprecating-excalidraw-electron-in-favor-of-the-web-version" class="w-article-header__headline">Deprecating Excalidraw Electron in favor of the web version</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          <p>Learn why the Excalidraw project decided to deprecate their Electron wrapper in favor of the web
+version.</p>
+
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Jan 7, 2021</time>
+           <span class="w-author__separator">•</span> Updated <time>May 19, 2021</time> 
+        </div>
+      
+      <div class="w-layout-container--narrow w-post-signpost">
+  <span class="w-post-signpost__title">Appears in:</span>
+  <a
+          class="w-post-signpost__link"
+          href="/progressive-web-apps"
+          >Progressive Web Apps</a
+        >
+</div>
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/thomassteiner/"><img     alt="Thomas Steiner"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/thomassteiner/">Thomas Steiner</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/tomayac"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/tomayac">GitHub</a>
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://glitch.com/@tomayac"
+          >Glitch</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://blog.tomayac.com/">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <div class="w-aside w-aside--note">
+<p><a href="https://excalidraw.com/" rel="noopener">Excalidraw</a> is a virtual collaborative whiteboard that lets you easily sketch diagrams that feel hand-drawn.
+This article was cross-posted to and first appeared on the <a href="https://blog.excalidraw.com/deprecating-excalidraw-electron/" rel="noopener">Excalidraw blog</a>.</p>
+</div>
+<p>On the <a href="https://github.com/excalidraw" rel="noopener">Excalidraw project</a>, we have decided to
+deprecate <a href="https://github.com/excalidraw/excalidraw-desktop" rel="noopener">Excalidraw Desktop</a>, an
+<a href="https://www.electronjs.org/" rel="noopener">Electron</a> wrapper for Excalidraw, in favor of the web version that you
+can—and always could—find at <a href="https://excalidraw.com/" rel="noopener">excalidraw.com</a>. After a careful analysis, we
+have decided that <a href="/pwa/">Progressive Web App</a> (PWA) is the future we want to build
+upon. Read on to learn why.</p>
+<h2 id="how-excalidraw-desktop-came-into-being">How Excalidraw Desktop came into being <a class="w-headline-link" href="#how-excalidraw-desktop-came-into-being">#</a></h2>
+<p>Soon after <a href="https://twitter.com/vjeux" rel="noopener">@vjeux</a> created the initial version of Excalidraw in
+January 2020 and <a href="https://blog.excalidraw.com/reflections-on-excalidraw/" rel="noopener">blogged about it</a>, he proposed the following in
+<a href="https://github.com/excalidraw/excalidraw/issues/561#issue-555138343" rel="noopener">Issue #561</a>:</p>
+<blockquote>
+<p>Would be great to wrap Excalidraw within Electron (or equivalent) and publish it as a [platform-specific]
+application to the various app stores.</p>
+</blockquote>
+<p>The immediate reaction by <a href="https://github.com/voluntadpear" rel="noopener">@voluntadpear</a> was to suggest:</p>
+<blockquote>
+<p>What about making it a PWA instead? Android currently supports adding them to the Play Store as
+Trusted Web Activities and hopefully iOS will do the same soon. On Desktop, Chrome lets you
+download a desktop shortcut to a PWA.</p>
+</blockquote>
+<p>The decision that <a href="https://github.com/vjeux" rel="noopener">@vjeux</a> took in the end was simple:</p>
+<blockquote>
+<p>We should do both :)</p>
+</blockquote>
+<p>While work on converting the version of Excalidraw into a PWA was started by
+<a href="https://github.com/voluntadpear" rel="noopener">@voluntadpear</a> and later others,
+<a href="https://github.com/lipis" rel="noopener">@lipis</a> independently
+<a href="https://github.com/excalidraw/excalidraw/issues/561#issuecomment-579573783" rel="noopener">went ahead</a> and created
+a <a href="https://github.com/excalidraw/excalidraw-desktop" rel="noopener">separate repo</a> for Excalidraw Desktop.</p>
+<p>To this day, the initial goal set by <a href="https://github.com/vjeux" rel="noopener">@vjeux</a>, that is, to submit
+Excalidraw to the various app stores, has not been reached yet. Honestly, no one has even started
+the submission process to any of the stores. But why is that? Before I answer, let's
+look at Electron, the platform.</p>
+<h2 id="what-is-electron">What is Electron? <a class="w-headline-link" href="#what-is-electron">#</a></h2>
+<p>The unique selling point of <a href="https://www.electronjs.org/" rel="noopener">Electron</a> is that it allows you to <em>&quot;build
+cross-platform desktop apps with JavaScript, HTML, and CSS&quot;</em>. Apps built with Electron are
+<em>&quot;compatible with Mac, Windows, and Linux&quot;</em>, that is, <em>&quot;Electron apps build and run on three
+platforms&quot;</em>. According to the homepage, the hard parts that Electron makes easy are
+<a href="https://www.electronjs.org/docs/api/auto-updater" rel="noopener">automatic updates</a>,
+<a href="https://www.electronjs.org/docs/api/menu" rel="noopener">system-level menus and notifications</a>,
+<a href="https://www.electronjs.org/docs/api/crash-reporter" rel="noopener">crash reporting</a>,
+<a href="https://www.electronjs.org/docs/api/content-tracing" rel="noopener">debugging and profiling</a>, and
+<a href="https://www.electronjs.org/docs/api/auto-updater#windows" rel="noopener">Windows installers</a>. Turns out, some of
+the promised features need a detailed look at the small print.</p>
+<ul>
+<li>
+<p>For example, automatic updates <em>&quot;are [currently] only [supported] on macOS and Windows. There is
+no built-in support for auto-updater on Linux, so it is recommended to use the distribution's
+package manager to update your app&quot;</em>.</p>
+</li>
+<li>
+<p>Developers can create system-level menus by calling <code>Menu.setApplicationMenu(menu)</code>. On Windows and
+Linux, the menu will be set as each window's top menu, while on macOS there are many
+system-defined standard menus, like the
+<a href="https://developer.apple.com/documentation/appkit/nsapplication/1428608-servicesmenu?language=objc" rel="noopener">Services</a>
+menu. To make one's menus a standard menu, developers should set their menu's <code>role</code> accordingly,
+and Electron will recognize them and make them become standard menus. This means that a lot of
+menu-related code will use the following platform check:
+<code>const isMac = process.platform === 'darwin'</code>.</p>
+</li>
+<li>
+<p>Windows installers can be made with
+<a href="https://github.com/electron/windows-installer" rel="noopener">windows-installer</a>. The README of the project
+highlights that <em>&quot;for a production app you need to sign your application. Internet Explorer's
+SmartScreen filter will block your app from being downloaded, and many anti-virus vendors will
+consider your app as malware unless you obtain a valid cert&quot;</em> [sic].</p>
+</li>
+</ul>
+<p>Looking at just these three examples, it is clear that Electron is far from &quot;write once, run
+everywhere&quot;. Distributing an app on app stores requires
+<a href="https://www.electronjs.org/docs/tutorial/code-signing" rel="noopener">code signing</a>, a security technology for
+certifying app ownership. Packaging an app requires using tools like
+<a href="https://github.com/electron-userland/electron-forge" rel="noopener">electron-forge</a> and thinking about where to
+host packages for app updates. It gets complex relatively quickly, especially when the objective
+truly is cross platform support. I want to note that it is <em>absolutely</em> possible to create stunning
+Electron apps with enough effort and dedication. For Excalidraw Desktop, we were not there.</p>
+<h2 id="where-excalidraw-desktop-left-off">Where Excalidraw Desktop left off <a class="w-headline-link" href="#where-excalidraw-desktop-left-off">#</a></h2>
+<p>Excalidraw Desktop so far is basically the Excalidraw web app bundled as an
+<a href="https://github.com/electron/asar" rel="noopener"><code>.asar</code></a> file with an added <strong>About Excalidraw</strong> window. The look
+and feel of the application is almost identical to the web version.</p>
+<figure class="w-figure">
+  <img     alt="The Excalidraw Desktop application running in an Electron wrapper."          decoding="async"     height="601"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/oR9usELiRYTSu8V7i7vj.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/oR9usELiRYTSu8V7i7vj.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/oR9usELiRYTSu8V7i7vj.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/oR9usELiRYTSu8V7i7vj.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/oR9usELiRYTSu8V7i7vj.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/oR9usELiRYTSu8V7i7vj.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/oR9usELiRYTSu8V7i7vj.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/oR9usELiRYTSu8V7i7vj.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/oR9usELiRYTSu8V7i7vj.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/oR9usELiRYTSu8V7i7vj.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/oR9usELiRYTSu8V7i7vj.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/oR9usELiRYTSu8V7i7vj.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/oR9usELiRYTSu8V7i7vj.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/oR9usELiRYTSu8V7i7vj.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/oR9usELiRYTSu8V7i7vj.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/oR9usELiRYTSu8V7i7vj.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/oR9usELiRYTSu8V7i7vj.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/oR9usELiRYTSu8V7i7vj.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">Excalidraw Desktop is almost indistinguishable from the web version</figcaption>
+</figure>
+<figure class="w-figure">
+  <img     alt="The Excalidraw Desktop &#x27;About&#x27; window displaying the version of the Electron wrapper and the web app."          decoding="async"     height="330"          loading="lazy"     sizes="(min-width: 400px) 400px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/y9d4nWR3p0VjvHcnP0iq.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/y9d4nWR3p0VjvHcnP0iq.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/y9d4nWR3p0VjvHcnP0iq.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/y9d4nWR3p0VjvHcnP0iq.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/y9d4nWR3p0VjvHcnP0iq.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/y9d4nWR3p0VjvHcnP0iq.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/y9d4nWR3p0VjvHcnP0iq.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/y9d4nWR3p0VjvHcnP0iq.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/y9d4nWR3p0VjvHcnP0iq.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/y9d4nWR3p0VjvHcnP0iq.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/y9d4nWR3p0VjvHcnP0iq.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/y9d4nWR3p0VjvHcnP0iq.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/y9d4nWR3p0VjvHcnP0iq.png?auto=format&w=800 800w"          width="400"   />
+  <figcaption class="w-figcaption">The <strong>About Excalibur</strong> menu providing insights into the versions</figcaption>
+</figure>
+<p>On macOS, there is now a system-level menu at the top of the application, but since none of the menu
+actions—apart from <strong>Close Window</strong> and <strong>About Excalidraw</strong>—are hooked up to to anything, the menu
+is, in its current state, pretty useless. Meanwhile, all actions can of course be performed via the
+regular Excalidraw toolbars and the context menu.</p>
+<figure class="w-figure">
+  <img     alt="The Excalidraw Desktop menu bar on macOS with the &#x27;File&#x27;, &#x27;Close Window&#x27; menu item selected."          decoding="async"     height="138"          loading="lazy"     sizes="(min-width: 736px) 736px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/akQQgmMKo66quqeVDdAH.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/akQQgmMKo66quqeVDdAH.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/akQQgmMKo66quqeVDdAH.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/akQQgmMKo66quqeVDdAH.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/akQQgmMKo66quqeVDdAH.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/akQQgmMKo66quqeVDdAH.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/akQQgmMKo66quqeVDdAH.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/akQQgmMKo66quqeVDdAH.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/akQQgmMKo66quqeVDdAH.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/akQQgmMKo66quqeVDdAH.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/akQQgmMKo66quqeVDdAH.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/akQQgmMKo66quqeVDdAH.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/akQQgmMKo66quqeVDdAH.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/akQQgmMKo66quqeVDdAH.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/akQQgmMKo66quqeVDdAH.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/akQQgmMKo66quqeVDdAH.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/akQQgmMKo66quqeVDdAH.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/akQQgmMKo66quqeVDdAH.png?auto=format&w=1472 1472w"          width="736"   />
+  <figcaption class="w-figcaption">The menu bar of Excalidraw Desktop on macOS</figcaption>
+</figure>
+<p>We use <a href="https://github.com/electron-userland/electron-builder" rel="noopener">electron-builder</a>, which supports
+<a href="https://www.electron.build/configuration/configuration#PlatformSpecificBuildOptions-fileAssociations" rel="noopener">file type associations</a>.
+By double-clicking an <code>.excalidraw</code> file, ideally the Excalidraw Desktop app should open. The
+relevant excerpt of our <code>electron-builder.json</code> file looks like this:</p>
+<web-copy-code><pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"fileAssociations"</span><span class="token operator">:</span> <span class="token punctuation">[</span><br>    <span class="token punctuation">{</span><br>      <span class="token property">"ext"</span><span class="token operator">:</span> <span class="token string">"excalidraw"</span><span class="token punctuation">,</span><br>      <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"Excalidraw"</span><span class="token punctuation">,</span><br>      <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"Excalidraw file"</span><span class="token punctuation">,</span><br>      <span class="token property">"role"</span><span class="token operator">:</span> <span class="token string">"Editor"</span><span class="token punctuation">,</span><br>      <span class="token property">"mimeType"</span><span class="token operator">:</span> <span class="token string">"application/json"</span><br>    <span class="token punctuation">}</span><br>  <span class="token punctuation">]</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>Unfortunately, in practice, this does not always work as intended, since, depending on the
+installation type (for the current user, for all users), apps on Windows 10 do not have the
+rights to associate a file type to themselves.</p>
+<p>These shortcomings and the pending work to make the experience truly app-like on <em>all</em> platforms
+(which, again, with enough effort <em>is</em> possible) were a strong argument for us to reconsider our
+investment in Excalidraw Desktop. The way bigger argument for us, though, was that we foresee that
+for <em>our</em> use case, we do not need all the features Electron offers. The grown and still growing set
+of capabilities of the web serves us equally well, if not better.</p>
+<h2 id="how-the-web-serves-us-today-and-in-the-future">How the web serves us today and in the future <a class="w-headline-link" href="#how-the-web-serves-us-today-and-in-the-future">#</a></h2>
+<p>Even in 2020, <a href="https://jquery.com/" rel="noopener">jQuery</a> is still
+<a href="https://almanac.httparchive.org/en/2020/javascript#libraries" rel="noopener">incredibly popular</a>. For many
+developers it has become a habit to use it, despite the fact that today they
+<a href="http://youmightnotneedjquery.com/" rel="noopener">might not need jQuery</a>. There is a similar resource for
+Electron, aptly called <a href="https://youmightnotneedelectron.com/" rel="noopener">You Might Not Need Electron</a>. Let me
+outline why we think we do not need Electron.</p>
+<h3 id="installable-progressive-web-app">Installable Progressive Web App <a class="w-headline-link" href="#installable-progressive-web-app">#</a></h3>
+<p>Excalidraw today is an <a href="/installable/">installable</a> Progressive Web App with a
+<a href="https://excalidraw.com/service-worker.js" rel="noopener">service worker</a> and a
+<a href="https://excalidraw.com/manifest.json" rel="noopener">web app manifest</a>. It caches all its resources in two caches,
+one for fonts and font-related CSS, and one for everything else.</p>
+<figure class="w-figure">
+  <img     alt="Chrome DevTools Application tab showing the two Excalidraw caches."          decoding="async"     height="569"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/tTo7miHIREZRySv8aoBd.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/tTo7miHIREZRySv8aoBd.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/tTo7miHIREZRySv8aoBd.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/tTo7miHIREZRySv8aoBd.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/tTo7miHIREZRySv8aoBd.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/tTo7miHIREZRySv8aoBd.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/tTo7miHIREZRySv8aoBd.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/tTo7miHIREZRySv8aoBd.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/tTo7miHIREZRySv8aoBd.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/tTo7miHIREZRySv8aoBd.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/tTo7miHIREZRySv8aoBd.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/tTo7miHIREZRySv8aoBd.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/tTo7miHIREZRySv8aoBd.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/tTo7miHIREZRySv8aoBd.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/tTo7miHIREZRySv8aoBd.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/tTo7miHIREZRySv8aoBd.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/tTo7miHIREZRySv8aoBd.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/tTo7miHIREZRySv8aoBd.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">Excalidraw's cache contents</figcaption>
+</figure>
+<p>This means the application is fully offline-capable and can run without a network connection.
+Chromium-based browsers on both desktop and mobile prompt the user to install the app.
+You can see the installation prompt in the screenshot below.</p>
+<figure class="w-figure">
+  <img     alt="Excalidraw prompting the user to install the app in Chrome on macOS."          decoding="async"     height="258"          loading="lazy"     sizes="(min-width: 400px) 400px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/be3EQLezj3776w6SHLPi.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/be3EQLezj3776w6SHLPi.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/be3EQLezj3776w6SHLPi.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/be3EQLezj3776w6SHLPi.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/be3EQLezj3776w6SHLPi.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/be3EQLezj3776w6SHLPi.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/be3EQLezj3776w6SHLPi.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/be3EQLezj3776w6SHLPi.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/be3EQLezj3776w6SHLPi.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/be3EQLezj3776w6SHLPi.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/be3EQLezj3776w6SHLPi.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/be3EQLezj3776w6SHLPi.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/be3EQLezj3776w6SHLPi.png?auto=format&w=800 800w"          width="400"   />
+  <figcaption class="w-figcaption">The Excalidraw install dialog in Chrome</figcaption>
+</figure>
+<p>Excalidraw is configured to run as a standalone application, so when you install it, you get an app
+that runs in its own window. It is fully integrated in the operating system's multitasking UI and
+gets its own app icon on the home screen, Dock, or task bar; depending on the platform where you install
+it.</p>
+<figure class="w-figure">
+  <img     alt="Excalidraw running in its own window."          decoding="async"     height="584"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/MbMgQlGSBeNcX7Y362jV.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/MbMgQlGSBeNcX7Y362jV.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/MbMgQlGSBeNcX7Y362jV.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/MbMgQlGSBeNcX7Y362jV.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/MbMgQlGSBeNcX7Y362jV.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/MbMgQlGSBeNcX7Y362jV.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/MbMgQlGSBeNcX7Y362jV.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/MbMgQlGSBeNcX7Y362jV.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/MbMgQlGSBeNcX7Y362jV.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/MbMgQlGSBeNcX7Y362jV.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/MbMgQlGSBeNcX7Y362jV.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/MbMgQlGSBeNcX7Y362jV.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/MbMgQlGSBeNcX7Y362jV.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/MbMgQlGSBeNcX7Y362jV.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/MbMgQlGSBeNcX7Y362jV.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/MbMgQlGSBeNcX7Y362jV.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/MbMgQlGSBeNcX7Y362jV.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/MbMgQlGSBeNcX7Y362jV.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">The Excalidraw PWA in a standalone window</figcaption>
+</figure>
+<figure class="w-figure">
+  <img     alt="Excalidraw icon on the macOS Dock."          decoding="async"     height="167"          loading="lazy"     sizes="(min-width: 400px) 400px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/7ncf98ZQZcg4g3UP2s7F.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/7ncf98ZQZcg4g3UP2s7F.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/7ncf98ZQZcg4g3UP2s7F.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/7ncf98ZQZcg4g3UP2s7F.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/7ncf98ZQZcg4g3UP2s7F.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/7ncf98ZQZcg4g3UP2s7F.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/7ncf98ZQZcg4g3UP2s7F.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/7ncf98ZQZcg4g3UP2s7F.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/7ncf98ZQZcg4g3UP2s7F.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/7ncf98ZQZcg4g3UP2s7F.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/7ncf98ZQZcg4g3UP2s7F.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/7ncf98ZQZcg4g3UP2s7F.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/7ncf98ZQZcg4g3UP2s7F.png?auto=format&w=800 800w"          width="400"   />
+  <figcaption class="w-figcaption">The Excalidraw icon on the macOS Dock</figcaption>
+</figure>
+<h3 id="file-system-access">File system access <a class="w-headline-link" href="#file-system-access">#</a></h3>
+<p>Excalidraw uses <a href="https://github.com/GoogleChromeLabs/browser-fs-access" rel="noopener">browser-fs-access</a> for
+accessing the file system of the operating system. On supporting browsers, this allows for a true
+open→edit→save workflow and actual over-saving and &quot;save as&quot;, with a transparent fallback for
+other browsers. You can learn more about this feature in my blog post
+<a href="/browser-fs-access/">Reading and writing files and directories with the browser-fs-access library</a>.</p>
+<h3 id="drag-and-drop-support">Drag and drop support <a class="w-headline-link" href="#drag-and-drop-support">#</a></h3>
+<p>Files can be dragged and dropped onto the Excalidraw window just as in platform-specific applications. On a
+browser that supports the <a href="/file-system-access/">File System Access API</a>, a dropped
+file can be immediately edited and the modifications be saved to the original file. This is so
+intuitive that you sometimes forget that you are dealing with a web app.</p>
+<h3 id="clipboard-access">Clipboard access <a class="w-headline-link" href="#clipboard-access">#</a></h3>
+<p>Excalidraw works well with the operating system's clipboard. Entire Excalidraw drawings or also just
+individual objects can be copied and pasted in <code>image/png</code> and <code>image/svg+xml</code> formats, allowing for
+an easy integration with other platform-specific tools like <a href="https://inkscape.org/" rel="noopener">Inkscape</a> or web-based
+tools like <a href="https://jakearchibald.github.io/svgomg/" rel="noopener">SVGOMG</a>.</p>
+<figure class="w-figure">
+  <img     alt="Excalidraw context menu showing the &#x27;copy to clipboard as SVG&#x27; and &#x27;copy to clipboard as PNG&#x27; menu items."          decoding="async"     height="746"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/90gLbYTtkKtDfun4fiRM.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/90gLbYTtkKtDfun4fiRM.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/90gLbYTtkKtDfun4fiRM.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/90gLbYTtkKtDfun4fiRM.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/90gLbYTtkKtDfun4fiRM.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/90gLbYTtkKtDfun4fiRM.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/90gLbYTtkKtDfun4fiRM.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/90gLbYTtkKtDfun4fiRM.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/90gLbYTtkKtDfun4fiRM.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/90gLbYTtkKtDfun4fiRM.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/90gLbYTtkKtDfun4fiRM.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/90gLbYTtkKtDfun4fiRM.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/90gLbYTtkKtDfun4fiRM.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/90gLbYTtkKtDfun4fiRM.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/90gLbYTtkKtDfun4fiRM.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/90gLbYTtkKtDfun4fiRM.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/90gLbYTtkKtDfun4fiRM.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/90gLbYTtkKtDfun4fiRM.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">The Excalidraw context menu offering clipboard actions</figcaption>
+</figure>
+<h3 id="file-handling">File handling <a class="w-headline-link" href="#file-handling">#</a></h3>
+<p>Excalidraw already supports the experimental <a href="/file-handling/">File Handling API</a>,
+which means <code>.excalidraw</code> files can be double-clicked in the operating system's file manager and
+open directly in the Excalidraw app, since Excalidraw registers as a file handler for <code>.excalidraw</code>
+files in the operating system.</p>
+<h3 id="declarative-link-capturing">Declarative link capturing <a class="w-headline-link" href="#declarative-link-capturing">#</a></h3>
+<p>Excalidraw drawings can be shared by link. Here is an
+<a href="https://excalidraw.com/#json=4646308765761536,jwZJW8JsOM75vdhqG2nBgA" rel="noopener">example</a>. In the future, if
+people have Excalidraw installed as a PWA, such links will not open in a browser tab, but launch a
+new standalone window. Pending implementation, this will work thanks to
+<a href="https://github.com/WICG/sw-launch/blob/master/declarative_link_capturing.md" rel="noopener">declarative link capturing</a>,
+an, at the time of writing, bleeding-edge proposal for a new web platform feature.</p>
+<h2 id="conclusion">Conclusion <a class="w-headline-link" href="#conclusion">#</a></h2>
+<p>The web has come a long way, with more and more features landing in browsers that only a couple of
+years or even months ago were unthinkable on the web and exclusive to platform-specific applications.
+Excalidraw is at the forefront of what is possible in the browser, all while acknowledging that not
+all browsers on all platforms support each feature we use. By betting on a progressive
+enhancement strategy, we enjoy the latest and greatest wherever possible, but without leaving anyone
+behind. Best viewed in <em>any</em> browser.</p>
+<p>Electron has served us well, but in 2020 and beyond, we can live without it. Oh, and for that
+objective of <a href="https://github/com/vjeux" rel="noopener">@vjeux</a>: since the Android Play Store now accepts PWAs in a
+container format called <a href="/using-a-pwa-in-your-android-app/">Trusted Web Activity</a> and
+since the
+<a href="https://docs.microsoft.com/en-us/microsoft-edge/progressive-web-apps-edgehtml/microsoft-store" rel="noopener">Microsoft Store supports PWAs</a>,
+too, you can expect Excalidraw in these stores in the not too distant future. Meanwhile, you can
+always use and install <a href="https://excalidraw.com/" rel="noopener">Excalidraw in and from the browser</a>.</p>
+<h2 id="acknowledgements">Acknowledgements <a class="w-headline-link" href="#acknowledgements">#</a></h2>
+<p>This article was reviewed by <a href="https://github.com/lipis" rel="noopener">@lipis</a>,
+<a href="https://github.com/dwelle" rel="noopener">@dwelle</a>, and
+<a href="https://github.com/jpmedley" rel="noopener">Joe Medley</a>.</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/capabilities/">Capabilities</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/case-study/">Case Study</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>May 19, 2021</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/deprecating-excalidraw-electron/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

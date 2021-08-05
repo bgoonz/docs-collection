@@ -1,0 +1,1186 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=633486fc5f7f6">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>A more private way to measure ad conversions, the Event Conversion Measurement API</title>
+<meta name="description" content="Our latest news, updates, and stories for developers" />
+
+<link rel="canonical" href="https://web.dev/conversion-measurement/" />
+
+<meta itemprop="name" content="A more private way to measure ad conversions, the Event Conversion Measurement API" />
+<meta itemprop="description" content="Our latest news, updates, and stories for developers" />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/wRrDtHNikUNqgdDewvYG.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/conversion-measurement/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="A more private way to measure ad conversions, the Event Conversion Measurement API" />
+<meta property="og:description" content="Our latest news, updates, and stories for developers" />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/wRrDtHNikUNqgdDewvYG.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="" />
+<meta property="tag" content="privacy" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="A more private way to measure ad conversions, the Event Conversion Measurement API" />
+<meta name="twitter:description" content="Our latest news, updates, and stories for developers" />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/wRrDtHNikUNqgdDewvYG.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=2127120c3910d', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=4a925c1103d3c', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="Hero Image"     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/wRrDtHNikUNqgdDewvYG.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/wRrDtHNikUNqgdDewvYG.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/wRrDtHNikUNqgdDewvYG.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/wRrDtHNikUNqgdDewvYG.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/wRrDtHNikUNqgdDewvYG.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/wRrDtHNikUNqgdDewvYG.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/wRrDtHNikUNqgdDewvYG.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/wRrDtHNikUNqgdDewvYG.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/wRrDtHNikUNqgdDewvYG.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/wRrDtHNikUNqgdDewvYG.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/wRrDtHNikUNqgdDewvYG.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/wRrDtHNikUNqgdDewvYG.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/wRrDtHNikUNqgdDewvYG.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/wRrDtHNikUNqgdDewvYG.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/wRrDtHNikUNqgdDewvYG.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/wRrDtHNikUNqgdDewvYG.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/wRrDtHNikUNqgdDewvYG.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/wRrDtHNikUNqgdDewvYG.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#a-more-private-way-to-measure-ad-conversions-the-event-conversion-measurement-api" class="w-toc__header--link">
+        A more private way to measure ad conversions, the Event Conversion Measurement API
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#glossary">Glossary</a></li><li><a href="#who-needs-to-know-about-this-api:-adtech-platforms-advertisers-and-publishers">Who needs to know about this API: adtech platforms, advertisers, and publishers</a></li><li><a href="#api-overview">API overview</a></li><li><a href="#why-is-this-needed">Why is this needed?</a></li><li><a href="#a-first-iteration">A first iteration</a></li><li><a href="#only-clicks">Only clicks</a></li><li><a href="#how-it-works">How it works</a></li><li><a href="#browser-support-and-similar-apis">Browser support and similar APIs</a></li><li><a href="#browser-support">Browser support</a></li><li><a href="#standardization">Standardization</a></li><li><a href="#similar-apis">Similar APIs</a></li><li><a href="#how-this-api-preserves-user-privacy">How this API preserves user privacy</a></li><li><a href="#data-limits">Data limits</a></li><li><a href="#noising-of-conversion-data">Noising of conversion data</a></li><li><a href="#report-timing">Report timing</a></li><li><a href="#example">Example</a></li><li><a href="#ad-click-(steps-1-to-5)">Ad click (steps 1 to 5)</a></li><li><a href="#conversion-and-report-scheduling-(steps-6-to-9)">Conversion and report scheduling (steps 6 to 9)</a></li><li><a href="#sending-the-report-(steps-10-and-11)">Sending the report (steps 10 and 11)</a></li><li><a href="#subsequent-conversions-and-expiry">Subsequent conversions and expiry</a></li><li><a href="#use-cases">Use cases</a></li><li><a href="#what-is-currently-supported">What is currently supported</a></li><li><a href="#what-is-not-supported-in-this-iteration">What is not supported in this iteration</a></li><li><a href="#what-else-may-change-in-future-iterations">What else may change in future iterations</a></li><li><a href="#try-it-out">Try it out</a></li><li><a href="#demo">Demo</a></li><li><a href="#experiment-with-the-api">Experiment with the API</a></li><li><a href="#share-your-feedback">Share your feedback</a></li><li><a href="#keep-an-eye-out">Keep an eye out</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@maudnals | @sw12"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="a-more-private-way-to-measure-ad-conversions-the-event-conversion-measurement-api" class="w-article-header__headline">A more private way to measure ad conversions, the Event Conversion Measurement API</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          <p>A new web API available as an origin trial measures when an ad click leads to a conversion, without using cross-site identifiers.</p>
+
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Oct 6, 2020</time>
+           <span class="w-author__separator">•</span> Updated <time>May 4, 2020</time> 
+        </div>
+      
+      <div class="w-layout-container--narrow w-post-signpost">
+  <span class="w-post-signpost__title">Appears in:</span>
+  <a
+          class="w-post-signpost__link"
+          href="/secure"
+          >Safe and secure</a
+        >
+</div>
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/maudn/"><img     alt="Maud Nalpas"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/F620GZorjY0JjKas3p3J.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/F620GZorjY0JjKas3p3J.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/F620GZorjY0JjKas3p3J.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/F620GZorjY0JjKas3p3J.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/F620GZorjY0JjKas3p3J.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/F620GZorjY0JjKas3p3J.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/maudn/">Maud Nalpas</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/maudnals"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/maudnals">GitHub</a>
+      </li>
+      
+      
+    </ul>
+  </div>
+</div>
+          
+            <div class="w-author">
+  <a href="/authors/samdutton/"><img     alt="Sam Dutton"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/wPss4TJX9IJ1CJza7iFY.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/wPss4TJX9IJ1CJza7iFY.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/wPss4TJX9IJ1CJza7iFY.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/wPss4TJX9IJ1CJza7iFY.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/wPss4TJX9IJ1CJza7iFY.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/wPss4TJX9IJ1CJza7iFY.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/samdutton/">Sam Dutton</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/sw12"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/samdutton">GitHub</a>
+      </li>
+      
+      
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <div role="banner" class="w-banner w-banner--caution w-banner--body">
+   The Conversion Measurement API will be renamed to
+  <em>Attribution Reporting API</em> and offer more features.
+<ul>
+<li>If you're experimenting with (<a href="https://github.com/WICG/conversion-measurement-api/blob/3e0ef7d3cee8d7dc5a4b953e70cb027b0e13943b/README.md">Conversion
+Measurement API</a>)
+in <a href="https://chromestatus.com/features/schedule">Chrome 91</a> and below, read this post
+to find more details, use cases and instructions for how to use the API.</li>
+<li>If you're interested in the next iteration of this API (Attribution Reporting), which will be
+available for experimentation in Chrome (origin trial), <a href="https://groups.google.com/u/1/a/chromium.org/g/attribution-reporting-api-dev">join the mailing
+list</a> for updates
+on available experiments.</li>
+</ul>
+</div>
+<p>In order to measure the effectiveness of ad campaigns, advertisers and publishers need to know when
+an ad click or view leads to a <a href="/digging-into-the-privacy-sandbox/#conversion">conversion</a>, such as
+a purchase or sign-up. Historically, this has been done with <strong>third-party cookies</strong>. Now, the Event
+Conversion Measurement API enables the correlation of an event on a publisher's website with a
+subsequent conversion on an advertiser site without involving mechanisms that can be used to
+recognize a user across sites.</p>
+<div role="banner" class="w-banner w-banner--info w-banner--body">
+   <strong>This proposal needs your feedback!</strong> If you have comments, please
+  <a href="https://github.com/WICG/conversion-measurement-api/issues/">create an issue</a> in the API proposal's
+  repository. 
+</div>
+<div class="w-aside w-aside--note">
+<p>This API is part of the Privacy Sandbox, a series of proposals to satisfy third-party
+use cases without third-party cookies or other cross-site tracking mechanisms. See <a href="/digging-into-the-privacy-sandbox">Digging into the
+Privacy Sandbox</a> for an overview of all the proposals. </div></p>
+<h2 id="glossary">Glossary <a class="w-headline-link" href="#glossary">#</a></h2>
+<ul>
+<li><strong>Adtech platforms</strong>: companies that provide software and tools to enable brands or agencies to
+target, deliver, and analyze their digital advertising.</li>
+<li><strong>Advertisers</strong>: companies paying for advertising.</li>
+<li><strong>Publishers</strong>: companies that display ads on their websites.</li>
+<li><strong>Click-through conversion</strong>: conversion that is attributed to an ad click.</li>
+<li><strong>View-through conversion</strong>: conversion that is attributed to an ad impression (if the user
+doesn't interact with the ad, then later converts).</li>
+</ul>
+<h2 id="who-needs-to-know-about-this-api:-adtech-platforms-advertisers-and-publishers">Who needs to know about this API: adtech platforms, advertisers, and publishers <a class="w-headline-link" href="#who-needs-to-know-about-this-api:-adtech-platforms-advertisers-and-publishers">#</a></h2>
+<ul>
+<li><strong>Adtech platforms</strong> such as <strong><a href="https://en.wikipedia.org/wiki/Demand-side_platform" rel="noopener">demand-side
+platforms</a></strong> are likely to be interested in
+using this API to support functionality that currently relies on third-party cookies. If you're
+working on conversion measurement systems: <a href="#demo">try out the demo</a>, <a href="#experiment-with-the-api">experiment with the
+API</a>, and <a href="#share-your-feedback">share your feedback</a>.</li>
+<li><strong>Advertisers and publishers relying on custom code for advertising or conversion measurement</strong>
+may similarly be interested in using this API to replace existing techniques.</li>
+<li><strong>Advertisers and publishers relying on adtech platforms for advertising or conversion
+measurement</strong> don't need to use the API directly, but the <a href="#why-is-this-needed">rationale for this
+API</a> may be of interest, particularly if you are working with adtech
+platforms that may integrate the API.</li>
+</ul>
+<h2 id="api-overview">API overview <a class="w-headline-link" href="#api-overview">#</a></h2>
+<h3 id="why-is-this-needed">Why is this needed? <a class="w-headline-link" href="#why-is-this-needed">#</a></h3>
+<p>Today, ad conversion measurement often relies on <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies#Third-party_cookies" rel="noopener">third-party
+cookies</a>. <strong>But
+browsers are restricting access to these.</strong></p>
+<p>Chrome plans on <a href="https://blog.chromium.org/2020/01/building-more-private-web-path-towards.html" rel="noopener">phasing out support for third-party
+cookies</a> and <a href="https://support.google.com/chrome/answer/95647?co=GENIE.Platform%3DDesktop&amp;hl=en" rel="noopener">offers
+ways for users to block them if they
+choose</a>. Safari
+<a href="https://webkit.org/blog/10218/full-third-party-cookie-blocking-and-more/" rel="noopener">blocks third-party
+cookies</a>, Firefox <a href="https://blog.mozilla.org/blog/2019/09/03/todays-firefox-blocks-third-party-tracking-cookies-and-cryptomining-by-default" rel="noopener">blocks
+known third-party tracking
+cookies</a>,
+and Edge <a href="https://support.microsoft.com/en-us/help/4533959/microsoft-edge-learn-about-tracking-prevention?ocid=EdgePrivacySettings-TrackingPrevention" rel="noopener">offers tracking
+prevention</a>.</p>
+<p>Third-party cookies are becoming a legacy solution. <strong>New purpose-built APIs</strong>, like this one, are emerging to
+address in a privacy-preserving way the use cases that third-party cookies solved.</p>
+<p><strong>How does the Event Conversion Measurement API compare to third-party cookies?</strong></p>
+<ul>
+<li>It's <strong>purpose-built</strong> to measure conversions, unlike cookies. This in turn can enable browsers to
+apply more enhanced privacy protections.</li>
+<li>It's <strong>more private</strong>: it makes it difficult to recognize a user across two different top-level
+sites, for example to link publisher-side and advertiser-side user profiles. See how in <a href="#how-this-api-preserves-user-privacy">How
+this API preserves user privacy</a>.</li>
+</ul>
+<h3 id="a-first-iteration">A first iteration <a class="w-headline-link" href="#a-first-iteration">#</a></h3>
+<p>This API is at an <strong>early experimental stage</strong>. What's available as an origin trial is the <strong>first
+iteration</strong> of the API. Things may change substantially in <a href="#use-cases">future iterations</a>.</p>
+<h3 id="only-clicks">Only clicks <a class="w-headline-link" href="#only-clicks">#</a></h3>
+<p>This iteration of the API only supports <strong>click-through conversion measurement</strong>, but <a href="https://github.com/WICG/conversion-measurement-api/blob/main/event_attribution_reporting.md" rel="noopener">view-through
+conversion
+measurement</a> is under public incubation.</p>
+<h3 id="how-it-works">How it works <a class="w-headline-link" href="#how-it-works">#</a></h3>
+<figure class="w-figure">
+  <img     alt="Diagram: overview of the conversion measurement API steps"          decoding="async"     height="496"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/Xn96AVosulGisR6Hoj4J.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/Xn96AVosulGisR6Hoj4J.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/Xn96AVosulGisR6Hoj4J.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/Xn96AVosulGisR6Hoj4J.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/Xn96AVosulGisR6Hoj4J.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/Xn96AVosulGisR6Hoj4J.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/Xn96AVosulGisR6Hoj4J.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/Xn96AVosulGisR6Hoj4J.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/Xn96AVosulGisR6Hoj4J.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/Xn96AVosulGisR6Hoj4J.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/Xn96AVosulGisR6Hoj4J.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/Xn96AVosulGisR6Hoj4J.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/Xn96AVosulGisR6Hoj4J.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/Xn96AVosulGisR6Hoj4J.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/Xn96AVosulGisR6Hoj4J.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/Xn96AVosulGisR6Hoj4J.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/Xn96AVosulGisR6Hoj4J.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/Xn96AVosulGisR6Hoj4J.jpg?auto=format&w=1600 1600w"          width="800"   />
+</figure>
+<p>This API can be used with two types of links (<code>&lt;a&gt;</code> elements) used for advertising:</p>
+<ul>
+<li>Links in a <strong>first-party</strong> context, such as ads on a social network or a search
+engine results page;</li>
+<li>Links in a <strong>third-party iframe</strong>, such as on a publisher site that uses a
+third-party adtech provider.</li>
+</ul>
+<p>With this API, such outbound links can be configured with attributes that are
+specific to ad conversions:</p>
+<ul>
+<li>Custom data to attach to an ad click on the publisher's side, for example a click ID or campaign
+ID.</li>
+<li>The website for which a conversion is expected for this ad.</li>
+<li>The reporting endpoint that should be notified of successful conversions.</li>
+<li>The cut-off date and time for when conversions can no longer be counted for this ad.</li>
+</ul>
+<p>When the user clicks an ad, the browser—on the user's local device—records this event, alongside
+conversion configuration and click data specified by Conversion Measurement attributes on the <code>&lt;a&gt;</code>
+element.</p>
+<p>Later on, the user may visit the advertiser's website and perform an action that the advertiser or
+their adtech provider categorizes as a <strong>conversion</strong>. If this happens, the ad click and the
+conversion event are matched by the user's browser.</p>
+<p>The browser finally schedules a <strong>conversion report</strong> to be sent to the endpoint specified in the
+<code>&lt;a&gt;</code> element's attributes. This report includes data about the ad click that led to this
+conversion, as a well as data about the conversion.</p>
+<p>If several conversions are registered for a given ad click, as many corresponding reports are
+scheduled to be sent (up to a maximum of three per ad click).</p>
+<p>Reports are sent after a delay: days or sometimes weeks after conversion (see why in <a href="#report-timing">Reports
+timing</a>).</p>
+<h2 id="browser-support-and-similar-apis">Browser support and similar APIs <a class="w-headline-link" href="#browser-support-and-similar-apis">#</a></h2>
+<h3 id="browser-support">Browser support <a class="w-headline-link" href="#browser-support">#</a></h3>
+<p>The Event Conversion Measurement API can be supported:</p>
+<ul>
+<li>As an <a href="/origin-trials/">origin trial</a>. Origin trials enable the API for <strong>all visitors</strong> of a given
+<a href="/same-site-same-origin/#origin">origin</a>. <strong>You need to register your origin for the origin trial
+in order to try the API with end users</strong>. See <a href="/using-conversion-measurement">Using the conversion measurement API</a> for details about the origin trial.</li>
+<li>By turning on flags, in Chrome 86 and later. Flags enable the API on a <strong>single user</strong>'s browser.
+<strong>Flags are useful when developing locally</strong>.</li>
+</ul>
+<p>See details on the current status on the <a href="https://chromestatus.com/features/6412002824028160" rel="noopener">Chrome feature
+entry</a>.</p>
+<h3 id="standardization">Standardization <a class="w-headline-link" href="#standardization">#</a></h3>
+<p>This API is being designed in the open, in the Web Platform Incubator Community Group
+(<a href="https://www.w3.org/community/wicg/" rel="noopener">WICG</a>). It's available for experimentation in Chrome.</p>
+<h3 id="similar-apis">Similar APIs <a class="w-headline-link" href="#similar-apis">#</a></h3>
+<p>WebKit, the web browser engine used by Safari, has a proposal with similar goals, the <a href="https://github.com/privacycg/private-click-measurement" rel="noopener">Private Click
+Measurement</a>.
+It's being worked on within the Privacy Community Group
+(<a href="https://www.w3.org/community/privacycg/" rel="noopener">PrivacyCG</a>).</p>
+<h2 id="how-this-api-preserves-user-privacy">How this API preserves user privacy <a class="w-headline-link" href="#how-this-api-preserves-user-privacy">#</a></h2>
+<p>With this API, conversions can be measured while protecting users' privacy: users can't be
+recognized across sites. This is made possible by <strong>data limits</strong>, <strong>noising of conversion data</strong>,
+and <strong>report timing</strong> mechanisms.</p>
+<p>Let's take a closer look at how these mechanisms work, and what they mean in practice.</p>
+<h3 id="data-limits">Data limits <a class="w-headline-link" href="#data-limits">#</a></h3>
+<p>In the following, <strong>click-time or view-time data</strong> is data available to <code>adtech.example</code> when the ad
+is served to the user and then clicked or viewed. Data from when a conversion happened is
+<strong>conversion-time data</strong>.</p>
+<p>Let's look at a <strong>publisher</strong> <code>news.example</code> and an <strong>advertiser</strong> <code>shoes.example</code>. Third-party
+scripts from the <strong>adtech platform</strong> <code>adtech.example</code> are present on the publisher site
+<code>news.example</code> to include ads for the advertiser <code>shoes.example</code>. <code>shoes.example</code> includes
+<code>adtech.example</code> scripts as well, to detect conversions.</p>
+<p>How much can <code>adtech.example</code> learn about web users?</p>
+<h4 id="with-third-party-cookies">With third-party cookies <a class="w-headline-link" href="#with-third-party-cookies">#</a></h4>
+<figure class="w-figure">
+  <img     alt="Diagram: how third-party cookies enable cross-site user recognition"          decoding="async"     height="860"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/kRpuY2r7ZSPtADz7e1P5.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/kRpuY2r7ZSPtADz7e1P5.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/kRpuY2r7ZSPtADz7e1P5.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/kRpuY2r7ZSPtADz7e1P5.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/kRpuY2r7ZSPtADz7e1P5.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/kRpuY2r7ZSPtADz7e1P5.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/kRpuY2r7ZSPtADz7e1P5.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/kRpuY2r7ZSPtADz7e1P5.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/kRpuY2r7ZSPtADz7e1P5.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/kRpuY2r7ZSPtADz7e1P5.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/kRpuY2r7ZSPtADz7e1P5.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/kRpuY2r7ZSPtADz7e1P5.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/kRpuY2r7ZSPtADz7e1P5.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/kRpuY2r7ZSPtADz7e1P5.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/kRpuY2r7ZSPtADz7e1P5.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/kRpuY2r7ZSPtADz7e1P5.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/kRpuY2r7ZSPtADz7e1P5.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/kRpuY2r7ZSPtADz7e1P5.jpg?auto=format&w=1600 1600w"          width="800"   />
+</figure>
+<p><code>adtech.example</code> relies on a <strong>a third-party cookie used as a unique cross-site identifier</strong> to
+<strong>recognize a user across sites</strong>. In addition, <code>adtech.example</code> can access <strong>both</strong> detailed click-
+or view-time data and detailed conversion-time data—and link them.</p>
+<p>As a result, <code>adtech.example</code> can track the behavior of a single user across sites, between an ad
+view, click, and conversion.</p>
+<p>Because <code>adtech.example</code> is likely present on a large number of publisher and advertiser sites—not
+just <code>news.example</code> and <code>shoes.example</code>—a user's behavior can be tracked across the web.</p>
+<h4 id="with-the-event-conversion-measurement-api">With the Event Conversion Measurement API <a class="w-headline-link" href="#with-the-event-conversion-measurement-api">#</a></h4>
+<figure class="w-figure">
+  <img     alt="Diagram: how the API enables conversion measurement without cross-site user recognition"          decoding="async"     height="643"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/X6sfyeKGncVm0LJSYJva.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/X6sfyeKGncVm0LJSYJva.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/X6sfyeKGncVm0LJSYJva.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/X6sfyeKGncVm0LJSYJva.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/X6sfyeKGncVm0LJSYJva.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/X6sfyeKGncVm0LJSYJva.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/X6sfyeKGncVm0LJSYJva.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/X6sfyeKGncVm0LJSYJva.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/X6sfyeKGncVm0LJSYJva.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/X6sfyeKGncVm0LJSYJva.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/X6sfyeKGncVm0LJSYJva.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/X6sfyeKGncVm0LJSYJva.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/X6sfyeKGncVm0LJSYJva.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/X6sfyeKGncVm0LJSYJva.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/X6sfyeKGncVm0LJSYJva.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/X6sfyeKGncVm0LJSYJva.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/X6sfyeKGncVm0LJSYJva.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/X6sfyeKGncVm0LJSYJva.jpg?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">"Ad ID" on the cookies diagram and "Click ID" are both identifiers that enable mapping to detailed data. On this diagram, it's called "Click ID" because only click-through conversion measurement is supported.</figcaption>
+</figure>
+<p><code>adtech.example</code> can't use a cross-site identifier and hence <strong>can't recognize a user across
+sites</strong>.</p>
+<ul>
+<li>A 64 bit-identifier can be attached to an ad click.</li>
+<li>Only 3 bits of conversion data can be attached to the conversion event. 3 bits can fit an integer
+value from 0 to 7. This is not much data, but enough that advertisers can learn how to make good
+decisions about where to spend their advertising budget in the future (for example by training
+data models).</li>
+</ul>
+<div class="w-aside w-aside--note">
+<p>The click data and conversion data are never exposed to a JavaScript environment in the
+same context. </div></p>
+<h4 id="without-an-alternative-to-third-party-cookies">Without an alternative to third-party cookies <a class="w-headline-link" href="#without-an-alternative-to-third-party-cookies">#</a></h4>
+<p>Without an alternative to third-party cookies such as the Event Conversion Measurement API,
+conversions can't be attributed: if <code>adtech.example</code> is present on both the publisher's and
+advertiser's site, it may access click-time or conversion-time data but it can't link them at all.</p>
+<p>In this case, user privacy is preserved but advertisers can't optimize their ad spend. This is why
+an alternative like the Event Conversion Measurement API is needed.</p>
+<h3 id="noising-of-conversion-data">Noising of conversion data <a class="w-headline-link" href="#noising-of-conversion-data">#</a></h3>
+<p>The 3 bits gathered at conversion time are <strong>noised</strong>.</p>
+<p>For example, in Chrome's implementation, data noising works as follows: 5% of the time, the API
+reports a random 3-bit value instead of the actual conversion data.</p>
+<p>This protects users from privacy attacks. An actor trying to misuse the data from several
+conversions to create an identifier won't have full confidence in the data they receive—making these
+types of attacks more complicated.</p>
+<p>Note that it's possible to <a href="/using-conversion-measurement/#(optional)-recover-the-corrected-conversion-count">recover the true conversion
+count</a>.</p>
+<p>Summing up click data and conversion data:</p>
+<div class="w-table-wrapper">
+  <table class="w-table--top-align">
+    <thead>
+      <tr>
+        <th>Data</th>
+        <th>Size</th>
+        <th>Example</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Click data (<code>impressiondata</code> attribute)</td>
+        <td>64 bits</td>
+        <td>An ad ID or click ID</td>
+      </tr>
+      <tr>
+        <td>Conversion data</td>
+        <td>3 bits, noised</td>
+        <td>An integer from 0 to 7 that can map to a conversion type: signup, complete checkout, etc.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h3 id="report-timing">Report timing <a class="w-headline-link" href="#report-timing">#</a></h3>
+<p>If several conversions are registered for a given ad click, <strong>a corresponding report is sent for
+each conversion, up to a maximum of three per click</strong>.</p>
+<p>To prevent conversion time from being used to get more information from the conversion side and
+hence hinder users' privacy, this API specifies that conversion reports aren't sent immediately
+after a conversion happens. After the initial ad click, a schedule of <strong>reporting windows</strong>
+associated with this click begins. Each reporting window has a deadline, and conversions registered
+before that deadline will be sent at the end of that window.</p>
+<p>Reports may not be exactly sent at these scheduled dates and times: if the browser isn't running
+when a report is scheduled to be sent, the report is sent at browser startup—which could be days
+or weeks after the scheduled time.</p>
+<p>After expiry (click time + <code>impressionexpiry</code>), no conversion is counted—<code>impressionexpiry</code> is the
+cut-off date and time for when conversions can no longer be counted for this ad.</p>
+<p>In Chrome, report scheduling works as follows:</p>
+<div class="w-table-wrapper">
+  <table class="w-table--top-align">
+    <thead>
+      <tr>
+        <th><code>impressionexpiry</code></th>
+        <th>Depending on conversion time, a conversion report is sent (if the browser is open)...</th>
+        <th>Number of reporting windows</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>30 days, the default and maximum value</td>
+        <td>
+          <ul>
+            <li>2 days after the ad was clicked</li>
+            <li>or 7 days after ad click</li>
+            <li>or <code>impressionexpiry</code> = 30 days after ad click.</li>
+          </ul>
+        </td>
+        <td>3</td>
+      </tr>
+      <tr>
+        <td><code>impressionexpiry</code> is between 7 and 30 days</td>
+        <td>
+          <ul>
+            <li>2 days after ad click</li>
+            <li>or 7 days after ad click</li>
+            <li>or <code>impressionexpiry</code> after ad click.</li>
+          </ul>
+        </td>
+        <td>3</td>
+      </tr>
+      <tr>
+        <td><code>impressionexpiry</code> is between 2 and 7 days</td>
+        <td>
+          <ul>
+            <li>2 days after ad click</li>
+            <li>or <code>impressionexpiry</code> after ad click.</li>
+          </ul>
+        </td>
+        <td>2</td>
+      </tr>
+      <tr>
+        <td><code>impressionexpiry</code> is under 2 days</td>
+        <td>
+          <li>2 days after ad click</li>
+        </td>
+        <td>1</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<figure class="w-figure">
+  <img     alt="Chronology of what reports are sent when"          decoding="async"     height="462"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/bgkpW6Nuqs5q1ddyMG8X.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/bgkpW6Nuqs5q1ddyMG8X.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/bgkpW6Nuqs5q1ddyMG8X.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/bgkpW6Nuqs5q1ddyMG8X.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/bgkpW6Nuqs5q1ddyMG8X.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/bgkpW6Nuqs5q1ddyMG8X.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/bgkpW6Nuqs5q1ddyMG8X.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/bgkpW6Nuqs5q1ddyMG8X.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/bgkpW6Nuqs5q1ddyMG8X.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/bgkpW6Nuqs5q1ddyMG8X.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/bgkpW6Nuqs5q1ddyMG8X.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/bgkpW6Nuqs5q1ddyMG8X.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/bgkpW6Nuqs5q1ddyMG8X.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/bgkpW6Nuqs5q1ddyMG8X.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/bgkpW6Nuqs5q1ddyMG8X.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/bgkpW6Nuqs5q1ddyMG8X.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/bgkpW6Nuqs5q1ddyMG8X.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/bgkpW6Nuqs5q1ddyMG8X.jpg?auto=format&w=1600 1600w"          width="800"   />
+</figure>
+<p>See <a href="https://github.com/WICG/conversion-measurement-api#sending-scheduled-reports" rel="noopener">Sending Scheduled
+Reports</a> for more
+details on timing.</p>
+<h2 id="example">Example <a class="w-headline-link" href="#example">#</a></h2>
+<div role="banner" class="w-banner w-banner--info w-banner--body">
+   To see this in action, try out the
+  <a href="https://goo.gle/demo-event-level-conversion-measurement-api">demo</a> ⚡️ and see the corresponding
+  <a href="https://github.com/GoogleChromeLabs/trust-safety-demo/tree/main/conversion-measurement">code</a>. 
+</div>
+<p>Here's how the API records and reports a conversion. Note that this is how a click-to-convert flow
+would work with the current API. Future iterations of this API <a href="#use-cases">may be different</a>.</p>
+<h3 id="ad-click-(steps-1-to-5)">Ad click (steps 1 to 5) <a class="w-headline-link" href="#ad-click-(steps-1-to-5)">#</a></h3>
+<figure class="w-figure">
+  <img     alt="Diagram: ad click and click storage"          decoding="async"     height="694"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/FvbacJL6u37XHuvQuUuO.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/FvbacJL6u37XHuvQuUuO.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/FvbacJL6u37XHuvQuUuO.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/FvbacJL6u37XHuvQuUuO.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/FvbacJL6u37XHuvQuUuO.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/FvbacJL6u37XHuvQuUuO.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/FvbacJL6u37XHuvQuUuO.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/FvbacJL6u37XHuvQuUuO.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/FvbacJL6u37XHuvQuUuO.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/FvbacJL6u37XHuvQuUuO.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/FvbacJL6u37XHuvQuUuO.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/FvbacJL6u37XHuvQuUuO.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/FvbacJL6u37XHuvQuUuO.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/FvbacJL6u37XHuvQuUuO.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/FvbacJL6u37XHuvQuUuO.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/FvbacJL6u37XHuvQuUuO.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/FvbacJL6u37XHuvQuUuO.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/FvbacJL6u37XHuvQuUuO.jpg?auto=format&w=1600 1600w"          width="800"   />
+</figure>
+<p>An <code>&lt;a&gt;</code> ad element is loaded on a publisher site by <code>adtech.example</code> within an iframe.</p>
+<p>The adtech platform developers have configured the <code>&lt;a&gt;</code> element with conversion measurement
+attributes:</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>a</span><br>  <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>ad<span class="token punctuation">"</span></span><br>  <span class="token attr-name">impressiondata</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>200400600<span class="token punctuation">"</span></span><br>  <span class="token attr-name">conversiondestination</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>https://advertiser.example<span class="token punctuation">"</span></span><br>  <span class="token attr-name">reportingorigin</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>https://adtech.example<span class="token punctuation">"</span></span><br>  <span class="token attr-name">impressionexpiry</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>864000000<span class="token punctuation">"</span></span><br>  <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>https://advertiser.example/shoes07<span class="token punctuation">"</span></span><br><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>img</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>/images/shoe.jpg<span class="token punctuation">"</span></span> <span class="token attr-name">alt</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>shoe<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>a</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><p>This code specifies the following:</p>
+<div class="w-table-wrapper">
+  <table class="w-table--top-align">
+    <thead>
+      <tr>
+        <th>Attribute</th>
+        <th>Default value, maximum, minimum</th>
+        <th>Example</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>impressiondata</code> (required): a <b>64-bit</b> identifier to attach to an ad click.</td>
+        <td>(no default)</td>
+        <td>A dynamically generated click ID  such as a 64-bit integer:
+          <code>200400600</code>
+        </td>
+      </tr>
+      <tr>
+        <td><code>conversiondestination</code> (required): the <b><a href="/same-site-same-origin/#site" noopener>eTLD+1</a></b> where a conversion is expected for this ad.</td>
+        <td>(no default)</td>
+        <td><code>https://advertiser.example</code>.<br/>If the <code>conversiondestination</code> is <code>https://advertiser.example</code>, conversions on both <code>https://advertiser.example</code> and <code>https://shop.advertiser.example</code> will be attributed.<br/>The same happens if the <code>conversiondestination</code> is <code>https://shop.advertiser.example</code>: conversions on both <code>https://advertiser.example</code> and <code>https://shop.advertiser.example</code> will be attributed.
+        </td>
+      </tr>
+      <tr>
+        <td><code>impressionexpiry</code> (optional): in milliseconds, the cutoff time for when conversions can be attributed to this ad.</td>
+        <td>
+          <code>2592000000</code> = 30 days (in milliseconds).<br/><br/>
+          Maximum: 30 days (in milliseconds).<br/><br/>
+          Minimum: 2 days (in milliseconds).
+        </td>
+        <td>Ten days after click: <code>864000000</code></td>
+      </tr>
+      <tr>
+        <td><code>reportingorigin</code> (optional): the destination for reporting confirmed conversions.</td>
+        <td>Top-level origin of the page where the link element is added.</td>
+        <td><code>https://adtech.example</code></td>
+      </tr>
+      <tr>
+        <td><code>href</code>: the intended destination of the ad click.</td>
+        <td><code>/</code></td>
+        <td><code>https://advertiser.example/shoes07</code></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div class="w-aside w-aside--note">
+<p>Some notes about the example:</p>
+<ul>
+<li>You will find the term &quot;impression&quot; used in the attributes of the API or in the API proposal, even
+though only clicks are supported for now. Names may be updated in future iterations of the API.</li>
+<li>The ad doesn't have to be in an iframe, but this is what this example is based on.</li>
+</ul>
+</div>
+<div class="w-aside w-aside--gotchas"><strong>Gotchas!</strong>
+<ul>
+<li>Flows based on navigating via <code>window.open</code> or <code>window.location</code> won't be eligible for
+attribution.</li>
+</ul>
+</div>
+<p>When the user taps or clicks the ad, they navigate to the advertiser's site. Once the navigation is
+committed, the browser stores an object that includes <code>impressiondata</code>, <code>conversiondestination</code>,
+<code>reportingorigin</code>, and <code>impressionexpiry</code>:</p>
+<web-copy-code><pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  <span class="token property">"impression-data"</span><span class="token operator">:</span> <span class="token string">"200400600"</span><span class="token punctuation">,</span><br>  <span class="token property">"conversion-destination"</span><span class="token operator">:</span> <span class="token string">"https://advertiser.example"</span><span class="token punctuation">,</span><br>  <span class="token property">"reporting-origin"</span><span class="token operator">:</span> <span class="token string">"https://adtech.example"</span><span class="token punctuation">,</span><br>  <span class="token property">"impression-expiry"</span><span class="token operator">:</span> <span class="token number">864000000</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><h3 id="conversion-and-report-scheduling-(steps-6-to-9)">Conversion and report scheduling (steps 6 to 9) <a class="w-headline-link" href="#conversion-and-report-scheduling-(steps-6-to-9)">#</a></h3>
+<figure class="w-figure">
+  <img     alt="Diagram: conversion and report scheduling"          decoding="async"     height="639"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/2fFVvAwyiXSaSDp8XVXo.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/2fFVvAwyiXSaSDp8XVXo.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/2fFVvAwyiXSaSDp8XVXo.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/2fFVvAwyiXSaSDp8XVXo.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/2fFVvAwyiXSaSDp8XVXo.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/2fFVvAwyiXSaSDp8XVXo.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/2fFVvAwyiXSaSDp8XVXo.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/2fFVvAwyiXSaSDp8XVXo.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/2fFVvAwyiXSaSDp8XVXo.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/2fFVvAwyiXSaSDp8XVXo.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/2fFVvAwyiXSaSDp8XVXo.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/2fFVvAwyiXSaSDp8XVXo.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/2fFVvAwyiXSaSDp8XVXo.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/2fFVvAwyiXSaSDp8XVXo.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/2fFVvAwyiXSaSDp8XVXo.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/2fFVvAwyiXSaSDp8XVXo.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/2fFVvAwyiXSaSDp8XVXo.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/2fFVvAwyiXSaSDp8XVXo.jpg?auto=format&w=1600 1600w"          width="800"   />
+</figure>
+<p>Either directly after clicking the ad, or later on—for example, on the next day—the user visits
+<code>advertiser.example</code>, browses sports shoes, finds a pair they want to purchase, and proceeds to
+checkout. <code>advertiser.example</code> has included a pixel on the checkout page:</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>img</span><br>  <span class="token attr-name">height</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>1<span class="token punctuation">"</span></span><br>  <span class="token attr-name">width</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>1<span class="token punctuation">"</span></span><br>  <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>https://adtech.example/conversion?model=shoe07&amp;type=checkout&amp;…<span class="token punctuation">"</span></span><br><span class="token punctuation">/></span></span></code></pre>
+</web-copy-code><p><code>adtech.example</code> receives this request, and decides that it qualifies as a conversion. They now need
+to request the browser to record a conversion. <code>adtech.example</code> compresses all of the conversion
+data into 3 bits—an integer between 0 and 7, for example they might map a <strong>Checkout</strong> action to a
+conversion value of 2.</p>
+<p><code>adtech.example</code> then sends a specific register-conversion redirect to the browser:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> conversionValues <span class="token operator">=</span> <span class="token punctuation">{</span><br>  signup<span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span><br>  checkout<span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span><br><br>app<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">'/conversion'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token parameter">req<span class="token punctuation">,</span> res</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token keyword">const</span> conversionData <span class="token operator">=</span> conversionValues<span class="token punctuation">[</span>req<span class="token punctuation">.</span>query<span class="token punctuation">.</span>conversiontype<span class="token punctuation">]</span><span class="token punctuation">;</span><br>  res<span class="token punctuation">.</span><span class="token function">redirect</span><span class="token punctuation">(</span><br>    <span class="token number">302</span><span class="token punctuation">,</span><br>    <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">/.well-known/register-conversion?conversion-data=</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>conversionData<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">,</span><br>  <span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><div class="w-aside w-aside--note">
+<p><code>.well-known</code> URLs are special URLs. They make it easy for software tools and servers to
+discover commonly-needed information or resources for a site—for example, on what page a user can
+<a href="/change-password-url/">change their password</a>. Here, <code>.well-known</code> is only used so that the browser
+recognizes this as a special conversion request. This request is actually cancelled internally by
+the browser. </div></p>
+<p>The browser receives this request. Upon detecting <code>.well-known/register-conversion</code>, the browser:</p>
+<ul>
+<li>Looks up all ad clicks in storage that match this <code>conversiondestination</code> (because it's receiving
+this conversion on a URL that has been registered as a <code>conversiondestination</code> URL when the user
+clicked the ad). It finds the ad click that happened on the publisher's site one day before.</li>
+<li>Registers a conversion for this ad click.</li>
+</ul>
+<p>Several ad clicks can match a conversion—the user may have clicked an ad for <code>shoes.example</code> on both
+<code>news.example</code> and <code>weather.example</code>. In this case, several conversions are registered.</p>
+<p>Now, the browser knows that it needs to inform the adtech server of this conversion—more
+specifically, the browser must inform the <code>reportingorigin</code> that is specified in both the <code>&lt;a&gt;</code>
+element and in the pixel request (<code>adtech.example</code>).</p>
+<p>To do so, the browser schedules to send a <strong>conversion report</strong>, a blob of data containing the click
+data (from the publisher's site) and the conversion data (from the advertiser's). For this example,
+the user converted one day after click. So the report is scheduled to be sent on the next day, at
+the two-day-after-click mark if the browser is running.</p>
+<h3 id="sending-the-report-(steps-10-and-11)">Sending the report (steps 10 and 11) <a class="w-headline-link" href="#sending-the-report-(steps-10-and-11)">#</a></h3>
+<figure class="w-figure">
+  <img     alt="Diagram: browser sending the report"          decoding="async"     height="533"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/Er48gVzK5gHUGdDHWHz1.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/Er48gVzK5gHUGdDHWHz1.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/Er48gVzK5gHUGdDHWHz1.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/Er48gVzK5gHUGdDHWHz1.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/Er48gVzK5gHUGdDHWHz1.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/Er48gVzK5gHUGdDHWHz1.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/Er48gVzK5gHUGdDHWHz1.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/Er48gVzK5gHUGdDHWHz1.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/Er48gVzK5gHUGdDHWHz1.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/Er48gVzK5gHUGdDHWHz1.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/Er48gVzK5gHUGdDHWHz1.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/Er48gVzK5gHUGdDHWHz1.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/Er48gVzK5gHUGdDHWHz1.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/Er48gVzK5gHUGdDHWHz1.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/Er48gVzK5gHUGdDHWHz1.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/Er48gVzK5gHUGdDHWHz1.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/Er48gVzK5gHUGdDHWHz1.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/Er48gVzK5gHUGdDHWHz1.jpg?auto=format&w=1600 1600w"          width="800"   />
+</figure>
+<p>Once the scheduled time to send the report is reached, the browser sends the <strong>conversion report</strong>:
+it sends an HTTP POST to the reporting origin that was specified in the <code>&lt;a&gt;</code> element
+(<code>adtech.example</code>). For example:</p>
+<p><code>https://adtech.example/.well-known/register-conversion?impression-data=200400600&amp;conversion-data=2&amp;credit=100</code></p>
+<p>Included as parameters are:</p>
+<ul>
+<li>The data associated with the original ad click (<code>impression-data</code>).</li>
+<li>The data associated with a conversion, <a href="#noising-of-conversion-data">potentially noised</a>.</li>
+<li>The conversion credit attributed to the click. This API follows a <strong>last-click attribution</strong>
+model: the most recent matching ad click is given a credit of 100, all other matching ad clicks
+are given a credit of 0.</li>
+</ul>
+<p>As the adtech server receives this request, it can pull the <code>impression-data</code> and <code>conversion-data</code>
+from it, i.e. the conversion report:</p>
+<web-copy-code><pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><span class="token property">"impression-data"</span><span class="token operator">:</span> <span class="token string">"200400600"</span><span class="token punctuation">,</span> <span class="token property">"conversion-data"</span><span class="token operator">:</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token property">"credit"</span><span class="token operator">:</span> <span class="token number">100</span><span class="token punctuation">}</span></code></pre>
+</web-copy-code><h3 id="subsequent-conversions-and-expiry">Subsequent conversions and expiry <a class="w-headline-link" href="#subsequent-conversions-and-expiry">#</a></h3>
+<p>Later on, the user may convert again—for example by purchasing a tennis racket on
+<code>advertiser.example</code> to go alongside their shoes. A similar flow takes place:</p>
+<ul>
+<li>The adtech server sends a conversion request to the browser.</li>
+<li>The browser matches this conversion with the ad click, schedules a report, and sends it to the
+adtech server later on.</li>
+</ul>
+<p>After <code>impressionexpiry</code>, conversions for this ad click stop being counted and the ad click is
+deleted from browser storage.</p>
+<h2 id="use-cases">Use cases <a class="w-headline-link" href="#use-cases">#</a></h2>
+<h3 id="what-is-currently-supported">What is currently supported <a class="w-headline-link" href="#what-is-currently-supported">#</a></h3>
+<ul>
+<li>Measure click-through conversions: determine which ad clicks lead to conversions, and access
+coarse information about the conversion.</li>
+<li>Gather data to optimize ad selection, for example by training machine learning models.</li>
+</ul>
+<h3 id="what-is-not-supported-in-this-iteration">What is not supported in this iteration <a class="w-headline-link" href="#what-is-not-supported-in-this-iteration">#</a></h3>
+<p>The following features aren't supported, but may be in future iterations of this API, or in
+<a href="https://github.com/WICG/conversion-measurement-api/blob/master/AGGREGATE.md" rel="noopener">Aggregate</a> reports:</p>
+<ul>
+<li>View-through conversion measurement.</li>
+<li><a href="https://github.com/WICG/conversion-measurement-api/issues/29" rel="noopener">Multiple reporting endpoints</a>.</li>
+<li><a href="https://github.com/WICG/conversion-measurement-api/issues/54" rel="noopener">Web conversions that started in an iOS/Android
+app</a>.</li>
+<li>Conversion lift measurement / incrementality: measurement of causal differences in conversion
+behavior, by measuring the difference between a test group that saw an ad and a control group that
+didn't.</li>
+<li>Attribution models that are not last-click.</li>
+<li>Use cases that require larger amounts of information about the conversion event. For example,
+granular purchase values or product categories.</li>
+</ul>
+<p>Before these features and more can be supported, <strong>more privacy protections</strong> (noise, fewer bits, or
+other limitations) must be added to the API.</p>
+<p>Discussion of additional possible features takes place in the open, in the <a href="https://github.com/WICG/conversion-measurement-api/issues" rel="noopener"><strong>Issues</strong> of the API
+proposal repository</a>.</p>
+<div class="w-aside w-aside--note">
+<p>Is your use case missing? Do you have feedback on the API? <a href="#share-your-feedback">Share
+it</a>. </div></p>
+<h3 id="what-else-may-change-in-future-iterations">What else may change in future iterations <a class="w-headline-link" href="#what-else-may-change-in-future-iterations">#</a></h3>
+<ul>
+<li>This API is at an early, experimental stage. In future iterations, this API may undergo
+substantial changes including but not limited to the ones listed below. Its goal is to measure
+conversions while preserving user privacy, and any change that would help better address this use
+case will be made.</li>
+<li>API and attribute naming may evolve.</li>
+<li>Click data and conversion data may not require encoding.</li>
+<li>The 3-bit limit for conversion data may be increased or decreased.</li>
+<li><a href="#what-is-not-supported-in-this-iteration">More features may be added</a>, and <strong>more privacy protections</strong> (noise / fewer bits /
+other limitations) if needed to support these new features.</li>
+</ul>
+<p>To follow and participate in discussions on new features, watch the proposal's <a href="https://github.com/WICG/conversion-measurement-api/issues" rel="noopener">GitHub
+repository</a> and submit ideas.</p>
+<h2 id="try-it-out">Try it out <a class="w-headline-link" href="#try-it-out">#</a></h2>
+<h3 id="demo">Demo <a class="w-headline-link" href="#demo">#</a></h3>
+<p>Try out the <a href="https://goo.gle/demo-event-level-conversion-measurement-api" rel="noopener">demo</a>. Make sure to follow
+the &quot;Before you start&quot; instructions.</p>
+<p>Tweet <a href="https://twitter.com/maudnals?lang=en" rel="noopener">@maudnals</a> or
+<a href="https://twitter.com/ChromiumDev" rel="noopener">@ChromiumDev</a> for any question about the demo!</p>
+<h3 id="experiment-with-the-api">Experiment with the API <a class="w-headline-link" href="#experiment-with-the-api">#</a></h3>
+<p>If you're planning to experiment with the API (locally or with end users), see <a href="/using-conversion-measurement">Using the conversion
+measurement API</a>.</p>
+<h3 id="share-your-feedback">Share your feedback <a class="w-headline-link" href="#share-your-feedback">#</a></h3>
+<p><strong>Your feedback is crucial</strong>, so that new conversion measurement APIs can support your use cases and
+provide a good developer experience.</p>
+<ul>
+<li>To report a bug on the Chrome implementation, <a href="https://bugs.chromium.org/p/chromium/issues/entry?status=Unconfirmed&amp;components=Internals%3EConversionMeasurement&amp;description=Chrome%20Version%3A%20%28copy%20from%20chrome%3A%2F%2Fversion%29%0AOS%3A%20%28e.g.%20Win10%2C%20MacOS%2010.12%2C%20etc...%29%0AURLs%20%28if%20applicable%29%20%3A%0A%0AWhat%20steps%20will%20reproduce%20the%20problem%3F%0A%281%29%0A%282%29%0A%283%29%0A%0AWhat%20is%20the%20expected%20result%3F%0A%0A%0AWhat%20happens%20instead%3F%0A%0AIf%20applicable%2C%20include%20screenshots%2Finfo%20from%20chrome%3A%2F%2Fconversion-internals%20or%20relevant%20devtools%20errors.%0A" rel="noopener">open a
+bug</a>.</li>
+<li>To share feedback and discuss use cases on the Chrome API, create a new issue or engage in
+existing ones on the <a href="https://github.com/WICG/conversion-measurement-api/issues" rel="noopener">API proposal
+repository</a>. Similarly, you can discuss
+the WebKit/Safari API and its use cases on the <a href="https://github.com/privacycg/private-click-measurement/issues" rel="noopener">API proposal
+repository</a>.</li>
+<li>To discuss advertising use cases and exchange views with industry experts: join the <a href="https://www.w3.org/community/web-adv/" rel="noopener">Improving Web
+Advertising Business Group</a>. Join the <a href="https://www.w3.org/community/privacycg/" rel="noopener">Privacy Community
+Group</a> for discussions around the WebKit/Safari API.</li>
+</ul>
+<h3 id="keep-an-eye-out">Keep an eye out <a class="w-headline-link" href="#keep-an-eye-out">#</a></h3>
+<ul>
+<li>As developer feedback and use cases are gathered, the Event Conversion Measurement API will evolve
+over time. Watch the proposal's <a href="https://github.com/WICG/conversion-measurement-api/" rel="noopener">GitHub
+repository</a>.</li>
+<li>Follow along the evolution of the <a href="https://github.com/WICG/conversion-measurement-api/blob/master/AGGREGATE.md" rel="noopener">Aggregate Conversion Measurement
+API</a> that will
+complement this API.</li>
+</ul>
+<p><em>With many thanks for contributions and feedback to all reviewers—especially Charlie Harrison,
+John Delaney, Michael Kleber and Kayce Basques.</em></p>
+<p><em>Hero image by William Warby / @wawarby on <a href="https://unsplash.com/photos/WahfNoqbYnM" rel="noopener">Unsplash</a>, edited.</em></p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/privacy/">Privacy</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>May 4, 2020</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/conversion-measurement/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

@@ -1,0 +1,976 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=8112bcf7118f6">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Improving user privacy and developer experience with User-Agent Client Hints</title>
+<meta name="description" content="Our latest news, updates, and stories for developers" />
+
+<link rel="canonical" href="https://web.dev/user-agent-client-hints/" />
+
+<meta itemprop="name" content="Improving user privacy and developer experience with User-Agent Client Hints" />
+<meta itemprop="description" content="Our latest news, updates, and stories for developers" />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/hgxRNa56Vb9o3QRwIrm9.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/user-agent-client-hints/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Improving user privacy and developer experience with User-Agent Client Hints" />
+<meta property="og:description" content="Our latest news, updates, and stories for developers" />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/hgxRNa56Vb9o3QRwIrm9.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="A variety of different footprints in the snow. A hint at who's been there." />
+<meta property="tag" content="privacy" />
+<meta property="tag" content="security" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Improving user privacy and developer experience with User-Agent Client Hints" />
+<meta name="twitter:description" content="Our latest news, updates, and stories for developers" />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/hgxRNa56Vb9o3QRwIrm9.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=f8b05c9507087', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=9893b7c262d69', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="A variety of different footprints in the snow. A hint at who&#x27;s been there."     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/xlg4t3uiTp0L5TBThFHQ.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/xlg4t3uiTp0L5TBThFHQ.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/xlg4t3uiTp0L5TBThFHQ.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/xlg4t3uiTp0L5TBThFHQ.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/xlg4t3uiTp0L5TBThFHQ.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/xlg4t3uiTp0L5TBThFHQ.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/xlg4t3uiTp0L5TBThFHQ.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/xlg4t3uiTp0L5TBThFHQ.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/xlg4t3uiTp0L5TBThFHQ.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/xlg4t3uiTp0L5TBThFHQ.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/xlg4t3uiTp0L5TBThFHQ.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/xlg4t3uiTp0L5TBThFHQ.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/xlg4t3uiTp0L5TBThFHQ.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/xlg4t3uiTp0L5TBThFHQ.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/xlg4t3uiTp0L5TBThFHQ.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/xlg4t3uiTp0L5TBThFHQ.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/xlg4t3uiTp0L5TBThFHQ.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/xlg4t3uiTp0L5TBThFHQ.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#improving-user-privacy-and-developer-experience-with-user-agent-client-hints" class="w-toc__header--link">
+        Improving user privacy and developer experience with User-Agent Client Hints
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#background">Background</a></li><li><a href="#the-state-of-the-user-agent-string">The state of the User-Agent string</a></li><li><a href="#introducing-the-new-user-agent-client-hints">Introducing the new User-Agent Client Hints</a></li><li><a href="#user-agent-client-hints-from-chromium-84">User-Agent Client Hints from Chromium 84</a></li><li><a href="#user-agent-response-and-request-headers">User-Agent response and request headers</a></li><li><a href="#example-exchange">Example exchange</a></li><li><a href="#javascript-api">JavaScript API</a></li><li><a href="#demo">Demo</a></li><li><a href="#hint-life-time-and-resetting">Hint life-time and resetting</a></li><li><a href="#hint-scope-and-cross-origin-requests">Hint scope and cross-origin requests</a></li><li><a href="#where-to-use-user-agent-client-hints">Where to use User-Agent Client Hints?</a></li><li><a href="#what-happens-to-the-user-agent-string">What happens to the User-Agent string?</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@rowan_m | @yoavweiss"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="improving-user-privacy-and-developer-experience-with-user-agent-client-hints" class="w-article-header__headline">Improving user privacy and developer experience with User-Agent Client Hints</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          User-Agent Client Hints are a new expansion to the Client Hints API, that enables developers to access information about a user's browser in a privacy-preserving and ergonomic way.
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Jun 25, 2020</time>
+           <span class="w-author__separator">•</span> Updated <time>Feb 12, 2021</time> 
+        </div>
+      
+      <div class="w-layout-container--narrow w-post-signpost">
+  <span class="w-post-signpost__title">Appears in:</span>
+  <a
+          class="w-post-signpost__link"
+          href="/secure"
+          >Safe and secure</a
+        >
+</div>
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/rowan_m/"><img     alt="Rowan Merewood"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/TASwqsVceW68MrM7bjt8.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/TASwqsVceW68MrM7bjt8.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/TASwqsVceW68MrM7bjt8.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/TASwqsVceW68MrM7bjt8.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/TASwqsVceW68MrM7bjt8.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/TASwqsVceW68MrM7bjt8.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/rowan_m/">Rowan Merewood</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/rowan_m"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/rowan-m">GitHub</a>
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://glitch.com/@rowan-m"
+          >Glitch</a
+        >
+      </li>
+      
+    </ul>
+  </div>
+</div>
+          
+            <div class="w-author">
+  <a href="/authors/yoavweiss/"><img     alt="Yoav Weiss"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/FOIxDKJfuHssXMNzezIt.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/FOIxDKJfuHssXMNzezIt.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/FOIxDKJfuHssXMNzezIt.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/FOIxDKJfuHssXMNzezIt.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/FOIxDKJfuHssXMNzezIt.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/FOIxDKJfuHssXMNzezIt.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/yoavweiss/">Yoav Weiss</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/yoavweiss"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/yoavweiss">GitHub</a>
+      </li>
+      
+      
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <div class="youtube">  <lite-youtube    videoid="f0YY0o2OAKA"      >  </lite-youtube></div>
+<p>Client Hints enable developers to actively request information about the user's
+device or conditions, rather than needing to parse it out of the User-Agent (UA)
+string. Providing this alternative route is the first step to eventually
+reducing User-Agent string granularity.</p>
+<p>Learn how to update your existing functionality that relies on parsing the
+User-Agent string to make use of User-Agent Client Hints instead.</p>
+<div role="banner" class="w-banner w-banner--caution w-banner--body">
+<p>If you are already using User-Agent Client Hints, pay attention to the upcoming
+changes. The header format is changing so the <code>Accept-CH</code> tokens exactly match
+the returned headers. Previously a site could have sent <code>Accept-CH: UA-Platform</code>
+to receive the <code>Sec-CH-UA-Platform</code> header and now that site should send
+<code>Accept-CH: Sec-CH-UA-Platform</code>. If you've already implemented User-Agent Client
+Hints, send both formats until the change has fully rolled out in stable
+Chromium. See <a href="https://groups.google.com/a/chromium.org/g/blink-dev/c/t-S9nnos9qU/m/pUFJb00jBAAJ">Intent to Remove: Rename User-Agent Client Hint ACCEPT-CH
+tokens</a>
+for updates.</p>
+</div>
+<h2 id="background">Background <a class="w-headline-link" href="#background">#</a></h2>
+<p>When web browsers make requests they include information about the browser and
+its environment so that servers can enable analytics and customize the response.
+This was defined all the way back in 1996 (RFC 1945 for HTTP/1.0), where you can
+find the <a href="https://tools.ietf.org/html/rfc1945#section-10.15" rel="noopener">original definition for the User-Agent
+string</a>, which includes an
+example:</p>
+<web-copy-code><pre class="language-text"><code class="language-text">User-Agent: CERN-LineMode/2.15 libwww/2.17b3</code></pre>
+</web-copy-code><p>This header was intended to specify, in order of significance, the product (e.g.
+browser or library) and a comment (e.g. version).</p>
+<h3 id="the-state-of-the-user-agent-string">The state of the User-Agent string <a class="w-headline-link" href="#the-state-of-the-user-agent-string">#</a></h3>
+<p>Over the intervening <em>decades</em>, this string has accrued a variety of additional
+details about the client making the request (as well as cruft, due to backwards
+compatibility). We can see that when looking at Chrome's current User-Agent
+string:</p>
+<web-copy-code><pre class="language-text"><code class="language-text">Mozilla/5.0 (Linux; Android 10; Pixel 3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4076.0 Mobile Safari/537.36</code></pre>
+</web-copy-code><p>The above string contains information about the user's operating system and
+version, the device model, the browser's brand and full version, enough clues to
+infer it's a mobile browser, and not to mention a number of references to other
+browsers for historical reasons.</p>
+<p>The combination of these parameters with the sheer diversity of possible values
+means the User-Agent string could contain enough information to allow individual
+users to be uniquely identified. If you test your own browser at
+<a href="https://amiunique.org/" rel="noopener">AmIUnique</a>, you can see just how closely <strong>your</strong>
+User-Agent string identifies <strong>you</strong>. The lower your resulting &quot;Similarity
+ratio&quot; is, the more unique your requests are, the easier it is for servers to
+covertly track you.</p>
+<p>The User-Agent string enables many legitimate <a href="https://github.com/WICG/ua-client-hints/blob/main/README.md#use-cases" rel="noopener">use
+cases</a>,
+and serves an important purpose for developers and site owners. However, it is
+also critical that users' privacy is protected against covert tracking methods,
+and sending UA information by default goes against that goal.</p>
+<p>There's also a need to improve web compatibility when it comes to the User-Agent
+string. It is unstructured, so parsing it results in unnecessary complexity,
+which is often the cause for bugs and site compatibility issues that hurt users.
+These issues also disproportionately hurt users of less common browsers, as
+sites may have failed to test against their configuration.</p>
+<h2 id="introducing-the-new-user-agent-client-hints">Introducing the new User-Agent Client Hints <a class="w-headline-link" href="#introducing-the-new-user-agent-client-hints">#</a></h2>
+<p><a href="https://github.com/WICG/ua-client-hints#explainer-reducing-user-agent-granularity" rel="noopener">User-Agent Client
+Hints</a>
+enable access to the same information but in a more privacy-preserving way, in
+turn enabling browsers to eventually reduce the User-Agent string's default of
+broadcasting everything. <a href="https://tools.ietf.org/html/draft-ietf-httpbis-client-hints" rel="noopener">Client
+Hints</a> enforce a
+model where the server must ask the browser for a set of data about the client
+(the hints) and the browser applies its own policies or user configuration to
+determine what data is returned. This means that rather than exposing <strong>all</strong>
+the User-Agent information by default, access is now managed in an explicit and
+auditable fashion. Developers also benefit from a simpler API - no more regular
+expressions!</p>
+<p>The current set of Client Hints primarily describes the browser's display and
+connection capabilities. You can explore the details in <a href="https://developers.google.com/web/updates/2015/09/automating-resource-selection-with-client-hints" rel="noopener">Automating Resource
+Selection with Client
+Hints</a>,
+but here's a quick refresher on the process.</p>
+<p>The server asks for specific Client Hints via a header:</p>
+<p>⬇️ <em>Response from server</em></p>
+<web-copy-code><pre class="language-text"><code class="language-text">Accept-CH: Viewport-Width, Width</code></pre>
+</web-copy-code><p>Or a meta tag:</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">http-equiv</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>Accept-CH<span class="token punctuation">"</span></span> <span class="token attr-name">content</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>Viewport-Width, Width<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span></code></pre>
+</web-copy-code><p>The browser can then choose to send the following headers back in subsequent
+requests:</p>
+<p>⬆️ <em>Subsequent request</em></p>
+<web-copy-code><pre class="language-text"><code class="language-text">Viewport-Width: 460<br>Width: 230</code></pre>
+</web-copy-code><p>The server can choose to vary its responses, for example by serving images at an
+appropriate resolution.</p>
+<div class="w-aside w-aside--note">
+<p>There are ongoing discussions on enabling Client Hints on an initial request,
+but you should consider <a href="/responsive-web-design-basics">responsive design</a> or
+progressive enhancement before going down this route.</p>
+</div>
+<p>User-Agent Client Hints expand the range of properties with the <code>Sec-CH-UA</code>
+prefix that can be specified via the <code>Accept-CH</code> server response header. For all
+the details, start with <a href="https://github.com/WICG/ua-client-hints/blob/main/README.md" rel="noopener">the
+explainer</a> and
+then dive into the <a href="https://wicg.github.io/ua-client-hints/" rel="noopener">full proposal</a>.</p>
+<div class="w-aside w-aside--note">
+<p>Client Hints are <strong>only sent over secure connections</strong>, so make sure you have
+<a href="/why-https-matters">migrated your site to HTTPS</a>.</p>
+</div>
+<p>The new set of hints is available from Chromium 84, so let's explore how it all
+works.</p>
+<h2 id="user-agent-client-hints-from-chromium-84">User-Agent Client Hints from Chromium 84 <a class="w-headline-link" href="#user-agent-client-hints-from-chromium-84">#</a></h2>
+<p>User-Agent Client Hints will only be enabled gradually on Chrome Stable as
+<a href="https://bugs.chromium.org/p/chromium/issues/detail?id=1091285" rel="noopener">compatibility
+concerns</a> are
+resolved. To force the functionality on for testing:</p>
+<ul>
+<li>Use Chrome 84 <strong>beta</strong> or equivalent.</li>
+<li>Enable the <code>about://flags/#enable-experimental-web-platform-features</code> flag.</li>
+</ul>
+<p>By default, the browser returns the browser brand, significant / major version,
+and an indicator if the client is a mobile device:</p>
+<p>⬆️ <em>All requests</em></p>
+<web-copy-code><pre class="language-text"><code class="language-text">Sec-CH-UA: "Chromium";v="84", "Google Chrome";v="84"<br>Sec-CH-UA-Mobile: ?0</code></pre>
+</web-copy-code><div class="w-aside w-aside--caution">
+<p><strong>Caution</strong>:
+These properties are more complex than just a single value, so <a href="https://httpwg.org/http-extensions/draft-ietf-httpbis-header-structure.html" rel="noopener">Structured
+Headers</a>
+are used for representing lists and booleans.</p>
+</div>
+<h3 id="user-agent-response-and-request-headers">User-Agent response and request headers <a class="w-headline-link" href="#user-agent-response-and-request-headers">#</a></h3>
+<style>
+.w-table-wrapper th:nth-of-type(1), .w-table-wrapper th:nth-of-type(2) {
+    width: 28ch;
+}
+
+.w-table-wrapper td {
+  padding: 4px 8px 4px 0;
+}
+</style>
+<div class="w-table-wrapper">
+<table>
+<thead>
+<tr>
+<th>⬇️ Response <code>Accept-CH</code><br>⬆️ Request header</th>
+<th>⬆️ Request<br>Example value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Sec-CH-UA</code></td>
+<td><code>&quot;Chromium&quot;;v=&quot;84&quot;,</code><br><code>&quot;Google Chrome&quot;;v=&quot;84&quot;</code></td>
+<td>List of browser brands and their significant version.</td>
+</tr>
+<tr>
+<td><code>Sec-CH-UA-Mobile</code></td>
+<td><code>?1</code></td>
+<td>Boolean indicating if the browser is on a mobile device (<code>?1</code> for true) or not (<code>?0</code> for false).</td>
+</tr>
+<tr>
+<td><code>Sec-CH-UA-Full-Version</code></td>
+<td><code>&quot;84.0.4143.2&quot;</code></td>
+<td>The complete version for the browser.</td>
+</tr>
+<tr>
+<td><code>Sec-CH-UA-Platform</code></td>
+<td><code>&quot;Android&quot;</code></td>
+<td>The platform for the device, usually the operating system (OS).</td>
+</tr>
+<tr>
+<td><code>Sec-CH-UA-Platform-Version</code></td>
+<td><code>&quot;10&quot;</code></td>
+<td>The version for the platform or OS.</td>
+</tr>
+<tr>
+<td><code>Sec-CH-UA-Arch</code></td>
+<td><code>&quot;arm&quot;</code></td>
+<td>The underlying architecture for the device. While this may not be relevant to displaying the page, the site may want to offer a download which defaults to the right format.</td>
+</tr>
+<tr>
+<td><code>Sec-CH-UA-Model</code></td>
+<td><code>&quot;Pixel 3&quot;</code></td>
+<td>The device model.</td>
+</tr>
+</tbody>
+</table>
+</div><div class="w-aside w-aside--gotchas"><strong>Gotchas!</strong>
+<p>Privacy and compatibility considerations mean the value may be blank, not
+returned, or populated with a varying value. This is referred to as
+<a href="https://wicg.github.io/ua-client-hints/#grease" rel="noopener">GREASE</a>.</p>
+</div>
+<h3 id="example-exchange">Example exchange <a class="w-headline-link" href="#example-exchange">#</a></h3>
+<p>An example exchange would look like this:</p>
+<p>⬆️ <em>Initial request from browser</em><br> The browser is requesting the <code>/downloads</code>
+page from the site and sends its default basic User-Agent.</p>
+<web-copy-code><pre class="language-text"><code class="language-text">GET /downloads HTTP/1.1<br>Host: example.site<br><br>Sec-CH-UA: "Chromium";v="84", "Google Chrome";v="84"<br>Sec-CH-UA-Mobile: ?0</code></pre>
+</web-copy-code><p>⬇️ <em>Response from server</em><br> The server sends the page back and additionally
+asks for the full browser version and the platform.</p>
+<web-copy-code><pre class="language-text"><code class="language-text">HTTP/1.1 200 OK<br>Accept-CH: Sec-CH-UA-Full-Version, Sec-CH-UA-Platform</code></pre>
+</web-copy-code><p>⬆️ <em>Subsequent requests</em><br> The browser grants the server access to the
+additional information and sends the extra hints back in all subsequent
+responses.</p>
+<web-copy-code><pre class="language-text"><code class="language-text">GET /downloads/app1 HTTP/1.1<br>Host: example.site<br><br>Sec-CH-UA: "Chromium";v="84", "Google Chrome";v="84"<br>Sec-CH-UA-Mobile: ?0<br>Sec-CH-UA-Full-Version: "84.0.4143.2"<br>Sec-CH-UA-Platform: "Android"</code></pre>
+</web-copy-code><h3 id="javascript-api">JavaScript API <a class="w-headline-link" href="#javascript-api">#</a></h3>
+<p>Alongside the headers, the User-Agent can also be accessed in JavaScript via
+<code>navigator.userAgentData</code>. The default <code>Sec-CH-UA</code> and <code>Sec-CH-UA-Mobile</code> header
+information can be accessed via the <code>brands</code> and <code>mobile</code> properties,
+respectively:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token comment">// Log the brand data</span><br>console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>navigator<span class="token punctuation">.</span>userAgentData<span class="token punctuation">.</span>brands<span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token comment">// output</span><br><span class="token punctuation">[</span><br>  <span class="token punctuation">{</span><br>    brand<span class="token operator">:</span> <span class="token string">'Chromium'</span><span class="token punctuation">,</span><br>    version<span class="token operator">:</span> <span class="token string">'84'</span><span class="token punctuation">,</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span><br>  <span class="token punctuation">{</span><br>    brand<span class="token operator">:</span> <span class="token string">'Google Chrome'</span><span class="token punctuation">,</span><br>    version<span class="token operator">:</span> <span class="token string">'84'</span><span class="token punctuation">,</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span><br><span class="token punctuation">]</span><span class="token punctuation">;</span><br><br><span class="token comment">// Log the mobile indicator</span><br>console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>navigator<span class="token punctuation">.</span>userAgentData<span class="token punctuation">.</span>mobile<span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token comment">// output</span><br><span class="token boolean">false</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>The additional values are accessed via the <code>getHighEntropyValues()</code> call. The
+&quot;high entropy&quot; term is a reference to <a href="https://en.wikipedia.org/wiki/Entropy_(information_theory)" rel="noopener">information
+entropy</a>, in other
+words - the amount of information that these values reveal about the user's
+browser. As with requesting the additional headers, it's down to the browser
+what values, if any, are returned.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token comment">// Log the full user-agent data</span><br>navigator<br>  <span class="token punctuation">.</span>userAgentData<span class="token punctuation">.</span><span class="token function">getHighEntropyValues</span><span class="token punctuation">(</span><br>    <span class="token punctuation">[</span><span class="token string">"architecture"</span><span class="token punctuation">,</span> <span class="token string">"model"</span><span class="token punctuation">,</span> <span class="token string">"platform"</span><span class="token punctuation">,</span> <span class="token string">"platformVersion"</span><span class="token punctuation">,</span><br>     <span class="token string">"uaFullVersion"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><br>  <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">ua</span> <span class="token operator">=></span> <span class="token punctuation">{</span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>ua<span class="token punctuation">)</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token comment">// output</span><br><span class="token punctuation">{</span><br>  <span class="token string">"architecture"</span><span class="token operator">:</span> <span class="token string">"x86"</span><span class="token punctuation">,</span><br>  <span class="token string">"model"</span><span class="token operator">:</span> <span class="token string">""</span><span class="token punctuation">,</span><br>  <span class="token string">"platform"</span><span class="token operator">:</span> <span class="token string">"Linux"</span><span class="token punctuation">,</span><br>  <span class="token string">"platformVersion"</span><span class="token operator">:</span> <span class="token string">""</span><span class="token punctuation">,</span><br>  <span class="token string">"uaFullVersion"</span><span class="token operator">:</span> <span class="token string">"84.0.4143.2"</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><h3 id="demo">Demo <a class="w-headline-link" href="#demo">#</a></h3>
+<p>You can try out both the headers and the JavaScript API on your own device at
+<a href="https://user-agent-client-hints.glitch.me" rel="noopener">user-agent-client-hints.glitch.me</a>.</p>
+<div class="w-aside w-aside--note">
+<p>Ensure you're using Chrome 84 Beta or equivalent with
+<code>about://flags/#enable-experimental-web-platform-features</code> enabled.</p>
+</div>
+<h3 id="hint-life-time-and-resetting">Hint life-time and resetting <a class="w-headline-link" href="#hint-life-time-and-resetting">#</a></h3>
+<p>Hints specified via the <code>Accept-CH</code> header will be sent for the duration of the
+browser session or until a different set of hints are specified.</p>
+<p>That means if the server sends:</p>
+<p>⬇️ <em>Response</em></p>
+<web-copy-code><pre class="language-text"><code class="language-text">Accept-CH: Sec-CH-UA-Full-Version</code></pre>
+</web-copy-code><p>Then the browser will send the <code>Sec-CH-UA-Full-Version</code> header on all requests
+for that site until the browser is closed.</p>
+<p>⬆️ <em>Subsequent requests</em></p>
+<web-copy-code><pre class="language-text"><code class="language-text">Sec-CH-UA-Full-Version: "84.0.4143.2"</code></pre>
+</web-copy-code><p>However, if another <code>Accept-CH</code> header is received then that will <strong>completely
+replace</strong> the current hints the browser is sending.</p>
+<p>⬇️ <em>Response</em></p>
+<web-copy-code><pre class="language-text"><code class="language-text">Accept-CH: Sec-CH-UA-Platform</code></pre>
+</web-copy-code><p>⬆️ <em>Subsequent requests</em></p>
+<web-copy-code><pre class="language-text"><code class="language-text">Sec-CH-UA-Platform: "Android"</code></pre>
+</web-copy-code><p>The previously asked-for <code>Sec-CH-UA-Full-Version</code> <strong>will not be sent</strong>.</p>
+<p>It's best to think of the <code>Accept-CH</code> header as specifying the complete set of
+hints desired for that page, meaning the browser then sends the specified hints
+for all the subresources on that page. While hints will persist to the next
+navigation, the site should not rely or assume they will be delivered.</p>
+<div class="w-aside w-aside--success">
+<p><strong>Success</strong>:
+Always ensure you can still deliver a meaningful experience without this
+information. This is to enhance the user experience, not define it. That's why
+they're called &quot;hints&quot; and not &quot;answers&quot; or &quot;requirements&quot;!</p>
+</div>
+<p>You can also use this to effectively clear all hints being sent by the browser
+by sending a blank <code>Accept-CH</code> in the response. Consider adding this anywhere
+that the user is resetting preferences or signing out of your site.</p>
+<p>This pattern also matches how hints work via the
+<code>&lt;meta http-equiv=&quot;Accept-CH&quot; …&gt;</code> tag. The requested hints will only be sent on
+requests initiated by the page and not on any subsequent navigation.</p>
+<h3 id="hint-scope-and-cross-origin-requests">Hint scope and cross-origin requests <a class="w-headline-link" href="#hint-scope-and-cross-origin-requests">#</a></h3>
+<p>By default, Client Hints will only be sent on same-origin requests. That means
+if you ask for specific hints on <code>https://example.com</code>, but the resources you
+want to optimize are on <code>https://downloads.example.com</code> they <strong>will not</strong>
+receive any hints.</p>
+<p>To allow hints on cross-origin requests each hint and origin must be specified
+by a <code>Feature-Policy</code> header. To apply this to a User-Agent Client Hint, you
+need to lowercase the hint and remove the <code>sec-</code> prefix. For example:</p>
+<p>⬇️ <em>Response from <code>example.com</code></em></p>
+<web-copy-code><pre class="language-text"><code class="language-text">Accept-CH: Sec-CH-UA-Platform, DPR<br>Feature-Policy: ch-ua-platform downloads.example.com;<br>                ch-dpr cdn.provider img.example.com</code></pre>
+</web-copy-code><p>⬆️ <em>Request to <code>downloads.example.com</code></em></p>
+<web-copy-code><pre class="language-text"><code class="language-text">Sec-CH-UA-Platform: "Android"</code></pre>
+</web-copy-code><p>⬆️ <em>Requests to <code>cdn.provider</code> or <code>img.example.com</code></em></p>
+<web-copy-code><pre class="language-text"><code class="language-text">DPR: 2</code></pre>
+</web-copy-code><h2 id="where-to-use-user-agent-client-hints">Where to use User-Agent Client Hints? <a class="w-headline-link" href="#where-to-use-user-agent-client-hints">#</a></h2>
+<p>The quick answer is that you should refactor any instances where you are parsing
+either the User-Agent header or making use of any of the JavaScript calls that
+access the same information (i.e. <code>navigator.userAgent</code>, <code>navigator.appVersion</code>,
+or <code>navigator.platform</code>) to make use of User-Agent Client Hints instead.</p>
+<p>Taking this a step further, you should re-examine your use of User-Agent
+information, and replace it with other methods whenever possible. Often, you can
+accomplish the same goal by making use of progressive enhancement, feature
+detection, or <a href="/responsive-web-design-basics">responsive design</a>.
+The base problem with relying on the User-Agent data is that you are always
+maintaining a mapping between the property you're inspecting and the behavior it
+enables. It's a maintenance overhead to ensure that your detection is
+comprehensive and remains up-to-date.</p>
+<p>With these caveats in mind, the <a href="https://github.com/WICG/ua-client-hints#use-cases" rel="noopener">User-Agent Client Hints repo lists some valid
+use cases</a> for sites.</p>
+<h2 id="what-happens-to-the-user-agent-string">What happens to the User-Agent string? <a class="w-headline-link" href="#what-happens-to-the-user-agent-string">#</a></h2>
+<p>The plan is to minimize the ability for covert tracking on the web by reducing
+the amount of identifying information exposed by the existing User-Agent string
+while not causing undue disruption on existing sites. Introducing User-Agent
+Client Hints now gives you a chance to understand and experiment with the new
+capability, before any changes are made to User-Agent strings.</p>
+<p><a href="https://groups.google.com/a/chromium.org/d/msg/blink-dev/-2JIRNMWJ7s/u-YzXjZ8BAAJ" rel="noopener">Eventually</a>,
+the information in the User-Agent string will be reduced so it maintains the
+legacy format while only providing the same high-level browser and significant
+version information as per the default hints. In Chromium, this change has been
+deferred until at least 2021 to provide additional time for the ecosystem to
+evaluate the new User Agent Client Hints capabilities.</p>
+<p>You can test a version of this by enabling the
+<code>about://flags/#reduce-user-agent</code> flag from Chrome 93 (Note: this flag was
+named <code>about://flags/#freeze-user-agent</code> in versions Chrome 84 - 92). This will
+return a string with the historical entries for compatibility reasons, but with
+sanitized specifics. For example, something like:</p>
+<web-copy-code><pre class="language-text"><code class="language-text">Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.0.0 Mobile Safari/537.36</code></pre>
+</web-copy-code><p><em>Photo by <a href="https://unsplash.com/@szolkin?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText" rel="noopener">Sergey Zolkin</a>
+on
+<a href="https://unsplash.com/photos/m9qMoh-scfE?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText" rel="noopener">Unsplash</a></em></p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/privacy/">Privacy</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/security/">Security</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Feb 12, 2021</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/user-agent-client-hints/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions="api"></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

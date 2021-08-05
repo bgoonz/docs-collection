@@ -1,0 +1,657 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=50e93a1fe891e">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Introducing libSquoosh</title>
+<meta name="description" content="It's Squoosh, but as a Node library. " />
+
+<link rel="canonical" href="https://web.dev/introducing-libsquoosh/" />
+
+<meta itemprop="name" content="Introducing libSquoosh" />
+<meta itemprop="description" content="It's Squoosh, but as a Node library. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/i9nJGvw3SnTPH63zKOYWtI6cP5m2/zTPjhYuOfh8bnk7c7tlO.png?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/introducing-libsquoosh/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Introducing libSquoosh" />
+<meta property="og:description" content="It's Squoosh, but as a Node library. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/i9nJGvw3SnTPH63zKOYWtI6cP5m2/zTPjhYuOfh8bnk7c7tlO.png?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="$ npm install --save @squoosh/lib" />
+<meta property="tag" content="tools" />
+<meta property="tag" content="javascript" />
+<meta property="tag" content="images" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Introducing libSquoosh" />
+<meta name="twitter:description" content="It's Squoosh, but as a Node library. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/i9nJGvw3SnTPH63zKOYWtI6cP5m2/zTPjhYuOfh8bnk7c7tlO.png?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=91ef7dfe415c1', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=1a5bbfb6bb31e', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="$ npm install --save @squoosh/lib"     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/i9nJGvw3SnTPH63zKOYWtI6cP5m2/zTPjhYuOfh8bnk7c7tlO.png?auto=format"     srcset="https://web-dev.imgix.net/image/i9nJGvw3SnTPH63zKOYWtI6cP5m2/zTPjhYuOfh8bnk7c7tlO.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/i9nJGvw3SnTPH63zKOYWtI6cP5m2/zTPjhYuOfh8bnk7c7tlO.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/i9nJGvw3SnTPH63zKOYWtI6cP5m2/zTPjhYuOfh8bnk7c7tlO.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/i9nJGvw3SnTPH63zKOYWtI6cP5m2/zTPjhYuOfh8bnk7c7tlO.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/i9nJGvw3SnTPH63zKOYWtI6cP5m2/zTPjhYuOfh8bnk7c7tlO.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/i9nJGvw3SnTPH63zKOYWtI6cP5m2/zTPjhYuOfh8bnk7c7tlO.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/i9nJGvw3SnTPH63zKOYWtI6cP5m2/zTPjhYuOfh8bnk7c7tlO.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/i9nJGvw3SnTPH63zKOYWtI6cP5m2/zTPjhYuOfh8bnk7c7tlO.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/i9nJGvw3SnTPH63zKOYWtI6cP5m2/zTPjhYuOfh8bnk7c7tlO.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/i9nJGvw3SnTPH63zKOYWtI6cP5m2/zTPjhYuOfh8bnk7c7tlO.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/i9nJGvw3SnTPH63zKOYWtI6cP5m2/zTPjhYuOfh8bnk7c7tlO.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/i9nJGvw3SnTPH63zKOYWtI6cP5m2/zTPjhYuOfh8bnk7c7tlO.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/i9nJGvw3SnTPH63zKOYWtI6cP5m2/zTPjhYuOfh8bnk7c7tlO.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/i9nJGvw3SnTPH63zKOYWtI6cP5m2/zTPjhYuOfh8bnk7c7tlO.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/i9nJGvw3SnTPH63zKOYWtI6cP5m2/zTPjhYuOfh8bnk7c7tlO.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/i9nJGvw3SnTPH63zKOYWtI6cP5m2/zTPjhYuOfh8bnk7c7tlO.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/i9nJGvw3SnTPH63zKOYWtI6cP5m2/zTPjhYuOfh8bnk7c7tlO.png?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#introducing-libsquoosh" class="w-toc__header--link">
+        Introducing libSquoosh
+      </a>
+    </h2>
+    
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@DasSurma"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="introducing-libsquoosh" class="w-article-header__headline">Introducing libSquoosh</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          It's Squoosh, but as a Node library.
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Jun 8, 2021</time>
+          
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/surma/"><img     alt="Surma"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/MPQ3Co9Ej7Uka4cgPePh.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/MPQ3Co9Ej7Uka4cgPePh.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/MPQ3Co9Ej7Uka4cgPePh.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/MPQ3Co9Ej7Uka4cgPePh.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/MPQ3Co9Ej7Uka4cgPePh.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/MPQ3Co9Ej7Uka4cgPePh.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/surma/">Surma</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/DasSurma"
+          >Twitter</a
+        >
+      </li>
+      
+      
+      
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p><strong>We are happy to introduce <a href="https://github.com/GoogleChromeLabs/squoosh/tree/dev/libsquoosh" rel="noopener">libSquoosh</a>, an experimental Node library on top of which the Squoosh CLI is built, giving you all the capabilities for the Squoosh CLI with a JavaScript-idiomatic interface.</strong></p>
+<p>Squoosh.app is a PWA that compresses images for you in the browser. It supports many old and new image formats and processes them client-side in the browser through WebAssembly. This means your pictures stay safely on your own computer rather than being sent to a server somewhere, and that Squoosh works even when offline.</p>
+<p>At Chrome DevSummit 2020 <a href="https://web.dev/squoosh-v2/">we announced Squoosh v2</a>, together with the Squoosh CLI to bring all the codecs of Squoosh to the command-line using Node and WebAssembly. This allows you to compress entire folders with one command and make use of the <a href="https://github.com/GoogleChromeLabs/squoosh/tree/dev/cli#auto-optimizer" rel="noopener">CLI's</a> to let it choose the codec parameters for you.</p>
+<p>The CLI enables a lot of automation and so it's only natural that developers began asking for a more idiomatic interface than programmatically invoking the Squoosh CLI via the shell. <a href="https://github.com/atjn" rel="noopener">Anton (@atjn on GitHub)</a> stepped up to the task and separated the Squoosh CLI code into two parts: The command line interface code and the underlying core functionality.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">import</span> <span class="token punctuation">{</span> ImagePool <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@squoosh/lib"</span><span class="token punctuation">;</span><br><br><span class="token comment">// libSquoosh uses a worker-pool under the hood</span><br><span class="token comment">// to parallelize all image processing.</span><br><span class="token keyword">const</span> imagePool <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ImagePool</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token comment">// Accepts both file paths and Buffers/TypedArrays.</span><br><span class="token keyword">const</span> image <span class="token operator">=</span> imagePool<span class="token punctuation">.</span><span class="token function">ingestImage</span><span class="token punctuation">(</span><span class="token string">"./squoosh.jpeg"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token comment">// Optional.</span><br><span class="token comment">// await image.preprocess({</span><br><span class="token comment">//   resize: {</span><br><span class="token comment">//     enabled: true,</span><br><span class="token comment">//     width: 128,</span><br><span class="token comment">//   },</span><br><span class="token comment">// });</span><br><br><span class="token keyword">await</span> image<span class="token punctuation">.</span><span class="token function">encode</span><span class="token punctuation">(</span><span class="token punctuation">{</span><br>  <span class="token comment">// All codecs are initialized with default values</span><br>  <span class="token comment">// that can be individually overwritten.</span><br>  mozjpeg<span class="token operator">:</span> <span class="token punctuation">{</span><br>    quality<span class="token operator">:</span> <span class="token number">10</span><span class="token punctuation">,</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span><br>  avif<span class="token operator">:</span> <span class="token punctuation">{</span><br>    cqLevel<span class="token operator">:</span> <span class="token number">10</span><span class="token punctuation">,</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span><br>  jxl<span class="token operator">:</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token keyword">const</span> <span class="token punctuation">{</span> extension<span class="token punctuation">,</span> binary <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">await</span> image<span class="token punctuation">.</span>encodedWith<span class="token punctuation">.</span>mozjpeg<span class="token punctuation">;</span><br><span class="token keyword">await</span> fs<span class="token punctuation">.</span><span class="token function">writeFile</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">output.</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>extension<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">,</span> binary<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token comment">// ... same for other encoders ...</span><br><br><span class="token keyword">await</span> imagePool<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>Our goal is to make image compression more accessible to tooling authors. We hope to see integration into Webpack, Rollup and other build tools to make sure your images are appropriately optimized for the web.</p>
+<p>I'd like to express a huge &quot;thank you&quot; to Anton for the time he has committed to Squoosh!</p>
+<p>It's still early for the Squoosh CLI and libSquoosh and we have many more ideas and plans that we'd like to implement. In the meanwhile, try libSquoosh! However, be mindful that this is an early, experimental release and that there is a good chance you will run into some bugs. If you find some or have questions, please open an <a href="https://github.com/GoogleChromeLabs/squoosh/issues/new/choose" rel="noopener">issue</a>.</p>
+<p>If you are interested in contributing to Squoosh—for example contributing to the extremely sparse documentation around libSquoosh or help with any of the other parts of the app—we are starting a mentorship program to help you get started. If you want to know more, check out our <a href="https://github.com/GoogleChromeLabs/squoosh/issues/1020" rel="noopener">tracking issue</a>.</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/tools/">Tools</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/javascript/">JavaScript</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/images/">Images</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Jun 8, 2021</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/introducing-libsquoosh/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

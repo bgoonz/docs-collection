@@ -1,0 +1,777 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=b31d6aa29ca6">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Create OS-style backgrounds with backdrop-filter</title>
+<meta name="description" content="Learn how to add background effects like blurring and transparency to UI elements on the web using the CSS backdrop-filter property. " />
+
+<link rel="canonical" href="https://web.dev/backdrop-filter/" />
+
+<meta itemprop="name" content="Create OS-style backgrounds with backdrop-filter" />
+<meta itemprop="description" content="Learn how to add background effects like blurring and transparency to UI elements on the web using the CSS backdrop-filter property. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/ltK4SNRultTnkbimOySm.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/backdrop-filter/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Create OS-style backgrounds with backdrop-filter" />
+<meta property="og:description" content="Learn how to add background effects like blurring and transparency to UI elements on the web using the CSS backdrop-filter property. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/ltK4SNRultTnkbimOySm.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="A view through a rain-covered foggy window." />
+<meta property="tag" content="css" />
+<meta property="tag" content="backdrop-filter" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Create OS-style backgrounds with backdrop-filter" />
+<meta name="twitter:description" content="Learn how to add background effects like blurring and transparency to UI elements on the web using the CSS backdrop-filter property. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/ltK4SNRultTnkbimOySm.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=b816ca80b5f82', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=d3b8b1b166287', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="A view through a rain-covered foggy window."     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/ltK4SNRultTnkbimOySm.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/ltK4SNRultTnkbimOySm.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/ltK4SNRultTnkbimOySm.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/ltK4SNRultTnkbimOySm.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/ltK4SNRultTnkbimOySm.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/ltK4SNRultTnkbimOySm.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/ltK4SNRultTnkbimOySm.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/ltK4SNRultTnkbimOySm.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/ltK4SNRultTnkbimOySm.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/ltK4SNRultTnkbimOySm.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/ltK4SNRultTnkbimOySm.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/ltK4SNRultTnkbimOySm.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/ltK4SNRultTnkbimOySm.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/ltK4SNRultTnkbimOySm.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/ltK4SNRultTnkbimOySm.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/ltK4SNRultTnkbimOySm.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/ltK4SNRultTnkbimOySm.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/ltK4SNRultTnkbimOySm.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#create-os-style-backgrounds-with-backdrop-filter" class="w-toc__header--link">
+        Create OS-style backgrounds with backdrop-filter
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#basics">Basics</a></li><li><a href="#feature-detection-and-fallback">Feature detection and fallback</a></li><li><a href="#examples">Examples</a></li><li><a href="#single-filter">Single filter</a></li><li><a href="#multiple-filters">Multiple filters</a></li><li><a href="#overlays">Overlays</a></li><li><a href="#text-contrast-on-dynamic-backgrounds">Text contrast on dynamic backgrounds</a></li><li><a href="#conclusion">Conclusion</a></li><li><a href="#additional-resources">Additional resources</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@argyleink | @medleyjp"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="create-os-style-backgrounds-with-backdrop-filter" class="w-article-header__headline">Create OS-style backgrounds with backdrop-filter</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          <p>Blurring and color shifting behind an element.</p>
+
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Jul 26, 2019</time>
+           <span class="w-author__separator">•</span> Updated <time>Aug 29, 2019</time> 
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/adamargyle/"><img     alt="Adam Argyle"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/adamargyle/">Adam Argyle</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/argyleink"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/argyleink">GitHub</a>
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://glitch.com/@argyleink"
+          >Glitch</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://nerdy.dev">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+            <div class="w-author">
+  <a href="/authors/joemedley/"><img     alt="Joe Medley"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/ynJFmvKEbD9diZZsTdkD.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/ynJFmvKEbD9diZZsTdkD.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/ynJFmvKEbD9diZZsTdkD.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/ynJFmvKEbD9diZZsTdkD.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/ynJFmvKEbD9diZZsTdkD.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/ynJFmvKEbD9diZZsTdkD.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/joemedley/">Joe Medley</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/medleyjp"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/jpmedley">GitHub</a>
+      </li>
+      
+      
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>Translucence, blurring, and other effects are useful ways of creating depth while keeping the context of the background content. They support a host of use cases such as frosted glass, video overlays, translucent navigation headers, inappropriate image censoring, image loading, and so on. You may recognize these effects from two popular operating systems: <a href="https://i.kinja-img.com/gawker-media/image/upload/s--9RLXARU4--/c_scale,dpr_2.0,f_auto,fl_progressive,q_80,w_800/trgz8yivyyqrpcnwscu5.png" rel="noopener">Windows 10</a> and <a href="https://static.businessinsider.com/image/51fd2822eab8eae16e00000b-750.jpg" rel="noopener">iOS</a>.</p>
+<figure class="w-figure">
+  <img     alt="An example of a frosted glass effect."          decoding="async"     height="300"          loading="lazy"     sizes="(min-width: 400px) 400px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/mEc6bdwB2ZX6VSXvyJEn.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/mEc6bdwB2ZX6VSXvyJEn.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/mEc6bdwB2ZX6VSXvyJEn.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/mEc6bdwB2ZX6VSXvyJEn.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/mEc6bdwB2ZX6VSXvyJEn.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/mEc6bdwB2ZX6VSXvyJEn.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/mEc6bdwB2ZX6VSXvyJEn.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/mEc6bdwB2ZX6VSXvyJEn.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/mEc6bdwB2ZX6VSXvyJEn.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/mEc6bdwB2ZX6VSXvyJEn.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/mEc6bdwB2ZX6VSXvyJEn.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/mEc6bdwB2ZX6VSXvyJEn.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/mEc6bdwB2ZX6VSXvyJEn.jpg?auto=format&w=800 800w"          width="400"   />
+  <figcaption class="w-figcaption">An example of a frosted glass effect. <a href="https://dribbble.com/shots/733714-Weather-App?list=tags&tag=android" target="_blank" rel="noopener noreferrer">Source</a>.</figcaption>
+</figure>
+<p>Historically, these techniques were difficult to implement on the web, requiring less than perfect <a href="https://stackoverflow.com/questions/38145368/css-workaround-to-backdrop-filter" rel="noopener">hacks or workarounds</a>. In recent years both <a href="https://webkit.org/blog/3632/introducing-backdrop-filters/" rel="noopener">Safari</a> and Edge have provided these capabilities through the <code>background-filter</code> (and alternatively, the <code>-webkit-backdrop-filter</code>) property, which dynamically blends foreground and background colors based on filter functions. Now Chrome supports <code>background-filter</code>, starting in version 76.</p>
+<figure class="w-figure w-figure--fullbleed">
+  <video controls autoplay loop muted class="w-screenshot">
+    <source src="https://storage.googleapis.com/web-dev-assets/backdrop-filter/backdrop_filter-kitchen_sink2.webm" type="video/webm; codecs=vp8">
+    <source src="https://storage.googleapis.com/web-dev-assets/backdrop-filter/backdrop_filter-kitchen_sink2.mp4" type="video/mp4; codecs=h264">
+  </video>
+  <figcaption class="w-figcaption w-figcaption--fullbleed">
+    A demonstration of the filter functions for <code>backdrop-filter</code>. Try the example on <a href="https://codepen.io/robinrendle/pen/LmzLEL" target="_blank" rel="noopener">CodePen</a>.
+  </figcaption>
+</figure>
+<h2 id="basics">Basics <a class="w-headline-link" href="#basics">#</a></h2>
+<ul>
+<li>The <code>backdrop-filter</code> property applies one or more filters to an element, changing the appearance of anything behind the element.</li>
+<li>The overlaying element must be at least partially transparent.</li>
+<li>The overlaying element will get a new stacking context.</li>
+</ul>
+<div class="w-aside w-aside--caution">
+<p><strong>Caution</strong>:
+<code>backdrop-filter</code> may harm performance. Test it before deploying.</p>
+</div>
+<p>CSS <code>backdrop-filter</code> applies one or more effects to an element that is translucent or transparent. To understand that, consider the images below.</p>
+<div class="w-columns">
+<figure class="w-compare"><p class="w-compare__label w-compare__label--worse">No foreground transparency</p>
+<img     alt="A triangle superimposed on a circle. The circle can&#x27;t be seen through the triangle."          decoding="async"     height="283"          loading="lazy"     sizes="(min-width: 480px) 480px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/LOqxvB3qqVkbZBmxMmKS.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/LOqxvB3qqVkbZBmxMmKS.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/LOqxvB3qqVkbZBmxMmKS.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/LOqxvB3qqVkbZBmxMmKS.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/LOqxvB3qqVkbZBmxMmKS.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/LOqxvB3qqVkbZBmxMmKS.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/LOqxvB3qqVkbZBmxMmKS.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/LOqxvB3qqVkbZBmxMmKS.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/LOqxvB3qqVkbZBmxMmKS.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/LOqxvB3qqVkbZBmxMmKS.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/LOqxvB3qqVkbZBmxMmKS.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/LOqxvB3qqVkbZBmxMmKS.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/LOqxvB3qqVkbZBmxMmKS.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/LOqxvB3qqVkbZBmxMmKS.png?auto=format&w=960 960w"          width="480"   />
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">.frosty-glass-pane</span> <span class="token punctuation">{</span><br>  <span class="token property">backdrop-filter</span><span class="token punctuation">:</span> <span class="token function">blur</span><span class="token punctuation">(</span>2px<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code></figure>
+<figure class="w-compare"><p class="w-compare__label w-compare__label--better">Foreground transparency</p>
+<img     alt="A triangle superimposed on a circle. The triangle is translucent, allowing the circle to be seen through it."          decoding="async"     height="283"          loading="lazy"     sizes="(min-width: 480px) 480px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/VbyjpS6Td39E4FudeiVg.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/VbyjpS6Td39E4FudeiVg.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/VbyjpS6Td39E4FudeiVg.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/VbyjpS6Td39E4FudeiVg.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/VbyjpS6Td39E4FudeiVg.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/VbyjpS6Td39E4FudeiVg.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/VbyjpS6Td39E4FudeiVg.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/VbyjpS6Td39E4FudeiVg.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/VbyjpS6Td39E4FudeiVg.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/VbyjpS6Td39E4FudeiVg.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/VbyjpS6Td39E4FudeiVg.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/VbyjpS6Td39E4FudeiVg.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/VbyjpS6Td39E4FudeiVg.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/VbyjpS6Td39E4FudeiVg.png?auto=format&w=960 960w"          width="480"   />
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="highlight-line"><span class="token selector">.frosty-glass-pane</span> <span class="token punctuation">{</span></span><br><mark class="highlight-line highlight-line-active">  <span class="token property">opacity</span><span class="token punctuation">:</span> .9<span class="token punctuation">;</span></mark><br><span class="highlight-line">  <span class="token property">backdrop-filter</span><span class="token punctuation">:</span> <span class="token function">blur</span><span class="token punctuation">(</span>2px<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line"><span class="token punctuation">}</span></span></code></pre>
+</web-copy-code></figure>
+</div>
+<p>The image on the left shows how overlapping elements would be rendered if <code>backdrop-filter</code> were not used or supported. The image on the right applies a blurring effect using <code>backdrop-filter</code>. Notice that it uses <code>opacity</code> in addition to <code>backdrop-filter</code>. Without <code>opacity</code>, there would be nothing to apply blurring to. It almost goes without saying that if <code>opacity</code> is set to <code>1</code> (fully opaque) there will be no effect on the background.</p>
+<p>The <code>backdrop-filter</code> property is like CSS <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/filter" rel="noopener">filters</a> in that all your favorite <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/filter#Filter_functions" rel="noopener">filter functions</a> are supported: <code>blur()</code>, <code>brightness()</code>, <code>contrast()</code>, <code>opacity()</code>, <code>drop-shadow()</code>, and so on. It also supports the <code>url()</code> function if you want to use an external image as the filter, as well as the keywords <code>none</code>, <code>inherit</code>, <code>initial</code>, and <code>unset</code>. There are explanations for all of this on <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/backdrop-filter" rel="noopener">MDN</a>, including descriptions of syntax, filters, and values.</p>
+<p>When <code>backdrop-filter</code> is set to anything other than <code>none</code>, the browser creates a new <a href="https://www.w3.org/TR/CSS21/zindex.html" rel="noopener">stacking context</a>. A <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Containing_block" rel="noopener">containing block</a> may also be created, but only if the element has absolute and fixed position descendants.</p>
+<p>You can combine filters for rich and clever effects, or use just one filter for more subtle or precise effects. You can even combine them with <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Element/filter" rel="noopener">SVG filters</a>.</p>
+<h2 id="feature-detection-and-fallback">Feature detection and fallback <a class="w-headline-link" href="#feature-detection-and-fallback">#</a></h2>
+<p>As with many features of the modern web, you'll want to know whether the user's browser supports <code>backdrop-filter</code> before using it. Do this with <code>@supports()</code>. For performance reasons, fall back to an image instead of a polyfill when <code>backdrop-image</code> isn't supported. The example below shows this.</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token atrule"><span class="token rule">@supports</span> <span class="token punctuation">(</span><span class="token property">backdrop-filter</span><span class="token punctuation">:</span> none<span class="token punctuation">)</span></span> <span class="token punctuation">{</span><br>	<span class="token selector">.background</span> <span class="token punctuation">{</span><br>		<span class="token property">backdrop-filter</span><span class="token punctuation">:</span> <span class="token function">blur</span><span class="token punctuation">(</span>10px<span class="token punctuation">)</span><span class="token punctuation">;</span><br>	<span class="token punctuation">}</span><br><span class="token punctuation">}</span><br><br><span class="token atrule"><span class="token rule">@supports</span> <span class="token keyword">not</span> <span class="token punctuation">(</span><span class="token property">backdrop-filter</span><span class="token punctuation">:</span> none<span class="token punctuation">)</span></span> <span class="token punctuation">{</span><br>  <span class="token selector">.background</span> <span class="token punctuation">{</span><br>    <span class="token property">background-image</span><span class="token punctuation">:</span> blurred-hero.png<span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><h2 id="examples">Examples <a class="w-headline-link" href="#examples">#</a></h2>
+<p>Design techniques and styles previously reserved for operating systems are now performant and achievable with a single CSS declaration. Let's look at some examples.</p>
+<h3 id="single-filter">Single filter <a class="w-headline-link" href="#single-filter">#</a></h3>
+<p>In the following example, the frosted effect is achieved by combining color and blur. The blur is supplied by <code>backdrop-filter</code>, while the color comes from the element's semi-transparent background color.</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">.blur-behind-me</span> <span class="token punctuation">{</span><br>  <span class="token property">background-color</span><span class="token punctuation">:</span> <span class="token function">rgba</span><span class="token punctuation">(</span>255<span class="token punctuation">,</span> 255<span class="token punctuation">,</span> 255<span class="token punctuation">,</span> 0.3<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token property">backdrop-filter</span><span class="token punctuation">:</span> <span class="token function">blur</span><span class="token punctuation">(</span>.5rem<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><figure class="w-figure">
+  <video controls autoplay loop muted class="w-screenshot">
+    <source src="https://storage.googleapis.com/web-dev-assets/backdrop-filter/backdrop_filter-rgb2.webm" type="video/webm; codecs=vp8">
+    <source src="https://storage.googleapis.com/web-dev-assets/backdrop-filter/backdrop_filter-rgb2.mp4" type="video/mp4; codecs=h264">
+  </video>
+  <figcaption class="w-figcaption">
+    Try this example for yourself in <a href="https://codepen.io/netsi1964/pen/JqBLPK" target="_blank" rel="noopener">CodePen</a>.
+  </figcaption>
+</figure>
+<h3 id="multiple-filters">Multiple filters <a class="w-headline-link" href="#multiple-filters">#</a></h3>
+<p>Sometimes you'll need multiple filters to achieve the desired effect. To do this, provide a list of filters separated by a space. For example:</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">.brighten-saturate-and-blur-behind-me</span> <span class="token punctuation">{</span><br>  <span class="token property">backdrop-filter</span><span class="token punctuation">:</span> <span class="token function">brightness</span><span class="token punctuation">(</span>150%<span class="token punctuation">)</span> <span class="token function">saturate</span><span class="token punctuation">(</span>150%<span class="token punctuation">)</span> <span class="token function">blur</span><span class="token punctuation">(</span>1rem<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>In the following example, each of the four panes has a different combination of backdrop filters while the same set of shapes are animated behind them.</p>
+<figure class="w-figure">
+  <video controls autoplay loop muted class="w-screenshot">
+    <source src="https://storage.googleapis.com/web-dev-assets/backdrop-filter/backdrop_filter-ambient_blur2.webm" type="video/webm; codecs=vp8">
+    <source src="https://storage.googleapis.com/web-dev-assets/backdrop-filter/backdrop_filter-ambient_blur2.mp4" type="video/mp4; codecs=h264">
+  </video>
+  <figcaption class="w-figcaption">
+    Try this example for yourself in <a href="https://codepen.io/pepf/pen/GqZkdj" target="_blank" rel="noopener">CodePen</a>.
+  </figcaption>
+</figure>
+<h3 id="overlays">Overlays <a class="w-headline-link" href="#overlays">#</a></h3>
+<p>This example shows how to blur a semi-transparent background to make text readable while stylistically blending with a page's background.</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">.modal</span> <span class="token punctuation">{</span><br>  <span class="token property">backdrop-filter</span><span class="token punctuation">:</span> <span class="token function">blur</span><span class="token punctuation">(</span>10px<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token property">background-color</span><span class="token punctuation">:</span> <span class="token function">rgba</span><span class="token punctuation">(</span>255<span class="token punctuation">,</span> 255<span class="token punctuation">,</span> 255<span class="token punctuation">,</span> 0.5<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><figure class="w-figure">
+  <video controls autoplay loop muted class="w-screenshot">
+    <source src="https://storage.googleapis.com/web-dev-assets/backdrop-filter/backdrop_filter-modal2.webm" type="video/webm; codecs=vp8">
+    <source src="https://storage.googleapis.com/web-dev-assets/backdrop-filter/backdrop_filter-modal2.mp4" type="video/mp4; codecs=h264">
+  </video>
+  <figcaption class="w-figcaption">
+    Try this <a href="https://mfreed7.github.io/backdrop-filter-feature/examples/scrollable.html" target="_blank" rel="noopener">example</a> for yourself.
+  </figcaption>
+</figure>
+<h3 id="text-contrast-on-dynamic-backgrounds">Text contrast on dynamic backgrounds <a class="w-headline-link" href="#text-contrast-on-dynamic-backgrounds">#</a></h3>
+<p>As stated earlier, <code>backdrop-filter</code> allows performant effects that would be difficult or impossible on the web. An example of this is changing a background in response to an animation. In this example, <code>backdrop-filter</code> maintains the high contrast between the text and its background in spite of what's going on behind the text. It starts with the default background color <code>darkslategray</code> and uses <code>backdrop-filter</code> to invert the colors after the transformation.</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">.container::before</span> <span class="token punctuation">{</span><br>  <span class="token property">z-index</span><span class="token punctuation">:</span> 1<span class="token punctuation">;</span><br>  <span class="token property">background-color</span><span class="token punctuation">:</span> darkslategray<span class="token punctuation">;</span><br>  <span class="token property">filter</span><span class="token punctuation">:</span> <span class="token function">invert</span><span class="token punctuation">(</span>1<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><br><br><span class="token selector">.container::after</span> <span class="token punctuation">{</span><br>	<span class="token property">backdrop-filter</span><span class="token punctuation">:</span> <span class="token function">invert</span><span class="token punctuation">(</span>1<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token property">z-index</span><span class="token punctuation">:</span> 3<span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><figure class="w-figure">
+  <video controls autoplay loop muted class="w-screenshot">
+    <source src="https://storage.googleapis.com/web-dev-assets/backdrop-filter/backdrop_filter-invert_color2.webm" type="video/webm; codecs=vp8">
+    <source src="https://storage.googleapis.com/web-dev-assets/backdrop-filter/backdrop_filter-invert_color2.mp4" type="video/mp4; codecs=h264">
+  </video>
+  <figcaption class="w-figcaption">
+    Try this example from <a href="https://www.chenhuijing.com/#%F0%9F%91%9F">Chen Hui Jing</a> in <a href="https://tympanus.net/codrops-playground/huijing/Qqpwg5Iy/editor" target="_blank" rel="noopener">Codrops</a>.
+  </figcaption>
+</figure>
+<h2 id="conclusion">Conclusion <a class="w-headline-link" href="#conclusion">#</a></h2>
+<p>More than 560 of you have upvoted the <a href="https://crbug.com/497522" rel="noopener">Chromium bug</a> over the past few years, clearly marking this as a long awaited CSS feature. Chrome's release of <code>backdrop-filter</code> in version 76 brings the web a step closer to truly OS-like UI presentation.</p>
+<h3 id="additional-resources">Additional resources <a class="w-headline-link" href="#additional-resources">#</a></h3>
+<ul>
+<li><a href="https://drafts.fxtf.org/filter-effects-2/#BackdropFilterProperty" rel="noopener">Specification</a></li>
+<li><a href="https://www.chromestatus.com/feature/5679432723333120" rel="noopener">Chrome Platform Status</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/backdrop-filter" rel="noopener">MDN</a></li>
+<li><a href="https://css-tricks.com/the-backdrop-filter-css-property/" rel="noopener"><code>background-filter</code> at CSS Tricks</a></li>
+<li><a href="https://codepen.io/tag/backdrop-filter/#" rel="noopener">Samples on Codepen</a></li>
+</ul>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/css/">CSS</a>
+      
+    
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Aug 29, 2019</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/backdrop-filter/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions="api"></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

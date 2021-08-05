@@ -1,0 +1,831 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=26154b1edea0c">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Streaming requests with the fetch API</title>
+<meta name="description" content="Chrome 85 has an experimental implementation of streaming uploads, which you can use on live sites using the origin trial. " />
+
+<link rel="canonical" href="https://web.dev/fetch-upload-streaming/" />
+
+<meta itemprop="name" content="Streaming requests with the fetch API" />
+<meta itemprop="description" content="Chrome 85 has an experimental implementation of streaming uploads, which you can use on live sites using the origin trial. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/9U7u4C7WCGbrdHm3181W.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/fetch-upload-streaming/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Streaming requests with the fetch API" />
+<meta property="og:description" content="Chrome 85 has an experimental implementation of streaming uploads, which you can use on live sites using the origin trial. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/9U7u4C7WCGbrdHm3181W.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="A canoe pointed up stream." />
+<meta property="tag" content="network" />
+<meta property="tag" content="service-worker" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Streaming requests with the fetch API" />
+<meta name="twitter:description" content="Chrome 85 has an experimental implementation of streaming uploads, which you can use on live sites using the origin trial. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/9U7u4C7WCGbrdHm3181W.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=74438ea908b39', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=18e1b4956eb02', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="A canoe pointed up stream."     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/9U7u4C7WCGbrdHm3181W.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/9U7u4C7WCGbrdHm3181W.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/9U7u4C7WCGbrdHm3181W.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/9U7u4C7WCGbrdHm3181W.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/9U7u4C7WCGbrdHm3181W.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/9U7u4C7WCGbrdHm3181W.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/9U7u4C7WCGbrdHm3181W.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/9U7u4C7WCGbrdHm3181W.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/9U7u4C7WCGbrdHm3181W.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/9U7u4C7WCGbrdHm3181W.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/9U7u4C7WCGbrdHm3181W.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/9U7u4C7WCGbrdHm3181W.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/9U7u4C7WCGbrdHm3181W.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/9U7u4C7WCGbrdHm3181W.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/9U7u4C7WCGbrdHm3181W.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/9U7u4C7WCGbrdHm3181W.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/9U7u4C7WCGbrdHm3181W.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/9U7u4C7WCGbrdHm3181W.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#streaming-requests-with-the-fetch-api" class="w-toc__header--link">
+        Streaming requests with the fetch API
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#try-out-request-streams">Try out request streams</a></li><li><a href="#enable-flags">Enabling via about://flags</a></li><li><a href="#enabling-support-during-the-origin-trial-phase">Enabling support during the origin trial phase</a></li><li><a href="#register-for-ot">Register for the origin trial</a></li><li><a href="#demo">Demo</a></li><li><a href="#previously-on-the-exciting-adventures-of-fetch-streams">Previously on the exciting adventures of fetch streams</a></li><li><a href="#streaming-request-bodies">Streaming request bodies</a></li><li><a href="#writable-streams">Writable streams</a></li><li><a href="#feature-detection">Feature detection</a></li><li><a href="#restrictions">Restrictions</a></li><li><a href="#restricted-redirects">Restricted redirects</a></li><li><a href="#http2-only-by-default">HTTP/2 only by default</a></li><li><a href="#no-duplex-communication">No duplex communication</a></li><li><a href="#potential-issues">Potential issues</a></li><li><a href="#incompatibility-on-the-server-side">Incompatibility on the server side</a></li><li><a href="#incompatibility-outside-of-your-control">Incompatibility outside of your control</a></li><li><a href="#feedback-welcome">Feedback welcome</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@jaffathecake"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="streaming-requests-with-the-fetch-api" class="w-article-header__headline">Streaming requests with the fetch API</h1>
+      
+
+      
+        <div class="w-author__published">
+          <time>Jul 22, 2020</time>
+           <span class="w-author__separator">•</span> Updated <time>Jul 22, 2020</time> 
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/jakearchibald/"><img     alt="Jake Archibald"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/Cprm03kLbFXkxbzGLI6x.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/Cprm03kLbFXkxbzGLI6x.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/Cprm03kLbFXkxbzGLI6x.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/Cprm03kLbFXkxbzGLI6x.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/Cprm03kLbFXkxbzGLI6x.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/Cprm03kLbFXkxbzGLI6x.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/jakearchibald/">Jake Archibald</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/jaffathecake"
+          >Twitter</a
+        >
+      </li>
+      
+      
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://jakearchibald.com/">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>Chrome 85 has an experimental implementation of request streams, meaning you can
+start making a request before you have the whole body available.</p>
+<p>You could use this to:</p>
+<ul>
+<li>Warm up the server. In other words, you could start the request once the user
+focuses a text input field, and get all of the headers out of the way, then
+wait until the user presses 'send' before sending the data they entered.</li>
+<li>Gradually send data generated on the client, such as audio, video, or input data.</li>
+<li>Recreate web sockets over HTTP.</li>
+</ul>
+<p>But since this is a low-level web platform feature, don't be limited by <em>my</em> ideas.
+Maybe you can think of a much more exciting use-case for request streaming.</p>
+<h2 id="try-out-request-streams">Try out request streams <a class="w-headline-link" href="#try-out-request-streams">#</a></h2>
+<h3 id="enable-flags">Enabling via about://flags <a class="w-headline-link" href="#enable-flags">#</a></h3>
+<p>Try out request streams in Chrome 85 by flipping an experimental flag:
+<code>enable-experimental-web-platform-features</code>.</p>
+<h3 id="enabling-support-during-the-origin-trial-phase">Enabling support during the origin trial phase <a class="w-headline-link" href="#enabling-support-during-the-origin-trial-phase">#</a></h3>
+<p>Fetch request streams are available in an origin trial as of Chrome 85. The
+origin trial is expected to end in Chrome 87.</p>
+<p>Origin trials allow you to try new features and give feedback on their
+usability, practicality, and effectiveness to the web standards community. For
+more information, see the <a href="https://github.com/GoogleChrome/OriginTrials/blob/gh-pages/developer-guide.md" rel="noopener">Origin Trials Guide for Web Developers</a>.
+To sign up for this or another origin trial, visit the <a href="https://developers.chrome.com/origintrials/#/trials/active" rel="noopener">registration page</a>.</p>
+<h3 id="register-for-ot">Register for the origin trial <a class="w-headline-link" href="#register-for-ot">#</a></h3>
+<ol>
+<li><a href="https://developers.chrome.com/origintrials/#/view_trial/-7680889164480380927" rel="noopener">Request a token</a> for your origin.</li>
+<li>Add the token to your pages. There are two ways to do that:
+<ul>
+<li>Add an <code>origin-trial</code> <code>&lt;meta&gt;</code> tag to the head of each page. For example,
+this may look something like: <br>
+<code>&lt;meta http-equiv=&quot;origin-trial&quot; content=&quot;TOKEN_GOES_HERE&quot;&gt;</code></li>
+<li>If you can configure your server, you can also add the token
+using an <code>Origin-Trial</code> HTTP header. The resulting response header should
+look something like:<br>
+<code>Origin-Trial: TOKEN_GOES_HERE</code></li>
+</ul>
+</li>
+</ol>
+<h2 id="demo">Demo <a class="w-headline-link" href="#demo">#</a></h2>
+<div class="glitch-embed-wrap" style="height: 480px; width: 100%;">
+  <iframe
+    allow="camera; clipboard-read; clipboard-write; encrypted-media; geolocation; microphone; midi"
+    loading="lazy"
+    src="https://glitch.com/embed/#!/embed/fetch-request-stream?attributionHidden=true&sidebarCollapsed=true&path=index.html&previewSize=100"
+    style="height: 100%; width: 100%; border: 0;"
+    title="fetch-request-stream on Glitch"
+  ></iframe>
+</div>
+<p>This shows how you can stream data from the user to the server, and send data
+back that can be processed in real time.</p>
+<p>Yeah ok it isn't the most imaginative example, I just wanted to keep it simple,
+okay?</p>
+<p>Anyway, how does this work?</p>
+<h2 id="previously-on-the-exciting-adventures-of-fetch-streams">Previously on the exciting adventures of fetch streams <a class="w-headline-link" href="#previously-on-the-exciting-adventures-of-fetch-streams">#</a></h2>
+<p><em>Response</em> streams have been available in all modern browsers for a while now.
+They allow you to access parts of a response as they arrive from the server:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> response <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">fetch</span><span class="token punctuation">(</span>url<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token keyword">const</span> reader <span class="token operator">=</span> response<span class="token punctuation">.</span>body<span class="token punctuation">.</span><span class="token function">getReader</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token keyword">const</span> <span class="token punctuation">{</span> value<span class="token punctuation">,</span> done <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">await</span> reader<span class="token punctuation">.</span><span class="token function">read</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token keyword">if</span> <span class="token punctuation">(</span>done<span class="token punctuation">)</span> <span class="token keyword">break</span><span class="token punctuation">;</span><br>  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'Received'</span><span class="token punctuation">,</span> value<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><br><br>console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'Response fully received'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>Each <code>value</code> is a <code>Uint8Array</code> of bytes. The number of arrays you get and the
+size of the arrays depends on the speed of the network. If you're on a fast
+connection, you'll get fewer, larger 'chunks' of data. If you're on a slow
+connection, you'll get more, smaller chunks.</p>
+<p>If you want to convert the bytes into text, you can use
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/TextDecoder/decode" rel="noopener"><code>TextDecoder</code></a>,
+or the newer transform stream if your <a href="https://caniuse.com/#feat=mdn-api_textdecoderstream" rel="noopener">target browsers support
+it</a>:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> response <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">fetch</span><span class="token punctuation">(</span>url<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token keyword">const</span> reader <span class="token operator">=</span> response<span class="token punctuation">.</span>body<br>  <span class="token punctuation">.</span><span class="token function">pipeThrough</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">TextDecoderStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><br>  <span class="token punctuation">.</span><span class="token function">getReader</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p><code>TextDecoderStream</code> is a transform stream that grabs all those <code>Uint8Array</code>
+chunks and converts them to strings.</p>
+<p>Streams are great, as you can start acting on the data as it arrives. For
+instance, if you're receiving a list of 100 'results', you can display the first
+result as soon as you receive it, rather than waiting for all 100.</p>
+<p>Anyway, that's response streams, the exciting new thing I wanted to talk about
+is request streams.</p>
+<h2 id="streaming-request-bodies">Streaming request bodies <a class="w-headline-link" href="#streaming-request-bodies">#</a></h2>
+<p>Requests can have bodies:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">await</span> <span class="token function">fetch</span><span class="token punctuation">(</span>url<span class="token punctuation">,</span> <span class="token punctuation">{</span><br>  method<span class="token operator">:</span> <span class="token string">'POST'</span><span class="token punctuation">,</span><br>  body<span class="token operator">:</span> requestBody<span class="token punctuation">,</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>Previously, you needed the whole body ready to go before you could start the
+request, but now in Chrome 85 you can provide your own <code>ReadableStream</code> of data:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">wait</span><span class="token punctuation">(</span><span class="token parameter">milliseconds</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Promise</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">resolve</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token function">setTimeout</span><span class="token punctuation">(</span>resolve<span class="token punctuation">,</span> milliseconds<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><br><br><span class="token keyword">const</span> stream <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ReadableStream</span><span class="token punctuation">(</span><span class="token punctuation">{</span><br>  <span class="token keyword">async</span> <span class="token function">start</span><span class="token punctuation">(</span><span class="token parameter">controller</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token keyword">await</span> <span class="token function">wait</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    controller<span class="token punctuation">.</span><span class="token function">enqueue</span><span class="token punctuation">(</span><span class="token string">'This '</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token keyword">await</span> <span class="token function">wait</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    controller<span class="token punctuation">.</span><span class="token function">enqueue</span><span class="token punctuation">(</span><span class="token string">'is '</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token keyword">await</span> <span class="token function">wait</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    controller<span class="token punctuation">.</span><span class="token function">enqueue</span><span class="token punctuation">(</span><span class="token string">'a '</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token keyword">await</span> <span class="token function">wait</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    controller<span class="token punctuation">.</span><span class="token function">enqueue</span><span class="token punctuation">(</span><span class="token string">'slow '</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token keyword">await</span> <span class="token function">wait</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    controller<span class="token punctuation">.</span><span class="token function">enqueue</span><span class="token punctuation">(</span><span class="token string">'request.'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    controller<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipeThrough</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">TextEncoderStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token function">fetch</span><span class="token punctuation">(</span>url<span class="token punctuation">,</span> <span class="token punctuation">{</span><br>  method<span class="token operator">:</span> <span class="token string">'POST'</span><span class="token punctuation">,</span><br>  headers<span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token string">'Content-Type'</span><span class="token operator">:</span> <span class="token string">'text/plain'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span><br>  body<span class="token operator">:</span> stream<span class="token punctuation">,</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>The above will send &quot;This is a slow request&quot; to the server, one word at a time,
+with a one second pause between each word.</p>
+<p>Each chunk of a request body needs to be a <code>Uint8Array</code> of bytes, so I'm using
+<code>pipeThrough(new TextEncoderStream())</code> to do the conversion for me.</p>
+<h3 id="writable-streams">Writable streams <a class="w-headline-link" href="#writable-streams">#</a></h3>
+<p>Sometimes it's easier to work with streams when you have a <code>WritableStream</code>. You can do this using an 'identity' stream, which is a readable/writable pair that takes anything that's passed to its writable end, and sends it to the readable end. You can create one of these by creating a <code>TransformStream</code> without any arguments:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> <span class="token punctuation">{</span> readable<span class="token punctuation">,</span> writable <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">TransformStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token keyword">const</span> responsePromise <span class="token operator">=</span> <span class="token function">fetch</span><span class="token punctuation">(</span>url<span class="token punctuation">,</span> <span class="token punctuation">{</span><br>  method<span class="token operator">:</span> <span class="token string">'POST'</span><span class="token punctuation">,</span><br>  body<span class="token operator">:</span> readable<span class="token punctuation">,</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>Now, anything you send to the writable stream will be part of the request. This
+lets you compose streams together. For instance, here's a silly example where
+data is fetched from one URL, compressed, and sent to another URL:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token comment">// Get from url1:</span><br><span class="token keyword">const</span> response <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">fetch</span><span class="token punctuation">(</span>url1<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token keyword">const</span> <span class="token punctuation">{</span> readable<span class="token punctuation">,</span> writable <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">TransformStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token comment">// Compress the data from url1:</span><br>response<span class="token punctuation">.</span>body<br>  <span class="token punctuation">.</span><span class="token function">pipeThrough</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">CompressionStream</span><span class="token punctuation">(</span><span class="token string">'gzip'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><br>  <span class="token punctuation">.</span><span class="token function">pipeTo</span><span class="token punctuation">(</span>writable<span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token comment">// Post to url2:</span><br><span class="token keyword">await</span> <span class="token function">fetch</span><span class="token punctuation">(</span>url2<span class="token punctuation">,</span> <span class="token punctuation">{</span><br>  method<span class="token operator">:</span> <span class="token string">'POST'</span><span class="token punctuation">,</span><br>  body<span class="token operator">:</span> readable<span class="token punctuation">,</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>The above example uses <a href="https://chromestatus.com/feature/5855937971617792" rel="noopener">compression
+streams</a> to compress
+arbitrary data using gzip.</p>
+<h3 id="feature-detection">Feature detection <a class="w-headline-link" href="#feature-detection">#</a></h3>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> supportsRequestStreamsP <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token keyword">const</span> supportsStreamsInRequestObjects <span class="token operator">=</span> <span class="token operator">!</span><span class="token keyword">new</span> <span class="token class-name">Request</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">,</span> <span class="token punctuation">{</span><br>    body<span class="token operator">:</span> <span class="token keyword">new</span> <span class="token class-name">ReadableStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span><br>    method<span class="token operator">:</span> <span class="token string">'POST'</span><span class="token punctuation">,</span><br>  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span>headers<span class="token punctuation">.</span><span class="token function">has</span><span class="token punctuation">(</span><span class="token string">'Content-Type'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>supportsStreamsInRequestObjects<span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span><br><br>  <span class="token keyword">return</span> <span class="token function">fetch</span><span class="token punctuation">(</span><span class="token string">'data:a/a;charset=utf-8,'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span><br>    method<span class="token operator">:</span> <span class="token string">'POST'</span><span class="token punctuation">,</span><br>    body<span class="token operator">:</span> <span class="token keyword">new</span> <span class="token class-name">ReadableStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span><br>  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token boolean">true</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token comment">// Note: supportsRequestStreamsP is a promise.</span><br><span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">await</span> supportsRequestStreamsP<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token comment">// …</span><br><span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span><br>  <span class="token comment">// …</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>If you're curious, here's how the feature detection works:</p>
+<p>If the browser doesn't support a particular <code>body</code> type, it calls <code>toString()</code> on the object and uses the result as the body. So, if the browser doesn't support request streams, the request body becomes the string <code>&quot;[object ReadableStream]&quot;</code>. When a string is used as a body, it conveniently sets the <code>Content-Type</code> header to <code>text/plain;charset=UTF-8</code>. So, if that header is set, then we know the browser <em>doesn't</em> support streams in request objects, and we can exit early.</p>
+<p>Unfortunately, Safari <em>does</em> support streams in request objects, but <em>doesn't</em> allow them to be used with <code>fetch</code>.</p>
+<p>To test that, we try <code>fetch</code> with a stream body. The test would be flakey and slow if it depended on the network, but thankfully a quirk in the spec allows for <code>POST</code> requests to be made to <code>data:</code> URLs. This is fast and works without a connection. Safari will reject this call because it doesn't support the stream body.</p>
+<h2 id="restrictions">Restrictions <a class="w-headline-link" href="#restrictions">#</a></h2>
+<p>Streaming requests are a new power for the web, so they come with a few
+restrictions:</p>
+<h3 id="restricted-redirects">Restricted redirects <a class="w-headline-link" href="#restricted-redirects">#</a></h3>
+<p>Some forms of HTTP redirect require the browser to resend the body of the
+request to another URL. To support this, the browser would have to buffer the
+contents of the stream, which sort-of defeats the point, so it doesn't do that.</p>
+<p>Instead, if the request has a streaming body, and the response is an HTTP
+redirect other than 303, the fetch will reject and the redirect will <em>not</em> be
+followed.</p>
+<p>303 redirects are allowed, since they explicitly change the method to <code>GET</code> and
+discard the request body.</p>
+<h3 id="http2-only-by-default">HTTP/2 only by default <a class="w-headline-link" href="#http2-only-by-default">#</a></h3>
+<p>By default, the fetch will be rejected if the connection isn't HTTP/2. If you
+want to use streaming requests over HTTP/1.1, you need to opt in:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="highlight-line"><span class="token keyword">await</span> <span class="token function">fetch</span><span class="token punctuation">(</span>url<span class="token punctuation">,</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">  method<span class="token operator">:</span> <span class="token string">'POST'</span><span class="token punctuation">,</span></span><br><span class="highlight-line">  body<span class="token operator">:</span> stream<span class="token punctuation">,</span></span><br><mark class="highlight-line highlight-line-active">  allowHTTP1ForStreamingUpload<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span></mark><br><span class="highlight-line"><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span></code></pre>
+</web-copy-code><div class="w-aside w-aside--caution">
+<p><strong>Caution</strong>:
+<code>allowHTTP1ForStreamingUpload</code> is non-standard and will only be used as part of
+Chrome's experimental implementation.</p>
+</div>
+<p>According to HTTP/1.1 rules, request and response bodies either need to send a
+<code>Content-Length</code> header, so the other side knows how much data it'll receive, or
+change the format of the message to use <a href="https://en.wikipedia.org/wiki/Chunked_transfer_encoding" rel="noopener">chunked
+encoding</a>. With chunked
+encoding, the body is split into parts, each with their own content length.</p>
+<p>Chunked encoding is pretty common when it comes to HTTP/1.1 <em>responses</em>, but
+very rare when it comes to <em>requests</em>. Because of this, Chrome is a little worried
+about compatibility, so it's opt-in for now.</p>
+<div class="w-aside w-aside--note">
+<p>This isn't an issue for HTTP/2, as HTTP/2 data is always 'chunked', although it
+calls the chunks
+<a href="https://developers.google.com/web/fundamentals/performance/http2#streams_messages_and_frames" rel="noopener">frames</a>.
+Chunked encoding wasn't introduced until HTTP/1.1, so requests with streaming
+bodies will always fail on HTTP/1 connections.</p>
+</div>
+<p>Depending on how this trial goes, the spec will either restrict streaming
+responses to HTTP/2, or always allow it for both HTTP/1.1 and HTTP/2.</p>
+<h3 id="no-duplex-communication">No duplex communication <a class="w-headline-link" href="#no-duplex-communication">#</a></h3>
+<p>A little-known feature of HTTP (although, whether this is standard behaviour
+depends on who you ask) is that you can start receiving the response while
+you're still sending the request. However, it's so little-known, that it isn't
+well supported by servers, and, well, browsers.</p>
+<p>In Chrome's current implementation, you won't get the response until the body
+has been fully sent. In the following example <code>responsePromise</code> won't resolve
+until the readable stream has been closed. Anything the server sends before that
+point will be buffered.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> responsePromise <span class="token operator">=</span> <span class="token function">fetch</span><span class="token punctuation">(</span>url<span class="token punctuation">,</span> <span class="token punctuation">{</span><br>  method<span class="token operator">:</span> <span class="token string">'POST'</span><span class="token punctuation">,</span><br>  body<span class="token operator">:</span> readableStream<span class="token punctuation">,</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>The next best thing to duplex communication is to make one fetch with a
+streaming request, then make another fetch to receive the streaming response.
+The server will need some way to associate these two requests, like an ID in the
+URL. That's how the <a href="#demo">demo</a> works.</p>
+<h2 id="potential-issues">Potential issues <a class="w-headline-link" href="#potential-issues">#</a></h2>
+<p>Yeah, so… this is a new feature, and one that's underused on the internet today.
+Here are some issues to look out for:</p>
+<h3 id="incompatibility-on-the-server-side">Incompatibility on the server side <a class="w-headline-link" href="#incompatibility-on-the-server-side">#</a></h3>
+<p>Some app servers don't support streaming requests, and instead wait for the full
+request to be received before letting you see any of it, which kinda defeats the
+point. Instead, use an app server that supports streaming, like
+<a href="https://nodejs.org/dist/latest-v14.x/docs/api/http.html#http_class_http_incomingmessage" rel="noopener">NodeJS</a>.</p>
+<p>But, you're not out of the woods yet! The application server, such as NodeJS,
+usually sits behind another server, often called a &quot;front-end server&quot;, which may
+in turn sit behind a CDN. If any of those decide to buffer the request before
+giving it to the next server in the chain, you lose the benefit of request
+streaming.</p>
+<p>Also, if you're using HTTP/1.1, one of the servers may not be prepared for
+chunked encoding, and may fail with an error. But hey, at least you can test
+that and try to change servers if needed.</p>
+<p><em>…long sigh…</em></p>
+<h3 id="incompatibility-outside-of-your-control">Incompatibility outside of your control <a class="w-headline-link" href="#incompatibility-outside-of-your-control">#</a></h3>
+<p>If you're using HTTPS you don't need to worry about proxies between you and the
+user, but the user may be running a proxy on their machine. Some internet
+protection software does this to allow it to monitor everything that goes
+between the browser and network.</p>
+<p>There may be cases where this software buffers request bodies, or in the case of
+HTTP/1.1, doesn't expect chunked encoding, and breaks in some exciting way.</p>
+<p>Right now, it's not clear how often this will happen, if at all.</p>
+<p>If you want to protect against this, you can create a 'feature test' similar to
+the <a href="#demo">demo above</a>, where you try to stream some data without closing the
+stream. If the server receives the data, it can respond via a different fetch.
+Once this happens, you know the client supports streaming requests end-to-end.</p>
+<h2 id="feedback-welcome">Feedback welcome <a class="w-headline-link" href="#feedback-welcome">#</a></h2>
+<p>Feedback from the community is crucial to the design of new APIs, so please try
+it out and tell us what you think! If you encounter any bugs, please <a href="https://bugs.chromium.org/p/chromium/issues/list" rel="noopener">report
+them</a>, but if you have general
+feedback, please send it to the <a href="https://groups.google.com/a/chromium.org/forum/#!forum/blink-network-dev" rel="noopener">blink-network-dev Google
+Group</a>.</p>
+<p>Photo by <a href="https://unsplash.com/@lauralefurgeysmith?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText" rel="noopener">Laura
+Lefurgey-Smith</a>
+on
+<a href="https://unsplash.com/s/photos/canoe-stream?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText" rel="noopener">Unsplash</a></p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/network/">Network</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/service-worker/">Service Worker</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Jul 22, 2020</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/fetch-upload-streaming/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions="api"></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

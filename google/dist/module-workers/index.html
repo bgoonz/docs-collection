@@ -1,0 +1,782 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=db808a1306227">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Threading the web with module workers</title>
+<meta name="description" content="Module workers make it easy to unblock the main thread by moving expensive code to a background thread while keeping the ergonomic and performance benefits of standard JavaScript modules. " />
+
+<link rel="canonical" href="https://web.dev/module-workers/" />
+
+<meta itemprop="name" content="Threading the web with module workers" />
+<meta itemprop="description" content="Module workers make it easy to unblock the main thread by moving expensive code to a background thread while keeping the ergonomic and performance benefits of standard JavaScript modules. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/I7oZWRPOJABk1YBGGisK.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/module-workers/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Threading the web with module workers" />
+<meta property="og:description" content="Module workers make it easy to unblock the main thread by moving expensive code to a background thread while keeping the ergonomic and performance benefits of standard JavaScript modules. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/I7oZWRPOJABk1YBGGisK.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="Computer processor graphic" />
+<meta property="tag" content="web-workers" />
+<meta property="tag" content="javascript-modules" />
+<meta property="tag" content="modules" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Threading the web with module workers" />
+<meta name="twitter:description" content="Module workers make it easy to unblock the main thread by moving expensive code to a background thread while keeping the ergonomic and performance benefits of standard JavaScript modules. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/I7oZWRPOJABk1YBGGisK.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=22314fde27861', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=3de38588a4792', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="Computer processor graphic"     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/I7oZWRPOJABk1YBGGisK.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/I7oZWRPOJABk1YBGGisK.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/I7oZWRPOJABk1YBGGisK.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/I7oZWRPOJABk1YBGGisK.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/I7oZWRPOJABk1YBGGisK.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/I7oZWRPOJABk1YBGGisK.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/I7oZWRPOJABk1YBGGisK.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/I7oZWRPOJABk1YBGGisK.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/I7oZWRPOJABk1YBGGisK.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/I7oZWRPOJABk1YBGGisK.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/I7oZWRPOJABk1YBGGisK.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/I7oZWRPOJABk1YBGGisK.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/I7oZWRPOJABk1YBGGisK.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/I7oZWRPOJABk1YBGGisK.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/I7oZWRPOJABk1YBGGisK.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/I7oZWRPOJABk1YBGGisK.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/I7oZWRPOJABk1YBGGisK.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/I7oZWRPOJABk1YBGGisK.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#threading-the-web-with-module-workers" class="w-toc__header--link">
+        Threading the web with module workers
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#history:-classic-workers">History: classic workers</a></li><li><a href="#enter-module-workers">Enter module workers</a></li><li><a href="#preload-workers-with-modulepreload">Preload workers with modulepreload</a></li><li><a href="#what-about-shared-workers">What about shared workers?</a></li><li><a href="#what-about-service-worker">What about service worker?</a></li><li><a href="#additional-resources-and-further-reading">Additional resources and further reading</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@_developit"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="threading-the-web-with-module-workers" class="w-article-header__headline">Threading the web with module workers</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          <p>Moving heavy lifting into background threads is now easier with JavaScript modules in web workers.</p>
+
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Dec 17, 2019</time>
+          
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/developit/"><img     alt="Jason Miller"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/bPCYfhUgxdCpXhKAWc9X.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/bPCYfhUgxdCpXhKAWc9X.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/bPCYfhUgxdCpXhKAWc9X.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/bPCYfhUgxdCpXhKAWc9X.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/bPCYfhUgxdCpXhKAWc9X.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/bPCYfhUgxdCpXhKAWc9X.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/developit/">Jason Miller</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/_developit"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/developit">GitHub</a>
+      </li>
+      
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://jasonformat.com">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>JavaScript is single-threaded, which means it can only perform one operation at a time. This is
+intuitive and works well for lots of cases on the web, but can become problematic when we need to
+do heavy lifting tasks like data processing, parsing, computation, or analysis. As more and more
+complex applications are delivered on the web, there's an increased need for multi-threaded
+processing.</p>
+<p>On the web platform, the main primitive for threading and parallelism is the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers" rel="noopener">Web
+Workers API</a>.
+Workers are a lightweight abstraction on top of <a href="https://en.wikipedia.org/wiki/Thread_%28computing%29" rel="noopener">operating system
+threads</a> that expose a message passing API
+for inter-thread communication. This can be immensely useful when performing costly computations or
+operating on large datasets, allowing the main thread to run smoothly while performing the
+expensive operations on one or more background threads.</p>
+<p>Here's a typical example of worker usage, where a worker script listens for messages from the main
+thread and responds by sending back messages of its own:</p>
+<p class="w-label">page.js:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> worker <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Worker</span><span class="token punctuation">(</span><span class="token string">'worker.js'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>worker<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'message'</span><span class="token punctuation">,</span> <span class="token parameter">e</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>e<span class="token punctuation">.</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>worker<span class="token punctuation">.</span><span class="token function">postMessage</span><span class="token punctuation">(</span><span class="token string">'hello'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p class="w-label">worker.js:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'message'</span><span class="token punctuation">,</span> <span class="token parameter">e</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token keyword">if</span> <span class="token punctuation">(</span>e<span class="token punctuation">.</span>data <span class="token operator">===</span> <span class="token string">'hello'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token function">postMessage</span><span class="token punctuation">(</span><span class="token string">'world'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>The Web Worker API has been available in most browsers for over ten years. While that
+means workers have excellent browser support and are well-optimized, it also means they long
+predate JavaScript modules. Since there was no module system when workers were designed, the API
+for loading code into a worker and composing scripts has remained similar to the synchronous script
+loading approaches common in 2009.</p>
+<h2 id="history:-classic-workers">History: classic workers <a class="w-headline-link" href="#history:-classic-workers">#</a></h2>
+<p>The Worker constructor takes a <a href="https://html.spec.whatwg.org/multipage/webappapis.html#classic-script" rel="noopener">classic
+script</a> URL, which is
+relative to the document URL. It immediately returns a reference to the new worker instance,
+which exposes a messaging interface as well as a <code>terminate()</code> method that immediately stops and
+destroys the worker.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> worker <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Worker</span><span class="token punctuation">(</span><span class="token string">'worker.js'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>An <code>importScripts()</code> function is available within web workers for loading additional code, but it
+pauses execution of the worker in order to fetch and evaluate each script. It also executes scripts
+in the global scope like a classic <code>&lt;script&gt;</code> tag, meaning the variables in one script can be
+overwritten by the variables in another.</p>
+<p class="w-label">worker.js:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token function">importScripts</span><span class="token punctuation">(</span><span class="token string">'greet.js'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token comment">// ^ could block for seconds</span><br><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'message'</span><span class="token punctuation">,</span> <span class="token parameter">e</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token function">postMessage</span><span class="token punctuation">(</span><span class="token function">sayHello</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p class="w-label">greet.js:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token comment">// global to the whole worker</span><br><span class="token keyword">function</span> <span class="token function">sayHello</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token keyword">return</span> <span class="token string">'world'</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>For this reason, web workers have historically imposed an outsized effect on the architecture of an
+application. Developers have had to create clever tooling and workarounds to make it possible to
+use web workers without giving up modern development practices. As an example, bundlers like
+webpack embed a small module loader implementation into generated code that uses <code>importScripts()</code>
+for code loading, but wraps modules in functions to avoid variable collisions and simulate
+dependency imports and exports.</p>
+<h2 id="enter-module-workers">Enter module workers <a class="w-headline-link" href="#enter-module-workers">#</a></h2>
+<p>A new mode for web workers with the ergonomics and performance benefits of <a href="https://v8.dev/features/modules" rel="noopener">JavaScript
+modules</a> is shipping in Chrome 80, called module workers. The
+<code>Worker</code> constructor now accepts a new <code>{type:&quot;module&quot;}</code> option, which changes script loading and
+execution to match <code>&lt;script type=&quot;module&quot;&gt;</code>.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> worker <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Worker</span><span class="token punctuation">(</span><span class="token string">'worker.js'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span><br>  type<span class="token operator">:</span> <span class="token string">'module'</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>Since module workers are standard JavaScript modules, they can use import and export statements. As
+with all JavaScript modules, dependencies are only executed once in a given context (main thread,
+worker, etc.), and all future imports reference the already-executed module instance. The loading
+and execution of JavaScript modules is also optimized by browsers. A module's dependencies can be
+loaded prior to the module being executed, which allows entire module trees to be loaded in
+parallel. Module loading also caches parsed code, which means modules that are used on the main
+thread and in a worker only need to be parsed once.</p>
+<p>Moving to JavaScript modules also enables the use of <a href="https://v8.dev/features/dynamic-import" rel="noopener">dynamic
+import</a> for lazy-loading code without blocking execution of
+the worker. Dynamic import is much more explicit than using <code>importScripts()</code> to load dependencies,
+since the imported module's exports are returned rather than relying on global variables.</p>
+<p class="w-label">worker.js:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">import</span> <span class="token punctuation">{</span> sayHello <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'./greet.js'</span><span class="token punctuation">;</span><br><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'message'</span><span class="token punctuation">,</span> <span class="token parameter">e</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token function">postMessage</span><span class="token punctuation">(</span><span class="token function">sayHello</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p class="w-label">greet.js:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">import</span> greetings <span class="token keyword">from</span> <span class="token string">'./data.js'</span><span class="token punctuation">;</span><br><span class="token keyword">export</span> <span class="token keyword">function</span> <span class="token function">sayHello</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token keyword">return</span> greetings<span class="token punctuation">.</span>hello<span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>To ensure great performance, the old <code>importScripts()</code> method is not available within module
+workers. Switching workers to use JavaScript modules means all code is loaded in <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode" rel="noopener">strict
+mode</a>. Another
+notable change is that the value of <code>this</code> in the top-level scope of a JavaScript module is
+<code>undefined</code>, whereas in classic workers the value is the worker's global scope. Fortunately, there
+has always been a <code>self</code> global that provides a reference to the global scope. It's available in
+all types of workers including service workers, as well as in the DOM.</p>
+<div class="w-aside w-aside--note">
+<p>Module workers also remove support for HTML-style comments. Did you know you could use
+HTML comments in web worker scripts?</p>
+</div>
+<h2 id="preload-workers-with-modulepreload">Preload workers with <code>modulepreload</code> <a class="w-headline-link" href="#preload-workers-with-modulepreload">#</a></h2>
+<p>One substantial performance improvement that comes with module workers is the ability to preload
+workers and their dependencies. With module workers, scripts are loaded and executed as standard
+JavaScript modules, which means they can be preloaded and even pre-parsed using <code>modulepreload</code>:</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token comment">&lt;!-- preloads worker.js and its dependencies: --></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>link</span> <span class="token attr-name">rel</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>modulepreload<span class="token punctuation">"</span></span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>worker.js<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><br><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script"><span class="token language-javascript"><br>  <span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'load'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>    <span class="token comment">// our worker code is likely already parsed and ready to execute!</span><br>    <span class="token keyword">const</span> worker <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Worker</span><span class="token punctuation">(</span><span class="token string">'worker.js'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> type<span class="token operator">:</span> <span class="token string">'module'</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><p>Preloaded modules can also be used by both the main thread and module workers. This is useful for
+modules that are imported in both contexts, or in cases where it's not possible to know in advance
+whether a module will be used on the main thread or in a worker.</p>
+<p>Previously, the options available for preloading web worker scripts were limited and not
+necessarily reliable. Classic workers had their own &quot;worker&quot; resource type for preloading, but no
+browsers implemented <code>&lt;link rel=&quot;preload&quot; as=&quot;worker&quot;&gt;</code>. As a result, the primary technique
+available for preloading web workers was to use <code>&lt;link rel=&quot;prefetch&quot;&gt;</code>, which relied entirely
+on the HTTP cache. When used in combination with the correct caching headers, this made it possible
+to avoid worker instantiation having to wait to download the worker script. However, unlike
+<code>modulepreload</code> this technique did not support preloading dependencies or pre-parsing.</p>
+<div class="glitch-embed-wrap" style="height: 480px; width: 100%;">
+  <iframe
+    allow="camera; clipboard-read; clipboard-write; encrypted-media; geolocation; microphone; midi"
+    loading="lazy"
+    src="https://glitch.com/embed/#!/embed/worker-preloading?attributionHidden=true&sidebarCollapsed=true&previewSize=100"
+    style="height: 100%; width: 100%; border: 0;"
+    title="worker-preloading on Glitch"
+  ></iframe>
+</div>
+<h2 id="what-about-shared-workers">What about shared workers? <a class="w-headline-link" href="#what-about-shared-workers">#</a></h2>
+<p><a href="https://developer.mozilla.org/docs/Web/API/SharedWorker/SharedWorker" rel="noopener">Shared workers</a> have
+been updated with support for JavaScript modules as of Chrome 83. Like dedicated workers,
+constructing a shared worker with the <code>{type:&quot;module&quot;}</code> option now loads the worker script as a
+module rather than a classic script:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> worker <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SharedWorker</span><span class="token punctuation">(</span><span class="token string">'/worker.js'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span><br>  type<span class="token operator">:</span> <span class="token string">'module'</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>Prior to support of JavaScript modules, the <code>SharedWorker()</code> constructor expected only a
+URL and an optional <code>name</code> argument. This will continue to work for classic shared worker usage; however
+creating module shared workers requires using the new <code>options</code> argument. The <a href="https://html.spec.whatwg.org/multipage/workers.html#shared-workers-and-the-sharedworker-interface" rel="noopener">available
+options</a>
+are the same as those for a dedicated worker, including the <code>name</code> option that supersedes
+the previous <code>name</code> argument.</p>
+<h2 id="what-about-service-worker">What about service worker? <a class="w-headline-link" href="#what-about-service-worker">#</a></h2>
+<p>The service worker specification <a href="https://w3c.github.io/ServiceWorker/#service-worker-concept" rel="noopener">has already been
+updated</a> to support accepting a
+JavaScript module as the entry point, using the same <code>{type:&quot;module&quot;}</code> option as module workers,
+however this change has yet to be implemented in browsers. Once that happens, it will be possible
+to instantiate a service worker using a JavaScript module using the following code:</p>
+<web-copy-code><pre class="language-js"><code class="language-js">navigator<span class="token punctuation">.</span>serviceWorker<span class="token punctuation">.</span><span class="token function">register</span><span class="token punctuation">(</span><span class="token string">'/sw.js'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span><br>  type<span class="token operator">:</span> <span class="token string">'module'</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>Now that the specification has been updated, browsers are beginning to implement the new behavior.
+This takes time because there are some extra complications associated with bringing JavaScript
+modules to service worker. Service worker registration needs to <a href="https://chromestatus.com/feature/6533131347689472" rel="noopener">compare imported scripts
+with their previous cached versions</a> when
+determining whether to trigger an update, and this needs to be implemented for JavaScript modules
+when used for service workers. Also, service workers need to be able to <a href="https://chromestatus.com/feature/5897293530136576" rel="noopener">bypass the
+cache</a> for scripts in certain cases when
+checking for updates.</p>
+<h2 id="additional-resources-and-further-reading">Additional resources and further reading <a class="w-headline-link" href="#additional-resources-and-further-reading">#</a></h2>
+<ul>
+<li><a href="https://www.chromestatus.com/feature/5761300827209728" rel="noopener">Feature status, browser consensus and standardization</a></li>
+<li><a href="https://github.com/whatwg/html/pull/608" rel="noopener">Original module workers spec addition</a></li>
+<li><a href="https://www.chromestatus.com/feature/5169440012369920" rel="noopener">JavaScript modules for shared workers</a></li>
+<li>JavaScript modules for service workers: <a href="https://bugs.chromium.org/p/chromium/issues/detail?id=824647" rel="noopener">Chrome implementation status</a></li>
+</ul>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/modules/">Modules</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Dec 17, 2019</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/module-workers/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions="api"></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

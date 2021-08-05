@@ -1,0 +1,861 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=0c63b672e31d4">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Use web workers to run JavaScript off the browser's main thread</title>
+<meta name="description" content="The browser's main thread is incredibly overworked. By using web workers to shift code off the main thread, you can significantly improve your app's reliability and user experience. " />
+
+<link rel="canonical" href="https://web.dev/off-main-thread/" />
+
+<meta itemprop="name" content="Use web workers to run JavaScript off the browser's main thread" />
+<meta itemprop="description" content="The browser's main thread is incredibly overworked. By using web workers to shift code off the main thread, you can significantly improve your app's reliability and user experience. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vU99HKzIf5EUPnzGVPf1.png?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/off-main-thread/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Use web workers to run JavaScript off the browser's main thread" />
+<meta property="og:description" content="The browser's main thread is incredibly overworked. By using web workers to shift code off the main thread, you can significantly improve your app's reliability and user experience. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vU99HKzIf5EUPnzGVPf1.png?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="" />
+<meta property="tag" content="performance" />
+<meta property="tag" content="test-post" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Use web workers to run JavaScript off the browser's main thread" />
+<meta name="twitter:description" content="The browser's main thread is incredibly overworked. By using web workers to shift code off the main thread, you can significantly improve your app's reliability and user experience. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/vU99HKzIf5EUPnzGVPf1.png?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=bf46611f97f3d', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=620501a2411ee', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#use-web-workers-to-run-javascript-off-the-browser&#39;s-main-thread" class="w-toc__header--link">
+        Use web workers to run JavaScript off the browser's main thread
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#threading-with-web-workers">Threading with web workers</a></li><li><a href="#main.js">main.js</a></li><li><a href="#worker.js">worker.js</a></li><li><a href="#main.js-2">main.js</a></li><li><a href="#worker.js-2">worker.js</a></li><li><a href="#comlink:-making-web-workers-less-work">Comlink: making web workers less work</a></li><li><a href="#worker.js-3">worker.js</a></li><li><a href="#main.js-3">main.js</a></li><li><a href="#what-code-should-you-move-to-a-web-worker">What code should you move to a web worker?</a></li><li><a href="#proxx:-an-omt-case-study">PROXX: an OMT case study</a></li><li><a href="#implications-of-an-omt-architecture">Implications of an OMT architecture</a></li><li><a href="#considering-the-tradeoffs">Considering the tradeoffs</a></li><li><a href="#a-note-about-tooling">A note about tooling</a></li><li><a href="#summing-up">Summing up</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@DasSurma"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="use-web-workers-to-run-javascript-off-the-browser&#39;s-main-thread" class="w-article-header__headline">Use web workers to run JavaScript off the browser's main thread</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          <p>An off-main-thread architecture
+can significantly improve your app's reliability and user experience.</p>
+
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Dec 5, 2019</time>
+          
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/surma/"><img     alt="Surma"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/MPQ3Co9Ej7Uka4cgPePh.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/MPQ3Co9Ej7Uka4cgPePh.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/MPQ3Co9Ej7Uka4cgPePh.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/MPQ3Co9Ej7Uka4cgPePh.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/MPQ3Co9Ej7Uka4cgPePh.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/MPQ3Co9Ej7Uka4cgPePh.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/surma/">Surma</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/DasSurma"
+          >Twitter</a
+        >
+      </li>
+      
+      
+      
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>In the past 20 years,
+the web has evolved dramatically from static documents with a few styles and images
+to complex, dynamic applications.
+However, one thing has remained largely unchanged:
+we have just one thread per browser tab (with some exceptions)
+to do the work of rendering our sites and running our JavaScript.</p>
+<p>As a result, the main thread has become incredibly overworked.
+And as web apps grow in complexity,
+the main thread becomes a significant bottleneck for performance.
+To make matters worse,
+the amount of time it takes to run code on the main thread for a given user
+is <strong>almost completely unpredictable</strong>
+because device capabilities have a massive effect on performance.
+That unpredictability will only grow as users access the web
+from an increasingly diverse set of devices,
+from hyper-constrained feature phones to high-powered,
+high-refresh-rate flagship machines.</p>
+<p>If we want sophisticated web apps to reliably meet performance guidelines
+like the <a href="https://developers.google.com/web/fundamentals/performance/rail" rel="noopener">RAIL model</a>—which
+is based on empirical data about human perception and psychology—we
+need ways to execute our code <strong>off the main thread (OMT)</strong>.</p>
+<div class="w-aside w-aside--note">
+<p>If you want to hear more about the case for an OMT architecture,
+watch my CDS 2019 talk below.</p>
+</div>
+<div class="youtube">  <lite-youtube    videoid="7Rrv9qFMWNM"      >  </lite-youtube></div>
+<h2 id="threading-with-web-workers">Threading with web workers <a class="w-headline-link" href="#threading-with-web-workers">#</a></h2>
+<p>Other platforms typically support parallel work
+by allowing you to give a thread a function,
+which runs in parallel with the rest of your program.
+You can access the same variables from both threads,
+and access to these shared resources can be synchronized
+with mutexes and semaphores to prevent race conditions.</p>
+<p>In JavaScript, we can get roughly similar functionality from web workers,
+which have been around since 2007
+and supported across all major browsers since 2012.
+Web workers run in parallel with the main thread,
+but unlike OS threading they can't share variables.</p>
+<div class="w-aside w-aside--note">
+<p>Don't confuse web workers with <a href="/service-workers-cache-storage">service workers</a>
+or <a href="https://developer.mozilla.org/en-US/docs/Web/API/Worklet" rel="noopener">worklets</a>.
+While the names are similar, the functionality and uses are different.</p>
+</div>
+<p>To create a web worker, pass a file to the worker constructor,
+which starts running that file in a separate thread:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> worker <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Worker</span><span class="token punctuation">(</span><span class="token string">"./worker.js"</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>Communicate with the web worker by sending messages via the
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage" rel="noopener"><code>postMessage</code> API</a>.
+Pass the message value as a parameter in the <code>postMessage</code> call
+and then add a message event listener to the worker:</p>
+<!--lint disable no-duplicate-headings-in-section-->
+<h3 id="main.js"><code>main.js</code> <a class="w-headline-link" href="#main.js">#</a></h3>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="highlight-line"><span class="token keyword">const</span> worker <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Worker</span><span class="token punctuation">(</span><span class="token string">"./worker.js"</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><mark class="highlight-line highlight-line-active">worker<span class="token punctuation">.</span><span class="token function">postMessage</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">40</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span></mark></code></pre>
+</web-copy-code><h3 id="worker.js"><code>worker.js</code> <a class="w-headline-link" href="#worker.js">#</a></h3>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">"message"</span><span class="token punctuation">,</span> <span class="token parameter">event</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token keyword">const</span> <span class="token punctuation">[</span>a<span class="token punctuation">,</span> b<span class="token punctuation">]</span> <span class="token operator">=</span> event<span class="token punctuation">.</span>data<span class="token punctuation">;</span><br>  <span class="token comment">// Do stuff with the message</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>To send a message back to the main thread,
+use the same <code>postMessage</code> API in the web worker
+and set up an event listener on the main thread:</p>
+<h3 id="main.js-2"><code>main.js</code> <a class="w-headline-link" href="#main.js-2">#</a></h3>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="highlight-line"><span class="token keyword">const</span> worker <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Worker</span><span class="token punctuation">(</span><span class="token string">"./worker.js"</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line">worker<span class="token punctuation">.</span><span class="token function">postMessage</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">40</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><mark class="highlight-line highlight-line-active">worker<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">"message"</span><span class="token punctuation">,</span> <span class="token parameter">event</span> <span class="token operator">=></span> <span class="token punctuation">{</span></mark><br><mark class="highlight-line highlight-line-active">  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>event<span class="token punctuation">.</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span></mark><br><mark class="highlight-line highlight-line-active"><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></mark></code></pre>
+</web-copy-code><h3 id="worker.js-2"><code>worker.js</code> <a class="w-headline-link" href="#worker.js-2">#</a></h3>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="highlight-line"><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">"message"</span><span class="token punctuation">,</span> <span class="token parameter">event</span> <span class="token operator">=></span> <span class="token punctuation">{</span></span><br><span class="highlight-line">  <span class="token keyword">const</span> <span class="token punctuation">[</span>a<span class="token punctuation">,</span> b<span class="token punctuation">]</span> <span class="token operator">=</span> event<span class="token punctuation">.</span>data<span class="token punctuation">;</span></span><br><span class="highlight-line">  <span class="token comment">// Do stuff with the message</span></span><br><mark class="highlight-line highlight-line-active">  <span class="token function">postMessage</span><span class="token punctuation">(</span>a<span class="token operator">+</span>b<span class="token punctuation">)</span><span class="token punctuation">;</span></mark><br><span class="highlight-line"><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span></code></pre>
+</web-copy-code><p>Admittedly, this approach is somewhat limited.
+Historically, web workers have mainly been used
+for moving a single piece of heavy work off the main thread.
+Trying to handle multiple operations with a single web worker gets unwieldy quickly:
+you have to encode not only the parameters but also the operation in the message,
+and you have to do bookkeeping to match responses to requests.
+That complexity is likely why web workers haven't been adopted more widely.</p>
+<p>But if we could remove some of the difficulty of communicating
+between the main thread and web workers,
+this model could be a great fit for many use cases.
+And, luckily, there's a library that does just that!</p>
+<h2 id="comlink:-making-web-workers-less-work">Comlink: making web workers less work <a class="w-headline-link" href="#comlink:-making-web-workers-less-work">#</a></h2>
+<p><a href="http://npm.im/comlink" rel="noopener">Comlink</a> is a library
+whose goal is to let you use web workers
+without having to think about the details of <code>postMessage</code>.
+Comlink lets you to share variables
+between web workers and the main thread
+almost like other programming languages that support threading.</p>
+<p>You set up Comlink by importing it in a web worker
+and defining a set of functions to expose to the main thread.
+You then import Comlink on the main thread, wrap the worker,
+and get access to the exposed functions:</p>
+<h3 id="worker.js-3"><code>worker.js</code> <a class="w-headline-link" href="#worker.js-3">#</a></h3>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">import</span> <span class="token punctuation">{</span>expose<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"comlink"</span><span class="token punctuation">;</span><br><br><span class="token keyword">const</span> api <span class="token operator">=</span> <span class="token punctuation">{</span><br>  <span class="token function">someMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token comment">/* … */</span> <span class="token punctuation">}</span><br><span class="token punctuation">}</span><br><span class="token function">expose</span><span class="token punctuation">(</span>api<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><h3 id="main.js-3"><code>main.js</code> <a class="w-headline-link" href="#main.js-3">#</a></h3>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">import</span> <span class="token punctuation">{</span>wrap<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"comlink"</span><span class="token punctuation">;</span><br><br><span class="token keyword">const</span> worker <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Worker</span><span class="token punctuation">(</span><span class="token string">"./worker.js"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token keyword">const</span> api <span class="token operator">=</span> <span class="token function">wrap</span><span class="token punctuation">(</span>worker<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>The <code>api</code> variable on main thread behaves the same as the one in the web worker,
+except that every function returns a promise for a value rather than the value itself.</p>
+<h2 id="what-code-should-you-move-to-a-web-worker">What code should you move to a web worker? <a class="w-headline-link" href="#what-code-should-you-move-to-a-web-worker">#</a></h2>
+<p>Web workers don't have access to the DOM and many APIs
+like <a href="https://developer.mozilla.org/en-US/docs/Web/API/USB" rel="noopener">WebUSB</a>,
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API" rel="noopener">WebRTC</a>, or
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API" rel="noopener">Web Audio</a>,
+so you can't put pieces of your app that rely on such access in a worker.
+Still, every small piece of code moved to a worker buys more headroom
+on the main thread for stuff that <em>has</em> to be there—like updating the user interface.</p>
+<div class="w-aside w-aside--note">
+<p>Restricting UI access  to the main thread is actually typical in other languages.
+In fact, both iOS and Android call the main thread the <em>UI thread</em>.</p>
+</div>
+<p>One problem for web developers is that most web apps rely on a UI framework
+like Vue or React to orchestrate everything in the app;
+everything is a component of the framework and so is inherently tied to the DOM.
+That would seem to make it difficult to migrate to an OMT architecture.</p>
+<p>However, if we shift to a model in which UI concerns are separated from other concerns,
+like state management, web workers can be quite useful even with framework-based apps.
+That's exactly the approach taken with PROXX.</p>
+<h2 id="proxx:-an-omt-case-study">PROXX: an OMT case study <a class="w-headline-link" href="#proxx:-an-omt-case-study">#</a></h2>
+<p>The Google Chrome team developed <a href="/load-faster-like-proxx/">PROXX</a>
+as a Minesweeper clone that meets
+<a href="https://developers.google.com/web/progressive-web-apps" rel="noopener">Progressive Web App</a> requirements,
+including working offline and having an engaging user experience.
+Unfortunately, early versions of the game performed poorly on constrained devices
+like feature phones, which led the team to realize that the main thread was a bottleneck.</p>
+<p>The team decided to use web workers to separate the game's visual state from its logic:</p>
+<ul>
+<li>The main thread handles rendering of animations and transitions.</li>
+<li>A web worker handles game logic, which is purely computational.</li>
+</ul>
+<div class="w-aside w-aside--note">
+<p>This approach is similar to the Redux
+<a href="https://facebook.github.io/flux/" rel="noopener">Flux pattern</a>,
+so many Flux apps may be able to migrate fairly easily to an OMT architecture.
+Take a look at <a href="http://dassur.ma/things/react-redux-comlink/" rel="noopener">this blog post</a>
+to read more about applying OMT to a Redux app.</p>
+</div>
+<p>OMT had interesting effects on PROXX's feature phone performance.
+In the non-OMT version,
+the UI is frozen for six seconds after the user interacts with it.
+There's no feedback, and the user has to wait for the full six seconds
+before being able to do something else.</p>
+<figure class="w-figure">
+  <video controls muted class="w-screenshot" style="max-width: 400px;">
+    <source src="https://storage.googleapis.com/web-dev-assets/off-main-thread/proxx-nonomt.webm" type="video/webm; codecs=vp8">
+    <source src="https://storage.googleapis.com/web-dev-assets/off-main-thread/proxx-nonomt.mp4" type="video/mp4; codecs=h264">
+  </video>
+ <figcaption class="w-figcaption">
+    UI response time in the <strong>non-OMT</strong> version of PROXX.
+  </figcaption>
+</figure>
+<p>In the OMT version, however, the game takes <em>twelve</em> seconds to complete a UI update.
+While that seems like a performance loss,
+it actually leads to increased feedback to the user.
+The slowdown occurs because the app is shipping more frames than the non-OMT version,
+which isn't shipping any frames at all.
+The user therefore knows that something is happening
+and can continue playing as the UI updates,
+making the game feel considerably better.</p>
+<figure class="w-figure">
+  <video controls muted class="w-screenshot" style="max-width: 400px;">
+    <source src="https://storage.googleapis.com/web-dev-assets/off-main-thread/proxx-omt.webm" type="video/webm; codecs=vp8">
+    <source src="https://storage.googleapis.com/web-dev-assets/off-main-thread/proxx-omt.mp4" type="video/mp4; codecs=h264">
+  </video>
+ <figcaption class="w-figcaption">
+    UI response time in the <strong>OMT</strong> version of PROXX.
+  </figcaption>
+</figure>
+<p>This is a conscious tradeoff:
+we give users of constrained devices an experience that <em>feels</em> better
+without penalizing users of high-end devices.</p>
+<h2 id="implications-of-an-omt-architecture">Implications of an OMT architecture <a class="w-headline-link" href="#implications-of-an-omt-architecture">#</a></h2>
+<p>As the PROXX example shows,
+OMT makes your app reliably run on a wider range of devices,
+but it doesn't make your app faster:</p>
+<ul>
+<li>You're just moving work from the main thread, not reducing the work.</li>
+<li>The extra communication overhead between the web worker
+and the main thread can sometimes make things marginally slower.</li>
+</ul>
+<h3 id="considering-the-tradeoffs">Considering the tradeoffs <a class="w-headline-link" href="#considering-the-tradeoffs">#</a></h3>
+<p>Since the main thread is free to process user interactions
+like scrolling while JavaScript is running,
+there are fewer dropped frames even though total wait time may be marginally longer.
+Making the user wait a bit is preferable to dropping a frame
+because the margin of error is smaller for dropped frames:
+dropping a frame happens in milliseconds,
+while you have <em>hundreds</em> of milliseconds before a user perceives wait time.</p>
+<p>Because of the unpredictability of performance across devices,
+the goal of OMT architecture is really about <strong>reducing risk</strong>—making
+your app more robust in the face of highly variable runtime conditions—not
+about the performance benefits of parallelization.
+The increase in resilience and the improvements
+to UX are more than worth any small tradeoff in speed.</p>
+<div class="w-aside w-aside--note">
+<p>Developers are sometimes concerned about the cost
+of copying complex objects across the main thread and web workers.
+There's more detail in the talk, but, in general,
+you shouldn't break your performance budget
+if your object's stringified JSON representation is less than 10 KB.
+If you need to copy larger objects, consider using
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer" rel="noopener">ArrayBuffer</a>
+or <a href="https://webassembly.org/" rel="noopener">WebAssembly</a>.
+You can read more about this issue in
+<a href="https://dassur.ma/things/is-postmessage-slow" rel="noopener">this blog post about <code>postMessage</code> performance</a>.</p>
+</div>
+<h3 id="a-note-about-tooling">A note about tooling <a class="w-headline-link" href="#a-note-about-tooling">#</a></h3>
+<p>Web workers aren't yet mainstream,
+so most module tools—like <a href="https://webpack.js.org/" rel="noopener">WebPack</a>
+and <a href="https://github.com/rollup/rollup" rel="noopener">Rollup</a>—don't support them out of the box.
+(<a href="https://parceljs.org/" rel="noopener">Parcel</a> does though!)
+Luckily, there are plugins to make web workers, well, <em>work</em> with WebPack and Rollup:</p>
+<ul>
+<li><a href="https://github.com/GoogleChromeLabs/worker-plugin" rel="noopener">worker-plugin</a> for WebPack</li>
+<li><a href="https://github.com/surma/rollup-plugin-off-main-thread" rel="noopener">rollup-plugin-off-main-thread</a> for Rollup</li>
+</ul>
+<h2 id="summing-up">Summing up <a class="w-headline-link" href="#summing-up">#</a></h2>
+<p>To make sure our apps are as reliable and accessible as possible, especially in an increasingly globalized marketplace, we need to support constrained devices—they're how most users are accessing the web globally. OMT offers a promising way to increase performance on such devices without adversely affecting users of high-end devices.</p>
+<p>Also, OMT has secondary benefits:</p>
+<ul>
+<li>It moves JavaScript execution costs to a separate thread.</li>
+<li>It moves <em>parsing</em> costs, meaning UI might boot up faster.
+That might reduce <a href="/first-contentful-paint">First Contentful Paint</a>
+or even <a href="/interactive">Time to Interactive</a>,
+which can in turn increase your
+<a href="https://developers.google.com/web/tools/lighthouse" rel="noopener">Lighthouse</a> score.</li>
+</ul>
+<p>Web workers don't have to be scary.
+Tools like Comlink are taking the work out of workers
+and making them a viable choice for a wide range of web applications.</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/performance/">Performance</a>
+      
+    
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Dec 5, 2019</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/off-main-thread/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

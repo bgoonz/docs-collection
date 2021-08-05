@@ -1,0 +1,789 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=b6cf41ec8b633">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Tabbed application mode for PWAs</title>
+<meta name="description" content="Tabbed application mode allows Progressive Web App developers to add a tabbed document interface to their standalone PWAs. " />
+
+<link rel="canonical" href="https://web.dev/tabbed-application-mode/" />
+
+<meta itemprop="name" content="Tabbed application mode for PWAs" />
+<meta itemprop="description" content="Tabbed application mode allows Progressive Web App developers to add a tabbed document interface to their standalone PWAs. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/N08W5skJmcYgS7346DBS.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/tabbed-application-mode/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Tabbed application mode for PWAs" />
+<meta property="og:description" content="Tabbed application mode allows Progressive Web App developers to add a tabbed document interface to their standalone PWAs. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/N08W5skJmcYgS7346DBS.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="Dictionary thumb index." />
+<meta property="tag" content="progressive-web-apps" />
+<meta property="tag" content="capabilities" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Tabbed application mode for PWAs" />
+<meta name="twitter:description" content="Tabbed application mode allows Progressive Web App developers to add a tabbed document interface to their standalone PWAs. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/N08W5skJmcYgS7346DBS.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=01964eb7053e4', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=91f1ce4d51357', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="Dictionary thumb index."     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/N08W5skJmcYgS7346DBS.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/N08W5skJmcYgS7346DBS.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/N08W5skJmcYgS7346DBS.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/N08W5skJmcYgS7346DBS.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/N08W5skJmcYgS7346DBS.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/N08W5skJmcYgS7346DBS.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/N08W5skJmcYgS7346DBS.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/N08W5skJmcYgS7346DBS.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/N08W5skJmcYgS7346DBS.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/N08W5skJmcYgS7346DBS.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/N08W5skJmcYgS7346DBS.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/N08W5skJmcYgS7346DBS.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/N08W5skJmcYgS7346DBS.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/N08W5skJmcYgS7346DBS.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/N08W5skJmcYgS7346DBS.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/N08W5skJmcYgS7346DBS.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/N08W5skJmcYgS7346DBS.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/8WbTDNrhLsU0El80frMBGE4eMCD3/N08W5skJmcYgS7346DBS.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#tabbed-application-mode-for-pwas" class="w-toc__header--link">
+        Tabbed application mode for PWAs
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#what-is-tabbed-application-mode">What is tabbed application mode</a></li><li><a href="#suggested-use-cases-for-tabbed-application-mode">Suggested use cases for tabbed application mode</a></li><li><a href="#differences-to-developer-built-tabs">Differences to developer-built tabs</a></li><li><a href="#differences-to-"display":-"browser"">Differences to &quot;display&quot;: &quot;browser&quot;</a></li><li><a href="#current-status">Current status</a></li><li><a href="#using-tabbed-application-mode">Using tabbed application mode</a></li><li><a href="#trying-tabbed-application-mode">Trying tabbed application mode</a></li><li><a href="#feedback">Feedback</a></li><li><a href="#tell-us-about-the-api-design">Tell us about the API design</a></li><li><a href="#report-a-problem-with-the-implementation">Report a problem with the implementation</a></li><li><a href="#show-support-for-the-api">Show support for the API</a></li><li><a href="#useful-links">Useful links</a></li><li><a href="#acknowledgements">Acknowledgements</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@tomayac"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="tabbed-application-mode-for-pwas" class="w-article-header__headline">Tabbed application mode for PWAs</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          Work on more than one document at a time with tabs in your Progressive Web App
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Feb 25, 2021</time>
+           <span class="w-author__separator">•</span> Updated <time>Jun 11, 2021</time> 
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/thomassteiner/"><img     alt="Thomas Steiner"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/thomassteiner/">Thomas Steiner</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/tomayac"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/tomayac">GitHub</a>
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://glitch.com/@tomayac"
+          >Glitch</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://blog.tomayac.com/">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <div class="w-aside w-aside--note">
+<p>Tabbed application mode is part of the
+<a href="/fugu-status/">capabilities project</a> and is currently in development. This post
+will be updated as the implementation progresses. Tabbed application mode is an early-stage
+exploration of the Chrome team. It is not ready for production yet.</p>
+</div>
+<p>In the world of computing, the <a href="https://en.wikipedia.org/wiki/Desktop_metaphor" rel="noopener">desktop metaphor</a> is
+an interface metaphor that is a set of unifying concepts used by graphical user interfaces (GUI) to
+help users interact more easily with the computer. In keeping with the desktop metaphor, GUI tabs
+are modeled after traditional card tabs inserted in books, paper files, or card indexes. A <em>tabbed
+document interface</em> (TDI) or tab is a graphical control element that allows multiple documents or
+panels to be contained within a single window, using tabs as a navigational widget for switching
+between sets of documents.</p>
+<p>Progressive Web Apps can run in <a href="/add-manifest/#display">various display modes</a> determined by the
+<code>display</code> property in the web app manifest. Examples are <code>fullscreen</code>, <code>standalone</code>, <code>minimal-ui</code>,
+and <code>browser</code>. These display modes follow a
+<a href="https://w3c.github.io/manifest/#dfn-fallback-display-mode" rel="noopener">well-defined fallback chain</a>
+(<code>&quot;fullscreen&quot;</code> → <code>&quot;standalone&quot;</code> → <code>&quot;minimal-ui&quot;</code> → <code>&quot;browser&quot;</code>). If a browser does not support a
+given mode, it falls back to the next display mode in the chain.
+Via the <a href="/display-override/"><code>&quot;display_override&quot;</code></a> property, developers can specify their own
+fallback chain if they need to.</p>
+<h2 id="what-is-tabbed-application-mode">What is tabbed application mode <a class="w-headline-link" href="#what-is-tabbed-application-mode">#</a></h2>
+<p>Something that has been missing from the platform so far is a way to let PWA developers offer their
+users a tabbed document interface, for example, to enable editing different files in the same PWA
+window. Tabbed application mode closes this gap.</p>
+<div class="w-aside w-aside--note">
+<p>This feature is about having a standalone app window with multiple tabs (containing
+separate documents inside the app scope) inside it. It is not to be confused with
+the existing <code>&quot;display&quot;: &quot;browser&quot;</code>, which has a separate meaning (specifically, that
+the app is opened in a regular browser tab).</p>
+</div>
+<h3 id="suggested-use-cases-for-tabbed-application-mode">Suggested use cases for tabbed application mode <a class="w-headline-link" href="#suggested-use-cases-for-tabbed-application-mode">#</a></h3>
+<p>Examples of sites that may use tabbed application mode include:</p>
+<ul>
+<li>Productivity apps that let the user edit more than one document (or file) at the same time.</li>
+<li>Communication apps that let the user have conversations in different rooms per tab.</li>
+<li>Reading apps that open article links in new in-app tabs.</li>
+</ul>
+<h3 id="differences-to-developer-built-tabs">Differences to developer-built tabs <a class="w-headline-link" href="#differences-to-developer-built-tabs">#</a></h3>
+<p>Having documents in separate browser tabs comes with resource isolation for free, which is not
+possible using the web today. Developer-built tabs would not scale acceptably to hundreds of tabs
+like browser tabs do. Developer-built tabs could also not be dragged out of the window to split into
+a separate application window, or be dragged back in to combine them back into a single window.
+Browser affordances such as navigation history, &quot;Copy this page URL&quot;, &quot;Cast this tab&quot; or &quot;Open this
+page in a web browser&quot; would be applied to the developer-built tabbed interface page, but not the
+currently selected document page.</p>
+<h3 id="differences-to-&quot;display&quot;:-&quot;browser&quot;">Differences to <code>&quot;display&quot;: &quot;browser&quot;</code> <a class="w-headline-link" href="#differences-to-&quot;display&quot;:-&quot;browser&quot;">#</a></h3>
+<p>The current <code>&quot;display&quot;: &quot;browser&quot;</code> already has a
+<a href="https://w3c.github.io/manifest/#dom-displaymodetype-browser" rel="noopener">specific meaning</a>:</p>
+<blockquote>
+<p>Opens the web application using the platform-specific convention for opening hyperlinks in the
+user agent (e.g., in a browser tab or a new window).</p>
+</blockquote>
+<p>While browsers can do whatever they want regarding UI, it would clearly be a pretty big subversion
+of developer expectations if <code>&quot;display&quot;: &quot;browser&quot;</code> suddenly meant &quot;run in a separate
+application-specific window with no browser affordances, but a tabbed document interface&quot;.</p>
+<p>Setting <code>&quot;display&quot;: &quot;browser&quot;</code> is effectively the way you <em>opt out</em> of being put into an application
+window.</p>
+<h2 id="current-status">Current status <a class="w-headline-link" href="#current-status">#</a></h2>
+<div class="w-table-wrapper">
+<div class="w-table-wrapper">
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Create explainer</td>
+<td><a href="https://github.com/w3c/manifest/issues/737" rel="noopener">In progress</a></td>
+</tr>
+<tr>
+<td>2. Create initial draft of specification</td>
+<td>Not started</td>
+</tr>
+<tr>
+<td>3. Gather feedback &amp; iterate on design</td>
+<td><a href="#feedback">In progress</a></td>
+</tr>
+<tr>
+<td>4. Origin trial</td>
+<td>Not started</td>
+</tr>
+<tr>
+<td>5. Launch</td>
+<td>Not started</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<h2 id="using-tabbed-application-mode">Using tabbed application mode <a class="w-headline-link" href="#using-tabbed-application-mode">#</a></h2>
+<p>To use tabbed application mode, developers need to opt their apps in by setting a specific
+<a href="/display-override/"><code>&quot;display_override&quot;</code></a> mode value in the web app manifest.</p>
+<web-copy-code><pre class="language-json"><code class="language-json"><span class="token punctuation">{</span><br>  …<br>  <span class="token property">"display"</span><span class="token operator">:</span> <span class="token string">"standalone"</span><span class="token punctuation">,</span><br>  <span class="token property">"display_override"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"tabbed"</span><span class="token punctuation">]</span><span class="token punctuation">,</span><br>  …<br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><h3 id="trying-tabbed-application-mode">Trying tabbed application mode <a class="w-headline-link" href="#trying-tabbed-application-mode">#</a></h3>
+<p>You can try tabbed application mode on Chrome OS devices running Chrome 83 and up today:</p>
+<ol>
+<li>Set the <code>#enable-desktop-pwas-tab-strip</code> flag.</li>
+<li>Install any web app that runs in <code>standalone</code> mode, for example,
+<a href="https://excalidraw.com/" rel="noopener">Excalidraw</a>.</li>
+<li>Pin the app icon to the shelf, right click the icon, and select &quot;New tabbed window&quot; from the
+context menu.</li>
+<li>Open the app and interact with the tab strip.</li>
+</ol>
+<p>The video below shows the current iteration of the feature in action. There is no need to make any
+changes to the web app manifest for this to work.</p>
+<p><video      autoplay                                          loop      muted                            >      <source src="https://storage.googleapis.com/web-dev-uploads/video/8WbTDNrhLsU0El80frMBGE4eMCD3/JwN0btyXFGiT9oPFh2qJ.webm" type="video/webm" />    </video></p>
+<h2 id="feedback">Feedback <a class="w-headline-link" href="#feedback">#</a></h2>
+<p>The Chrome team wants to hear about your experiences with tabbed application mode.</p>
+<h3 id="tell-us-about-the-api-design">Tell us about the API design <a class="w-headline-link" href="#tell-us-about-the-api-design">#</a></h3>
+<p>Is there something about tabbed application mode that does not work like you expected? Comment on
+the <a href="https://github.com/w3c/manifest/issues/737" rel="noopener">web app manifest Issue</a> that we have created.</p>
+<h3 id="report-a-problem-with-the-implementation">Report a problem with the implementation <a class="w-headline-link" href="#report-a-problem-with-the-implementation">#</a></h3>
+<p>Did you find a bug with Chrome's implementation? File a bug at
+<a href="https://new.crbug.com" rel="noopener">new.crbug.com</a>. Be sure to include as much detail as you can, simple
+instructions for reproducing, and enter <code>UI&gt;Browser&gt;WebAppInstalls</code> in the <strong>Components</strong> box.
+<a href="https://glitch.com/" rel="noopener">Glitch</a> works great for sharing quick and easy reproduction cases.</p>
+<h3 id="show-support-for-the-api">Show support for the API <a class="w-headline-link" href="#show-support-for-the-api">#</a></h3>
+<p>Are you planning to use tabbed application mode? Your public support helps the Chrome team
+prioritize features and shows other browser vendors how critical it is to support them.</p>
+<p>Send a tweet to <a href="https://twitter.com/ChromiumDev" rel="noopener">@ChromiumDev</a> using the hashtag
+<a href="https://twitter.com/search?q=%23TabbedApplicationMode&amp;src=typed_query&amp;f=live" rel="noopener"><code>#TabbedApplicationMode</code></a>
+and let us
+know where and how you are using it.</p>
+<h2 id="useful-links">Useful links <a class="w-headline-link" href="#useful-links">#</a></h2>
+<ul>
+<li><a href="https://github.com/w3c/manifest/issues/737" rel="noopener">Web app manifest spec issue</a></li>
+<li><a href="https://crbug.com/897314" rel="noopener">Chromium bug</a></li>
+<li>Blink Component: <a href="https://chromestatus.com/features#component%3ABlink%3EUI%3EBrowser%3EWebAppInstalls" rel="noopener"><code>UI&gt;Browser&gt;WebAppInstalls</code></a></li>
+</ul>
+<h2 id="acknowledgements">Acknowledgements <a class="w-headline-link" href="#acknowledgements">#</a></h2>
+<p>Tabbed application mode was explored by <a href="https://github.com/mgiuca" rel="noopener">Matt Giuca</a>. The experimental
+implementation in Chrome was the work of <a href="https://github.com/alancutter" rel="noopener">Alan Cutter</a>. This article
+was reviewed by <a href="https://github.com/jpmedley" rel="noopener">Joe Medley</a>. Hero image by
+<a href="https://commons.wikimedia.org/wiki/User:Till.niermann" rel="noopener">Till Niermann</a> on
+<a href="https://commons.wikimedia.org/wiki/File:Dictionary_indents_headon.jpg" rel="noopener">Wikimedia Commons</a>.</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/progressive-web-apps/">Progressive Web Apps</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/capabilities/">Capabilities</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Jun 11, 2021</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/tabbed-application-mode/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

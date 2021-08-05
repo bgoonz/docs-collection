@@ -1,0 +1,998 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=44d41247f00e5">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>2021 Scroll Survey Report</title>
+<meta name="description" content="Get the 2021 Scroll Survey Report plus words from the Chrome team about how this impacts priorities and plans for Chromium and the web." />
+
+<link rel="canonical" href="https://web.dev/2021-scroll-survey-report/" />
+
+<meta itemprop="name" content="2021 Scroll Survey Report" />
+<meta itemprop="description" content="Get the 2021 Scroll Survey Report plus words from the Chrome team about how this impacts priorities and plans for Chromium and the web." />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/0yI4zjveGNiC1Kh8QzhV.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/2021-scroll-survey-report/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="2021 Scroll Survey Report" />
+<meta property="og:description" content="Get the 2021 Scroll Survey Report plus words from the Chrome team about how this impacts priorities and plans for Chromium and the web." />
+<meta property="og:image" content="https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/0yI4zjveGNiC1Kh8QzhV.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="The unveiling of the new Torah display at Trinity International University, photo by Taylor Wilcox." />
+<meta property="tag" content="css" />
+<meta property="tag" content="dom" />
+<meta property="tag" content="javascript" />
+<meta property="tag" content="mobile" />
+<meta property="tag" content="ux" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="2021 Scroll Survey Report" />
+<meta name="twitter:description" content="Get the 2021 Scroll Survey Report plus words from the Chrome team about how this impacts priorities and plans for Chromium and the web." />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/80mq7dk16vVEg8BBhsVe42n6zn82/0yI4zjveGNiC1Kh8QzhV.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=05319af58f20a', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=4db51c18a168b', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#2021-scroll-survey-report" class="w-toc__header--link">
+        2021 Scroll Survey Report
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#noteworthy-results">Noteworthy results</a></li><li><a href="#overall-satisfaction-with-web-scrolling">Overall satisfaction with web scrolling</a></li><li><a href="#difficulty-working-with-scroll">Difficulty working with scroll</a></li><li><a href="#importance-of-touch-interactions">Importance of touch interactions</a></li><li><a href="#difficulty-of-tab-key-or-gamepad-navigation">Difficulty of tab key or gamepad navigation</a></li><li><a href="#learning-touch-action">Learning touch-action</a></li><li><a href="#cyclical-scrolling">Cyclical scrolling</a></li><li><a href="#are-scrollable-areas-important">Are scrollable areas important</a></li><li><a href="#carousels">Carousels</a></li><li><a href="#infinite-scroll">Infinite scroll</a></li><li><a href="#scroll-linked-or-scroll-triggered-animations">Scroll-linked or scroll-triggered animations</a></li><li><a href="#compete-with-built-in-scrolling">Compete with built-in scrolling</a></li><li><a href="#overall-satisfaction-building-scroll-interactions-on-the-web">Overall satisfaction building scroll interactions on the web</a></li><li><a href="#survey-takeaways">Survey Takeaways</a></li><li><a href="#compatibility">Compatibility</a></li><li><a href="#education">Education</a></li><li><a href="#apis">APIs</a></li><li><a href="#features">Features</a></li><li><a href="#resources">Resources</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@argyleink | @sw12"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="2021-scroll-survey-report" class="w-article-header__headline">2021 Scroll Survey Report</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          Get the 2021 Scroll Survey Report plus words from the Chrome team about how this impacts priorities and plans for Chromium and the web.
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Aug 2, 2021</time>
+          
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/adamargyle/"><img     alt="Adam Argyle"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/jdQIxAJrGuFOtwmuDfIn.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/adamargyle/">Adam Argyle</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/argyleink"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/argyleink">GitHub</a>
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://glitch.com/@argyleink"
+          >Glitch</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://nerdy.dev">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+            <div class="w-author">
+  <a href="/authors/samdutton/"><img     alt="Sam Dutton"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/wPss4TJX9IJ1CJza7iFY.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/wPss4TJX9IJ1CJza7iFY.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/wPss4TJX9IJ1CJza7iFY.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/wPss4TJX9IJ1CJza7iFY.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/wPss4TJX9IJ1CJza7iFY.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/wPss4TJX9IJ1CJza7iFY.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/samdutton/">Sam Dutton</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/sw12"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/samdutton">GitHub</a>
+      </li>
+      
+      
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>In April, the Chrome team <a href="/2021-scroll-survey/">released a scroll and touch-action
+survey</a> based on top reported issues from
+the <a href="https://mdn-web-dna.s3-us-west-2.amazonaws.com/MDN-Web-DNA-Report-2019.pdf" rel="noopener">2019 MDN Web DNA
+Report</a>.
+The <a href="https://storage.googleapis.com/web-dev-uploads/file/vS06HQ1YTsbMKSFTIPl2iogUQP73/QZopyELSk8T7IpsgOnRU.pdf" rel="noopener">2021 Scroll Survey
+Report</a>
+is ready, and the Chrome team would like to share some thoughts and action items
+we've gleaned from the survey results. We hope these results will help browser
+vendors and standards groups understand how to improve web scrolling.</p>
+<p><strong>View the <a href="https://storage.googleapis.com/web-dev-uploads/file/vS06HQ1YTsbMKSFTIPl2iogUQP73/QZopyELSk8T7IpsgOnRU.pdf" rel="noopener">2021 Scroll Survey
+Report</a>.</strong></p>
+<h2 id="noteworthy-results">Noteworthy results <a class="w-headline-link" href="#noteworthy-results">#</a></h2>
+<p>The survey anonymously collected 880 submissions, with 366 answering every
+question.</p>
+<p>While getting started with scrolling is one line of CSS, like <code>overflow-x: scroll;</code>, the surface area of scroll APIs and options is large, spanning JavaScript to
+CSS. The following results help to highlight the issues web developers are
+encountering.</p>
+<h3 id="overall-satisfaction-with-web-scrolling">Overall satisfaction with web scrolling <a class="w-headline-link" href="#overall-satisfaction-with-web-scrolling">#</a></h3>
+<p><small>Question 27</small></p>
+<div class="w-stats">
+  <div class="w-stat">
+    <p class="w-stat__figure">45<sub class="w-stat__sub">%</sub></p>
+    <p class="w-stat__desc">
+      are <b>somewhat</b> or <b>extremely dissatisfied overall</b> <br>
+      with <b>web scrolling</b>.
+    </p>
+  </div>
+</div>
+<p>This question was placed near the end of the survey intentionally, after
+questions on 26 scroll use cases and features. From the response, it's clear that
+the web community struggles with scroll. Almost half of the respondents report a
+level of overall dissatisfaction.</p>
+<p>We believe overall sentiment about working with scroll should not be this low.
+This metric needs to be changed; it's a clear signal there's work to be done.</p>
+<h3 id="difficulty-working-with-scroll">Difficulty working with scroll <a class="w-headline-link" href="#difficulty-working-with-scroll">#</a></h3>
+<p><small>Question 2</small></p>
+<div class="w-stats">
+  <div class="w-stat">
+    <p class="w-stat__figure">43<sub class="w-stat__sub">%</sub></p>
+    <p class="w-stat__desc">
+      reported it's <b>somewhat</b> or <br>
+      <b>extremely difficult <br>
+      to  work with scrolling</b>.
+    </p>
+  </div>
+</div>
+<p>From our research, these difficulties come from the multitude of use cases for
+scroll. When we talk about scrolling, that might include:</p>
+<ul>
+<li><a href="https://elad.medium.com/css-position-sticky-how-it-really-works-54cd01dc2d46" rel="noopener">Positioning elements within scrollable areas</a></li>
+<li><a href="https://blog.logrocket.com/infinite-scroll-techniques-in-react-adcfd7ff32bd/" rel="noopener">Infinite scroll</a></li>
+<li><a href="https://greensock.com/scrolltrigger/" rel="noopener">Scroll linked animation</a></li>
+<li><a href="https://css-tricks.com/css-only-carousel/" rel="noopener">Carousels</a></li>
+<li><a href="https://blog.alexandergottlieb.com/overflow-scroll-and-the-right-padding-problem-a-css-only-solution-6d442915b3f4" rel="noopener">Scrollview padding</a></li>
+<li><a href="https://www.magictoolbox.com/magicscroll/integration/" rel="noopener">Cyclical scroll</a></li>
+<li><a href="https://github.com/tbranyen/hyperlist" rel="noopener">Virtualized scroll</a></li>
+</ul>
+<p>Missing browser features,
+complex JavaScript, and the need to support input modes including touch,
+keyboard, and gamepads, make all of these things harder.</p>
+<h3 id="importance-of-touch-interactions">Importance of touch interactions <a class="w-headline-link" href="#importance-of-touch-interactions">#</a></h3>
+<p><small>Question 3</small></p>
+<div class="w-stats">
+  <div class="w-stat">
+    <p class="w-stat__figure">51<sub class="w-stat__sub">%</sub></p>
+    <p class="w-stat__desc">
+      report <b>touch interactions</b> as <br>
+      <b>very</b> or <b>extremely important</b> <br>
+      to their work.
+    </p>
+  </div>
+</div>
+<p>With <a href="https://twitter.com/TheRealNooshu/status/1399676709125906432?s=20" rel="noopener">mobile web users still on the rise in visit
+statistics</a>,
+it wasn't surprising to see half of the respondents report that touch is very
+important to their work on the web. This signaled that web features like CSS
+scroll snap and <code>touch-action</code> need extra attention so the web can deliver on
+high-quality touch interaction.</p>
+<h3 id="difficulty-of-tab-key-or-gamepad-navigation">Difficulty of tab key or gamepad navigation <a class="w-headline-link" href="#difficulty-of-tab-key-or-gamepad-navigation">#</a></h3>
+<p><small>Question 5a</small></p>
+<div class="w-stats">
+  <div class="w-stat">
+    <p class="w-stat__figure">44<sub class="w-stat__sub">%</sub></p>
+    <p class="w-stat__desc">
+      report <b>somewhat</b> or <b>extremely difficult</b> <br>
+      to do <b>gamepad</b> and <b>tab navigation</b>.
+    </p>
+  </div>
+</div>
+<p>Scrolling includes navigation methods such as keyboard arrows, tab keys,
+spacebar presses, and gamepads, and it can be difficult to include these when doing
+custom scroll work. Almost half of the respondents report it's
+somewhat or extremely difficult to include these inputs.</p>
+<h3 id="learning-touch-action">Learning <code>touch-action</code> <a class="w-headline-link" href="#learning-touch-action">#</a></h3>
+<p><small>Question 9</small></p>
+<div class="w-stats">
+  <div class="w-stat">
+    <p class="w-stat__figure">50<sub class="w-stat__sub">%</sub></p>
+    <p class="w-stat__desc">
+      report <b>learning</b> about <br>
+      <b>`touch-action: manipulation`</b> <br>
+      from the survey.
+    </p>
+  </div>
+</div>
+<p>Some of the survey questions asked about using certain APIs with a possible
+answer of Yes, No, or &quot;today I learned.&quot; One notable piece of feedback was the
+number of people who reported learning about <code>touch-action</code> from the survey, as
+it's a critical property when building custom touch gestures that need to
+interact within scroll.</p>
+<h3 id="cyclical-scrolling">Cyclical scrolling <a class="w-headline-link" href="#cyclical-scrolling">#</a></h3>
+<p><small>Question 27</small></p>
+<div class="w-stats">
+  <div class="w-stat">
+    <p class="w-stat__figure">58<sub class="w-stat__sub">%</sub></p>
+    <p class="w-stat__desc">
+      report <b>sometimes, often</b> or on <b>every project</b> <br>
+      using <b>cyclical scrolling</b>.
+    </p>
+  </div>
+</div>
+<figure class="w-figure">
+  <video      autoplay                                          loop      muted                        width="380"    >      <source src="https://storage.googleapis.com/web-dev-uploads/video/vS06HQ1YTsbMKSFTIPl2iogUQP73/xLwqQ6xGBIdI0uxFx566.mp4" type="video/mp4" />    </video>
+  <figcaption class="w-figure">
+    The video shows cyclical seconds scrolling, <br>
+    after 60 seconds it begins at 0 again.
+  </figcaption>
+</figure>
+<p>Those numbers are high for a scrolling feature with little or no support provided by the web platform.
+The feature often incurs high amounts of technical
+debt because of this, with duplication or JavaScript injected to force the
+effect. It's popular for product carousels and when selecting time in seconds or minutes to
+offer cyclical scrolling.</p>
+<h3 id="are-scrollable-areas-important">Are scrollable areas important <a class="w-headline-link" href="#are-scrollable-areas-important">#</a></h3>
+<p><small>Question 2</small></p>
+<div class="w-stats">
+  <div class="w-stat">
+    <p class="w-stat__figure">55<sub class="w-stat__sub">%</sub></p>
+    <p class="w-stat__desc">
+      <b>very</b> or <br>
+      <b>extremely important</b>
+    </p>
+  </div>
+  <div class="w-stat">
+    <p class="w-stat__figure">16<sub class="w-stat__sub">%</sub></p>
+    <p class="w-stat__desc">
+      report <b>not at all</b> <br>
+      or <b>slightly important</b>
+    </p>
+  </div>
+</div>
+<p>Respondents felt strongly about the importance of scrollable areas,
+giving another signal about the struggles required to deliver high-quality scrolling.</p>
+<h3 id="carousels">Carousels <a class="w-headline-link" href="#carousels">#</a></h3>
+<p><small>Question 20</small></p>
+<div class="w-stats">
+  <div class="w-stat">
+    <p class="w-stat__figure">87<sub class="w-stat__sub">%</sub></p>
+    <p class="w-stat__desc">
+      <b>have used</b> carousels.
+    </p>
+  </div>
+  <div class="w-stat">
+    <p class="w-stat__figure">24<sub class="w-stat__sub">%</sub></p>
+    <p class="w-stat__desc">
+      report they're <br>
+      <b>easy</b> to manage.
+    </p>
+  </div>
+</div>
+<p>Nearly every respondent delivers carousels in their web work, while only 25% find
+them easy to manage. Off-the-shelf carousels were popular during our
+research, but this statistic surprised us, as it doesn't sound very solved.</p>
+<h3 id="infinite-scroll">Infinite scroll <a class="w-headline-link" href="#infinite-scroll">#</a></h3>
+<p><small>Question 22</small></p>
+<div class="w-stats">
+  <div class="w-stat">
+    <p class="w-stat__figure">65<sub class="w-stat__sub">%</sub></p>
+    <p class="w-stat__desc">
+      use it <b>sometimes</b> <br>
+      to <b>every project</b>
+    </p>
+  </div>
+  <div class="w-stat">
+    <p class="w-stat__figure">60<sub class="w-stat__sub">%</sub></p>
+    <p class="w-stat__desc">
+      <b>somewhat</b> or <br>
+      <b>extremely difficult</b>.
+    </p>
+  </div>
+</div>
+<p>Two-thirds of respondents deliver infinite scroll in their web work, and an equal
+amount report it's difficult to do. Another example of high usage paired with
+high difficulty, which indicates to us an area needing attention.</p>
+<p>While <a href="/content-visibility/"><code>content-visibility</code></a> and
+<code>contain-intrinsic-size</code> can be combined to reduce render costs for long
+scrollable areas, it doesn't seem to be helping with &quot;load more&quot; infinite scroll
+UX.</p>
+<h3 id="scroll-linked-or-scroll-triggered-animations">Scroll-linked or scroll-triggered animations <a class="w-headline-link" href="#scroll-linked-or-scroll-triggered-animations">#</a></h3>
+<p><small>Question 24</small></p>
+<div class="w-stats">
+  <div class="w-stat">
+    <p class="w-stat__figure">47<sub class="w-stat__sub">%</sub></p>
+    <p class="w-stat__desc">
+      use it <b>sometimes</b><br>
+      to <b>every project</b>
+    </p>
+  </div>
+  <div class="w-stat">
+    <p class="w-stat__figure">56<sub class="w-stat__sub">%</sub></p>
+    <p class="w-stat__desc">
+      report <b>somewhat</b> or <br>
+      <b>extremely difficult</b>
+    </p>
+  </div>
+</div>
+<p>Almost half of all respondents use scroll-orchestrated animations and half the
+respondents find it difficult, once again linking high usage with difficulty.</p>
+<h3 id="compete-with-built-in-scrolling">Compete with built-in scrolling <a class="w-headline-link" href="#compete-with-built-in-scrolling">#</a></h3>
+<p><small>Question 26</small></p>
+<div class="w-stats">
+  <div class="w-stat">
+    <p class="w-stat__figure">32<sub class="w-stat__sub">%</sub></p>
+    <p class="w-stat__desc">
+      <b>always</b> or <br>
+      <b>most of the time</b>
+    </p>
+  </div>
+  <div class="w-stat">
+    <p class="w-stat__figure">50<sub class="w-stat__sub">%</sub></p>
+    <p class="w-stat__desc">
+      <b>sometimes</b>
+    </p>
+  </div>
+</div>
+<p>The built-in scroll and touch interactions of phone and tablet applications are
+often touted as a clear place where the web can catch up. The features include
+scroll-linked animations, programmatic interfaces, voice integration, scroll
+hints, and pull-to-refresh APIs.</p>
+<p>Just half of the respondents felt it was only sometimes possible to match the
+experience of built-in scrolling.</p>
+<h3 id="overall-satisfaction-building-scroll-interactions-on-the-web">Overall satisfaction building scroll interactions on the web <a class="w-headline-link" href="#overall-satisfaction-building-scroll-interactions-on-the-web">#</a></h3>
+<p><small>Question 27</small></p>
+<img     alt="A pie chart showing 5 sections: 6.3% extremely dissatisfied, 2.7% extremely satisfied, 23.4% somewhat satisfied, 28.8% neither satisfied nor dissatisfied, 38.7% somewhat dissatisfied."          decoding="async"     height="400"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/ycHj33nZb1KfUFxNBdH5.png?auto=format"     srcset="https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/ycHj33nZb1KfUFxNBdH5.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/ycHj33nZb1KfUFxNBdH5.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/ycHj33nZb1KfUFxNBdH5.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/ycHj33nZb1KfUFxNBdH5.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/ycHj33nZb1KfUFxNBdH5.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/ycHj33nZb1KfUFxNBdH5.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/ycHj33nZb1KfUFxNBdH5.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/ycHj33nZb1KfUFxNBdH5.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/ycHj33nZb1KfUFxNBdH5.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/ycHj33nZb1KfUFxNBdH5.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/ycHj33nZb1KfUFxNBdH5.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/ycHj33nZb1KfUFxNBdH5.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/ycHj33nZb1KfUFxNBdH5.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/ycHj33nZb1KfUFxNBdH5.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/ycHj33nZb1KfUFxNBdH5.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/ycHj33nZb1KfUFxNBdH5.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/vS06HQ1YTsbMKSFTIPl2iogUQP73/ycHj33nZb1KfUFxNBdH5.png?auto=format&w=1600 1600w"          width="800"   />
+<h2 id="survey-takeaways">Survey Takeaways <a class="w-headline-link" href="#survey-takeaways">#</a></h2>
+<p>The survey results are segmented into four categories:
+<a href="#compatibility">compatibility</a>,
+<a href="#education">education</a>,
+<a href="#apis">APIs</a>,
+and <a href="#features">features</a>.</p>
+<h3 id="compatibility">Compatibility <a class="w-headline-link" href="#compatibility">#</a></h3>
+<p>The Chrome team has <a href="/compat2021">declared a goal</a> to decrease
+the number of web compatibility issues, including scroll compatibility.</p>
+<p>The first three compatibility issues to focus on:</p>
+<ol>
+<li>Horizontal scrolling compatibility.</li>
+<li><code>overscroll-behavior</code> cross browser.</li>
+<li>Removing prefixes from <code>-webkit-scrollbar</code> and following the standard.</li>
+</ol>
+<h3 id="education">Education <a class="w-headline-link" href="#education">#</a></h3>
+<p>The survey results showed that there needs to be more education around
+<code>touch-action</code> and <a href="/logical-property-shorthands/">logical
+properties</a>. The browser is at the
+forefront of international layout, and it's apparent it's underutilized or
+misunderstood.</p>
+<p>Areas to focus on:</p>
+<ol>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/touch-action" rel="noopener"><code>touch-action</code></a></li>
+<li><a href="/learn/css/logical-properties/">Logical properties</a></li>
+</ol>
+<h3 id="apis">APIs <a class="w-headline-link" href="#apis">#</a></h3>
+<p>Usage of scroll snapping is growing, and developers have responded that they
+want to use features interoperably with popular libraries and
+plugins. Shrinking this gap between CSS and plugin libraries will help the
+satisfaction of scroll snap developer and user experience.</p>
+<p>We'll focus API work on <code>scroll-snap</code>:</p>
+<ol>
+<li>API availability and compatibility across browsers.</li>
+<li>Begin work on <a href="https://github.com/argyleink/ScrollSnapExplainers" rel="noopener">new CSS
+APIs</a> like <code>scroll-start</code>.</li>
+<li>Begin work on <a href="https://github.com/argyleink/ScrollSnapExplainers" rel="noopener">new JS
+events</a> like
+<code>snapChanged()</code>.</li>
+</ol>
+<h3 id="features">Features <a class="w-headline-link" href="#features">#</a></h3>
+<p>The survey results showed that users struggle with some specific types of
+scroll-related components on the web, as the platform doesn't provide the
+primitives they need to build them without plugins or a high level of effort.
+This is an area that we hope to explore more deeply.</p>
+<p>The features developers struggle to build include:</p>
+<ol>
+<li>Carousels</li>
+<li>Virtual scroll</li>
+<li>Infinite scroll</li>
+</ol>
+<h3 id="resources">Resources <a class="w-headline-link" href="#resources">#</a></h3>
+<ul>
+<li><a href="https://drive.google.com/file/d/10WXTJHCZmH0rXEh3J7z3ki96-f9SHs_R/view?usp=sharing&amp;resourcekey=0-5b1y_6rZDhyt6Tkbz3FCzA" rel="noopener">Scroll Survey
+Report</a></li>
+<li><a href="/2021-scroll-survey/">Survey Announcement</a></li>
+<li><a href="https://insights.developer.mozilla.org/" rel="noopener">Mozilla DNA Reports</a></li>
+<li><a href="/compat2021/">Compat2021: Eliminating five top compatibility pain points on the
+web</a></li>
+<li><a href="https://groups.google.com/a/google.com/g/blink-interactions-team/search?q=Igalia%20work%20update" rel="noopener">2020-2021 Scroll Compatibility Igalia
+Work</a></li>
+</ul>
+<p>Thumbnail image: photo by <a href="https://unsplash.com/@taypaigey" rel="noopener">Taylor Wilcox</a> on <a href="https://unsplash.com/photos/aXeVH4FcS1k" rel="noopener">Unsplash</a>.</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/css/">CSS</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/dom/">DOM</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/javascript/">JavaScript</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/mobile/">Mobile</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/ux/">UX</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Aug 2, 2021</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/2021-scroll-survey-report/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

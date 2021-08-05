@@ -1,0 +1,1004 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=0ad72df52df7">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Boldly link where no one has linked before: Text Fragments </title>
+<meta name="description" content="Text Fragments let you specify a text snippet in the URL fragment. When navigating to a URL with such a text fragment, the browser can emphasize and/or bring it to the user's attention. " />
+
+<link rel="canonical" href="https://web.dev/text-fragments/" />
+
+<meta itemprop="name" content="Boldly link where no one has linked before: Text Fragments " />
+<meta itemprop="description" content="Text Fragments let you specify a text snippet in the URL fragment. When navigating to a URL with such a text fragment, the browser can emphasize and/or bring it to the user's attention. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/Y4NLEbOwgTWdMNoxRYXw.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/text-fragments/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Boldly link where no one has linked before: Text Fragments " />
+<meta property="og:description" content="Text Fragments let you specify a text snippet in the URL fragment. When navigating to a URL with such a text fragment, the browser can emphasize and/or bring it to the user's attention. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/Y4NLEbOwgTWdMNoxRYXw.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="" />
+<meta property="tag" content="text-fragments" />
+<meta property="tag" content="capabilities" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Boldly link where no one has linked before: Text Fragments " />
+<meta name="twitter:description" content="Text Fragments let you specify a text snippet in the URL fragment. When navigating to a URL with such a text fragment, the browser can emphasize and/or bring it to the user's attention. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/Y4NLEbOwgTWdMNoxRYXw.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=cf98de675ffda', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=c3980e0daf3e1', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="Hero Image"     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/Y4NLEbOwgTWdMNoxRYXw.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/Y4NLEbOwgTWdMNoxRYXw.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/Y4NLEbOwgTWdMNoxRYXw.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/Y4NLEbOwgTWdMNoxRYXw.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/Y4NLEbOwgTWdMNoxRYXw.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/Y4NLEbOwgTWdMNoxRYXw.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/Y4NLEbOwgTWdMNoxRYXw.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/Y4NLEbOwgTWdMNoxRYXw.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/Y4NLEbOwgTWdMNoxRYXw.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/Y4NLEbOwgTWdMNoxRYXw.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/Y4NLEbOwgTWdMNoxRYXw.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/Y4NLEbOwgTWdMNoxRYXw.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/Y4NLEbOwgTWdMNoxRYXw.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/Y4NLEbOwgTWdMNoxRYXw.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/Y4NLEbOwgTWdMNoxRYXw.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/Y4NLEbOwgTWdMNoxRYXw.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/Y4NLEbOwgTWdMNoxRYXw.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/Y4NLEbOwgTWdMNoxRYXw.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#boldly-link-where-no-one-has-linked-before:-text-fragments" class="w-toc__header--link">
+        Boldly link where no one has linked before: Text Fragments
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#fragment-identifiers">Fragment Identifiers</a></li><li><a href="#text-fragments">Text Fragments</a></li><li><a href="#browser-compatibility">Browser compatibility</a></li><li><a href="#textstart">textStart</a></li><li><a href="#textstart-and-textend">textStart and textEnd</a></li><li><a href="#prefix-and-suffix">prefix- and -suffix</a></li><li><a href="#the-full-syntax">The full syntax</a></li><li><a href="#creating-text-fragment-urls-with-a-browser-extension">Creating Text Fragment URLs with a browser extension</a></li><li><a href="#multiple-text-fragments-in-one-url">Multiple text fragments in one URL</a></li><li><a href="#mixing-element-and-text-fragments">Mixing element and text fragments</a></li><li><a href="#the-fragment-directive">The fragment directive</a></li><li><a href="#feature-detection">Feature detection</a></li><li><a href="#styling-text-fragments">Styling text fragments</a></li><li><a href="#polyfillability">Polyfillability</a></li><li><a href="#programmatic-text-fragment-link-generation">Programmatic Text Fragment link generation</a></li><li><a href="#obtaining-text-fragments-for-analytics-purposes">Obtaining Text Fragments for analytics purposes</a></li><li><a href="#security">Security</a></li><li><a href="#privacy">Privacy</a></li><li><a href="#disabling-text-fragments">Disabling text fragments</a></li><li><a href="#text-fragments-in-web-search">Text fragments in web search</a></li><li><a href="#conclusion">Conclusion</a></li><li><a href="#related-links">Related links</a></li><li><a href="#acknowledgements">Acknowledgements</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@tomayac"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="boldly-link-where-no-one-has-linked-before:-text-fragments" class="w-article-header__headline">Boldly link where no one has linked before: Text Fragments</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          <p>Text Fragments let you specify a text snippet in the URL fragment.
+When navigating to a URL with such a text fragment, the browser can emphasize
+and/or bring it to the user's attention.</p>
+
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Jun 17, 2020</time>
+           <span class="w-author__separator">•</span> Updated <time>May 17, 2021</time> 
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/thomassteiner/"><img     alt="Thomas Steiner"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/thomassteiner/">Thomas Steiner</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/tomayac"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/tomayac">GitHub</a>
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://glitch.com/@tomayac"
+          >Glitch</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://blog.tomayac.com/">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <h2 id="fragment-identifiers">Fragment Identifiers <a class="w-headline-link" href="#fragment-identifiers">#</a></h2>
+<p>Chrome 80 was a big release. It contained a number of highly anticipated features like
+<a href="/module-workers/">ECMAScript Modules in Web Workers</a>,
+<a href="https://v8.dev/features/nullish-coalescing" rel="noopener">nullish coalescing</a>,
+<a href="https://v8.dev/features/optional-chaining" rel="noopener">optional chaining</a>, and more. The release was, as usual,
+announced through a
+<a href="https://blog.chromium.org/2019/12/chrome-80-content-indexing-es-modules.html" rel="noopener">blog post</a> on the
+Chromium blog. You can see an excerpt of the blog post in the screenshot below.</p>
+<figure class="w-figure">
+  <img     alt=""          decoding="async"     height="628"          loading="lazy"     sizes="(min-width: 400px) 400px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/egsW6tkKWYI8IHE6JyMZ.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/egsW6tkKWYI8IHE6JyMZ.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/egsW6tkKWYI8IHE6JyMZ.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/egsW6tkKWYI8IHE6JyMZ.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/egsW6tkKWYI8IHE6JyMZ.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/egsW6tkKWYI8IHE6JyMZ.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/egsW6tkKWYI8IHE6JyMZ.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/egsW6tkKWYI8IHE6JyMZ.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/egsW6tkKWYI8IHE6JyMZ.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/egsW6tkKWYI8IHE6JyMZ.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/egsW6tkKWYI8IHE6JyMZ.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/egsW6tkKWYI8IHE6JyMZ.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/egsW6tkKWYI8IHE6JyMZ.png?auto=format&w=800 800w"          width="400"   />
+  <figcaption class="w-figcaption">Chromium blog post with red boxes around elements with an <code>id</code> attribute.</figcaption>
+</figure>
+<p>You are probably asking yourself what all the red boxes mean. They are the result of running the
+following snippet in DevTools. It highlights all elements that have an <code>id</code> attribute.</p>
+<web-copy-code><pre class="language-js"><code class="language-js">document<span class="token punctuation">.</span><span class="token function">querySelectorAll</span><span class="token punctuation">(</span><span class="token string">'[id]'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">el</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  el<span class="token punctuation">.</span>style<span class="token punctuation">.</span>border <span class="token operator">=</span> <span class="token string">'solid 2px red'</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>I can place a deep link to any element highlighted with a red box thanks to the
+<a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Identifying_resources_on_the_Web#Fragment" rel="noopener">fragment identifier</a>
+which I then use in the <a href="https://developer.mozilla.org/en-US/docs/Web/API/URL/hash" rel="noopener">hash</a> of the
+page's URL. Assuming I wanted to deep link to the <em>Give us feedback in our
+<a href="http://support.google.com/bin/static.py?hl=en&amp;page=portal_groups.cs" rel="noopener">Product Forums</a></em> box in the
+aside, I could do so by handcrafting the URL
+<a href="https://blog.chromium.org/2019/12/chrome-80-content-indexing-es-modules.html#HTML1"><code>https://blog.chromium.org/2019/12/chrome-80-content-indexing-es-modules.html<mark class="highlight-line highlight-line-active">#HTML1</mark></code></a>.
+As you can see in the Elements panel of the Developer Tools, the element in question has an <code>id</code>
+attribute with the value <code>HTML1</code>.</p>
+<figure class="w-figure">
+  <img     alt=""          decoding="async"     height="97"          loading="lazy"     sizes="(min-width: 600px) 600px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/whVXhhrYwA55S3i4J3l5.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/whVXhhrYwA55S3i4J3l5.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/whVXhhrYwA55S3i4J3l5.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/whVXhhrYwA55S3i4J3l5.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/whVXhhrYwA55S3i4J3l5.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/whVXhhrYwA55S3i4J3l5.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/whVXhhrYwA55S3i4J3l5.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/whVXhhrYwA55S3i4J3l5.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/whVXhhrYwA55S3i4J3l5.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/whVXhhrYwA55S3i4J3l5.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/whVXhhrYwA55S3i4J3l5.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/whVXhhrYwA55S3i4J3l5.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/whVXhhrYwA55S3i4J3l5.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/whVXhhrYwA55S3i4J3l5.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/whVXhhrYwA55S3i4J3l5.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/whVXhhrYwA55S3i4J3l5.png?auto=format&w=1200 1200w"          width="600"   />
+  <figcaption class="w-figcaption">Dev Tools showing the <code>id</code> of an element.</figcaption>
+</figure>
+<p>If I parse this URL with JavaScript's <code>URL()</code> constructor, the different components are revealed.
+Notice the <code>hash</code> property with the value <code>#HTML1</code>.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="highlight-line"><span class="token keyword">new</span> <span class="token class-name">URL</span><span class="token punctuation">(</span><span class="token string">'https://blog.chromium.org/2019/12/chrome-80-content-indexing-es-modules.html#HTML1'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="token comment">/* Creates a new `URL` object<br><span class="highlight-line">URL {</span><br><mark class="highlight-line highlight-line-active">  hash: "#HTML1"</mark><br><span class="highlight-line">  host: "blog.chromium.org"</span><br><span class="highlight-line">  hostname: "blog.chromium.org"</span><br><span class="highlight-line">  href: "https://blog.chromium.org/2019/12/chrome-80-content-indexing-es-modules.html#HTML1"</span><br><span class="highlight-line">  origin: "https://blog.chromium.org"</span><br><span class="highlight-line">  password: ""</span><br><span class="highlight-line">  pathname: "/2019/12/chrome-80-content-indexing-es-modules.html"</span><br><span class="highlight-line">  port: ""</span><br><span class="highlight-line">  protocol: "https:"</span><br><span class="highlight-line">  search: ""</span><br><span class="highlight-line">  searchParams: URLSearchParams {}</span><br><span class="highlight-line">  username: ""</span><br><span class="highlight-line">}</span><br>*/</span></code></pre>
+</web-copy-code><p>The fact though that I had to open the Developer Tools to find the <code>id</code> of an element speaks volumes
+about the probability this particular section of the page was meant to be linked to by the author of
+the blog post.</p>
+<p>What if I want to link to something without an <code>id</code>? Say I want to link to the <em>ECMAScript Modules
+in Web Workers</em> heading. As you can see in the screenshot below, the <code>&lt;h1&gt;</code> in question does not
+have an <code>id</code> attribute, meaning there is no way I can link to this heading. This is the problem that
+Text Fragments solve.</p>
+<figure class="w-figure">
+  <img     alt=""          decoding="async"     height="71"          loading="lazy"     sizes="(min-width: 600px) 600px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/1g4rTS1q5LKHEHnDoF9o.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/1g4rTS1q5LKHEHnDoF9o.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/1g4rTS1q5LKHEHnDoF9o.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/1g4rTS1q5LKHEHnDoF9o.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/1g4rTS1q5LKHEHnDoF9o.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/1g4rTS1q5LKHEHnDoF9o.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/1g4rTS1q5LKHEHnDoF9o.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/1g4rTS1q5LKHEHnDoF9o.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/1g4rTS1q5LKHEHnDoF9o.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/1g4rTS1q5LKHEHnDoF9o.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/1g4rTS1q5LKHEHnDoF9o.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/1g4rTS1q5LKHEHnDoF9o.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/1g4rTS1q5LKHEHnDoF9o.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/1g4rTS1q5LKHEHnDoF9o.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/1g4rTS1q5LKHEHnDoF9o.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/1g4rTS1q5LKHEHnDoF9o.png?auto=format&w=1200 1200w"          width="600"   />
+  <figcaption class="w-figcaption">Dev Tools showing a heading without an <code>id</code>.</figcaption>
+</figure>
+<h2 id="text-fragments">Text Fragments <a class="w-headline-link" href="#text-fragments">#</a></h2>
+<p>The <a href="https://wicg.github.io/ScrollToTextFragment/" rel="noopener">Text Fragments</a> proposal adds support for
+specifying a text snippet in the URL hash. When navigating to a URL with such a text fragment, the
+user agent can emphasize and/or bring it to the user's attention.</p>
+<h3 id="browser-compatibility">Browser compatibility <a class="w-headline-link" href="#browser-compatibility">#</a></h3>
+<p>The Text Fragments feature is supported in version 80 and beyond of Chromium-based browsers. At the
+time of writing, Safari and Firefox have not publicly signaled an intent to implement the feature.
+See <a href="#related-links">Related links</a> for pointers to the Safari and Firefox discussions.</p>
+<div class="w-aside w-aside--success">
+<p><strong>Success</strong>:  These links used to not work when served across
+<a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Redirections#Alternative_way_of_specifying_redirections" rel="noopener">client-side redirects</a>
+that some common services like Twitter use. This issue was tracked as
+<a href="https://crbug.com/1055455" rel="noopener">crbug.com/1055455</a> and is now fixed. Regular
+<a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Redirections#Principle" rel="noopener">HTTP redirects</a> always
+worked fine. </div></p>
+<p>For <a href="#security">security</a> reasons, the feature requires links to be opened in a
+<a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Link_types/noopener" rel="noopener"><code>noopener</code></a> context.
+Therefore, make sure to include
+<a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#attr-rel" rel="noopener"><code>rel=&quot;noopener&quot;</code></a> in your
+<code>&lt;a&gt;</code> anchor markup or add
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/open#noopener" rel="noopener"><code>noopener</code></a> to your
+<code>Window.open()</code> list of window functionality features.</p>
+<h3 id="textstart"><code>textStart</code> <a class="w-headline-link" href="#textstart">#</a></h3>
+<p>In its simplest form, the syntax of Text Fragments is as follows: The hash symbol <code>#</code> followed by
+<code>:~:text=</code> and finally <code>textStart</code>, which represents the
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent" rel="noopener">percent-encoded</a>
+text I want to link to.</p>
+<web-copy-code><pre class="language-bash"><code class="language-bash"><span class="token comment">#:~:text=textStart</span></code></pre>
+</web-copy-code><p>For example, say that I want to link to the <em>ECMAScript Modules in Web Workers</em> heading in the
+<a href="https://blog.chromium.org/2019/12/chrome-80-content-indexing-es-modules.html" rel="noopener">blog post announcing features in Chrome 80</a>,
+the URL in this case would be:</p>
+<p><a href="https://blog.chromium.org/2019/12/chrome-80-content-indexing-es-modules.html#:~:text=ECMAScript%20Modules%20in%20Web%20Workers"><code>https://blog.chromium.org/2019/12/chrome-80-content-indexing-es-modules.html<mark class="highlight-line highlight-line-active">#:~:text=ECMAScript%20Modules%20in%20Web%20Workers</mark></code></a></p>
+<p>The text fragment is emphasized <mark class="highlight-line highlight-line-active">like this</mark>.
+If you click the link in a supporting browser like Chrome, the text fragment is highlighted and
+scrolls into view:</p>
+<figure class="w-figure">
+  <img     alt=""          decoding="async"     height="208"          loading="lazy"     sizes="(min-width: 400px) 400px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/D3jwPrJlvN3FmJo3pADt.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/D3jwPrJlvN3FmJo3pADt.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/D3jwPrJlvN3FmJo3pADt.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/D3jwPrJlvN3FmJo3pADt.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/D3jwPrJlvN3FmJo3pADt.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/D3jwPrJlvN3FmJo3pADt.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/D3jwPrJlvN3FmJo3pADt.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/D3jwPrJlvN3FmJo3pADt.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/D3jwPrJlvN3FmJo3pADt.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/D3jwPrJlvN3FmJo3pADt.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/D3jwPrJlvN3FmJo3pADt.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/D3jwPrJlvN3FmJo3pADt.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/D3jwPrJlvN3FmJo3pADt.png?auto=format&w=800 800w"          width="400"   />
+  <figcaption class="w-figcaption">Text fragment scrolled into view and highlighted.</figcaption>
+</figure>
+<h3 id="textstart-and-textend"><code>textStart</code> and <code>textEnd</code> <a class="w-headline-link" href="#textstart-and-textend">#</a></h3>
+<p>Now what if I want to link to the entire <em>section</em> titled <em>ECMAScript Modules in Web Workers</em>, not
+just its heading? Percent-encoding the entire text of the section would make the resulting URL
+impracticably long.</p>
+<p>Luckily there is a better way. Rather than the entire text, I can frame the desired text using the
+<code>textStart,textEnd</code> syntax. Therefore, I specify a couple of percent-encoded words at the beginning
+of the desired text, and a couple of percent-encoded words at the end of the desired text, separated
+by a comma <code>,</code>.</p>
+<p>That looks like this:</p>
+<p><a href="https://blog.chromium.org/2019/12/chrome-80-content-indexing-es-modules.html#:~:text=ECMAScript%20Modules%20in%20Web%20Workers,ES%20Modules%20in%20Web%20Workers."><code>https://blog.chromium.org/2019/12/chrome-80-content-indexing-es-modules.html<mark class="highlight-line highlight-line-active">#:~:text=ECMAScript%20Modules%20in%20Web%20Workers,ES%20Modules%20in%20Web%20Workers.</mark></code></a>.</p>
+<p>For <code>textStart</code>, I have <code>ECMAScript%20Modules%20in%20Web%20Workers</code>, then a comma <code>,</code> followed
+by <code>ES%20Modules%20in%20Web%20Workers.</code> as <code>textEnd</code>. When you click through on a supporting browser
+like Chrome, the whole section is highlighted and scrolled into view:</p>
+<figure class="w-figure">
+  <img     alt=""          decoding="async"     height="343"          loading="lazy"     sizes="(min-width: 400px) 400px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/2yTYmKnjHTnqXkcmHF1F.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/2yTYmKnjHTnqXkcmHF1F.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/2yTYmKnjHTnqXkcmHF1F.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/2yTYmKnjHTnqXkcmHF1F.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/2yTYmKnjHTnqXkcmHF1F.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/2yTYmKnjHTnqXkcmHF1F.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/2yTYmKnjHTnqXkcmHF1F.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/2yTYmKnjHTnqXkcmHF1F.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/2yTYmKnjHTnqXkcmHF1F.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/2yTYmKnjHTnqXkcmHF1F.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/2yTYmKnjHTnqXkcmHF1F.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/2yTYmKnjHTnqXkcmHF1F.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/2yTYmKnjHTnqXkcmHF1F.png?auto=format&w=800 800w"          width="400"   />
+  <figcaption class="w-figcaption">Text fragment scrolled into view and highlighted.</figcaption>
+</figure>
+<p>Now you may wonder about my choice of <code>textStart</code> and <code>textEnd</code>. Actually, the slightly shorter URL
+<a href="https://blog.chromium.org/2019/12/chrome-80-content-indexing-es-modules.html#:~:text=ECMAScript%20Modules,Web%20Workers."><code>https://blog.chromium.org/2019/12/chrome-80-content-indexing-es-modules.html<mark class="highlight-line highlight-line-active">#:~:text=ECMAScript%20Modules,Web%20Workers.</mark></code></a>
+with only two words on each side would have worked, too. Compare <code>textStart</code> and <code>textEnd</code> with the
+previous values.</p>
+<p>If I take it one step further and now use only one word for both <code>textStart</code> and <code>textEnd</code>, you can
+see that I am in trouble. The URL
+<a href="https://blog.chromium.org/2019/12/chrome-80-content-indexing-es-modules.html#:~:text=ECMAScript,Workers."><code>https://blog.chromium.org/2019/12/chrome-80-content-indexing-es-modules.html<mark class="highlight-line highlight-line-active">#:~:text=ECMAScript,Workers.</mark></code></a>
+is even shorter now, but the highlighted text fragment is no longer the originally desired one. The
+highlighting stops at the first occurrence of the word <code>Workers.</code>, which is correct, but not what I
+intended to highlight. The problem is that the desired section is not uniquely identified by the
+current one-word <code>textStart</code> and <code>textEnd</code> values:</p>
+<figure class="w-figure">
+  <img     alt=""          decoding="async"     height="342"          loading="lazy"     sizes="(min-width: 400px) 400px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/GGbbtHBpsoFyubnISyZw.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/GGbbtHBpsoFyubnISyZw.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/GGbbtHBpsoFyubnISyZw.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/GGbbtHBpsoFyubnISyZw.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/GGbbtHBpsoFyubnISyZw.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/GGbbtHBpsoFyubnISyZw.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/GGbbtHBpsoFyubnISyZw.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/GGbbtHBpsoFyubnISyZw.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/GGbbtHBpsoFyubnISyZw.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/GGbbtHBpsoFyubnISyZw.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/GGbbtHBpsoFyubnISyZw.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/GGbbtHBpsoFyubnISyZw.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/GGbbtHBpsoFyubnISyZw.png?auto=format&w=800 800w"          width="400"   />
+  <figcaption class="w-figcaption">Non-intended text fragment scrolled into view and highlighted.</figcaption>
+</figure>
+<h3 id="prefix-and-suffix"><code>prefix-</code> and <code>-suffix</code> <a class="w-headline-link" href="#prefix-and-suffix">#</a></h3>
+<p>Using long enough values for <code>textStart</code> and <code>textEnd</code> is one solution for obtaining a unique link.
+In some situations, however, this is not possible. On a side note, why did I choose the
+Chrome 80 release blog post as my example? The answer is that in this release Text Fragments
+were introduced:</p>
+<figure class="w-figure">
+  <img     alt="Blog post text: Text URL Fragments. Users or authors can now link to a specific portion of a page using a text fragment provided in a URL. When the page is loaded, the browser highlights the text and scrolls the fragment into view. For example, the URL below loads a wiki page for &#x27;Cat&#x27; and scrolls to the content listed in the &#x60;text&#x60; parameter."     class="w-screenshot"     decoding="async"     height="200"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/yA1p3CijeDbTRwMys9Hq.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/yA1p3CijeDbTRwMys9Hq.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/yA1p3CijeDbTRwMys9Hq.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/yA1p3CijeDbTRwMys9Hq.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/yA1p3CijeDbTRwMys9Hq.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/yA1p3CijeDbTRwMys9Hq.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/yA1p3CijeDbTRwMys9Hq.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/yA1p3CijeDbTRwMys9Hq.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/yA1p3CijeDbTRwMys9Hq.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/yA1p3CijeDbTRwMys9Hq.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/yA1p3CijeDbTRwMys9Hq.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/yA1p3CijeDbTRwMys9Hq.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/yA1p3CijeDbTRwMys9Hq.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/yA1p3CijeDbTRwMys9Hq.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/yA1p3CijeDbTRwMys9Hq.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/yA1p3CijeDbTRwMys9Hq.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/yA1p3CijeDbTRwMys9Hq.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/yA1p3CijeDbTRwMys9Hq.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">Text Fragments announcement blog post excerpt.</figcaption>
+</figure>
+<p>Notice how in the screenshot above the word &quot;text&quot; appears four times. The forth occurrence is
+written in a green code font. If I wanted to link to this particular word, I would set <code>textStart</code>
+to <code>text</code>. Since the word &quot;text&quot; is, well, only one word, there cannot be a <code>textEnd</code>. What now? The
+URL
+<a href="https://blog.chromium.org/2019/12/chrome-80-content-indexing-es-modules.html#:~:text=text"><code>https://blog.chromium.org/2019/12/chrome-80-content-indexing-es-modules.html<mark class="highlight-line highlight-line-active">#:~:text=text</mark></code></a>
+matches at the first occurrence of the word &quot;Text&quot; already in the heading:</p>
+<figure class="w-figure">
+  <img     alt=""          decoding="async"     height="209"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/nXxCskUwdCxwxejPSSZW.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/nXxCskUwdCxwxejPSSZW.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/nXxCskUwdCxwxejPSSZW.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/nXxCskUwdCxwxejPSSZW.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/nXxCskUwdCxwxejPSSZW.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/nXxCskUwdCxwxejPSSZW.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/nXxCskUwdCxwxejPSSZW.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/nXxCskUwdCxwxejPSSZW.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/nXxCskUwdCxwxejPSSZW.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/nXxCskUwdCxwxejPSSZW.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/nXxCskUwdCxwxejPSSZW.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/nXxCskUwdCxwxejPSSZW.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/nXxCskUwdCxwxejPSSZW.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/nXxCskUwdCxwxejPSSZW.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/nXxCskUwdCxwxejPSSZW.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/nXxCskUwdCxwxejPSSZW.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/nXxCskUwdCxwxejPSSZW.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/nXxCskUwdCxwxejPSSZW.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">Text Fragment matching at the first occurrence of "Text".</figcaption>
+</figure>
+<div class="w-aside w-aside--caution">
+<p><strong>Caution</strong>:  Note that text fragment matching is case-insensitive. </div></p>
+<p>Luckily there is a solution. In cases like this, I can specify a <code>prefix​-</code> and a <code>-suffix</code>. The
+word before the green code font &quot;text&quot; is &quot;the&quot;, and the word after is &quot;parameter&quot;. None of the
+other three occurrences of the word &quot;text&quot; has the same surrounding words. Armed with this
+knowledge, I can tweak the previous URL and add the <code>prefix-</code> and the <code>-suffix</code>. Like the other
+parameters, they, too, need to be percent-encoded and can contain more than one word.
+<a href="https://blog.chromium.org/2019/12/chrome-80-content-indexing-es-modules.html#:~:text=the-,text,-parameter"><code>https://blog.chromium.org/2019/12/chrome-80-content-indexing-es-modules.html<mark class="highlight-line highlight-line-active">#:~:text=the-,text,-parameter</mark></code></a>.
+To allow the parser to clearly identify the <code>prefix-</code> and the <code>-suffix</code>, they need to be separated
+from the <code>textStart</code> and the optional <code>textEnd</code> with a dash <code>-</code>.</p>
+<figure class="w-figure">
+  <img     alt=""          decoding="async"     height="203"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/J3L5BVSMmzGY6xdkabP6.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/J3L5BVSMmzGY6xdkabP6.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/J3L5BVSMmzGY6xdkabP6.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/J3L5BVSMmzGY6xdkabP6.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/J3L5BVSMmzGY6xdkabP6.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/J3L5BVSMmzGY6xdkabP6.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/J3L5BVSMmzGY6xdkabP6.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/J3L5BVSMmzGY6xdkabP6.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/J3L5BVSMmzGY6xdkabP6.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/J3L5BVSMmzGY6xdkabP6.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/J3L5BVSMmzGY6xdkabP6.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/J3L5BVSMmzGY6xdkabP6.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/J3L5BVSMmzGY6xdkabP6.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/J3L5BVSMmzGY6xdkabP6.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/J3L5BVSMmzGY6xdkabP6.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/J3L5BVSMmzGY6xdkabP6.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/J3L5BVSMmzGY6xdkabP6.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/J3L5BVSMmzGY6xdkabP6.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">Text Fragment matching at the desired occurrence of "text".</figcaption>
+</figure>
+<h3 id="the-full-syntax">The full syntax <a class="w-headline-link" href="#the-full-syntax">#</a></h3>
+<p>The full syntax of Text Fragments is shown below. (Square brackets indicate an optional parameter.)
+The values for all parameters need to be percent-encoded. This is especially important for the dash
+<code>-</code>, ampersand <code>&amp;</code>, and comma <code>,</code> characters, so they are not being interpreted as part of the text
+directive syntax.</p>
+<web-copy-code><pre class="language-bash"><code class="language-bash"><span class="token comment">#:~:text=[prefix-,]textStart[,textEnd][,-suffix]</span></code></pre>
+</web-copy-code><p>Each of <code>prefix-</code>, <code>textStart</code>, <code>textEnd</code>, and <code>-suffix</code> will only match text within a single
+<a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Block-level_elements#Elements" rel="noopener">block-level element</a>,
+but full <code>textStart,textEnd</code> ranges <em>can</em> span multiple blocks. For example,
+<code>:~:text=The quick,lazy dog</code> will fail to match in the following example, because the starting
+string &quot;The quick&quot; does not appear within a single, uninterrupted block-level element:</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span><br>  The<br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span><br>  quick brown fox<br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>jumped over the lazy dog<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><p>It does, however, match in this example:</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>The quick brown fox<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>jumped over the lazy dog<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><h3 id="creating-text-fragment-urls-with-a-browser-extension">Creating Text Fragment URLs with a browser extension <a class="w-headline-link" href="#creating-text-fragment-urls-with-a-browser-extension">#</a></h3>
+<p>Creating Text Fragments URLs by hand is tedious, especially when it comes to making sure they are
+unique. If you really want to, the specification has some tips and lists the exact
+<a href="https://wicg.github.io/ScrollToTextFragment/#generating-text-fragment-directives" rel="noopener">steps for generating Text Fragment URLs</a>.
+We provide an open-source browser extension called
+<a href="https://github.com/GoogleChromeLabs/link-to-text-fragment" rel="noopener">Link to Text Fragment</a> that lets you
+link to any text by selecting it, and then clicking &quot;Copy Link to Selected Text&quot; in the context
+menu. This extension is available for the following browsers:</p>
+<ul>
+<li><a href="https://chrome.google.com/webstore/detail/link-to-text-fragment/pbcodcjpfjdpcineamnnmbkkmkdpajjg" rel="noopener">Link to Text Fragment for Google Chrome</a></li>
+<li><a href="https://microsoftedge.microsoft.com/addons/detail/link-to-text-fragment/pmdldpbcbobaamgkpkghjigngamlolag" rel="noopener">Link to Text Fragment for Microsoft Edge</a></li>
+<li><a href="https://addons.mozilla.org/firefox/addon/link-to-text-fragment/" rel="noopener">Link to Text Fragment for Mozilla Firefox</a></li>
+<li><a href="https://apps.apple.com/app/link-to-text-fragment/id1532224396" rel="noopener">Link to Text Fragment for Apple Safari</a></li>
+</ul>
+<figure class="w-figure">
+  <img     alt=""          decoding="async"     height="500"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ASLtFCPoHvyTKrAtKAv4.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ASLtFCPoHvyTKrAtKAv4.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ASLtFCPoHvyTKrAtKAv4.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ASLtFCPoHvyTKrAtKAv4.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ASLtFCPoHvyTKrAtKAv4.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ASLtFCPoHvyTKrAtKAv4.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ASLtFCPoHvyTKrAtKAv4.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ASLtFCPoHvyTKrAtKAv4.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ASLtFCPoHvyTKrAtKAv4.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ASLtFCPoHvyTKrAtKAv4.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ASLtFCPoHvyTKrAtKAv4.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ASLtFCPoHvyTKrAtKAv4.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ASLtFCPoHvyTKrAtKAv4.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ASLtFCPoHvyTKrAtKAv4.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ASLtFCPoHvyTKrAtKAv4.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ASLtFCPoHvyTKrAtKAv4.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ASLtFCPoHvyTKrAtKAv4.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ASLtFCPoHvyTKrAtKAv4.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">
+    <a href="https://github.com/GoogleChromeLabs/link-to-text-fragment">
+      Link to Text Fragment
+    </a>
+    browser extension.
+  </figcaption>
+</figure>
+<h3 id="multiple-text-fragments-in-one-url">Multiple text fragments in one URL <a class="w-headline-link" href="#multiple-text-fragments-in-one-url">#</a></h3>
+<p>Note that multiple text fragments can appear in one URL. The particular text fragments need to be
+separated by an ampersand character <code>&amp;</code>. Here is an example link with three text fragments:
+<a href="https://blog.chromium.org/2019/12/chrome-80-content-indexing-es-modules.html#:~:text=Text%20URL%20Fragments&text=text,-parameter&text=:~:text=On%20islands,%20birds%20can%20contribute%20as%20much%20as%2060%25%20of%20a%20cat's%20diet"><code>https://blog.chromium.org/2019/12/chrome-80-content-indexing-es-modules.html<mark class="highlight-line highlight-line-active">#:~:text=Text%20URL%20Fragments&amp;text=text,-parameter&amp;text=:~:text=On%20islands,%20birds%20can%20contribute%20as%20much%20as%2060%25%20of%20a%20cat's%20diet<mark class="highlight-line highlight-line-active"></code></a>.</p>
+<figure class="w-figure">
+  <img     alt=""          decoding="async"     height="324"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ffsq7aoSoVd9q6r5cquY.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ffsq7aoSoVd9q6r5cquY.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ffsq7aoSoVd9q6r5cquY.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ffsq7aoSoVd9q6r5cquY.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ffsq7aoSoVd9q6r5cquY.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ffsq7aoSoVd9q6r5cquY.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ffsq7aoSoVd9q6r5cquY.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ffsq7aoSoVd9q6r5cquY.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ffsq7aoSoVd9q6r5cquY.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ffsq7aoSoVd9q6r5cquY.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ffsq7aoSoVd9q6r5cquY.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ffsq7aoSoVd9q6r5cquY.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ffsq7aoSoVd9q6r5cquY.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ffsq7aoSoVd9q6r5cquY.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ffsq7aoSoVd9q6r5cquY.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ffsq7aoSoVd9q6r5cquY.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ffsq7aoSoVd9q6r5cquY.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/ffsq7aoSoVd9q6r5cquY.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">Three text fragments in one URL.</figcaption>
+</figure>
+<h3 id="mixing-element-and-text-fragments">Mixing element and text fragments <a class="w-headline-link" href="#mixing-element-and-text-fragments">#</a></h3>
+<p>Traditional element fragments can be combined with text fragments. It is perfectly fine to have both
+in the same URL, for example, to provide a meaningful fallback in case the original text on the page
+changes, so that the text fragment does not match anymore. The URL
+<a href="https://blog.chromium.org/2019/12/chrome-80-content-indexing-es-modules.html#HTML1:~:text=Give%20us%20feedback%20in%20our%20Product%20Forums."><code>https://blog.chromium.org/2019/12/chrome-80-content-indexing-es-modules.html<mark class="highlight-line highlight-line-active">#HTML1:~:text=Give%20us%20feedback%20in%20our%20Product%20Forums.</mark></code></a>
+linking to the <em>Give us feedback in our
+<a href="http://support.google.com/bin/static.py?hl=en&amp;page=portal_groups.cs" rel="noopener">Product Forums</a></em> section
+contains both an element fragment (<code>HTML1</code>), as well as a text fragment
+(<code>text=Give%20us%20feedback%20in%20our%20Product%20Forums.</code>):</p>
+<figure class="w-figure">
+   <img     alt=""          decoding="async"     height="121"          loading="lazy"     sizes="(min-width: 237px) 237px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/JRKCM6Ihrq8sgRZRiymr.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/JRKCM6Ihrq8sgRZRiymr.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/JRKCM6Ihrq8sgRZRiymr.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/JRKCM6Ihrq8sgRZRiymr.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/JRKCM6Ihrq8sgRZRiymr.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/JRKCM6Ihrq8sgRZRiymr.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/JRKCM6Ihrq8sgRZRiymr.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/JRKCM6Ihrq8sgRZRiymr.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/JRKCM6Ihrq8sgRZRiymr.png?auto=format&w=474 474w"          width="237"   />
+  <figcaption class="w-figcaption">Linking with both element fragment and text fragment.</figcaption>
+</figure>
+<h3 id="the-fragment-directive">The fragment directive <a class="w-headline-link" href="#the-fragment-directive">#</a></h3>
+<p>There is one element of the syntax I have not explained yet: the fragment directive <code>:~:</code>. To avoid
+compatibility issues with existing URL element fragments as shown above, the
+<a href="https://wicg.github.io/ScrollToTextFragment/" rel="noopener">Text Fragments specification</a> introduces the fragment
+directive. The fragment directive is a portion of the URL fragment delimited by the code sequence
+<code>:~:</code>. It is reserved for user agent instructions, such as <code>text=</code>, and is stripped from the URL
+during loading so that author scripts cannot directly interact with it. User agent instructions are
+also called <em>directives</em>. In the concrete case, <code>text=</code> is therefore called a <em>text directive</em>.</p>
+<h3 id="feature-detection">Feature detection <a class="w-headline-link" href="#feature-detection">#</a></h3>
+<p>To detect support, test for the read-only <code>fragmentDirective</code> property on <code>document</code>. The fragment
+directive is a mechanism for URLs to specify instructions directed to the browser rather than the
+document. It is meant to avoid direct interaction with author script, so that future user agent
+instructions can be added without fear of introducing breaking changes to existing content. One
+potential example of such future additions could be translation hints.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token string">'fragmentDirective'</span> <span class="token keyword">in</span> document<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token comment">// Text Fragments is supported.</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><div class="w-aside w-aside--note">
+<p>From Chrome 80 to Chrome 85, the <code>fragmentDirective</code> property was defined on
+<code>Location.prototype</code>. For details on this change, see
+<a href="https://github.com/WICG/scroll-to-text-fragment/issues/130" rel="noopener">WICG/scroll-to-text-fragment#130</a>.</p>
+</div>
+<p>Feature detection is mainly intended for cases where links are dynamically generated (for example by
+search engines) to avoid serving text fragments links to browsers that do not support them.</p>
+<h3 id="styling-text-fragments">Styling text fragments <a class="w-headline-link" href="#styling-text-fragments">#</a></h3>
+<p>By default, browsers style text fragments the same way they style
+<a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/mark" rel="noopener"><code>mark</code></a> (typically black on yellow,
+the CSS <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value#system_colors" rel="noopener">system colors</a>
+for <code>mark</code>). The user-agent stylesheet contains CSS that looks like this:</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">:root::target-text</span> <span class="token punctuation">{</span><br>  <span class="token property">color</span><span class="token punctuation">:</span> MarkText<span class="token punctuation">;</span><br>  <span class="token property">background</span><span class="token punctuation">:</span> Mark<span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>As you can see, the browser exposes a pseudo selector
+<a href="https://drafts.csswg.org/css-pseudo/#selectordef-target-text" rel="noopener"><code>::target-text</code></a> that you can use to
+customize the applied highlighting. For example, you could design your text fragments to be black
+text on a red background. As always, be sure to
+<a href="https://developers.google.com/web/tools/chrome-devtools/accessibility/reference#contrast" rel="noopener">check the color contrast</a>
+so your override styling does not cause accessibility issues and make sure the highlighting actually
+visually stands out from the rest of the content.</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token selector">:root::target-text</span> <span class="token punctuation">{</span><br>  <span class="token property">color</span><span class="token punctuation">:</span> black<span class="token punctuation">;</span><br>  <span class="token property">background-color</span><span class="token punctuation">:</span> red<span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><h3 id="polyfillability">Polyfillability <a class="w-headline-link" href="#polyfillability">#</a></h3>
+<p>The Text Fragments feature can be polyfilled to some extent. We provide a
+<a href="https://github.com/GoogleChromeLabs/text-fragments-polyfill" rel="noopener">polyfill</a>, which is used internally by
+the <a href="https://github.com/GoogleChromeLabs/link-to-text-fragment" rel="noopener">extension</a>, for browsers that do not
+provide built-in support for Text Fragments where the functionality is implemented in JavaScript.</p>
+<h3 id="programmatic-text-fragment-link-generation">Programmatic Text Fragment link generation <a class="w-headline-link" href="#programmatic-text-fragment-link-generation">#</a></h3>
+<p>The <a href="https://github.com/GoogleChromeLabs/text-fragments-polyfill" rel="noopener">polyfill</a> contains a file
+<code>fragment-generation-utils.js</code> that you can import and use to generate Text Fragment links. This is
+outlined in the code sample below:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> <span class="token punctuation">{</span> generateFragment <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token keyword">import</span><span class="token punctuation">(</span><span class="token string">'https://unpkg.com/text-fragments-polyfill/dist/fragment-generation-utils.js'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token keyword">const</span> result <span class="token operator">=</span> <span class="token function">generateFragment</span><span class="token punctuation">(</span>window<span class="token punctuation">.</span><span class="token function">getSelection</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token keyword">if</span> <span class="token punctuation">(</span>result<span class="token punctuation">.</span>status <span class="token operator">===</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token keyword">let</span> url <span class="token operator">=</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>location<span class="token punctuation">.</span>origin<span class="token interpolation-punctuation punctuation">}</span></span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>location<span class="token punctuation">.</span>pathname<span class="token interpolation-punctuation punctuation">}</span></span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>location<span class="token punctuation">.</span>search<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span><br>  <span class="token keyword">const</span> fragment <span class="token operator">=</span> result<span class="token punctuation">.</span>fragment<span class="token punctuation">;</span><br>  <span class="token keyword">const</span> prefix <span class="token operator">=</span> fragment<span class="token punctuation">.</span>prefix <span class="token operator">?</span><br>    <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token function">encodeURIComponent</span><span class="token punctuation">(</span>fragment<span class="token punctuation">.</span>prefix<span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">-,</span><span class="token template-punctuation string">`</span></span> <span class="token operator">:</span><br>    <span class="token string">''</span><span class="token punctuation">;</span><br>  <span class="token keyword">const</span> suffix <span class="token operator">=</span> fragment<span class="token punctuation">.</span>suffix <span class="token operator">?</span><br>    <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">,-</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token function">encodeURIComponent</span><span class="token punctuation">(</span>fragment<span class="token punctuation">.</span>suffix<span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span> <span class="token operator">:</span><br>    <span class="token string">''</span><span class="token punctuation">;</span><br>  <span class="token keyword">const</span> textStart <span class="token operator">=</span> <span class="token function">encodeURIComponent</span><span class="token punctuation">(</span>fragment<span class="token punctuation">.</span>textStart<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token keyword">const</span> textEnd <span class="token operator">=</span> fragment<span class="token punctuation">.</span>textEnd <span class="token operator">?</span><br>    <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">,</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token function">encodeURIComponent</span><span class="token punctuation">(</span>fragment<span class="token punctuation">.</span>textEnd<span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span> <span class="token operator">:</span><br>    <span class="token string">''</span><span class="token punctuation">;</span><br>  url <span class="token operator">+=</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">#:~:text=</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>prefix<span class="token interpolation-punctuation punctuation">}</span></span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>textStart<span class="token interpolation-punctuation punctuation">}</span></span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>textEnd<span class="token interpolation-punctuation punctuation">}</span></span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>suffix<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span><br>  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>url<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><h3 id="obtaining-text-fragments-for-analytics-purposes">Obtaining Text Fragments for analytics purposes <a class="w-headline-link" href="#obtaining-text-fragments-for-analytics-purposes">#</a></h3>
+<p>Plenty of sites use the fragment for routing, which is why browsers strip out Text Fragments
+so as to not break those pages. There is an
+<a href="https://github.com/WICG/scroll-to-text-fragment/issues/128" rel="noopener">acknowledged need</a>
+to expose Text Fragments links to pages, for example, for analytics purposes,
+but the proposed solution is not implemented yet.
+As a workaround for now, you can use the code below to extract
+the desired information.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">new</span> <span class="token class-name">URL</span><span class="token punctuation">(</span>performance<span class="token punctuation">.</span><span class="token function">getEntries</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter"><span class="token punctuation">{</span> type <span class="token punctuation">}</span></span><span class="token punctuation">)</span> <span class="token operator">=></span> type <span class="token operator">===</span> <span class="token string">'navigate'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>name<span class="token punctuation">)</span><span class="token punctuation">.</span>hash<span class="token punctuation">;</span></code></pre>
+</web-copy-code><h3 id="security">Security <a class="w-headline-link" href="#security">#</a></h3>
+<p>Text fragment directives are invoked only on full (non-same-page) navigations that are the result of
+a
+<a href="https://html.spec.whatwg.org/multipage/interaction.html#tracking-user-activation" rel="noopener">user activation</a>.
+Additionally, navigations originating from a different origin than the destination will require the
+navigation to take place in a
+<a href="https://html.spec.whatwg.org/multipage/links.html#link-type-noopener" rel="noopener"><code>noopener</code></a> context, such
+that the destination page is known to be sufficiently isolated. Text fragment directives are only
+applied to the main frame. This means that text will not be searched inside iframes, and iframe
+navigation will not invoke a text fragment.</p>
+<h3 id="privacy">Privacy <a class="w-headline-link" href="#privacy">#</a></h3>
+<p>It is important that implementations of the Text Fragments specification do not leak whether a text
+fragment was found on a page or not. While element fragments are fully under the control of the
+original page author, text fragments can be created by anyone. Remember how in my example above
+there was no way to link to the <em>ECMAScript Modules in Web Workers</em> heading, since the <code>&lt;h1&gt;</code> did
+not have an <code>id</code>, but how anyone, including me, could just link to anywhere by carefully crafting
+the text fragment?</p>
+<p>Imagine I ran an evil ad network <code>evil-ads.example.com</code>. Further imagine that in one of my ad
+iframes I dynamically created a hidden cross-origin iframe to <code>dating.example.com</code> with a Text
+Fragment URL
+<code>dating.example.com<mark class="highlight-line highlight-line-active">#:~:text=Log%20Out</mark></code>
+once the user interacts with the ad. If the text &quot;Log Out&quot; is found, I know the victim is currently
+logged in to <code>dating.example.com</code>, which I could use for user profiling. Since a naive Text
+Fragments implementation might decide that a successful match should cause a focus switch, on
+<code>evil-ads.example.com</code> I could listen for the <code>blur</code> event and thus know when a match occurred. In
+Chrome, we have implemented Text Fragments in such a way that the above scenario cannot happen.</p>
+<p>Another attack might be to exploit network traffic based on scroll position. Assume I had access to
+network traffic logs of my victim, like as the admin of a company intranet. Now imagine there
+existed a long human resources document <em>What to Do If You Suffer From…</em> and then a list of
+conditions like <em>burn out</em>, <em>anxiety</em>, etc. I could place a tracking pixel next to each item on the
+list. If I then determine that loading the document temporally co-occurs with the loading of the
+tracking pixel next to, say, the <em>burn out</em> item, I can then, as the intranet admin, determine that
+an employee has clicked through on a text fragment link with <code>:~:text=burn%20out</code> that the employee
+may have assumed was confidential and not visible to anyone. Since this example is somewhat
+contrived to begin with and since its exploitation requires <em>very</em> specific preconditions to be met,
+the Chrome security team evaluated the risk of implementing scroll on navigation to be manageable.
+Other user agents may decide to show a manual scroll UI element instead.</p>
+<p>For sites that wish to opt-out, Chromium supports a
+<a href="https://wicg.github.io/document-policy/" rel="noopener">Document Policy</a>
+header value that they can send so user agents will not process Text Fragment URLs.</p>
+<web-copy-code><pre class="language-bash"><code class="language-bash">Document-Policy: force-load-at-top</code></pre>
+</web-copy-code><h2 id="disabling-text-fragments">Disabling text fragments <a class="w-headline-link" href="#disabling-text-fragments">#</a></h2>
+<p>The easiest way for disabling the feature is by using an extension that can inject HTTP response
+headers, for example,
+<a href="https://chrome.google.com/webstore/detail/modheader/idgpnmonknjnojddfkpgkljpfnnfcklj" rel="noopener">ModHeader</a>
+(not a Google product), to insert a response (<em>not</em> request) header as follows:</p>
+<web-copy-code><pre class="language-bash"><code class="language-bash">Document-Policy: force-load-at-top</code></pre>
+</web-copy-code><p>Another, more involved, way to opt out is by using the enterprise setting
+<a href="https://cloud.google.com/docs/chrome-enterprise/policies/?policy=ScrollToTextFragmentEnabled" rel="noopener"><code>ScrollToTextFragmentEnabled</code></a>.
+To do this on macOS, paste the command below in the terminal.</p>
+<web-copy-code><pre class="language-bash"><code class="language-bash">defaults <span class="token function">write</span> com.google.Chrome ScrollToTextFragmentEnabled -bool <span class="token boolean">false</span></code></pre>
+</web-copy-code><p>On Windows, follow the documentation on the
+<a href="https://support.google.com/chrome/a/answer/9131254?hl=en" rel="noopener">Google Chrome Enterprise Help</a> support
+site.</p>
+<div class="w-aside w-aside--warning">
+<p><strong>Warning</strong>:  Only try this when you know what you are doing. </div></p>
+<h2 id="text-fragments-in-web-search">Text fragments in web search <a class="w-headline-link" href="#text-fragments-in-web-search">#</a></h2>
+<p>For some searches, the search engine Google provides a quick answer or summary with a content
+snippet from a relevant website. These <em>featured snippets</em> are most likely to show up when a search
+is in the form of a question. Clicking a featured snippet takes the user directly to the featured
+snippet text on the source web page. This works thanks to automatically created Text Fragments URLs.</p>
+<figure class="w-figure">
+  <img     alt=""          decoding="async"     height="451"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/KbZgnGxZOOymLxYPZyGH.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/KbZgnGxZOOymLxYPZyGH.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/KbZgnGxZOOymLxYPZyGH.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/KbZgnGxZOOymLxYPZyGH.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/KbZgnGxZOOymLxYPZyGH.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/KbZgnGxZOOymLxYPZyGH.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/KbZgnGxZOOymLxYPZyGH.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/KbZgnGxZOOymLxYPZyGH.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/KbZgnGxZOOymLxYPZyGH.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/KbZgnGxZOOymLxYPZyGH.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/KbZgnGxZOOymLxYPZyGH.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/KbZgnGxZOOymLxYPZyGH.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/KbZgnGxZOOymLxYPZyGH.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/KbZgnGxZOOymLxYPZyGH.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/KbZgnGxZOOymLxYPZyGH.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/KbZgnGxZOOymLxYPZyGH.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/KbZgnGxZOOymLxYPZyGH.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/KbZgnGxZOOymLxYPZyGH.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">Google search engine results page showing a featured snippet. The status bar shows the Text Fragments URL.</figcaption>
+</figure>
+<figure class="w-figure">
+  <img     alt=""          decoding="async"     height="451"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/4Q7zk9xBnb2uw8GRaLnU.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/4Q7zk9xBnb2uw8GRaLnU.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/4Q7zk9xBnb2uw8GRaLnU.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/4Q7zk9xBnb2uw8GRaLnU.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/4Q7zk9xBnb2uw8GRaLnU.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/4Q7zk9xBnb2uw8GRaLnU.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/4Q7zk9xBnb2uw8GRaLnU.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/4Q7zk9xBnb2uw8GRaLnU.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/4Q7zk9xBnb2uw8GRaLnU.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/4Q7zk9xBnb2uw8GRaLnU.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/4Q7zk9xBnb2uw8GRaLnU.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/4Q7zk9xBnb2uw8GRaLnU.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/4Q7zk9xBnb2uw8GRaLnU.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/4Q7zk9xBnb2uw8GRaLnU.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/4Q7zk9xBnb2uw8GRaLnU.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/4Q7zk9xBnb2uw8GRaLnU.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/4Q7zk9xBnb2uw8GRaLnU.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/4Q7zk9xBnb2uw8GRaLnU.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">After clicking through, the relevant section of the page is scrolled into view.</figcaption>
+</figure>
+<h2 id="conclusion">Conclusion <a class="w-headline-link" href="#conclusion">#</a></h2>
+<p>Text Fragments URL is a powerful feature to link to arbitrary text on webpages. The scholarly
+community can use it to provide highly accurate citation or reference links. Search engines can use
+it to deeplink to text results on pages. Social networking sites can use it to let users share
+specific passages of a webpage rather than inaccessible screenshots. I hope you start
+<a href="https://blog.chromium.org/2019/12/chrome-80-content-indexing-es-modules.html#:~:text=Text%20URL%20Fragments&amp;text=text,-parameter&amp;text=:~:text=On%20islands,%20birds%20can%20contribute%20as%20much%20as%2060%25%20of%20a%20cat's%20diet" rel="noopener">using Text Fragment URLs</a>
+and find them as useful as I do. Be sure to install the
+<a href="https://github.com/GoogleChromeLabs/link-to-text-fragment" rel="noopener">Link to Text Fragment</a> browser
+extension.</p>
+<h2 id="related-links">Related links <a class="w-headline-link" href="#related-links">#</a></h2>
+<ul>
+<li><a href="https://wicg.github.io/scroll-to-text-fragment/" rel="noopener">Spec draft</a></li>
+<li><a href="https://github.com/w3ctag/design-reviews/issues/392" rel="noopener">TAG Review</a></li>
+<li><a href="https://chromestatus.com/feature/4733392803332096" rel="noopener">Chrome Platform Status entry</a></li>
+<li><a href="https://crbug.com/919204" rel="noopener">Chrome tracking bug</a></li>
+<li><a href="https://groups.google.com/a/chromium.org/d/topic/blink-dev/zlLSxQ9BA8Y/discussion" rel="noopener">Intent to Ship thread</a></li>
+<li><a href="https://lists.webkit.org/pipermail/webkit-dev/2019-December/030978.html" rel="noopener">WebKit-Dev thread</a></li>
+<li><a href="https://github.com/mozilla/standards-positions/issues/194" rel="noopener">Mozilla standards position thread</a></li>
+</ul>
+<h2 id="acknowledgements">Acknowledgements <a class="w-headline-link" href="#acknowledgements">#</a></h2>
+<p>Text Fragments was implemented and specified by <a href="https://github.com/nickburris" rel="noopener">Nick Burris</a> and
+<a href="https://github.com/bokand" rel="noopener">David Bokan</a>, with contributions from
+<a href="https://github.com/grantjwang" rel="noopener">Grant Wang</a>. Thanks to <a href="https://github.com/jpmedley" rel="noopener">Joe Medley</a> for
+the thorough review of this article. Hero image by <a href="https://unsplash.com/@grakozy" rel="noopener">Greg Rakozy</a> on
+<a href="https://unsplash.com/photos/oMpAz-DN-9I" rel="noopener">Unsplash</a>.</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/capabilities/">Capabilities</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>May 17, 2021</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/text-fragments/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions="api"></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

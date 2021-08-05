@@ -1,0 +1,801 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=de885dd80e383">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Better JS scheduling with isInputPending()</title>
+<meta name="description" content="A new JavaScript API that may help you avoid the trade-off between load performance and input responsiveness. " />
+
+<link rel="canonical" href="https://web.dev/isinputpending/" />
+
+<meta itemprop="name" content="Better JS scheduling with isInputPending()" />
+<meta itemprop="description" content="A new JavaScript API that may help you avoid the trade-off between load performance and input responsiveness. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/Jlg1NJbRJnJN4VgubXh4.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/isinputpending/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Better JS scheduling with isInputPending()" />
+<meta property="og:description" content="A new JavaScript API that may help you avoid the trade-off between load performance and input responsiveness. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/Jlg1NJbRJnJN4VgubXh4.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="A traffic sign that says 'GIVE WAY'." />
+<meta property="tag" content="javascript" />
+<meta property="tag" content="performance" />
+<meta property="tag" content="rendering" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Better JS scheduling with isInputPending()" />
+<meta name="twitter:description" content="A new JavaScript API that may help you avoid the trade-off between load performance and input responsiveness. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/Jlg1NJbRJnJN4VgubXh4.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=2bedc4e9ca4a6', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=d30f804cd4c78', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="A traffic sign that says &#x27;GIVE WAY&#x27;."     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/Jlg1NJbRJnJN4VgubXh4.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/Jlg1NJbRJnJN4VgubXh4.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/Jlg1NJbRJnJN4VgubXh4.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/Jlg1NJbRJnJN4VgubXh4.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/Jlg1NJbRJnJN4VgubXh4.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/Jlg1NJbRJnJN4VgubXh4.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/Jlg1NJbRJnJN4VgubXh4.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/Jlg1NJbRJnJN4VgubXh4.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/Jlg1NJbRJnJN4VgubXh4.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/Jlg1NJbRJnJN4VgubXh4.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/Jlg1NJbRJnJN4VgubXh4.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/Jlg1NJbRJnJN4VgubXh4.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/Jlg1NJbRJnJN4VgubXh4.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/Jlg1NJbRJnJN4VgubXh4.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/Jlg1NJbRJnJN4VgubXh4.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/Jlg1NJbRJnJN4VgubXh4.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/Jlg1NJbRJnJN4VgubXh4.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/Jlg1NJbRJnJN4VgubXh4.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#better-js-scheduling-with-isinputpending()" class="w-toc__header--link">
+        Better JS scheduling with isInputPending()
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#browser-compatibility">Browser compatibility</a></li><li><a href="#background">Background</a></li><li><a href="#example:-a-yieldier-scheduler">Example: a yieldier scheduler</a></li><li><a href="#yielding-isn't-always-bad">Yielding isn't always bad</a></li><li><a href="#feedback">Feedback</a></li><li><a href="#conclusion">Conclusion</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@n8schloss | @acomminos"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="better-js-scheduling-with-isinputpending()" class="w-article-header__headline">Better JS scheduling with isInputPending()</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          <p>A new JavaScript API that may help you avoid the trade-off between load performance and input responsiveness.</p>
+
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Nov 19, 2020</time>
+          
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/nateschloss/"><img     alt="Nate Schloss"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/BS9rSjcVynuKi2SX5Whu.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/BS9rSjcVynuKi2SX5Whu.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/BS9rSjcVynuKi2SX5Whu.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/BS9rSjcVynuKi2SX5Whu.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/BS9rSjcVynuKi2SX5Whu.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/BS9rSjcVynuKi2SX5Whu.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/nateschloss/">Nate Schloss</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/n8schloss"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/n8schloss">GitHub</a>
+      </li>
+      
+      
+    </ul>
+  </div>
+</div>
+          
+            <div class="w-author">
+  <a href="/authors/andrewcomminos/"><img     alt="Andrew Comminos"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/ykAIcNpbomeiulF6Kw7P.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/ykAIcNpbomeiulF6Kw7P.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/ykAIcNpbomeiulF6Kw7P.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/ykAIcNpbomeiulF6Kw7P.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/ykAIcNpbomeiulF6Kw7P.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/ykAIcNpbomeiulF6Kw7P.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/andrewcomminos/">Andrew Comminos</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/acomminos"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/acomminos">GitHub</a>
+      </li>
+      
+      
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>Loading fast is hard. Sites that leverage JS to render their content currently
+have to make a trade-off between load performance and input
+responsiveness: either perform all the work needed for display
+all at once (better load performance, worse input responsiveness), or
+chunk the work into smaller tasks in order to remain responsive to
+input and paint (worse load performance, better input
+responsiveness).</p>
+<p>To eliminate the need to make this trade-off, Facebook proposed and implemented
+the <code>isInputPending()</code> API in Chromium in order to improve responsiveness without
+yielding. Based on origin trial feedback, we've made a number of updates to the
+API, and are happy to announce that the API is now shipping by default in Chromium
+87!</p>
+<h2 id="browser-compatibility">Browser compatibility <a class="w-headline-link" href="#browser-compatibility">#</a></h2>
+<p><code>isInputPending()</code> is shipping in Chromium-based browsers starting in version 87.
+No other browser has signaled an intent to ship the API.</p>
+<h2 id="background">Background <a class="w-headline-link" href="#background">#</a></h2>
+<div class="w-aside w-aside--note">
+<p>For the full background, check out our Facebook Engineering blog post,
+<a href="https://engineering.fb.com/developer-tools/isinputpending-api/" rel="noopener">Faster input events with Facebook's first browser API
+contribution</a>.</p>
+</div>
+<p>Most work in today's JS ecosystem gets done on a single thread: the main thread.
+This provides a robust execution model to developers, but the user experience
+(responsiveness in particular) can suffer drastically if script executes for a long
+time. If the page is doing a lot of work while an input event is fired,
+for instance, the page won't handle the click input event until after that work
+completes.</p>
+<p>The current best practice is to deal with this issue by breaking the
+JavaScript up into smaller blocks. While the page is loading, the page can run a
+bit of JavaScript, and then yield and pass control back to the browser. The
+browser can then check its input event queue and see whether there is anything
+it needs to tell the page about. Then the browser can go back to running the
+JavaScript blocks as they get added. This helps, but it can cause other issues.</p>
+<p>Each time the page yields control back to the browser, it takes some time for
+the browser to check its input event queue, process events, and pick up the next
+JavaScript block. While the browser responds to events quicker, the overall
+loading time of the page gets slowed down. And if we yield too often, the page
+loads too slowly. If we yield less often, it takes longer for the browser to
+respond to user events, and people get frustrated. Not fun.</p>
+<img     alt="A diagram showing that when you run long JS tasks, the browser has less time to dispatch events."          decoding="async"     height="450"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/C2JMVL3EhgBqne5DkrhN.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/C2JMVL3EhgBqne5DkrhN.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/C2JMVL3EhgBqne5DkrhN.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/C2JMVL3EhgBqne5DkrhN.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/C2JMVL3EhgBqne5DkrhN.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/C2JMVL3EhgBqne5DkrhN.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/C2JMVL3EhgBqne5DkrhN.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/C2JMVL3EhgBqne5DkrhN.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/C2JMVL3EhgBqne5DkrhN.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/C2JMVL3EhgBqne5DkrhN.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/C2JMVL3EhgBqne5DkrhN.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/C2JMVL3EhgBqne5DkrhN.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/C2JMVL3EhgBqne5DkrhN.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/C2JMVL3EhgBqne5DkrhN.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/C2JMVL3EhgBqne5DkrhN.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/C2JMVL3EhgBqne5DkrhN.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/C2JMVL3EhgBqne5DkrhN.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/C2JMVL3EhgBqne5DkrhN.png?auto=format&w=1600 1600w"          width="800"   />
+<p>At Facebook, we wanted to see what things would look like if we came up with a
+new approach for loading that would eliminate this frustrating trade-off. We
+reached out to our friends at Chrome about this, and came up with the proposal
+for <code>isInputPending()</code>. The <code>isInputPending()</code> API is the first to use the concept of
+interrupts for user inputs on the web, and allows for JavaScript to be
+able to check for input without yielding to the browser.</p>
+<img     alt="A diagram showing that isInputPending() allows your JS to check if there&#x27;s pending user input, without completely yielding execution back to the browser."          decoding="async"     height="450"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/6Et3ZusgDbXrdTIfenRD.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/6Et3ZusgDbXrdTIfenRD.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/6Et3ZusgDbXrdTIfenRD.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/6Et3ZusgDbXrdTIfenRD.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/6Et3ZusgDbXrdTIfenRD.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/6Et3ZusgDbXrdTIfenRD.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/6Et3ZusgDbXrdTIfenRD.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/6Et3ZusgDbXrdTIfenRD.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/6Et3ZusgDbXrdTIfenRD.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/6Et3ZusgDbXrdTIfenRD.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/6Et3ZusgDbXrdTIfenRD.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/6Et3ZusgDbXrdTIfenRD.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/6Et3ZusgDbXrdTIfenRD.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/6Et3ZusgDbXrdTIfenRD.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/6Et3ZusgDbXrdTIfenRD.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/6Et3ZusgDbXrdTIfenRD.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/6Et3ZusgDbXrdTIfenRD.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/6Et3ZusgDbXrdTIfenRD.png?auto=format&w=1600 1600w"          width="800"   />
+<p>Since there was interest in the API, we partnered with our colleagues at Chrome
+to implement and ship the feature in Chromium. With help from the Chrome
+engineers, we got the patches landed behind an <a href="/origin-trials/">origin trial</a>
+(which is a way for Chrome to test changes and get feedback from developers
+before fully releasing an API).</p>
+<p>We've now taken feedback from the origin trial and from the other members of the
+W3C Web Performance Working Group and implemented changes to the API.</p>
+<h2 id="example:-a-yieldier-scheduler">Example: a yieldier scheduler <a class="w-headline-link" href="#example:-a-yieldier-scheduler">#</a></h2>
+<p>Suppose that you've got a bunch of display-blocking work to do to load your
+page, for example generating markup from components, factoring out primes, or
+just drawing a cool loading spinner. Each one of these is broken into a discrete
+work item. Using the scheduler pattern, let's sketch out how we might process
+our work in a hypothetical <code>processWorkQueue()</code> function:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> <span class="token constant">DEADLINE</span> <span class="token operator">=</span> performance<span class="token punctuation">.</span><span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token constant">QUANTUM</span><span class="token punctuation">;</span><br><span class="token keyword">while</span> <span class="token punctuation">(</span>workQueue<span class="token punctuation">.</span>length <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token keyword">if</span> <span class="token punctuation">(</span>performance<span class="token punctuation">.</span><span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">>=</span> <span class="token constant">DEADLINE</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token comment">// Yield the event loop if we're out of time.</span><br>    <span class="token function">setTimeout</span><span class="token punctuation">(</span>processWorkQueue<span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token keyword">return</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br>  <span class="token keyword">let</span> job <span class="token operator">=</span> workQueue<span class="token punctuation">.</span><span class="token function">shift</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  job<span class="token punctuation">.</span><span class="token function">execute</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>By invoking <code>processWorkQueue()</code> later in a new macrotask via <code>setTimeout()</code>, we
+give the browser the ability to remain somewhat responsive to input (it can
+run event handlers before work resumes) while still managing to run relatively
+uninterrupted. Though, we might get descheduled for a long time by other work
+that wants control of the event loop, or get up to an extra <code>QUANTUM</code> milliseconds
+of event latency.</p>
+<div class="w-aside w-aside--note">
+<p>A good value for <code>QUANTUM</code> (under the <a href="/rail/">RAIL model</a>) is &lt;50ms,
+depending on the type of work being done. This value is primarily what
+dictates the tradeoff between throughput and latency.</p>
+</div>
+<p>This is okay, but can we do better? Absolutely!</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> <span class="token constant">DEADLINE</span> <span class="token operator">=</span> performance<span class="token punctuation">.</span><span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token constant">QUANTUM</span><span class="token punctuation">;</span><br><span class="token keyword">while</span> <span class="token punctuation">(</span>workQueue<span class="token punctuation">.</span>length <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token keyword">if</span> <span class="token punctuation">(</span>navigator<span class="token punctuation">.</span>scheduling<span class="token punctuation">.</span><span class="token function">isInputPending</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">||</span> performance<span class="token punctuation">.</span><span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">>=</span> <span class="token constant">DEADLINE</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token comment">// Yield if we have to handle an input event, or we're out of time.</span><br>    <span class="token function">setTimeout</span><span class="token punctuation">(</span>processWorkQueue<span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token keyword">return</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br>  <span class="token keyword">let</span> job <span class="token operator">=</span> workQueue<span class="token punctuation">.</span><span class="token function">shift</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  job<span class="token punctuation">.</span><span class="token function">execute</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>By introducing a call to <code>navigator.scheduling.isInputPending()</code>, we're able to
+respond to input quicker while still ensuring that our display-blocking work
+executes uninterrupted otherwise. If we're not interested in handling anything
+other than input (e.g. painting) until work is complete, we can handily increase
+the length of <code>QUANTUM</code> as well.</p>
+<p>By default, &quot;continuous&quot; events are not returned from <code>isInputPending()</code>. These
+include <code>mousemove</code>, <code>pointermove</code>, and others. If you're interested in yielding for
+these as well, no problem. By providing a dictionary to <code>isInputPending()</code> with
+<code>includeContinuous</code> set to <code>true</code>, we're good to go:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> <span class="token constant">DEADLINE</span> <span class="token operator">=</span> performance<span class="token punctuation">.</span><span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token constant">QUANTUM</span><span class="token punctuation">;</span><br><span class="token keyword">const</span> options <span class="token operator">=</span> <span class="token punctuation">{</span> includeContinuous<span class="token operator">:</span> <span class="token boolean">true</span> <span class="token punctuation">}</span><span class="token punctuation">;</span><br><span class="token keyword">while</span> <span class="token punctuation">(</span>workQueue<span class="token punctuation">.</span>length <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token keyword">if</span> <span class="token punctuation">(</span>navigator<span class="token punctuation">.</span>scheduling<span class="token punctuation">.</span><span class="token function">isInputPending</span><span class="token punctuation">(</span>options<span class="token punctuation">)</span> <span class="token operator">||</span> performance<span class="token punctuation">.</span><span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">>=</span> <span class="token constant">DEADLINE</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token comment">// Yield if we have to handle an input event (any of them!), or we're out of time.</span><br>    <span class="token function">setTimeout</span><span class="token punctuation">(</span>processWorkQueue<span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token keyword">return</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br>  <span class="token keyword">let</span> job <span class="token operator">=</span> workQueue<span class="token punctuation">.</span><span class="token function">shift</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  job<span class="token punctuation">.</span><span class="token function">execute</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>That's it! Frameworks like React are building <code>isInputPending()</code> support into their
+core scheduling libraries using similar logic. Hopefully, this will lead
+developers who use these frameworks to be able to benefit from <code>isInputPending()</code>
+behind the scenes without significant rewrites.</p>
+<h2 id="yielding-isn't-always-bad">Yielding isn't always bad <a class="w-headline-link" href="#yielding-isn't-always-bad">#</a></h2>
+<p>It's worth noting that yielding less isn't the right solution for every use
+case. There are many reasons to return control to the browser other than to
+process input events, such as to perform rendering and execute other scripts on
+the page.</p>
+<p>There exist cases where the browser isn't able to properly attribute pending
+input events. In particular, setting complex clips and masks for cross-origin
+iframes may report false negatives (i.e. <code>isInputPending()</code> may unexpectedly return
+false when targeting these frames). Be sure that you're yielding often enough if
+your site does require interactions with stylized subframes.</p>
+<p>Be mindful of other pages that share an event loop, as well. On platforms such
+as Chrome for Android, it's quite common for multiple origins to share an event
+loop. <code>isInputPending()</code> will never return <code>true</code> if input is dispatched to a
+cross-origin frame, and thus backgrounded pages may interfere with the
+responsiveness of foreground pages. You may wish to reduce, postpone, or yield
+more often when doing work in the background using the <a href="https://www.w3.org/TR/page-visibility-2/" rel="noopener">Page Visibility
+API</a>.</p>
+<p>We encourage you to use <code>isInputPending()</code> with discretion. If there isn't
+user-blocking work to be done, then be kind to others on the event loop by
+yielding more frequently. <a href="/long-tasks-devtools/">Long tasks can be
+harmful</a>.</p>
+<h2 id="feedback">Feedback <a class="w-headline-link" href="#feedback">#</a></h2>
+<ul>
+<li>Leave feedback on the spec in the
+<a href="https://github.com/WICG/is-input-pending" rel="noopener">is-input-pending</a> repository.</li>
+<li>Contact <a href="https://twitter.com/acomminos" rel="noopener">@acomminos</a> (one of the spec authors)
+on Twitter.</li>
+</ul>
+<h2 id="conclusion">Conclusion <a class="w-headline-link" href="#conclusion">#</a></h2>
+<p>We're excited that <code>isInputPending()</code> is launching, and that developers are able
+to start using it today. This API is the first time that Facebook has built a
+new web API and taken it from idea incubation to standards proposal to actually
+shipping in a browser. We'd like to thank everyone who helped us get to this
+point, and give a special shoutout to everyone at Chrome who helped us flesh out
+this idea and get it shipped!</p>
+<p>Hero photo by <a href="https://unsplash.com/@whmii" rel="noopener">Will H McMahan</a> on
+<a href="https://unsplash.com" rel="noopener">Unsplash</a>.</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/javascript/">JavaScript</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/performance/">Performance</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/rendering/">Rendering</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Nov 19, 2020</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/isinputpending/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions="api"></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

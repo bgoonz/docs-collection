@@ -1,0 +1,801 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=1ea6e0ac1ecae">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Going beyond images with basic video for the web</title>
+<meta name="description" content="Research shows that web video lead to higher engagement and sales. Even if you haven't added video to your sites yet, it's just a matter of time until you do. " />
+
+<link rel="canonical" href="https://web.dev/video-basics/" />
+
+<meta itemprop="name" content="Going beyond images with basic video for the web" />
+<meta itemprop="description" content="Research shows that web video lead to higher engagement and sales. Even if you haven't added video to your sites yet, it's just a matter of time until you do. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/ZzDrBdBMFxBtALr0uCz6.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/video-basics/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Going beyond images with basic video for the web" />
+<meta property="og:description" content="Research shows that web video lead to higher engagement and sales. Even if you haven't added video to your sites yet, it's just a matter of time until you do. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/ZzDrBdBMFxBtALr0uCz6.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="A description of the hero image for screen reader users." />
+<meta property="tag" content="media" />
+<meta property="tag" content="video" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Going beyond images with basic video for the web" />
+<meta name="twitter:description" content="Research shows that web video lead to higher engagement and sales. Even if you haven't added video to your sites yet, it's just a matter of time until you do. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/ZzDrBdBMFxBtALr0uCz6.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=88d212659012e', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=67d8a3e358346', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="A description of the hero image for screen reader users."     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/ZzDrBdBMFxBtALr0uCz6.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/ZzDrBdBMFxBtALr0uCz6.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/ZzDrBdBMFxBtALr0uCz6.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/ZzDrBdBMFxBtALr0uCz6.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/ZzDrBdBMFxBtALr0uCz6.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/ZzDrBdBMFxBtALr0uCz6.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/ZzDrBdBMFxBtALr0uCz6.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/ZzDrBdBMFxBtALr0uCz6.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/ZzDrBdBMFxBtALr0uCz6.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/ZzDrBdBMFxBtALr0uCz6.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/ZzDrBdBMFxBtALr0uCz6.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/ZzDrBdBMFxBtALr0uCz6.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/ZzDrBdBMFxBtALr0uCz6.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/ZzDrBdBMFxBtALr0uCz6.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/ZzDrBdBMFxBtALr0uCz6.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/ZzDrBdBMFxBtALr0uCz6.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/ZzDrBdBMFxBtALr0uCz6.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/ZzDrBdBMFxBtALr0uCz6.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#going-beyond-images-with-basic-video-for-the-web" class="w-toc__header--link">
+        Going beyond images with basic video for the web
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#the-lessvideogreater-tag">The &lt;video&gt; tag</a></li><li><a href="#the-lesssourcegreater-tag">The &lt;source&gt; tag</a></li><li><a href="#the-preload-attribute">The preload attribute</a></li><li><a href="#preload'auto'">preload='auto'</a></li><li><a href="#preload'metadata'">preload='metadata'</a></li><li><a href="#preload'none'">preload='none'</a></li><li><a href="#poster">poster</a></li><li><a href="#playback-controls">Playback controls</a></li><li><a href="#muted">muted</a></li><li><a href="#loop">loop</a></li><li><a href="#autoplaying-video">Autoplaying video</a></li><li><a href="#conclusion">Conclusion</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@dougsillars"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="going-beyond-images-with-basic-video-for-the-web" class="w-article-header__headline">Going beyond images with basic video for the web</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          Learn basic video. Increase engagement.
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Sep 3, 2019</time>
+          
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/dougsillars/"><img     alt="Doug Sillars"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/pl93DWDPXm3Jkz7V0Lnt.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/pl93DWDPXm3Jkz7V0Lnt.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/pl93DWDPXm3Jkz7V0Lnt.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/pl93DWDPXm3Jkz7V0Lnt.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/pl93DWDPXm3Jkz7V0Lnt.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/pl93DWDPXm3Jkz7V0Lnt.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/dougsillars/">Doug Sillars</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/dougsillars"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/Dougsillars">GitHub</a>
+      </li>
+      
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://dougsillars.com">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>Are you thinking about adding video to your website? As devices and network
+connections have become faster and more powerful, you can move beyond images and
+add video to your toolchest of techniques to build the web.
+<a href="https://www.foodbloggerpro.com/blog/how-we-improved-our-landing-page-conversion-rate-by-138/" rel="noopener">Research
+shows</a>
+that websites with video lead to higher engagement and sales. So even if you
+haven't added video to your sites yet, it's probably just a matter of time
+until you do.</p>
+<p>In all likelihood, the video files you add to your site will be the largest
+files that are downloaded. For that reason, it's extremely important to ensure
+that the files are built for fast and steady playback to all of your customers.
+Even though video can increase engagement and customer satisfaction, a video
+that doesn't play or stalls during playback can lead to customer frustration.
+This post focuses on using the HTML5 <code>&lt;video&gt;</code> tag for delivering video, and
+therefore will not cover streaming video.</p>
+<p>So let's get started!</p>
+<h2 id="the-lessvideogreater-tag">The &lt;video&gt; tag <a class="w-headline-link" href="#the-lessvideogreater-tag">#</a></h2>
+<p>It seems obvious, right? To add video, you have to add the <code>&lt;video&gt;</code> tag, point to a
+source, and then you're off to the races!</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>video</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>myVideo.mp4<span class="token punctuation">"</span></span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><p>And, you're right. At the highest level, this is all you need to add a video to
+the web. But there are a lot of attributes that you can add to the video tag to
+improve the layout and delivery of the video.</p>
+<h2 id="the-lesssourcegreater-tag">The &lt;source&gt; tag <a class="w-headline-link" href="#the-lesssourcegreater-tag">#</a></h2>
+<p>Perhaps the best way to improve the delivery of video on the web is to optimize
+the files that are delivered to the browser. The way to do this is using the
+<code>&lt;source&gt;</code> tag:</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>video</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>source</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>myWebmVideo.webm<span class="token punctuation">"</span></span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>video/webm<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>source</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>myh265Video.mp4<span class="token punctuation">"</span></span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>video/mp4<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>source</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>myh264Video.mp4<span class="token punctuation">"</span></span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>video/mp4<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>video</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><p>This references three separate source files. The browser starts at the top, and
+picks the first format and codec that it can use. In the video world, the file
+format, usually called the container, can be saved with different codecs, each
+with different attributes. (<a href="https://developers.google.com/web/fundamentals/media/manipulating/applications" rel="noopener">More on this
+here</a>.)
+In the example above, the first choice is the WebM format (<a href="https://www.webmproject.org/about/" rel="noopener">which can be encoded
+with VP8 or VP9 codecs</a>), and is supported
+(at the time of writing) by 78% of <a href="https://caniuse.com/#search=webm" rel="noopener">global
+users</a>. The second choice is the H.265
+codec of mp4, which is supported on <a href="https://caniuse.com/#search=h265" rel="noopener">iOS and newer
+Macs</a>. These codecs are newer and have
+improved data compression, while delivering the same quality video as older
+video formats.</p>
+<p>The final choice in our list is H.264 mp4, which boasts support on 92% of all
+<a href="https://caniuse.com/#search=h264" rel="noopener">global
+users</a>,
+but is an older format, and as such, is generally a lot larger than WebM or H.265
+videos. In one example, you can see the difference for a two minute movie:</p>
+<div class="w-table-wrapper">
+  <table>
+    <thead>
+      <tr>
+        <th>Codec</th>
+        <th>File size</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th>VP8</th>
+        <th>5.5 MB</th>
+      </tr>
+      <tr>
+        <th>VP9</th>
+        <th>4.2 MB</th>
+      </tr>
+      <tr>
+        <th>H.265</th>
+        <th>5.4 MB</th>
+      </tr>
+      <tr>
+        <th>H.264</th>
+        <th>16.1 MB</th>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<p>Delivering files that are smaller is the best performance optimization you can
+make to better deliver your videos. When a smaller video is downloaded, video
+playback occurs sooner, and the video buffer fills up faster. This leads to
+fewer stalls during video playback. Additionally, server load is
+decreased, which makes up for the increased storage requirements of multiple
+video files.</p>
+<h2 id="the-preload-attribute">The preload attribute <a class="w-headline-link" href="#the-preload-attribute">#</a></h2>
+<p>Videos cannot begin playback until there is some video downloaded and stored
+locally. Using the preload attribute, you can control how much video is
+downloaded on page load. There are three values for the preload attribute:
+<code>auto</code>, <code>metadata</code>, and <code>none</code>.</p>
+<h3 id="preload'auto'">preload='auto' <a class="w-headline-link" href="#preload'auto'">#</a></h3>
+<p>If <code>'auto'</code> is used, the entire video will be downloaded, no matter if
+the user presses play or not. This enables fast video playback as the video is
+downloaded locally before the user presses play. From a data usage (and server
+load perspective) this should only be used when it is highly probable that the
+video is to be watched. Otherwise all the data of a full video download will be
+wasted.</p>
+<h3 id="preload'metadata'">preload='metadata' <a class="w-headline-link" href="#preload'metadata'">#</a></h3>
+<p>This is the default setting for preload on Chrome and Safari. When <code>'metadata'</code>
+is used, the first 3% of the video is downloaded. Though this shares caveats
+with <code>'auto'</code>, downloading just 3% of the video holds a much smaller server/data
+usage cost than the entire video, while still ensuring a portion of the video is
+stored locally for fast video startup.</p>
+<h3 id="preload'none'">preload='none' <a class="w-headline-link" href="#preload'none'">#</a></h3>
+<p>This saves the most data, but will lead to slower video startup when play is
+pressed, because as the setting states, zero kilobytes of the video is
+preloaded locally on the device. For videos that are present, but unlikely to
+be played, this is the appropriate setting. This might also be used if the user
+has enabled <a href="https://blog.chromium.org/2019/04/data-saver-is-now-lite-mode.html" rel="noopener">Lite mode</a> in their browser.</p>
+<h2 id="poster">poster <a class="w-headline-link" href="#poster">#</a></h2>
+<p>You may want to have a poster image that displays over the video
+window before the video starts playing:</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>video</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>myVideo.mp4<span class="token punctuation">"</span></span> <span class="token attr-name">poster</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>/image/myVideoImage.jpg<span class="token punctuation">"</span></span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><figure class="w-figure">
+  <img     alt="A video without a poster shows a black screen before it starts."          decoding="async"     height="269"          loading="lazy"     sizes="(min-width: 478px) 478px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/g25bdsYqmAWM39KhjGTj.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/g25bdsYqmAWM39KhjGTj.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/g25bdsYqmAWM39KhjGTj.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/g25bdsYqmAWM39KhjGTj.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/g25bdsYqmAWM39KhjGTj.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/g25bdsYqmAWM39KhjGTj.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/g25bdsYqmAWM39KhjGTj.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/g25bdsYqmAWM39KhjGTj.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/g25bdsYqmAWM39KhjGTj.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/g25bdsYqmAWM39KhjGTj.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/g25bdsYqmAWM39KhjGTj.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/g25bdsYqmAWM39KhjGTj.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/g25bdsYqmAWM39KhjGTj.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/g25bdsYqmAWM39KhjGTj.png?auto=format&w=956 956w"          width="478"   />
+</figure>
+<figure class="w-compare"><p class="w-compare__label w-compare__label--worse">No poster image</p>
+<p>A video without a poster shows a black screen before it starts.</p>
+</figure>
+<figure class="w-figure">
+  <img     alt="A video with a poster is much more engaging."          decoding="async"     height="269"          loading="lazy"     sizes="(min-width: 478px) 478px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/QVLwk1zEOzqllD8eY3pc.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/QVLwk1zEOzqllD8eY3pc.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/QVLwk1zEOzqllD8eY3pc.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/QVLwk1zEOzqllD8eY3pc.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/QVLwk1zEOzqllD8eY3pc.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/QVLwk1zEOzqllD8eY3pc.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/QVLwk1zEOzqllD8eY3pc.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/QVLwk1zEOzqllD8eY3pc.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/QVLwk1zEOzqllD8eY3pc.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/QVLwk1zEOzqllD8eY3pc.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/QVLwk1zEOzqllD8eY3pc.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/QVLwk1zEOzqllD8eY3pc.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/QVLwk1zEOzqllD8eY3pc.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/QVLwk1zEOzqllD8eY3pc.png?auto=format&w=956 956w"          width="478"   />
+</figure>
+<figure class="w-compare"><p class="w-compare__label w-compare__label--better">With a poster image</p>
+<p>A video with a poster is much more engaging.</p>
+</figure>
+<p>By adding a photo instead of a black box on the page, you make your website more
+engaging and interactive. However, using the <code>poster</code> attribute adds an image
+download before the video download begins. For that reason, you might consider
+avoiding adding a poster for videos that autoplay (as the additional download
+will delay the video download).</p>
+<h2 id="playback-controls">Playback controls <a class="w-headline-link" href="#playback-controls">#</a></h2>
+<p>Adding a <code>controls</code> attribute adds playback controls. Without these, your
+customers cannot start or stop your video. You should add this for videos so
+that users can stop and pause, change the volume, and so on. For background or
+looping videos, you may wish to omit this attribute.</p>
+<h2 id="muted">muted <a class="w-headline-link" href="#muted">#</a></h2>
+<p>The <code>muted</code> attribute causes playback to begin in a muted state. If no controls
+are supplied, it will remain muted for the entirety of playback. If that is
+intended it might make sense to remove the audio track from the video. This
+further reduces the size of the video file being delivered to the customer.</p>
+<p>As with containers and codecs, removing the audio file, also called demuxing, is
+also beyond the scope of this article. You can find instructions in the <a href="https://developers.google.com/web/fundamentals/media/manipulating/cheatsheet#demux_split_audio_and_video" rel="noopener">Media
+Manipulation Cheat
+Sheet</a>.</p>
+<h2 id="loop">loop <a class="w-headline-link" href="#loop">#</a></h2>
+<p>To deliver a video that loops the content (like an animated GIF), add the <code>loop</code>
+attribute. As video files are typically much smaller than animated GIFs, this
+mechanism allows you to <a href="https://dougsillars.com/2017/04/12/animated-gifs-vs-video-files/" rel="noopener">replace your GIFs with video
+files</a>.</p>
+<h2 id="autoplaying-video">Autoplaying video <a class="w-headline-link" href="#autoplaying-video">#</a></h2>
+<p>If you want your video to play immediately (for example as a background video, or a
+video that loops like an animated GIF) you can add the <code>autoplay</code> attribute:</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>video</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>myVideo.mp4<span class="token punctuation">"</span></span> <span class="token attr-name">autoplay</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><p>That said, in order for a video to autoplay on mobile browsers, the <code>muted</code>
+attribute must also be added:</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>video</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>myVideo.mp4<span class="token punctuation">"</span></span> <span class="token attr-name">autoplay</span> <span class="token attr-name">muted</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><h2 id="conclusion">Conclusion <a class="w-headline-link" href="#conclusion">#</a></h2>
+<p>Simply adding a video to your website will add a new realm of engagement for
+your customers, but it is important that you deliver the content
+properly—ensuring that the playback of the video is seamless and without
+stalls. Using the built in attributes of the &lt;video&gt; tag can greatly help you
+deliver flawless video to everyone who visits your website.</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/media/">Media</a>
+      
+    
+      
+    
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Sep 3, 2019</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/video-basics/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

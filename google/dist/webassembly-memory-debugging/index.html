@@ -1,0 +1,861 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=bf59f8afe580f">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Debugging memory leaks in WebAssembly using Emscripten</title>
+<meta name="description" content="Learn how to use WebAssembly to bring libraries, written in other languages, to the Web in a safe and idiomatic manner." />
+
+<link rel="canonical" href="https://web.dev/webassembly-memory-debugging/" />
+
+<meta itemprop="name" content="Debugging memory leaks in WebAssembly using Emscripten" />
+<meta itemprop="description" content="Learn how to use WebAssembly to bring libraries, written in other languages, to the Web in a safe and idiomatic manner." />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/b6lB9C3Fz4es4D2rPAxC.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/webassembly-memory-debugging/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Debugging memory leaks in WebAssembly using Emscripten" />
+<meta property="og:description" content="Learn how to use WebAssembly to bring libraries, written in other languages, to the Web in a safe and idiomatic manner." />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/b6lB9C3Fz4es4D2rPAxC.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="A WebAssembly-branded hose leaking water onto the street." />
+<meta property="tag" content="webassembly" />
+<meta property="tag" content="memory" />
+<meta property="tag" content="security" />
+<meta property="tag" content="devtools" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Debugging memory leaks in WebAssembly using Emscripten" />
+<meta name="twitter:description" content="Learn how to use WebAssembly to bring libraries, written in other languages, to the Web in a safe and idiomatic manner." />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/b6lB9C3Fz4es4D2rPAxC.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=20de30085c22', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=1df24b04eb98d', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="A WebAssembly-branded hose leaking water onto the street."     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/b6lB9C3Fz4es4D2rPAxC.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/b6lB9C3Fz4es4D2rPAxC.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/b6lB9C3Fz4es4D2rPAxC.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/b6lB9C3Fz4es4D2rPAxC.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/b6lB9C3Fz4es4D2rPAxC.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/b6lB9C3Fz4es4D2rPAxC.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/b6lB9C3Fz4es4D2rPAxC.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/b6lB9C3Fz4es4D2rPAxC.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/b6lB9C3Fz4es4D2rPAxC.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/b6lB9C3Fz4es4D2rPAxC.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/b6lB9C3Fz4es4D2rPAxC.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/b6lB9C3Fz4es4D2rPAxC.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/b6lB9C3Fz4es4D2rPAxC.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/b6lB9C3Fz4es4D2rPAxC.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/b6lB9C3Fz4es4D2rPAxC.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/b6lB9C3Fz4es4D2rPAxC.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/b6lB9C3Fz4es4D2rPAxC.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/b6lB9C3Fz4es4D2rPAxC.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#debugging-memory-leaks-in-webassembly-using-emscripten" class="w-toc__header--link">
+        Debugging memory leaks in WebAssembly using Emscripten
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#suspicious-pattern">Suspicious pattern</a></li><li><a href="#looking-for-memory-bugs">Looking for memory bugs</a></li><li><a href="#discovering-more-issues-with-sanitizers">Discovering more issues with sanitizers</a></li><li><a href="#issues-with-shared-state">Issues with shared state</a></li><li><a href="#building-a-safe-wrapper">Building a safe wrapper</a></li><li><a href="#takeaways">Takeaways</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@RReverser"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="debugging-memory-leaks-in-webassembly-using-emscripten" class="w-article-header__headline">Debugging memory leaks in WebAssembly using Emscripten</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          While JavaScript is fairly forgiving in cleaning up after itself, static languages are definitely not…
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Aug 13, 2020</time>
+          
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/rreverser/"><img     alt="Ingvar Stepanyan"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/Ma3ckXmLV7aj1rVgVT1I.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/Ma3ckXmLV7aj1rVgVT1I.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/Ma3ckXmLV7aj1rVgVT1I.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/Ma3ckXmLV7aj1rVgVT1I.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/Ma3ckXmLV7aj1rVgVT1I.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/Ma3ckXmLV7aj1rVgVT1I.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/rreverser/">Ingvar Stepanyan</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/RReverser"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/RReverser">GitHub</a>
+      </li>
+      
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://rreverser.com/">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p><a href="https://squoosh.app/" rel="noopener">Squoosh.app</a> is a PWA that illustrates just how much different image codecs
+and settings can improve image file size without significantly affecting quality. However, it's also
+a technical demo showcasing how you can take libraries written in C++ or Rust and bring them to the
+web.</p>
+<p>Being able to port code from existing ecosystems is incredibly valuable, but there are some key
+differences between those static languages and JavaScript. One of those is in their different
+approaches to memory management.</p>
+<p>While JavaScript is fairly forgiving in cleaning up after itself, such static languages are
+definitely not. You need to explicitly ask for a new allocated memory and you really need to make
+sure you give it back afterwards, and never use it again. If that doesn't happen, you get leaks… and
+it actually happens fairly regularly. Let's take a look at how you can debug those memory leaks and,
+even better, how you can design your code to avoid them next time.</p>
+<h2 id="suspicious-pattern">Suspicious pattern <a class="w-headline-link" href="#suspicious-pattern">#</a></h2>
+<p>Recently, while starting to work on Squoosh, I couldn't help but notice an interesting pattern in
+C++ codec wrappers. Let's take a look at an <a href="https://pngquant.org/lib/" rel="noopener">ImageQuant</a> wrapper as an
+example (reduced to show only object creation and deallocation parts):</p>
+<web-copy-code><pre class="language-cpp"><code class="language-cpp">liq_attr<span class="token operator">*</span> attr<span class="token punctuation">;</span><br>liq_image<span class="token operator">*</span> image<span class="token punctuation">;</span><br>liq_result<span class="token operator">*</span> res<span class="token punctuation">;</span><br><span class="token keyword">uint8_t</span><span class="token operator">*</span> result<span class="token punctuation">;</span><br><br>RawImage <span class="token function">quantize</span><span class="token punctuation">(</span>std<span class="token double-colon punctuation">::</span>string rawimage<span class="token punctuation">,</span><br>                  <span class="token keyword">int</span> image_width<span class="token punctuation">,</span><br>                  <span class="token keyword">int</span> image_height<span class="token punctuation">,</span><br>                  <span class="token keyword">int</span> num_colors<span class="token punctuation">,</span><br>                  <span class="token keyword">float</span> dithering<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token keyword">const</span> <span class="token keyword">uint8_t</span><span class="token operator">*</span> image_buffer <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">uint8_t</span><span class="token operator">*</span><span class="token punctuation">)</span>rawimage<span class="token punctuation">.</span><span class="token function">c_str</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token keyword">int</span> size <span class="token operator">=</span> image_width <span class="token operator">*</span> image_height<span class="token punctuation">;</span><br><br>  attr <span class="token operator">=</span> <span class="token function">liq_attr_create</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  image <span class="token operator">=</span> <span class="token function">liq_image_create_rgba</span><span class="token punctuation">(</span>attr<span class="token punctuation">,</span> image_buffer<span class="token punctuation">,</span> image_width<span class="token punctuation">,</span> image_height<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token function">liq_set_max_colors</span><span class="token punctuation">(</span>attr<span class="token punctuation">,</span> num_colors<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token function">liq_image_quantize</span><span class="token punctuation">(</span>image<span class="token punctuation">,</span> attr<span class="token punctuation">,</span> <span class="token operator">&amp;</span>res<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token function">liq_set_dithering_level</span><span class="token punctuation">(</span>res<span class="token punctuation">,</span> dithering<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token keyword">uint8_t</span><span class="token operator">*</span> image8bit <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">uint8_t</span><span class="token operator">*</span><span class="token punctuation">)</span><span class="token function">malloc</span><span class="token punctuation">(</span>size<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  result <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">uint8_t</span><span class="token operator">*</span><span class="token punctuation">)</span><span class="token function">malloc</span><span class="token punctuation">(</span>size <span class="token operator">*</span> <span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>  <span class="token comment">// …</span><br><br>  <span class="token function">free</span><span class="token punctuation">(</span>image8bit<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token function">liq_result_destroy</span><span class="token punctuation">(</span>res<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token function">liq_image_destroy</span><span class="token punctuation">(</span>image<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token function">liq_attr_destroy</span><span class="token punctuation">(</span>attr<span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>  <span class="token keyword">return</span> <span class="token punctuation">{</span><br>    <span class="token function">val</span><span class="token punctuation">(</span><span class="token function">typed_memory_view</span><span class="token punctuation">(</span>image_width <span class="token operator">*</span> image_height <span class="token operator">*</span> <span class="token number">4</span><span class="token punctuation">,</span> result<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span><br>    image_width<span class="token punctuation">,</span><br>    image_height<br>  <span class="token punctuation">}</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><br><br><span class="token keyword">void</span> <span class="token function">free_result</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token function">free</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>JavaScript (well, TypeScript):</p>
+<web-copy-code><pre class="language-ts"><code class="language-ts"><span class="token keyword">export</span> <span class="token keyword">async</span> <span class="token keyword">function</span> <span class="token function">process</span><span class="token punctuation">(</span>data<span class="token operator">:</span> ImageData<span class="token punctuation">,</span> opts<span class="token operator">:</span> QuantizeOptions<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>emscriptenModule<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    emscriptenModule <span class="token operator">=</span> <span class="token function">initEmscriptenModule</span><span class="token punctuation">(</span>imagequant<span class="token punctuation">,</span> wasmUrl<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br>  <span class="token keyword">const</span> module <span class="token operator">=</span> <span class="token keyword">await</span> emscriptenModule<span class="token punctuation">;</span><br><br>  <span class="token keyword">const</span> result <span class="token operator">=</span> module<span class="token punctuation">.</span><span class="token function">quantize</span><span class="token punctuation">(</span><span class="token comment">/* … */</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>  module<span class="token punctuation">.</span><span class="token function">free_result</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>  <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">ImageData</span><span class="token punctuation">(</span><br>    <span class="token keyword">new</span> <span class="token class-name">Uint8ClampedArray</span><span class="token punctuation">(</span>result<span class="token punctuation">.</span>view<span class="token punctuation">)</span><span class="token punctuation">,</span><br>    result<span class="token punctuation">.</span>width<span class="token punctuation">,</span><br>    result<span class="token punctuation">.</span>height<br>  <span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>Do you spot an issue? Hint: it's
+<a href="https://owasp.org/www-community/vulnerabilities/Using_freed_memory" rel="noopener">use-after-free</a>, but in
+JavaScript!</p>
+<p>In Emscripten, <code>typed_memory_view</code> returns a JavaScript <code>Uint8Array</code> backed by the WebAssembly (Wasm)
+memory buffer, with <code>byteOffset</code> and <code>byteLength</code> set to the given pointer and length. The main
+point is that this is a TypedArray <em>view</em> into a WebAssembly memory buffer, rather than a
+JavaScript-owned copy of the data.</p>
+<p>When we call <code>free_result</code> from JavaScript, it, in turn, calls a standard C function <code>free</code> to mark
+this memory as available for any future allocations, which means the data that our <code>Uint8Array</code> view
+points to, can be overwritten with arbitrary data by any future call into Wasm.</p>
+<p>Or, some implementation of <code>free</code> might even decide to zero-fill the freed memory immediately. The
+<code>free</code> that Emscripten uses doesn't do that, but we are relying on an implementation detail here
+that cannot be guaranteed.</p>
+<p>Or, even if the memory behind the pointer gets preserved, new allocation might need to grow the
+WebAssembly memory. When <code>WebAssembly.Memory</code> is grown either via JavaScript API, or corresponding
+<code>memory.grow</code> instruction, it invalidates the existing <code>ArrayBuffer</code> and, transitively, any views
+backed by it.</p>
+<p>Let me use the DevTools (or Node.js) console to demonstrate this behavior:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token operator">></span> memory <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">WebAssembly<span class="token punctuation">.</span>Memory</span><span class="token punctuation">(</span><span class="token punctuation">{</span> initial<span class="token operator">:</span> <span class="token number">1</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><br>Memory <span class="token punctuation">{</span><span class="token punctuation">}</span><br><br><span class="token operator">></span> view <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Uint8Array</span><span class="token punctuation">(</span>memory<span class="token punctuation">.</span>buffer<span class="token punctuation">,</span> <span class="token number">42</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span><br><span class="token function">Uint8Array</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">]</span><br><span class="token comment">// ^ all good, we got a 10 bytes long view at address 42</span><br><br><span class="token operator">></span> view<span class="token punctuation">.</span>buffer<br><span class="token function">ArrayBuffer</span><span class="token punctuation">(</span><span class="token parameter"><span class="token number">65536</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><br><span class="token comment">// ^ its buffer is the same as the one used for WebAssembly memory</span><br><span class="token comment">//   (the size of the buffer is 1 WebAssembly "page" == 64KB)</span><br><br><span class="token operator">></span> memory<span class="token punctuation">.</span><span class="token function">grow</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><br><span class="token number">1</span><br><span class="token comment">// ^ let's say we grow Wasm memory by +1 page to fit some new data</span><br><br><span class="token operator">></span> view<br>Uint8Array <span class="token punctuation">[</span><span class="token punctuation">]</span><br><span class="token comment">// ^ our original view is no longer valid and looks empty!</span><br><br><span class="token operator">></span> view<span class="token punctuation">.</span>buffer<br><span class="token function">ArrayBuffer</span><span class="token punctuation">(</span><span class="token parameter"><span class="token number">0</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><br><span class="token comment">// ^ its buffer got invalidated as well and turned into an empty one</span></code></pre>
+</web-copy-code><p>Finally, even if we don't explicitly call into Wasm again between <code>free_result</code> and <code>new Uint8ClampedArray</code>, at some point we might add multithreading support to our codecs. In that case it
+could be a completely different thread that overwrites the data just before we manage to clone it.</p>
+<h2 id="looking-for-memory-bugs">Looking for memory bugs <a class="w-headline-link" href="#looking-for-memory-bugs">#</a></h2>
+<p>Just in case, I've decided to go further and check if this code exhibits any issues in practice.
+This seems like a perfect opportunity to try out the new(ish) <a href="https://emscripten.org/docs/debugging/Sanitizers.html" rel="noopener">Emscripten sanitizers
+support</a> that was added last year
+and presented in our WebAssembly talk at the Chrome Dev Summit:</p>
+<div class="youtube">  <lite-youtube    videoid="kZrl91SPSpc"      >  </lite-youtube></div>
+<div class="w-aside w-aside--note">
+<p><a href="https://github.com/google/sanitizers" rel="noopener">Sanitizers</a> are special tools that instrument the
+code with auto-generated checks during compilation, which can then help catch common bugs during
+runtime. Since they introduce runtime overhead, they're primarily used during development, although
+in some critical applications they're sometimes enabled on a [subset of] production environments as
+well. </div></p>
+<p>In this case, we're interested in the
+<a href="https://emscripten.org/docs/debugging/Sanitizers.html#address-sanitizer" rel="noopener">AddressSanitizer</a>, which
+can detect various pointer- and memory-related issues. To use it, we need to recompile our codec
+with <code>-fsanitize=address</code>:</p>
+<web-copy-code><pre class="language-shell"><code class="language-shell"><span class="highlight-line">emcc <span class="token punctuation">\</span></span><br><span class="highlight-line">  --bind <span class="token punctuation">\</span></span><br><span class="highlight-line">  <span class="token variable">${OPTIMIZE}</span> <span class="token punctuation">\</span></span><br><span class="highlight-line">  --closure <span class="token number">1</span> <span class="token punctuation">\</span></span><br><span class="highlight-line">  -s <span class="token assign-left variable">ALLOW_MEMORY_GROWTH</span><span class="token operator">=</span><span class="token number">1</span> <span class="token punctuation">\</span></span><br><span class="highlight-line">  -s <span class="token assign-left variable">MODULARIZE</span><span class="token operator">=</span><span class="token number">1</span> <span class="token punctuation">\</span></span><br><span class="highlight-line">  -s <span class="token string">'EXPORT_NAME="imagequant"'</span> <span class="token punctuation">\</span></span><br><span class="highlight-line">  -I node_modules/libimagequant <span class="token punctuation">\</span></span><br><span class="highlight-line">  -o ./imagequant.js <span class="token punctuation">\</span></span><br><span class="highlight-line">  --std<span class="token operator">=</span>c++11 <span class="token punctuation">\</span></span><br><span class="highlight-line">  imagequant.cpp <span class="token punctuation">\</span></span><br><ins class="highlight-line highlight-line-add">  -fsanitize<span class="token operator">=</span>address <span class="token punctuation">\</span></ins><br><span class="highlight-line">  node_modules/libimagequant/libimagequant.a</span></code></pre>
+</web-copy-code><p>This will automatically enable pointer safety checks, but we also want to find potential memory
+leaks. Since we're using ImageQuant as a library rather than a program, there is no &quot;exit point&quot; at
+which Emscripten could automatically validate that all memory has been freed.</p>
+<p>Instead, for such cases the LeakSanitizer (included in the AddressSanitizer) provides the functions
+<a href="https://emscripten.org/docs/debugging/Sanitizers.html#memory-leaks" rel="noopener"><code>__lsan_do_leak_check</code> and
+<code>__lsan_do_recoverable_leak_check</code></a>,
+which can be manually invoked whenever we expect all memory to be freed and want to validate that
+assumption. <code>__lsan_do_leak_check</code> is meant to be used at the end of a running application, when you
+want to abort the process in case any leaks are detected, while <code>__lsan_do_recoverable_leak_check</code>
+is more suitable for library use-cases like ours, when you want to print leaks to the console, but
+keep the application running regardless.</p>
+<p>Let's expose that second helper via Embind so that we can call it from JavaScript at any time:</p>
+<web-copy-code><pre class="language-cpp"><code class="language-cpp"><ins class="highlight-line highlight-line-add"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;sanitizer/lsan_interface.h></span></span></ins><br><span class="highlight-line"></span><br><span class="highlight-line"><span class="token comment">// …</span></span><br><span class="highlight-line"></span><br><span class="highlight-line"><span class="token keyword">void</span> <span class="token function">free_result</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">  <span class="token function">free</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line"><span class="token punctuation">}</span></span><br><span class="highlight-line"></span><br><span class="highlight-line"><span class="token function">EMSCRIPTEN_BINDINGS</span><span class="token punctuation">(</span>my_module<span class="token punctuation">)</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">  <span class="token function">function</span><span class="token punctuation">(</span><span class="token string">"zx_quantize"</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>zx_quantize<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line">  <span class="token function">function</span><span class="token punctuation">(</span><span class="token string">"version"</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>version<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line">  <span class="token function">function</span><span class="token punctuation">(</span><span class="token string">"free_result"</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>free_result<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><ins class="highlight-line highlight-line-add">  <span class="token function">function</span><span class="token punctuation">(</span><span class="token string">"doLeakCheck"</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>__lsan_do_recoverable_leak_check<span class="token punctuation">)</span><span class="token punctuation">;</span></ins><br><span class="highlight-line"><span class="token punctuation">}</span></span></code></pre>
+</web-copy-code><p>And invoke it from the JavaScript side once we're done with the image. Doing this from the
+JavaScript side, rather than the C++ one, helps to ensure that all the scopes have been
+exited and all the temporary C++ objects were freed by the time we run those checks:</p>
+<web-copy-code><pre class="language-typescript"><code class="language-typescript"><span class="highlight-line">  <span class="token comment">// …</span></span><br><span class="highlight-line"></span><br><span class="highlight-line">  <span class="token keyword">const</span> result <span class="token operator">=</span> opts<span class="token punctuation">.</span>zx</span><br><span class="highlight-line">    <span class="token operator">?</span> module<span class="token punctuation">.</span><span class="token function">zx_quantize</span><span class="token punctuation">(</span>data<span class="token punctuation">.</span>data<span class="token punctuation">,</span> data<span class="token punctuation">.</span>width<span class="token punctuation">,</span> data<span class="token punctuation">.</span>height<span class="token punctuation">,</span> opts<span class="token punctuation">.</span>dither<span class="token punctuation">)</span></span><br><span class="highlight-line">    <span class="token operator">:</span> module<span class="token punctuation">.</span><span class="token function">quantize</span><span class="token punctuation">(</span>data<span class="token punctuation">.</span>data<span class="token punctuation">,</span> data<span class="token punctuation">.</span>width<span class="token punctuation">,</span> data<span class="token punctuation">.</span>height<span class="token punctuation">,</span> opts<span class="token punctuation">.</span>maxNumColors<span class="token punctuation">,</span> opts<span class="token punctuation">.</span>dither<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line"></span><br><span class="highlight-line">  module<span class="token punctuation">.</span><span class="token function">free_result</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><ins class="highlight-line highlight-line-add">  module<span class="token punctuation">.</span><span class="token function">doLeakCheck</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></ins><br><span class="highlight-line"></span><br><span class="highlight-line">  <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">ImageData</span><span class="token punctuation">(</span></span><br><span class="highlight-line">    <span class="token keyword">new</span> <span class="token class-name">Uint8ClampedArray</span><span class="token punctuation">(</span>result<span class="token punctuation">.</span>view<span class="token punctuation">)</span><span class="token punctuation">,</span></span><br><span class="highlight-line">    result<span class="token punctuation">.</span>width<span class="token punctuation">,</span></span><br><span class="highlight-line">    result<span class="token punctuation">.</span>height</span><br><span class="highlight-line">  <span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line"><span class="token punctuation">}</span></span></code></pre>
+</web-copy-code><p>This gives us a report like the following in the console:</p>
+<img     alt="Screenshot of a message &amp;quot;Direct leak of 12 bytes&amp;quot; coming from an anonymous wasm-function[…]."     class="w-screenshot"     decoding="async"     height="239"          loading="lazy"     sizes="(min-width: 768px) 768px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/6gm8BJfm97IWnBD5vYBc.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/6gm8BJfm97IWnBD5vYBc.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/6gm8BJfm97IWnBD5vYBc.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/6gm8BJfm97IWnBD5vYBc.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/6gm8BJfm97IWnBD5vYBc.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/6gm8BJfm97IWnBD5vYBc.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/6gm8BJfm97IWnBD5vYBc.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/6gm8BJfm97IWnBD5vYBc.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/6gm8BJfm97IWnBD5vYBc.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/6gm8BJfm97IWnBD5vYBc.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/6gm8BJfm97IWnBD5vYBc.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/6gm8BJfm97IWnBD5vYBc.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/6gm8BJfm97IWnBD5vYBc.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/6gm8BJfm97IWnBD5vYBc.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/6gm8BJfm97IWnBD5vYBc.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/6gm8BJfm97IWnBD5vYBc.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/6gm8BJfm97IWnBD5vYBc.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/6gm8BJfm97IWnBD5vYBc.png?auto=format&w=1536 1536w"          width="768"   />
+<p>Uh-oh, there are some small leaks, but the stacktrace is not very helpful as all the function names
+are mangled. Let's recompile with a basic debugging info to preserve them:</p>
+<web-copy-code><pre class="language-shell"><code class="language-shell"><span class="highlight-line">emcc <span class="token punctuation">\</span></span><br><span class="highlight-line">  --bind <span class="token punctuation">\</span></span><br><span class="highlight-line">  <span class="token variable">${OPTIMIZE}</span> <span class="token punctuation">\</span></span><br><span class="highlight-line">  --closure <span class="token number">1</span> <span class="token punctuation">\</span></span><br><span class="highlight-line">  -s <span class="token assign-left variable">ALLOW_MEMORY_GROWTH</span><span class="token operator">=</span><span class="token number">1</span> <span class="token punctuation">\</span></span><br><span class="highlight-line">  -s <span class="token assign-left variable">MODULARIZE</span><span class="token operator">=</span><span class="token number">1</span> <span class="token punctuation">\</span></span><br><span class="highlight-line">  -s <span class="token string">'EXPORT_NAME="imagequant"'</span> <span class="token punctuation">\</span></span><br><span class="highlight-line">  -I node_modules/libimagequant <span class="token punctuation">\</span></span><br><span class="highlight-line">  -o ./imagequant.js <span class="token punctuation">\</span></span><br><span class="highlight-line">  --std<span class="token operator">=</span>c++11 <span class="token punctuation">\</span></span><br><span class="highlight-line">  imagequant.cpp <span class="token punctuation">\</span></span><br><span class="highlight-line">  -fsanitize<span class="token operator">=</span>address <span class="token punctuation">\</span></span><br><ins class="highlight-line highlight-line-add">  -g2 <span class="token punctuation">\</span></ins><br><span class="highlight-line">  node_modules/libimagequant/libimagequant.a</span></code></pre>
+</web-copy-code><p>This looks much better:</p>
+<img     alt="Screenshot of a message &amp;quot;Direct leak of 12 bytes&amp;quot; coming from a &#x60;GenericBindingType&lt;RawImage&gt;::toWireType&#x60; function"     class="w-screenshot"     decoding="async"     height="271"          loading="lazy"     sizes="(min-width: 768px) 768px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/mISFSSAJBklHqRj8WcaC.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/mISFSSAJBklHqRj8WcaC.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/mISFSSAJBklHqRj8WcaC.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/mISFSSAJBklHqRj8WcaC.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/mISFSSAJBklHqRj8WcaC.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/mISFSSAJBklHqRj8WcaC.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/mISFSSAJBklHqRj8WcaC.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/mISFSSAJBklHqRj8WcaC.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/mISFSSAJBklHqRj8WcaC.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/mISFSSAJBklHqRj8WcaC.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/mISFSSAJBklHqRj8WcaC.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/mISFSSAJBklHqRj8WcaC.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/mISFSSAJBklHqRj8WcaC.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/mISFSSAJBklHqRj8WcaC.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/mISFSSAJBklHqRj8WcaC.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/mISFSSAJBklHqRj8WcaC.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/mISFSSAJBklHqRj8WcaC.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/mISFSSAJBklHqRj8WcaC.png?auto=format&w=1536 1536w"          width="768"   />
+<p>Some parts of the stacktrace still look obscure as they point to Emscripten internals, but we can
+tell that the leak is coming from a <code>RawImage</code> conversion to &quot;wire type&quot; (to a JavaScript value) by
+Embind. Indeed, when we look at the code, we can see that we return <code>RawImage</code> C++ instances to
+JavaScript, but we never free them on either side.</p>
+<p>As a reminder, currently there is no garbage collection integration between JavaScript and
+WebAssembly, although <a href="https://github.com/WebAssembly/gc" rel="noopener">one is being developed</a>. Instead, you have
+to manually free any memory and call destructors from the JavaScript side once you're done with the
+object. For Embind specifically, the <a href="https://emscripten.org/docs/porting/connecting_cpp_and_javascript/embind.html#memory-management" rel="noopener">official
+docs</a>
+suggest to call a <code>.delete()</code> method on exposed C++ classes:</p>
+<blockquote>
+<p>JavaScript code must explicitly delete any C++ object handles it has received, or the Emscripten
+heap will grow indefinitely.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">var</span> x <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Module<span class="token punctuation">.</span>MyClass</span><span class="token punctuation">;</span><br>x<span class="token punctuation">.</span><span class="token function">method</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>x<span class="token punctuation">.</span><span class="token function">delete</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code></blockquote>
+<p>Indeed, when we do that in JavaScript for our class:</p>
+<web-copy-code><pre class="language-ts"><code class="language-ts"><span class="highlight-line">  <span class="token comment">// …</span></span><br><span class="highlight-line"></span><br><span class="highlight-line">  <span class="token keyword">const</span> result <span class="token operator">=</span> opts<span class="token punctuation">.</span>zx</span><br><span class="highlight-line">    <span class="token operator">?</span> module<span class="token punctuation">.</span><span class="token function">zx_quantize</span><span class="token punctuation">(</span>data<span class="token punctuation">.</span>data<span class="token punctuation">,</span> data<span class="token punctuation">.</span>width<span class="token punctuation">,</span> data<span class="token punctuation">.</span>height<span class="token punctuation">,</span> opts<span class="token punctuation">.</span>dither<span class="token punctuation">)</span></span><br><span class="highlight-line">    <span class="token operator">:</span> module<span class="token punctuation">.</span><span class="token function">quantize</span><span class="token punctuation">(</span>data<span class="token punctuation">.</span>data<span class="token punctuation">,</span> data<span class="token punctuation">.</span>width<span class="token punctuation">,</span> data<span class="token punctuation">.</span>height<span class="token punctuation">,</span> opts<span class="token punctuation">.</span>maxNumColors<span class="token punctuation">,</span> opts<span class="token punctuation">.</span>dither<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line"></span><br><span class="highlight-line">  module<span class="token punctuation">.</span><span class="token function">free_result</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><ins class="highlight-line highlight-line-add">  result<span class="token punctuation">.</span><span class="token function">delete</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></ins><br><span class="highlight-line">  module<span class="token punctuation">.</span><span class="token function">doLeakCheck</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line"></span><br><span class="highlight-line">  <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">ImageData</span><span class="token punctuation">(</span></span><br><span class="highlight-line">    <span class="token keyword">new</span> <span class="token class-name">Uint8ClampedArray</span><span class="token punctuation">(</span>result<span class="token punctuation">.</span>view<span class="token punctuation">)</span><span class="token punctuation">,</span></span><br><span class="highlight-line">    result<span class="token punctuation">.</span>width<span class="token punctuation">,</span></span><br><span class="highlight-line">    result<span class="token punctuation">.</span>height</span><br><span class="highlight-line">  <span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line"><span class="token punctuation">}</span></span></code></pre>
+</web-copy-code><p>The leak goes away as expected.</p>
+<h3 id="discovering-more-issues-with-sanitizers">Discovering more issues with sanitizers <a class="w-headline-link" href="#discovering-more-issues-with-sanitizers">#</a></h3>
+<p>Building other Squoosh codecs with sanitizers reveals both similar as well as some new issues. For
+example, I've got this error in MozJPEG bindings:</p>
+<img     alt="Screenshot of a message &amp;quot;memory access out of bounds&amp;quot; coming from a &#x60;jpeg_start_compress&#x60; function"     class="w-screenshot"     decoding="async"     height="174"          loading="lazy"     sizes="(min-width: 768px) 768px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/ArR34HLUVjU5violfalT.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/ArR34HLUVjU5violfalT.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/ArR34HLUVjU5violfalT.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/ArR34HLUVjU5violfalT.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/ArR34HLUVjU5violfalT.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/ArR34HLUVjU5violfalT.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/ArR34HLUVjU5violfalT.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/ArR34HLUVjU5violfalT.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/ArR34HLUVjU5violfalT.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/ArR34HLUVjU5violfalT.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/ArR34HLUVjU5violfalT.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/ArR34HLUVjU5violfalT.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/ArR34HLUVjU5violfalT.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/ArR34HLUVjU5violfalT.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/ArR34HLUVjU5violfalT.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/ArR34HLUVjU5violfalT.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/ArR34HLUVjU5violfalT.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/ArR34HLUVjU5violfalT.png?auto=format&w=1536 1536w"          width="768"   />
+<p>Here, it's not a leak, but us writing to a memory outside of the allocated boundaries 😱</p>
+<p>Digging into the code of MozJPEG, we find that the problem here is that <code>jpeg_mem_dest</code>—the
+function that we use to allocate a memory destination for JPEG—<a href="https://github.com/mozilla/mozjpeg/blob/1d2320994dd0d293d39cfaea3d13060b60f32c45/jdatadst.c#L282-L288" rel="noopener">reuses existing values of
+<code>outbuffer</code> and <code>outsize</code> when they're
+non-zero</a>:</p>
+<web-copy-code><pre class="language-cpp"><code class="language-cpp"><mark class="highlight-line highlight-line-active"><span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">*</span>outbuffer <span class="token operator">==</span> <span class="token constant">NULL</span> <span class="token operator">||</span> <span class="token operator">*</span>outsize <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span></mark><br><span class="highlight-line">  <span class="token comment">/* Allocate initial buffer */</span></span><br><span class="highlight-line">  dest<span class="token operator">-></span>newbuffer <span class="token operator">=</span> <span class="token operator">*</span>outbuffer <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">unsigned</span> <span class="token keyword">char</span> <span class="token operator">*</span><span class="token punctuation">)</span> <span class="token function">malloc</span><span class="token punctuation">(</span>OUTPUT_BUF_SIZE<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line">  <span class="token keyword">if</span> <span class="token punctuation">(</span>dest<span class="token operator">-></span>newbuffer <span class="token operator">==</span> <span class="token constant">NULL</span><span class="token punctuation">)</span></span><br><span class="highlight-line">    <span class="token function">ERREXIT1</span><span class="token punctuation">(</span>cinfo<span class="token punctuation">,</span> JERR_OUT_OF_MEMORY<span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line">  <span class="token operator">*</span>outsize <span class="token operator">=</span> OUTPUT_BUF_SIZE<span class="token punctuation">;</span></span><br><span class="highlight-line"><span class="token punctuation">}</span></span></code></pre>
+</web-copy-code><p>However, we invoke it without initialising either of those variables, which means MozJPEG writes the
+result into a potentially random memory address that happened to be stored in those variables at the
+time of the call!</p>
+<web-copy-code><pre class="language-cpp"><code class="language-cpp"><mark class="highlight-line highlight-line-active"><span class="token keyword">uint8_t</span><span class="token operator">*</span> output<span class="token punctuation">;</span></mark><br><mark class="highlight-line highlight-line-active"><span class="token keyword">unsigned</span> <span class="token keyword">long</span> size<span class="token punctuation">;</span></mark><br><span class="highlight-line"><span class="token comment">// …</span></span><br><span class="highlight-line"><span class="token function">jpeg_mem_dest</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>cinfo<span class="token punctuation">,</span> <span class="token operator">&amp;</span>output<span class="token punctuation">,</span> <span class="token operator">&amp;</span>size<span class="token punctuation">)</span><span class="token punctuation">;</span></span></code></pre>
+</web-copy-code><p>Zero-initialising both variables before the invocation solves this issue, and now the code reaches a
+memory leak check instead. Luckily, the check passes successfully, indicating that we don't have any
+leaks in this codec.</p>
+<h2 id="issues-with-shared-state">Issues with shared state <a class="w-headline-link" href="#issues-with-shared-state">#</a></h2>
+<p>…Or do we?</p>
+<p>We know that our codec bindings store some of the state as well as results in global static
+variables, and MozJPEG has some particularly complicated structures.</p>
+<web-copy-code><pre class="language-cpp"><code class="language-cpp"><span class="token keyword">uint8_t</span><span class="token operator">*</span> last_result<span class="token punctuation">;</span><br><span class="token keyword">struct</span> <span class="token class-name">jpeg_compress_struct</span> cinfo<span class="token punctuation">;</span><br><br>val <span class="token function">encode</span><span class="token punctuation">(</span>std<span class="token double-colon punctuation">::</span>string image_in<span class="token punctuation">,</span> <span class="token keyword">int</span> image_width<span class="token punctuation">,</span> <span class="token keyword">int</span> image_height<span class="token punctuation">,</span> MozJpegOptions opts<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token comment">// …</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>What if some of those get lazily initialized on the first run, and then improperly reused on future
+runs? Then a single call with a sanitizer would not report them as problematic.</p>
+<p>Let's try and process the image a couple of times by randomly clicking at different quality levels
+in the UI. Indeed, now we get the following report:</p>
+<img     alt="Screenshot of a message &amp;quot;Direct leak of 262144 bytes&amp;quot; coming from a &#x60;jpeg_finish_compress&#x60; function"     class="w-screenshot"     decoding="async"     height="265"          loading="lazy"     sizes="(min-width: 768px) 768px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/3X5eGopvZ9m5mxySmoWj.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/3X5eGopvZ9m5mxySmoWj.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/3X5eGopvZ9m5mxySmoWj.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/3X5eGopvZ9m5mxySmoWj.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/3X5eGopvZ9m5mxySmoWj.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/3X5eGopvZ9m5mxySmoWj.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/3X5eGopvZ9m5mxySmoWj.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/3X5eGopvZ9m5mxySmoWj.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/3X5eGopvZ9m5mxySmoWj.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/3X5eGopvZ9m5mxySmoWj.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/3X5eGopvZ9m5mxySmoWj.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/3X5eGopvZ9m5mxySmoWj.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/3X5eGopvZ9m5mxySmoWj.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/3X5eGopvZ9m5mxySmoWj.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/3X5eGopvZ9m5mxySmoWj.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/3X5eGopvZ9m5mxySmoWj.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/3X5eGopvZ9m5mxySmoWj.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/3X5eGopvZ9m5mxySmoWj.png?auto=format&w=1536 1536w"          width="768"   />
+<p>262,144 bytes—looks like the whole sample image is leaked from <code>jpeg_finish_compress</code>!</p>
+<p>After checking out the docs and the official examples, it turns out that <code>jpeg_finish_compress</code>
+doesn't free the memory allocated by our earlier <code>jpeg_mem_dest</code> call—it only frees the
+compression structure, even though that compression structure already knows about our memory
+destination… Sigh.</p>
+<p>We can fix this by freeing the data manually in the <code>free_result</code> function:</p>
+<web-copy-code><pre class="language-cpp"><code class="language-cpp"><span class="highlight-line"><span class="token keyword">void</span> <span class="token function">free_result</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">  <span class="token comment">/* This is an important step since it will release a good deal of memory. */</span></span><br><span class="highlight-line">  <span class="token function">free</span><span class="token punctuation">(</span>last_result<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><ins class="highlight-line highlight-line-add">  <span class="token function">jpeg_destroy_compress</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>cinfo<span class="token punctuation">)</span><span class="token punctuation">;</span></ins><br><span class="highlight-line"><span class="token punctuation">}</span></span></code></pre>
+</web-copy-code><p>I could keep hunting those memory bugs one by one, but I think by now it's clear enough that the
+current approach to memory management leads to some nasty systematic issues.</p>
+<p>Some of them can be caught by the sanitizer right away. Others require intricate tricks to be caught.
+Finally, there are issues like in the beginning of the post that, as we can see from the logs,
+aren't caught by the sanitizer at all. The reason is that the actual mis-use happens on the
+JavaScript side, into which the sanitizer has no visibility. Those issues will reveal themselves
+only in production or after seemingly unrelated changes to the code in the future.</p>
+<h2 id="building-a-safe-wrapper">Building a safe wrapper <a class="w-headline-link" href="#building-a-safe-wrapper">#</a></h2>
+<p>Let's take a couple of steps back, and instead fix all of these problems by restructuring the code
+in a safer way. I'll use ImageQuant wrapper as an example again, but similar refactoring rules apply
+to all the codecs, as well as other similar codebases.</p>
+<p>First of all, let's fix the use-after-free issue from the beginning of the post. For that, we need
+to clone the data from the WebAssembly-backed view before marking it as free on the JavaScript side:</p>
+<web-copy-code><pre class="language-ts"><code class="language-ts"><span class="highlight-line">  <span class="token comment">// …</span></span><br><span class="highlight-line"></span><br><span class="highlight-line">  <span class="token keyword">const</span> result <span class="token operator">=</span> <span class="token comment">/* … */</span><span class="token punctuation">;</span></span><br><span class="highlight-line"></span><br><ins class="highlight-line highlight-line-add">  <span class="token keyword">const</span> imgData <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ImageData</span><span class="token punctuation">(</span></ins><br><ins class="highlight-line highlight-line-add">    <span class="token keyword">new</span> <span class="token class-name">Uint8ClampedArray</span><span class="token punctuation">(</span>result<span class="token punctuation">.</span>view<span class="token punctuation">)</span><span class="token punctuation">,</span></ins><br><ins class="highlight-line highlight-line-add">    result<span class="token punctuation">.</span>width<span class="token punctuation">,</span></ins><br><ins class="highlight-line highlight-line-add">    result<span class="token punctuation">.</span>height</ins><br><ins class="highlight-line highlight-line-add">  <span class="token punctuation">)</span><span class="token punctuation">;</span></ins><br><span class="highlight-line"></span><br><span class="highlight-line">  module<span class="token punctuation">.</span><span class="token function">free_result</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line">  result<span class="token punctuation">.</span><span class="token function">delete</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line">  module<span class="token punctuation">.</span><span class="token function">doLeakCheck</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line"></span><br><del class="highlight-line highlight-line-remove">  <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">ImageData</span><span class="token punctuation">(</span></del><br><del class="highlight-line highlight-line-remove">    <span class="token keyword">new</span> <span class="token class-name">Uint8ClampedArray</span><span class="token punctuation">(</span>result<span class="token punctuation">.</span>view<span class="token punctuation">)</span><span class="token punctuation">,</span></del><br><del class="highlight-line highlight-line-remove">    result<span class="token punctuation">.</span>width<span class="token punctuation">,</span></del><br><del class="highlight-line highlight-line-remove">    result<span class="token punctuation">.</span>height</del><br><del class="highlight-line highlight-line-remove">  <span class="token punctuation">)</span><span class="token punctuation">;</span></del><br><ins class="highlight-line highlight-line-add">  <span class="token keyword">return</span> imgData<span class="token punctuation">;</span></ins><br><span class="highlight-line"><span class="token punctuation">}</span></span></code></pre>
+</web-copy-code><p>Now, let's make sure that we don't share any state in global variables between invocations. This
+will both fix some of the issues we've already seen, as well as will make it easier to use our
+codecs in a multithreaded environment in the future.</p>
+<p>To do that, we refactor the C++ wrapper to make sure that each call to the function manages its own
+data using local variables. Then, we can change the signature of our <code>free_result</code> function to
+accept the pointer back:</p>
+<web-copy-code><pre class="language-cpp"><code class="language-cpp"><del class="highlight-line highlight-line-remove">liq_attr<span class="token operator">*</span> attr<span class="token punctuation">;</span></del><br><del class="highlight-line highlight-line-remove">liq_image<span class="token operator">*</span> image<span class="token punctuation">;</span></del><br><del class="highlight-line highlight-line-remove">liq_result<span class="token operator">*</span> res<span class="token punctuation">;</span></del><br><del class="highlight-line highlight-line-remove"><span class="token keyword">uint8_t</span><span class="token operator">*</span> result<span class="token punctuation">;</span></del><br><span class="highlight-line"></span><br><span class="highlight-line">RawImage <span class="token function">quantize</span><span class="token punctuation">(</span>std<span class="token double-colon punctuation">::</span>string rawimage<span class="token punctuation">,</span></span><br><span class="highlight-line">                  <span class="token keyword">int</span> image_width<span class="token punctuation">,</span></span><br><span class="highlight-line">                  <span class="token keyword">int</span> image_height<span class="token punctuation">,</span></span><br><span class="highlight-line">                  <span class="token keyword">int</span> num_colors<span class="token punctuation">,</span></span><br><span class="highlight-line">                  <span class="token keyword">float</span> dithering<span class="token punctuation">)</span> <span class="token punctuation">{</span></span><br><span class="highlight-line">  <span class="token keyword">const</span> <span class="token keyword">uint8_t</span><span class="token operator">*</span> image_buffer <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">uint8_t</span><span class="token operator">*</span><span class="token punctuation">)</span>rawimage<span class="token punctuation">.</span><span class="token function">c_str</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line">  <span class="token keyword">int</span> size <span class="token operator">=</span> image_width <span class="token operator">*</span> image_height<span class="token punctuation">;</span></span><br><span class="highlight-line"></span><br><del class="highlight-line highlight-line-remove">  attr <span class="token operator">=</span> <span class="token function">liq_attr_create</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></del><br><del class="highlight-line highlight-line-remove">  image <span class="token operator">=</span> <span class="token function">liq_image_create_rgba</span><span class="token punctuation">(</span>attr<span class="token punctuation">,</span> image_buffer<span class="token punctuation">,</span> image_width<span class="token punctuation">,</span> image_height<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span></del><br><ins class="highlight-line highlight-line-add">  liq_attr<span class="token operator">*</span> attr <span class="token operator">=</span> <span class="token function">liq_attr_create</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></ins><br><ins class="highlight-line highlight-line-add">  liq_image<span class="token operator">*</span> image <span class="token operator">=</span> <span class="token function">liq_image_create_rgba</span><span class="token punctuation">(</span>attr<span class="token punctuation">,</span> image_buffer<span class="token punctuation">,</span> image_width<span class="token punctuation">,</span> image_height<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span></ins><br><span class="highlight-line">  <span class="token function">liq_set_max_colors</span><span class="token punctuation">(</span>attr<span class="token punctuation">,</span> num_colors<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><ins class="highlight-line highlight-line-add">  liq_result<span class="token operator">*</span> res <span class="token operator">=</span> <span class="token keyword">nullptr</span><span class="token punctuation">;</span></ins><br><span class="highlight-line">  <span class="token function">liq_image_quantize</span><span class="token punctuation">(</span>image<span class="token punctuation">,</span> attr<span class="token punctuation">,</span> <span class="token operator">&amp;</span>res<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line">  <span class="token function">liq_set_dithering_level</span><span class="token punctuation">(</span>res<span class="token punctuation">,</span> dithering<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line">  <span class="token keyword">uint8_t</span><span class="token operator">*</span> image8bit <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">uint8_t</span><span class="token operator">*</span><span class="token punctuation">)</span><span class="token function">malloc</span><span class="token punctuation">(</span>size<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><del class="highlight-line highlight-line-remove">  result <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">uint8_t</span><span class="token operator">*</span><span class="token punctuation">)</span><span class="token function">malloc</span><span class="token punctuation">(</span>size <span class="token operator">*</span> <span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">;</span></del><br><ins class="highlight-line highlight-line-add">  <span class="token keyword">uint8_t</span><span class="token operator">*</span> result <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">uint8_t</span><span class="token operator">*</span><span class="token punctuation">)</span><span class="token function">malloc</span><span class="token punctuation">(</span>size <span class="token operator">*</span> <span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">;</span></ins><br><span class="highlight-line"></span><br><span class="highlight-line">  <span class="token comment">// …</span></span><br><span class="highlight-line"><span class="token punctuation">}</span></span><br><span class="highlight-line"></span><br><del class="highlight-line highlight-line-remove"><span class="token keyword">void</span> <span class="token function">free_result</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span></del><br><ins class="highlight-line highlight-line-add"><span class="token keyword">void</span> <span class="token function">free_result</span><span class="token punctuation">(</span><span class="token keyword">uint8_t</span> <span class="token operator">*</span>result<span class="token punctuation">)</span> <span class="token punctuation">{</span></ins><br><span class="highlight-line">  <span class="token function">free</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line"><span class="token punctuation">}</span></span></code></pre>
+</web-copy-code><p>But, since we're already using Embind in Emscripten to interact with JavaScript, we might as well
+make the API even safer by hiding C++ memory management details altogether!</p>
+<p>For that, let's move the <code>new Uint8ClampedArray(…)</code> part from JavaScript to the C++ side with
+Embind. Then, we can use it to clone the data into the JavaScript memory even <em>before</em> returning
+from the function:</p>
+<web-copy-code><pre class="language-ts"><code class="language-ts"><del class="highlight-line highlight-line-remove"><span class="token keyword">class</span> <span class="token class-name">RawImage</span> <span class="token punctuation">{</span></del><br><del class="highlight-line highlight-line-remove"> <span class="token keyword">public</span><span class="token operator">:</span></del><br><del class="highlight-line highlight-line-remove">  val buffer<span class="token punctuation">;</span></del><br><del class="highlight-line highlight-line-remove">  int width<span class="token punctuation">;</span></del><br><del class="highlight-line highlight-line-remove">  int height<span class="token punctuation">;</span></del><br><del class="highlight-line highlight-line-remove"></del><br><del class="highlight-line highlight-line-remove">  <span class="token function">RawImage</span><span class="token punctuation">(</span>val b<span class="token punctuation">,</span> int w<span class="token punctuation">,</span> int h<span class="token punctuation">)</span> <span class="token operator">:</span> <span class="token function">buffer</span><span class="token punctuation">(</span>b<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">width</span><span class="token punctuation">(</span>w<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">height</span><span class="token punctuation">(</span>h<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span></del><br><del class="highlight-line highlight-line-remove"><span class="token punctuation">}</span><span class="token punctuation">;</span></del><br><ins class="highlight-line highlight-line-add">thread_local <span class="token keyword">const</span> val Uint8ClampedArray <span class="token operator">=</span> val<span class="token operator">:</span><span class="token operator">:</span><span class="token function">global</span><span class="token punctuation">(</span><span class="token string">"Uint8ClampedArray"</span><span class="token punctuation">)</span><span class="token punctuation">;</span></ins><br><span class="highlight-line"></span><br><del class="highlight-line highlight-line-remove">RawImage <span class="token function">quantize</span><span class="token punctuation">(</span><span class="token comment">/* … */</span><span class="token punctuation">)</span> <span class="token punctuation">{</span></del><br><ins class="highlight-line highlight-line-add">val <span class="token function">quantize</span><span class="token punctuation">(</span><span class="token comment">/* … */</span><span class="token punctuation">)</span> <span class="token punctuation">{</span></ins><br><span class="highlight-line">  <span class="token comment">// …</span></span><br><del class="highlight-line highlight-line-remove">  <span class="token keyword">return</span> <span class="token punctuation">{</span></del><br><del class="highlight-line highlight-line-remove">    <span class="token function">val</span><span class="token punctuation">(</span><span class="token keyword">type</span><span class="token function">d_memory_view</span><span class="token punctuation">(</span>image_width <span class="token operator">*</span> image_height <span class="token operator">*</span> <span class="token number">4</span><span class="token punctuation">,</span> result<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span></del><br><del class="highlight-line highlight-line-remove">    image_width<span class="token punctuation">,</span></del><br><del class="highlight-line highlight-line-remove">    image_height</del><br><del class="highlight-line highlight-line-remove">  <span class="token punctuation">}</span><span class="token punctuation">;</span></del><br><ins class="highlight-line highlight-line-add">  val js_result <span class="token operator">=</span> Uint8ClampedArray<span class="token punctuation">.</span><span class="token function">new_</span><span class="token punctuation">(</span><span class="token keyword">type</span><span class="token function">d_memory_view</span><span class="token punctuation">(</span></ins><br><ins class="highlight-line highlight-line-add">    image_width <span class="token operator">*</span> image_height <span class="token operator">*</span> <span class="token number">4</span><span class="token punctuation">,</span></ins><br><ins class="highlight-line highlight-line-add">    result</ins><br><ins class="highlight-line highlight-line-add">  <span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></ins><br><ins class="highlight-line highlight-line-add">  <span class="token function">free</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span></ins><br><ins class="highlight-line highlight-line-add">  <span class="token keyword">return</span> js_result<span class="token punctuation">;</span></ins><br><span class="highlight-line"><span class="token punctuation">}</span></span></code></pre>
+</web-copy-code><div class="w-aside w-aside--note">
+<p>In this case we can return <code>Uint8ClampedArray</code>, because JavaScript already knows the
+width and height of the resulting image. If this wasn't the case, then we could return an
+<code>ImageData</code> instance instead, which is functionally equivalent to our previous <code>RawImage</code> wrapper,
+but is a standard JavaScript-owned object:</p>
+<web-copy-code><pre class="language-ts"><code class="language-ts">  <span class="token comment">// …</span><br>  val js_result <span class="token operator">=</span> Uint8ClampedArray<span class="token punctuation">.</span><span class="token function">new_</span><span class="token punctuation">(</span><span class="token keyword">type</span><span class="token function">d_memory_view</span><span class="token punctuation">(</span><br>    image_width <span class="token operator">*</span> image_height <span class="token operator">*</span> <span class="token number">4</span><span class="token punctuation">,</span><br>    result<br>  <span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token function">free</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token keyword">return</span> ImageData<span class="token punctuation">.</span><span class="token function">new_</span><span class="token punctuation">(</span>js_result<span class="token punctuation">,</span> image_width<span class="token punctuation">,</span> image_height<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code></div>
+<p>Note how, with a single change, we both ensure that the resulting byte array is owned by JavaScript
+and not backed by WebAssembly memory, <em><strong>and</strong></em> get rid of the previously leaked <code>RawImage</code> wrapper
+too.</p>
+<p>Now JavaScript doesn't have to worry about freeing data at all anymore, and can use the result like
+any other garbage-collected object:</p>
+<web-copy-code><pre class="language-ts"><code class="language-ts"><span class="highlight-line">  <span class="token comment">// …</span></span><br><span class="highlight-line"></span><br><del class="highlight-line highlight-line-remove">  <span class="token keyword">const</span> result <span class="token operator">=</span> <span class="token comment">/* … */</span><span class="token punctuation">;</span></del><br><del class="highlight-line highlight-line-remove"></del><br><del class="highlight-line highlight-line-remove">  <span class="token keyword">const</span> imgData <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ImageData</span><span class="token punctuation">(</span></del><br><del class="highlight-line highlight-line-remove">    <span class="token keyword">new</span> <span class="token class-name">Uint8ClampedArray</span><span class="token punctuation">(</span>result<span class="token punctuation">.</span>view<span class="token punctuation">)</span><span class="token punctuation">,</span></del><br><del class="highlight-line highlight-line-remove">    result<span class="token punctuation">.</span>width<span class="token punctuation">,</span></del><br><del class="highlight-line highlight-line-remove">    result<span class="token punctuation">.</span>height</del><br><del class="highlight-line highlight-line-remove">  <span class="token punctuation">)</span><span class="token punctuation">;</span></del><br><del class="highlight-line highlight-line-remove"></del><br><del class="highlight-line highlight-line-remove">  module<span class="token punctuation">.</span><span class="token function">free_result</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></del><br><del class="highlight-line highlight-line-remove">  result<span class="token punctuation">.</span><span class="token function">delete</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></del><br><del class="highlight-line highlight-line-remove">  <span class="token comment">// module.doLeakCheck();</span></del><br><del class="highlight-line highlight-line-remove"></del><br><del class="highlight-line highlight-line-remove">  <span class="token keyword">return</span> imgData<span class="token punctuation">;</span></del><br><ins class="highlight-line highlight-line-add">  <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">ImageData</span><span class="token punctuation">(</span>result<span class="token punctuation">,</span> result<span class="token punctuation">.</span>width<span class="token punctuation">,</span> result<span class="token punctuation">.</span>height<span class="token punctuation">)</span><span class="token punctuation">;</span></ins><br><span class="highlight-line"><span class="token punctuation">}</span></span></code></pre>
+</web-copy-code><p>This also means we no longer need a custom <code>free_result</code> binding on the C++ side:</p>
+<web-copy-code><pre class="language-cpp"><code class="language-cpp"><del class="highlight-line highlight-line-remove"><span class="token keyword">void</span> <span class="token function">free_result</span><span class="token punctuation">(</span><span class="token keyword">uint8_t</span><span class="token operator">*</span> result<span class="token punctuation">)</span> <span class="token punctuation">{</span></del><br><del class="highlight-line highlight-line-remove">  <span class="token function">free</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span></del><br><del class="highlight-line highlight-line-remove"><span class="token punctuation">}</span></del><br><del class="highlight-line highlight-line-remove"></del><br><span class="highlight-line"><span class="token function">EMSCRIPTEN_BINDINGS</span><span class="token punctuation">(</span>my_module<span class="token punctuation">)</span> <span class="token punctuation">{</span></span><br><del class="highlight-line highlight-line-remove">  <span class="token generic-function"><span class="token function">class_</span><span class="token generic class-name"><span class="token operator">&lt;</span>RawImage<span class="token operator">></span></span></span><span class="token punctuation">(</span><span class="token string">"RawImage"</span><span class="token punctuation">)</span></del><br><del class="highlight-line highlight-line-remove">      <span class="token punctuation">.</span><span class="token function">property</span><span class="token punctuation">(</span><span class="token string">"buffer"</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>RawImage<span class="token double-colon punctuation">::</span>buffer<span class="token punctuation">)</span></del><br><del class="highlight-line highlight-line-remove">      <span class="token punctuation">.</span><span class="token function">property</span><span class="token punctuation">(</span><span class="token string">"width"</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>RawImage<span class="token double-colon punctuation">::</span>width<span class="token punctuation">)</span></del><br><del class="highlight-line highlight-line-remove">      <span class="token punctuation">.</span><span class="token function">property</span><span class="token punctuation">(</span><span class="token string">"height"</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>RawImage<span class="token double-colon punctuation">::</span>height<span class="token punctuation">)</span><span class="token punctuation">;</span></del><br><del class="highlight-line highlight-line-remove"></del><br><span class="highlight-line">  <span class="token function">function</span><span class="token punctuation">(</span><span class="token string">"quantize"</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>quantize<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line">  <span class="token function">function</span><span class="token punctuation">(</span><span class="token string">"zx_quantize"</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>zx_quantize<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><span class="highlight-line">  <span class="token function">function</span><span class="token punctuation">(</span><span class="token string">"version"</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>version<span class="token punctuation">)</span><span class="token punctuation">;</span></span><br><del class="highlight-line highlight-line-remove">  <span class="token function">function</span><span class="token punctuation">(</span><span class="token string">"free_result"</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>free_result<span class="token punctuation">,</span> <span class="token function">allow_raw_pointers</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></del><br><span class="highlight-line"><span class="token punctuation">}</span></span></code></pre>
+</web-copy-code><p>All in all, our wrapper code became both cleaner and safer at the same time.</p>
+<p>After this I went through some further minor improvements to the code of the ImageQuant wrapper and
+replicated similar memory management fixes for other codecs. If you're interested in more details,
+you can see the resulting PR here: <a href="https://github.com/GoogleChromeLabs/squoosh/pull/780" rel="noopener">Memory fixes for C++
+codecs</a>.</p>
+<h2 id="takeaways">Takeaways <a class="w-headline-link" href="#takeaways">#</a></h2>
+<p>What lessons can we learn and share from this refactoring that could be applied to other codebases?</p>
+<ul>
+<li>Don't use memory views backed by WebAssembly—no matter which language it's built from—beyond a
+single invocation. You can't rely on them surviving any longer than that, and you won't be able
+to catch these bugs by conventional means, so if you need to store the data for later, copy it to
+the JavaScript side and store it there.</li>
+<li>If possible, use a safe memory management language or, at least, safe type wrappers, instead of
+operating on raw pointers directly. This won't save you from bugs on the JavaScript ↔ WebAssembly
+boundary, but at least it will reduce the surface for bugs self-contained by the static language code.</li>
+<li>No matter which language you use, run code with sanitizers during development—they can help to
+catch not only problems in the static language code, but also some issues across the JavaScript ↔
+WebAssembly boundary, such as forgetting to call <code>.delete()</code> or passing in invalid pointers from
+the JavaScript side.</li>
+<li>If possible, avoid exposing unmanaged data and objects from WebAssembly to JavaScript altogether.
+JavaScript is a garbage-collected language, and manual memory management is not common in it.
+This can be considered an abstraction leak of the memory model of the language your WebAssembly
+was built from, and incorrect management is easy to overlook in a JavaScript codebase.</li>
+<li>This might be obvious, but, like in any other codebase, avoid storing mutable state in global
+variables. You don't want to debug issues with its reuse across various invocations or even
+threads, so it's best to keep it as self-contained as possible.</li>
+</ul>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/webassembly/">WebAssembly</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/memory/">Memory</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/security/">Security</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/devtools/">DevTools</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Aug 13, 2020</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/webassembly-memory-debugging/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

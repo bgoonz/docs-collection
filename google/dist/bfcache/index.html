@@ -1,0 +1,1050 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=742a4d7bcfb86">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Back/forward cache</title>
+<meta name="description" content="Learn how to optimize your pages for instant loads when using the browser's back and forward buttons. " />
+
+<link rel="canonical" href="https://web.dev/bfcache/" />
+
+<meta itemprop="name" content="Back/forward cache" />
+<meta itemprop="description" content="Learn how to optimize your pages for instant loads when using the browser's back and forward buttons. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/Qoeb8x3a11BdGgRzYJbY.png?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/bfcache/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Back/forward cache" />
+<meta property="og:description" content="Learn how to optimize your pages for instant loads when using the browser's back and forward buttons. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/Qoeb8x3a11BdGgRzYJbY.png?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="Back and forward buttons" />
+<meta property="tag" content="performance" />
+<meta property="tag" content="web-vitals" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Back/forward cache" />
+<meta name="twitter:description" content="Learn how to optimize your pages for instant loads when using the browser's back and forward buttons. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/Qoeb8x3a11BdGgRzYJbY.png?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=b8456e6290537', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=71279d7a91b0f', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="Back and forward buttons"     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/Qoeb8x3a11BdGgRzYJbY.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/Qoeb8x3a11BdGgRzYJbY.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/Qoeb8x3a11BdGgRzYJbY.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/Qoeb8x3a11BdGgRzYJbY.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/Qoeb8x3a11BdGgRzYJbY.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/Qoeb8x3a11BdGgRzYJbY.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/Qoeb8x3a11BdGgRzYJbY.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/Qoeb8x3a11BdGgRzYJbY.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/Qoeb8x3a11BdGgRzYJbY.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/Qoeb8x3a11BdGgRzYJbY.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/Qoeb8x3a11BdGgRzYJbY.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/Qoeb8x3a11BdGgRzYJbY.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/Qoeb8x3a11BdGgRzYJbY.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/Qoeb8x3a11BdGgRzYJbY.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/Qoeb8x3a11BdGgRzYJbY.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/Qoeb8x3a11BdGgRzYJbY.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/Qoeb8x3a11BdGgRzYJbY.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/Qoeb8x3a11BdGgRzYJbY.png?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#backforward-cache" class="w-toc__header--link">
+        Back/forward cache
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#browser-compatibility">Browser compatibility</a></li><li><a href="#bfcache-basics">bfcache basics</a></li><li><a href="#how-the-"cache"-works">How the &quot;cache&quot; works</a></li><li><a href="#apis-to-observe-bfcache">APIs to observe bfcache</a></li><li><a href="#optimize-your-pages-for-bfcache">Optimize your pages for bfcache</a></li><li><a href="#never-use-the-unload-event">Never use the unload event</a></li><li><a href="#avoid-window.opener-references">Avoid window.opener references</a></li><li><a href="#always-close-open-connections-before-the-user-navigates-away">Always close open connections before the user navigates away</a></li><li><a href="#test-to-ensure-your-pages-are-cacheable">Test to ensure your pages are cacheable</a></li><li><a href="#ways-to-opt-out-of-bfcache">Ways to opt out of bfcache</a></li><li><a href="#how-bfcache-affects-analytics-and-performance-measurement">How bfcache affects analytics and performance measurement</a></li><li><a href="#performance-measurement">Performance measurement</a></li><li><a href="#impact-on-core-web-vitals">Impact on Core Web Vitals</a></li><li><a href="#additional-resources">Additional Resources</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@philwalton"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="backforward-cache" class="w-article-header__headline">Back/forward cache</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          Optimize your pages for instant loads when using the browser's back and forward buttons.
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Nov 10, 2020</time>
+           <span class="w-author__separator">•</span> Updated <time>Nov 10, 2020</time> 
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/philipwalton/"><img     alt="Philip Walton"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/ovBM8MF9rYDxVVHUVlcG.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/ovBM8MF9rYDxVVHUVlcG.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/ovBM8MF9rYDxVVHUVlcG.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/ovBM8MF9rYDxVVHUVlcG.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/ovBM8MF9rYDxVVHUVlcG.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/ovBM8MF9rYDxVVHUVlcG.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/philipwalton/">Philip Walton</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/philwalton"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/philipwalton">GitHub</a>
+      </li>
+      
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://philipwalton.com">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>Back/forward cache (or bfcache) is a browser optimization that enables instant
+back and forward navigation. It significantly improves the browsing experience
+for users—especially those with slower networks or devices.</p>
+<p>As web developers, it's critical to understand how to <a href="#optimize-your-pages-for-bfcache">optimize your pages for
+bfcache</a> across all browsers, so your users
+can reap the benefits.</p>
+<h2 id="browser-compatibility">Browser compatibility <a class="w-headline-link" href="#browser-compatibility">#</a></h2>
+<p>bfcache has been supported in both
+<a href="https://developer.mozilla.org/en-US/docs/Mozilla/Firefox/Releases/1.5/Using_Firefox_1.5_caching" rel="noopener">Firefox</a>
+and <a href="https://webkit.org/blog/427/webkit-page-cache-i-the-basics/" rel="noopener">Safari</a> for
+many years, across desktop and mobile.</p>
+<p>Starting in version 86, Chrome has enabled bfcache for
+<a href="/same-site-same-origin/">cross-site</a> navigations on Android for a small
+percentage of users. In Chrome 87, bfcache support will be rolled out to all
+Android users for cross-site navigation, with the intent to support
+<a href="/same-site-same-origin/">same-site</a> navigation as well in the near future.</p>
+<h2 id="bfcache-basics">bfcache basics <a class="w-headline-link" href="#bfcache-basics">#</a></h2>
+<p>bfcache is an in-memory cache that stores a complete snapshot of a page
+(including the JavaScript heap) as the user is navigating away. With the entire
+page in memory, the browser can quickly and easily restore it if the user
+decides to return.</p>
+<p>How many times have you visited a website and clicked a link to go to another
+page, only to realize it's not what you wanted and click the back button? In
+that moment, bfcache can make a big difference in how fast the previous page
+loads:</p>
+<div class="w-table-wrapper w-table--top-align">
+  <table>
+    <tr>
+      <td width="30%"><strong><em>Without</em> bfcache enabled</strong></td>
+      <td>
+        A new request is initiated to load the previous page, and, depending
+        on how well that page has been <a
+        href="/reliable/#the-options-in-your-caching-toolbox">
+        optimized</a> for repeat visits, the browser might have to re-download,
+        re-parse, and re-execute some (or all) of resources it just downloaded.
+      </td>
+    </tr>
+    <tr>
+      <td><strong><em>With</em> bfcache enabled</strong></td>
+      <td>
+        Loading the previous page is <em>essentially instant</em>, because the
+        entire page can be restored from memory, without having to go to the
+        network at all
+      </td>
+    </tr>
+  </table>
+</div>
+<p>Check out this video of bfcache in action to understand the speed up it can
+bring to navigations:</p>
+<div class="youtube">  <lite-youtube    videoid="cuPsdRckkF0"      >  </lite-youtube></div>
+<p>In the video above, the example with bfcache is quite a bit faster than the
+example without it.</p>
+<p>bfcache not only speeds up navigation, it also reduces data usage, since
+resources do not have to be downloaded again.</p>
+<p>Chrome usage data shows that 1 in 10 navigations on desktop and 1 in 5 on mobile
+are either back or forward. With bfcache enabled, browsers could eliminate the
+data transfer and time spent loading for billions of web pages every single day!</p>
+<h3 id="how-the-&quot;cache&quot;-works">How the &quot;cache&quot; works <a class="w-headline-link" href="#how-the-&quot;cache&quot;-works">#</a></h3>
+<p>The &quot;cache&quot; used by bfcache is different from the <a href="/http-cache/">HTTP cache</a>
+(which is also useful in speeding up repeat navigations). The bfcache is a
+snapshot of the entire page in memory (including the JavaScript heap), whereas
+the HTTP cache contains only the responses for previously made requests. Since
+it's quite rare that all requests required to load a page can be fulfilled from
+the HTTP cache, repeat visits using bfcache restores are always faster than even
+the most well-optimized non-bfcache navigations.</p>
+<p>Creating a snapshot of a page in memory, however, involves some complexity in
+terms of how best to preserve in-progress code. For example, how do you handle
+<code>setTimeout()</code> calls where the timeout is reached while the page is in the
+bfcache?</p>
+<p>The answer is that browsers pause running any pending timers or unresolved
+promises—essentially all pending tasks in the <a href="https://html.spec.whatwg.org/multipage/webappapis.html#task-queue" rel="noopener">JavaScript task
+queues</a>—and
+resume processing tasks when (or if) the page is restored from the bfcache.</p>
+<p>In some cases this is fairly low-risk (for example, timeouts or promises), but
+in other cases it might lead to very confusing or unexpected behavior. For
+example, if the browser pauses a task that's required as part of an <a href="https://developer.mozilla.org/en-US/docs/Web/API/IDBTransaction" rel="noopener">IndexedDB
+transaction</a>,
+it can affect other open tabs in the same origin (since the same IndexedDB
+databases can be accessed by multiple tabs simultaneously). As a result,
+browsers will generally not attempt to cache pages in the middle of an IndexedDB
+transaction or using APIs that might affect other pages.</p>
+<p>For more details on how various API usage affects a page's bfcache eligibility,
+see <a href="#optimize-your-pages-for-bfcache">Optimize your pages for bfcache</a> below.</p>
+<h3 id="apis-to-observe-bfcache">APIs to observe bfcache <a class="w-headline-link" href="#apis-to-observe-bfcache">#</a></h3>
+<p>While bfcache is an optimization that browsers do automatically, it's still
+important for developers to know when it's happening so they can <a href="#optimize-your-pages-for-bfcache">optimize their
+pages for it</a> and <a href="#implications-for-analytics-and-performance-measurement">adjust any metrics or
+performance
+measurement</a>
+accordingly.</p>
+<p>The primary events used to observe bfcache are the <a href="https://developer.mozilla.org/en-US/docs/Web/API/PageTransitionEvent" rel="noopener">page transition
+events</a>—<code>pageshow</code>
+and <code>pagehide</code>—which have been around as long as bfcache has and are supported
+in pretty much <a href="https://caniuse.com/page-transition-events" rel="noopener">all browsers in use
+today</a>.</p>
+<p>The newer <a href="https://developers.google.com/web/updates/2018/07/page-lifecycle-api" rel="noopener">Page
+Lifecycle</a>
+events—<code>freeze</code> and <code>resume</code>—are also dispatched when pages go in or out of the
+bfcache, as well as in some other situations. For example when a background tab
+gets frozen to minimize CPU usage. Note, the Page Lifecycle events are currently
+only supported in Chromium-based browsers.</p>
+<h4 id="observe-when-a-page-is-restored-from-bfcache">Observe when a page is restored from bfcache <a class="w-headline-link" href="#observe-when-a-page-is-restored-from-bfcache">#</a></h4>
+<p>The <code>pageshow</code> event fires right after the <code>load</code> event when the page is
+initially loading and any time the page is restored from bfcache. The <code>pageshow</code>
+event has a
+<code><a href="https://developer.mozilla.org/en-US/docs/Web/API/PageTransitionEvent/persisted" rel="noopener">persisted</a></code>
+property which will be <code>true</code> if the page was restored from bfcache
+(and <code>false</code> if not). You can use the <code>persisted</code> property
+to distinguish regular page loads from bfcache restores. For example:</p>
+<web-copy-code><pre class="language-js"><code class="language-js">window<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'pageshow'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">event</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token keyword">if</span> <span class="token punctuation">(</span>event<span class="token punctuation">.</span>persisted<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'This page was restored from the bfcache.'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span><br>    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'This page was loaded normally.'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>In browsers that support the Page Lifecycle API, the <code>resume</code> event will also
+fire when pages are restored from bfcache (immediately before the <code>pageshow</code>
+event), though it will also fire when a user revisits a frozen background tab.
+If you want to restore a page's state after it's frozen (which includes pages in
+the bfcache), you can use the <code>resume</code> event, but if you want to measure your
+site's bfcache hit rate, you'd need to use the <code>pageshow</code> event. In some cases,
+you might need to use both.</p>
+<div class="w-aside w-aside--note">
+<p>See <a href="#how-bfcache-affects-analytics-and-performance-measurement">Implications for performance and
+analytics</a> for
+more details on bfcache measurement best practices.</p>
+</div>
+<h4 id="observe-when-a-page-is-entering-bfcache">Observe when a page is entering bfcache <a class="w-headline-link" href="#observe-when-a-page-is-entering-bfcache">#</a></h4>
+<p>The <code>pagehide</code> event is the counterpart to the <code>pageshow</code> event. The <code>pageshow</code>
+event fires when a page is either loaded normally or restored from the bfcache.
+The <code>pagehide</code> event fires when the page is either unloaded normally or when the
+browser attempts to put it into the bfcache.</p>
+<p>The <code>pagehide</code> event also has a <code>persisted</code> property, and if it's <code>false</code> then
+you can be confident a page is not about to enter the bfcache. However, if the
+<code>persisted</code> property is <code>true</code>, it doesn't guarantee that a page will be cached.
+It means that the browser <em>intends</em> to cache the page, but there may be factors
+that make it impossible to cache.</p>
+<web-copy-code><pre class="language-js"><code class="language-js">window<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'pagehide'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">event</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token keyword">if</span> <span class="token punctuation">(</span>event<span class="token punctuation">.</span>persisted <span class="token operator">===</span> <span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>   console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'This page *might* be entering the bfcache.'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span><br>    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'This page will unload normally and be discarded.'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>Similarly, the <code>freeze</code> event will fire immediately after the <code>pagehide</code> event
+(if the event's <code>persisted</code> property is <code>true</code>), but again that only means the
+browser <em>intends</em> to cache the page. It may still have to discard it for a
+number of reasons explained below.</p>
+<h2 id="optimize-your-pages-for-bfcache">Optimize your pages for bfcache <a class="w-headline-link" href="#optimize-your-pages-for-bfcache">#</a></h2>
+<p>Not all pages get stored in bfcache, and even when a page does get stored there,
+it won't stay there indefinitely. It's critical that developers understand what
+makes pages eligible (and ineligible) for bfcache to maximize their cache-hit
+rates.</p>
+<p>The following sections outline the best practices to make it as likely as
+possible that the browser can cache your pages.</p>
+<h3 id="never-use-the-unload-event">Never use the <code>unload</code> event <a class="w-headline-link" href="#never-use-the-unload-event">#</a></h3>
+<p>The most important way to optimize for bfcache in all browsers is to never use
+the <code>unload</code> event. Ever!</p>
+<p>The <code>unload</code> event is problematic for browsers because it predates bfcache and
+many pages on the internet operate under the (reasonable) assumption that a page
+will not continue to exist after the <code>unload</code> event has fired. This presents a
+challenge because many of those pages were <em>also</em> built with the assumption that
+the <code>unload</code> event would fire any time a user is navigating away, which is no
+longer true (and <a href="https://developers.google.com/web/updates/2018/07/page-lifecycle-api#the-unload-event" rel="noopener">hasn't been true for a long
+time</a>).</p>
+<p>So browsers are faced with a dilemma, they have to choose between something that
+can improve the user experience—but might also risk breaking the page.</p>
+<p>Firefox has chosen to make pages ineligible for bfcache if they add an <code>unload</code>
+listener, which is less risky but also disqualifies <em>a lot</em> of pages. Safari
+will attempt to cache some pages with an <code>unload</code> event listener, but to reduce
+potential breakage it will not run the <code>unload</code> event when a user is navigating
+away.</p>
+<p>Since <a href="https://www.chromestatus.com/metrics/feature/popularity#DocumentUnloadRegistered" rel="noopener">65% of
+pages</a>
+in Chrome register an <code>unload</code> event listener, to be able to cache as many pages
+as possible, Chrome chose to align implementation with Safari.</p>
+<p>Instead of using the <code>unload</code> event, use the <code>pagehide</code> event. The <code>pagehide</code>
+event fires in all cases where the <code>unload</code> event currently fires, and it
+<em>also</em> fires when a page is put in the bfcache.</p>
+<p>In fact, <a href="https://github.com/GoogleChrome/lighthouse/releases/tag/v6.2.0" rel="noopener">Lighthouse
+v6.2.0</a> has
+added a <code><a href="https://github.com/GoogleChrome/lighthouse/pull/11085" rel="noopener">no-unload-listeners
+audit</a></code>, which will
+warn developers if any JavaScript on their pages (including that from
+third-party libraries) adds an <code>unload</code> event listener.</p>
+<div class="w-aside w-aside--warning">
+<p><strong>Warning</strong>:
+Never add an <code>unload</code> event listener! Use the <code>pagehide</code> event instead.
+Adding an <code>unload</code> event listener will make your site slower in Firefox, and
+the code won't even run most of the time in Chrome and Safari.</p>
+</div>
+<h4 id="only-add-beforeunload-listeners-conditionally">Only add <code>beforeunload</code> listeners conditionally <a class="w-headline-link" href="#only-add-beforeunload-listeners-conditionally">#</a></h4>
+<p>The <code>beforeunload</code> event will not make your pages ineligible for bfcache in
+Chrome or Safari, but it will make them ineligible in Firefox, so avoid using it
+unless absolutely necessary.</p>
+<p>Unlike the <code>unload</code> event, however, there are legitimate uses for
+<code>beforeunload</code>. For example, when you want to warn the user that they have
+unsaved changes they'll lose if they leave the page. In this case, it's
+recommended that you only add <code>beforeunload</code> listeners when a user has unsaved
+changes and then remove them immediately after the unsaved changes are saved.</p>
+<figure class="w-compare"><p class="w-compare__label w-compare__label--worse">Don't</p>
+<web-copy-code><pre class="language-js"><code class="language-js">window<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'beforeunload'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token parameter">event</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">pageHasUnsavedChanges</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    event<span class="token punctuation">.</span><span class="token function">preventDefault</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token keyword">return</span> event<span class="token punctuation">.</span>returnValue <span class="token operator">=</span> <span class="token string">'Are you sure you want to exit?'</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><figcaption class="w-compare__caption">
+<p>The code above adds a <code>beforeunload</code> listener unconditionally.</p>
+</figcaption>
+</figure>
+<figure class="w-compare"><p class="w-compare__label w-compare__label--better">Do</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">beforeUnloadListener</span><span class="token punctuation">(</span><span class="token parameter">event</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  event<span class="token punctuation">.</span><span class="token function">preventDefault</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token keyword">return</span> event<span class="token punctuation">.</span>returnValue <span class="token operator">=</span> <span class="token string">'Are you sure you want to exit?'</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span><br><br><span class="token comment">// A function that invokes a callback when the page has unsaved changes.</span><br><span class="token function">onPageHasUnsavedChanges</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  window<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'beforeunload'</span><span class="token punctuation">,</span> beforeUnloadListener<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token comment">// A function that invokes a callback when the page's unsaved changes are resolved.</span><br><span class="token function">onAllChangesSaved</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  window<span class="token punctuation">.</span><span class="token function">removeEventListener</span><span class="token punctuation">(</span><span class="token string">'beforeunload'</span><span class="token punctuation">,</span> beforeUnloadListener<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><figcaption class="w-compare__caption">
+<p>The code above only adds the <code>beforeunload</code> listener when it's needed (and removes it
+when it's not).</p>
+</figcaption>
+</figure>
+<h3 id="avoid-window.opener-references">Avoid window.opener references <a class="w-headline-link" href="#avoid-window.opener-references">#</a></h3>
+<p>In some browsers (including Chromium-based browsers) if a page was opened using
+<code><a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/open" rel="noopener">window.open()</a></code>
+or (in <a href="https://crbug.com/898942" rel="noopener">Chromium-based browsers prior to version 88</a>) from a link with
+<code><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#target" rel="noopener">target=_blank</a></code>—without
+specifying
+<code><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Link_types/noopener" rel="noopener">rel=&quot;noopener&quot;</a></code>—then
+the opening page will have a reference to the window object of the opened page.</p>
+<p>In addition to <a href="https://mathiasbynens.github.io/rel-noopener/" rel="noopener">being a security
+risk</a>, a page with a non-null
+<code><a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/opener" rel="noopener">window.opener</a></code>
+reference cannot safely be put into the bfcache because that could break any
+pages attempting to access it.</p>
+<p>As a result, it's best to avoid creating <code>window.opener</code> references by using
+<code>rel=&quot;noopener&quot;</code> whenever possible. If your site requires opening a window and
+controlling it through
+<code><a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage" rel="noopener">window.postMessage()</a></code>
+or directly referencing the window object, neither the opened window nor the
+opener will be eligible for bfcache.</p>
+<h3 id="always-close-open-connections-before-the-user-navigates-away">Always close open connections before the user navigates away <a class="w-headline-link" href="#always-close-open-connections-before-the-user-navigates-away">#</a></h3>
+<p>As mentioned above, when a page is put into the bfcache all scheduled JavaScript
+tasks are paused and then resumed when the page is taken out of the cache.</p>
+<p>If these scheduled JavaScript tasks are only accessing DOM APIs—or other APIs
+isolated to just the current page—then pausing these tasks while the page is not
+visible to the user is not going to cause any problems.</p>
+<p>However, if these tasks are connected to APIs that are also accessible from
+other pages in the same origin (for example: IndexedDB, Web Locks, WebSockets,
+etc.) this can be problematic because pausing these tasks may prevent code in
+other tabs from running.</p>
+<p>As a result, most browsers will not attempt to put a page in bfcache in the
+following scenarios:</p>
+<ul>
+<li>Pages with an unfinished <a href="https://developer.mozilla.org/en-US/docs/Web/API/IDBTransaction" rel="noopener">IndexedDB
+transaction</a></li>
+<li>Pages with in-progress
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API" rel="noopener">fetch()</a> or
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest" rel="noopener">XMLHttpRequest</a></li>
+<li>Pages with an open
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/WebSocket" rel="noopener">WebSocket</a> or
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API" rel="noopener">WebRTC</a>
+connection</li>
+</ul>
+<p>If your page is using any of these APIs, it's best to always close connections
+and remove or disconnect observers during the <code>pagehide</code> or <code>freeze</code> event. That
+will allow the browser to safely cache the page without the risk of it affecting
+other open tabs.</p>
+<p>Then, if the page is restored from the bfcache, you can re-open or re-connect to
+those APIs (in the <code>pageshow</code> or <code>resume</code> event).</p>
+<div class="w-aside w-aside--note">
+<p>Using the APIs listed above does not disqualify a page from being stored in
+bfcache, as long as they are not actively in use before the user navigates
+away. However, there are APIs (Embedded Plugins, Workers,
+Broadcast Channel, and <a href="https://source.chromium.org/chromium/chromium/src/+/master:content/browser/frame_host/back_forward_cache_impl.cc;l=124;drc=e790fb2272990696f1d16a465832692f25506925?originalUrl=https:%2F%2Fcs.chromium.org%2F" rel="noopener">several
+others</a>)
+where usage currently does disqualify a page from being cached. While Chrome
+is intentionally being conservative in its initial release of bfcache, the
+long-term goal is to make bfcache work with as many APIs as possible.</p>
+</div>
+<h3 id="test-to-ensure-your-pages-are-cacheable">Test to ensure your pages are cacheable <a class="w-headline-link" href="#test-to-ensure-your-pages-are-cacheable">#</a></h3>
+<p>While there's no way to determine whether a page was put into the cache as it's
+unloading, it is possible to assert that a back or forward navigation did
+restore a page from the cache.</p>
+<p>Currently, in Chrome, a page can remain in the bfcache for up to three minutes,
+which should be enough time to run a test (using a tool like
+<a href="https://github.com/puppeteer/puppeteer" rel="noopener">Puppeteer</a> or
+<a href="https://www.w3.org/TR/webdriver/" rel="noopener">WebDriver</a>) to ensure that the <code>persisted</code>
+property of a <code>pageshow</code> event is <code>true</code> after navigating away from a page and
+then clicking the back button.</p>
+<p>Note that, while under normal conditions a page should remain in the cache for
+long enough to run a test, it <em>can</em> be evicted silently at any time (for
+example, if the system is under memory pressure). A failing test doesn't
+necessarily mean your pages are not cacheable, so you need to configure your
+test or build failure criteria accordingly.</p>
+<div class="w-aside w-aside--gotchas"><strong>Gotchas!</strong>
+<p>In Chrome, bfcache is currently only enabled on mobile. To test bfcache on
+desktop you need to <a href="https://www.chromium.org/developers/how-tos/run-chromium-with-flags" rel="noopener">enable the <code>#back-forward-cache</code>
+flag</a>.</p>
+</div>
+<h3 id="ways-to-opt-out-of-bfcache">Ways to opt out of bfcache <a class="w-headline-link" href="#ways-to-opt-out-of-bfcache">#</a></h3>
+<p>If you do not want a page to be stored in the bfcache you can ensure it's not
+cached by setting the <code>Cache-Control</code> header on the top-level page response to
+<code>no-store</code>:</p>
+<web-copy-code><pre class="language-http"><code class="language-http"><span class="token header-name keyword">Cache-Control:</span> no-store</code></pre>
+</web-copy-code><p>All other caching directives (including <code>no-cache</code> or even <code>no-store</code> on a
+subframe) will not affect a page's eligibility for bfcache.</p>
+<p>While this method is effective and works across browsers, it has other caching
+and performance implications that may be undesirable. To address that, there's a
+proposal to <a href="https://github.com/whatwg/html/issues/5744" rel="noopener">add a more explicit opt-out
+mechanism</a>, including a mechanism to
+clear the bfcache if needed (for example, when a user logs out of a website on a
+shared device).</p>
+<p>Also, in Chrome, user-level opt-out is currently possible via <a href="https://www.chromium.org/developers/how-tos/run-chromium-with-flags" rel="noopener">the
+<code>#back-forward-cache</code>
+flag</a>, as
+well an <a href="https://cloud.google.com/docs/chrome-enterprise/policies" rel="noopener">enterprise policy-based
+opt-out</a>.</p>
+<div class="w-aside w-aside--caution">
+<p><strong>Caution</strong>:
+Given the significantly better user experience that bfcache delivers, it is
+not recommended to opt-out unless absolutely necessary for privacy reasons,
+for example if a user logs out of a website on a shared device.</p>
+</div>
+<h2 id="how-bfcache-affects-analytics-and-performance-measurement">How bfcache affects analytics and performance measurement <a class="w-headline-link" href="#how-bfcache-affects-analytics-and-performance-measurement">#</a></h2>
+<p>If you track visits to your site with an analytics tool, you will likely notice
+a decrease in the total number of pageviews reported as Chrome continues to
+enable bfcache for more users.</p>
+<p>In fact, you're likely <em>already</em> underreporting pageviews from other browsers
+that implement bfcache since most of the popular analytics libraries do not
+track bfcache restores as new pageviews.</p>
+<p>If you don't want your pageview counts to go down due to Chrome enabling
+bfcache, you can report bfcache restores as pageviews (recommended) by listening
+to the <code>pageshow</code> event and checking the <code>persisted</code> property.</p>
+<p>The following example shows how to do this with Google Analytics; the logic
+should be similar for other analytics tools:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token comment">// Send a pageview when the page is first loaded.</span><br><span class="token function">gtag</span><span class="token punctuation">(</span><span class="token string">'event'</span><span class="token punctuation">,</span> <span class="token string">'page_view'</span><span class="token punctuation">)</span><br><br>window<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'pageshow'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">event</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token keyword">if</span> <span class="token punctuation">(</span>event<span class="token punctuation">.</span>persisted <span class="token operator">===</span> <span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token comment">// Send another pageview if the page is restored from bfcache.</span><br>    <span class="token function">gtag</span><span class="token punctuation">(</span><span class="token string">'event'</span><span class="token punctuation">,</span> <span class="token string">'page_view'</span><span class="token punctuation">)</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><h3 id="performance-measurement">Performance measurement <a class="w-headline-link" href="#performance-measurement">#</a></h3>
+<p>bfcache can also negatively affect performance metrics collected <a href="/user-centric-performance-metrics/#in-the-field">in the
+field</a>, specifically metrics
+that measure page load times.</p>
+<p>Since bfcache navigations restore an existing page rather than initiate a new
+page load, the total number of page loads collected will decrease when bfcache
+is enabled. What's critical, though, is that the page loads being replaced by
+bfcache restores would likely have been some of the fastest page loads in your
+dataset. This is because back and forward navigations, by definition, are repeat
+visits, and repeat page loads are generally faster than page loads from first
+time visitors (due to <a href="/http-cache/">HTTP caching</a>, as mentioned earlier).</p>
+<p>The result is fewer fast page loads in your dataset, which will likely skew the
+distribution slower—despite the fact that the performance experienced by the
+user has probably improved!</p>
+<p>There are a few ways to deal with this issue. One is to annotate all page load
+metrics with their respective <a href="https://www.w3.org/TR/navigation-timing-2/#sec-performance-navigation-types" rel="noopener">navigation
+type</a>:
+<code>navigate</code>, <code>reload</code>, <code>back_forward</code>, or <code>prerender</code>. This will allow you to
+continue to monitor your performance within these navigation types—even if the
+overall distribution skews negative. This approach is recommended for
+non-user-centric page load metrics like <a href="/time-to-first-byte/">Time to First Byte
+(TTFB)</a>.</p>
+<p>For user-centric metrics like the <a href="/vitals/">Core Web Vitals</a>, a better option
+is to report a value that more accurately represents what the user experiences.</p>
+<div class="w-aside w-aside--caution">
+<p><strong>Caution</strong>:
+The <code>back_forward</code> navigation type in the <a href="https://www.w3.org/TR/navigation-timing-2/#sec-performance-navigation-types" rel="noopener">Navigation Timing
+API</a>
+is not to be confused with bfcache restores. The Navigation Timing API only
+annotates page loads, whereas bfcache restores are re-using a page loaded from
+a previous navigation.</p>
+</div>
+<h3 id="impact-on-core-web-vitals">Impact on Core Web Vitals <a class="w-headline-link" href="#impact-on-core-web-vitals">#</a></h3>
+<p><a href="/vitals/">Core Web Vitals</a> measure the user's experience of a web page across a
+variety of dimensions (loading speed, interactivity, visual stability), and
+since users experience bfcache restores as faster navigations than traditional
+page loads, it's important that the Core Web Vitals metrics reflect this. After
+all, a user doesn't care whether or not bfcache was enabled, they just care that
+the navigation was fast!</p>
+<p>Tools like the <a href="https://developers.google.com/web/tools/chrome-user-experience-report" rel="noopener">Chrome User Experience
+Report</a>,
+that collect and report on the Core Web Vitals metrics treat bfcache restores as
+separate page visits in their dataset.</p>
+<p>And while there aren't (yet) dedicated web performance APIs for measuring these
+metrics after bfcache restores, their values can be approximated using existing
+web APIs.</p>
+<ul>
+<li>For <a href="/lcp/">Largest Contentful Paint (LCP)</a>, you can use the delta between
+the <code>pageshow</code> event's timestamp and the timestamp of the next painted frame
+(since all elements in the frame will be painted at the same time). Note
+that in the case of a bfcache restore, LCP and FCP will be the same.</li>
+<li>For <a href="/fid/">First Input Delay (FID)</a>, you can re-add the event listeners
+(the same ones used by the <a href="https://github.com/GoogleChromeLabs/first-input-delay" rel="noopener">FID
+polyfill</a>) in the
+<code>pageshow</code> event, and report FID as the delay of the first input after the
+bfcache restore.</li>
+<li>For <a href="/cls/">Cumulative Layout Shift (CLS)</a>, you can continue to keep using
+your existing Performance Observer; all you have to do is reset the current
+CLS value to 0.</li>
+</ul>
+<p>For more details on how bfcache affects each metric, refer to the individual
+Core Web Vitals <a href="/vitals/#core-web-vitals">metric guides pages</a>. And for a
+specific example of how to implement bfcache versions of these metrics in code,
+refer to the <a href="https://github.com/GoogleChrome/web-vitals/pull/87" rel="noopener">PR adding them to the web-vitals JS
+library</a>.</p>
+<div class="w-aside w-aside--note">
+<p>As of <code>v1</code>, the <a href="https://github.com/GoogleChrome/web-vitals" rel="noopener">web-vitals</a>
+JavaScript library <a href="https://github.com/GoogleChrome/web-vitals/pull/87" rel="noopener">supports bfcache
+restores</a> in the metrics
+it reports. Developers using <code>v1</code> or greater should not need to update their
+code.</p>
+</div>
+<h2 id="additional-resources">Additional Resources <a class="w-headline-link" href="#additional-resources">#</a></h2>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/Firefox/Releases/1.5/Using_Firefox_1.5_caching" rel="noopener">Firefox
+Caching</a>
+<em>(bfcache in Firefox)</em></li>
+<li><a href="https://webkit.org/blog/427/webkit-page-cache-i-the-basics/" rel="noopener">Page Cache</a>
+<em>(bfcache in Safari)</em></li>
+<li><a href="https://docs.google.com/document/d/1JtDCN9A_1UBlDuwkjn1HWxdhQ1H2un9K4kyPLgBqJUc/edit?usp=sharing" rel="noopener">Back/forward cache: web exposed
+behavior</a>
+<em>(bfcache differences across browsers)</em></li>
+<li><a href="https://back-forward-cache-tester.glitch.me/?persistent_logs=1" rel="noopener">bfcache
+tester</a>
+<em>(test how different APIs and events affect bfcache in browsers)</em></li>
+</ul>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/performance/">Performance</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/web-vitals/">Web Vitals</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Nov 10, 2020</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/bfcache/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

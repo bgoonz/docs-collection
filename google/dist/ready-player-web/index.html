@@ -1,0 +1,709 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=42e18bc1d347a">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Ready Player Web</title>
+<meta name="description" content="The Web platform is very mature for game development nowadays. The key to building a modern web game is embracing the best practices of game design and monetization. This post provides provides guidance towards this goal. " />
+
+<link rel="canonical" href="https://web.dev/ready-player-web/" />
+
+<meta itemprop="name" content="Ready Player Web" />
+<meta itemprop="description" content="The Web platform is very mature for game development nowadays. The key to building a modern web game is embracing the best practices of game design and monetization. This post provides provides guidance towards this goal. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/d14lKdJ4iYwr1wI8AgA3.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/ready-player-web/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Ready Player Web" />
+<meta property="og:description" content="The Web platform is very mature for game development nowadays. The key to building a modern web game is embracing the best practices of game design and monetization. This post provides provides guidance towards this goal. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/d14lKdJ4iYwr1wI8AgA3.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="Game design, business and tools for modern web games." />
+<meta property="tag" content="games" />
+<meta property="tag" content="game-design" />
+<meta property="tag" content="monetization" />
+<meta property="tag" content="tools" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Ready Player Web" />
+<meta name="twitter:description" content="The Web platform is very mature for game development nowadays. The key to building a modern web game is embracing the best practices of game design and monetization. This post provides provides guidance towards this goal. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/d14lKdJ4iYwr1wI8AgA3.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=f967b020bafa8', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=7f86c988015f2', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="Game design, business and tools for modern web games."     class="w-hero w-hero--contain w-hero--center"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/d14lKdJ4iYwr1wI8AgA3.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/d14lKdJ4iYwr1wI8AgA3.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/d14lKdJ4iYwr1wI8AgA3.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/d14lKdJ4iYwr1wI8AgA3.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/d14lKdJ4iYwr1wI8AgA3.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/d14lKdJ4iYwr1wI8AgA3.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/d14lKdJ4iYwr1wI8AgA3.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/d14lKdJ4iYwr1wI8AgA3.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/d14lKdJ4iYwr1wI8AgA3.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/d14lKdJ4iYwr1wI8AgA3.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/d14lKdJ4iYwr1wI8AgA3.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/d14lKdJ4iYwr1wI8AgA3.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/d14lKdJ4iYwr1wI8AgA3.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/d14lKdJ4iYwr1wI8AgA3.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/d14lKdJ4iYwr1wI8AgA3.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/d14lKdJ4iYwr1wI8AgA3.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/d14lKdJ4iYwr1wI8AgA3.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/d14lKdJ4iYwr1wI8AgA3.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#ready-player-web" class="w-toc__header--link">
+        Ready Player Web
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#the-challenges-of-web-games">The challenges of web games</a></li><li><a href="#modern-best-practices">Modern best practices</a></li><li><a href="#enter-the-loop">Enter the loop</a></li><li><a href="#return-on-investment">Return on investment</a></li><li><a href="#the-future">The future</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@tcmg"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="ready-player-web" class="w-article-header__headline">Ready Player Web</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          Building games for the modern web.
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Aug 21, 2019</time>
+          
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/tomgreenaway/"><img     alt="Tom Greenaway"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/A1EASC3dUKSf0lHijPyh.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/A1EASC3dUKSf0lHijPyh.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/A1EASC3dUKSf0lHijPyh.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/A1EASC3dUKSf0lHijPyh.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/A1EASC3dUKSf0lHijPyh.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/A1EASC3dUKSf0lHijPyh.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/tomgreenaway/">Tom Greenaway</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/tcmg"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/tcmg">GitHub</a>
+      </li>
+      
+      
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>Good game developers know that to capitalise on the opportunity of a particular platform it's important to embrace the unique characteristics of that platform. So what are the unique characteristics of the web? And what defines a web game?</p>
+<p>At Google I/O 2019 I presented my thoughts on the state of the web games ecosystem, the current best practices for modern web game development, and where the industry is heading. In this blog post, I'll summarise some of the key points from my talk which you can watch in full on YouTube:</p>
+<div class="youtube">  <lite-youtube    videoid="aVTYxHL45SA"      >  </lite-youtube></div>
+<h2 id="the-challenges-of-web-games">The challenges of web games <a class="w-headline-link" href="#the-challenges-of-web-games">#</a></h2>
+<p>Before joining Google I created a mobile game known as <a href="https://www.duetgame.com" rel="noopener">Duet</a> which was downloaded nearly 20 million times. Through that experience I learned that the three essential ingredients to building a successful business out of a game are:</p>
+<ul>
+<li>A functional game</li>
+<li>Users</li>
+<li>A way to monetize users</li>
+</ul>
+<p>Without these three elements, a game developer cannot succeed. Nowadays, these last two points are the most critical. Closed HTML5 ecosystems such as WeChat, Facebook Instant Games, and more have demonstrated that building games using HTML5 is achievable.</p>
+<h2 id="modern-best-practices">Modern best practices <a class="w-headline-link" href="#modern-best-practices">#</a></h2>
+<p>By &quot;functional game&quot; I refer to the three most core elements of what makes a game work:</p>
+<ul>
+<li>Performance</li>
+<li>Visuals</li>
+<li>Audio</li>
+</ul>
+<p>In each of these areas, the web platform has made significant strides in the past few years. For CPU performance we have access to a <a href="https://www.youtube.com/watch?v=njt-Qzw0mVY" rel="noopener">performant new standard called WebAssembly</a>. From the graphics side, <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API" rel="noopener">WebGL 1.0</a> has <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API#WebGL_1" rel="noopener">good cross-browser support</a> and future standards such as <a href="https://www.youtube.com/watch?v=K2JzIUIHIhc" rel="noopener">WebGPU</a> are positioning the web platform for an extensible future of graphics programming similar to Vulkan and Metal. Finally, for web audio we have the <a href="https://www.youtube.com/watch?v=-GaD0RCp-Q0" rel="noopener">common Web Audio API and more recently the Audio Worklet API</a>.</p>
+<p>Recently, Unity previewed a new runtime called Project Tiny which is focused on building 2D games for HTML5-based platforms. Project Tiny applies a new modular design to the engine structure of Unity enabling the core Unity engine to be under 1 megabyte in size.</p>
+<figure class="w-figure">
+  <img     alt="Two tanks engaged in a battle."          decoding="async"     height="449"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/NAydOzjTBzlBnom2SubM.gif?auto=format"     srcset="https://web-dev.imgix.net/image/admin/NAydOzjTBzlBnom2SubM.gif?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/NAydOzjTBzlBnom2SubM.gif?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/NAydOzjTBzlBnom2SubM.gif?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/NAydOzjTBzlBnom2SubM.gif?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/NAydOzjTBzlBnom2SubM.gif?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/NAydOzjTBzlBnom2SubM.gif?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/NAydOzjTBzlBnom2SubM.gif?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/NAydOzjTBzlBnom2SubM.gif?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/NAydOzjTBzlBnom2SubM.gif?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/NAydOzjTBzlBnom2SubM.gif?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/NAydOzjTBzlBnom2SubM.gif?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/NAydOzjTBzlBnom2SubM.gif?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/NAydOzjTBzlBnom2SubM.gif?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/NAydOzjTBzlBnom2SubM.gif?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/NAydOzjTBzlBnom2SubM.gif?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/NAydOzjTBzlBnom2SubM.gif?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/NAydOzjTBzlBnom2SubM.gif?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">Unity's Tanks Demo exported via HTML5.</figcaption>
+</figure>
+<p>From the technical side, there has never been a better time to embrace web game development.</p>
+<h2 id="enter-the-loop">Enter the loop <a class="w-headline-link" href="#enter-the-loop">#</a></h2>
+<p>A great game is obviously more than just good performance, graphics, and sound though–to be great a game must be fun.</p>
+<p>Fun is a difficult element to measure in a product. When a game is fun, interesting, or innovative enough, users will want to tell their friends–in other words, they'll want to share the experience. Tapping into this opportunity and coupling it with the web is a powerful combination that unlocks a lot of potential for viral growth. And on the web in particular, without a central discovery platform, our best bet towards acquiring users is to ensure our games are as viral as possible.</p>
+<p>Good game developers know that to capitalise on a particular platform–whether at a software or hardware level–it's important to embrace the unique characteristics of that platform. For example, if you're building a game for a console with motion controls, you should probably think about the best way to embrace those motion controls.</p>
+<p>In other words, you must respect the expectations of the users of the platform you're building for. What do users of the web expect? They expect web content to load fast and be interactive quickly. In my talk, I covered several examples of ways–both on and off the web–that games have been designed to load quickly, pull users into their game worlds, engage those users, and provide users with additional incentives to share their experiences.</p>
+<img     alt="Three games with minimalist art styles."          decoding="async"     height="368"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/ppUw6LsWIqub2vRiMuaG.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/ppUw6LsWIqub2vRiMuaG.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/ppUw6LsWIqub2vRiMuaG.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/ppUw6LsWIqub2vRiMuaG.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/ppUw6LsWIqub2vRiMuaG.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/ppUw6LsWIqub2vRiMuaG.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/ppUw6LsWIqub2vRiMuaG.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/ppUw6LsWIqub2vRiMuaG.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/ppUw6LsWIqub2vRiMuaG.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/ppUw6LsWIqub2vRiMuaG.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/ppUw6LsWIqub2vRiMuaG.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/ppUw6LsWIqub2vRiMuaG.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/ppUw6LsWIqub2vRiMuaG.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/ppUw6LsWIqub2vRiMuaG.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/ppUw6LsWIqub2vRiMuaG.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/ppUw6LsWIqub2vRiMuaG.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/ppUw6LsWIqub2vRiMuaG.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/ppUw6LsWIqub2vRiMuaG.png?auto=format&w=1600 1600w"          width="800"   />
+<p>I personally believe that the key to building a successful web game is to lean into this unique characteristic of the web. Specifically, the strength of the web's URL structure and the sharing loop that users can join in.</p>
+<p>Here's an example of a web game I built using <a href="http://construct.net" rel="noopener">Construct 3</a> that leverages the URL in a fun and engaging way.</p>
+<img     alt="A level editor interface for a game."          decoding="async"     height="608"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/L0wolsGPYf4pQjlI4i1g.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/L0wolsGPYf4pQjlI4i1g.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/L0wolsGPYf4pQjlI4i1g.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/L0wolsGPYf4pQjlI4i1g.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/L0wolsGPYf4pQjlI4i1g.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/L0wolsGPYf4pQjlI4i1g.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/L0wolsGPYf4pQjlI4i1g.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/L0wolsGPYf4pQjlI4i1g.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/L0wolsGPYf4pQjlI4i1g.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/L0wolsGPYf4pQjlI4i1g.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/L0wolsGPYf4pQjlI4i1g.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/L0wolsGPYf4pQjlI4i1g.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/L0wolsGPYf4pQjlI4i1g.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/L0wolsGPYf4pQjlI4i1g.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/L0wolsGPYf4pQjlI4i1g.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/L0wolsGPYf4pQjlI4i1g.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/L0wolsGPYf4pQjlI4i1g.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/L0wolsGPYf4pQjlI4i1g.png?auto=format&w=1600 1600w"          width="800"   />
+<p><a href="https://io-space-board.firebaseapp.com" rel="noopener">Space Board</a> is a very simple game that can be played on either mobile with touch controls or on desktop with keyboard input. The objective is to navigate a maze of obstacles to reach a goal at the end.</p>
+<p>How does Space Board leverage the URL in a unique fashion? By encoding the level structure into the URL itself. All levels are defined as a 10 by 10 grid of objects–e.g. walls, enemy turrets, keys, locked doors etc. The URL then lists all the individual grid positions and their contents. A wall is represented by a <code>W</code> character. An empty space is an underscore character.</p>
+<p>Here's an example:</p>
+<web-copy-code><pre class="language-text"><code class="language-text">https://io-space-board.firebaseapp.com/?gameWorld=_wwwwwwwwww___ww__eww_k__d___ww___ww___ww_wwwww_www_wwwww_www___ww___ww_s_ww_f_ww___ww___wwwwwwwwwwww</code></pre>
+</web-copy-code><p>It's ugly but it does the job.</p>
+<p>Upon completing a level in Space Board, the player has the opportunity to design their own level using the simple level editor shown above. By enabling players to design their own levels we are giving them the opportunity for personalisation. When a user feels a connection to a game and a sense of ownership via creation and customisation they are more likely to want to share that 'thing' with the world.</p>
+<p>The desire to share a game is the beginning of the viral loop that we are aiming to achieve with our web games. This game design and sharing mechanism is just one example that's possible but there are many other possibilities–I encourage you to watch my talk for further examples!</p>
+<h2 id="return-on-investment">Return on investment <a class="w-headline-link" href="#return-on-investment">#</a></h2>
+<p>At present, there are ultimately two schools of thought with regards to how a game developer can generate revenue through web games:</p>
+<ul>
+<li>Monetizing the games directly</li>
+<li>Treating them as an acquisition channel</li>
+</ul>
+<p>Treating web games as an acquisition channel means leveraging the web version of your iOS/Android/desktop game as a mechanism to get your players hooked and convincing them to download your larger iOS/Android/desktop binary. You then generate revenue with the iOS/Android/desktop platform's built-in payment and billing backends.</p>
+<p>Monetization is usually a mixture of advertising and microtransactions. There is still work to be done for the web to compete with mobile platforms in game advertising. For example, formats like Rewarded Video Ads have been extremely popular for mobile games for several years and yet we're only now seeing ad networks deploy these formats on the web.</p>
+<p>Nonetheless, there are game developers who continue to be successful on the open web through advertising via traditional banner ads and interstitial video ads. Take a look at <a href="https://support.google.com/adsense/answer/1705831" rel="noopener">Adsense for Games</a> for more information on these formats.</p>
+<p>For microtransactions, the web offers complete flexibility due to the limitless number of payment methods that can be implemented. However this quality is a double-edged sword. The negative side of this is that players have less implicit trust towards a new website they discover versus the familiarity of the platform-specific mobile store payment methods.</p>
+<p>One solution that brings a more consistent payment UI to the web is the <a href="https://developers.google.com/web/fundamentals/payments/" rel="noopener">Payment Request API</a>. This API invokes a UI that is shown by the browser and streamlines the acquisition of payment details such as credit cards and billing addresses. However, acquiring payment details is just the first step of making a transaction. You need a backend billing platform as well.</p>
+<h2 id="the-future">The future <a class="w-headline-link" href="#the-future">#</a></h2>
+<p>We've seen several surprisingly successful web games over the past few years. Slither.io has built a mixed web and platform-specific business that demonstrates the tremendous reach and viral growth opportunity that the web offers. Portals such as <a href="https://poki.com/" rel="noopener">Poki.com</a> are innovating in their user experience and releasing new games every day including titles that match the fidelity of their mobile counterparts, such as Subway Surfers or Crossy Road.</p>
+<p>Furthermore, if you look outside of the open web you can see that web games are already taking off. Closed ecosystems such as WeChat and LINE offer satisfying games which aren't playable on the open web but which are built on top of web technologies like HTML5 and WebViews. This is a clear sign that the web has reached a level of fidelity that's capable of rivaling platform-specific mobile games–perhaps not in a textbook definition of fidelity but in a more important metric: player attention.</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/games/">Games</a>
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/monetization/">Monetization</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/tools/">Tools</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Aug 21, 2019</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/ready-player-web/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

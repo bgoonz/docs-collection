@@ -1,0 +1,903 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=4e17044b72953">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Using asynchronous web APIs from WebAssembly</title>
+<meta name="description" content="Learn how to invoke asynchronous web APIs when compiling traditionally synchronous languages to WebAssembly." />
+
+<link rel="canonical" href="https://web.dev/asyncify/" />
+
+<meta itemprop="name" content="Using asynchronous web APIs from WebAssembly" />
+<meta itemprop="description" content="Learn how to invoke asynchronous web APIs when compiling traditionally synchronous languages to WebAssembly." />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/3XqfQyjjfxEw8T3azz0W.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/asyncify/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Using asynchronous web APIs from WebAssembly" />
+<meta property="og:description" content="Learn how to invoke asynchronous web APIs when compiling traditionally synchronous languages to WebAssembly." />
+<meta property="og:image" content="https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/3XqfQyjjfxEw8T3azz0W.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="A crosswalk signal asking pedestrians to wait." />
+<meta property="tag" content="webassembly" />
+<meta property="tag" content="file-system" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Using asynchronous web APIs from WebAssembly" />
+<meta name="twitter:description" content="Learn how to invoke asynchronous web APIs when compiling traditionally synchronous languages to WebAssembly." />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/3XqfQyjjfxEw8T3azz0W.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=db4aca8dca636', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=52bf318fc56ba', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="A crosswalk signal asking pedestrians to wait."     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/3XqfQyjjfxEw8T3azz0W.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/3XqfQyjjfxEw8T3azz0W.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/3XqfQyjjfxEw8T3azz0W.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/3XqfQyjjfxEw8T3azz0W.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/3XqfQyjjfxEw8T3azz0W.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/3XqfQyjjfxEw8T3azz0W.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/3XqfQyjjfxEw8T3azz0W.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/3XqfQyjjfxEw8T3azz0W.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/3XqfQyjjfxEw8T3azz0W.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/3XqfQyjjfxEw8T3azz0W.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/3XqfQyjjfxEw8T3azz0W.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/3XqfQyjjfxEw8T3azz0W.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/3XqfQyjjfxEw8T3azz0W.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/3XqfQyjjfxEw8T3azz0W.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/3XqfQyjjfxEw8T3azz0W.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/3XqfQyjjfxEw8T3azz0W.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/3XqfQyjjfxEw8T3azz0W.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/3XqfQyjjfxEw8T3azz0W.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#using-asynchronous-web-apis-from-webassembly" class="w-toc__header--link">
+        Using asynchronous web APIs from WebAssembly
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#io-in-system-languages">I/O in system languages</a></li><li><a href="#asynchronous-model-of-the-web">Asynchronous model of the web</a></li><li><a href="#bridging-the-gap-with-asyncify">Bridging the gap with Asyncify</a></li><li><a href="#usage-in-c-c++-with-emscripten">Usage in C / C++ with Emscripten</a></li><li><a href="#usage-from-other-languages">Usage from other languages</a></li><li><a href="#how-does-this-all-work-under-the-hood">How does this all work under the hood?</a></li><li><a href="#transformation-costs">Transformation costs</a></li><li><a href="#real-world-demos">Real-world demos</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@RReverser"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="using-asynchronous-web-apis-from-webassembly" class="w-article-header__headline">Using asynchronous web APIs from WebAssembly</h1>
+      
+
+      
+        <div class="w-author__published">
+          <time>Apr 26, 2021</time>
+          
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/rreverser/"><img     alt="Ingvar Stepanyan"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/Ma3ckXmLV7aj1rVgVT1I.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/Ma3ckXmLV7aj1rVgVT1I.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/Ma3ckXmLV7aj1rVgVT1I.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/Ma3ckXmLV7aj1rVgVT1I.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/Ma3ckXmLV7aj1rVgVT1I.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/Ma3ckXmLV7aj1rVgVT1I.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/rreverser/">Ingvar Stepanyan</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/RReverser"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/RReverser">GitHub</a>
+      </li>
+      
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://rreverser.com/">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>The I/O APIs on the web are asynchronous, but they're synchronous in most system languages. When
+compiling code to WebAssembly, you need to bridge one kind of APIs to another—and this bridge is
+Asyncify. In this post, you'll learn when and how to use Asyncify and how it works under the hood.</p>
+<h2 id="io-in-system-languages">I/O in system languages <a class="w-headline-link" href="#io-in-system-languages">#</a></h2>
+<p>I'll start with a simple example in C. Say, you want to read the user's name from a file, and greet
+them with a &quot;Hello, (username)!&quot; message:</p>
+<web-copy-code><pre class="language-cpp"><code class="language-cpp"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h></span></span><br><br><span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    FILE <span class="token operator">*</span>stream <span class="token operator">=</span> <span class="token function">fopen</span><span class="token punctuation">(</span><span class="token string">"name.txt"</span><span class="token punctuation">,</span> <span class="token string">"r"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token keyword">char</span> name<span class="token punctuation">[</span><span class="token number">20</span><span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span><br>    size_t len <span class="token operator">=</span> <span class="token function">fread</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>name<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">,</span> stream<span class="token punctuation">)</span><span class="token punctuation">;</span><br>    name<span class="token punctuation">[</span>len<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">'\0'</span><span class="token punctuation">;</span><br>    <span class="token function">fclose</span><span class="token punctuation">(</span>stream<span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Hello, %s!\n"</span><span class="token punctuation">,</span> name<span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>While the example doesn't do much, it already demonstrates something you'll find in an application
+of any size: it reads some inputs from the external world, processes them internally and writes
+outputs back to the external world. All such interaction with the outside world happens via a few
+functions commonly called input-output functions, also shortened to I/O.</p>
+<p>To read the name from C, you need at least two crucial I/O calls: <code>fopen</code>, to open the file, and
+<code>fread</code> to read data from it. Once you retrieve the data, you can use another I/O function <code>printf</code>
+to print the result to the console.</p>
+<p>Those functions look quite simple at first glance and you don't have to think twice about the
+machinery involved to read or write data. However, depending on the environment, there can be quite
+a lot going on inside:</p>
+<ul>
+<li>If the input file is located on a local drive, the application needs to perform a series of
+memory and disk accesses to locate the file, check permissions, open it for reading, and then
+read block by block until the requested number of bytes is retrieved. This can be pretty slow,
+depending on the speed of your disk and the requested size.</li>
+<li>Or, the input file might be located on a mounted network location, in which case, the network
+stack will now be involved too, increasing the complexity, latency and number of potential
+retries for each operation.</li>
+<li>Finally, even <code>printf</code> is not guaranteed to print things to the console and might be redirected
+to a file or a network location, in which case it would have to go via the same steps above.</li>
+</ul>
+<p>Long story short, I/O can be slow and you can't predict how long a particular call will take by a
+quick glance at the code. While that operation is running, your whole application will appear frozen
+and unresponsive to the user.</p>
+<p>This is not limited to C or C++ either. Most system languages present all the I/O in a form of
+synchronous APIs. For example, if you translate the example to Rust, the API might look simpler, but
+the same principles apply. You just make a call and synchronously wait for it to return the result,
+while it performs all the expensive operations and eventually returns the result in a single
+invocation:</p>
+<web-copy-code><pre class="language-rust"><code class="language-rust"><span class="token keyword">fn</span> <span class="token function-definition function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token keyword">let</span> s <span class="token operator">=</span> <span class="token namespace">std<span class="token punctuation">::</span>fs<span class="token punctuation">::</span></span><span class="token function">read_to_string</span><span class="token punctuation">(</span><span class="token string">"name.txt"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token macro property">println!</span><span class="token punctuation">(</span><span class="token string">"Hello, {}!"</span><span class="token punctuation">,</span> s<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>But what happens when you try to compile any of those samples to WebAssembly and translate them to
+the web? Or, to provide a specific example, what could &quot;file read&quot; operation translate to? It would
+need to read data from some storage.</p>
+<h2 id="asynchronous-model-of-the-web">Asynchronous model of the web <a class="w-headline-link" href="#asynchronous-model-of-the-web">#</a></h2>
+<p>The web has a variety of different storage options you could map to, such as in-memory storage (JS
+objects), <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage" rel="noopener"><code>localStorage</code></a>,
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API" rel="noopener">IndexedDB</a>, server-side storage,
+and a new <a href="https://web.dev/file-system-access/">File System Access API</a>.</p>
+<p>However, only two of those APIs—the in-memory storage and the <code>localStorage</code>—can be used
+synchronously, and both are the most limiting options in what you can store and for how long. All
+the other options provide only asynchronous APIs.</p>
+<p>This is one of the core properties of executing code on the web: any time-consuming operation, which
+includes any I/O, has to be asynchronous.</p>
+<p>The reason is that the web is historically single-threaded, and any user code that touches the UI
+has to run on the same thread as the UI. It has to compete with the other important tasks like
+layout, rendering and event handling for the CPU time. You wouldn't want a piece of JavaScript or
+WebAssembly to be able to start a &quot;file read&quot; operation and block everything else—the entire tab,
+or, in the past, the entire browser—for a range from milliseconds to a few seconds, until it's over.</p>
+<p>Instead, code is only allowed to schedule an I/O operation together with a callback to be executed
+once it's finished. Such callbacks are executed as part of the browser's event loop. I won't be
+going into details here, but if you're interested in learning how the event loop works under the hood,
+check out
+<a href="https://jakearchibald.com/2015/tasks-microtasks-queues-and-schedules/" rel="noopener">Tasks, microtasks, queues and schedules</a>
+which explains this topic in-depth.</p>
+<p>The short version is that the browser runs all the pieces of code in sort of an infinite loop, by
+taking them from the queue one by one. When some event is triggered, the browser queues the
+corresponding handler, and on the next loop iteration it's taken out from the queue and executed.
+This mechanism allows simulating concurrency and running lots of parallel operations while using only
+a single thread.</p>
+<p>The important thing to remember about this mechanism is that, while your custom JavaScript (or
+WebAssembly) code executes, the event loop is blocked and, while it is, there is no way to react to
+any external handlers, events, I/O, etc. The only way to get the I/O results back is to register a
+callback, finish executing your code, and give the control back to the browser so that it can keep
+processing any pending tasks. Once I/O is finished, your handler will become one of those tasks and
+will get executed.</p>
+<p>For example, if you wanted to rewrite the samples above in modern JavaScript and decided to read a
+name from a remote URL, you would use Fetch API and async-await syntax:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">async</span> <span class="token keyword">function</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token keyword">let</span> response <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">fetch</span><span class="token punctuation">(</span><span class="token string">"name.txt"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token keyword">let</span> name <span class="token operator">=</span> <span class="token keyword">await</span> response<span class="token punctuation">.</span><span class="token function">text</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"Hello, %s!"</span><span class="token punctuation">,</span> name<span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>Even though it looks synchronous, under the hood each <code>await</code> is essentially syntax sugar for
+callbacks:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token keyword">return</span> <span class="token function">fetch</span><span class="token punctuation">(</span><span class="token string">"name.txt"</span><span class="token punctuation">)</span><br>    <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">response</span> <span class="token operator">=></span> response<span class="token punctuation">.</span><span class="token function">text</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><br>    <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">name</span> <span class="token operator">=></span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"Hello, %s!"</span><span class="token punctuation">,</span> name<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>In this de-sugared example, which is a bit clearer, a request is started and responses are subscribed to with the first callback. Once the browser receives the initial response—just the HTTP
+headers—it asynchronously invokes this callback. The callback starts reading the body as text using
+<code>response.text()</code>, and subscribes to the result with another callback. Finally, once <code>fetch</code> has
+retrieved all the contents, it invokes the last callback, which prints &quot;Hello, (username)!&quot; to the
+console.</p>
+<p>Thanks to the asynchronous nature of those steps, the original function can return control to the
+browser as soon as the I/O has been scheduled, and leave the entire UI responsive and available for
+other tasks, including rendering, scrolling and so on, while the I/O is executing in background.</p>
+<p>As a final example, even simple APIs like &quot;sleep&quot;, which makes an application wait a specified
+number of seconds, are also a form of an I/O operation:</p>
+<web-copy-code><pre class="language-cpp"><code class="language-cpp"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h></span></span><br><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h></span></span><br><span class="token comment">// ...</span><br><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"A\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"B\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>Sure, you could translate it in a very straightforward manner that would block the current thread
+until the time expires:</p>
+<web-copy-code><pre class="language-js"><code class="language-js">console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"A"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> start <span class="token operator">=</span> Date<span class="token punctuation">.</span><span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> Date<span class="token punctuation">.</span><span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> start <span class="token operator">&lt;</span> <span class="token number">1000</span><span class="token punctuation">;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"B"</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>In fact, that's exactly what Emscripten does in <a href="https://github.com/emscripten-core/emscripten/blob/16d5755a3f71f27d0c67b8d7752f94844e56ef7c/src/library_pthread_stub.js#L47-L52" rel="noopener">its default implementation of
+&quot;sleep&quot;,</a>
+but that's very inefficient, will block the entire UI and won't allow any other events to be handled
+meanwhile. Generally, don't do that in production code.</p>
+<p>Instead, a more idiomatic version of &quot;sleep&quot; in JavaScript would involve calling <code>setTimeout()</code>, and
+subscribing with a handler:</p>
+<web-copy-code><pre class="language-js"><code class="language-js">console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"A"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token function">setTimeout</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"B"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>What's common to all these examples and APIs? In each case, the idiomatic code in the original
+systems language uses a blocking API for the I/O, whereas an equivalent example for the web uses an
+asynchronous API instead. When compiling to the web, you need to somehow transform between those two
+execution models, and WebAssembly has no built-in ability to do so just yet.</p>
+<h2 id="bridging-the-gap-with-asyncify">Bridging the gap with Asyncify <a class="w-headline-link" href="#bridging-the-gap-with-asyncify">#</a></h2>
+<p>This is where <a href="https://emscripten.org/docs/porting/asyncify.html" rel="noopener">Asyncify</a> comes in. Asyncify is a
+compile-time feature supported by Emscripten that allows pausing the entire program and
+asynchronously resuming it later.</p>
+<img     alt="A call graph describing a JavaScript -&gt; WebAssembly -&gt; web API -&gt; async task invocation, where Asyncify connects the result of the async task back into WebAssembly"          decoding="async"     height="200"          loading="lazy"          src="https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/VSMrdTiQ7PubW6vfE6WZ.svg"               width="800"   />
+<h3 id="usage-in-c-c++-with-emscripten">Usage in C / C++ with Emscripten <a class="w-headline-link" href="#usage-in-c-c++-with-emscripten">#</a></h3>
+<p>If you wanted to use Asyncify to implement an asynchronous sleep for the last example, you could do
+it like this:</p>
+<web-copy-code><pre class="language-cpp"><code class="language-cpp"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h></span></span><br><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;emscripten.h></span></span><br><br><span class="token function">EM_JS</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">,</span> async_sleep<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token keyword">int</span> seconds<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">{</span><br>    Asyncify<span class="token punctuation">.</span><span class="token function">handleSleep</span><span class="token punctuation">(</span>wakeUp <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span><br>        <span class="token function">setTimeout</span><span class="token punctuation">(</span>wakeUp<span class="token punctuation">,</span> seconds <span class="token operator">*</span> <span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>…<br><span class="token function">puts</span><span class="token punctuation">(</span><span class="token string">"A"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token function">async_sleep</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token function">puts</span><span class="token punctuation">(</span><span class="token string">"B"</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p><a href="https://emscripten.org/docs/api_reference/emscripten.h.html?highlight=em_js#c.EM_JS" rel="noopener"><code>EM_JS</code></a> is a
+macro that allows defining JavaScript snippets as if they were C functions. Inside, use a function
+<a href="https://emscripten.org/docs/porting/asyncify.html#making-async-web-apis-behave-as-if-they-were-synchronous" rel="noopener"><code>Asyncify.handleSleep()</code></a>
+which tells Emscripten to suspend the program and provides a <code>wakeUp()</code> handler that should be
+called once the asynchronous operation has finished. In the example above, the handler is passed to
+<code>setTimeout()</code>, but it could be used in any other context that accepts callbacks. Finally, you can
+call <code>async_sleep()</code> anywhere you want just like regular <code>sleep()</code> or any other synchronous API.</p>
+<p>When compiling such code, you need to tell Emscripten to activate the Asyncify feature. Do that by
+passing <code>-s ASYNCIFY</code> as well as <a href="https://emscripten.org/docs/porting/asyncify.html#more-on-asyncify-imports" rel="noopener"><code>-s ASYNCIFY_IMPORTS=[func1, func2]</code></a> with an
+array-like list of functions that might be asynchronous.</p>
+<web-copy-code><pre class="language-shell"><code class="language-shell">emcc -O2 <span class="token punctuation">\</span><br>    -s ASYNCIFY <span class="token punctuation">\</span><br>    -s <span class="token assign-left variable">ASYNCIFY_IMPORTS</span><span class="token operator">=</span><span class="token punctuation">[</span>async_sleep<span class="token punctuation">]</span> <span class="token punctuation">\</span><br>    <span class="token punctuation">..</span>.</code></pre>
+</web-copy-code><p>This lets Emscripten know that any calls to those functions might require saving and restoring the
+state, so the compiler will inject supporting code around such calls.</p>
+<p>Now, when you execute this code in the browser you'll see a seamless output log like you'd expect,
+with B coming after a short delay after A.</p>
+<web-copy-code><pre class="language-text"><code class="language-text">A<br>B</code></pre>
+</web-copy-code><p>You can <a href="https://emscripten.org/docs/porting/asyncify.html#returning-values" rel="noopener">return values from
+Asyncify</a> functions too. What
+you need to do is return the result of <code>handleSleep()</code>, and pass the result to the <code>wakeUp()</code>
+callback. For example, if, instead of reading from a file, you want to fetch a number from a remote
+resource, you can use a snippet like the one below to issue a request, suspend the C code, and
+resume once the response body is retrieved—all done seamlessly as if the call were synchronous.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token constant">EM_JS</span><span class="token punctuation">(</span>int<span class="token punctuation">,</span> get_answer<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">{</span><br>     <span class="token keyword">return</span> Asyncify<span class="token punctuation">.</span><span class="token function">handleSleep</span><span class="token punctuation">(</span><span class="token parameter">wakeUp</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>        <span class="token function">fetch</span><span class="token punctuation">(</span><span class="token string">"answer.txt"</span><span class="token punctuation">)</span><br>            <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">response</span> <span class="token operator">=></span> response<span class="token punctuation">.</span><span class="token function">text</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><br>            <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">text</span> <span class="token operator">=></span> <span class="token function">wakeUp</span><span class="token punctuation">(</span><span class="token function">Number</span><span class="token punctuation">(</span>text<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token function">puts</span><span class="token punctuation">(</span><span class="token string">"Getting answer..."</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>int answer <span class="token operator">=</span> <span class="token function">get_answer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Answer is %d\n"</span><span class="token punctuation">,</span> answer<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>In fact, for Promise-based APIs like <code>fetch()</code>, you can even combine Asyncify with JavaScript's
+async-await feature instead of using the callback-based API. For that, instead of
+<code>Asyncify.handleSleep()</code>, call <code>Asyncify.handleAsync()</code>. Then, instead of having to schedule a
+<code>wakeUp()</code> callback, you can pass an <code>async</code> JavaScript function and use <code>await</code> and <code>return</code>
+inside, making code look even more natural and synchronous, while not losing any of the benefits of
+the asynchronous I/O.</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token constant">EM_JS</span><span class="token punctuation">(</span>int<span class="token punctuation">,</span> get_answer<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">{</span><br>     <span class="token keyword">return</span> Asyncify<span class="token punctuation">.</span><span class="token function">handleAsync</span><span class="token punctuation">(</span><span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>        <span class="token keyword">let</span> response <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">fetch</span><span class="token punctuation">(</span><span class="token string">"answer.txt"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>        <span class="token keyword">let</span> text <span class="token operator">=</span> <span class="token keyword">await</span> response<span class="token punctuation">.</span><span class="token function">text</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>        <span class="token keyword">return</span> <span class="token function">Number</span><span class="token punctuation">(</span>text<span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>int answer <span class="token operator">=</span> <span class="token function">get_answer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><h4 id="awaiting-complex-values">Awaiting complex values <a class="w-headline-link" href="#awaiting-complex-values">#</a></h4>
+<p>But this example still limits you only to numbers. What if you want to implement the original
+example, where I tried to get a user's name from a file as a string? Well, you can do that too!</p>
+<p>Emscripten provides a feature called
+<a href="https://emscripten.org/docs/porting/connecting_cpp_and_javascript/embind.html" rel="noopener">Embind</a> that allows
+you to handle conversions between JavaScript and C++ values. It has support for Asyncify as well, so
+you can call <code>await()</code> on external <code>Promise</code>s and it will act just like <code>await</code> in async-await
+JavaScript code:</p>
+<web-copy-code><pre class="language-cpp"><code class="language-cpp">val fetch <span class="token operator">=</span> val<span class="token double-colon punctuation">::</span><span class="token function">global</span><span class="token punctuation">(</span><span class="token string">"fetch"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>val response <span class="token operator">=</span> <span class="token function">fetch</span><span class="token punctuation">(</span>std<span class="token double-colon punctuation">::</span><span class="token function">string</span><span class="token punctuation">(</span><span class="token string">"answer.txt"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">await</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>val text <span class="token operator">=</span> response<span class="token punctuation">.</span><span class="token generic-function"><span class="token function">call</span><span class="token generic class-name"><span class="token operator">&lt;</span>val<span class="token operator">></span></span></span><span class="token punctuation">(</span><span class="token string">"text"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">await</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token keyword">auto</span> answer <span class="token operator">=</span> text<span class="token punctuation">.</span><span class="token generic-function"><span class="token function">as</span><span class="token generic class-name"><span class="token operator">&lt;</span>std<span class="token double-colon punctuation">::</span>string<span class="token operator">></span></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>When using this method, you don't even need to pass <code>ASYNCIFY_IMPORTS</code> as a compile flag, as it's
+already included by default.</p>
+<p>Okay, so this all works great in Emscripten. What about other toolchains and languages?</p>
+<h3 id="usage-from-other-languages">Usage from other languages <a class="w-headline-link" href="#usage-from-other-languages">#</a></h3>
+<p>Say that you have a similar synchronous call somewhere in your Rust code that you want to map to an
+async API on the web. Turns out, you can do that too!</p>
+<p>First, you need to define such a function as a regular import via <code>extern</code> block (or your chosen
+language's syntax for foreign functions).</p>
+<web-copy-code><pre class="language-rust"><code class="language-rust"><span class="token keyword">extern</span> <span class="token punctuation">{</span><br>    <span class="token keyword">fn</span> <span class="token function-definition function">get_answer</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">-></span> <span class="token keyword">i32</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><br><br><span class="token macro property">println!</span><span class="token punctuation">(</span><span class="token string">"Getting answer..."</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token keyword">let</span> answer <span class="token operator">=</span> <span class="token function">get_answer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token macro property">println!</span><span class="token punctuation">(</span><span class="token string">"Answer is {}"</span><span class="token punctuation">,</span> answer<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>And compile your code to WebAssembly:</p>
+<web-copy-code><pre class="language-shell"><code class="language-shell">cargo build --target wasm32-unknown-unknown</code></pre>
+</web-copy-code><p>Now you need to instrument the WebAssembly file with code for storing/restoring the stack. For C /
+C++, Emscripten would do this for us, but it's not used here, so the process is a bit more manual.</p>
+<p>Luckily, the Asyncify transform itself is completely toolchain-agnostic. It can transform arbitrary
+WebAssembly files, no matter which compiler it's produced by. The transform is provided separately
+as part of the <code>wasm-opt</code> optimiser from the <a href="https://github.com/WebAssembly/binaryen" rel="noopener">Binaryen
+toolchain</a> and can be invoked like this:</p>
+<web-copy-code><pre class="language-shell"><code class="language-shell">wasm-opt -O2 --asyncify <span class="token punctuation">\</span><br>      --pass-arg<span class="token operator">=</span>asyncify-imports@env.get_answer <span class="token punctuation">\</span><br>      <span class="token punctuation">[</span><span class="token punctuation">..</span>.<span class="token punctuation">]</span></code></pre>
+</web-copy-code><p>Pass <code>--asyncify</code> to enable the transform, and then use <code>--pass-arg=…</code> to provide a comma-separated
+list of asynchronous functions, where the program state should be suspended and later resumed.</p>
+<p>All that's left is to provide supporting runtime code that will actually do that—suspend and resume
+WebAssembly code. Again, in the C / C++ case this would be included by Emscripten, but now you need
+custom JavaScript glue code that would handle arbitrary WebAssembly files. We've created a library
+just for that.</p>
+<p>You can find it on Github at
+<a href="https://github.com/GoogleChromeLabs/asyncify" rel="noopener">https://github.com/GoogleChromeLabs/asyncify</a> or npm
+under the name <a href="https://www.npmjs.com/package/asyncify-wasm" rel="noopener"><code>asyncify-wasm</code></a>.</p>
+<p>It simulates a standard <a href="https://developer.mozilla.org/en-US/docs/WebAssembly" rel="noopener">WebAssembly instantiation
+API</a>, but under its own namespace. The only
+difference is that, under a regular WebAssembly API you can only provide synchronous functions as
+imports, while under the Asyncify wrapper, you can provide asynchronous imports as well:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> <span class="token punctuation">{</span> instance <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">await</span> Asyncify<span class="token punctuation">.</span><span class="token function">instantiateStreaming</span><span class="token punctuation">(</span><span class="token function">fetch</span><span class="token punctuation">(</span><span class="token string">'app.wasm'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">{</span><br>    env<span class="token operator">:</span> <span class="token punctuation">{</span><br>        <span class="token keyword">async</span> <span class="token function">get_answer</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>            <span class="token keyword">let</span> response <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">fetch</span><span class="token punctuation">(</span><span class="token string">"answer.txt"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>            <span class="token keyword">let</span> text <span class="token operator">=</span> <span class="token keyword">await</span> response<span class="token punctuation">.</span><span class="token function">text</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>            <span class="token keyword">return</span> <span class="token function">Number</span><span class="token punctuation">(</span>text<span class="token punctuation">)</span><span class="token punctuation">;</span><br>        <span class="token punctuation">}</span><br>    <span class="token punctuation">}</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>…<br><span class="token keyword">await</span> instance<span class="token punctuation">.</span>exports<span class="token punctuation">.</span><span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>Once you try to call such an asynchronous function - like <code>get_answer()</code> in the example above - from
+the WebAssembly side, the library will detect the returned <code>Promise</code>, suspend and save the state of
+the WebAssembly application, subscribe to the promise completion, and later, once it's resolved,
+seamlessly restore the call stack and state and continue execution as if nothing has happened.</p>
+<p>Since any function in the module might make an asynchronous call, all the exports become potentially
+asynchronous too, so they get wrapped as well. You might have noticed in the example above that you
+need to <code>await</code> the result of <code>instance.exports.main()</code> to know when the execution is truly
+finished.</p>
+<h3 id="how-does-this-all-work-under-the-hood">How does this all work under the hood? <a class="w-headline-link" href="#how-does-this-all-work-under-the-hood">#</a></h3>
+<p>When Asyncify detects a call to one of the <code>ASYNCIFY_IMPORTS</code> functions, it starts an asynchronous
+operation, saves the entire state of the application, including the call stack and any temporary
+locals, and later, when that operation is finished, restores all the memory and call stack and
+resumes from the same place and with the same state as if the program has never stopped.</p>
+<p>This is quite similar to async-await feature in JavaScript that I showed earlier, but, unlike the
+JavaScript one, doesn't require any special syntax or runtime support from the language, and instead
+works by transforming plain synchronous functions at compile-time.</p>
+<p>When compiling the earlier shown asynchronous sleep example:</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token function">puts</span><span class="token punctuation">(</span><span class="token string">"A"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token function">async_sleep</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token function">puts</span><span class="token punctuation">(</span><span class="token string">"B"</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>Asyncify takes this code and transforms it to roughly like the following one (pseudo-code, real
+transformation is more involved than this):</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token parameter">mode <span class="token operator">==</span> <span class="token constant">NORMAL_EXECUTION</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token function">puts</span><span class="token punctuation">(</span><span class="token string">"A"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token function">async_sleep</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token function">saveLocals</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    mode <span class="token operator">=</span> <span class="token constant">UNWINDING</span><span class="token punctuation">;</span><br>    <span class="token keyword">return</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><br><span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token parameter">mode <span class="token operator">==</span> <span class="token constant">REWINDING</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token function">restoreLocals</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    mode <span class="token operator">=</span> <span class="token constant">NORMAL_EXECUTION</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><br><span class="token function">puts</span><span class="token punctuation">(</span><span class="token string">"B"</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>Initially <code>mode</code> is set to <code>NORMAL_EXECUTION</code>. Correspondingly, the first time such transformed code
+is executed, only the part leading up to <code>async_sleep()</code> will get evaluated. As soon as the
+asynchronous operation is scheduled, Asyncify saves all the locals, and unwinds the stack by
+returning from each function all the way to the top, this way giving control back to the browser
+event loop.</p>
+<p>Then, once <code>async_sleep()</code> resolves, Asyncify support code will change <code>mode</code> to <code>REWINDING</code>, and
+call the function again. This time, the &quot;normal execution&quot; branch is skipped - since it already did
+the job last time and I want to avoid printing &quot;A&quot; twice - and instead it comes straight to the
+&quot;rewinding&quot; branch. Once it's reached, it restores all the stored locals, changes mode back to
+&quot;normal&quot; and continues the execution as if the code were never stopped in the first place.</p>
+<h3 id="transformation-costs">Transformation costs <a class="w-headline-link" href="#transformation-costs">#</a></h3>
+<p>Unfortunately, Asyncify transform isn't completely free, since it has to inject quite a bit of
+supporting code for storing and restoring all those locals, navigating the call stack under
+different modes and so on. It tries to modify only functions marked as asynchronous on the command
+line, as well as any of their potential callers, but the code size overhead might still add up to approximately 50% before compression.</p>
+<img     alt="A graph showing code size overhead for various benchmarks, from near-0% under fine-tuned conditions to over 100% in worst cases"          decoding="async"     height="494"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/Im4hmQOYRHFcsg8UTfTR.png?auto=format"     srcset="https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/Im4hmQOYRHFcsg8UTfTR.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/Im4hmQOYRHFcsg8UTfTR.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/Im4hmQOYRHFcsg8UTfTR.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/Im4hmQOYRHFcsg8UTfTR.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/Im4hmQOYRHFcsg8UTfTR.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/Im4hmQOYRHFcsg8UTfTR.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/Im4hmQOYRHFcsg8UTfTR.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/Im4hmQOYRHFcsg8UTfTR.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/Im4hmQOYRHFcsg8UTfTR.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/Im4hmQOYRHFcsg8UTfTR.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/Im4hmQOYRHFcsg8UTfTR.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/Im4hmQOYRHFcsg8UTfTR.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/Im4hmQOYRHFcsg8UTfTR.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/Im4hmQOYRHFcsg8UTfTR.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/Im4hmQOYRHFcsg8UTfTR.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/Im4hmQOYRHFcsg8UTfTR.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/Im4hmQOYRHFcsg8UTfTR.png?auto=format&w=1600 1600w"          width="800"   />
+<p>This isn't ideal, but in many cases acceptable when the alternative is not having the functionality
+altogether or having to make significant rewrites to the original code.</p>
+<p>Make sure to always enable optimizations for the final builds to avoid it going even higher. You can
+also check <a href="https://emscripten.org/docs/porting/asyncify.html#optimizing" rel="noopener">Asyncify-specific optimization
+options</a> to reduce the overhead by
+limiting transforms only to specified functions and/or only direct function calls. There is also a
+minor cost to runtime performance, but it's limited to the async calls themselves. However, compared
+to the cost of the actual work, it's usually negligible.</p>
+<h2 id="real-world-demos">Real-world demos <a class="w-headline-link" href="#real-world-demos">#</a></h2>
+<p>Now that you've looked at the simple examples, I'll move on to more complicated scenarios.</p>
+<p>As mentioned in the beginning of the article, one of the storage options on the web is an
+asynchronous <a href="https://web.dev/file-system-access/">File System Access API</a>. It provides access to a
+real host filesystem from a web application.</p>
+<p>On the other hand, there is a de-facto standard called <a href="https://github.com/WebAssembly/WASI" rel="noopener">WASI</a>
+for WebAssembly I/O in the console and the server-side. It was designed as a compilation target for
+system languages, and exposes all sorts of file system and other operations in a traditional
+synchronous form.</p>
+<p>What if you could map one to another? Then you could compile any application in any source language
+with any toolchain supporting the WASI target, and run it in a sandbox on the web, while still
+allowing it to operate on real user files! With Asyncify, you can do just that.</p>
+<p>In this demo, I've compiled Rust <a href="https://github.com/RReverser/coreutils" rel="noopener">coreutils</a> crate with a
+few minor patches to WASI, passed via Asyncify transform and implemented asynchronous
+<a href="https://github.com/GoogleChromeLabs/wasi-fs-access/blob/main/src/bindings.ts" rel="noopener">bindings</a> from WASI
+to File System Access API on the JavaScript side. Once combined with
+<a href="https://xtermjs.org/" rel="noopener">Xterm.js</a> terminal component, this provides a realistic shell running in the
+browser tab and operating on real user files - just like an actual terminal.</p>
+<p><video                                                                                  >      <source src="https://storage.googleapis.com/web-dev-uploads/video/9oK23mr86lhFOwKaoYZ4EySNFp02/4244yB6c9RbMCjGjP8ZW.mp4" type="video/mp4" />    </video></p>
+<p>Check it out live at <a href="https://wasi.rreverser.com/" rel="noopener">https://wasi.rreverser.com/</a>.</p>
+<p>Asyncify use-cases are not limited just to timers and filesystems, either. You can go further and
+use more niche APIs on the web.</p>
+<p>For example, also with the help of Asyncify, it's possible to map
+<a href="https://github.com/libusb/libusb" rel="noopener">libusb</a>—probably the most popular native library for working with
+USB devices—to a <a href="https://web.dev/usb/">WebUSB API</a>, which gives asynchronous access to such devices
+on the web. Once mapped and compiled, I got standard libusb tests and examples to run against chosen
+devices right in the sandbox of a web page.</p>
+<img     alt="Screenshot of libusb debug output on a web page, showing information about the connected Canon camera"          decoding="async"     height="548"          loading="lazy"     sizes="(min-width: 375px) 375px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/2rscL8dyhOVMacuq54Ad.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/2rscL8dyhOVMacuq54Ad.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/2rscL8dyhOVMacuq54Ad.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/2rscL8dyhOVMacuq54Ad.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/2rscL8dyhOVMacuq54Ad.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/2rscL8dyhOVMacuq54Ad.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/2rscL8dyhOVMacuq54Ad.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/2rscL8dyhOVMacuq54Ad.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/2rscL8dyhOVMacuq54Ad.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/2rscL8dyhOVMacuq54Ad.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/2rscL8dyhOVMacuq54Ad.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/2rscL8dyhOVMacuq54Ad.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/9oK23mr86lhFOwKaoYZ4EySNFp02/2rscL8dyhOVMacuq54Ad.jpg?auto=format&w=750 750w"          width="375"   />
+<p>It's probably a story for another blog post though.</p>
+<p>Those examples demonstrate just how powerful Asyncify can be for bridging the gap and porting all
+sorts of applications to the web, allowing you to gain cross-platform access, sandboxing, and better
+security, all without losing functionality.</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/webassembly/">WebAssembly</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/file-system/">File System</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Apr 26, 2021</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/asyncify/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

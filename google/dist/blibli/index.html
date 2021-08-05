@@ -1,0 +1,783 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=e1535ca83596c">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Blibli's PWA generates 10x more revenue per user than their previous mobile website</title>
+<meta name="description" content="How Blibli achieved a 42% reduction in bounce rate, an 8x improvement in mobile conversion rate, and 2.5x more pages per session." />
+
+<link rel="canonical" href="https://web.dev/blibli/" />
+
+<meta itemprop="name" content="Blibli's PWA generates 10x more revenue per user than their previous mobile website" />
+<meta itemprop="description" content="How Blibli achieved a 42% reduction in bounce rate, an 8x improvement in mobile conversion rate, and 2.5x more pages per session." />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/nO8c2UEgQRXsoYVp3tZO.png?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/blibli/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Blibli's PWA generates 10x more revenue per user than their previous mobile website" />
+<meta property="og:description" content="How Blibli achieved a 42% reduction in bounce rate, an 8x improvement in mobile conversion rate, and 2.5x more pages per session." />
+<meta property="og:image" content="https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/nO8c2UEgQRXsoYVp3tZO.png?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="Images of the BliBli app. " />
+<meta property="tag" content="capabilities" />
+<meta property="tag" content="case-study" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Blibli's PWA generates 10x more revenue per user than their previous mobile website" />
+<meta name="twitter:description" content="How Blibli achieved a 42% reduction in bounce rate, an 8x improvement in mobile conversion rate, and 2.5x more pages per session." />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/nO8c2UEgQRXsoYVp3tZO.png?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=b99a96219e7e3', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=0321b0b7d0ace', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="Images of the BliBli app."     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/nO8c2UEgQRXsoYVp3tZO.png?auto=format"     srcset="https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/nO8c2UEgQRXsoYVp3tZO.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/nO8c2UEgQRXsoYVp3tZO.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/nO8c2UEgQRXsoYVp3tZO.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/nO8c2UEgQRXsoYVp3tZO.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/nO8c2UEgQRXsoYVp3tZO.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/nO8c2UEgQRXsoYVp3tZO.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/nO8c2UEgQRXsoYVp3tZO.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/nO8c2UEgQRXsoYVp3tZO.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/nO8c2UEgQRXsoYVp3tZO.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/nO8c2UEgQRXsoYVp3tZO.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/nO8c2UEgQRXsoYVp3tZO.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/nO8c2UEgQRXsoYVp3tZO.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/nO8c2UEgQRXsoYVp3tZO.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/nO8c2UEgQRXsoYVp3tZO.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/nO8c2UEgQRXsoYVp3tZO.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/nO8c2UEgQRXsoYVp3tZO.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/nO8c2UEgQRXsoYVp3tZO.png?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#blibli&#39;s-pwa-generates-10x-more-revenue-per-user-than-their-previous-mobile-website" class="w-toc__header--link">
+        Blibli's PWA generates 10x more revenue per user than their previous mobile website
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#highlighting-the-opportunity">Highlighting the opportunity</a></li><li><a href="#the-approach-they-used">The approach they used</a></li><li><a href="#user-flow">User flow</a></li><li><a href="#set-performance-budgets">Set performance budgets</a></li><li><a href="#overall-business-results">Overall business results</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@CollinDion | @swetha_go"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="blibli&#39;s-pwa-generates-10x-more-revenue-per-user-than-their-previous-mobile-website" class="w-article-header__headline">Blibli's PWA generates 10x more revenue per user than their previous mobile website</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          How Blibli achieved a 42% reduction in bounce rate, an 8x improvement in mobile conversion rate, and 2.5x more pages per session.
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Jun 15, 2021</time>
+          
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/collindionagata/"><img     alt="Collin Dion Agata"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/ZpE2N6yjkaqQNcSiaxvR.jpeg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/ZpE2N6yjkaqQNcSiaxvR.jpeg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/ZpE2N6yjkaqQNcSiaxvR.jpeg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/ZpE2N6yjkaqQNcSiaxvR.jpeg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/ZpE2N6yjkaqQNcSiaxvR.jpeg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/ZpE2N6yjkaqQNcSiaxvR.jpeg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/collindionagata/">Collin Dion Agata</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/CollinDion"
+          >Twitter</a
+        >
+      </li>
+      
+      
+      
+    </ul>
+  </div>
+</div>
+          
+            <div class="w-author">
+  <a href="/authors/swethagopalakrishnan/"><img     alt="Swetha Gopalakrishnan"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/ZDZVuXt6QqfXtxkpXcPGfnygYjd2/Mpe7GGUwnUsy9Gx7UxZK.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/ZDZVuXt6QqfXtxkpXcPGfnygYjd2/Mpe7GGUwnUsy9Gx7UxZK.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/ZDZVuXt6QqfXtxkpXcPGfnygYjd2/Mpe7GGUwnUsy9Gx7UxZK.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/ZDZVuXt6QqfXtxkpXcPGfnygYjd2/Mpe7GGUwnUsy9Gx7UxZK.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/ZDZVuXt6QqfXtxkpXcPGfnygYjd2/Mpe7GGUwnUsy9Gx7UxZK.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/ZDZVuXt6QqfXtxkpXcPGfnygYjd2/Mpe7GGUwnUsy9Gx7UxZK.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/swethagopalakrishnan/">Swetha Gopalakrishnan</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/swetha_go"
+          >Twitter</a
+        >
+      </li>
+      
+      
+      
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p><a href="https://www.blibli.com/" rel="noopener">Blibli</a> is a well known e-commerce marketplace in
+Indonesia. The company had over 29 million average monthly website visits in
+2019. In a recent study, Blibli's web team found that their mobile web platform
+is a significant visitor and user acquisition platform, with 70% of web
+users landing on mobile and 30% of web users landing on desktop.</p>
+<p>With that insight, Blibli embarked on a journey to develop a better web
+experience and improve conversions. As a result, they were able to achieve some
+exceptional results:</p>
+<div class="w-stats">
+  <div class="w-stat">
+    <p class="w-stat__figure">42<sub class="w-stat__sub">%</sub></p>
+    <p class="w-stat__desc">Reduction in bounce rates</p>
+  </div>
+  <div class="w-stat">
+    <p class="w-stat__figure">8<sub class="w-stat__sub">x</sub></p>
+    <p class="w-stat__desc">Better mCVR in installed PWA compared to browser mobile web</p>
+  </div>
+  <div class="w-stat">
+    <p class="w-stat__figure">2.5<sub class="w-stat__sub">x</sub></p>
+    <p class="w-stat__desc">More pages/sessions on installed PWA</p>
+  </div>
+</div>
+<h2 id="highlighting-the-opportunity">Highlighting the opportunity <a class="w-headline-link" href="#highlighting-the-opportunity">#</a></h2>
+<p>Blibli identified the following areas of opportunities:</p>
+<ul>
+<li>For Blibli, the mobile web platform was important for user
+acquisition with many users on mid- to low-tier devices.</li>
+<li>Indonesia's internet economy was <a href="https://storage.googleapis.com/gweb-economy-sea.appspot.com/assets/pdf/Indonesia-e-Conomy_SEA_2020_Country_Insights.pdf" rel="noopener">expanding rapidly beyond tier 1
+cities</a>.
+Hence, PWA and fast pages were a good investment to support user needs like
+limited storage and slow networks.</li>
+<li>50% of users that are coming to the Blibli web platform are returning users.</li>
+</ul>
+<h2 id="the-approach-they-used">The approach they used <a class="w-headline-link" href="#the-approach-they-used">#</a></h2>
+<p>The team took a staged strategy of short- to medium-term improvements on the
+mobile web platform. This included:</p>
+<ul>
+<li>A performance optimized website including a UX revamped <a href="https://www.blibli.com" rel="noopener">home
+page</a>.</li>
+<li>A lite version of the home page for new users with a
+<a href="https://developers.google.com/web/fundamentals/primers/service-workers" rel="noopener">service worker</a>
+to cache critical assets for subsequent navigation.</li>
+<li>A <a href="https://web.dev/progressive-web-apps/">Progressive Web App</a> (PWA) for
+returning users.</li>
+</ul>
+<h3 id="user-flow">User flow <a class="w-headline-link" href="#user-flow">#</a></h3>
+<p>New visitors are presented with a lightweight page which is three times faster
+when compared to the old home page.</p>
+<figure class="w-figure">
+<img     alt="A lightweight page that is three times faster than the old."          decoding="async"     height="1422"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/bfL1ZGsRjv3QcbACnRGu.png?auto=format&w=400"     srcset="https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/bfL1ZGsRjv3QcbACnRGu.png?w=400&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/bfL1ZGsRjv3QcbACnRGu.png?w=400&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/bfL1ZGsRjv3QcbACnRGu.png?w=400&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/bfL1ZGsRjv3QcbACnRGu.png?w=400&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/bfL1ZGsRjv3QcbACnRGu.png?w=400&auto=format&dpr=5&q=20 5x"          width="800"   />
+  <figcaption class="w-figcaption">
+    A lightweight page that is three times faster than the old.
+  </figcaption>
+</figure>
+<p>On subsequent pages, Blibli prompts users to add the PWA shortcut
+to their home screen.</p>
+<figure class="w-figure">
+  <video controls autoplay loop muted class="w-screenshot" style="width:800px;">
+    <source src="https://storage.googleapis.com/web-dev-assets/blibli/save-to-home-screen.webm" type="video/webm">
+    <source src="https://storage.googleapis.com/web-dev-assets/blibli/save-to-home-screen.mp4" type="video/mp4">
+  </video>
+  <figcaption class="w-figcaption">
+    The add to home screen prompt.
+  </figcaption>
+</figure>
+<p>If users lose the network connection, they are presented with an elegant offline
+fallback page.</p>
+<figure class="w-figure">
+<img     alt="An elegent offline fallback page."          decoding="async"     height="468"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/biDb6f1owQWxmRNXUauu.png?auto=format"     srcset="https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/biDb6f1owQWxmRNXUauu.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/biDb6f1owQWxmRNXUauu.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/biDb6f1owQWxmRNXUauu.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/biDb6f1owQWxmRNXUauu.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/biDb6f1owQWxmRNXUauu.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/biDb6f1owQWxmRNXUauu.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/biDb6f1owQWxmRNXUauu.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/biDb6f1owQWxmRNXUauu.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/biDb6f1owQWxmRNXUauu.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/biDb6f1owQWxmRNXUauu.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/biDb6f1owQWxmRNXUauu.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/biDb6f1owQWxmRNXUauu.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/biDb6f1owQWxmRNXUauu.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/biDb6f1owQWxmRNXUauu.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/biDb6f1owQWxmRNXUauu.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/biDb6f1owQWxmRNXUauu.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/biDb6f1owQWxmRNXUauu.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">
+    An elegent offline fallback page.
+  </figcaption>
+</figure>
+<p>Blibli's lite page created a first impression that Blibli.com is fast and
+responsive. Moreover, the lite page streamlined the number of features by only
+focusing on those that deliver the value proposition of Blibli.</p>
+<figure class="w-figure">
+  <video controls autoplay loop muted class="w-screenshot"  style="width:800px;">
+    <source src="https://storage.googleapis.com/web-dev-assets/blibli/responsive-comparison.webm" type="video/webm">
+    <source src="https://storage.googleapis.com/web-dev-assets/blibli/responsive-comparison.mp4" type="video/mp4">
+  </video>
+  <figcaption class="w-figcaption">
+    Comparison of loading times before and after streamlining.
+  </figcaption>
+</figure>
+<p>Blibli's PWA is installable, giving it an app-like look and feel. It is also
+fast and reliable which was achieved using service worker caching and graceful
+offline fallback.</p>
+<figure class="w-figure">
+<img     alt="The offline fallback"          decoding="async"     height="1778"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/ONCtI6MryOS5wCLPd3Ep.jpeg?auto=format"     srcset="https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/ONCtI6MryOS5wCLPd3Ep.jpeg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/ONCtI6MryOS5wCLPd3Ep.jpeg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/ONCtI6MryOS5wCLPd3Ep.jpeg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/ONCtI6MryOS5wCLPd3Ep.jpeg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/ONCtI6MryOS5wCLPd3Ep.jpeg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/ONCtI6MryOS5wCLPd3Ep.jpeg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/ONCtI6MryOS5wCLPd3Ep.jpeg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/ONCtI6MryOS5wCLPd3Ep.jpeg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/ONCtI6MryOS5wCLPd3Ep.jpeg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/ONCtI6MryOS5wCLPd3Ep.jpeg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/ONCtI6MryOS5wCLPd3Ep.jpeg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/ONCtI6MryOS5wCLPd3Ep.jpeg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/ONCtI6MryOS5wCLPd3Ep.jpeg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/ONCtI6MryOS5wCLPd3Ep.jpeg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/ONCtI6MryOS5wCLPd3Ep.jpeg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/ONCtI6MryOS5wCLPd3Ep.jpeg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/sQ51XsLqKMgSQMCZjIN0B7hlBO02/ONCtI6MryOS5wCLPd3Ep.jpeg?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">
+    The offline fallback.
+  </figcaption>
+</figure>
+<p>This comes as a delight for web users, a large proportion of whom use mid-tier
+devices. Since Blibli's PWA is less than 1MB in size (that's a whopping 24 times
+lighter than their Android app!), there is much less friction for users to
+install it. It also makes it easier for Blibli to retain users while providing
+them with a seamless app-like experience.</p>
+<h3 id="set-performance-budgets">Set performance budgets <a class="w-headline-link" href="#set-performance-budgets">#</a></h3>
+<p>Blibli made performance budgeting a performance standard within the tech
+development and management, where the standard was reviewed on a regular basis.
+It's set as the KPI of internal tech development, with the guidance
+of top management to ensure the best platform for all of our users.</p>
+<h2 id="overall-business-results">Overall business results <a class="w-headline-link" href="#overall-business-results">#</a></h2>
+<ul>
+<li>3x reduction in page load times.</li>
+<li>42% reduction in bounce rates.</li>
+<li>8x Better mobile conversion rates in installed PWA compared to browser
+mobile web.</li>
+<li>2.5x more pages/sessions on installed PWA.</li>
+<li>10x more revenue per user compared to the previous mobile website.</li>
+</ul>
+<p>&quot;Speed and PWA were a valuable investment for us to provide the best mobile
+experience and representing our mission, to deliver the best platform for our
+users&quot;
+<em>—Collin Dion Agata, Lead Product Manager, Blibli</em></p>
+<p>Photo by <a href="https://unsplash.com/@cristian1" rel="noopener">Cristian Escobar</a> on Unsplash.</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/capabilities/">Capabilities</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/case-study/">Case Study</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Jun 15, 2021</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/blibli/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

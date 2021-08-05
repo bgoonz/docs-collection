@@ -1,0 +1,938 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=859f38033b863">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Ensure your website is available and usable for everyone during COVID-19</title>
+<meta name="description" content="How to ensure that the core functionality of your website is always available, accessible, secure, usable, discoverable, and fast. " />
+
+<link rel="canonical" href="https://web.dev/covid19/" />
+
+<meta itemprop="name" content="Ensure your website is available and usable for everyone during COVID-19" />
+<meta itemprop="description" content="How to ensure that the core functionality of your website is always available, accessible, secure, usable, discoverable, and fast. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/LH3VwpI4GW1lW51Ns5ab.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/covid19/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Ensure your website is available and usable for everyone during COVID-19" />
+<meta property="og:description" content="How to ensure that the core functionality of your website is always available, accessible, secure, usable, discoverable, and fast. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/LH3VwpI4GW1lW51Ns5ab.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="" />
+<meta property="tag" content="accessibility" />
+<meta property="tag" content="performance" />
+<meta property="tag" content="seo" />
+<meta property="tag" content="ux" />
+<meta property="tag" content="security" />
+<meta property="tag" content="mobile" />
+<meta property="tag" content="forms" />
+<meta property="tag" content="images" />
+<meta property="tag" content="css" />
+<meta property="tag" content="javascript" />
+<meta property="tag" content="lighthouse" />
+<meta property="tag" content="media" />
+<meta property="tag" content="devtools" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Ensure your website is available and usable for everyone during COVID-19" />
+<meta name="twitter:description" content="How to ensure that the core functionality of your website is always available, accessible, secure, usable, discoverable, and fast. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/LH3VwpI4GW1lW51Ns5ab.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=89bc296b90cef', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=6c94a0c16f6f3', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="Hero Image"     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/LH3VwpI4GW1lW51Ns5ab.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/LH3VwpI4GW1lW51Ns5ab.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/LH3VwpI4GW1lW51Ns5ab.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/LH3VwpI4GW1lW51Ns5ab.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/LH3VwpI4GW1lW51Ns5ab.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/LH3VwpI4GW1lW51Ns5ab.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/LH3VwpI4GW1lW51Ns5ab.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/LH3VwpI4GW1lW51Ns5ab.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/LH3VwpI4GW1lW51Ns5ab.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/LH3VwpI4GW1lW51Ns5ab.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/LH3VwpI4GW1lW51Ns5ab.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/LH3VwpI4GW1lW51Ns5ab.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/LH3VwpI4GW1lW51Ns5ab.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/LH3VwpI4GW1lW51Ns5ab.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/LH3VwpI4GW1lW51Ns5ab.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/LH3VwpI4GW1lW51Ns5ab.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/LH3VwpI4GW1lW51Ns5ab.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/LH3VwpI4GW1lW51Ns5ab.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#ensure-your-website-is-available-and-usable-for-everyone-during-covid-19" class="w-toc__header--link">
+        Ensure your website is available and usable for everyone during COVID-19
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#guidance">Guidance</a></li><li><a href="#availability">Availability, reliability, resilience, and stability</a></li><li><a href="#accessibility">Accessibility</a></li><li><a href="#PII">Identity, security, and privacy</a></li><li><a href="#usability">Usability, UI, and UX</a></li><li><a href="#seo">SEO</a></li><li><a href="#performance">Performance</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors=""
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="ensure-your-website-is-available-and-usable-for-everyone-during-covid-19" class="w-article-header__headline">Ensure your website is available and usable for everyone during COVID-19</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          <p>How to ensure that the core functionality of your website is always available, accessible, secure, usable, discoverable, and fast.</p>
+
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Apr 3, 2020</time>
+           <span class="w-author__separator">•</span> Updated <time>Apr 6, 2020</time> 
+        </div>
+      
+      
+
+      
+    </header>
+
+    
+
+    <p>This page provides guidance to help ensure your website is available,
+accessible, secure, and usable for everyone at all times.</p>
+<div class="w-aside w-aside--note">
+<p>If you're building or maintaining a health organization website
+that qualifies as a national health ministry or US state-level agency, you can
+request to join the COVID-19 Google Search technical support group. Visit
+<a href="https://webmasters.googleblog.com/2020/03/health-organizations-covid19.html" rel="noopener">Helping health organizations make COVID-19 information more
+accessible</a>
+to learn more. </div></p>
+<p>The guidance on this page comes from a cross-functional collection of teams
+within Google that are shifting their short-term focus to support websites that are
+helping people stay safe during the COVID-19 situation. These Googlers have seen that sites
+are facing unprecedented increases in demand from people looking for critical
+information, many of whom have rarely or never used the web before. It can be a challenge
+to ensure sites are available during this time and accessible to all.</p>
+<h2 id="guidance">Guidance <a class="w-headline-link" href="#guidance">#</a></h2>
+<div class="w-aside w-aside--note">
+<p>This guidance is a work in progress and will be updated frequently.
+If you have any suggestions, please <a href="https://github.com/GoogleChrome/web.dev/issues/new/choose" rel="noopener">file an
+issue</a>, or <a href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/covid19/index.md" rel="noopener">edit
+this page</a>
+and then open a pull request.</p>
+</div>
+<h3 id="availability">Availability, reliability, resilience, and stability <a class="w-headline-link" href="#availability">#</a></h3>
+<p>If your site is seeing traffic spikes and it's failing, or you want to prevent it
+from failing, the guidance below can help you quickly fix problems or detect them
+before they become major issues.</p>
+<ul>
+<li>Read <a href="/overloaded-server">Fix an overloaded server</a> to learn
+how to detect, mitigate, and prevent traffic spike issues.</li>
+<li>Remove unnecessary images, videos, scripts, and fonts. Ensure each page focuses
+on just delivering the functionality that the people using your site really
+need.</li>
+<li><a href="/fast/#optimize-your-images">Optimizing your images</a> may
+significantly reduce your server bandwidth usage because <a href="https://images.guide/#introduction" rel="noopener">images are the
+number one source of bloat on the web</a>.</li>
+<li>Offload as much of your static content to CDNs as possible.
+More details from common providers:
+<a href="https://aws.amazon.com/cloudfront/" rel="noopener">AWS</a>,
+<a href="https://azure.microsoft.com/en-us/services/cdn/" rel="noopener">Azure</a>,
+<a href="https://www.cloudflare.com/cdn/" rel="noopener">Cloudflare</a>,
+<a href="https://cloud.google.com/cdn" rel="noopener">Google Cloud</a>,
+<a href="https://firebase.google.com/docs/hosting" rel="noopener">Firebase</a>.</li>
+<li>Check if your CDN has any optimizations that are easy to turn on, such as
+dynamic image compression, text compression, or automatic minification of JS
+and CSS resources.</li>
+<li>Optimizing HTTP caching can significantly reduce demands on your servers with
+minimal code change. Check out <a href="/http-cache/">The HTTP cache: your first line of
+defense</a> for an overview and <a href="https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/http-caching" rel="noopener">HTTP
+caching</a>
+and <a href="https://jakearchibald.com/2016/caching-best-practices/" rel="noopener">Caching best
+practices</a> for
+specific recommendations. The <a href="/uses-long-cache-ttl/">Serve static assets with an efficient cache
+policy</a> audit in Lighthouse can help you
+quickly detect resources that aren't being cached. Keep in mind that different
+types of resources will have different freshness requirements and will
+therefore require different caching strategies.</li>
+<li><a href="/service-workers-cache-storage/">Service workers</a> are another
+way to significantly reduce demands on your servers but may require significant technical
+investment. They also enable your website to work
+<a href="https://developers.google.com/web/fundamentals/codelabs/offline" rel="noopener">offline</a>,
+enabling you to present opening hours, phone numbers, and other information to
+returning users without a connection. <a href="/workbox/">Workbox</a> is
+the recommended approach for adding service workers to websites because it
+automates a lot of boilerplate, makes it easier to follow best practices, and
+prevents subtle bugs that are common when using the low-level <code>ServiceWorker</code>
+API directly.</li>
+<li>If your site is seeing major increased usage, check whether you have adequate
+protection against <a href="https://en.wikipedia.org/wiki/Denial-of-service_attack" rel="noopener">DDoS
+attacks</a> because your
+site may now be a more attractive target. More details from common providers:
+<a href="https://aws.amazon.com/answers/networking/aws-ddos-attack-mitigation/" rel="noopener">AWS</a>,
+<a href="https://azure.microsoft.com/en-us/services/ddos-protection/" rel="noopener">Azure</a>,
+<a href="https://www.cloudflare.com/learning/ddos/ddos-mitigation/" rel="noopener">Cloudflare</a>,
+<a href="https://cloud.google.com/files/GCPDDoSprotection-04122016.pdf" rel="noopener">Google Cloud</a>.</li>
+</ul>
+<p>See <a href="/reliable/">Network reliability</a> for more guidance.</p>
+<h3 id="accessibility">Accessibility <a class="w-headline-link" href="#accessibility">#</a></h3>
+<p>Focusing on accessibility is more important than ever because more people with a
+variety of needs are probably accessing your site. Follow the guidelines below
+to ensure that the core functionality of your website is accessible for
+everyone.</p>
+<ul>
+<li>Accessibility is a team effort and everyone has a role to play. Start by
+reviewing Google's <a href="https://developers.google.com/web/fundamentals/accessibility/a11y-for-teams" rel="noopener">Accessibility for Teams
+guide</a>
+as well as <a href="https://accessibility.digital.gov/" rel="noopener">the team guide from the U.S. Digital
+Service</a>. These guides explain what each
+team member (product managers, engineers, designers, QA, and so on) can
+contribute.</li>
+<li>Do an <a href="https://developers.google.com/web/fundamentals/accessibility/how-to-review" rel="noopener">Accessibility
+Review</a>
+to determine what's working well, and what needs improvement.
+The <a href="https://wave.webaim.org/extension/" rel="noopener">WAVE browser extensions</a> can help
+guide you through a manual accessibility audit of your site.</li>
+<li>Read through the <a href="/accessible">Accessibility Guides</a> to better understand
+specific topics like keyboard navigation and screen reader support.</li>
+<li><a href="https://developers.google.com/web/tools/lighthouse#devtools" rel="noopener">Run a Lighthouse
+audit</a> to catch
+common accessibility issues. The report also provides a list of manual checks
+that you can perform to improve the operability of your site. Note that an
+Accessibility score of 100 does not guarantee that your site is accessible. There
+are many important issues that Lighthouse can't test for in an automated
+fashion so it's still important to do manual reviews. Other automated auditing
+tools include the <a href="https://wave.webaim.org/api/" rel="noopener">WAVE API</a> and the <a href="https://chrome.google.com/webstore/detail/axe-web-accessibility-tes/lhdoppojpmngadmnindnejefpokejbdd" rel="noopener">AXE
+extension</a>.</li>
+<li>Complete the <a href="https://egghead.io/courses/start-building-accessible-web-applications-today" rel="noopener">Start Building Accessible Web Applications Today course
+on
+egghead.io</a>
+course or check out the <a href="https://www.udacity.com/course/web-accessibility--ud891" rel="noopener">Web Accessibility course on
+Udacity</a>.</li>
+<li>Watch the <a href="https://www.youtube.com/playlist?list=PLNYkxOF6rcICWx0C9LVWWVqvHlYJyqw7g" rel="noopener">A11ycast
+playlist</a>
+for more quick tips on specific accessibility topics.</li>
+</ul>
+<h3 id="PII">Identity, security, and privacy <a class="w-headline-link" href="#PII">#</a></h3>
+<p>It can be tempting to take shortcuts to get critical fixes out the door, but
+always be careful that you are not opening up security holes in doing so. People
+need to access content on topics that are extremely private. Websites need to
+protect this sensitive user data at all costs and convince people that their
+<a href="https://en.wikipedia.org/wiki/Personal_data" rel="noopener">personally identifiable
+information</a> (PII) is safe.</p>
+<ul>
+<li>Understand <a href="https://developers.google.com/web/fundamentals/security/encrypt-in-transit/why-https" rel="noopener">why all websites should be protected with
+HTTPS</a>,
+not just those that handle sensitive PII data.</li>
+<li>Switch to a hosting provider that uses HTTPS by default, or use <a href="https://letsencrypt.org/getting-started/" rel="noopener">Let's
+Encrypt</a> or similar services to
+enable HTTPS on your servers.</li>
+<li>Review <a href="/samesite-cookies-explained/">SameSite cookies explained</a> to learn
+how to make your use of cookies more secure. Note that
+<a href="https://blog.chromium.org/2020/04/temporarily-rolling-back-samesite.html" rel="noopener">the enforcement of SameSite cookie labeling has been temporarily rolled back</a>.</li>
+</ul>
+<p>See <a href="/secure/">Safe and secure</a> for more guidance.</p>
+<h3 id="usability">Usability, UI, and UX <a class="w-headline-link" href="#usability">#</a></h3>
+<p>People are relying more heavily on the web to fulfill basic needs. Many of these
+people don't use the web frequently. It's worthwhile to audit the usability of
+your site's core functionality and make sure it's as simple and easy to use as
+possible.</p>
+<ul>
+<li>Consider adding a prominent banner (that can be removed with an <strong>X</strong> button)
+to the top of your website that clearly communicates service updates. Use a
+call-to-action in the banner to direct people to more specific resources.
+Consider using distinct colors and fonts that stand out from the rest of your
+page content. Keep your writing empathetic, focused on people's needs, and
+transparent about what kind of service to expect.</li>
+<li>Look for opportunities to minimize physical interactions in your <a href="https://www.nngroup.com/articles/journey-mapping-101/" rel="noopener">critical
+user journeys</a> (CUJs)
+and suggest those changes to your product team. For example, if your delivery
+service usually requires a signature, see if there's any way to work around
+that.</li>
+<li>Double-check that your CUJs are as simple and intuitive as possible and
+suggest changes to your product team if you see any opportunities to improve.</li>
+<li>Review the <a href="https://developers.google.com/web/fundamentals/design-and-ux/principles" rel="noopener">principles of good mobile
+design</a>
+and try out your CUJs on various mobile devices to make sure there aren't any
+glaring issues. The people who don't use the web often and are suddenly finding
+themselves having to rely on the web more are probably accessing your site from
+mobile devices.</li>
+<li>Refactor your site to use <a href="https://developers.google.com/web/fundamentals/design-and-ux/responsive" rel="noopener">responsive design
+patterns</a>
+as much as possible.</li>
+<li>Ensure that your forms are
+<a href="https://www.smashingmagazine.com/2017/06/designing-efficient-web-forms/" rel="noopener">efficient</a>
+and
+<a href="https://developers.google.com/web/fundamentals/design-and-ux/input/forms" rel="noopener">well-designed</a>.</li>
+</ul>
+<h3 id="seo">SEO <a class="w-headline-link" href="#seo">#</a></h3>
+<p>People are looking for critical health- and job-related information. It's
+important to ensure that your sites are discoverable by all search engines.
+The <a href="/lighthouse-seo/">Lighthouse SEO audits</a> can help you detect basic problems.
+Follow the official blogs of search engines for the latest guidance and updates:
+<a href="https://webmasters.googleblog.com/" rel="noopener">Google</a>,
+<a href="https://blogs.bing.com/webmaster/" rel="noopener">Bing</a>,
+<a href="http://research.baidu.com/Blog" rel="noopener">Baidu</a>,
+<a href="https://spreadprivacy.com/tag/duckduckgo/" rel="noopener">DuckDuckGo</a>,
+<a href="https://yandex.com/blog/yacompany-com" rel="noopener">Yandex</a>.
+Recent COVID-19-related posts:</p>
+<ul>
+<li><a href="https://webmasters.googleblog.com/2020/03/how-to-pause-your-business-online-in.html" rel="noopener">How to change your online activities while minimizing impact on your Google
+Search
+presence</a></li>
+<li><a href="https://webmasters.googleblog.com/2020/03/new-properties-virtual-or-canceled-events.html" rel="noopener">New properties for virtual, postponed, and canceled
+events</a></li>
+<li><a href="https://blogs.bing.com/webmaster/march-2020/Bing-adopts-schema-org-mark-up-for-Special-Announcements-about-COVID-19" rel="noopener">Bing adopts schema.org markup for special announcements for
+COVID-19</a></li>
+<li><a href="https://developers.google.com/search/docs/data-types/special-announcements" rel="noopener">Add structured data to COVID-19 announcements</a></li>
+<li><a href="https://webmasters.googleblog.com/2020/03/health-organizations-covid19.html" rel="noopener">Helping health organizations make COVID-19 information more
+accessible</a></li>
+<li><a href="https://support.google.com/webmasters/answer/9781983" rel="noopener">General best practices for Search for health &amp; government
+sites</a></li>
+</ul>
+<p>See <a href="/discoverable/">Discoverable</a> for more guidance.</p>
+<h3 id="performance">Performance <a class="w-headline-link" href="#performance">#</a></h3>
+<p>Some ISPs (<a href="https://economictimes.indiatimes.com/tech/internet/brace-yourself-for-slower-data-speeds/articleshow/74702264.cms" rel="noopener">in India for
+example</a>)
+are seeing a <a href="https://www.npr.org/2020/03/17/817154787/internet-traffic-surges-as-companies-and-schools-send-people-home" rel="noopener">sharp increase in home internet
+usage</a>
+and don't have the infrastructure to meet the increased demand. In situations
+like this your website speed may be getting slower through no fault of your own.
+Optimizing your load performance could be a way to offset the headwind of
+reduced bandwidth. In other words, by reducing the number of bytes that need to
+be sent over the network in order to load your pages, you can offset the
+performance impact of reduced bandwidth.</p>
+<ul>
+<li>Images are the <a href="https://images.guide/#introduction" rel="noopener">number one cause of bloat on the
+web</a>. You might be able to significantly
+reduce your website's bandwidth usage by <a href="/fast/#optimize-your-images">optimizing your
+images</a>.
+<a href="https://squoosh.app" rel="noopener">Squoosh</a> is a simple open source image compression tool
+that can help you quickly compress your images.</li>
+<li>Run <a href="https://webpagetest.org/easy" rel="noopener">WebPageTest</a> or
+<a href="https://developers.google.com/web/tools/lighthouse/#get-started" rel="noopener">Lighthouse</a>
+to discover your top performance improvement opportunities.</li>
+<li><a href="/uses-text-compression/">Enable text compression</a> to reduce
+the network size of text resources. This is often an easy performance win that
+requires minimal technical investment.</li>
+<li>Read <a href="/fixing-website-speed-cross-functionally/">Fixing website speed
+cross-functionally</a>
+to learn how to collaborate with and get buy-in from other departments.</li>
+<li><a href="/browser-level-image-lazy-loading/">Use standardized lazy-loading for images</a> to
+minimize requests for images that people may never actually see. <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#Browser_compatibility" rel="noopener">Browser
+compatibility</a>
+is not 100% but the feature can be treated as a progressive enhancement. In
+other words, if a certain browser doesn't support standardized lazy-loading, the
+image should load as it normally does.</li>
+<li>Check if your site has any A/B testing or personalization scripts that can be
+loaded more asynchronously or if there's any non-critical functionality in the
+scripts that can be disabled. A/B testing and personalization scripts usually
+can't be loaded <em>completely</em> asynchronously because they need to run before
+the page content loads, but there may be some opportunity to load parts of the
+scripts more asynchronously. See <a href="https://developers.google.com/web/fundamentals/performance/critical-rendering-path" rel="noopener">Critical Rendering Path</a> to understand
+the fundamental tradeoff between synchronous scripts (also known as
+render-blocking scripts) in general and page load time, and then decide
+whether you need to prioritize the render-blocking scripts over page load
+time, or vice versa.</li>
+<li>Third-party code constitutes <a href="https://almanac.httparchive.org/en/2019/third-parties" rel="noopener">around half of all
+requests</a> for most
+websites. Consider
+<a href="https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/loading-third-party-javascript" rel="noopener">optimizing</a>
+or temporarily removing or disabling third-party code that isn't fundamental
+to running your site.</li>
+<li>If feature releases are deprioritized, this might be the perfect time to clean
+up. Remove tags from your tag managers, clean up bloated CSS and JS, and
+remove deprecated features or code. The
+<a href="https://developers.google.com/web/tools/chrome-devtools/coverage" rel="noopener">Coverage tab</a>
+in Chrome DevTools and the
+<a href="https://pptr.dev/#?product=Puppeteer&amp;version=v2.1.1&amp;show=api-class-coverage" rel="noopener"><code>Coverage</code></a> class
+in Puppeteer can help you detect unused code.</li>
+</ul>
+<p>See <a href="/fast/">Fast load times</a> for more guidance.</p>
+<p><a href="https://unsplash.com/photos/Q1p7bh3SHj8" rel="noopener">Hero image</a> by
+<a href="https://unsplash.com/@nasa" rel="noopener">NASA</a> on
+<a href="https://unsplash.com/s/photos/earth" rel="noopener">Unsplash</a></p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/accessibility/">Accessibility</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/performance/">Performance</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/seo/">SEO</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/ux/">UX</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/security/">Security</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/mobile/">Mobile</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/forms/">Forms</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/images/">Images</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/css/">CSS</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/javascript/">JavaScript</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/lighthouse/">Lighthouse</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/media/">Media</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/devtools/">DevTools</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Apr 6, 2020</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/covid19/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

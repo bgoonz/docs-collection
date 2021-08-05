@@ -1,0 +1,693 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=11981999b62f3">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>How OpenSooq increased engagement by investing in the web</title>
+<meta name="description" content="Learn how the OpenSooq team used best practices to create a reliable, compelling marketplace progressive web app. " />
+
+<link rel="canonical" href="https://web.dev/opensooq-case-study/" />
+
+<meta itemprop="name" content="How OpenSooq increased engagement by investing in the web" />
+<meta itemprop="description" content="Learn how the OpenSooq team used best practices to create a reliable, compelling marketplace progressive web app. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/AxbQe1JfE7WXPUzhFw9I.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/opensooq-case-study/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="How OpenSooq increased engagement by investing in the web" />
+<meta property="og:description" content="Learn how the OpenSooq team used best practices to create a reliable, compelling marketplace progressive web app. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/AxbQe1JfE7WXPUzhFw9I.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="The OpenSooq logo next to a smartphone displaying the OpenSooq website." />
+<meta property="tag" content="e-commerce" />
+<meta property="tag" content="reliable" />
+<meta property="tag" content="case-study" />
+<meta property="tag" content="performance" />
+<meta property="tag" content="progressive-web-apps" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="How OpenSooq increased engagement by investing in the web" />
+<meta name="twitter:description" content="Learn how the OpenSooq team used best practices to create a reliable, compelling marketplace progressive web app. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/AxbQe1JfE7WXPUzhFw9I.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=451d866d014f3', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=04299ca15852', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="The OpenSooq logo next to a smartphone displaying the OpenSooq website."     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/AxbQe1JfE7WXPUzhFw9I.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/AxbQe1JfE7WXPUzhFw9I.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/AxbQe1JfE7WXPUzhFw9I.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/AxbQe1JfE7WXPUzhFw9I.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/AxbQe1JfE7WXPUzhFw9I.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/AxbQe1JfE7WXPUzhFw9I.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/AxbQe1JfE7WXPUzhFw9I.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/AxbQe1JfE7WXPUzhFw9I.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/AxbQe1JfE7WXPUzhFw9I.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/AxbQe1JfE7WXPUzhFw9I.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/AxbQe1JfE7WXPUzhFw9I.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/AxbQe1JfE7WXPUzhFw9I.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/AxbQe1JfE7WXPUzhFw9I.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/AxbQe1JfE7WXPUzhFw9I.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/AxbQe1JfE7WXPUzhFw9I.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/AxbQe1JfE7WXPUzhFw9I.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/AxbQe1JfE7WXPUzhFw9I.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/AxbQe1JfE7WXPUzhFw9I.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#how-opensooq-increased-engagement-by-investing-in-the-web" class="w-toc__header--link">
+        How OpenSooq increased engagement by investing in the web
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#the-challenge">The challenge</a></li><li><a href="#a-focus-on-performance-and-reliability">A focus on performance and reliability</a></li><li><a href="#improving-re-engagement">Improving re-engagement</a></li><li><a href="#looking-ahead">Looking ahead</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@harleenkbatra"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="how-opensooq-increased-engagement-by-investing-in-the-web" class="w-article-header__headline">How OpenSooq increased engagement by investing in the web</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          Learn how a small team achieved big wins by creating a compelling marketplace PWA.
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Jul 3, 2019</time>
+          
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/hbatra/"><img     alt="Harleen Batra"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/msXgnzpR066rwvDz772V.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/msXgnzpR066rwvDz772V.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/msXgnzpR066rwvDz772V.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/msXgnzpR066rwvDz772V.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/msXgnzpR066rwvDz772V.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/msXgnzpR066rwvDz772V.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/hbatra/">Harleen Batra</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/harleenkbatra"
+          >Twitter</a
+        >
+      </li>
+      
+      
+      
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>Based in Amman, Jordan, <a href="http://jo.opensooq.com/en" rel="noopener">OpenSooq</a> is a mobile-first classifieds marketplace offering a wide range of products and services in 19 countries across the Middle East and North Africa.</p>
+<h2 id="the-challenge">The challenge <a class="w-headline-link" href="#the-challenge">#</a></h2>
+<p>Over 85% of OpenSooq's traffic comes from mobile devices, and that number continues to rise. Many people in the region rely on low-end devices with limited storage capacities, which creates a strong need for OpenSooq's mobile site to be as fast and light as possible. However, slow load times on OpenSooq's old mobile site were affecting customer satisfaction and led to <a href="https://support.google.com/analytics/answer/1009409?hl=en--for" rel="noopener">bounce rates</a> as high as 49% in markets like Kuwait.</p>
+<p>To serve its customers with a consistently better experience across all platforms, the company realized it needed a faster, more responsive website. So, in June 2017, OpenSooq's engineering team launched a <a href="/discover-installable/">Progressive Web App (PWA)</a>.</p>
+<h2 id="a-focus-on-performance-and-reliability">A focus on performance and reliability <a class="w-headline-link" href="#a-focus-on-performance-and-reliability">#</a></h2>
+<p>OpenSooq's three in-house developers were able to build a full-featured PWA with <a href="https://reactjs.org/" rel="noopener">React</a> and <a href="https://webpack.js.org/" rel="noopener">webpack</a> in just two and a half months.</p>
+<p>To ensure that the site would be fast and easily indexable by search engines, the team chose to implement server-side rendering. With almost 28% of their users accessing the PWA on patchy 2G or 3G networks, it was critical that users trust the experience to work, regardless of network constraints. So the team implemented an offline experience using <a href="/service-workers-cache-storage">service workers</a> and a <a href="https://developers.google.com/web/tools/workbox/modules/workbox-strategies#cache_first_cache_falling_back_to_network" rel="noopener">cache-first-then-network strategy</a>. They also used the <a href="/apply-instant-loading-with-prpl/?hl=en">PRPL pattern</a> to give their users instant loading.</p>
+<p>By adopting these best practices, the team was able to cut the average page load time (<a href="/interactive">Time to Interactive</a>) from 4 seconds to less than 2 seconds. And they used <a href="https://developers.google.com/web/tools/lighthouse/" rel="noopener">Lighthouse</a> to make sure the site <em>stayed</em> that fast. Those efforts helped OpenSooq hit over 1.8 billion pageviews a month.</p>
+<figure class="w-figure">
+  <img     alt="A screenshot of the Lighthouse performance metrics for the OpenSooq PWA."     class="w-screenshot"     decoding="async"     height="509"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/ItUJANptPfn2KooyDyq4.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/ItUJANptPfn2KooyDyq4.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/ItUJANptPfn2KooyDyq4.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/ItUJANptPfn2KooyDyq4.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/ItUJANptPfn2KooyDyq4.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/ItUJANptPfn2KooyDyq4.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/ItUJANptPfn2KooyDyq4.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/ItUJANptPfn2KooyDyq4.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/ItUJANptPfn2KooyDyq4.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/ItUJANptPfn2KooyDyq4.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/ItUJANptPfn2KooyDyq4.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/ItUJANptPfn2KooyDyq4.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/ItUJANptPfn2KooyDyq4.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/ItUJANptPfn2KooyDyq4.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/ItUJANptPfn2KooyDyq4.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/ItUJANptPfn2KooyDyq4.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/ItUJANptPfn2KooyDyq4.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/ItUJANptPfn2KooyDyq4.png?auto=format&w=1600 1600w"          width="800"   />
+  <figcaption class="w-figcaption">OpenSooq's Lighthouse performance metrics.</figcaption>
+</figure>
+<blockquote>
+  <p>
+    Over a quarter of our users access the OpenSooq PWA from low-mid networks, so reliability was essential for keeping those users engaged. Service workers and caching strategies helped us build the reliable user experience we needed, seamlessly.
+  </p>
+  <cite>
+    Amin Shoman, PWA Technical Manager, OpenSooq
+  </cite>
+</blockquote>
+<h2 id="improving-re-engagement">Improving re-engagement <a class="w-headline-link" href="#improving-re-engagement">#</a></h2>
+<figure class="w-figure w-figure--inline-right">
+  <img     alt="A smartphone displaying OpenSooq notifications."     class="w-screenshot"     decoding="async"     height="549"          loading="lazy"     sizes="(min-width: 284px) 284px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/U97z7PSx8CgKACjMnLkO.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/U97z7PSx8CgKACjMnLkO.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/U97z7PSx8CgKACjMnLkO.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/U97z7PSx8CgKACjMnLkO.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/U97z7PSx8CgKACjMnLkO.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/U97z7PSx8CgKACjMnLkO.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/U97z7PSx8CgKACjMnLkO.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/U97z7PSx8CgKACjMnLkO.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/U97z7PSx8CgKACjMnLkO.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/U97z7PSx8CgKACjMnLkO.png?auto=format&w=568 568w"          width="284"   />
+  <figcaption class="w-figcaption">OpenSooq's meaningful user notifications.</figcaption>
+</figure>
+<p>Having built a performant and reliable experience, the OpenSooq team wanted to make sure their users stayed engaged with the product. To do that, they enabled users to install the <a href="https://developers.google.com/web/fundamentals/app-install-banners/promoting-install-mobile" rel="noopener">PWA to their home screen</a> and added support for <a href="https://developers.google.com/web/fundamentals/push-notifications/" rel="noopener">meaningful notifications</a>. This allowed the site to notify buyers about seller interaction on queries and sellers about ad activation and expiration.</p>
+<p>These improvements increased the monthly active users of OpenSooq's web experience by 14%. For users who installed the PWA, there was a 48% increase in the number of page visits per session and a 28% jump in average session duration. OpenSooq also saw a 25% increase in users' average time on a page and a 29% drop in average bounce rates across all markets.</p>
+<h2 id="looking-ahead">Looking ahead <a class="w-headline-link" href="#looking-ahead">#</a></h2>
+<p>After just a few weeks of effort, OpenSooq created a 23 KB, full-featured PWA that delivers a consistent experience to users across all platforms and browsers. And because it's easy to update features on the web, the team has gone PWA-first by launching and testing new features and user flows on their PWA before rolling them out to other platforms.</p>
+<p>OpenSooq is now working on adding a <a href="https://developers.google.com/web/fundamentals/app-install-banners/native" rel="noopener">platform-specific install prompt</a> and integrating the PWA with <a href="https://amp.dev/" rel="noopener">accelerated mobile pages (AMP)</a>. These enhancements will further speed up page loads and make the transition to the platform-specific app as seamless as possible. By building on the foundation of their initial development effort, the OpenSooq team will continue giving their users the best possible experience.</p>
+<blockquote>
+  <p>
+    The importance of developing our PWA was clear to both the leadership and technical teams. After building a modern web app and making it performant, we're excited to see the business impact on our 2.5 month investment.
+  </p>
+  <cite>
+    Ramzi Alqrainy, Chief Technology Officer, OpenSooq
+  </cite>
+</blockquote>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/case-study/">Case Study</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/performance/">Performance</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/progressive-web-apps/">Progressive Web Apps</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Jul 3, 2019</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/opensooq-case-study/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

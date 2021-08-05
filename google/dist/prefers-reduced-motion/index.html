@@ -1,0 +1,834 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=dbab067991cff">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>prefers-reduced-motion: Sometimes less movement is more</title>
+<meta name="description" content="The prefers-reduced-motion media query detects whether the user has requested that the system minimize the amount of animation or motion it uses. This is for users who either require or prefer minimized animations; for example people with vestibular disorders often desire animations to be kept to a minimum." />
+
+<link rel="canonical" href="https://web.dev/prefers-reduced-motion/" />
+
+<meta itemprop="name" content="prefers-reduced-motion: Sometimes less movement is more" />
+<meta itemprop="description" content="The prefers-reduced-motion media query detects whether the user has requested that the system minimize the amount of animation or motion it uses. This is for users who either require or prefer minimized animations; for example people with vestibular disorders often desire animations to be kept to a minimum." />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/LI2vYKZwQ98w3MLtUF8V.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/prefers-reduced-motion/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="prefers-reduced-motion: Sometimes less movement is more" />
+<meta property="og:description" content="The prefers-reduced-motion media query detects whether the user has requested that the system minimize the amount of animation or motion it uses. This is for users who either require or prefer minimized animations; for example people with vestibular disorders often desire animations to be kept to a minimum." />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/LI2vYKZwQ98w3MLtUF8V.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="Time-lapse of woman in a train" />
+<meta property="tag" content="media-queries" />
+<meta property="tag" content="css" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="prefers-reduced-motion: Sometimes less movement is more" />
+<meta name="twitter:description" content="The prefers-reduced-motion media query detects whether the user has requested that the system minimize the amount of animation or motion it uses. This is for users who either require or prefer minimized animations; for example people with vestibular disorders often desire animations to be kept to a minimum." />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/LI2vYKZwQ98w3MLtUF8V.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=7927a191f1e81', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=120afd610c17a', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="Time-lapse of woman in a train"     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/LI2vYKZwQ98w3MLtUF8V.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/LI2vYKZwQ98w3MLtUF8V.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/LI2vYKZwQ98w3MLtUF8V.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/LI2vYKZwQ98w3MLtUF8V.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/LI2vYKZwQ98w3MLtUF8V.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/LI2vYKZwQ98w3MLtUF8V.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/LI2vYKZwQ98w3MLtUF8V.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/LI2vYKZwQ98w3MLtUF8V.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/LI2vYKZwQ98w3MLtUF8V.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/LI2vYKZwQ98w3MLtUF8V.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/LI2vYKZwQ98w3MLtUF8V.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/LI2vYKZwQ98w3MLtUF8V.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/LI2vYKZwQ98w3MLtUF8V.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/LI2vYKZwQ98w3MLtUF8V.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/LI2vYKZwQ98w3MLtUF8V.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/LI2vYKZwQ98w3MLtUF8V.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/LI2vYKZwQ98w3MLtUF8V.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/LI2vYKZwQ98w3MLtUF8V.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#prefers-reduced-motion:-sometimes-less-movement-is-more" class="w-toc__header--link">
+        prefers-reduced-motion: Sometimes less movement is more
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#too-much-motion-in-real-life-and-on-the-web">Too much motion in real life and on the web</a></li><li><a href="#animation-on-the-web">Animation on the web</a></li><li><a href="#motion-triggered-vestibular-spectrum-disorder">Motion-triggered vestibular spectrum disorder</a></li><li><a href="#remove-motion-on-operating-systems">Remove motion on operating systems</a></li><li><a href="#remove-motion-on-the-web">Remove motion on the web</a></li><li><a href="#working-with-the-media-query">Working with the media query</a></li><li><a href="#demo">Demo</a></li><li><a href="#conclusions">Conclusions</a></li><li><a href="#(bonus)-forcing-reduced-motion-on-all-websites">(Bonus) Forcing reduced motion on all websites</a></li><li><a href="#related-links">Related Links</a></li><li><a href="#acknowledgements">Acknowledgements</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@tomayac"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="prefers-reduced-motion:-sometimes-less-movement-is-more" class="w-article-header__headline">prefers-reduced-motion: Sometimes less movement is more</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          <p>The prefers-reduced-motion media query detects whether the user has requested
+the operating system to minimize the amount of animation or motion it uses.</p>
+
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Mar 11, 2019</time>
+           <span class="w-author__separator">•</span> Updated <time>Dec 10, 2019</time> 
+        </div>
+      
+      <div class="w-layout-container--narrow w-post-signpost">
+  <span class="w-post-signpost__title">Appears in:</span>
+  <a
+          class="w-post-signpost__link"
+          href="/animations"
+          >Animations</a
+        >
+</div>
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/thomassteiner/"><img     alt="Thomas Steiner"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/8PLpVmFef6mj72MVWeiN.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/thomassteiner/">Thomas Steiner</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/tomayac"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/tomayac">GitHub</a>
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://glitch.com/@tomayac"
+          >Glitch</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://blog.tomayac.com/">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>Not everyone likes decorative animations or transitions, and some users outright
+experience motion sickness when faced with parallax scrolling, zooming effects, and so on.
+Chrome 74 supports a user preference media query <code>prefers-reduced-motion</code>
+that lets you design a motion-reduced variant of your site for users who have expressed this
+preference.</p>
+<h2 id="too-much-motion-in-real-life-and-on-the-web">Too much motion in real life and on the web <a class="w-headline-link" href="#too-much-motion-in-real-life-and-on-the-web">#</a></h2>
+<p>The other day, I was ice skating with my kids. It was a lovely day, the sun was shining, and the ice
+rink was crammed with people ⛸. The only issue with that: I don't cope with crowds well. With so
+many moving targets, I fail to focus on anything, and end up lost and with a feeling of complete
+visual overload, almost like staring at an anthill 🐜.</p>
+<figure>
+  <img     alt="Throng of feet of ice skating people"          decoding="async"     height="320"          loading="lazy"     sizes="(min-width: 580px) 580px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/JA5v1s8gSBk70eJBB8xW.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/JA5v1s8gSBk70eJBB8xW.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/JA5v1s8gSBk70eJBB8xW.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/JA5v1s8gSBk70eJBB8xW.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/JA5v1s8gSBk70eJBB8xW.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/JA5v1s8gSBk70eJBB8xW.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/JA5v1s8gSBk70eJBB8xW.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/JA5v1s8gSBk70eJBB8xW.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/JA5v1s8gSBk70eJBB8xW.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/JA5v1s8gSBk70eJBB8xW.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/JA5v1s8gSBk70eJBB8xW.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/JA5v1s8gSBk70eJBB8xW.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/JA5v1s8gSBk70eJBB8xW.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/JA5v1s8gSBk70eJBB8xW.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/JA5v1s8gSBk70eJBB8xW.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/JA5v1s8gSBk70eJBB8xW.jpg?auto=format&w=1160 1160w"          width="580"   />
+  <figcaption>Visual overload in real life.</figcaption>
+</figure>
+<p>Occasionally, the same can happen on the web: with flashing ads, fancy parallax effects, surprising
+reveal animations, autoplaying videos, and so on, <em>the web sometimes can be quite
+overwhelming</em>… Happily, unlike in real life, there is a solution to that. The CSS media query
+<code>prefers-reduced-motion</code> lets developers create a variant of a page for users who, well, prefer
+reduced motion. This can comprise anything from refraining from having autoplaying videos to
+disabling certain purely decorative effects, to completely redesigning a page for certain users.</p>
+<p>Before I dive into the feature, let's take one step back and think of what animations are used for
+on the web. If you want, you can also skip the background information and
+<a href="#working_with_the_media_query">jump right into the technical details</a> below.</p>
+<h2 id="animation-on-the-web">Animation on the web <a class="w-headline-link" href="#animation-on-the-web">#</a></h2>
+<p>Animation is oftentimes used to provide <em>feedback</em> to the user, for example, to let them know that
+an action was received and is being processed. For example, on a shopping website, a product
+could be animated to &quot;fly&quot; into a virtual shopping cart, depicted as an icon in the top-right corner
+of the site.</p>
+<p>Another use case involves using motion to
+<a href="https://medium.com/dev-channel/hacking-user-perception-to-make-your-websites-and-apps-feel-faster-922636b620e3" rel="noopener">hack user perception</a>
+by using a mixture of skeleton screens, contextual metadata, and low quality image previews to
+occupy a lot of the user's time and make the whole experience <em>feel faster</em>.
+The idea is to give context to the user of what's coming and meanwhile load in things as quickly as
+possible.</p>
+<p>Finally, there are <em>decorative</em> effects like animated gradients, parallax scrolling,
+background videos, and several others.
+While many users enjoy such animations, some users dislike
+them because they feel distracted or slowed down by them. In the worst case, users may even suffer
+from motion sickness as if it were a real life experience, so for these users reducing animations is
+a <em>medical necessity</em>.</p>
+<h2 id="motion-triggered-vestibular-spectrum-disorder">Motion-triggered vestibular spectrum disorder <a class="w-headline-link" href="#motion-triggered-vestibular-spectrum-disorder">#</a></h2>
+<p>Some users experience <a href="https://www.w3.org/WAI/WCAG21/Understanding/animation-from-interactions.html" rel="noopener">distraction or nausea from animated content</a>.
+For example, scrolling animations can cause vestibular disorders when elements other than the main element associated with the
+scrolling move around a lot. For example, parallax scrolling animations can cause vestibular
+disorders because background elements move at a different rate than foreground elements.
+Vestibular (inner ear) disorder reactions include dizziness, nausea, and migraine headaches, and
+sometimes require bed rest to recover.</p>
+<h2 id="remove-motion-on-operating-systems">Remove motion on operating systems <a class="w-headline-link" href="#remove-motion-on-operating-systems">#</a></h2>
+<p>Many operating systems have had accessibility settings for specifying a preference for reduced
+motion for a long time. The screenshots below show macOS Mojave's <strong>Reduce motion</strong> preference and
+Android Pie's <strong>Remove animations</strong> preference. When checked,
+these preferences cause the operating system to not use decorative effects like app launching
+animations. Applications themselves can and should honor this setting, too, and remove all
+unnecessary animations.</p>
+<div class="w-columns">
+  <figure>
+    <img     alt="A screenshot of the macOS settings screen with the &#x27;Reduce motion&#x27; checkbox checked."          decoding="async"     height="300"          loading="lazy"     sizes="(min-width: 398px) 398px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/KwuLNPefeDzUfR17EUtr.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/KwuLNPefeDzUfR17EUtr.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/KwuLNPefeDzUfR17EUtr.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/KwuLNPefeDzUfR17EUtr.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/KwuLNPefeDzUfR17EUtr.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/KwuLNPefeDzUfR17EUtr.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/KwuLNPefeDzUfR17EUtr.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/KwuLNPefeDzUfR17EUtr.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/KwuLNPefeDzUfR17EUtr.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/KwuLNPefeDzUfR17EUtr.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/KwuLNPefeDzUfR17EUtr.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/KwuLNPefeDzUfR17EUtr.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/KwuLNPefeDzUfR17EUtr.png?auto=format&w=796 796w"          width="398"   />
+  </figure>
+  <figure>
+    <img     alt="A screenshot of the Android settings screen with the &#x27;Remove animations&#x27; checkbox checked."          decoding="async"     height="300"          loading="lazy"     sizes="(min-width: 287px) 287px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/qed7yE6FKVQ5YXHn0TbJ.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/qed7yE6FKVQ5YXHn0TbJ.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/qed7yE6FKVQ5YXHn0TbJ.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/qed7yE6FKVQ5YXHn0TbJ.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/qed7yE6FKVQ5YXHn0TbJ.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/qed7yE6FKVQ5YXHn0TbJ.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/qed7yE6FKVQ5YXHn0TbJ.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/qed7yE6FKVQ5YXHn0TbJ.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/qed7yE6FKVQ5YXHn0TbJ.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/qed7yE6FKVQ5YXHn0TbJ.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/qed7yE6FKVQ5YXHn0TbJ.png?auto=format&w=574 574w"          width="287"   />
+  </figure>
+</div>
+<h2 id="remove-motion-on-the-web">Remove motion on the web <a class="w-headline-link" href="#remove-motion-on-the-web">#</a></h2>
+<p><a href="https://drafts.csswg.org/mediaqueries-5/" rel="noopener">Media Queries Level 5</a>
+brings the reduced motion user preference to the web as well. Media queries allow authors to test and query values
+or features of the user agent or display device independent of the document being rendered.
+The media query
+<a href="https://drafts.csswg.org/mediaqueries-5/#prefers-reduced-motion" rel="noopener"><code>prefers-reduced-motion</code></a>
+is used to detect if the user has set an operating system preference to minimize the amount of
+animation or motion it uses. It can take two possible values:</p>
+<ul>
+<li><code>no-preference</code>: Indicates that the user has made no preference in the underlying operating system.
+This keyword value evaluates as <code>false</code> in the boolean context.</li>
+<li><code>reduce</code>: Indicates that the user has set an operating system preference indicating that
+interfaces should minimize movement or animation, preferably to the point where all non-essential
+movement is removed.</li>
+</ul>
+<h2 id="working-with-the-media-query">Working with the media query <a class="w-headline-link" href="#working-with-the-media-query">#</a></h2>
+<div class="w-aside w-aside--note">
+<p>See <a href="https://caniuse.com/#feat=prefers-reduced-motion" rel="noopener">Can I use prefers-reduced-motion media query?</a>
+to find out which browsers support <code>prefers-reduced-motion</code>.</p>
+</div>
+<p>As with all media queries, <code>prefers-reduced-motion</code> can be checked from a CSS context and from a
+JavaScript context.</p>
+<p>To illustrate both, let's say I have an important sign-up button that I want the user to click.
+I could define an attention-catching &quot;vibrate&quot; animation, but as a good web citizen I will only play it for
+those users who are explicitly OK with animations, but not everyone else, which can be users who
+have opted out of animations, or users on browsers that don't understand the media query.</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token comment">/*<br>  If the user has expressed their preference for<br>  reduced motion, then don't use animations on buttons.<br>*/</span><br><span class="token atrule"><span class="token rule">@media</span> <span class="token punctuation">(</span><span class="token property">prefers-reduced-motion</span><span class="token punctuation">:</span> reduce<span class="token punctuation">)</span></span> <span class="token punctuation">{</span><br>  <span class="token selector">button</span> <span class="token punctuation">{</span><br>    <span class="token property">animation</span><span class="token punctuation">:</span> none<span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span><br><br><span class="token comment">/*<br>  If the browser understands the media query and the user<br>  explicitly hasn't set a preference, then use animations on buttons.<br>*/</span><br><span class="token atrule"><span class="token rule">@media</span> <span class="token punctuation">(</span><span class="token property">prefers-reduced-motion</span><span class="token punctuation">:</span> no-preference<span class="token punctuation">)</span></span> <span class="token punctuation">{</span><br>  <span class="token selector">button</span> <span class="token punctuation">{</span><br>    <span class="token comment">/* `vibrate` keyframes are defined elsewhere */</span><br>    <span class="token property">animation</span><span class="token punctuation">:</span> vibrate 0.3s linear infinite both<span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><div class="w-aside w-aside--note">
+<p>If you have a lot of animation-related CSS, you can spare your opted-out users from
+downloading it by outsourcing all animation-related CSS into a separate stylesheet that you only
+load conditionally via the <code>media</code> attribute on the <code>link</code> element 😎:</p>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>link</span> <span class="token attr-name">rel</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>stylesheet<span class="token punctuation">"</span></span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>animations.css<span class="token punctuation">"</span></span><br>      <span class="token attr-name">media</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>(prefers-reduced-motion: no-preference)<span class="token punctuation">"</span></span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code></div>
+<p>To illustrate how to work with <code>prefers-reduced-motion</code> with JavaScript, let's imagine I have
+defined a complex animation with the
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API" rel="noopener">Web Animations API</a>. While
+CSS rules will be dynamically triggered by the browser when the user preference changes, for
+JavaScript animations I have to listen for changes myself, and then manually stop my potentially
+in-flight animations (or restart them if the user lets me):</p>
+<web-copy-code><pre class="language-js"><code class="language-js"><span class="token keyword">const</span> mediaQuery <span class="token operator">=</span> window<span class="token punctuation">.</span><span class="token function">matchMedia</span><span class="token punctuation">(</span><span class="token string">'(prefers-reduced-motion: reduce)'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>mediaQuery<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'change'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>mediaQuery<span class="token punctuation">.</span>media<span class="token punctuation">,</span> mediaQuery<span class="token punctuation">.</span>matches<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token comment">// Stop JavaScript-based animations.</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+</web-copy-code><p>Note that the parentheses around the actual media query are obligatory:</p>
+<figure class="w-compare"><p class="w-compare__label w-compare__label--worse">Don't</p>
+<web-copy-code><pre class="language-js"><code class="language-js">window<span class="token punctuation">.</span><span class="token function">matchMedia</span><span class="token punctuation">(</span><span class="token string">'prefers-reduced-motion: reduce'</span><span class="token punctuation">)</span></code></pre>
+</web-copy-code></figure>
+<figure class="w-compare"><p class="w-compare__label w-compare__label--better">Do</p>
+<web-copy-code><pre class="language-js"><code class="language-js">window<span class="token punctuation">.</span><span class="token function">matchMedia</span><span class="token punctuation">(</span><span class="token string">'(prefers-reduced-motion: reduce)'</span><span class="token punctuation">)</span></code></pre>
+</web-copy-code></figure>
+<h2 id="demo">Demo <a class="w-headline-link" href="#demo">#</a></h2>
+<p>I have created a little demo based on Rogério Vicente's amazing
+<a href="https://http.cat/" rel="noopener">🐈 HTTP status cats</a>. First, take a moment to appreciate the joke, it's
+hilarious and I'll wait. Now that you're back, let me introduce the
+<a href="https://prefers-reduced-motion.glitch.me" rel="noopener">demo</a>. When you scroll down, each HTTP status cat
+alternatingly appears from either the right or the left side. It's a buttery smooth 60 FPS animation,
+but as outlined above, some users may dislike it or even get motion sick by it, so the demo is
+programmed to respect <code>prefers-reduced-motion</code>. This even works dynamically, so users can change
+their preference on-the-fly, no reload required. If a user prefers reduced motion, the non-necessary
+reveal animations are gone, and just the regular scrolling motion is left. The screencast below
+shows the demo in action:</p>
+<figure>
+  <video                        controls                              muted      playsinline      poster="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/CQAw3Ee43Dcv0JOsm9fl.png?auto=format"                >      <source src="https://storage.googleapis.com/web-dev-uploads/video/tcFciHGuF3MxnTr1y5ue01OGLBn2/zWs45QPPI9C8CjF813Zx.mp4" type="video/mp4" />    </video>
+  <figcaption>Video of the
+    <a href="https://prefers-reduced-motion.glitch.me"><code>prefers-reduced-motion</code> demo</a>
+    app
+  </figcaption>
+</figure>
+<h2 id="conclusions">Conclusions <a class="w-headline-link" href="#conclusions">#</a></h2>
+<p>Respecting user preferences is key for modern websites, and browsers are exposing more and more features
+to enable web developers to do so.
+Another launched example is
+<a href="https://drafts.csswg.org/mediaqueries-5/#prefers-color-scheme" rel="noopener"><code>prefers-color-scheme</code></a>,
+which detects if the user prefers a light or dark color scheme.
+You can read everything about <code>prefers-color-scheme</code> in my article
+<a href="/prefers-color-scheme">Hello Darkness, My Old Friend</a> 🌒.</p>
+<p>The CSS Working Group is currently standardizing more
+<a href="https://drafts.csswg.org/mediaqueries-5/#mf-user-preferences" rel="noopener">user preference media queries</a>
+like
+<a href="https://drafts.csswg.org/mediaqueries-5/#prefers-reduced-transparency" rel="noopener"><code>prefers-reduced-transparency</code></a>
+(detects if the user prefers reduced transparency),
+<a href="https://drafts.csswg.org/mediaqueries-5/#prefers-contrast" rel="noopener"><code>prefers-contrast</code></a>
+(detects if the user has requested the system to increase or decrease the amount of
+contrast between adjacent colors), and
+<a href="https://drafts.csswg.org/mediaqueries-5/#inverted" rel="noopener"><code>inverted-colors</code></a>
+(detects if the user prefers inverted colors).
+👀 Watch this space, we will definitely let you know once they launch in Chrome!</p>
+<h2 id="(bonus)-forcing-reduced-motion-on-all-websites">(Bonus) Forcing reduced motion on all websites <a class="w-headline-link" href="#(bonus)-forcing-reduced-motion-on-all-websites">#</a></h2>
+<p>Not every site will use <code>prefers-reduced-motion</code>, or maybe not significantly enough for your taste.
+If you, for whatever reason, want to stop motion on all websites, you actually can. One way to make
+this happen is to inject a stylesheet with the following CSS into every web page you visit.
+There are several
+<a href="https://chrome.google.com/webstore/search/user%20stylesheets?_category=extensions" rel="noopener">browser extensions</a>
+out there (use at your own risk!) that allow for this.</p>
+<web-copy-code><pre class="language-css"><code class="language-css"><span class="token atrule"><span class="token rule">@media</span> <span class="token punctuation">(</span><span class="token property">prefers-reduced-motion</span><span class="token punctuation">:</span> reduce<span class="token punctuation">)</span></span> <span class="token punctuation">{</span><br>  <span class="token selector">*, ::before, ::after</span> <span class="token punctuation">{</span><br>    <span class="token property">animation-delay</span><span class="token punctuation">:</span> -1ms <span class="token important">!important</span><span class="token punctuation">;</span><br>    <span class="token property">animation-duration</span><span class="token punctuation">:</span> 1ms <span class="token important">!important</span><span class="token punctuation">;</span><br>    <span class="token property">animation-iteration-count</span><span class="token punctuation">:</span> 1 <span class="token important">!important</span><span class="token punctuation">;</span><br>    <span class="token property">background-attachment</span><span class="token punctuation">:</span> initial <span class="token important">!important</span><span class="token punctuation">;</span><br>    <span class="token property">scroll-behavior</span><span class="token punctuation">:</span> auto <span class="token important">!important</span><span class="token punctuation">;</span><br>    <span class="token property">transition-duration</span><span class="token punctuation">:</span> 0s <span class="token important">!important</span><span class="token punctuation">;</span><br>    <span class="token property">transition-delay</span><span class="token punctuation">:</span> 0s <span class="token important">!important</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span></code></pre>
+</web-copy-code><p>The way this works is that the CSS above overrides the durations of all animations and transitions
+to such a short time that they are not noticeable anymore. As some websites depend on an animation
+to be run in order to work correctly (maybe because a certain step depends on the firing of the
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/animationend_event" rel="noopener"><code>animationend</code> event</a>),
+the more radical <code>animation: none !important;</code> approach wouldn't work. Even the above hack is not
+guaranteed to succeed on all websites (for example, it can't stop motion that was initiated via the
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API" rel="noopener">Web Animations API</a>),
+so be sure to deactivate it when you notice breakage.</p>
+<h2 id="related-links">Related Links <a class="w-headline-link" href="#related-links">#</a></h2>
+<ul>
+<li>Latest Editor's Draft of the <a href="https://drafts.csswg.org/mediaqueries-5/#prefers-reduced-motion" rel="noopener">Media Queries Level 5</a> spec.</li>
+<li><code>prefers-reduced-motion</code> on <a href="https://www.chromestatus.com/feature/5597964353404928" rel="noopener">Chrome Platform Status</a>.</li>
+<li><code>prefers-reduced-motion</code> <a href="http://crbug.com/722548" rel="noopener">Chromium bug</a>.</li>
+<li>Blink <a href="https://groups.google.com/a/chromium.org/forum/#!msg/blink-dev/NZ3c9d4ivA8/BIHFbOj6DAAJ" rel="noopener">Intent to Implement posting</a>.</li>
+</ul>
+<h2 id="acknowledgements">Acknowledgements <a class="w-headline-link" href="#acknowledgements">#</a></h2>
+<p>Massive shout-out to <a href="https://github.com/stephenmcgruer" rel="noopener">Stephen McGruer</a> who has implemented
+<code>prefers-reduced-motion</code> in Chrome and—together with
+<a href="https://twitter.com/rob_dodson" rel="noopener">Rob Dodson</a>—has also reviewed this article.
+<a href="https://unsplash.com/photos/im7Tiw1OY7c" rel="noopener">Hero image</a> by Hannah Cauhepe on Unsplash.</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/media-queries/">Media Queries</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/css/">CSS</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Dec 10, 2019</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/prefers-reduced-motion/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions="api"></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

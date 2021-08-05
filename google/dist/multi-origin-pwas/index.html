@@ -1,0 +1,743 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=27ce372e70b85">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Progressive Web Apps in multi-origin sites</title>
+<meta name="description" content="Multi-origin architectures presents many challenges when building PWAs. Explore the good and bad uses of multiple origins, and some workarounds to build PWAs in multi-origin sites." />
+
+<link rel="canonical" href="https://web.dev/multi-origin-pwas/" />
+
+<meta itemprop="name" content="Progressive Web Apps in multi-origin sites" />
+<meta itemprop="description" content="Multi-origin architectures presents many challenges when building PWAs. Explore the good and bad uses of multiple origins, and some workarounds to build PWAs in multi-origin sites." />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/4bvbhJ3F0uGKvw5DLTMy.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/multi-origin-pwas/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Progressive Web Apps in multi-origin sites" />
+<meta property="og:description" content="Multi-origin architectures presents many challenges when building PWAs. Explore the good and bad uses of multiple origins, and some workarounds to build PWAs in multi-origin sites." />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/4bvbhJ3F0uGKvw5DLTMy.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="Multiple Shifting Gears." />
+<meta property="tag" content="progressive-web-apps" />
+<meta property="tag" content="service-worker" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Progressive Web Apps in multi-origin sites" />
+<meta name="twitter:description" content="Multi-origin architectures presents many challenges when building PWAs. Explore the good and bad uses of multiple origins, and some workarounds to build PWAs in multi-origin sites." />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/4bvbhJ3F0uGKvw5DLTMy.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=6a596f7af1ede', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=204618dba2ccb', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="Multiple Shifting Gears."     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/4bvbhJ3F0uGKvw5DLTMy.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/4bvbhJ3F0uGKvw5DLTMy.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/4bvbhJ3F0uGKvw5DLTMy.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/4bvbhJ3F0uGKvw5DLTMy.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/4bvbhJ3F0uGKvw5DLTMy.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/4bvbhJ3F0uGKvw5DLTMy.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/4bvbhJ3F0uGKvw5DLTMy.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/4bvbhJ3F0uGKvw5DLTMy.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/4bvbhJ3F0uGKvw5DLTMy.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/4bvbhJ3F0uGKvw5DLTMy.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/4bvbhJ3F0uGKvw5DLTMy.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/4bvbhJ3F0uGKvw5DLTMy.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/4bvbhJ3F0uGKvw5DLTMy.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/4bvbhJ3F0uGKvw5DLTMy.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/4bvbhJ3F0uGKvw5DLTMy.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/4bvbhJ3F0uGKvw5DLTMy.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/4bvbhJ3F0uGKvw5DLTMy.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/4bvbhJ3F0uGKvw5DLTMy.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#progressive-web-apps-in-multi-origin-sites" class="w-toc__header--link">
+        Progressive Web Apps in multi-origin sites
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#background">Background</a></li><li><a href="#good-and-bad-uses-of-multiple-origins">Good and bad uses of multiple origins</a></li><li><a href="#the-good">The good</a></li><li><a href="#the-bad">The bad</a></li><li><a href="#challenges-and-workarounds-for-pwas-across-different-origins">Challenges and Workarounds for PWAs across different origins</a></li><li><a href="#service-workers">Service workers</a></li><li><a href="#caching">Caching</a></li><li><a href="#permissions">Permissions</a></li><li><a href="#installation">Installation</a></li><li><a href="#standalone-mode">Standalone Mode</a></li><li><a href="#conclusion">Conclusion</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@drenzulli"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="progressive-web-apps-in-multi-origin-sites" class="w-article-header__headline">Progressive Web Apps in multi-origin sites</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          Challenges and workarounds for building Progressive Web Apps in multi-origin sites.
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>Aug 19, 2019</time>
+          
+        </div>
+      
+      <div class="w-layout-container--narrow w-post-signpost">
+  <span class="w-post-signpost__title">Appears in:</span>
+  <a
+          class="w-post-signpost__link"
+          href="/progressive-web-apps"
+          >Progressive Web Apps</a
+        >
+</div>
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/demianrenzulli/"><img     alt="Demian Renzulli"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/EuTrT82fyivFn16L0vD9.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/EuTrT82fyivFn16L0vD9.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/EuTrT82fyivFn16L0vD9.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/EuTrT82fyivFn16L0vD9.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/EuTrT82fyivFn16L0vD9.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/EuTrT82fyivFn16L0vD9.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/demianrenzulli/">Demian Renzulli</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/drenzulli"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/demianrenzulli">GitHub</a>
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://glitch.com/@demianrenzulli"
+          >Glitch</a
+        >
+      </li>
+      
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <h2 id="background">Background <a class="w-headline-link" href="#background">#</a></h2>
+<p>In the past, there were some advantages to using multi-origin architectures, but for Progressive Web Apps, that approach presents many challenges. In particular, the <a href="https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy" rel="noopener">same-origin policy</a>, imposes restrictions for sharing things like service workers and caches, permissions, and for achieving a standalone experience across multiple origins. This article will describe the good and bad uses of multiple origins, and explain the challenges and workarounds for building Progressive Web Apps in multi-origin sites.</p>
+<h2 id="good-and-bad-uses-of-multiple-origins">Good and bad uses of multiple origins <a class="w-headline-link" href="#good-and-bad-uses-of-multiple-origins">#</a></h2>
+<p>There are a few legitimate reasons for sites to employ a multi-origin architecture, mostly related to providing an independent set of web applications, or to create experiences that are completely isolated from each other. There are also uses that should be avoided.</p>
+<h3 id="the-good">The good <a class="w-headline-link" href="#the-good">#</a></h3>
+<p>Let's look at the useful reasons first:</p>
+<ul>
+<li>
+<p><strong>Localization / Language:</strong> Using a <a href="https://developer.mozilla.org/en-US/docs/Glossary/TLD" rel="noopener">country-code top-level domain</a>, to separate sites to be served in different countries (e.g. <code>https://www.google.com.ar</code>), or using subdomains to divide sites targeted to different locations (e.g.: <code>https://newyork.craigslist.org</code>) or to offer content for a specific language (e.g. <code>https://en.wikipedia.org</code>).</p>
+</li>
+<li>
+<p><strong>Independent webapps:</strong> Using different subdomains to provide experiences whose purpose differs considerably from the site on the main origin. For example, in a news site, the crosswords webapp could be intentionally served from <code>https://crosswords.example.com</code>, and installed and used as an independent PWA, without having to share any resources or functionality with the main website.</p>
+</li>
+</ul>
+<h3 id="the-bad">The bad <a class="w-headline-link" href="#the-bad">#</a></h3>
+<p>If you're not doing any of these things, it's likely that using a multi-origin architecture will be a disadvantage when building Progressive Web Apps.</p>
+<p>Despite this, many sites continue being structured this way for no particular reason, or for 'legacy' reasons. One example is using subdomains to arbitrarily separate parts of a site that should be part of a unified experience.</p>
+<p>The following patterns, for example, are highly discouraged:</p>
+<ul>
+<li>
+<p><strong>Site sections:</strong> Separating different sections of a site on subdomains. In news sites, it's not uncommon to see the home page at: <code>https://www.example.com</code>, while the sports section lives at <code>https://sports.example.com</code>, politics at <code>https://politics.example.com</code>, and so forth. In the case of an e-commerce site, using something like <code>https://category.example.com</code> for product categories, <code>https://product.example.com</code> for product pages, etc.</p>
+</li>
+<li>
+<p><strong>User Flow:</strong> Another approach that's discouraged is to separate different smaller parts of the site, like pages for the login or purchase flows in subdomains. For example, using <code>https://login.example.com</code>, and <code>https://checkout.example.com</code>.</p>
+</li>
+</ul>
+<div class="w-aside w-aside--note">
+<p>When building a site from scratch it's highly recommended to avoid dividing it into subdomains. For existing sites, migrating to a single origin is the best approach.</p>
+</div>
+<p>For those cases where migrating to a single origin is not possible, what follows is a list of challenges, and (where possible), workarounds that can be considered when building Progressive Web Apps.</p>
+<h2 id="challenges-and-workarounds-for-pwas-across-different-origins">Challenges and Workarounds for PWAs across different origins <a class="w-headline-link" href="#challenges-and-workarounds-for-pwas-across-different-origins">#</a></h2>
+<p>When building a website on multiple origins, providing a unified PWA experience is challenging, mostly because of the <a href="https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy" rel="noopener">same-origin policy</a>, which imposes a number of constraints. Let's look at them one at a time.</p>
+<h3 id="service-workers">Service workers <a class="w-headline-link" href="#service-workers">#</a></h3>
+<p>The origin of the service worker script URL has to be the same as the origin of the page calling <a href="https://w3c.github.io/ServiceWorker/#navigator-service-worker-register" rel="noopener">register()</a>. This means that, for example, a page at <code>https://www.example.com</code> can't call <code>register()</code> with a service worker url at <code>https://section.example.com</code>.</p>
+<p>Another consideration is that a service worker can only control pages hosted under the origin and path it belongs to. This means that, if the service worker is hosted at <code>https://www.example.com</code> it can only control URLs from that origin (according to the path defined in the <a href="https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerContainer/register#Parameters" rel="noopener">scope parameter</a>), but won't control any page in other subdomains such as, for example, those in <code>https://section.example.com</code>.</p>
+<p>In this case, the only workaround is to use multiple service workers (one per origin).</p>
+<div class="w-aside w-aside--caution">
+<p><strong>Caution</strong>:
+Registering, and having multiple active service workers consumes additional resources (memory, CPU, etc.), so use your best judgement on how many active service workers a user will likely need to navigate across the site.</p>
+</div>
+<h3 id="caching">Caching <a class="w-headline-link" href="#caching">#</a></h3>
+<p>The Cache object, indexedDB, and localStorage are also constrained to a single origin. This means it's not possible to access the caches that belong to <code>https://www.example.com</code>, from, for example: <code>https://www.section.example.com</code>.</p>
+<p>Here are some things you can do to manage caches properly in scenarios like this:</p>
+<ul>
+<li>
+<p><strong>Leverage browser caching:</strong> Using <a href="https://webkit.org/blog/8090/workers-at-your-service/" rel="noopener">traditional browser caching best practices</a> is always recommended. This technique provides the added benefit of reusing cached resources across origins, which can't be done with the service worker's cache. For best practices on how to use HTTP Cache with service workers, you can take a look at <a href="https://jakearchibald.com/2016/caching-best-practices/#the-service-worker-the-http-cache-play-well-together-dont-make-them-fight" rel="noopener">this post</a>.</p>
+</li>
+<li>
+<p><strong>Keep service worker installation lightweight:</strong> If you are maintaining multiple service workers, avoid making users pay a big installation cost every time they navigate to a new origin. In other words: only pre-cache resources that are absolutely necessary.</p>
+</li>
+</ul>
+<div class="w-aside w-aside--gotchas"><strong>Gotchas!</strong>
+<p>Once the service worker is active and running, the same-origin policy also restricts cross-origin requests made <strong><em>inside</em></strong> service workers. Fortunately this has a recommended workaround, which is to use <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS" rel="noopener">CORS</a> (as explained <a href="https://developers.google.com/web/ilt/pwa/working-with-the-fetch-api#cross-origin_requests" rel="noopener">here</a>). Using the <a href="https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Parameters" rel="noopener">no-cors mode</a> when fetching resources inside the service worker is not recommended.</p>
+</div>
+<h3 id="permissions">Permissions <a class="w-headline-link" href="#permissions">#</a></h3>
+<p>Permissions are also scoped to origins. This means that if a user granted a given permission to the origin <code>https://section.example.com</code>, it won't carry over to other origins, like <code>https://www.example.com</code>.</p>
+<p>Since there's no way to share permissions across origins, the only solution here is to ask for permission on each of subdomain where a given feature is required (e.g. location). For things like web push, you can maintain a cookie to track if the permission has been accepted by the user in another subdomain, to avoid requesting it again.</p>
+<h3 id="installation">Installation <a class="w-headline-link" href="#installation">#</a></h3>
+<p>To install a PWA, each origin must have its own manifest with a <code>start_url</code> that's <a href="https://w3c.github.io/manifest/#start_url-member" rel="noopener">relative to itself</a>. This means that a user receiving the installation prompt on a given origin (i.e: <code>https://section.example.com</code>) won't be able to install the PWA with a <code>start_url</code> on a different one (i.e: <code>https://www.example.com</code>).
+In other words, users receiving the installation prompt in a subdomain will only be able to install PWAs for the subpages, not for the main URL of the app.</p>
+<p>There's also the issue that the same user could receive multiple installation prompts when navigating the site, if each subdomain meets the <a href="https://developers.google.com/web/fundamentals/app-install-banners/#criteria" rel="noopener">installation criteria</a>, and prompts the user to install the PWA.</p>
+<p>To mitigate this problem you can make sure that the prompt is shown only on the main origin. When a user visits a subdomain that passes the installation criteria:</p>
+<ol>
+<li><a href="https://developers.google.com/web/fundamentals/app-install-banners/#listen_for_beforeinstallprompt" rel="noopener">Listen for <code>beforeinstallprompt</code> event</a>.</li>
+<li><a href="https://developers.google.com/web/fundamentals/app-install-banners/#preventing_the_mini-infobar_from_appearing" rel="noopener">Prevent the prompt from appearing</a>, calling <code>event.preventDefault()</code>.</li>
+</ol>
+<p>That way, you make sure the prompt is not shown in unintended parts of the site, while you can continue showing it, for example, in the main origin (e.g. Home page).</p>
+<h3 id="standalone-mode">Standalone Mode <a class="w-headline-link" href="#standalone-mode">#</a></h3>
+<p>While navigating in a standalone window, the browser will behave differently when the user moves outside of the scope set by the PWA's manifest. The behavior depends on each browser version and vendor. For example, the latest Chrome versions open a <a href="https://developer.chrome.com/multidevice/android/customtabs" rel="noopener">Chrome Custom Tab</a>, when a user moves out of the scope in standalone mode.</p>
+<p>In most cases, there's no solution for this, but a workaround can be applied for small parts of the experience that are hosted in subdomains (for example: login workflows):</p>
+<ol>
+<li>The new URL, <code>https://login.example.com</code>, could open inside a full screen iframe.</li>
+<li>Once the task is completed inside the iframe (for example, the login process), <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage" rel="noopener">postMessage()</a> can be used, to pass any resulting information from the iframe back to the parent page.</li>
+<li>As a final step, once the message is received by the main page, the listeners can be unregistered, and the iframe finally be removed from the DOM.</li>
+</ol>
+<div class="w-aside w-aside--caution">
+<p><strong>Caution</strong>:
+The previous technique can help mitigating the potential UI change in a small part of the site, where the user can perform an action in a subdomain and return to the main origin (like in a login flow), but won't be an efficient technique to implement for entire paths, including many pages hosted in subdomains (like entire site sections).</p>
+</div>
+<div class="w-aside w-aside--note">
+<p>In the context of <a href="https://developers.google.com/web/updates/2019/02/using-twa" rel="noopener">Trusted Web Actitivies</a>, there's a recommended way of avoiding this issue, by <a href="https://developers.google.com/web/updates/2020/01/twa-multi-origin" rel="noopener">validating all origins using Digital Asset Links</a>.</p>
+</div>
+<h3 id="conclusion">Conclusion <a class="w-headline-link" href="#conclusion">#</a></h3>
+<p>Same-origin policy imposes many restrictions for sites built on top of multiple origins that want to achieve a coherent PWA experience. For that reason, to provide the best experience to users, we strongly recommend against dividing sites into different origins.</p>
+<p>For existing sites that are already built in this way, it can be challenging to make multi-origin PWAs work correctly, but we have explored some potential workarounds. Each can come with tradeoffs, so use your judgement when deciding which approach to take on your website.</p>
+<p>When evaluating a long-term strategy or site redesign, consider migrating to a single origin, unless there's an important reason to keep the multi-origin architecture.</p>
+<p><em>With many thanks for their technical reviews and suggestions: Penny Mclachlan, Paul Covell, Dominick Ng, Alberto Medina, Pete LePage, Joe Medley, Cheney Tsai, Martin Schierle, and Andre Bandarra.</em></p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/progressive-web-apps/">Progressive Web Apps</a>
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/service-worker/">Service Worker</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>Aug 19, 2019</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/multi-origin-pwas/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>

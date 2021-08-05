@@ -1,0 +1,746 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+  
+    
+    <link rel="stylesheet" href="/css/main.css?v=09723cf0f0755">
+  
+
+  <link rel="preload" as="font" crossorigin href="/fonts/material-icons/regular.woff2">
+
+
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/regular/latin.woff2">
+<link rel="preload" as="font" crossorigin href="/fonts/google-sans/bold/latin.woff2">
+
+<meta name="theme-color" content="#fff"/>
+
+
+
+
+<title>Speed at scale: what's new in web performance?</title>
+<meta name="description" content="For Google I/O 2019, we introduced three new Web Performance initiatives that we hope will lead to better user experiences for everyone. " />
+
+<link rel="canonical" href="https://web.dev/speed-at-scale/" />
+
+<meta itemprop="name" content="Speed at scale: what's new in web performance?" />
+<meta itemprop="description" content="For Google I/O 2019, we introduced three new Web Performance initiatives that we hope will lead to better user experiences for everyone. " />
+<meta itemprop="image" content="https://web-dev.imgix.net/image/admin/3ewq4uJrMKiYvuXxkQGI.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://web.dev/speed-at-scale/" />
+<meta property="og:site_name" content="web.dev" />
+<meta property="og:title" content="Speed at scale: what's new in web performance?" />
+<meta property="og:description" content="For Google I/O 2019, we introduced three new Web Performance initiatives that we hope will lead to better user experiences for everyone. " />
+<meta property="og:image" content="https://web-dev.imgix.net/image/admin/3ewq4uJrMKiYvuXxkQGI.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<meta property="og:image:alt" content="Speedometer on a retro car" />
+<meta property="tag" content="performance" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Speed at scale: what's new in web performance?" />
+<meta name="twitter:description" content="For Google I/O 2019, we introduced three new Web Performance initiatives that we hope will lead to better user experiences for everyone. " />
+<meta name="twitter:image" content="https://web-dev.imgix.net/image/admin/3ewq4uJrMKiYvuXxkQGI.jpg?auto=format&fit=max&w=1200&fm=auto" />
+<link
+  rel="alternate"
+  href="/feed.xml"
+  type="application/atom+xml"
+  data-title="web.dev feed"
+/>
+
+<link rel="manifest" href="/manifest.webmanifest" />
+
+<link rel="shortcut icon" href="/images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+<link rel="mask-icon" color="#0054ff" href="/images/safari-pinned-tab.svg">
+
+
+
+<script>
+window.ga =
+  window.ga ||
+  function () {
+    (ga.q = ga.q || []).push(arguments);
+  };
+ga.l = +new Date();
+ga('create', 'UA-126406676-2');
+ga('set', 'transport', 'beacon');
+ga('set', 'anonymizeIp', true);
+ga('set', 'page', window.location.pathname);
+ga('set', 'dimension5', '4');
+ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+<script>
+function loadScript(url, type) {
+  const s = document.createElement('script');
+  s.src = url;
+  if (type) {
+    s.type = type;
+  }
+  if (type === 'module') {
+    s.async = false; // Preserve load order.
+    const pre = document.createElement('link');
+    pre.rel = 'modulepreload';
+    pre.href = url;
+    document.head.append(pre);
+    // We use DOMContentLoaded as the loader script is running sync, and inserting a module script here doesn't defer. This brings back normal type="module" behavior.
+    window.addEventListener('DOMContentLoaded', () => {
+      document.head.append(s);
+    });
+  } else {
+    document.head.append(s);
+  }
+}
+loadScript('/js/app.js?v=fefe6e7fefc3b', 'module');
+
+
+
+
+  loadScript('/js/content.js?v=c6c0626298962', 'module');
+
+
+  loadScript('https://www.google-analytics.com/analytics.js', null);
+
+</script>
+
+  </head>
+  <body class="unresolved">
+    
+    <web-snackbar-container></web-snackbar-container>
+
+    
+
+
+
+<web-header class="header-default" role="navigation">
+  <button data-open-drawer-button class="w-button--svg w-button--round" aria-label="Open menu">
+    
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+
+
+    <span class="w-tooltip w-tooltip--left">Open menu</span>
+  </button>
+
+  <a
+    href="/"
+    class="header-default__logo-link gc-analytics-event"
+    data-category="Site-Wide Custom Events"
+    data-label="Site logo"
+  >
+    <img class="header-default__logo" width="125" height="30" src="/images/lockup.svg" alt="web.dev" />
+  </a>
+
+  <div class="header-default__middle">
+    <div class="header-default__links">
+      <a
+        href="/learn/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Learn"
+      >
+        Learn
+      </a>
+
+      <a
+        href="/measure/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Measure"
+      >
+        Measure
+      </a>
+
+      <a
+        href="/blog/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: Blog"
+      >
+        Blog
+      </a>
+
+      <a
+        href="/about/"
+        class="header-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="Tab: About"
+      >
+        About
+      </a>
+    </div>
+    <web-search results-id="search-main-results"></web-search>
+    <web-search-results id="search-main-results"></web-search-results>
+  </div>
+
+  <web-profile-switcher-container></web-profile-switcher-container>
+</web-header>
+
+
+
+<web-navigation-drawer class="drawer-default" type="modal">
+  <nav data-drawer-container>
+    <div class="drawer-default__contents">
+      <div class="drawer-default__header">
+        <button
+          data-drawer-close-button
+          class="drawer-default__hide w-button--svg w-button--round"
+          aria-label="Close"
+        >
+          
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <svg class="icon " role="img" aria-label="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+
+
+          <span class="w-tooltip">Close</span>
+        </button>
+        <a
+          href="/"
+          class="gc-analytics-event"
+          data-category="Site-Wide Custom Events"
+          data-label="Site logo"
+        >
+          <img
+            width="125"
+            height="30"
+            class="drawer-default__logo"
+            src="/images/lockup.svg"
+            alt="web.dev"
+          />
+        </a>
+      </div>
+      <a
+        href="/learn/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Learn"
+      >
+        Learn
+      </a>
+      <a
+        href="/measure/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Measure"
+      >
+        Measure
+      </a>
+      <a
+        href="/blog/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: Blog"
+      >
+        Blog
+      </a>
+      <a
+        href="/about/"
+        class="drawer-default__link gc-analytics-event"
+        data-category="Site-Wide Custom Events"
+        data-label="SideNav: About"
+      >
+        About
+      </a>
+    </div>
+  </nav>
+</web-navigation-drawer>
+
+<main>
+  <div id="content">
+    
+      
+    
+    
+
+
+<div class="guide-landing-page">
+  
+  
+
+  
+    <img     alt="Speedometer on a retro car"     class="w-hero w-hero--cover"     decoding="auto"     height="480"               sizes="100vw"     src="https://web-dev.imgix.net/image/admin/3ewq4uJrMKiYvuXxkQGI.jpg?auto=format"     srcset="https://web-dev.imgix.net/image/admin/3ewq4uJrMKiYvuXxkQGI.jpg?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/3ewq4uJrMKiYvuXxkQGI.jpg?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/3ewq4uJrMKiYvuXxkQGI.jpg?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/3ewq4uJrMKiYvuXxkQGI.jpg?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/3ewq4uJrMKiYvuXxkQGI.jpg?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/3ewq4uJrMKiYvuXxkQGI.jpg?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/3ewq4uJrMKiYvuXxkQGI.jpg?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/3ewq4uJrMKiYvuXxkQGI.jpg?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/3ewq4uJrMKiYvuXxkQGI.jpg?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/3ewq4uJrMKiYvuXxkQGI.jpg?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/3ewq4uJrMKiYvuXxkQGI.jpg?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/3ewq4uJrMKiYvuXxkQGI.jpg?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/3ewq4uJrMKiYvuXxkQGI.jpg?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/3ewq4uJrMKiYvuXxkQGI.jpg?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/3ewq4uJrMKiYvuXxkQGI.jpg?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/3ewq4uJrMKiYvuXxkQGI.jpg?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/3ewq4uJrMKiYvuXxkQGI.jpg?auto=format&w=1600 1600w"          width="1600"   />
+  
+
+  <web-table-of-contents>
+    <h2 class="w-toc__header">
+      <a href="#speed-at-scale:-what&#39;s-new-in-web-performance" class="w-toc__header--link">
+        Speed at scale: what's new in web performance?
+      </a>
+    </h2>
+    <div class="w-toc__list">
+        <ul><li><a href="#lighthouse-now-supports-performance-budgeting">Lighthouse now supports Performance Budgeting</a></li><li><a href="#browser-level-image-and-iframe-lazy-loading-comes-to-the-web">Browser-level image and iframe lazy-loading comes to the web</a></li><li><a href="#google-fonts-now-supports-font-display-as-a-query-parameter">Google Fonts now supports font-display as a query parameter</a></li><li><a href="#watch-for-more">Watch for more</a></li></ul></div>
+  </web-table-of-contents>
+  <web-table-of-contents-button></web-table-of-contents-button>
+
+  
+  <div class="w-actions">
+    <share-action authors="@katiehempenius | @addyosmani"
+      class="gc-analytics-event w-actions__fab w-actions__fab--share"
+      data-category="web.dev"
+      data-label="share"
+      data-action="click"
+      data-icon="share"
+      tabindex="0"
+      role="button"
+    >
+      <span>Share</span>
+    </share-action>
+    <a class="w-actions__fab w-actions__fab--subscribe gc-analytics-event" data-category="web.dev" data-label="view-subscribe" data-action="click" href="/newsletter/">
+  <span>subscribe</span>
+</a>
+
+  </div>
+
+  <div class="w-layout-container--narrow w-post-content">
+    <header class="w-article-header">
+      
+        <div class="w-post-breadcrumbs">
+          <ul class="w-breadcrumbs">
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link w-breadcrumbs__link--left-justify gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, home breadcrumb"
+      data-action="click"
+      href="/"
+    >
+      Home
+    </a>
+  </li>
+
+  <svg
+    class="w-breadcrumbs__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    aria-hidden="true"
+  >
+    <path d="M0 0h24v24H0V0z" fill="none" />
+    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+  </svg>
+
+  <li class="w-breadcrumbs__crumb">
+    <a
+      class="w-breadcrumbs__link gc-analytics-event"
+      data-category="web.dev"
+      data-label="post, path breadcrumb"
+      data-action="click"
+      href=/blog
+    >
+      All articles
+    </a>
+  </li>
+</ul>
+        </div>
+      
+
+      <h1 id="speed-at-scale:-what&#39;s-new-in-web-performance" class="w-article-header__headline">Speed at scale: what's new in web performance?</h1>
+      
+        <p class="w-article-header__subhead w-mb--non">
+          Learn about three new web performance launches from I/O 2019.
+        </p>
+      
+
+      
+        <div class="w-author__published">
+          <time>May 24, 2019</time>
+          
+        </div>
+      
+      
+
+      
+        <div class="w-authors w-mt--xl w-pt--sm">
+          
+            <div class="w-author">
+  <a href="/authors/katiehempenius/"><img     alt="Katie Hempenius"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/fZo7BJGec2MNRt6cWpeh.jpg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/admin/fZo7BJGec2MNRt6cWpeh.jpg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/admin/fZo7BJGec2MNRt6cWpeh.jpg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/admin/fZo7BJGec2MNRt6cWpeh.jpg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/admin/fZo7BJGec2MNRt6cWpeh.jpg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/admin/fZo7BJGec2MNRt6cWpeh.jpg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/katiehempenius/">Katie Hempenius</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/katiehempenius"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/khempenius">GitHub</a>
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://glitch.com/@khempenius"
+          >Glitch</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://katiehempenius.com/">Blog</a>
+      </li>
+    </ul>
+  </div>
+</div>
+          
+            <div class="w-author">
+  <a href="/authors/addyosmani/"><img     alt="Addy Osmani"     class="w-author__image"     decoding="async"     height="64"          loading="lazy"     sizes="(min-width: 64px) 64px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LJyNTOzyWbowv2mrlzPS.jpeg?auto=format&fit=crop&h=64&w=64"     srcset="https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LJyNTOzyWbowv2mrlzPS.jpeg?fit=crop&h=64&w=64&auto=format&dpr=1&q=75 1x,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LJyNTOzyWbowv2mrlzPS.jpeg?fit=crop&h=64&w=64&auto=format&dpr=2&q=50 2x,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LJyNTOzyWbowv2mrlzPS.jpeg?fit=crop&h=64&w=64&auto=format&dpr=3&q=35 3x,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LJyNTOzyWbowv2mrlzPS.jpeg?fit=crop&h=64&w=64&auto=format&dpr=4&q=23 4x,     https://web-dev.imgix.net/image/1L2RBhCLSnXjCnSlevaDjy3vba73/LJyNTOzyWbowv2mrlzPS.jpeg?fit=crop&h=64&w=64&auto=format&dpr=5&q=20 5x"          width="64"   /></a>
+  <div
+    class="w-author__info"
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <cite class="w-author__name">
+      <a class="w-author__name-link" href="/authors/addyosmani/">Addy Osmani</a>
+    </cite>
+    <ul class="w-author__link-list">
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://twitter.com/addyosmani"
+          >Twitter</a
+        >
+      </li>
+      <li class="w-author__link-listitem">
+        <a class="w-author__link" href="https://github.com/addyosmani">GitHub</a>
+      </li>
+      
+      
+    </ul>
+  </div>
+</div>
+          
+        </div>
+      
+    </header>
+
+    
+
+    <p>During the <a href="https://www.youtube.com/watch?v=YJGCZCaIZkQ&amp;feature=youtu.be" rel="noopener">&quot;Speed at Scale&quot;
+talk</a> at Google
+I/O 2019, we announced three things that we hope will improve web performance
+over the coming year.</p>
+<div class="youtube">  <lite-youtube    videoid="YJGCZCaIZkQ"      >  </lite-youtube></div>
+<h2 id="lighthouse-now-supports-performance-budgeting">Lighthouse now supports Performance Budgeting <a class="w-headline-link" href="#lighthouse-now-supports-performance-budgeting">#</a></h2>
+<p><a href="https://developers.google.com/web/tools/lighthouse/audits/budgets" rel="noopener">LightWallet</a>
+is a new feature in Lighthouse that adds support for <a href="/fast#set-performance-budgets">performance
+budgets</a>. Performance budgets establish
+standards for the performance of your site. More importantly, they make it is
+easy to identify and fix performance regressions before they ship.</p>
+<figure class="w-figure">
+  <img     alt="A LightWallet report showing which assets are over the file size budget."     class="w-screenshot w-screenshot--filled"     decoding="async"     height="607"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/b1hw1bMU0dCIqS45XdfW.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/b1hw1bMU0dCIqS45XdfW.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/b1hw1bMU0dCIqS45XdfW.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/b1hw1bMU0dCIqS45XdfW.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/b1hw1bMU0dCIqS45XdfW.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/b1hw1bMU0dCIqS45XdfW.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/b1hw1bMU0dCIqS45XdfW.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/b1hw1bMU0dCIqS45XdfW.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/b1hw1bMU0dCIqS45XdfW.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/b1hw1bMU0dCIqS45XdfW.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/b1hw1bMU0dCIqS45XdfW.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/b1hw1bMU0dCIqS45XdfW.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/b1hw1bMU0dCIqS45XdfW.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/b1hw1bMU0dCIqS45XdfW.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/b1hw1bMU0dCIqS45XdfW.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/b1hw1bMU0dCIqS45XdfW.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/b1hw1bMU0dCIqS45XdfW.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/b1hw1bMU0dCIqS45XdfW.png?auto=format&w=1600 1600w"          width="800"   />
+</figure>
+<p>LightWallet is available in the newest version of the Lighthouse CLI and only
+takes a couple minutes to set up. These<a href="https://developers.google.com/web/tools/lighthouse/audits/budgets" rel="noopener">
+instructions</a>
+provide more information.</p>
+<p>Unsure what your budgets should be? Try our experimental <a href="https://bit.ly/perf-budget-calculator" rel="noopener">Performance Budget
+Calculator</a> which can generate a
+LightWallet compatible budget configuration.</p>
+<h2 id="browser-level-image-and-iframe-lazy-loading-comes-to-the-web">Browser-level image and iframe lazy-loading comes to the web <a class="w-headline-link" href="#browser-level-image-and-iframe-lazy-loading-comes-to-the-web">#</a></h2>
+<p>Web pages often contain a large number of images, which contribute to
+data-usage, <a href="https://httparchive.org/reports/state-of-images" rel="noopener">page-bloat</a> and
+slower page loads. Many of these images are offscreen, requiring a user to
+scroll in order to view them.</p>
+<p>Until now, you've needed to solve lazy-loading images using a JavaScript
+library but that may soon change. This summer, Chrome will be launching support
+for the <a href="https://addyosmani.com/blog/lazy-loading/" rel="noopener">loading</a> attribute which
+brings standardized <code>&lt;img&gt;</code> and <code>&lt;iframe&gt;</code> lazy-loading to the web.</p>
+<figure class="w-figure">
+<img     alt="Browser-level lazy-loading highlighting offscreen content being loaded on-demand"          decoding="async"     height="450"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/5W51sHaRUB0NEuN0MaFh.png?auto=format"     srcset="https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/5W51sHaRUB0NEuN0MaFh.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/5W51sHaRUB0NEuN0MaFh.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/5W51sHaRUB0NEuN0MaFh.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/5W51sHaRUB0NEuN0MaFh.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/5W51sHaRUB0NEuN0MaFh.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/5W51sHaRUB0NEuN0MaFh.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/5W51sHaRUB0NEuN0MaFh.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/5W51sHaRUB0NEuN0MaFh.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/5W51sHaRUB0NEuN0MaFh.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/5W51sHaRUB0NEuN0MaFh.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/5W51sHaRUB0NEuN0MaFh.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/5W51sHaRUB0NEuN0MaFh.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/5W51sHaRUB0NEuN0MaFh.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/5W51sHaRUB0NEuN0MaFh.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/5W51sHaRUB0NEuN0MaFh.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/5W51sHaRUB0NEuN0MaFh.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/tcFciHGuF3MxnTr1y5ue01OGLBn2/5W51sHaRUB0NEuN0MaFh.png?auto=format&w=1600 1600w"          width="800"   />
+</figure>
+<p>The <code>loading</code> attribute allows a browser to defer loading offscreen images and
+iframes until users scroll near them. <code>loading</code> supports three values:</p>
+<ul>
+<li><code>lazy</code>: is a good candidate for lazy loading.</li>
+<li><code>eager</code>: is not a good candidate for lazy loading. Load right away.</li>
+<li><code>auto</code>: browser will determine whether or not to lazily load.</li>
+</ul>
+<web-copy-code><pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>img</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>io2019.jpg<span class="token punctuation">"</span></span> <span class="token attr-name">loading</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>lazy<span class="token punctuation">"</span></span> <span class="token attr-name">alt</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>...<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>iframe</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>video-player.html<span class="token punctuation">"</span></span> <span class="token attr-name">loading</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>lazy<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>iframe</span><span class="token punctuation">></span></span></code></pre>
+</web-copy-code><p>The exact heuristics for &quot;when the user scrolls near&quot; is left up to the
+browser. In general, our hope is that browsers will start fetching deferred
+images and iframe content a little before it comes into the viewport.</p>
+<p>The <code>loading</code> attribute is implemented behind flags in Chrome Canary. You can
+try out <a href="https://mathiasbynens.be/demo/img-loading-lazy" rel="noopener">this demo</a> in Chrome
+75+ with the <code>about://flags/#enable-lazy-image-loading</code> and
+<code>about://flags/#enable-lazy-frame-loading</code> flags turned on.</p>
+<p>A <a href="https://addyosmani.com/blog/lazy-loading/" rel="noopener">write-up</a> on the
+lazy-loading feature is available with more details.</p>
+<h2 id="google-fonts-now-supports-font-display-as-a-query-parameter">Google Fonts now supports font-display as a query parameter <a class="w-headline-link" href="#google-fonts-now-supports-font-display-as-a-query-parameter">#</a></h2>
+<p>We announced support for <a href="https://font-display.glitch.me" rel="noopener">font-display</a> is now available in production for all <a href="https://fonts.google.com" rel="noopener">Google Fonts</a> via the <a href="https://developers.google.com/fonts/docs/getting_started#use_font-display" rel="noopener">display query-string parameter</a>:</p>
+<web-copy-code><pre class="language-html"><code class="language-html">https://fonts.googleapis.com/css?family=Lobster&amp;display=swap</code></pre>
+</web-copy-code><p>The <code>font-display</code> descriptor lets you decide how your web fonts will render or
+fallback, depending on how long it takes for them to load. It supports a number
+of values including <code>auto</code>, <code>block</code>, <code>swap</code>, <code>fallback</code> and <code>optional</code>.</p>
+<p>Previously, the only way to specify <code>font-display</code> for web fonts from Google Fonts was to self-host them but this change removes the need to do so.</p>
+<p>The <a href="https://developers.google.com/fonts/docs/getting_started#use_font-display" rel="noopener">Google Fonts
+documentation</a>
+has been updated to include <code>font-display</code> in the default code embeds (as seem
+below). We hope this will encourage more developers to try out this exciting
+addition.</p>
+<figure class="w-figure">
+  <img     alt="Google Fonts embed code with font-display included in the URL as a query-parameter"     class="w-screenshot"     decoding="async"     height="528"          loading="lazy"     sizes="(min-width: 800px) 800px, calc(100vw - 48px)"     src="https://web-dev.imgix.net/image/admin/aJqdPp1xobaYRDNx4aJd.png?auto=format"     srcset="https://web-dev.imgix.net/image/admin/aJqdPp1xobaYRDNx4aJd.png?auto=format&w=200 200w,     https://web-dev.imgix.net/image/admin/aJqdPp1xobaYRDNx4aJd.png?auto=format&w=228 228w,     https://web-dev.imgix.net/image/admin/aJqdPp1xobaYRDNx4aJd.png?auto=format&w=260 260w,     https://web-dev.imgix.net/image/admin/aJqdPp1xobaYRDNx4aJd.png?auto=format&w=296 296w,     https://web-dev.imgix.net/image/admin/aJqdPp1xobaYRDNx4aJd.png?auto=format&w=338 338w,     https://web-dev.imgix.net/image/admin/aJqdPp1xobaYRDNx4aJd.png?auto=format&w=385 385w,     https://web-dev.imgix.net/image/admin/aJqdPp1xobaYRDNx4aJd.png?auto=format&w=439 439w,     https://web-dev.imgix.net/image/admin/aJqdPp1xobaYRDNx4aJd.png?auto=format&w=500 500w,     https://web-dev.imgix.net/image/admin/aJqdPp1xobaYRDNx4aJd.png?auto=format&w=571 571w,     https://web-dev.imgix.net/image/admin/aJqdPp1xobaYRDNx4aJd.png?auto=format&w=650 650w,     https://web-dev.imgix.net/image/admin/aJqdPp1xobaYRDNx4aJd.png?auto=format&w=741 741w,     https://web-dev.imgix.net/image/admin/aJqdPp1xobaYRDNx4aJd.png?auto=format&w=845 845w,     https://web-dev.imgix.net/image/admin/aJqdPp1xobaYRDNx4aJd.png?auto=format&w=964 964w,     https://web-dev.imgix.net/image/admin/aJqdPp1xobaYRDNx4aJd.png?auto=format&w=1098 1098w,     https://web-dev.imgix.net/image/admin/aJqdPp1xobaYRDNx4aJd.png?auto=format&w=1252 1252w,     https://web-dev.imgix.net/image/admin/aJqdPp1xobaYRDNx4aJd.png?auto=format&w=1428 1428w,     https://web-dev.imgix.net/image/admin/aJqdPp1xobaYRDNx4aJd.png?auto=format&w=1600 1600w"          width="800"   />
+</figure>
+<p>Here's a <a href="https://glitch.com/~truth-bookcase" rel="noopener">demo</a> on Glitch of using display
+with multiple font families. Try it out with <a href="https://developers.google.com/web/tools/chrome-devtools/network/#throttle" rel="noopener">DevTools network
+emulation</a>
+to see the impact of <code>font-display: swap</code>.</p>
+<h2 id="watch-for-more">Watch for more <a class="w-headline-link" href="#watch-for-more">#</a></h2>
+<p>Our talk also covered several production case studies of using advanced
+performance patterns to improve user-experience. These included sites
+leveraging image CDNs, <a href="/fast/reduce-network-payloads-using-text-compression/codelab-text-compression-brotli">Brotli
+compression</a>,
+smart JavaScript serving and prefetching to speed up their pages. <a href="https://www.youtube.com/watch?v=YJGCZCaIZkQ&amp;feature=youtu.be" rel="noopener">Watch the
+talk</a> to learn
+more :)</p>
+
+
+    
+
+    
+  <div class="w-chips ">
+    
+      
+    
+      
+    
+      
+        
+        <a class="w-chip" href="/tags/performance/">Performance</a>
+      
+    
+  </div>
+
+
+    <div class="w-post-github-link w-mt--l w-mb--l">
+      <span class="w-mr--sm">
+        
+        Last updated: <time>May 24, 2019</time>
+        
+      </span>
+      <a
+        href="https://github.com/GoogleChrome/web.dev/blob/master/src/site/content/en/blog/speed-at-scale/index.md"
+      >
+        Improve article
+      </a>
+       
+    </div>
+
+    
+    <web-feedback additional-questions=""></web-feedback>
+  </div>
+
+  
+    
+    <nav class="w-article-navigation">
+  <a
+    class="w-article-navigation__link w-article-navigation__link--back
+      w-article-navigation__link--single gc-analytics-event"
+    data-category="web.dev"
+    data-label="navigation, go back"
+    data-action="click"
+    href="/blog"
+  >
+    Return to all articles
+  </a>
+</nav>
+  
+</div>
+
+  </div>
+</main>
+<footer class="w-footer">
+  <nav class="w-footer__linkboxes">
+    <ul class="w-footer__linkboxes-list">
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Contribute</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/GoogleChrome/web.dev/issues/new?assignees=&labels=bug&template=bug_report.md&title="
+              class="w-footer__linkbox-link" data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              File a bug
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://github.com/googlechrome/web.dev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              View source
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Related content</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://blog.chromium.org/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Chrome updates
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              Web Fundamentals
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://developers.google.com/web/showcase/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 3)">
+              Case studies
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://devwebfeed.appspot.com/" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 4)">
+              DevWeb Content Firehose
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/podcasts/" class="w-footer__linkbox-link"
+              data-category="Podcasts" data-label="Footer Link (index 5)">
+              Podcasts
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="/shows/" class="w-footer__linkbox-link"
+              data-category="Shows" data-label="Footer Link (index 6)">
+              Shows
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="w-footer__linkbox">
+        <h3 class="w-footer__linkbox-heading">Connect</h3>
+        <ul class="w-footer__linkbox-list">
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.twitter.com/@ChromiumDev" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 1)">
+              Twitter
+            </a>
+          </li>
+          <li class="w-footer__linkbox-item">
+            <a href="https://www.youtube.com/user/ChromeDevelopers" class="w-footer__linkbox-link"
+              data-category="Site-Wide Custom Events" data-label="Footer Link (index 2)">
+              YouTube
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="w-footer__utility">
+    <nav class="w-footer__utility-nav">
+      <a href="https://developers.google.com/" class="w-footer__utility-logo-link"
+        data-category="Site-Wide Custom Events" data-label="Footer Google Developers Link">
+        <img loading="lazy" width="185" height="33" class="w-footer__utility-logo" src="/images/lockup-color.png"
+          alt="Google Developers" />
+      </a>
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developer.chrome.com/home"
+            data-category="Site-Wide Custom Events" data-label="Footer Chrome Link">
+            Chrome
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://firebase.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Firebase Link">
+            Firebase
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://cloud.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Google Cloud Platform Link">
+            Google Cloud Platform
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://developers.google.com/products"
+            data-category="Site-Wide Custom Events" data-label="Footer All products Link">
+            All products
+          </a>
+        </li>
+      </ul>
+      <web-language-select current="en"></web-language-select>
+    </nav>
+    <nav class="w-footer__utility-nav">
+      <ul class="w-footer__utility-list">
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="https://policies.google.com/" data-category="Site-Wide Custom Events"
+            data-label="Footer Terms and Privacy link">
+            Terms &amp; Privacy
+          </a>
+        </li>
+        <li class="w-footer__utility-item">
+          <a class="w-footer__utility-link" href="/community-guidelines/" data-category="Site-Wide Custom Events"
+            data-label="Footer Community Guidelines link">
+            Community Guidelines
+          </a>
+        </li>
+      </ul>
+      <div class="w-footer__license">
+        <p>
+          Except as otherwise noted, the content of this page is licensed
+          under the
+          <a href="https://creativecommons.org/licenses/by/4.0/">
+          Creative Commons Attribution 4.0 License</a>,
+          and code samples are licensed under the
+          <a href="https://www.apache.org/licenses/LICENSE-2.0">
+          Apache 2.0 License</a>. For details, see the
+          <a href="https://developers.google.com/site-policies">
+          Google Developers Site Policies</a>.
+        </p>
+      </div>
+    </nav>
+  </div>
+</footer>
+
+  </body>
+</html>
