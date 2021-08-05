@@ -1,70 +1,148 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
-<head>
-  <meta charset="utf-8" />
-  <meta name="generator" content="pandoc" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>api-middlewares</title>
-  <link rel="stylesheet" href="https://raw.githubusercontent.com/bgoonz/docs-collection/master/nextjs.css">
-</head>
-<body>
-<h1 id="api-middlewares">API Middlewares</h1>
-<details open>
-<summary><b>Examples</b></summary>
-<ul>
-<li>
-<a href="https://github.com/vercel/next.js/tree/canary/examples/api-routes-middleware">API Routes with middleware</a>
-</li>
-<li>
-<a href="https://github.com/vercel/next.js/tree/canary/examples/api-routes-cors">API Routes with CORS</a>
-</li>
-</ul>
-</details>
-<p>API routes provide built in middlewares which parse the incoming request (<code>req</code>). Those middlewares are:</p>
-<ul>
-<li><code>req.cookies</code> - An object containing the cookies sent by the request. Defaults to <code>{}</code></li>
-<li><code>req.query</code> - An object containing the <a href="https://en.wikipedia.org/wiki/Query_string">query string</a>. Defaults to <code>{}</code></li>
-<li><code>req.body</code> - An object containing the body parsed by <code>content-type</code>, or <code>null</code> if no body was sent</li>
-</ul>
-<h2 id="custom-config">Custom config</h2>
-<p>Every API route can export a <code>config</code> object to change the default configs, which are the following:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="im">export</span> <span class="kw">const</span> config <span class="op">=</span> <span class="op">{</span></a>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>api-middlewares</title>
+    <link
+      rel="stylesheet"
+      href="https://raw.githubusercontent.com/bgoonz/docs-collection/master/nextjs.css"
+    />
+  </head>
+  <body>
+    <h1 id="api-middlewares">API Middlewares</h1>
+    <details open>
+      <summary><b>Examples</b></summary>
+      <ul>
+        <li>
+          <a
+            href="https://github.com/vercel/next.js/tree/canary/examples/api-routes-middleware"
+            >API Routes with middleware</a
+          >
+        </li>
+        <li>
+          <a
+            href="https://github.com/vercel/next.js/tree/canary/examples/api-routes-cors"
+            >API Routes with CORS</a
+          >
+        </li>
+      </ul>
+    </details>
+    <p>
+      API routes provide built in middlewares which parse the incoming request
+      (<code>req</code>). Those middlewares are:
+    </p>
+    <ul>
+      <li>
+        <code>req.cookies</code> - An object containing the cookies sent by the
+        request. Defaults to <code>{}</code>
+      </li>
+      <li>
+        <code>req.query</code> - An object containing the
+        <a href="https://en.wikipedia.org/wiki/Query_string">query string</a>.
+        Defaults to <code>{}</code>
+      </li>
+      <li>
+        <code>req.body</code> - An object containing the body parsed by
+        <code>content-type</code>, or <code>null</code> if no body was sent
+      </li>
+    </ul>
+    <h2 id="custom-config">Custom config</h2>
+    <p>
+      Every API route can export a <code>config</code> object to change the
+      default configs, which are the following:
+    </p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="im">export</span> <span class="kw">const</span> config <span class="op">=</span> <span class="op">{</span></a>
 <a class="sourceLine" id="cb1-2" title="2">  <span class="dt">api</span><span class="op">:</span> <span class="op">{</span></a>
 <a class="sourceLine" id="cb1-3" title="3">    <span class="dt">bodyParser</span><span class="op">:</span> <span class="op">{</span></a>
 <a class="sourceLine" id="cb1-4" title="4">      <span class="dt">sizeLimit</span><span class="op">:</span> <span class="st">&quot;1mb&quot;</span><span class="op">,</span></a>
 <a class="sourceLine" id="cb1-5" title="5">    <span class="op">},</span></a>
 <a class="sourceLine" id="cb1-6" title="6">  <span class="op">},</span></a>
-<a class="sourceLine" id="cb1-7" title="7"><span class="op">};</span></a></code></pre></div>
-<p>The <code>api</code> object includes all configs available for API routes.</p>
-<p><code>bodyParser</code> Enables body parsing, you can disable it if you want to consume it as a <code>Stream</code>:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="im">export</span> <span class="kw">const</span> config <span class="op">=</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-7" title="7"><span class="op">};</span></a></code></pre>
+    </div>
+    <p>
+      The <code>api</code> object includes all configs available for API routes.
+    </p>
+    <p>
+      <code>bodyParser</code> Enables body parsing, you can disable it if you
+      want to consume it as a <code>Stream</code>:
+    </p>
+    <div class="sourceCode" id="cb2">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="im">export</span> <span class="kw">const</span> config <span class="op">=</span> <span class="op">{</span></a>
 <a class="sourceLine" id="cb2-2" title="2">  <span class="dt">api</span><span class="op">:</span> <span class="op">{</span></a>
 <a class="sourceLine" id="cb2-3" title="3">    <span class="dt">bodyParser</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></a>
 <a class="sourceLine" id="cb2-4" title="4">  <span class="op">},</span></a>
-<a class="sourceLine" id="cb2-5" title="5"><span class="op">};</span></a></code></pre></div>
-<p><code>bodyParser.sizeLimit</code> is the maximum size allowed for the parsed body, in any format supported by <a href="https://github.com/visionmedia/bytes.js">bytes</a>, like so:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb3-1" title="1"><span class="im">export</span> <span class="kw">const</span> config <span class="op">=</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb2-5" title="5"><span class="op">};</span></a></code></pre>
+    </div>
+    <p>
+      <code>bodyParser.sizeLimit</code> is the maximum size allowed for the
+      parsed body, in any format supported by
+      <a href="https://github.com/visionmedia/bytes.js">bytes</a>, like so:
+    </p>
+    <div class="sourceCode" id="cb3">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb3-1" title="1"><span class="im">export</span> <span class="kw">const</span> config <span class="op">=</span> <span class="op">{</span></a>
 <a class="sourceLine" id="cb3-2" title="2">  <span class="dt">api</span><span class="op">:</span> <span class="op">{</span></a>
 <a class="sourceLine" id="cb3-3" title="3">    <span class="dt">bodyParser</span><span class="op">:</span> <span class="op">{</span></a>
 <a class="sourceLine" id="cb3-4" title="4">      <span class="dt">sizeLimit</span><span class="op">:</span> <span class="st">&quot;500kb&quot;</span><span class="op">,</span></a>
 <a class="sourceLine" id="cb3-5" title="5">    <span class="op">},</span></a>
 <a class="sourceLine" id="cb3-6" title="6">  <span class="op">},</span></a>
-<a class="sourceLine" id="cb3-7" title="7"><span class="op">};</span></a></code></pre></div>
-<p><code>externalResolver</code> is an explicit flag that tells the server that this route is being handled by an external resolver like <em>express</em> or <em>connect</em>. Enabling this option disables warnings for unresolved requests.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb4-1" title="1"><span class="im">export</span> <span class="kw">const</span> config <span class="op">=</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb3-7" title="7"><span class="op">};</span></a></code></pre>
+    </div>
+    <p>
+      <code>externalResolver</code> is an explicit flag that tells the server
+      that this route is being handled by an external resolver like
+      <em>express</em> or <em>connect</em>. Enabling this option disables
+      warnings for unresolved requests.
+    </p>
+    <div class="sourceCode" id="cb4">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb4-1" title="1"><span class="im">export</span> <span class="kw">const</span> config <span class="op">=</span> <span class="op">{</span></a>
 <a class="sourceLine" id="cb4-2" title="2">  <span class="dt">api</span><span class="op">:</span> <span class="op">{</span></a>
 <a class="sourceLine" id="cb4-3" title="3">    <span class="dt">externalResolver</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></a>
 <a class="sourceLine" id="cb4-4" title="4">  <span class="op">},</span></a>
-<a class="sourceLine" id="cb4-5" title="5"><span class="op">};</span></a></code></pre></div>
-<h2 id="connectexpress-middleware-support">Connect/Express middleware support</h2>
-<p>You can also use <a href="https://github.com/senchalabs/connect">Connect</a> compatible middleware.</p>
-<p>For example, <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS">configuring CORS</a> for your API endpoint can be done leveraging the <a href="https://www.npmjs.com/package/cors">cors</a> package.</p>
-<p>First, install <code>cors</code>:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" title="1"><span class="ex">npm</span> i cors</a>
+<a class="sourceLine" id="cb4-5" title="5"><span class="op">};</span></a></code></pre>
+    </div>
+    <h2 id="connectexpress-middleware-support">
+      Connect/Express middleware support
+    </h2>
+    <p>
+      You can also use
+      <a href="https://github.com/senchalabs/connect">Connect</a> compatible
+      middleware.
+    </p>
+    <p>
+      For example,
+      <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS"
+        >configuring CORS</a
+      >
+      for your API endpoint can be done leveraging the
+      <a href="https://www.npmjs.com/package/cors">cors</a> package.
+    </p>
+    <p>First, install <code>cors</code>:</p>
+    <div class="sourceCode" id="cb5">
+      <pre
+        class="sourceCode bash"
+      ><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" title="1"><span class="ex">npm</span> i cors</a>
 <a class="sourceLine" id="cb5-2" title="2"><span class="co"># or</span></a>
-<a class="sourceLine" id="cb5-3" title="3"><span class="ex">yarn</span> add cors</a></code></pre></div>
-<p>Now, let’s add <code>cors</code> to the API route:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb6-1" title="1"><span class="im">import</span> Cors <span class="im">from</span> <span class="st">&quot;cors&quot;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="ex">yarn</span> add cors</a></code></pre>
+    </div>
+    <p>Now, let’s add <code>cors</code> to the API route:</p>
+    <div class="sourceCode" id="cb6">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb6-1" title="1"><span class="im">import</span> Cors <span class="im">from</span> <span class="st">&quot;cors&quot;</span><span class="op">;</span></a>
 <a class="sourceLine" id="cb6-2" title="2"></a>
 <a class="sourceLine" id="cb6-3" title="3"><span class="co">// Initializing the cors middleware</span></a>
 <a class="sourceLine" id="cb6-4" title="4"><span class="kw">const</span> cors <span class="op">=</span> <span class="at">Cors</span>(<span class="op">{</span></a>
@@ -93,13 +171,30 @@
 <a class="sourceLine" id="cb6-27" title="27">  <span class="va">res</span>.<span class="at">json</span>(<span class="op">{</span> <span class="dt">message</span><span class="op">:</span> <span class="st">&quot;Hello Everyone!&quot;</span> <span class="op">}</span>)<span class="op">;</span></a>
 <a class="sourceLine" id="cb6-28" title="28"><span class="op">}</span></a>
 <a class="sourceLine" id="cb6-29" title="29"></a>
-<a class="sourceLine" id="cb6-30" title="30"><span class="im">export</span> <span class="im">default</span> handler<span class="op">;</span></a></code></pre></div>
-<blockquote>
-<p>Go to the <a href="https://github.com/vercel/next.js/tree/canary/examples/api-routes-cors">API Routes with CORS</a> example to see the finished app</p>
-</blockquote>
-<h2 id="extending-the-reqres-objects-with-typescript">Extending the <code>req</code>/<code>res</code> objects with TypeScript</h2>
-<p>For better type-safety, it is not recommended to extend the <code>req</code> and <code>res</code> objects. Instead, use pure functions to work with them:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode ts"><code class="sourceCode typescript"><a class="sourceLine" id="cb7-1" title="1"><span class="co">// utils/cookies.ts</span></a>
+<a class="sourceLine" id="cb6-30" title="30"><span class="im">export</span> <span class="im">default</span> handler<span class="op">;</span></a></code></pre>
+    </div>
+    <blockquote>
+      <p>
+        Go to the
+        <a
+          href="https://github.com/vercel/next.js/tree/canary/examples/api-routes-cors"
+          >API Routes with CORS</a
+        >
+        example to see the finished app
+      </p>
+    </blockquote>
+    <h2 id="extending-the-reqres-objects-with-typescript">
+      Extending the <code>req</code>/<code>res</code> objects with TypeScript
+    </h2>
+    <p>
+      For better type-safety, it is not recommended to extend the
+      <code>req</code> and <code>res</code> objects. Instead, use pure functions
+      to work with them:
+    </p>
+    <div class="sourceCode" id="cb7">
+      <pre
+        class="sourceCode ts"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb7-1" title="1"><span class="co">// utils/cookies.ts</span></a>
 <a class="sourceLine" id="cb7-2" title="2"></a>
 <a class="sourceLine" id="cb7-3" title="3"><span class="im">import</span> <span class="op">{</span> serialize<span class="op">,</span> CookieSerializeOptions <span class="op">}</span> <span class="im">from</span> <span class="st">&quot;cookie&quot;</span><span class="op">;</span></a>
 <a class="sourceLine" id="cb7-4" title="4"><span class="im">import</span> <span class="op">{</span> NextApiResponse <span class="op">}</span> <span class="im">from</span> <span class="st">&quot;next&quot;</span><span class="op">;</span></a>
@@ -137,9 +232,16 @@
 <a class="sourceLine" id="cb7-36" title="36">  <span class="va">res</span><span class="op">.</span><span class="fu">end</span>(<span class="va">res</span><span class="op">.</span><span class="fu">getHeader</span>(<span class="st">&quot;Set-Cookie&quot;</span>))<span class="op">;</span></a>
 <a class="sourceLine" id="cb7-37" title="37"><span class="op">};</span></a>
 <a class="sourceLine" id="cb7-38" title="38"></a>
-<a class="sourceLine" id="cb7-39" title="39"><span class="im">export</span> <span class="im">default</span> handler<span class="op">;</span></a></code></pre></div>
-<p>If you can’t avoid these objects from being extended, you have to create your own type to include the extra properties:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode ts"><code class="sourceCode typescript"><a class="sourceLine" id="cb8-1" title="1"><span class="co">// pages/api/foo.ts</span></a>
+<a class="sourceLine" id="cb7-39" title="39"><span class="im">export</span> <span class="im">default</span> handler<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      If you can’t avoid these objects from being extended, you have to create
+      your own type to include the extra properties:
+    </p>
+    <div class="sourceCode" id="cb8">
+      <pre
+        class="sourceCode ts"
+      ><code class="sourceCode typescript"><a class="sourceLine" id="cb8-1" title="1"><span class="co">// pages/api/foo.ts</span></a>
 <a class="sourceLine" id="cb8-2" title="2"></a>
 <a class="sourceLine" id="cb8-3" title="3"><span class="im">import</span> <span class="op">{</span> NextApiRequest<span class="op">,</span> NextApiResponse <span class="op">}</span> <span class="im">from</span> <span class="st">&quot;next&quot;</span><span class="op">;</span></a>
 <a class="sourceLine" id="cb8-4" title="4"><span class="im">import</span> <span class="op">{</span> withFoo <span class="op">}</span> <span class="im">from</span> <span class="st">&quot;external-lib-foo&quot;</span><span class="op">;</span></a>
@@ -153,7 +255,11 @@
 <a class="sourceLine" id="cb8-12" title="12">  <span class="va">res</span><span class="op">.</span><span class="fu">end</span>(<span class="st">&quot;ok&quot;</span>)<span class="op">;</span></a>
 <a class="sourceLine" id="cb8-13" title="13"><span class="op">};</span></a>
 <a class="sourceLine" id="cb8-14" title="14"></a>
-<a class="sourceLine" id="cb8-15" title="15"><span class="im">export</span> <span class="im">default</span> <span class="fu">withFoo</span>(handler)<span class="op">;</span></a></code></pre></div>
-<p>Keep in mind this is not safe since the code will still compile even if you remove <code>withFoo()</code> from the export.</p>
-</body>
+<a class="sourceLine" id="cb8-15" title="15"><span class="im">export</span> <span class="im">default</span> <span class="fu">withFoo</span>(handler)<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      Keep in mind this is not safe since the code will still compile even if
+      you remove <code>withFoo()</code> from the export.
+    </p>
+  </body>
 </html>

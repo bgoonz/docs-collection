@@ -1,17 +1,37 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
-<head>
-  <meta charset="utf-8" />
-  <meta name="generator" content="pandoc" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>font-optimization</title>
-  <link rel="stylesheet" href="https://raw.githubusercontent.com/bgoonz/docs-collection/master/nextjs.css">
-</head>
-<body>
-<h1 id="font-optimization">Font Optimization</h1>
-<p>Since version <strong>10.2</strong>, Next.js has built-in web font optimization.</p>
-<p>By default, Next.js will automatically inline font CSS at build time, eliminating an extra round trip to fetch font declarations. This results in improvements to <a href="https://web.dev/fcp/">First Contentful Paint (FCP)</a> and <a href="https://vercel.com/blog/core-web-vitals#largest-contentful-paint">Largest Contentful Paint (LCP)</a>. For example:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="co">// Before</span></a>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>font-optimization</title>
+    <link
+      rel="stylesheet"
+      href="https://raw.githubusercontent.com/bgoonz/docs-collection/master/nextjs.css"
+    />
+  </head>
+  <body>
+    <h1 id="font-optimization">Font Optimization</h1>
+    <p>
+      Since version <strong>10.2</strong>, Next.js has built-in web font
+      optimization.
+    </p>
+    <p>
+      By default, Next.js will automatically inline font CSS at build time,
+      eliminating an extra round trip to fetch font declarations. This results
+      in improvements to
+      <a href="https://web.dev/fcp/">First Contentful Paint (FCP)</a> and
+      <a href="https://vercel.com/blog/core-web-vitals#largest-contentful-paint"
+        >Largest Contentful Paint (LCP)</a
+      >. For example:
+    </p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="co">// Before</span></a>
 <a class="sourceLine" id="cb1-2" title="2"><span class="op">&lt;</span>link</a>
 <a class="sourceLine" id="cb1-3" title="3">  href<span class="op">=</span><span class="st">&quot;https://fonts.googleapis.com/css2?family=Inter&quot;</span></a>
 <a class="sourceLine" id="cb1-4" title="4">  rel<span class="op">=</span><span class="st">&quot;stylesheet&quot;</span></a>
@@ -20,10 +40,18 @@
 <a class="sourceLine" id="cb1-7" title="7"><span class="co">// After</span></a>
 <a class="sourceLine" id="cb1-8" title="8"><span class="op">&lt;</span>style data<span class="op">-</span>href<span class="op">=</span><span class="st">&quot;https://fonts.googleapis.com/css2?family=Inter&quot;</span><span class="op">&gt;</span></a>
 <a class="sourceLine" id="cb1-9" title="9">  @font<span class="op">-</span>face<span class="op">{</span>font<span class="op">-</span><span class="dt">family</span><span class="op">:</span><span class="st">&#39;Inter&#39;</span><span class="op">;</span>font<span class="op">-</span><span class="dt">style</span><span class="op">:</span><span class="va">normal</span>...</a>
-<a class="sourceLine" id="cb1-10" title="10">&lt;/style<span class="op">&gt;</span></a></code></pre></div>
-<h2 id="usage">Usage</h2>
-<p>To add a web font to your Next.js application, override <code>next/head</code>. For example, you can add a font to a specific page:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="co">// pages/index.js</span></a>
+<a class="sourceLine" id="cb1-10" title="10">&lt;/style<span class="op">&gt;</span></a></code></pre>
+    </div>
+    <h2 id="usage">Usage</h2>
+    <p>
+      To add a web font to your Next.js application, override
+      <code>next/head</code>. For example, you can add a font to a specific
+      page:
+    </p>
+    <div class="sourceCode" id="cb2">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="co">// pages/index.js</span></a>
 <a class="sourceLine" id="cb2-2" title="2"></a>
 <a class="sourceLine" id="cb2-3" title="3"><span class="im">import</span> Head <span class="im">from</span> <span class="st">&quot;next/head&quot;</span><span class="op">;</span></a>
 <a class="sourceLine" id="cb2-4" title="4"></a>
@@ -39,9 +67,18 @@
 <a class="sourceLine" id="cb2-14" title="14">      <span class="op">&lt;</span>p<span class="op">&gt;</span>Hello world<span class="op">!</span>&lt;/p<span class="op">&gt;</span></a>
 <a class="sourceLine" id="cb2-15" title="15">    &lt;/div<span class="op">&gt;</span></a>
 <a class="sourceLine" id="cb2-16" title="16">  )<span class="op">;</span></a>
-<a class="sourceLine" id="cb2-17" title="17"><span class="op">}</span></a></code></pre></div>
-<p>or to your entire application with a <a href="/docs/advanced-features/custom-document.md">Custom <code>Document</code></a>.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb3-1" title="1"><span class="co">// pages/_document.js</span></a>
+<a class="sourceLine" id="cb2-17" title="17"><span class="op">}</span></a></code></pre>
+    </div>
+    <p>
+      or to your entire application with a
+      <a href="/docs/advanced-features/custom-document.md"
+        >Custom <code>Document</code></a
+      >.
+    </p>
+    <div class="sourceCode" id="cb3">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb3-1" title="1"><span class="co">// pages/_document.js</span></a>
 <a class="sourceLine" id="cb3-2" title="2"></a>
 <a class="sourceLine" id="cb3-3" title="3"><span class="im">import</span> Document<span class="op">,</span> <span class="op">{</span> Html<span class="op">,</span> Head<span class="op">,</span> Main<span class="op">,</span> NextScript <span class="op">}</span> <span class="im">from</span> <span class="st">&quot;next/document&quot;</span><span class="op">;</span></a>
 <a class="sourceLine" id="cb3-4" title="4"></a>
@@ -64,19 +101,40 @@
 <a class="sourceLine" id="cb3-21" title="21">  <span class="op">}</span></a>
 <a class="sourceLine" id="cb3-22" title="22"><span class="op">}</span></a>
 <a class="sourceLine" id="cb3-23" title="23"></a>
-<a class="sourceLine" id="cb3-24" title="24"><span class="im">export</span> <span class="im">default</span> MyDocument<span class="op">;</span></a></code></pre></div>
-<p>Automatic Webfont Optimization currently supports Google Fonts and Typekit with support for other font providers coming soon. We’re also planning to add control over <a href="https://github.com/vercel/next.js/issues/21555">loading strategies</a> and <code>font-display</code> values.</p>
-<h2 id="disabling-optimization">Disabling Optimization</h2>
-<p>If you do not want Next.js to optimize your fonts, you can opt-out.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb4-1" title="1"><span class="co">// next.config.js</span></a>
+<a class="sourceLine" id="cb3-24" title="24"><span class="im">export</span> <span class="im">default</span> MyDocument<span class="op">;</span></a></code></pre>
+    </div>
+    <p>
+      Automatic Webfont Optimization currently supports Google Fonts and Typekit
+      with support for other font providers coming soon. We’re also planning to
+      add control over <a href="https://github.com/vercel/next.js/issues/21555"
+        >loading strategies</a
+      > and <code>font-display</code> values.
+    </p>
+    <h2 id="disabling-optimization">Disabling Optimization</h2>
+    <p>If you do not want Next.js to optimize your fonts, you can opt-out.</p>
+    <div class="sourceCode" id="cb4">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb4-1" title="1"><span class="co">// next.config.js</span></a>
 <a class="sourceLine" id="cb4-2" title="2"></a>
 <a class="sourceLine" id="cb4-3" title="3"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> <span class="op">{</span></a>
 <a class="sourceLine" id="cb4-4" title="4">  <span class="dt">optimizeFonts</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></a>
-<a class="sourceLine" id="cb4-5" title="5"><span class="op">};</span></a></code></pre></div>
-<h2 id="related">Related</h2>
-<p>For more information on what to do next, we recommend the following sections:</p>
-<div class="card">
-<p><a href="/docs/advanced-features/custom-document.md"> <b>Custom Document</b> <small>Learn how to augment your application’s html and body tags.</small> </a></p>
-</div>
-</body>
+<a class="sourceLine" id="cb4-5" title="5"><span class="op">};</span></a></code></pre>
+    </div>
+    <h2 id="related">Related</h2>
+    <p>
+      For more information on what to do next, we recommend the following
+      sections:
+    </p>
+    <div class="card">
+      <p>
+        <a href="/docs/advanced-features/custom-document.md">
+          <b>Custom Document</b>
+          <small
+            >Learn how to augment your application’s html and body tags.</small
+          >
+        </a>
+      </p>
+    </div>
+  </body>
 </html>

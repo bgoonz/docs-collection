@@ -1,59 +1,80 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
-<head>
-  <meta charset="utf-8" />
-  <meta name="generator" content="pandoc" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>image</title>
-  <link rel="stylesheet" href="https://raw.githubusercontent.com/bgoonz/docs-collection/master/nextjs.css">
-</head>
-<body>
-<h1 id="nextimage">next/image</h1>
-<details>
-<summary><b>Examples</b></summary>
-<ul>
-<li>
-<a href="https://github.com/vercel/next.js/tree/canary/examples/image-component">Image Component</a>
-</li>
-</ul>
-</details>
-<details>
-<p><summary><b>Version History</b></summary></p>
-<table>
-<thead>
-<tr class="header">
-<th>Version</th>
-<th>Changes</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>v10.0.5</code></td>
-<td><code>loader</code> prop added.</td>
-</tr>
-<tr class="even">
-<td><code>v10.0.1</code></td>
-<td><code>layout</code> prop added.</td>
-</tr>
-<tr class="odd">
-<td><code>v10.0.0</code></td>
-<td><code>next/image</code> introduced.</td>
-</tr>
-</tbody>
-</table>
-</details>
-<blockquote>
-<p>Before moving forward, we recommend you to read <a href="/docs/basic-features/image-optimization.md">Image Optimization</a> first.</p>
-</blockquote>
-<p>Image Optimization can be enabled via the <code>&lt;Image /&gt;</code> component exported by <code>next/image</code>.</p>
-<h2 id="usage">Usage</h2>
-<p>For an example, consider a project with the following files:</p>
-<ul>
-<li><code>pages/index.js</code></li>
-<li><code>public/me.png</code></li>
-</ul>
-<p>We can serve an optimized image like so:</p>
-<pre class="jsx"><code>import Image from &quot;next/image&quot;;
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>image</title>
+    <link
+      rel="stylesheet"
+      href="https://raw.githubusercontent.com/bgoonz/docs-collection/master/nextjs.css"
+    />
+  </head>
+  <body>
+    <h1 id="nextimage">next/image</h1>
+    <details>
+      <summary><b>Examples</b></summary>
+      <ul>
+        <li>
+          <a
+            href="https://github.com/vercel/next.js/tree/canary/examples/image-component"
+            >Image Component</a
+          >
+        </li>
+      </ul>
+    </details>
+    <details>
+      <p>
+        <summary><b>Version History</b></summary>
+      </p>
+      <table>
+        <thead>
+          <tr class="header">
+            <th>Version</th>
+            <th>Changes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="odd">
+            <td><code>v10.0.5</code></td>
+            <td><code>loader</code> prop added.</td>
+          </tr>
+          <tr class="even">
+            <td><code>v10.0.1</code></td>
+            <td><code>layout</code> prop added.</td>
+          </tr>
+          <tr class="odd">
+            <td><code>v10.0.0</code></td>
+            <td><code>next/image</code> introduced.</td>
+          </tr>
+        </tbody>
+      </table>
+    </details>
+    <blockquote>
+      <p>
+        Before moving forward, we recommend you to read
+        <a href="/docs/basic-features/image-optimization.md"
+          >Image Optimization</a
+        >
+        first.
+      </p>
+    </blockquote>
+    <p>
+      Image Optimization can be enabled via the
+      <code>&lt;Image /&gt;</code> component exported by
+      <code>next/image</code>.
+    </p>
+    <h2 id="usage">Usage</h2>
+    <p>For an example, consider a project with the following files:</p>
+    <ul>
+      <li><code>pages/index.js</code></li>
+      <li><code>public/me.png</code></li>
+    </ul>
+    <p>We can serve an optimized image like so:</p>
+    <pre class="jsx"><code>import Image from &quot;next/image&quot;;
 
 function Home() {
   return (
@@ -71,42 +92,115 @@ function Home() {
 }
 
 export default Home;</code></pre>
-<h2 id="required-props">Required Props</h2>
-<p>The <code>&lt;Image /&gt;</code> component requires the following properties.</p>
-<h3 id="src">src</h3>
-<p>The path or URL to the source image. This is required.</p>
-<p>When using an external URL, you must add it to <a href="/docs/basic-features/image-optimization.md#domains">domains</a> in <code>next.config.js</code>.</p>
-<h3 id="width">width</h3>
-<p>The width of the image, in pixels. Must be an integer without a unit.</p>
-<p>Required unless <a href="#layout"><code>layout="fill"</code></a>.</p>
-<h3 id="height">height</h3>
-<p>The height of the image, in pixels. Must be an integer without a unit.</p>
-<p>Required unless <a href="#layout"><code>layout="fill"</code></a>.</p>
-<h2 id="optional-props">Optional Props</h2>
-<p>The <code>&lt;Image /&gt;</code> component optionally accepts the following properties.</p>
-<h3 id="layout">layout</h3>
-<p>The layout behavior of the image as the viewport changes size. Defaults to <code>intrinsic</code>.</p>
-<p>When <code>fixed</code>, the image dimensions will not change as the viewport changes (no responsiveness) similar to the native <code>img</code> element.</p>
-<p>When <code>intrinsic</code>, the image will scale the dimensions down for smaller viewports but maintain the original dimensions for larger viewports.</p>
-<p>When <code>responsive</code>, the image will scale the dimensions down for smaller viewports and scale up for larger viewports.</p>
-<p>When <code>fill</code>, the image will stretch both width and height to the dimensions of the parent element, usually paired with the <a href="#objectFit"><code>objectFit</code></a> property.</p>
-<p>Try it out:</p>
-<ul>
-<li><a href="https://image-component.nextjs.gallery/layout-fixed">Demo the <code>fixed</code> layout</a></li>
-<li><a href="https://image-component.nextjs.gallery/layout-intrinsic">Demo the <code>intrinsic</code> layout</a></li>
-<li><a href="https://image-component.nextjs.gallery/layout-responsive">Demo the <code>responsive</code> layout</a></li>
-<li><a href="https://image-component.nextjs.gallery/layout-fill">Demo the <code>fill</code> layout</a></li>
-<li><a href="https://image-component.nextjs.gallery/background">Demo background image</a></li>
-</ul>
-<h3 id="loader">loader</h3>
-<p>A custom function used to resolve URLs. Defaults to <a href="/docs/basic-features/image-optimization.md#loader"><code>images</code> object in <code>next.config.js</code></a>.</p>
-<p><code>loader</code> is a function returning a string, given the following parameters:</p>
-<ul>
-<li><a href="#src"><code>src</code></a></li>
-<li><a href="#width"><code>width</code></a></li>
-<li><a href="#quality"><code>quality</code></a></li>
-</ul>
-<div class="sourceCode" id="cb2"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="im">import</span> Image <span class="im">from</span> <span class="st">&quot;next/image&quot;</span><span class="op">;</span></a>
+    <h2 id="required-props">Required Props</h2>
+    <p>
+      The <code>&lt;Image /&gt;</code> component requires the following
+      properties.
+    </p>
+    <h3 id="src">src</h3>
+    <p>The path or URL to the source image. This is required.</p>
+    <p>
+      When using an external URL, you must add it to
+      <a href="/docs/basic-features/image-optimization.md#domains">domains</a>
+      in <code>next.config.js</code>.
+    </p>
+    <h3 id="width">width</h3>
+    <p>The width of the image, in pixels. Must be an integer without a unit.</p>
+    <p>
+      Required unless <a href="#layout"><code>layout="fill"</code></a
+      >.
+    </p>
+    <h3 id="height">height</h3>
+    <p>
+      The height of the image, in pixels. Must be an integer without a unit.
+    </p>
+    <p>
+      Required unless <a href="#layout"><code>layout="fill"</code></a
+      >.
+    </p>
+    <h2 id="optional-props">Optional Props</h2>
+    <p>
+      The <code>&lt;Image /&gt;</code> component optionally accepts the
+      following properties.
+    </p>
+    <h3 id="layout">layout</h3>
+    <p>
+      The layout behavior of the image as the viewport changes size. Defaults to
+      <code>intrinsic</code>.
+    </p>
+    <p>
+      When <code>fixed</code>, the image dimensions will not change as the
+      viewport changes (no responsiveness) similar to the native
+      <code>img</code> element.
+    </p>
+    <p>
+      When <code>intrinsic</code>, the image will scale the dimensions down for
+      smaller viewports but maintain the original dimensions for larger
+      viewports.
+    </p>
+    <p>
+      When <code>responsive</code>, the image will scale the dimensions down for
+      smaller viewports and scale up for larger viewports.
+    </p>
+    <p>
+      When <code>fill</code>, the image will stretch both width and height to
+      the dimensions of the parent element, usually paired with the
+      <a href="#objectFit"><code>objectFit</code></a> property.
+    </p>
+    <p>Try it out:</p>
+    <ul>
+      <li>
+        <a href="https://image-component.nextjs.gallery/layout-fixed"
+          >Demo the <code>fixed</code> layout</a
+        >
+      </li>
+      <li>
+        <a href="https://image-component.nextjs.gallery/layout-intrinsic"
+          >Demo the <code>intrinsic</code> layout</a
+        >
+      </li>
+      <li>
+        <a href="https://image-component.nextjs.gallery/layout-responsive"
+          >Demo the <code>responsive</code> layout</a
+        >
+      </li>
+      <li>
+        <a href="https://image-component.nextjs.gallery/layout-fill"
+          >Demo the <code>fill</code> layout</a
+        >
+      </li>
+      <li>
+        <a href="https://image-component.nextjs.gallery/background"
+          >Demo background image</a
+        >
+      </li>
+    </ul>
+    <h3 id="loader">loader</h3>
+    <p>
+      A custom function used to resolve URLs. Defaults to
+      <a href="/docs/basic-features/image-optimization.md#loader"
+        ><code>images</code> object in <code>next.config.js</code></a
+      >.
+    </p>
+    <p>
+      <code>loader</code> is a function returning a string, given the following
+      parameters:
+    </p>
+    <ul>
+      <li>
+        <a href="#src"><code>src</code></a>
+      </li>
+      <li>
+        <a href="#width"><code>width</code></a>
+      </li>
+      <li>
+        <a href="#quality"><code>quality</code></a>
+      </li>
+    </ul>
+    <div class="sourceCode" id="cb2">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="im">import</span> Image <span class="im">from</span> <span class="st">&quot;next/image&quot;</span><span class="op">;</span></a>
 <a class="sourceLine" id="cb2-2" title="2"></a>
 <a class="sourceLine" id="cb2-3" title="3"><span class="kw">const</span> myLoader <span class="op">=</span> (<span class="op">{</span> src<span class="op">,</span> width<span class="op">,</span> quality <span class="op">}</span>) <span class="kw">=&gt;</span> <span class="op">{</span></a>
 <a class="sourceLine" id="cb2-4" title="4">  <span class="cf">return</span> <span class="vs">`https://example.com/</span><span class="sc">${</span>src<span class="sc">}</span><span class="vs">?w=</span><span class="sc">${</span>width<span class="sc">}</span><span class="vs">&amp;q=</span><span class="sc">${</span>quality <span class="op">||</span> <span class="dv">75</span><span class="sc">}</span><span class="vs">`</span><span class="op">;</span></a>
@@ -122,46 +216,118 @@ export default Home;</code></pre>
 <a class="sourceLine" id="cb2-14" title="14">      height<span class="op">={</span><span class="dv">500</span><span class="op">}</span></a>
 <a class="sourceLine" id="cb2-15" title="15">    /&gt;</a>
 <a class="sourceLine" id="cb2-16" title="16">  )<span class="op">;</span></a>
-<a class="sourceLine" id="cb2-17" title="17"><span class="op">};</span></a></code></pre></div>
-<h3 id="sizes">sizes</h3>
-<p>A string mapping media queries to device sizes. Defaults to <code>100vw</code>.</p>
-<p>We recommend setting <code>sizes</code> when using <code>layout="responsive"</code> or <code>layout="fill"</code> and your image will <strong>not</strong> be the same width as the viewport.</p>
-<p><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#attr-sizes">Learn more</a>.</p>
-<h3 id="quality">quality</h3>
-<p>The quality of the optimized image, an integer between <code>1</code> and <code>100</code> where <code>100</code> is the best quality. Defaults to <code>75</code>.</p>
-<h3 id="priority">priority</h3>
-<p>When true, the image will be considered high priority and <a href="https://web.dev/preload-responsive-images/">preload</a>.</p>
-<p>Should only be used when the image is visible above the fold. Defaults to <code>false</code>.</p>
-<h2 id="advanced-props">Advanced Props</h2>
-<p>In some cases, you may need more advanced usage. The <code>&lt;Image /&gt;</code> component optionally accepts the following advanced properties.</p>
-<h3 id="objectfit">objectFit</h3>
-<p>The image fit when using <code>layout="fill"</code>.</p>
-<p><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/object-fit">Learn more</a></p>
-<h3 id="objectposition">objectPosition</h3>
-<p>The image position when using <code>layout="fill"</code>.</p>
-<p><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/object-position">Learn more</a></p>
-<h3 id="loading">loading</h3>
-<blockquote>
-<p><strong>Attention</strong>: This property is only meant for advanced usage. Switching an image to load with <code>eager</code> will normally <strong>hurt performance</strong>.</p>
-<p>We recommend using the <a href="#priority"><code>priority</code></a> property instead, which properly loads the image eagerly for nearly all use cases.</p>
-</blockquote>
-<p>The loading behavior of the image. Defaults to <code>lazy</code>.</p>
-<p>When <code>lazy</code>, defer loading the image until it reaches a calculated distance from the viewport.</p>
-<p>When <code>eager</code>, load the image immediately.</p>
-<p><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#attr-loading">Learn more</a></p>
-<h3 id="unoptimized">unoptimized</h3>
-<p>When true, the source image will be served as-is instead of changing quality, size, or format. Defaults to <code>false</code>.</p>
-<h2 id="other-props">Other Props</h2>
-<p>Other properties on the <code>&lt;Image /&gt;</code> component will be passed to the underlying <code>img</code> element with the exception of the following:</p>
-<ul>
-<li><code>style</code>. Use <code>className</code> instead.</li>
-<li><code>srcSet</code>. Use <a href="/docs/basic-features/image-optimization.md#device-sizes">Device Sizes</a> instead.</li>
-<li><code>decoding</code>. It is always <code>"async"</code>.</li>
-</ul>
-<h2 id="related">Related</h2>
-<p>For more information on what to do next, we recommend the following sections:</p>
-<div class="card">
-<p><a href="/docs/basic-features/image-optimization.md"> <b>Image Optimization</b> <small>See how to configure domains and loaders.</small> </a></p>
-</div>
-</body>
+<a class="sourceLine" id="cb2-17" title="17"><span class="op">};</span></a></code></pre>
+    </div>
+    <h3 id="sizes">sizes</h3>
+    <p>
+      A string mapping media queries to device sizes. Defaults to
+      <code>100vw</code>.
+    </p>
+    <p>
+      We recommend setting <code>sizes</code> when using
+      <code>layout="responsive"</code> or <code>layout="fill"</code> and your
+      image will <strong>not</strong> be the same width as the viewport.
+    </p>
+    <p>
+      <a
+        href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#attr-sizes"
+        >Learn more</a
+      >.
+    </p>
+    <h3 id="quality">quality</h3>
+    <p>
+      The quality of the optimized image, an integer between <code>1</code> and
+      <code>100</code> where <code>100</code> is the best quality. Defaults to
+      <code>75</code>.
+    </p>
+    <h3 id="priority">priority</h3>
+    <p>
+      When true, the image will be considered high priority and
+      <a href="https://web.dev/preload-responsive-images/">preload</a>.
+    </p>
+    <p>
+      Should only be used when the image is visible above the fold. Defaults to
+      <code>false</code>.
+    </p>
+    <h2 id="advanced-props">Advanced Props</h2>
+    <p>
+      In some cases, you may need more advanced usage. The
+      <code>&lt;Image /&gt;</code> component optionally accepts the following
+      advanced properties.
+    </p>
+    <h3 id="objectfit">objectFit</h3>
+    <p>The image fit when using <code>layout="fill"</code>.</p>
+    <p>
+      <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/object-fit"
+        >Learn more</a
+      >
+    </p>
+    <h3 id="objectposition">objectPosition</h3>
+    <p>The image position when using <code>layout="fill"</code>.</p>
+    <p>
+      <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/object-position"
+        >Learn more</a
+      >
+    </p>
+    <h3 id="loading">loading</h3>
+    <blockquote>
+      <p>
+        <strong>Attention</strong>: This property is only meant for advanced
+        usage. Switching an image to load with <code>eager</code> will normally
+        <strong>hurt performance</strong>.
+      </p>
+      <p>
+        We recommend using the
+        <a href="#priority"><code>priority</code></a> property instead, which
+        properly loads the image eagerly for nearly all use cases.
+      </p>
+    </blockquote>
+    <p>The loading behavior of the image. Defaults to <code>lazy</code>.</p>
+    <p>
+      When <code>lazy</code>, defer loading the image until it reaches a
+      calculated distance from the viewport.
+    </p>
+    <p>When <code>eager</code>, load the image immediately.</p>
+    <p>
+      <a
+        href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#attr-loading"
+        >Learn more</a
+      >
+    </p>
+    <h3 id="unoptimized">unoptimized</h3>
+    <p>
+      When true, the source image will be served as-is instead of changing
+      quality, size, or format. Defaults to <code>false</code>.
+    </p>
+    <h2 id="other-props">Other Props</h2>
+    <p>
+      Other properties on the <code>&lt;Image /&gt;</code> component will be
+      passed to the underlying <code>img</code> element with the exception of
+      the following:
+    </p>
+    <ul>
+      <li><code>style</code>. Use <code>className</code> instead.</li>
+      <li>
+        <code>srcSet</code>. Use
+        <a href="/docs/basic-features/image-optimization.md#device-sizes"
+          >Device Sizes</a
+        >
+        instead.
+      </li>
+      <li><code>decoding</code>. It is always <code>"async"</code>.</li>
+    </ul>
+    <h2 id="related">Related</h2>
+    <p>
+      For more information on what to do next, we recommend the following
+      sections:
+    </p>
+    <div class="card">
+      <p>
+        <a href="/docs/basic-features/image-optimization.md">
+          <b>Image Optimization</b>
+          <small>See how to configure domains and loaders.</small>
+        </a>
+      </p>
+    </div>
+  </body>
 </html>

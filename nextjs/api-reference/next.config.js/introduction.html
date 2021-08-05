@@ -1,28 +1,60 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
-<head>
-  <meta charset="utf-8" />
-  <meta name="generator" content="pandoc" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>introduction</title>
-  <link rel="stylesheet" href="https://raw.githubusercontent.com/bgoonz/docs-collection/master/nextjs.css">
-</head>
-<body>
-<h1 id="next.config.js">next.config.js</h1>
-<p>For custom advanced behavior of Next.js, you can create a <code>next.config.js</code> in the root of your project directory (next to <code>package.json</code>).</p>
-<p><code>next.config.js</code> is a regular Node.js module, not a JSON file. It gets used by the Next.js server and build phases, and it’s not included in the browser build.</p>
-<p>Take a look at the following <code>next.config.js</code> example:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> <span class="op">{</span></a>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>introduction</title>
+    <link
+      rel="stylesheet"
+      href="https://raw.githubusercontent.com/bgoonz/docs-collection/master/nextjs.css"
+    />
+  </head>
+  <body>
+    <h1 id="next.config.js">next.config.js</h1>
+    <p>
+      For custom advanced behavior of Next.js, you can create a
+      <code>next.config.js</code> in the root of your project directory (next to
+      <code>package.json</code>).
+    </p>
+    <p>
+      <code>next.config.js</code> is a regular Node.js module, not a JSON file.
+      It gets used by the Next.js server and build phases, and it’s not included
+      in the browser build.
+    </p>
+    <p>Take a look at the following <code>next.config.js</code> example:</p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> <span class="op">{</span></a>
 <a class="sourceLine" id="cb1-2" title="2">  <span class="co">/* config options here */</span></a>
-<a class="sourceLine" id="cb1-3" title="3"><span class="op">};</span></a></code></pre></div>
-<p>You can also use a function:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> (phase<span class="op">,</span> <span class="op">{</span> defaultConfig <span class="op">}</span>) <span class="kw">=&gt;</span> <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="op">};</span></a></code></pre>
+    </div>
+    <p>You can also use a function:</p>
+    <div class="sourceCode" id="cb2">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> (phase<span class="op">,</span> <span class="op">{</span> defaultConfig <span class="op">}</span>) <span class="kw">=&gt;</span> <span class="op">{</span></a>
 <a class="sourceLine" id="cb2-2" title="2">  <span class="cf">return</span> <span class="op">{</span></a>
 <a class="sourceLine" id="cb2-3" title="3">    <span class="co">/* config options here */</span></a>
 <a class="sourceLine" id="cb2-4" title="4">  <span class="op">};</span></a>
-<a class="sourceLine" id="cb2-5" title="5"><span class="op">};</span></a></code></pre></div>
-<p><code>phase</code> is the current context in which the configuration is loaded. You can see the available phases <a href="https://github.com/vercel/next.js/blob/canary/packages/next/next-server/lib/constants.ts#L1-L4">here</a>. Phases can be imported from <code>next/constants</code>:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">const</span> <span class="op">{</span> PHASE_DEVELOPMENT_SERVER <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&quot;next/constants&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb2-5" title="5"><span class="op">};</span></a></code></pre>
+    </div>
+    <p>
+      <code>phase</code> is the current context in which the configuration is
+      loaded. You can see the available phases
+      <a
+        href="https://github.com/vercel/next.js/blob/canary/packages/next/next-server/lib/constants.ts#L1-L4"
+        >here</a
+      >. Phases can be imported from <code>next/constants</code>:
+    </p>
+    <div class="sourceCode" id="cb3">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">const</span> <span class="op">{</span> PHASE_DEVELOPMENT_SERVER <span class="op">}</span> <span class="op">=</span> <span class="at">require</span>(<span class="st">&quot;next/constants&quot;</span>)<span class="op">;</span></a>
 <a class="sourceLine" id="cb3-2" title="2"></a>
 <a class="sourceLine" id="cb3-3" title="3"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> (phase<span class="op">,</span> <span class="op">{</span> defaultConfig <span class="op">}</span>) <span class="kw">=&gt;</span> <span class="op">{</span></a>
 <a class="sourceLine" id="cb3-4" title="4">  <span class="cf">if</span> (phase <span class="op">===</span> PHASE_DEVELOPMENT_SERVER) <span class="op">{</span></a>
@@ -34,11 +66,28 @@
 <a class="sourceLine" id="cb3-10" title="10">  <span class="cf">return</span> <span class="op">{</span></a>
 <a class="sourceLine" id="cb3-11" title="11">    <span class="co">/* config options for all phases except development here */</span></a>
 <a class="sourceLine" id="cb3-12" title="12">  <span class="op">};</span></a>
-<a class="sourceLine" id="cb3-13" title="13"><span class="op">};</span></a></code></pre></div>
-<p>The commented lines are the place where you can put the configs allowed by <code>next.config.js</code>, which are defined <a href="https://github.com/vercel/next.js/blob/canary/packages/next/next-server/server/config-shared.ts#L68">here</a>.</p>
-<p>However, none of the configs are required, and it’s not necessary to understand what each config does. Instead, search for the features you need to enable or modify in this section and they will show you what to do.</p>
-<blockquote>
-<p>Avoid using new JavaScript features not available in your target Node.js version. <code>next.config.js</code> will not be parsed by Webpack, Babel or TypeScript.</p>
-</blockquote>
-</body>
+<a class="sourceLine" id="cb3-13" title="13"><span class="op">};</span></a></code></pre>
+    </div>
+    <p>
+      The commented lines are the place where you can put the configs allowed by
+      <code>next.config.js</code>, which are defined
+      <a
+        href="https://github.com/vercel/next.js/blob/canary/packages/next/next-server/server/config-shared.ts#L68"
+        >here</a
+      >.
+    </p>
+    <p>
+      However, none of the configs are required, and it’s not necessary to
+      understand what each config does. Instead, search for the features you
+      need to enable or modify in this section and they will show you what to
+      do.
+    </p>
+    <blockquote>
+      <p>
+        Avoid using new JavaScript features not available in your target Node.js
+        version. <code>next.config.js</code> will not be parsed by Webpack,
+        Babel or TypeScript.
+      </p>
+    </blockquote>
+  </body>
 </html>

@@ -1,50 +1,127 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
-<head>
-  <meta charset="utf-8" />
-  <meta name="generator" content="pandoc" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>custom-webpack-config</title>
-  <link rel="stylesheet" href="https://raw.githubusercontent.com/bgoonz/docs-collection/master/nextjs.css">
-</head>
-<body>
-<h1 id="custom-webpack-config">Custom Webpack Config</h1>
-<p>Before continuing to add custom webpack configuration to your application make sure Next.js doesn’t already support your use-case:</p>
-<ul>
-<li><a href="/docs/basic-features/built-in-css-support.md#adding-a-global-stylesheet">CSS imports</a></li>
-<li><a href="/docs/basic-features/built-in-css-support.md#adding-component-level-css">CSS modules</a></li>
-<li><a href="/docs/basic-features/built-in-css-support.md#sass-support">Sass/SCSS imports</a></li>
-<li><a href="/docs/basic-features/built-in-css-support.md#sass-support">Sass/SCSS modules</a></li>
-<li><a href="https://github.com/vercel/next.js/tree/canary/examples/using-preact">preact</a></li>
-<li><a href="/docs/advanced-features/customizing-babel-config.md">Customizing babel configuration</a></li>
-</ul>
-<p>Some commonly asked for features are available as plugins:</p>
-<ul>
-<li><span class="citation" data-cites="next/mdx">[@next/mdx]</span>(https://github.com/vercel/next.js/tree/canary/packages/next-mdx)</li>
-<li><span class="citation" data-cites="next/bundle-analyzer">[@next/bundle-analyzer]</span>(https://github.com/vercel/next.js/tree/canary/packages/next-bundle-analyzer)</li>
-</ul>
-<p>In order to extend our usage of <code>webpack</code>, you can define a function that extends its config inside <code>next.config.js</code>, like so:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> <span class="op">{</span></a>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>custom-webpack-config</title>
+    <link
+      rel="stylesheet"
+      href="https://raw.githubusercontent.com/bgoonz/docs-collection/master/nextjs.css"
+    />
+  </head>
+  <body>
+    <h1 id="custom-webpack-config">Custom Webpack Config</h1>
+    <p>
+      Before continuing to add custom webpack configuration to your application
+      make sure Next.js doesn’t already support your use-case:
+    </p>
+    <ul>
+      <li>
+        <a
+          href="/docs/basic-features/built-in-css-support.md#adding-a-global-stylesheet"
+          >CSS imports</a
+        >
+      </li>
+      <li>
+        <a
+          href="/docs/basic-features/built-in-css-support.md#adding-component-level-css"
+          >CSS modules</a
+        >
+      </li>
+      <li>
+        <a href="/docs/basic-features/built-in-css-support.md#sass-support"
+          >Sass/SCSS imports</a
+        >
+      </li>
+      <li>
+        <a href="/docs/basic-features/built-in-css-support.md#sass-support"
+          >Sass/SCSS modules</a
+        >
+      </li>
+      <li>
+        <a
+          href="https://github.com/vercel/next.js/tree/canary/examples/using-preact"
+          >preact</a
+        >
+      </li>
+      <li>
+        <a href="/docs/advanced-features/customizing-babel-config.md"
+          >Customizing babel configuration</a
+        >
+      </li>
+    </ul>
+    <p>Some commonly asked for features are available as plugins:</p>
+    <ul>
+      <li>
+        <span class="citation" data-cites="next/mdx">[@next/mdx]</span
+        >(https://github.com/vercel/next.js/tree/canary/packages/next-mdx)
+      </li>
+      <li>
+        <span class="citation" data-cites="next/bundle-analyzer"
+          >[@next/bundle-analyzer]</span
+        >(https://github.com/vercel/next.js/tree/canary/packages/next-bundle-analyzer)
+      </li>
+    </ul>
+    <p>
+      In order to extend our usage of <code>webpack</code>, you can define a
+      function that extends its config inside <code>next.config.js</code>, like
+      so:
+    </p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> <span class="op">{</span></a>
 <a class="sourceLine" id="cb1-2" title="2">  <span class="dt">webpack</span><span class="op">:</span> (config<span class="op">,</span> <span class="op">{</span> buildId<span class="op">,</span> dev<span class="op">,</span> isServer<span class="op">,</span> defaultLoaders<span class="op">,</span> webpack <span class="op">}</span>) <span class="kw">=&gt;</span> <span class="op">{</span></a>
 <a class="sourceLine" id="cb1-3" title="3">    <span class="co">// Important: return the modified config</span></a>
 <a class="sourceLine" id="cb1-4" title="4">    <span class="cf">return</span> config<span class="op">;</span></a>
 <a class="sourceLine" id="cb1-5" title="5">  <span class="op">},</span></a>
-<a class="sourceLine" id="cb1-6" title="6"><span class="op">};</span></a></code></pre></div>
-<blockquote>
-<p>The <code>webpack</code> function is executed twice, once for the server and once for the client. This allows you to distinguish between client and server configuration using the <code>isServer</code> property.</p>
-</blockquote>
-<p>The second argument to the <code>webpack</code> function is an object with the following properties:</p>
-<ul>
-<li><code>buildId</code>: <code>String</code> - The build id, used as a unique identifier between builds</li>
-<li><code>dev</code>: <code>Boolean</code> - Indicates if the compilation will be done in development</li>
-<li><code>isServer</code>: <code>Boolean</code> - It’s <code>true</code> for server-side compilation, and <code>false</code> for client-side compilation</li>
-<li><code>defaultLoaders</code>: <code>Object</code> - Default loaders used internally by Next.js:
-<ul>
-<li><code>babel</code>: <code>Object</code> - Default <code>babel-loader</code> configuration</li>
-</ul></li>
-</ul>
-<p>Example usage of <code>defaultLoaders.babel</code>:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="co">// Example config for adding a loader that depends on babel-loader</span></a>
+<a class="sourceLine" id="cb1-6" title="6"><span class="op">};</span></a></code></pre>
+    </div>
+    <blockquote>
+      <p>
+        The <code>webpack</code> function is executed twice, once for the server
+        and once for the client. This allows you to distinguish between client
+        and server configuration using the <code>isServer</code> property.
+      </p>
+    </blockquote>
+    <p>
+      The second argument to the <code>webpack</code> function is an object with
+      the following properties:
+    </p>
+    <ul>
+      <li>
+        <code>buildId</code>: <code>String</code> - The build id, used as a
+        unique identifier between builds
+      </li>
+      <li>
+        <code>dev</code>: <code>Boolean</code> - Indicates if the compilation
+        will be done in development
+      </li>
+      <li>
+        <code>isServer</code>: <code>Boolean</code> - It’s <code>true</code> for
+        server-side compilation, and <code>false</code> for client-side
+        compilation
+      </li>
+      <li>
+        <code>defaultLoaders</code>: <code>Object</code> - Default loaders used
+        internally by Next.js:
+        <ul>
+          <li>
+            <code>babel</code>: <code>Object</code> - Default
+            <code>babel-loader</code> configuration
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <p>Example usage of <code>defaultLoaders.babel</code>:</p>
+    <div class="sourceCode" id="cb2">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="co">// Example config for adding a loader that depends on babel-loader</span></a>
 <a class="sourceLine" id="cb2-2" title="2"><span class="co">// This source was taken from the @next/mdx plugin source:</span></a>
 <a class="sourceLine" id="cb2-3" title="3"><span class="co">// https://github.com/vercel/next.js/tree/canary/packages/next-mdx</span></a>
 <a class="sourceLine" id="cb2-4" title="4"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> <span class="op">{</span></a>
@@ -62,10 +139,18 @@
 <a class="sourceLine" id="cb2-16" title="16"></a>
 <a class="sourceLine" id="cb2-17" title="17">    <span class="cf">return</span> config<span class="op">;</span></a>
 <a class="sourceLine" id="cb2-18" title="18">  <span class="op">},</span></a>
-<a class="sourceLine" id="cb2-19" title="19"><span class="op">};</span></a></code></pre></div>
-<h2 id="related">Related</h2>
-<div class="card">
-<p><a href="/docs/api-reference/next.config.js/introduction.md"> <b>Introduction to next.config.js:</b> <small>Learn more about the configuration file used by Next.js.</small> </a></p>
-</div>
-</body>
+<a class="sourceLine" id="cb2-19" title="19"><span class="op">};</span></a></code></pre>
+    </div>
+    <h2 id="related">Related</h2>
+    <div class="card">
+      <p>
+        <a href="/docs/api-reference/next.config.js/introduction.md">
+          <b>Introduction to next.config.js:</b>
+          <small
+            >Learn more about the configuration file used by Next.js.</small
+          >
+        </a>
+      </p>
+    </div>
+  </body>
 </html>

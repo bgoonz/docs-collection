@@ -1,41 +1,75 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
-<head>
-  <meta charset="utf-8" />
-  <meta name="generator" content="pandoc" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>basepath</title>
-  <link rel="stylesheet" href="https://raw.githubusercontent.com/bgoonz/docs-collection/master/nextjs.css">
-</head>
-<body>
-<h1 id="base-path">Base Path</h1>
-<details>
-<p><summary><b>Version History</b></summary></p>
-<table>
-<thead>
-<tr class="header">
-<th>Version</th>
-<th>Changes</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>v9.5.0</code></td>
-<td>Base Path added.</td>
-</tr>
-</tbody>
-</table>
-</details>
-<p>To deploy a Next.js application under a sub-path of a domain you can use the <code>basePath</code> config option.</p>
-<p><code>basePath</code> allows you to set a path prefix for the application. For example, to use <code>/docs</code> instead of <code>/</code> (the default), open <code>next.config.js</code> and add the <code>basePath</code> config:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> <span class="op">{</span></a>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>basepath</title>
+    <link
+      rel="stylesheet"
+      href="https://raw.githubusercontent.com/bgoonz/docs-collection/master/nextjs.css"
+    />
+  </head>
+  <body>
+    <h1 id="base-path">Base Path</h1>
+    <details>
+      <p>
+        <summary><b>Version History</b></summary>
+      </p>
+      <table>
+        <thead>
+          <tr class="header">
+            <th>Version</th>
+            <th>Changes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="odd">
+            <td><code>v9.5.0</code></td>
+            <td>Base Path added.</td>
+          </tr>
+        </tbody>
+      </table>
+    </details>
+    <p>
+      To deploy a Next.js application under a sub-path of a domain you can use
+      the <code>basePath</code> config option.
+    </p>
+    <p>
+      <code>basePath</code> allows you to set a path prefix for the application.
+      For example, to use <code>/docs</code> instead of <code>/</code> (the
+      default), open <code>next.config.js</code> and add the
+      <code>basePath</code> config:
+    </p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> <span class="op">{</span></a>
 <a class="sourceLine" id="cb1-2" title="2">  <span class="dt">basePath</span><span class="op">:</span> <span class="st">&quot;/docs&quot;</span><span class="op">,</span></a>
-<a class="sourceLine" id="cb1-3" title="3"><span class="op">};</span></a></code></pre></div>
-<p>Note: this value must be set at build time and can not be changed without re-building as the value is inlined in the client-side bundles.</p>
-<h2 id="links">Links</h2>
-<p>When linking to other pages using <code>next/link</code> and <code>next/router</code> the <code>basePath</code> will be automatically applied.</p>
-<p>For example, using <code>/about</code> will automatically become <code>/docs/about</code> when <code>basePath</code> is set to <code>/docs</code>.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="im">export</span> <span class="im">default</span> <span class="kw">function</span> <span class="at">HomePage</span>() <span class="op">{</span></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="op">};</span></a></code></pre>
+    </div>
+    <p>
+      Note: this value must be set at build time and can not be changed without
+      re-building as the value is inlined in the client-side bundles.
+    </p>
+    <h2 id="links">Links</h2>
+    <p>
+      When linking to other pages using <code>next/link</code> and
+      <code>next/router</code> the <code>basePath</code> will be automatically
+      applied.
+    </p>
+    <p>
+      For example, using <code>/about</code> will automatically become
+      <code>/docs/about</code> when <code>basePath</code> is set to
+      <code>/docs</code>.
+    </p>
+    <div class="sourceCode" id="cb2">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="im">export</span> <span class="im">default</span> <span class="kw">function</span> <span class="at">HomePage</span>() <span class="op">{</span></a>
 <a class="sourceLine" id="cb2-2" title="2">  <span class="cf">return</span> (</a>
 <a class="sourceLine" id="cb2-3" title="3">    <span class="op">&lt;&gt;</span></a>
 <a class="sourceLine" id="cb2-4" title="4">      <span class="op">&lt;</span>Link href<span class="op">=</span><span class="st">&quot;/about&quot;</span><span class="op">&gt;</span></a>
@@ -43,14 +77,30 @@
 <a class="sourceLine" id="cb2-6" title="6">      &lt;/Link<span class="op">&gt;</span></a>
 <a class="sourceLine" id="cb2-7" title="7">    &lt;/<span class="op">&gt;</span></a>
 <a class="sourceLine" id="cb2-8" title="8">  )<span class="op">;</span></a>
-<a class="sourceLine" id="cb2-9" title="9"><span class="op">}</span></a></code></pre></div>
-<p>Output html:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode html"><code class="sourceCode html"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">&lt;a</span><span class="ot"> href=</span><span class="st">&quot;/docs/about&quot;</span><span class="kw">&gt;</span>About Page<span class="kw">&lt;/a&gt;</span></a></code></pre></div>
-<p>This makes sure that you don’t have to change all links in your application when changing the <code>basePath</code> value.</p>
-<h2 id="images">Images</h2>
-<p>When using the <a href="/docs/api-reference/next/image.md"><code>next/image</code></a> component, you will need to add the <code>basePath</code> in front of <code>src</code>.</p>
-<p>For example, using <code>/docs/me.png</code> will properly serve your image when <code>basePath</code> is set to <code>/docs</code>.</p>
-<pre class="jsx"><code>import Image from &quot;next/image&quot;;
+<a class="sourceLine" id="cb2-9" title="9"><span class="op">}</span></a></code></pre>
+    </div>
+    <p>Output html:</p>
+    <div class="sourceCode" id="cb3">
+      <pre
+        class="sourceCode html"
+      ><code class="sourceCode html"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">&lt;a</span><span class="ot"> href=</span><span class="st">&quot;/docs/about&quot;</span><span class="kw">&gt;</span>About Page<span class="kw">&lt;/a&gt;</span></a></code></pre>
+    </div>
+    <p>
+      This makes sure that you don’t have to change all links in your
+      application when changing the <code>basePath</code> value.
+    </p>
+    <h2 id="images">Images</h2>
+    <p>
+      When using the
+      <a href="/docs/api-reference/next/image.md"><code>next/image</code></a>
+      component, you will need to add the <code>basePath</code> in front of
+      <code>src</code>.
+    </p>
+    <p>
+      For example, using <code>/docs/me.png</code> will properly serve your
+      image when <code>basePath</code> is set to <code>/docs</code>.
+    </p>
+    <pre class="jsx"><code>import Image from &quot;next/image&quot;;
 
 function Home() {
   return (
@@ -68,5 +118,5 @@ function Home() {
 }
 
 export default Home;</code></pre>
-</body>
+  </body>
 </html>

@@ -1,34 +1,77 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
-<head>
-  <meta charset="utf-8" />
-  <meta name="generator" content="pandoc" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>i18n-routing</title>
-  <link rel="stylesheet" href="https://raw.githubusercontent.com/bgoonz/docs-collection/master/nextjs.css">
-</head>
-<body>
-<h1 id="internationalized-routing">Internationalized Routing</h1>
-<details>
-<summary><b>Examples</b></summary>
-<ul>
-<li>
-<a href="https://github.com/vercel/next.js/tree/canary/examples/i18n-routing">i18n routing</a>
-</li>
-</ul>
-</details>
-<p>Next.js has built-in support for internationalized (<a href="https://en.wikipedia.org/wiki/Internationalization_and_localization#Naming">i18n</a>) routing since <code>v10.0.0</code>. You can provide a list of locales, the default locale, and domain-specific locales and Next.js will automatically handle the routing.</p>
-<p>The i18n routing support is currently meant to complement existing i18n library solutions like <a href="https://formatjs.io/docs/getting-started/installation"><code>react-intl</code></a>, <a href="https://react.i18next.com/"><code>react-i18next</code></a>, <a href="https://lingui.js.org/"><code>lingui</code></a>, <a href="https://github.com/lukeed/rosetta"><code>rosetta</code></a>, <a href="https://github.com/amannn/next-intl"><code>next-intl</code></a> and others by streamlining the routes and locale parsing.</p>
-<h2 id="getting-started">Getting started</h2>
-<p>To get started, add the <code>i18n</code> config to your <code>next.config.js</code> file.</p>
-<p>Locales are <a href="https://www.unicode.org/reports/tr35/tr35-59/tr35.html#Identifiers">UTS Locale Identifiers</a>, a standardized format for defining locales.</p>
-<p>Generally a Locale Identifier is made up of a language, region, and script separated by a dash: <code>language-region-script</code>. The region and script are optional. An example:</p>
-<ul>
-<li><code>en-US</code> - English as spoken in the United States</li>
-<li><code>nl-NL</code> - Dutch as spoken in the Netherlands</li>
-<li><code>nl</code> - Dutch, no specific region</li>
-</ul>
-<div class="sourceCode" id="cb1"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="co">// next.config.js</span></a>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>i18n-routing</title>
+    <link
+      rel="stylesheet"
+      href="https://raw.githubusercontent.com/bgoonz/docs-collection/master/nextjs.css"
+    />
+  </head>
+  <body>
+    <h1 id="internationalized-routing">Internationalized Routing</h1>
+    <details>
+      <summary><b>Examples</b></summary>
+      <ul>
+        <li>
+          <a
+            href="https://github.com/vercel/next.js/tree/canary/examples/i18n-routing"
+            >i18n routing</a
+          >
+        </li>
+      </ul>
+    </details>
+    <p>
+      Next.js has built-in support for internationalized (<a
+        href="https://en.wikipedia.org/wiki/Internationalization_and_localization#Naming"
+        >i18n</a
+      >) routing since <code>v10.0.0</code>. You can provide a list of locales,
+      the default locale, and domain-specific locales and Next.js will
+      automatically handle the routing.
+    </p>
+    <p>
+      The i18n routing support is currently meant to complement existing i18n
+      library solutions like
+      <a href="https://formatjs.io/docs/getting-started/installation"
+        ><code>react-intl</code></a
+      >, <a href="https://react.i18next.com/"><code>react-i18next</code></a
+      >, <a href="https://lingui.js.org/"><code>lingui</code></a
+      >, <a href="https://github.com/lukeed/rosetta"><code>rosetta</code></a
+      >,
+      <a href="https://github.com/amannn/next-intl"><code>next-intl</code></a>
+      and others by streamlining the routes and locale parsing.
+    </p>
+    <h2 id="getting-started">Getting started</h2>
+    <p>
+      To get started, add the <code>i18n</code> config to your
+      <code>next.config.js</code> file.
+    </p>
+    <p>
+      Locales are
+      <a
+        href="https://www.unicode.org/reports/tr35/tr35-59/tr35.html#Identifiers"
+        >UTS Locale Identifiers</a
+      >, a standardized format for defining locales.
+    </p>
+    <p>
+      Generally a Locale Identifier is made up of a language, region, and script
+      separated by a dash: <code>language-region-script</code>. The region and
+      script are optional. An example:
+    </p>
+    <ul>
+      <li><code>en-US</code> - English as spoken in the United States</li>
+      <li><code>nl-NL</code> - Dutch as spoken in the Netherlands</li>
+      <li><code>nl</code> - Dutch, no specific region</li>
+    </ul>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="co">// next.config.js</span></a>
 <a class="sourceLine" id="cb1-2" title="2"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> <span class="op">{</span></a>
 <a class="sourceLine" id="cb1-3" title="3">  <span class="dt">i18n</span><span class="op">:</span> <span class="op">{</span></a>
 <a class="sourceLine" id="cb1-4" title="4">    <span class="co">// These are all the locales you want to support in</span></a>
@@ -55,28 +98,47 @@
 <a class="sourceLine" id="cb1-25" title="25">      <span class="op">},</span></a>
 <a class="sourceLine" id="cb1-26" title="26">    ]<span class="op">,</span></a>
 <a class="sourceLine" id="cb1-27" title="27">  <span class="op">},</span></a>
-<a class="sourceLine" id="cb1-28" title="28"><span class="op">};</span></a></code></pre></div>
-<h2 id="locale-strategies">Locale Strategies</h2>
-<p>There are two locale handling strategies: Sub-path Routing and Domain Routing.</p>
-<h3 id="sub-path-routing">Sub-path Routing</h3>
-<p>Sub-path Routing puts the locale in the url path.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="co">// next.config.js</span></a>
+<a class="sourceLine" id="cb1-28" title="28"><span class="op">};</span></a></code></pre>
+    </div>
+    <h2 id="locale-strategies">Locale Strategies</h2>
+    <p>
+      There are two locale handling strategies: Sub-path Routing and Domain
+      Routing.
+    </p>
+    <h3 id="sub-path-routing">Sub-path Routing</h3>
+    <p>Sub-path Routing puts the locale in the url path.</p>
+    <div class="sourceCode" id="cb2">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb2-1" title="1"><span class="co">// next.config.js</span></a>
 <a class="sourceLine" id="cb2-2" title="2"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> <span class="op">{</span></a>
 <a class="sourceLine" id="cb2-3" title="3">  <span class="dt">i18n</span><span class="op">:</span> <span class="op">{</span></a>
 <a class="sourceLine" id="cb2-4" title="4">    <span class="dt">locales</span><span class="op">:</span> [<span class="st">&quot;en-US&quot;</span><span class="op">,</span> <span class="st">&quot;fr&quot;</span><span class="op">,</span> <span class="st">&quot;nl-NL&quot;</span>]<span class="op">,</span></a>
 <a class="sourceLine" id="cb2-5" title="5">    <span class="dt">defaultLocale</span><span class="op">:</span> <span class="st">&quot;en-US&quot;</span><span class="op">,</span></a>
 <a class="sourceLine" id="cb2-6" title="6">  <span class="op">},</span></a>
-<a class="sourceLine" id="cb2-7" title="7"><span class="op">};</span></a></code></pre></div>
-<p>With the above configuration <code>en-US</code>, <code>fr</code>, and <code>nl-NL</code> will be available to be routed to, and <code>en-US</code> is the default locale. If you have a <code>pages/blog.js</code> the following urls would be available:</p>
-<ul>
-<li><code>/blog</code></li>
-<li><code>/fr/blog</code></li>
-<li><code>/nl-nl/blog</code></li>
-</ul>
-<p>The default locale does not have a prefix.</p>
-<h3 id="domain-routing">Domain Routing</h3>
-<p>By using domain routing you can configure locales to be served from different domains:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb3-1" title="1"><span class="co">// next.config.js</span></a>
+<a class="sourceLine" id="cb2-7" title="7"><span class="op">};</span></a></code></pre>
+    </div>
+    <p>
+      With the above configuration <code>en-US</code>, <code>fr</code>, and
+      <code>nl-NL</code> will be available to be routed to, and
+      <code>en-US</code> is the default locale. If you have a
+      <code>pages/blog.js</code> the following urls would be available:
+    </p>
+    <ul>
+      <li><code>/blog</code></li>
+      <li><code>/fr/blog</code></li>
+      <li><code>/nl-nl/blog</code></li>
+    </ul>
+    <p>The default locale does not have a prefix.</p>
+    <h3 id="domain-routing">Domain Routing</h3>
+    <p>
+      By using domain routing you can configure locales to be served from
+      different domains:
+    </p>
+    <div class="sourceCode" id="cb3">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb3-1" title="1"><span class="co">// next.config.js</span></a>
 <a class="sourceLine" id="cb3-2" title="2"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> <span class="op">{</span></a>
 <a class="sourceLine" id="cb3-3" title="3">  <span class="dt">i18n</span><span class="op">:</span> <span class="op">{</span></a>
 <a class="sourceLine" id="cb3-4" title="4">    <span class="dt">locales</span><span class="op">:</span> [<span class="st">&quot;en-US&quot;</span><span class="op">,</span> <span class="st">&quot;fr&quot;</span><span class="op">,</span> <span class="st">&quot;nl-NL&quot;</span><span class="op">,</span> <span class="st">&quot;nl-BE&quot;</span>]<span class="op">,</span></a>
@@ -100,45 +162,122 @@
 <a class="sourceLine" id="cb3-22" title="22">      <span class="op">},</span></a>
 <a class="sourceLine" id="cb3-23" title="23">    ]<span class="op">,</span></a>
 <a class="sourceLine" id="cb3-24" title="24">  <span class="op">},</span></a>
-<a class="sourceLine" id="cb3-25" title="25"><span class="op">};</span></a></code></pre></div>
-<p>For example if you have <code>pages/blog.js</code> the following urls will be available:</p>
-<ul>
-<li><code>example.com/blog</code></li>
-<li><code>example.fr/blog</code></li>
-<li><code>example.nl/blog</code></li>
-<li><code>example.nl/nl-BE/blog</code></li>
-</ul>
-<h2 id="automatic-locale-detection">Automatic Locale Detection</h2>
-<p>When a user visits the application root (generally <code>/</code>), Next.js will try to automatically detect which locale the user prefers based on the <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Language"><code>Accept-Language</code></a> header and the current domain.</p>
-<p>If a locale other than the default locale is detected, the user will be redirected to either:</p>
-<ul>
-<li><strong>When using Sub-path Routing:</strong> The locale prefixed path</li>
-<li><strong>When using Domain Routing:</strong> The domain with that locale specified as the default</li>
-</ul>
-<p>When using Domain Routing, if a user with the <code>Accept-Language</code> header <code>fr;q=0.9</code> visits <code>example.com</code>, they will be redirected to <code>example.fr</code> since that domain handles the <code>fr</code> locale by default.</p>
-<p>When using Sub-path Routing, the user would be redirected to <code>/fr</code>.</p>
-<h3 id="disabling-automatic-locale-detection">Disabling Automatic Locale Detection</h3>
-<p>The automatic locale detection can be disabled with:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb4-1" title="1"><span class="co">// next.config.js</span></a>
+<a class="sourceLine" id="cb3-25" title="25"><span class="op">};</span></a></code></pre>
+    </div>
+    <p>
+      For example if you have <code>pages/blog.js</code> the following urls will
+      be available:
+    </p>
+    <ul>
+      <li><code>example.com/blog</code></li>
+      <li><code>example.fr/blog</code></li>
+      <li><code>example.nl/blog</code></li>
+      <li><code>example.nl/nl-BE/blog</code></li>
+    </ul>
+    <h2 id="automatic-locale-detection">Automatic Locale Detection</h2>
+    <p>
+      When a user visits the application root (generally <code>/</code>),
+      Next.js will try to automatically detect which locale the user prefers
+      based on the
+      <a
+        href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Language"
+        ><code>Accept-Language</code></a
+      >
+      header and the current domain.
+    </p>
+    <p>
+      If a locale other than the default locale is detected, the user will be
+      redirected to either:
+    </p>
+    <ul>
+      <li>
+        <strong>When using Sub-path Routing:</strong> The locale prefixed path
+      </li>
+      <li>
+        <strong>When using Domain Routing:</strong> The domain with that locale
+        specified as the default
+      </li>
+    </ul>
+    <p>
+      When using Domain Routing, if a user with the
+      <code>Accept-Language</code> header <code>fr;q=0.9</code> visits
+      <code>example.com</code>, they will be redirected to
+      <code>example.fr</code> since that domain handles the
+      <code>fr</code> locale by default.
+    </p>
+    <p>
+      When using Sub-path Routing, the user would be redirected to
+      <code>/fr</code>.
+    </p>
+    <h3 id="disabling-automatic-locale-detection">
+      Disabling Automatic Locale Detection
+    </h3>
+    <p>The automatic locale detection can be disabled with:</p>
+    <div class="sourceCode" id="cb4">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb4-1" title="1"><span class="co">// next.config.js</span></a>
 <a class="sourceLine" id="cb4-2" title="2"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> <span class="op">{</span></a>
 <a class="sourceLine" id="cb4-3" title="3">  <span class="dt">i18n</span><span class="op">:</span> <span class="op">{</span></a>
 <a class="sourceLine" id="cb4-4" title="4">    <span class="dt">localeDetection</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></a>
 <a class="sourceLine" id="cb4-5" title="5">  <span class="op">},</span></a>
-<a class="sourceLine" id="cb4-6" title="6"><span class="op">};</span></a></code></pre></div>
-<p>When <code>localeDetection</code> is set to <code>false</code> Next.js will no longer automatically redirect based on the user’s preferred locale and will only provide locale information detected from either the locale based domain or locale path as described above.</p>
-<h2 id="accessing-the-locale-information">Accessing the locale information</h2>
-<p>You can access the locale information via the Next.js router. For example, using the <a href="/docs/api-reference/next/router.md#userouter"><code>useRouter()</code></a> hook the following properties are available:</p>
-<ul>
-<li><code>locale</code> contains the currently active locale.</li>
-<li><code>locales</code> contains all configured locales.</li>
-<li><code>defaultLocale</code> contains the configured default locale.</li>
-</ul>
-<p>When <a href="/docs/basic-features/pages.md#static-generation-recommended">pre-rendering</a> pages with <code>getStaticProps</code> or <code>getServerSideProps</code>, the locale information is provided in <a href="/docs/basic-features/data-fetching.md#getstaticprops-static-generation">the context</a> provided to the function.</p>
-<p>When leveraging <code>getStaticPaths</code>, the configured locales are provided in the context parameter of the function under <code>locales</code> and the configured defaultLocale under <code>defaultLocale</code>.</p>
-<h2 id="transition-between-locales">Transition between locales</h2>
-<p>You can use <code>next/link</code> or <code>next/router</code> to transition between locales.</p>
-<p>For <code>next/link</code>, a <code>locale</code> prop can be provided to transition to a different locale from the currently active one. If no <code>locale</code> prop is provided, the currently active <code>locale</code> is used during client-transitions. For example:</p>
-<pre class="jsx"><code>import Link from &quot;next/link&quot;;
+<a class="sourceLine" id="cb4-6" title="6"><span class="op">};</span></a></code></pre>
+    </div>
+    <p>
+      When <code>localeDetection</code> is set to <code>false</code> Next.js
+      will no longer automatically redirect based on the user’s preferred locale
+      and will only provide locale information detected from either the locale
+      based domain or locale path as described above.
+    </p>
+    <h2 id="accessing-the-locale-information">
+      Accessing the locale information
+    </h2>
+    <p>
+      You can access the locale information via the Next.js router. For example,
+      using the
+      <a href="/docs/api-reference/next/router.md#userouter"
+        ><code>useRouter()</code></a
+      >
+      hook the following properties are available:
+    </p>
+    <ul>
+      <li><code>locale</code> contains the currently active locale.</li>
+      <li><code>locales</code> contains all configured locales.</li>
+      <li>
+        <code>defaultLocale</code> contains the configured default locale.
+      </li>
+    </ul>
+    <p>
+      When
+      <a href="/docs/basic-features/pages.md#static-generation-recommended"
+        >pre-rendering</a
+      >
+      pages with <code>getStaticProps</code> or <code>getServerSideProps</code>,
+      the locale information is provided in
+      <a
+        href="/docs/basic-features/data-fetching.md#getstaticprops-static-generation"
+        >the context</a
+      >
+      provided to the function.
+    </p>
+    <p>
+      When leveraging <code>getStaticPaths</code>, the configured locales are
+      provided in the context parameter of the function under
+      <code>locales</code> and the configured defaultLocale under
+      <code>defaultLocale</code>.
+    </p>
+    <h2 id="transition-between-locales">Transition between locales</h2>
+    <p>
+      You can use <code>next/link</code> or <code>next/router</code> to
+      transition between locales.
+    </p>
+    <p>
+      For <code>next/link</code>, a <code>locale</code> prop can be provided to
+      transition to a different locale from the currently active one. If no
+      <code>locale</code> prop is provided, the currently active
+      <code>locale</code> is used during client-transitions. For example:
+    </p>
+    <pre class="jsx"><code>import Link from &quot;next/link&quot;;
 
 export default function IndexPage(props) {
   return (
@@ -147,8 +286,12 @@ export default function IndexPage(props) {
     &lt;/Link&gt;
   );
 }</code></pre>
-<p>When using the <code>next/router</code> methods directly, you can specify the <code>locale</code> that should be used via the transition options. For example:</p>
-<pre class="jsx"><code>import { useRouter } from &quot;next/router&quot;;
+    <p>
+      When using the <code>next/router</code> methods directly, you can specify
+      the <code>locale</code> that should be used via the transition options.
+      For example:
+    </p>
+    <pre class="jsx"><code>import { useRouter } from &quot;next/router&quot;;
 
 export default function IndexPage(props) {
   const router = useRouter();
@@ -163,8 +306,11 @@ export default function IndexPage(props) {
     &lt;/div&gt;
   );
 }</code></pre>
-<p>If you have a <code>href</code> that already includes the locale you can opt-out of automatically handling the locale prefixing:</p>
-<pre class="jsx"><code>import Link from &quot;next/link&quot;;
+    <p>
+      If you have a <code>href</code> that already includes the locale you can
+      opt-out of automatically handling the locale prefixing:
+    </p>
+    <pre class="jsx"><code>import Link from &quot;next/link&quot;;
 
 export default function IndexPage(props) {
   return (
@@ -173,21 +319,76 @@ export default function IndexPage(props) {
     &lt;/Link&gt;
   );
 }</code></pre>
-<h2 id="leveraging-the-next_locale-cookie">Leveraging the NEXT_LOCALE cookie</h2>
-<p>Next.js supports overriding the accept-language header with a <code>NEXT_LOCALE=the-locale</code> cookie. This cookie can be set using a language switcher and then when a user comes back to the site it will leverage the locale specified in the cookie when redirecting from <code>/</code> to the correct locale location.</p>
-<p>For example, if a user prefers the locale <code>fr</code> in their accept-language header but a <code>NEXT_LOCALE=en</code> cookie is set the <code>en</code> locale when visiting <code>/</code> the user will be redirected to the <code>en</code> locale location until the cookie is removed or expired.</p>
-<h2 id="search-engine-optimization">Search Engine Optimization</h2>
-<p>Since Next.js knows what language the user is visiting it will automatically add the <code>lang</code> attribute to the <code>&lt;html&gt;</code> tag.</p>
-<p>Next.js doesn’t know about variants of a page so it’s up to you to add the <code>hreflang</code> meta tags using <a href="/docs/api-reference/next/head.md"><code>next/head</code></a>. You can learn more about <code>hreflang</code> in the <a href="https://support.google.com/webmasters/answer/189077">Google Webmasters documentation</a>.</p>
-<h2 id="how-does-this-work-with-static-generation">How does this work with Static Generation?</h2>
-<blockquote>
-<p>Note that Internationalized Routing does not integrate with <a href="/docs/advanced-features/static-html-export.md"><code>next export</code></a> as <code>next export</code> does not leverage the Next.js routing layer. Hybrid Next.js applications that do not use <code>next export</code> are fully supported.</p>
-</blockquote>
-<h3 id="automatically-statically-optimized-pages">Automatically Statically Optimized Pages</h3>
-<p>For pages that are <a href="/docs/advanced-features/automatic-static-optimization.md">automatically statically optimized</a>, a version of the page will be generated for each locale.</p>
-<h3 id="non-dynamic-getstaticprops-pages">Non-dynamic getStaticProps Pages</h3>
-<p>For non-dynamic <code>getStaticProps</code> pages, a version is generated for each locale like above. <code>getStaticProps</code> is called with each <code>locale</code> that is being rendered. If you would like to opt-out of a certain locale from being pre-rendered, you can return <code>notFound: true</code> from <code>getStaticProps</code> and this variant of the page will not be generated.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb8-1" title="1"><span class="im">export</span> <span class="kw">async</span> <span class="kw">function</span> <span class="at">getStaticProps</span>(<span class="op">{</span> locale <span class="op">}</span>) <span class="op">{</span></a>
+    <h2 id="leveraging-the-next_locale-cookie">
+      Leveraging the NEXT_LOCALE cookie
+    </h2>
+    <p>
+      Next.js supports overriding the accept-language header with a
+      <code>NEXT_LOCALE=the-locale</code> cookie. This cookie can be set using a
+      language switcher and then when a user comes back to the site it will
+      leverage the locale specified in the cookie when redirecting from
+      <code>/</code> to the correct locale location.
+    </p>
+    <p>
+      For example, if a user prefers the locale <code>fr</code> in their
+      accept-language header but a <code>NEXT_LOCALE=en</code> cookie is set the
+      <code>en</code> locale when visiting <code>/</code> the user will be
+      redirected to the <code>en</code> locale location until the cookie is
+      removed or expired.
+    </p>
+    <h2 id="search-engine-optimization">Search Engine Optimization</h2>
+    <p>
+      Since Next.js knows what language the user is visiting it will
+      automatically add the <code>lang</code> attribute to the
+      <code>&lt;html&gt;</code> tag.
+    </p>
+    <p>
+      Next.js doesn’t know about variants of a page so it’s up to you to add the
+      <code>hreflang</code> meta tags using
+      <a href="/docs/api-reference/next/head.md"><code>next/head</code></a
+      >. You can learn more about <code>hreflang</code> in the
+      <a href="https://support.google.com/webmasters/answer/189077"
+        >Google Webmasters documentation</a
+      >.
+    </p>
+    <h2 id="how-does-this-work-with-static-generation">
+      How does this work with Static Generation?
+    </h2>
+    <blockquote>
+      <p>
+        Note that Internationalized Routing does not integrate with
+        <a href="/docs/advanced-features/static-html-export.md"
+          ><code>next export</code></a
+        >
+        as <code>next export</code> does not leverage the Next.js routing layer.
+        Hybrid Next.js applications that do not use <code>next export</code> are
+        fully supported.
+      </p>
+    </blockquote>
+    <h3 id="automatically-statically-optimized-pages">
+      Automatically Statically Optimized Pages
+    </h3>
+    <p>
+      For pages that are
+      <a href="/docs/advanced-features/automatic-static-optimization.md"
+        >automatically statically optimized</a
+      >, a version of the page will be generated for each locale.
+    </p>
+    <h3 id="non-dynamic-getstaticprops-pages">
+      Non-dynamic getStaticProps Pages
+    </h3>
+    <p>
+      For non-dynamic <code>getStaticProps</code> pages, a version is generated
+      for each locale like above. <code>getStaticProps</code> is called with
+      each <code>locale</code> that is being rendered. If you would like to
+      opt-out of a certain locale from being pre-rendered, you can return
+      <code>notFound: true</code> from <code>getStaticProps</code> and this
+      variant of the page will not be generated.
+    </p>
+    <div class="sourceCode" id="cb8">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb8-1" title="1"><span class="im">export</span> <span class="kw">async</span> <span class="kw">function</span> <span class="at">getStaticProps</span>(<span class="op">{</span> locale <span class="op">}</span>) <span class="op">{</span></a>
 <a class="sourceLine" id="cb8-2" title="2">  <span class="co">// Call an external API endpoint to get posts.</span></a>
 <a class="sourceLine" id="cb8-3" title="3">  <span class="co">// You can use any data fetching library</span></a>
 <a class="sourceLine" id="cb8-4" title="4">  <span class="kw">const</span> res <span class="op">=</span> <span class="cf">await</span> <span class="at">fetch</span>(<span class="vs">`https://.../posts?locale=</span><span class="sc">${</span>locale<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></a>
@@ -206,10 +407,23 @@ export default function IndexPage(props) {
 <a class="sourceLine" id="cb8-17" title="17">      posts<span class="op">,</span></a>
 <a class="sourceLine" id="cb8-18" title="18">    <span class="op">},</span></a>
 <a class="sourceLine" id="cb8-19" title="19">  <span class="op">};</span></a>
-<a class="sourceLine" id="cb8-20" title="20"><span class="op">}</span></a></code></pre></div>
-<h3 id="dynamic-getstaticprops-pages">Dynamic getStaticProps Pages</h3>
-<p>For dynamic <code>getStaticProps</code> pages, any locale variants of the page that is desired to be prerendered needs to be returned from <a href="/docs/basic-features/data-fetching.md#getstaticpaths-static-generation"><code>getStaticPaths</code></a>. Along with the <code>params</code> object that can be returned for the <code>paths</code>, you can also return a <code>locale</code> field specifying which locale you want to render. For example:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb9-1" title="1"><span class="co">// pages/blog/[slug].js</span></a>
+<a class="sourceLine" id="cb8-20" title="20"><span class="op">}</span></a></code></pre>
+    </div>
+    <h3 id="dynamic-getstaticprops-pages">Dynamic getStaticProps Pages</h3>
+    <p>
+      For dynamic <code>getStaticProps</code> pages, any locale variants of the
+      page that is desired to be prerendered needs to be returned from
+      <a
+        href="/docs/basic-features/data-fetching.md#getstaticpaths-static-generation"
+        ><code>getStaticPaths</code></a
+      >. Along with the <code>params</code> object that can be returned for the
+      <code>paths</code>, you can also return a <code>locale</code> field
+      specifying which locale you want to render. For example:
+    </p>
+    <div class="sourceCode" id="cb9">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb9-1" title="1"><span class="co">// pages/blog/[slug].js</span></a>
 <a class="sourceLine" id="cb9-2" title="2"><span class="im">export</span> <span class="kw">const</span> getStaticPaths <span class="op">=</span> (<span class="op">{</span> locales <span class="op">}</span>) <span class="kw">=&gt;</span> <span class="op">{</span></a>
 <a class="sourceLine" id="cb9-3" title="3">  <span class="cf">return</span> <span class="op">{</span></a>
 <a class="sourceLine" id="cb9-4" title="4">    <span class="dt">paths</span><span class="op">:</span> [</a>
@@ -218,6 +432,7 @@ export default function IndexPage(props) {
 <a class="sourceLine" id="cb9-7" title="7">    ]<span class="op">,</span></a>
 <a class="sourceLine" id="cb9-8" title="8">    <span class="dt">fallback</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span></a>
 <a class="sourceLine" id="cb9-9" title="9">  <span class="op">};</span></a>
-<a class="sourceLine" id="cb9-10" title="10"><span class="op">};</span></a></code></pre></div>
-</body>
+<a class="sourceLine" id="cb9-10" title="10"><span class="op">};</span></a></code></pre>
+    </div>
+  </body>
 </html>

@@ -1,44 +1,79 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
-<head>
-  <meta charset="utf-8" />
-  <meta name="generator" content="pandoc" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>module-path-aliases</title>
-  <link rel="stylesheet" href="https://raw.githubusercontent.com/bgoonz/docs-collection/master/nextjs.css">
-</head>
-<body>
-<h1 id="absolute-imports-and-module-path-aliases">Absolute Imports and Module path aliases</h1>
-<details>
-<summary><b>Examples</b></summary>
-<ul>
-<li>
-<a href="https://github.com/vercel/next.js/tree/canary/examples/with-absolute-imports">Absolute Imports</a>
-</li>
-</ul>
-</details>
-<p>Next.js automatically supports the <code>tsconfig.json</code> and <code>jsconfig.json</code> <code>"paths"</code> and <code>"baseUrl"</code> options since <a href="https://nextjs.org/blog/next-9-4">Next.js 9.4</a>.</p>
-<blockquote>
-<p>Note: <code>jsconfig.json</code> can be used when you don’t use TypeScript</p>
-</blockquote>
-<blockquote>
-<p>Note: you need to restart dev server to reflect modifications done in <code>tsconfig.json</code> / <code>jsconfig.json</code></p>
-</blockquote>
-<p>These options allow you to configure module aliases, for example a common pattern is aliasing certain directories to use absolute paths.</p>
-<p>One useful feature of these options is that they integrate automatically into certain editors, for example vscode.</p>
-<p>The <code>baseUrl</code> configuration option allows you to import directly from the root of the project.</p>
-<p>An example of this configuration:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb1-1" title="1"><span class="er">//</span> <span class="er">tsconfig.json</span> <span class="er">or</span> <span class="er">jsconfig.json</span></a>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>module-path-aliases</title>
+    <link
+      rel="stylesheet"
+      href="https://raw.githubusercontent.com/bgoonz/docs-collection/master/nextjs.css"
+    />
+  </head>
+  <body>
+    <h1 id="absolute-imports-and-module-path-aliases">
+      Absolute Imports and Module path aliases
+    </h1>
+    <details>
+      <summary><b>Examples</b></summary>
+      <ul>
+        <li>
+          <a
+            href="https://github.com/vercel/next.js/tree/canary/examples/with-absolute-imports"
+            >Absolute Imports</a
+          >
+        </li>
+      </ul>
+    </details>
+    <p>
+      Next.js automatically supports the <code>tsconfig.json</code> and
+      <code>jsconfig.json</code> <code>"paths"</code> and
+      <code>"baseUrl"</code> options since
+      <a href="https://nextjs.org/blog/next-9-4">Next.js 9.4</a>.
+    </p>
+    <blockquote>
+      <p>
+        Note: <code>jsconfig.json</code> can be used when you don’t use
+        TypeScript
+      </p>
+    </blockquote>
+    <blockquote>
+      <p>
+        Note: you need to restart dev server to reflect modifications done in
+        <code>tsconfig.json</code> / <code>jsconfig.json</code>
+      </p>
+    </blockquote>
+    <p>
+      These options allow you to configure module aliases, for example a common
+      pattern is aliasing certain directories to use absolute paths.
+    </p>
+    <p>
+      One useful feature of these options is that they integrate automatically
+      into certain editors, for example vscode.
+    </p>
+    <p>
+      The <code>baseUrl</code> configuration option allows you to import
+      directly from the root of the project.
+    </p>
+    <p>An example of this configuration:</p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb1-1" title="1"><span class="er">//</span> <span class="er">tsconfig.json</span> <span class="er">or</span> <span class="er">jsconfig.json</span></a>
 <a class="sourceLine" id="cb1-2" title="2"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb1-3" title="3">  <span class="dt">&quot;compilerOptions&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
 <a class="sourceLine" id="cb1-4" title="4">    <span class="dt">&quot;baseUrl&quot;</span><span class="fu">:</span> <span class="st">&quot;.&quot;</span></a>
 <a class="sourceLine" id="cb1-5" title="5">  <span class="fu">}</span></a>
-<a class="sourceLine" id="cb1-6" title="6"><span class="fu">}</span></a></code></pre></div>
-<pre class="jsx"><code>// components/button.js
+<a class="sourceLine" id="cb1-6" title="6"><span class="fu">}</span></a></code></pre>
+    </div>
+    <pre class="jsx"><code>// components/button.js
 export default function Button() {
   return &lt;button&gt;Click me&lt;/button&gt;;
 }</code></pre>
-<pre class="jsx"><code>// pages/index.js
+    <pre class="jsx"><code>// pages/index.js
 import Button from &quot;components/button&quot;;
 
 export default function HomePage() {
@@ -49,10 +84,20 @@ export default function HomePage() {
     &lt;/&gt;
   );
 }</code></pre>
-<p>While <code>baseUrl</code> is useful you might want to add other aliases that don’t match 1 on 1. For this TypeScript has the <code>"paths"</code> option.</p>
-<p>Using <code>"paths"</code> allows you to configure module aliases. For example <code>@/components/*</code> to <code>components/*</code>.</p>
-<p>An example of this configuration:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb4-1" title="1"><span class="er">//</span> <span class="er">tsconfig.json</span> <span class="er">or</span> <span class="er">jsconfig.json</span></a>
+    <p>
+      While <code>baseUrl</code> is useful you might want to add other aliases
+      that don’t match 1 on 1. For this TypeScript has the
+      <code>"paths"</code> option.
+    </p>
+    <p>
+      Using <code>"paths"</code> allows you to configure module aliases. For
+      example <code>@/components/*</code> to <code>components/*</code>.
+    </p>
+    <p>An example of this configuration:</p>
+    <div class="sourceCode" id="cb4">
+      <pre
+        class="sourceCode json"
+      ><code class="sourceCode json"><a class="sourceLine" id="cb4-1" title="1"><span class="er">//</span> <span class="er">tsconfig.json</span> <span class="er">or</span> <span class="er">jsconfig.json</span></a>
 <a class="sourceLine" id="cb4-2" title="2"><span class="fu">{</span></a>
 <a class="sourceLine" id="cb4-3" title="3">  <span class="dt">&quot;compilerOptions&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
 <a class="sourceLine" id="cb4-4" title="4">    <span class="dt">&quot;baseUrl&quot;</span><span class="fu">:</span> <span class="st">&quot;.&quot;</span><span class="fu">,</span></a>
@@ -60,12 +105,13 @@ export default function HomePage() {
 <a class="sourceLine" id="cb4-6" title="6">      <span class="dt">&quot;@/components/*&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;components/*&quot;</span><span class="ot">]</span></a>
 <a class="sourceLine" id="cb4-7" title="7">    <span class="fu">}</span></a>
 <a class="sourceLine" id="cb4-8" title="8">  <span class="fu">}</span></a>
-<a class="sourceLine" id="cb4-9" title="9"><span class="fu">}</span></a></code></pre></div>
-<pre class="jsx"><code>// components/button.js
+<a class="sourceLine" id="cb4-9" title="9"><span class="fu">}</span></a></code></pre>
+    </div>
+    <pre class="jsx"><code>// components/button.js
 export default function Button() {
   return &lt;button&gt;Click me&lt;/button&gt;;
 }</code></pre>
-<pre class="jsx"><code>// pages/index.js
+    <pre class="jsx"><code>// pages/index.js
 import Button from &quot;@/components/button&quot;;
 
 export default function HomePage() {
@@ -76,5 +122,5 @@ export default function HomePage() {
     &lt;/&gt;
   );
 }</code></pre>
-</body>
+  </body>
 </html>

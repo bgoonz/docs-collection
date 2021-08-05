@@ -1,45 +1,123 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
-<head>
-  <meta charset="utf-8" />
-  <meta name="generator" content="pandoc" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>cdn-support-with-asset-prefix</title>
-  <link rel="stylesheet" href="https://raw.githubusercontent.com/bgoonz/docs-collection/master/nextjs.css">
-</head>
-<body>
-<h1 id="cdn-support-with-asset-prefix">CDN Support with Asset Prefix</h1>
-<blockquote>
-<p><strong>Attention</strong>: <a href="/docs/deployment.md">Deploying to Vercel</a> automatically configures a global CDN for your Next.js project. You do not need to manually setup an Asset Prefix.</p>
-</blockquote>
-<blockquote>
-<p><strong>Note</strong>: Next.js 9.5+ added support for a customizable <a href="/docs/api-reference/next.config.js/basepath.md">Base Path</a>, which is better suited for hosting your application on a sub-path like <code>/docs</code>. We do not suggest you use a custom Asset Prefix for this use case.</p>
-</blockquote>
-<p>To set up a <a href="https://en.wikipedia.org/wiki/Content_delivery_network">CDN</a>, you can set up an asset prefix and configure your CDN’s origin to resolve to the domain that Next.js is hosted on.</p>
-<p>Open <code>next.config.js</code> and add the <code>assetPrefix</code> config:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">const</span> isProd <span class="op">=</span> <span class="va">process</span>.<span class="va">env</span>.<span class="at">NODE_ENV</span> <span class="op">===</span> <span class="st">&quot;production&quot;</span><span class="op">;</span></a>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>cdn-support-with-asset-prefix</title>
+    <link
+      rel="stylesheet"
+      href="https://raw.githubusercontent.com/bgoonz/docs-collection/master/nextjs.css"
+    />
+  </head>
+  <body>
+    <h1 id="cdn-support-with-asset-prefix">CDN Support with Asset Prefix</h1>
+    <blockquote>
+      <p>
+        <strong>Attention</strong>:
+        <a href="/docs/deployment.md">Deploying to Vercel</a> automatically
+        configures a global CDN for your Next.js project. You do not need to
+        manually setup an Asset Prefix.
+      </p>
+    </blockquote>
+    <blockquote>
+      <p>
+        <strong>Note</strong>: Next.js 9.5+ added support for a customizable
+        <a href="/docs/api-reference/next.config.js/basepath.md">Base Path</a>,
+        which is better suited for hosting your application on a sub-path like
+        <code>/docs</code>. We do not suggest you use a custom Asset Prefix for
+        this use case.
+      </p>
+    </blockquote>
+    <p>
+      To set up a
+      <a href="https://en.wikipedia.org/wiki/Content_delivery_network">CDN</a>,
+      you can set up an asset prefix and configure your CDN’s origin to resolve
+      to the domain that Next.js is hosted on.
+    </p>
+    <p>
+      Open <code>next.config.js</code> and add the
+      <code>assetPrefix</code> config:
+    </p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">const</span> isProd <span class="op">=</span> <span class="va">process</span>.<span class="va">env</span>.<span class="at">NODE_ENV</span> <span class="op">===</span> <span class="st">&quot;production&quot;</span><span class="op">;</span></a>
 <a class="sourceLine" id="cb1-2" title="2"></a>
 <a class="sourceLine" id="cb1-3" title="3"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> <span class="op">{</span></a>
 <a class="sourceLine" id="cb1-4" title="4">  <span class="co">// Use the CDN in production and localhost for development.</span></a>
 <a class="sourceLine" id="cb1-5" title="5">  <span class="dt">assetPrefix</span><span class="op">:</span> isProd <span class="op">?</span> <span class="st">&quot;https://cdn.mydomain.com&quot;</span> : <span class="st">&quot;&quot;</span><span class="op">,</span></a>
-<a class="sourceLine" id="cb1-6" title="6"><span class="op">};</span></a></code></pre></div>
-<p>Next.js will automatically use your asset prefix for the JavaScript and CSS files it loads from the <code>/_next/</code> path (<code>.next/static/</code> folder). For example, with the above configuration, the following request for a JS chunk:</p>
-<pre><code>/_next/static/chunks/4b9b41aaa062cbbfeff4add70f256968c51ece5d.4d708494b3aed70c04f0.js</code></pre>
-<p>Would instead become:</p>
-<pre><code>https://cdn.mydomain.com/_next/static/chunks/4b9b41aaa062cbbfeff4add70f256968c51ece5d.4d708494b3aed70c04f0.js</code></pre>
-<p>The exact configuration for uploading your files to a given CDN will depend on your CDN of choice. The only folder you need to host on your CDN is the contents of <code>.next/static/</code>, which should be uploaded as <code>_next/static/</code> as the above URL request indicates. <strong>Do not upload the rest of your <code>.next/</code> folder</strong>, as you should not expose your server code and other configuration to the public.</p>
-<p>While <code>assetPrefix</code> covers requests to <code>_next/static</code>, it does not influence the following paths:</p>
-<ul>
-<li>Files in the <a href="/docs/basic-features/static-file-serving.md">public</a> folder; if you want to serve those assets over a CDN, you’ll have to introduce the prefix yourself</li>
-<li><code>/_next/data/</code> requests for <code>getServerSideProps</code> pages. These requests will always be made against the main domain since they’re not static.</li>
-<li><code>/_next/data/</code> requests for <code>getStaticProps</code> pages. These requests will always be made against the main domain to support <a href="/docs/basic-features/data-fetching.md#incremental-static-regeneration">Incremental Static Generation</a>, even if you’re not using it (for consistency).</li>
-</ul>
-<h2 id="related">Related</h2>
-<div class="card">
-<p><a href="/docs/api-reference/next.config.js/introduction.md"> <b>Introduction to next.config.js:</b> <small>Learn more about the configuration file used by Next.js.</small> </a></p>
-</div>
-<div class="card">
-<p><a href="/docs/basic-features/static-file-serving.md"> <b>Static File Serving:</b> <small>Serve static files, like images, in the public directory.</small> </a></p>
-</div>
-</body>
+<a class="sourceLine" id="cb1-6" title="6"><span class="op">};</span></a></code></pre>
+    </div>
+    <p>
+      Next.js will automatically use your asset prefix for the JavaScript and
+      CSS files it loads from the <code>/_next/</code> path (<code
+        >.next/static/</code
+      >
+      folder). For example, with the above configuration, the following request
+      for a JS chunk:
+    </p>
+    <pre><code>/_next/static/chunks/4b9b41aaa062cbbfeff4add70f256968c51ece5d.4d708494b3aed70c04f0.js</code></pre>
+    <p>Would instead become:</p>
+    <pre><code>https://cdn.mydomain.com/_next/static/chunks/4b9b41aaa062cbbfeff4add70f256968c51ece5d.4d708494b3aed70c04f0.js</code></pre>
+    <p>
+      The exact configuration for uploading your files to a given CDN will
+      depend on your CDN of choice. The only folder you need to host on your CDN
+      is the contents of <code>.next/static/</code>, which should be uploaded as
+      <code>_next/static/</code> as the above URL request indicates.
+      <strong>Do not upload the rest of your <code>.next/</code> folder</strong
+      >, as you should not expose your server code and other configuration to
+      the public.
+    </p>
+    <p>
+      While <code>assetPrefix</code> covers requests to
+      <code>_next/static</code>, it does not influence the following paths:
+    </p>
+    <ul>
+      <li>
+        Files in the
+        <a href="/docs/basic-features/static-file-serving.md">public</a> folder;
+        if you want to serve those assets over a CDN, you’ll have to introduce
+        the prefix yourself
+      </li>
+      <li>
+        <code>/_next/data/</code> requests for
+        <code>getServerSideProps</code> pages. These requests will always be
+        made against the main domain since they’re not static.
+      </li>
+      <li>
+        <code>/_next/data/</code> requests for
+        <code>getStaticProps</code> pages. These requests will always be made
+        against the main domain to support
+        <a
+          href="/docs/basic-features/data-fetching.md#incremental-static-regeneration"
+          >Incremental Static Generation</a
+        >, even if you’re not using it (for consistency).
+      </li>
+    </ul>
+    <h2 id="related">Related</h2>
+    <div class="card">
+      <p>
+        <a href="/docs/api-reference/next.config.js/introduction.md">
+          <b>Introduction to next.config.js:</b>
+          <small
+            >Learn more about the configuration file used by Next.js.</small
+          >
+        </a>
+      </p>
+    </div>
+    <div class="card">
+      <p>
+        <a href="/docs/basic-features/static-file-serving.md">
+          <b>Static File Serving:</b>
+          <small
+            >Serve static files, like images, in the public directory.</small
+          >
+        </a>
+      </p>
+    </div>
+  </body>
 </html>

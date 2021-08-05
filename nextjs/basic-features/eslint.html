@@ -1,18 +1,38 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
-<head>
-  <meta charset="utf-8" />
-  <meta name="generator" content="pandoc" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>eslint</title>
-  <link rel="stylesheet" href="https://raw.githubusercontent.com/bgoonz/docs-collection/master/nextjs.css">
-</head>
-<body>
-<h1 id="eslint">ESLint</h1>
-<p>Since version <strong>11.0.0</strong>, Next.js provides an integrated <a href="https://eslint.org/">ESLint</a> experience out of the box. To get started, run <code>next lint</code>:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1"><span class="ex">next</span> lint</a></code></pre></div>
-<p>If you don’t already have ESLint configured in your application, you will be guided through the installation of any required packages.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" title="1"><span class="ex">next</span> lint</a>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>eslint</title>
+    <link
+      rel="stylesheet"
+      href="https://raw.githubusercontent.com/bgoonz/docs-collection/master/nextjs.css"
+    />
+  </head>
+  <body>
+    <h1 id="eslint">ESLint</h1>
+    <p>
+      Since version <strong>11.0.0</strong>, Next.js provides an integrated
+      <a href="https://eslint.org/">ESLint</a> experience out of the box. To get
+      started, run <code>next lint</code>:
+    </p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode bash"
+      ><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1"><span class="ex">next</span> lint</a></code></pre>
+    </div>
+    <p>
+      If you don’t already have ESLint configured in your application, you will
+      be guided through the installation of any required packages.
+    </p>
+    <div class="sourceCode" id="cb2">
+      <pre
+        class="sourceCode bash"
+      ><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" title="1"><span class="ex">next</span> lint</a>
 <a class="sourceLine" id="cb2-2" title="2"></a>
 <a class="sourceLine" id="cb2-3" title="3"><span class="co"># You&#39;ll see instructions like these:</span></a>
 <a class="sourceLine" id="cb2-4" title="4"><span class="co">#</span></a>
@@ -20,61 +40,166 @@
 <a class="sourceLine" id="cb2-6" title="6"><span class="co">#</span></a>
 <a class="sourceLine" id="cb2-7" title="7"><span class="co">#         yarn add --dev eslint eslint-config-next</span></a>
 <a class="sourceLine" id="cb2-8" title="8"><span class="co">#</span></a>
-<a class="sourceLine" id="cb2-9" title="9"><span class="co"># ...</span></a></code></pre></div>
-<p>If no ESLint configuration is present, Next.js will create an <code>.eslintrc</code> file in the root of your project and automatically configure it with the base configuration:</p>
-<pre><code>{
+<a class="sourceLine" id="cb2-9" title="9"><span class="co"># ...</span></a></code></pre>
+    </div>
+    <p>
+      If no ESLint configuration is present, Next.js will create an
+      <code>.eslintrc</code> file in the root of your project and automatically
+      configure it with the base configuration:
+    </p>
+    <pre><code>{
   &quot;extends&quot;: &quot;next&quot;
 }</code></pre>
-<p>Now you can run <code>next lint</code> every time you want to run ESLint to catch errors</p>
-<blockquote>
-<p>The default base configuration (<code>"extends": "next"</code>) can be updated at any time and will only be included if no ESLint configuration is present.</p>
-</blockquote>
-<p>We recommend using an appropriate <a href="https://eslint.org/docs/user-guide/integrations#editors">integration</a> to view warnings and errors directly in your code editor during development.</p>
-<h2 id="linting-during-builds">Linting During Builds</h2>
-<p>Once ESLint has been set up, it will automatically run during every build (<code>next build</code>). Errors will fail the build while warnings will not.</p>
-<p>If you do not want ESLint to run as a build step, it can be disabled using the <code>--no-lint</code> flag:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" title="1"><span class="ex">next</span> build --no-lint</a></code></pre></div>
-<p>This is not recommended unless you have configured ESLint to run in a separate part of your workflow (for example, in CI or a pre-commit hook).</p>
-<h2 id="linting-custom-directories">Linting Custom Directories</h2>
-<p>By default, Next.js will only run ESLint for all files in the <code>pages/</code> directory. However, you can specify other custom directories to run by using the <code>--dir</code> flag in <code>next lint</code>:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" title="1"><span class="ex">next</span> lint --dir components --dir lib</a></code></pre></div>
-<h2 id="eslint-plugin">ESLint Plugin</h2>
-<p>Next.js provides an ESLint plugin, <a href="https://www.npmjs.com/package/@next/eslint-plugin-next"><code>eslint-plugin-next</code></a>, that makes it easier to catch common issues and problems in a Next.js application. The full set of rules can be found in the <a href="https://github.com/vercel/next.js/tree/master/packages/eslint-plugin-next/lib/rules">package repository</a>.</p>
-<h2 id="base-configuration">Base Configuration</h2>
-<p>The Next.js base ESLint configuration is automatically generated when <code>next lint</code> is run for the first time:</p>
-<pre><code>{
+    <p>
+      Now you can run <code>next lint</code> every time you want to run ESLint
+      to catch errors
+    </p>
+    <blockquote>
+      <p>
+        The default base configuration (<code>"extends": "next"</code>) can be
+        updated at any time and will only be included if no ESLint configuration
+        is present.
+      </p>
+    </blockquote>
+    <p>
+      We recommend using an appropriate
+      <a href="https://eslint.org/docs/user-guide/integrations#editors"
+        >integration</a
+      >
+      to view warnings and errors directly in your code editor during
+      development.
+    </p>
+    <h2 id="linting-during-builds">Linting During Builds</h2>
+    <p>
+      Once ESLint has been set up, it will automatically run during every build
+      (<code>next build</code>). Errors will fail the build while warnings will
+      not.
+    </p>
+    <p>
+      If you do not want ESLint to run as a build step, it can be disabled using
+      the <code>--no-lint</code> flag:
+    </p>
+    <div class="sourceCode" id="cb4">
+      <pre
+        class="sourceCode bash"
+      ><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" title="1"><span class="ex">next</span> build --no-lint</a></code></pre>
+    </div>
+    <p>
+      This is not recommended unless you have configured ESLint to run in a
+      separate part of your workflow (for example, in CI or a pre-commit hook).
+    </p>
+    <h2 id="linting-custom-directories">Linting Custom Directories</h2>
+    <p>
+      By default, Next.js will only run ESLint for all files in the
+      <code>pages/</code> directory. However, you can specify other custom
+      directories to run by using the <code>--dir</code> flag in
+      <code>next lint</code>:
+    </p>
+    <div class="sourceCode" id="cb5">
+      <pre
+        class="sourceCode bash"
+      ><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" title="1"><span class="ex">next</span> lint --dir components --dir lib</a></code></pre>
+    </div>
+    <h2 id="eslint-plugin">ESLint Plugin</h2>
+    <p>
+      Next.js provides an ESLint plugin,
+      <a href="https://www.npmjs.com/package/@next/eslint-plugin-next"
+        ><code>eslint-plugin-next</code></a
+      >, that makes it easier to catch common issues and problems in a Next.js
+      application. The full set of rules can be found in the
+      <a
+        href="https://github.com/vercel/next.js/tree/master/packages/eslint-plugin-next/lib/rules"
+        >package repository</a
+      >.
+    </p>
+    <h2 id="base-configuration">Base Configuration</h2>
+    <p>
+      The Next.js base ESLint configuration is automatically generated when
+      <code>next lint</code> is run for the first time:
+    </p>
+    <pre><code>{
   &quot;extends&quot;: &quot;next&quot;
 }</code></pre>
-<p>This configuration extends recommended rule sets from various Eslint plugins:</p>
-<ul>
-<li><a href="https://www.npmjs.com/package/eslint-plugin-react"><code>eslint-plugin-react</code></a></li>
-<li><a href="https://www.npmjs.com/package/eslint-plugin-react-hooks"><code>eslint-plugin-react-hooks</code></a></li>
-<li><a href="https://www.npmjs.com/package/@next/eslint-plugin-next"><code>eslint-plugin-next</code></a></li>
-</ul>
-<p>You can see the full details of the shareable configuration in the <a href="https://www.npmjs.com/package/eslint-config-next"><code>eslint-config-next</code></a> package.</p>
-<p>If you would like to modify any rules provided by the supported plugins (<code>react</code>, <code>react-hooks</code>, <code>next</code>), you can directly modify them using the <code>rules</code> property:</p>
-<pre><code>{
+    <p>
+      This configuration extends recommended rule sets from various Eslint
+      plugins:
+    </p>
+    <ul>
+      <li>
+        <a href="https://www.npmjs.com/package/eslint-plugin-react"
+          ><code>eslint-plugin-react</code></a
+        >
+      </li>
+      <li>
+        <a href="https://www.npmjs.com/package/eslint-plugin-react-hooks"
+          ><code>eslint-plugin-react-hooks</code></a
+        >
+      </li>
+      <li>
+        <a href="https://www.npmjs.com/package/@next/eslint-plugin-next"
+          ><code>eslint-plugin-next</code></a
+        >
+      </li>
+    </ul>
+    <p>
+      You can see the full details of the shareable configuration in the
+      <a href="https://www.npmjs.com/package/eslint-config-next"
+        ><code>eslint-config-next</code></a
+      >
+      package.
+    </p>
+    <p>
+      If you would like to modify any rules provided by the supported plugins
+      (<code>react</code>, <code>react-hooks</code>, <code>next</code>), you can
+      directly modify them using the <code>rules</code> property:
+    </p>
+    <pre><code>{
   &quot;extends&quot;: &quot;next&quot;,
   &quot;rules&quot;: {
     &quot;react/no-unescaped-entities&quot;: &quot;off&quot;,
     &quot;@next/next/no-page-custom-font&quot;: &quot;error&quot;,
   }
 }</code></pre>
-<blockquote>
-<p><strong>Note</strong>: If you need to also include a separate, custom ESLint configuration, it is highly recommended that <code>eslint-config-next</code> is extended last after other configurations. For example:</p>
-<pre><code>{
+    <blockquote>
+      <p>
+        <strong>Note</strong>: If you need to also include a separate, custom
+        ESLint configuration, it is highly recommended that
+        <code>eslint-config-next</code> is extended last after other
+        configurations. For example:
+      </p>
+      <pre><code>{
   &quot;extends&quot;: [&quot;eslint:recommended&quot;, &quot;next&quot;]
 }</code></pre>
-<p>The <code>next</code> configuration already handles setting default values for the <code>parser</code>, <code>plugins</code> and <code>settings</code> properties. There is no need to manually re-declare any of these properties unless you need a different configuration for your use case. If you include any other shareable configurations, you will need to make sure that these properties are not overwritten or modified.</p>
-</blockquote>
-<h3 id="core-web-vitals">Core Web Vitals</h3>
-<p>A stricter <code>next/core-web-vitals</code> entrypoint can also be specified in <code>.eslintrc</code>:</p>
-<pre><code>{
+      <p>
+        The <code>next</code> configuration already handles setting default
+        values for the <code>parser</code>, <code>plugins</code> and
+        <code>settings</code> properties. There is no need to manually
+        re-declare any of these properties unless you need a different
+        configuration for your use case. If you include any other shareable
+        configurations, you will need to make sure that these properties are not
+        overwritten or modified.
+      </p>
+    </blockquote>
+    <h3 id="core-web-vitals">Core Web Vitals</h3>
+    <p>
+      A stricter <code>next/core-web-vitals</code> entrypoint can also be
+      specified in <code>.eslintrc</code>:
+    </p>
+    <pre><code>{
   &quot;extends&quot;: [&quot;next&quot;, &quot;next/core-web-vitals&quot;]
 }</code></pre>
-<p><code>next/core-web-vitals</code> updates <code>eslint-plugin-next</code> to error on a number of rules that are warnings by default if they affect <a href="https://web.dev/vitals/">Core Web Vitals</a>.</p>
-<blockquote>
-<p>Both <code>next</code> and <code>next/core-web-vitals</code> entry points are automatically included for new applications built with <a href="/docs/api-reference/create-next-app.md">Create Next App</a>.</p>
-</blockquote>
-</body>
+    <p>
+      <code>next/core-web-vitals</code> updates
+      <code>eslint-plugin-next</code> to error on a number of rules that are
+      warnings by default if they affect
+      <a href="https://web.dev/vitals/">Core Web Vitals</a>.
+    </p>
+    <blockquote>
+      <p>
+        Both <code>next</code> and <code>next/core-web-vitals</code> entry
+        points are automatically included for new applications built with
+        <a href="/docs/api-reference/create-next-app.md">Create Next App</a>.
+      </p>
+    </blockquote>
+  </body>
 </html>

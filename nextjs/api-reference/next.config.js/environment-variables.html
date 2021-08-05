@@ -1,48 +1,97 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
-<head>
-  <meta charset="utf-8" />
-  <meta name="generator" content="pandoc" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>environment-variables</title>
-  <link rel="stylesheet" href="https://raw.githubusercontent.com/bgoonz/docs-collection/master/nextjs.css">
-</head>
-<body>
-<h1 id="environment-variables">Environment Variables</h1>
-<blockquote>
-<p>Since the release of <a href="https://nextjs.org/blog/next-9-4">Next.js 9.4</a> we now have a more intuitive and ergonomic experience for <a href="/docs/basic-features/environment-variables.md">adding environment variables</a>. Give it a try!</p>
-</blockquote>
-<details>
-<summary><b>Examples</b></summary>
-<ul>
-<li>
-<a href="https://github.com/vercel/next.js/tree/canary/examples/with-env-from-next-config-js">With env</a>
-</li>
-</ul>
-</details>
-<p>To add environment variables to the JavaScript bundle, open <code>next.config.js</code> and add the <code>env</code> config:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode js"><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> <span class="op">{</span></a>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>environment-variables</title>
+    <link
+      rel="stylesheet"
+      href="https://raw.githubusercontent.com/bgoonz/docs-collection/master/nextjs.css"
+    />
+  </head>
+  <body>
+    <h1 id="environment-variables">Environment Variables</h1>
+    <blockquote>
+      <p>
+        Since the release of
+        <a href="https://nextjs.org/blog/next-9-4">Next.js 9.4</a> we now have a
+        more intuitive and ergonomic experience for
+        <a href="/docs/basic-features/environment-variables.md"
+          >adding environment variables</a
+        >. Give it a try!
+      </p>
+    </blockquote>
+    <details>
+      <summary><b>Examples</b></summary>
+      <ul>
+        <li>
+          <a
+            href="https://github.com/vercel/next.js/tree/canary/examples/with-env-from-next-config-js"
+            >With env</a
+          >
+        </li>
+      </ul>
+    </details>
+    <p>
+      To add environment variables to the JavaScript bundle, open
+      <code>next.config.js</code> and add the <code>env</code> config:
+    </p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="va">module</span>.<span class="at">exports</span> <span class="op">=</span> <span class="op">{</span></a>
 <a class="sourceLine" id="cb1-2" title="2">  <span class="dt">env</span><span class="op">:</span> <span class="op">{</span></a>
 <a class="sourceLine" id="cb1-3" title="3">    <span class="dt">customKey</span><span class="op">:</span> <span class="st">&quot;my-value&quot;</span><span class="op">,</span></a>
 <a class="sourceLine" id="cb1-4" title="4">  <span class="op">},</span></a>
-<a class="sourceLine" id="cb1-5" title="5"><span class="op">};</span></a></code></pre></div>
-<p>Now you can access <code>process.env.customKey</code> in your code. For example:</p>
-<pre class="jsx"><code>function Page() {
+<a class="sourceLine" id="cb1-5" title="5"><span class="op">};</span></a></code></pre>
+    </div>
+    <p>
+      Now you can access <code>process.env.customKey</code> in your code. For
+      example:
+    </p>
+    <pre class="jsx"><code>function Page() {
   return &lt;h1&gt;The value of customKey is: {process.env.customKey}&lt;/h1&gt;;
 }
 
 export default Page;</code></pre>
-<p>Next.js will replace <code>process.env.customKey</code> with <code>'my-value'</code> at build time. Trying to destructure <code>process.env</code> variables won’t work due to the nature of webpack <a href="https://webpack.js.org/plugins/define-plugin/">DefinePlugin</a>.</p>
-<p>For example, the following line:</p>
-<pre class="jsx"><code>return &lt;h1&gt;The value of customKey is: {process.env.customKey}&lt;/h1&gt;;</code></pre>
-<p>Will end up being:</p>
-<pre class="jsx"><code>return &lt;h1&gt;The value of customKey is: {&quot;my-value&quot;}&lt;/h1&gt;;</code></pre>
-<h2 id="related">Related</h2>
-<div class="card">
-<p><a href="/docs/api-reference/next.config.js/introduction.md"> <b>Introduction to next.config.js:</b> <small>Learn more about the configuration file used by Next.js.</small> </a></p>
-</div>
-<div class="card">
-<p><a href="/docs/basic-features/environment-variables.md"> <b>Built-in support for Environment Variables:</b> <small>Learn more about the new support for environment variables.</small> </a></p>
-</div>
-</body>
+    <p>
+      Next.js will replace <code>process.env.customKey</code> with
+      <code>'my-value'</code> at build time. Trying to destructure
+      <code>process.env</code> variables won’t work due to the nature of webpack
+      <a href="https://webpack.js.org/plugins/define-plugin/">DefinePlugin</a>.
+    </p>
+    <p>For example, the following line:</p>
+    <pre
+      class="jsx"
+    ><code>return &lt;h1&gt;The value of customKey is: {process.env.customKey}&lt;/h1&gt;;</code></pre>
+    <p>Will end up being:</p>
+    <pre
+      class="jsx"
+    ><code>return &lt;h1&gt;The value of customKey is: {&quot;my-value&quot;}&lt;/h1&gt;;</code></pre>
+    <h2 id="related">Related</h2>
+    <div class="card">
+      <p>
+        <a href="/docs/api-reference/next.config.js/introduction.md">
+          <b>Introduction to next.config.js:</b>
+          <small
+            >Learn more about the configuration file used by Next.js.</small
+          >
+        </a>
+      </p>
+    </div>
+    <div class="card">
+      <p>
+        <a href="/docs/basic-features/environment-variables.md">
+          <b>Built-in support for Environment Variables:</b>
+          <small
+            >Learn more about the new support for environment variables.</small
+          >
+        </a>
+      </p>
+    </div>
+  </body>
 </html>
