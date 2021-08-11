@@ -2,7 +2,7 @@
 title: Select menu (deprecated)
 path: components/select-menu
 status: Deprecated
-source: 'https://github.com/github/github/blob/main/app/assets/stylesheets/components/select-menu.scss'
+source: "https://github.com/github/github/blob/main/app/assets/stylesheets/components/select-menu.scss"
 symbols:
   [
     active,

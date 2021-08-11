@@ -2,7 +2,7 @@
 title: Marketing buttons
 path: components/marketing-buttons
 status: New
-source: 'https://github.com/primer/css/tree/main/src/marketing/buttons'
+source: "https://github.com/primer/css/tree/main/src/marketing/buttons"
 bundle: marketing-buttons
 ---
 

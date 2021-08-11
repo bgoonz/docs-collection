@@ -2,7 +2,7 @@
 title: Typography
 path: utilities/typography
 status: Stable
-source: 'https://github.com/primer/css/tree/main/src/utilities/typography.scss'
+source: "https://github.com/primer/css/tree/main/src/utilities/typography.scss"
 bundle: utilities
 ---
 
@@ -11,15 +11,15 @@ Type utilities are designed to work in combination with line-height utilities so
 Font sizes are smaller on mobile and scale up at the `md` [breakpoint](/support/breakpoints) to be larger on desktop.
 
 | Scale | Font size: mobile | Font size: desktop | 1.25 line height | 1.5 line height |
-| --- | --- | --- | --- | --- |
-| 00 | 40px | 48px | 60 | 72 |
-| 0 | 32px | 40px | 50 | 60 |
-| 1 | 26px | 32px | 40 | 48 |
-| 2 | 22px | 24px | 30 | 36 |
-| 3 | 18px | 20px | 25 | 30 |
-| 4 | 16px | 16px | 20 | 24 |
-| 5 | 14px | 14px | 17.5 | 21 |
-| 6 | 12px | 12px | 15 | 18 |
+| ----- | ----------------- | ------------------ | ---------------- | --------------- |
+| 00    | 40px              | 48px               | 60               | 72              |
+| 0     | 32px              | 40px               | 50               | 60              |
+| 1     | 26px              | 32px               | 40               | 48              |
+| 2     | 22px              | 24px               | 30               | 36              |
+| 3     | 18px              | 20px               | 25               | 30              |
+| 4     | 16px              | 16px               | 20               | 24              |
+| 5     | 14px              | 14px               | 17.5             | 21              |
+| 6     | 12px              | 12px               | 15               | 18              |
 
 ## Heading utilities
 

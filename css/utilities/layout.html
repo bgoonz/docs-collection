@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Layout</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Layout</h1>
+    </header>
+    <p>
+      Change the document layout with display, float, alignment, and other
+      utilities.
+    </p>
+    <h2 id="display">Display</h2>
+    <p>
+      Adjust the display of an element with <code>.d-block</code>,
+      <code>.d-none</code>, <code>.d-inline</code>,
+      <code>.d-inline-block</code>, <code>.d-table</code>,
+      <code>.d-table-cell</code> utilities.
+    </p>
+    <p>
+      <code
+        >html live &lt;div class="d-inline border"&gt; .d-inline &lt;div
+        class="d-inline-block border"&gt;.d-inline-block&lt;/div&gt; &lt;span
+        class="d-block border"&gt;.d-block&lt;/span&gt; &lt;div class="d-table
+        border"&gt; &lt;div class="d-table-cell
+        border"&gt;.d-table-cell&lt;/div&gt; &lt;/div&gt; &lt;div
+        class="d-table-cell border"&gt;.d-table-cell&lt;/div&gt; &lt;div
+        class="d-none"&gt;.d-none&lt;/div&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <h3 id="the-html-hidden-attribute">
+      The HTML <code>hidden</code> attribute
+    </h3>
+    <p>
+      As of
+      <a href="https://github.com/primer/css/releases/v10.10.0"
+        >Primer v10.10.0</a
+      >, <code>primer-base</code> includes a rule that sets
+      <code>display: none !important</code> for any element with the
+      <a
+        href="https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/hidden"
+        ><code>hidden</code> attribute</a
+      >. You can safely use the <code>hidden</code> attribute with display
+      utilities, but we suggest:
+    </p>
+    <ol type="1">
+      <li>
+        Use the <code>hidden</code> attribute (and corresponding JavaScript
+        property) if you’re going to programmatically show and hide content.
+      </li>
+      <li>
+        Use <code>d-none</code> and/or its responsive variants
+        (<code>d-sm-block</code>, <code>d-lg-none</code>) to conditionally show
+        content at different screen sizes.
+      </li>
+    </ol>
+    <p>
+      Rather than toggling the <code>d-none</code> class in JavaScript, you
+      should toggle the <code>hidden</code> property on an element. This means
+      that you won’t have to restore any more specific display utility (<code
+        >d-inline</code
+      >
+      or <code>d-flex</code>, for instance) just to work around the order in
+      which they’re listed in the stylesheet.
+    </p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode js"
+      ><code class="sourceCode javascript"><a class="sourceLine" id="cb1-1" title="1"><span class="co">// Good:</span></a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="va">element</span>.<span class="at">hidden</span> <span class="op">=</span> <span class="op">!</span>visible<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-3" title="3"></a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="co">// Bad:</span></a>
+<a class="sourceLine" id="cb1-5" title="5"><span class="va">element</span>.<span class="va">classList</span>.<span class="at">toggle</span>(<span class="st">&#39;d-none&#39;</span><span class="op">,</span> <span class="op">!</span>visible)<span class="op">;</span></a>
+<a class="sourceLine" id="cb1-6" title="6"><span class="va">element</span>.<span class="va">classList</span>.<span class="at">toggle</span>(<span class="st">&#39;d-inline&#39;</span><span class="op">,</span> visible)<span class="op">;</span></a></code></pre>
+    </div>
+    <h3 id="displaytable-wrapping-issues">
+      <code>display:table</code> wrapping issues
+    </h3>
+    <p>
+      There are known issues with using <code>display:table</code> and wrapping
+      long strings, particularly in Firefox. You may need to use
+      <code>table-fixed</code> on elements with <code>d-table</code> and apply
+      column widths to table cells, which you can do with our
+      <a href="/objects/grid#column-widths">column width styles</a>.
+    </p>
+    <p>
+      <code
+        >html live &lt;div class="d-table table-fixed width-full"&gt; &lt;div
+        class="d-table-cell border"&gt;.d-table-cell&lt;/div&gt; &lt;div
+        class="d-table-cell col-10 border"&gt;d-table-cell .col-10&lt;/div&gt;
+        &lt;/div&gt;</code
+      >
+    </p>
+    <h3 id="responsive-display">Responsive display</h3>
+    <p>
+      A selection of display utilities are able to be applied or changed per
+      <a href="/objects/grid#breakpoints">breakpoint</a>. <code>.d-block</code>,
+      <code>.d-none</code>, <code>.d-inline</code>, and
+      <code>.d-inline-block</code> are available as responsive utilities using
+      the following formula: <code>d-[breakpoint]-[property]</code>. For
+      example: <code>d-md-inline-block</code>. Each responsive display utility
+      is applied to the specified breakpoint and up.
+    </p>
+    <p>
+      In the following example, the <code>ul</code> element switches from
+      <code>display: block</code> on mobile to
+      <code>display: inline-block</code> at the <code>md</code> breakpoint,
+      while the list items remain inline.
+    </p>
+    <p>
+      <code
+        >html live &lt;h5
+        class="d-md-inline-block"&gt;.d-md-inline-block&lt;/h5&gt; &lt;ul
+        class="d-md-inline-block border"&gt; &lt;li class="d-inline
+        border"&gt;.d-inline&lt;/li&gt; &lt;li class="d-inline
+        border"&gt;.d-inline&lt;/li&gt; &lt;/ul&gt;</code
+      >
+    </p>
+    <h3 id="responsive-hide">Responsive hide</h3>
+    <p>
+      Hide utilities are able to be applied or changed per breakpoint using the
+      following formula:<br />
+      <code>hide-[breakpoint]</code>, for example: <code>hide-sm</code>. Hide
+      utilities act differently from other responsive styles and are applied to
+      each <strong>breakpoint-range only</strong>.
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Shorthand</th>
+          <th>Range</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>-sm</td>
+          <td>0—543px</td>
+        </tr>
+        <tr class="even">
+          <td>-md</td>
+          <td>544px—767px</td>
+        </tr>
+        <tr class="odd">
+          <td>-lg</td>
+          <td>768px—1011px</td>
+        </tr>
+        <tr class="even">
+          <td>-xl</td>
+          <td>1012px and above</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      <code
+        >html live &lt;div&gt; &lt;h3&gt;Potato update&lt;/h3&gt; &lt;span
+        class="hide-sm hide-md"&gt;Opened by &lt;a
+        href="#url"&gt;broccolini&lt;/a&gt;&lt;/span&gt; &lt;span
+        class="d-md-none"&gt;Updated&lt;/span&gt; 3 hours ago &lt;/div&gt;</code
+      >
+    </p>
+    <h3 id="text-direction">Text direction</h3>
+    <p>
+      <code>.direction-ltr</code> or <code>.direction-rtl</code> can be used to
+      change the text direction. This is especially helpful when paired with
+      <code>.d-table</code>, <code>.d-table-cell</code>, and
+      <code>.v-align-middle</code> to create equal height, vertically centered,
+      alternating content.
+    </p>
+    <h2 id="visibility">Visibility</h2>
+    <p>
+      Adjust the visibility of an element with <code>.v-hidden</code> and
+      <code>.v-visible</code>.
+    </p>
+    <h2 id="overflow">Overflow</h2>
+    <p>
+      Adjust element overflow with <code>.overflow-hidden</code>,
+      <code>.overflow-scroll</code>, and <code>.overflow-auto</code>, or use
+      <code>.overflow-visible</code> to undo the effects of CSS with overflow
+      issues. <code>.overflow-hidden</code> can also be used to create a new
+      <a
+        href="https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Block_formatting_context"
+        >block formatting context</a
+      >
+      or clear floats.
+    </p>
+    <p>Overflow utilities can also target x- and y-axes independently via:</p>
+    <ul>
+      <li><code>.overflow-x-auto</code></li>
+      <li><code>.overflow-x-hidden</code></li>
+      <li><code>.overflow-x-scroll</code></li>
+      <li><code>.overflow-x-visible</code></li>
+      <li><code>.overflow-y-auto</code></li>
+      <li><code>.overflow-y-hidden</code></li>
+      <li><code>.overflow-y-scroll</code></li>
+      <li><code>.overflow-y-visible</code></li>
+    </ul>
+    <p>
+      Overflow utilities can be applied or changed per
+      <a href="/objects/grid#breakpoints">breakpoint</a>. Each
+      <strong>responsive</strong> overflow utility is applied to the specified
+      breakpoint and up, using the following formula:
+      <code>overflow-[breakpoint]-[axis]-[property]</code>. For example:
+      <code>overflow-x-scroll</code> or <code>overflow-md-x-visible</code>.
+    </p>
+    <h2 id="floats">Floats</h2>
+    <p>
+      Use <code>.float-left</code> and <code>.float-right</code> to set floats,
+      and <code>.clearfix</code> to clear.
+    </p>
+    <p>
+      <code
+        >html live &lt;div class="clearfix border"&gt; &lt;div class="float-left
+        border"&gt;.float-left&lt;/div&gt; &lt;div class="float-right
+        border"&gt;.float-right&lt;/div&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <h3 id="responsive-floats">Responsive floats</h3>
+    <p>
+      Float utilities can be applied or changed per
+      <a href="/objects/grid#breakpoints">breakpoint</a>. This can be useful for
+      responsive layouts when you want an element to be full width on mobile but
+      floated at a larger breakpoint.
+    </p>
+    <p>
+      Each responsive float utility is applied to the specified breakpoint and
+      up, using the following formula:
+      <code>float-[breakpoint]-[property]</code>. For example:
+      <code>float-md-left</code>. Remember to use <code>.clearfix</code> to
+      clear.
+    </p>
+    <p>
+      <code
+        >html live &lt;div class="clearfix border"&gt; &lt;div
+        class="float-md-left border"&gt;.float-md-left&lt;/div&gt; &lt;div
+        class="float-md-right border"&gt;.float-md-right&lt;/div&gt;
+        &lt;/div&gt;</code
+      >
+    </p>
+    <h2 id="alignment">Alignment</h2>
+    <p>
+      Adjust the alignment of an element with <code>.v-align-baseline</code>,
+      <code>.v-align-top</code>, <code>.v-align-middle</code> or
+      <code>.v-align-bottom</code>. The vertical-align property only applies to
+      inline or table-cell boxes.
+    </p>
+    <p>
+      <code
+        >html live &lt;div class="d-table border"&gt; &lt;div
+        class="d-table-cell"&gt;&lt;h1&gt;Potatoes&lt;/h1&gt;&lt;/div&gt;
+        &lt;div class="d-table-cell
+        v-align-baseline"&gt;.v-align-baseline&lt;/div&gt; &lt;div
+        class="d-table-cell v-align-top"&gt;.v-align-top&lt;/div&gt; &lt;div
+        class="d-table-cell v-align-middle"&gt;.v-align-middle&lt;/div&gt;
+        &lt;div class="d-table-cell
+        v-align-bottom"&gt;.v-align-bottom&lt;/div&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <p>
+      Use <code>v-align-text-top</code> or <code>v-align-text-bottom</code> to
+      adjust the alignment of an element with the top or bottom of the parent
+      element’s font.
+    </p>
+    <p>
+      <code
+        >html live &lt;div class="border"&gt; &lt;h1 class="mr-1"&gt; Potatoes
+        &lt;span class="f4 v-align-text-top
+        mr-1"&gt;.v-align-text-top&lt;/span&gt; &lt;span class="f4
+        v-align-text-bottom mr-1"&gt;.v-align-text-bottom&lt;/span&gt;
+        &lt;/h1&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <h2 id="width-and-height">Width and height</h2>
+    <p>Use <code>.width-fit</code> to set max-width 100%.</p>
+    <p>
+      <code
+        >html live &lt;div class="one-fourth column"&gt; &lt;img
+        class="width-fit color-bg-secondary" src="https://github.com/github.png"
+        alt="width fitted octocat" /&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <p>Use <code>.width-full</code> to set width to 100%.</p>
+    <p>
+      <code
+        >html live &lt;div class="d-table width-full"&gt; &lt;div
+        class="d-table-cell"&gt; &lt;input class="form-control width-full"
+        type="text" value="Full width form field" aria-label="Sample full width
+        form field" /&gt; &lt;/div&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <p>
+      Use <code>.width-auto</code> to reset width to <code>auto</code> (initial
+      value). Typically used with <strong>responsive variants</strong>. Resize
+      the window to see the effect in the example below.
+    </p>
+    <p>
+      <code
+        >html live &lt;div class="d-table width-full width-md-auto"&gt; &lt;div
+        class="d-table-cell"&gt; &lt;input class="form-control width-full"
+        type="text" value="Responsive width form field" aria-label="Sample full
+        responsive width form field" /&gt; &lt;/div&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <p>Use <code>.height-fit</code> to set max-height 100%.</p>
+    <p>
+      <code
+        >html live &lt;div class="one-fourth column" style="height: 100px;
+        overflow: auto;"&gt; &lt;div class="p-3 height-fit border"&gt; Bacon
+        ipsum dolor amet meatball flank beef tail pig boudin ham hock chicken
+        capicola. Shoulder ham spare ribs turducken pork tongue. Bresaola corned
+        beef sausage jowl ribeye kielbasa tenderloin andouille leberkas tongue.
+        Ribeye tri-tip tenderloin pig, chuck ground round chicken tongue corned
+        beef biltong. &lt;/div&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <p>Use <code>.height-full</code> to set height to 100%.</p>
+    <p>
+      <code
+        >html live &lt;div class="d-table border"&gt; &lt;div
+        class="d-table-cell height-full v-align-middle pl-3"&gt; &lt;!-- &lt;%=
+        octicon "three-bars" %&gt; --&gt; &lt;svg class="octicon
+        octicon-three-bars" viewBox="0 0 12 16" version="1.1" width="12"
+        height="16" aria-hidden="true" &gt; &lt;path fill-rule="evenodd"
+        d="M11.41 9H.59C0 9 0 8.59 0 8c0-.59 0-1 .59-1H11.4c.59 0 .59.41.59 1 0
+        .59 0 1-.59 1h.01zm0-4H.59C0 5 0 4.59 0 4c0-.59 0-1 .59-1H11.4c.59 0
+        .59.41.59 1 0 .59 0 1-.59 1h.01zM.59 11H11.4c.59 0 .59.41.59 1 0 .59 0
+        1-.59 1H.59C0 13 0 12.59 0 12c0-.59 0-1 .59-1z" &gt;&lt;/path&gt;
+        &lt;/svg&gt; &lt;/div&gt; &lt;div class="p-3"&gt; Bacon ipsum dolor amet
+        meatball flank beef tail pig boudin ham hock chicken capicola. Shoulder
+        ham spare ribs turducken pork tongue. Bresaola corned beef sausage jowl
+        ribeye kielbasa tenderloin andouille leberkas tongue. Ribeye tri-tip
+        tenderloin pig, chuck ground round chicken tongue corned beef biltong.
+        &lt;/div&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <h2 id="position">Position</h2>
+    <p>
+      Position utilities can be used to alter the default document flow.
+      <strong
+        >Be careful when using positioning, it’s often unnecessary and commonly
+        misused.</strong
+      >
+    </p>
+    <p>
+      The position of an element depends on the content. Use <code>top-0</code>,
+      <code>right-0</code>, <code>bottom-0</code>, and <code>left-0</code> to
+      further specify an elements final position.
+    </p>
+    <p>
+      <code
+        >html live &lt;div style="height: 64px;"&gt; &lt;div class="border
+        position-absolute top-0 left-0"&gt;.top-0 .left-0&lt;/div&gt; &lt;div
+        class="border position-absolute top-0 right-0"&gt;.top-0
+        .right-0&lt;/div&gt; &lt;div class="border position-absolute bottom-0
+        right-0"&gt; .bottom-0 .right-0 &lt;/div&gt; &lt;div class="border
+        position-absolute bottom-0 left-0"&gt;.bottom-0 .left-0&lt;/div&gt;
+        &lt;/div&gt;</code
+      >
+    </p>
+    <p>
+      Using the
+      <strong>responsive variants</strong> (e.g. <code>.right-md-0</code>) can
+      be helpful for positioning select menus, dropdowns, popovers etc. when the
+      content gets shuffled around for certain responsive breakpoints. You can
+      also use <code>auto</code> to “reset” a final position for wider
+      breakpoints (e.g. <code>right-0 right-md-auto</code>).
+    </p>
+    <h3 id="relative">Relative</h3>
+    <p>Use <code>.position-relative</code> to create a new stacking context.</p>
+    <p>
+      <em
+        >Note how the other elements are displayed as if “Two” were in its
+        normal position and taking up space.</em
+      >
+    </p>
+    <p>
+      <code
+        >html live &lt;div class="d-inline-block float-left
+        color-bg-info-inverse color-text-white m-3" style="width:100px;
+        height:100px;" &gt; One &lt;/div&gt; &lt;div class="d-inline-block
+        float-left position-relative color-bg-info-inverse color-text-white m-3"
+        style="width:100px; height:100px; top:12px; left:12px;" &gt; Two
+        &lt;/div&gt; &lt;div class="d-inline-block float-left
+        color-bg-info-inverse color-text-white m-3" style="width:100px;
+        height:100px;" &gt; Three &lt;/div&gt; &lt;div class="d-inline-block
+        float-left color-bg-info-inverse color-text-white m-3"
+        style="width:100px; height:100px;" &gt; Four &lt;/div&gt;</code
+      >
+    </p>
+    <h3 id="absolute">Absolute</h3>
+    <p>
+      Use <code>.position-absolute</code> to take elements out of the normal
+      document flow.
+    </p>
+    <p>
+      <code
+        >html live &lt;div class="position-relative" style="height:116px;"&gt;
+        &lt;button type="button" class="btn mb-1"&gt;Button&lt;/button&gt;
+        &lt;div class="position-absolute border p-2"&gt; &lt;a href="#url"
+        class="d-block p-1"&gt;Mashed potatoes&lt;/a&gt; &lt;a href="#url"
+        class="d-block p-1"&gt;Fries&lt;/a&gt; &lt;/div&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <h3 id="fixed">Fixed</h3>
+    <p>
+      Use <code>.position-fixed</code> to position an element relative to the
+      viewport.
+      <strong
+        >Be careful when using fixed positioning. It is tricky to use and can
+        lead to unwanted side effects.</strong
+      >
+    </p>
+    <p>
+      <em
+        >Note: This example is shown in an <code>&lt;iframe&gt;</code> and
+        therefore will not be positioned to the viewport of this page.</em
+      >
+    </p>
+    <p>
+      <code
+        >html live &lt;div style="height: 64px;"&gt; &lt;div
+        class="position-fixed right-0 bottom-0 color-bg-secondary border
+        p-2"&gt; .position-fixed &lt;/div&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <p>To fill an entire width or height, use opposing directions.</p>
+    <p>
+      <em
+        >Note: fixed positioning has been disabled here for demonstration
+        only.</em
+      >
+    </p>
+    <p>
+      <code
+        >html live &lt;div class="position-fixed left-0 right-0 p-3
+        color-bg-info-inverse color-text-white" &gt; .position-fixed .left-0
+        .right-0 &lt;/div&gt;</code
+      >
+    </p>
+    <h3 id="sticky">Sticky</h3>
+    <p>
+      Use <code>.position-sticky</code> to keep an element stuck to an edge as
+      long as its parent is visible. Things to keep in mind:
+    </p>
+    <ul>
+      <li>
+        Using the <code>.position-sticky</code> class by itself doesn’t have any
+        effect. An additional <code>[top|bottom|left|right]-0</code> class is
+        needed. See the examples below.
+      </li>
+      <li>
+        Add a background color to sticky elements so it covers the content
+        underneath.
+      </li>
+      <li>
+        Use <code>style="z-index: 1;"</code> (or higher) in case there are other
+        elements with <code>z-index</code>.
+      </li>
+    </ul>
+    <h4 id="top">Top</h4>
+    <p>
+      Combine <code>.position-sticky</code> with <code>.top-0</code> to keep an
+      element stuck to the top.
+    </p>
+    ```html live
+    <section class="mb-3">
+      <header
+        class="border position-sticky top-0 color-bg-secondary p-3"
+        style="z-index: 1"
+      >
+        Sticky header 1
+      </header>
+      <main class="border border-top-0 p-3">
+        <p>
+          Until recently, the prevailing view assumed lorem ipsum was born as a
+          nonsense text. “It’s not Latin, though it looks like it, and it
+          actually says nothing,” Before &amp; After magazine answered a curious
+          reader, “Its ‘words’ loosely approximate the frequency with which
+          letters occur in English, which is why at a glance it looks pretty
+          real.”
+        </p>
+      </main>
+    </section>
+    <section class="mb-3">
+      <header class="border position-sticky top-0 color-bg-secondary p-3">
+        Sticky header 2
+      </header>
+      <main class="border border-top-0 p-3">
+        <p>As Cicero would put it, “Um, not so fast.”</p>
+        <p>
+          The placeholder text, beginning with the line “Lorem ipsum dolor sit
+          amet, consectetur adipiscing elit”, looks like Latin because in its
+          youth, centuries ago, it was Latin.
+        </p>
+      </main>
+    </section>
+    <section class="mb-3">
+      <header class="border position-sticky top-0 color-bg-secondary p-3">
+        Sticky header 3
+      </header>
+      <main class="border border-top-0 p-3">
+        <p>
+          Richard McClintock, a Latin scholar from Hampden-Sydney College, is
+          credited with discovering the source behind the ubiquitous filler
+          text. In seeing a sample of lorem ipsum, his interest was piqued by
+          consectetur—a genuine, albeit rare, Latin word. Consulting a Latin
+          dictionary led McClintock to a passage from De Finibus Bonorum et
+          Malorum (“On the Extremes of Good and Evil”), a first-century B.C.
+          text from the Roman philosopher Cicero.
+        </p>
+      </main>
+    </section>
+    <style>
+      .frame-example {
+        max-width: 300px;
+        height: 300px;
+      }
+    </style>
+    <p>```</p>
+    <h4 id="bottom">Bottom</h4>
+    <p>
+      Combine <code>.position-sticky</code> with <code>.bottom-0</code> to keep
+      an element stuck to the bottom. Can be used as a footer or toolbar.
+    </p>
+    ```html live
+    <section class="mb-3">
+      <main class="border border-bottom-0 p-3">
+        <h3>Title</h3>
+        <p>
+          Until recently, the prevailing view assumed lorem ipsum was born as a
+          nonsense text. “It’s not Latin, though it looks like it, and it
+          actually says nothing,” Before &amp; After magazine answered a curious
+          reader, “Its ‘words’ loosely approximate the frequency with which
+          letters occur in English, which is why at a glance it looks pretty
+          real.”
+        </p>
+      </main>
+      <footer class="border position-sticky bottom-0 color-bg-secondary p-3">
+        Sticky footer 1
+      </footer>
+    </section>
+    <section class="mb-3">
+      <main class="border border-bottom-0 p-3">
+        <h3>Title</h3>
+        <p>
+          Richard McClintock, a Latin scholar from Hampden-Sydney College, is
+          credited with discovering the source behind the ubiquitous filler
+          text. In seeing a sample of lorem ipsum, his interest was piqued by
+          consectetur—a genuine, albeit rare, Latin word. Consulting a Latin
+          dictionary led McClintock to a passage from De Finibus Bonorum et
+          Malorum (“On the Extremes of Good and Evil”), a first-century B.C.
+          text from the Roman philosopher Cicero.
+        </p>
+      </main>
+      <footer class="border position-sticky bottom-0 color-bg-secondary p-3">
+        Sticky footer 2
+      </footer>
+    </section>
+    <style>
+      .frame-example {
+        max-width: 300px;
+        height: 300px;
+      }
+    </style>
+    <p>```</p>
+    <h4 id="left-and-right">Left and right</h4>
+    <p>
+      Combine <code>.position-sticky</code> with <code>.left-0</code> or
+      <code>.right-0</code> to keep elements stuck to the left or right when
+      scrolling horizontally.
+    </p>
+    <p>
+      <code
+        >html live &lt;div class="d-flex border overflow-x-auto"&gt; &lt;section
+        class="d-flex"&gt; &lt;span class="border position-sticky left-0
+        color-bg-secondary p-4"&gt;A&lt;/span&gt; &lt;span class="border
+        p-4"&gt;1&lt;/span&gt;&lt;span class="border p-4"&gt;2&lt;/span
+        &gt;&lt;span class="border p-4"&gt;3&lt;/span&gt;&lt;span class="border
+        p-4"&gt;4&lt;/span &gt;&lt;span class="border
+        p-4"&gt;5&lt;/span&gt;&lt;span class="border p-4"&gt;6&lt;/span
+        &gt;&lt;span class="border p-4"&gt;7&lt;/span&gt;&lt;span class="border
+        p-4"&gt;8&lt;/span &gt;&lt;span class="border p-4"&gt;9&lt;/span&gt;
+        &lt;/section&gt; &lt;section class="d-flex"&gt; &lt;span class="border
+        position-sticky left-0 color-bg-secondary p-4"&gt;B&lt;/span&gt;
+        &lt;span class="border p-4"&gt;1&lt;/span&gt;&lt;span class="border
+        p-4"&gt;2&lt;/span &gt;&lt;span class="border
+        p-4"&gt;3&lt;/span&gt;&lt;span class="border p-4"&gt;4&lt;/span
+        &gt;&lt;span class="border p-4"&gt;5&lt;/span&gt;&lt;span class="border
+        p-4"&gt;6&lt;/span &gt;&lt;span class="border
+        p-4"&gt;7&lt;/span&gt;&lt;span class="border p-4"&gt;8&lt;/span
+        &gt;&lt;span class="border p-4"&gt;9&lt;/span&gt; &lt;/section&gt;
+        &lt;section class="d-flex"&gt; &lt;span class="border position-sticky
+        left-0 color-bg-secondary p-4"&gt;C&lt;/span&gt; &lt;span class="border
+        p-4"&gt;1&lt;/span&gt;&lt;span class="border p-4"&gt;2&lt;/span
+        &gt;&lt;span class="border p-4"&gt;3&lt;/span&gt;&lt;span class="border
+        p-4"&gt;4&lt;/span &gt;&lt;span class="border
+        p-4"&gt;5&lt;/span&gt;&lt;span class="border p-4"&gt;6&lt;/span
+        &gt;&lt;span class="border p-4"&gt;7&lt;/span&gt;&lt;span class="border
+        p-4"&gt;8&lt;/span &gt;&lt;span class="border p-4"&gt;9&lt;/span&gt;
+        &lt;/section&gt; &lt;section class="d-flex"&gt; &lt;span class="border
+        position-sticky left-0 color-bg-secondary p-4"&gt;D&lt;/span&gt;
+        &lt;span class="border p-4"&gt;1&lt;/span&gt;&lt;span class="border
+        p-4"&gt;2&lt;/span &gt;&lt;span class="border
+        p-4"&gt;3&lt;/span&gt;&lt;span class="border p-4"&gt;4&lt;/span
+        &gt;&lt;span class="border p-4"&gt;5&lt;/span&gt;&lt;span class="border
+        p-4"&gt;6&lt;/span &gt;&lt;span class="border
+        p-4"&gt;7&lt;/span&gt;&lt;span class="border p-4"&gt;8&lt;/span
+        &gt;&lt;span class="border p-4"&gt;9&lt;/span&gt; &lt;/section&gt;
+        &lt;section class="d-flex"&gt; &lt;span class="border position-sticky
+        left-0 color-bg-secondary p-4"&gt;E&lt;/span&gt; &lt;span class="border
+        p-4"&gt;1&lt;/span&gt;&lt;span class="border p-4"&gt;2&lt;/span
+        &gt;&lt;span class="border p-4"&gt;3&lt;/span&gt;&lt;span class="border
+        p-4"&gt;4&lt;/span &gt;&lt;span class="border
+        p-4"&gt;5&lt;/span&gt;&lt;span class="border p-4"&gt;6&lt;/span
+        &gt;&lt;span class="border p-4"&gt;7&lt;/span&gt;&lt;span class="border
+        p-4"&gt;8&lt;/span &gt;&lt;span class="border p-4"&gt;9&lt;/span&gt;
+        &lt;span class="border position-sticky right-0 color-bg-secondary p-4"
+        &gt;...&lt;/span &gt; &lt;/section&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <h3 id="responsive-position">Responsive position</h3>
+    <p>
+      Position utilities can be applied or changed per breakpoint in responsive
+      layouts. Each responsive position utility is applied to the specified
+      breakpoint and up, using the following formula:
+      <code>position-[breakpoint]-[property]</code>. For example:
+      <code>position-md-absolute</code>.
+    </p>
+    <p>
+      <code
+        >html live &lt;div style="height: 64px;"&gt; &lt;div class="border
+        position-md-absolute top-0 right-0"&gt; .position-md-absolute .top-0
+        .right-0 &lt;/div&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <h3 id="screen-reader-only">Screen reader only</h3>
+    <p>
+      Use <code>.sr-only</code> to position an element outside of the viewport
+      for screen reader access only.
+      <strong
+        >Even though the element can’t be seen, make sure it still has a
+        sensible tab order.</strong
+      >
+    </p>
+    <p>
+      <code
+        >html live &lt;div class="js-details-container Details"&gt; &lt;button
+        type="button" class="btn"&gt; Tab once from this button, and press enter
+        &lt;/button&gt; &lt;button type="button" class="sr-only
+        js-details-target"&gt; Screen reader only button &lt;/button&gt; &lt;div
+        class="Details-content--hidden"&gt;Button activated!&lt;/div&gt;
+        &lt;/div&gt;</code
+      >
+    </p>
+    <h2 id="the-media-object">The media object</h2>
+    <p>Create a media object with utilities.</p>
+    <p>
+      <code
+        >html live &lt;div class="clearfix p-3 border"&gt; &lt;div
+        class="float-left p-3 mr-3 color-bg-secondary"&gt;Image&lt;/div&gt;
+        &lt;div class="overflow-hidden"&gt; &lt;p&gt; &lt;b&gt;Body&lt;/b&gt;
+        Bacon ipsum dolor amet shankle rump tenderloin pork chop meatball strip
+        steak bresaola doner sirloin capicola biltong shank pig. Alcatra
+        frankfurter ham hock, ribeye prosciutto hamburger kevin brisket chuck
+        burgdoggen short loin. &lt;/p&gt; &lt;/div&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <p>
+      Create a double-sided media object for a container with a flexible center.
+    </p>
+    <p>
+      <code
+        >html live &lt;div class="clearfix p-3 border"&gt; &lt;div
+        class="float-left p-3 mr-3 color-bg-secondary"&gt;Image&lt;/div&gt;
+        &lt;div class="float-right p-3 ml-3
+        color-bg-secondary"&gt;Image&lt;/div&gt; &lt;div
+        class="overflow-hidden"&gt; &lt;p&gt; &lt;b&gt;Body&lt;/b&gt; Bacon
+        ipsum dolor amet shankle rump tenderloin pork chop meatball strip steak
+        bresaola doner sirloin capicola biltong shank pig. Alcatra frankfurter
+        ham hock, ribeye prosciutto hamburger kevin brisket chuck burgdoggen
+        short loin. &lt;/p&gt; &lt;/div&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <p>
+      You can also create a media object with
+      <a href="./flexbox#media-object">flexbox utilities</a> instead of floats
+      which can be useful for changing the vertical alignment.
+    </p>
+  </body>
+</html>

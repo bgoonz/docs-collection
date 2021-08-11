@@ -2,8 +2,8 @@
 title: Flexbox
 path: utilities/flexbox
 status: Stable
-status_issue: 'https://github.com/github/design-systems/issues/157'
-source: 'https://github.com/primer/css/blob/main/src/utilities/flexbox.scss'
+status_issue: "https://github.com/github/design-systems/issues/157"
+source: "https://github.com/primer/css/blob/main/src/utilities/flexbox.scss"
 bundle: utilities
 ---
 
@@ -32,9 +32,9 @@ Use these classes to make an element lay out its content using the flexbox model
 
 ### Classes
 
-| Class | Description |
-| --- | --- |
-| `.d-flex` | The element behaves like a block and lays out its content using the flexbox model. |
+| Class            | Description                                                                                  |
+| ---------------- | -------------------------------------------------------------------------------------------- |
+| `.d-flex`        | The element behaves like a block and lays out its content using the flexbox model.           |
 | `.d-inline-flex` | The element behaves like an inline element and lays out its content using the flexbox model. |
 
 ### Example using `.d-flex`
@@ -155,10 +155,10 @@ You can choose whether flex items are forced into a single line or wrapped onto 
 
 ### Classes
 
-| Class | Description |
-| --- | --- |
-| `.flex-wrap` | Flex items will break onto multiple lines (default) |
-| `.flex-nowrap` | Flex items are laid out in a single line, even if they overflow |
+| Class                | Description                                                          |
+| -------------------- | -------------------------------------------------------------------- |
+| `.flex-wrap`         | Flex items will break onto multiple lines (default)                  |
+| `.flex-nowrap`       | Flex items are laid out in a single line, even if they overflow      |
 | `.flex-wrap-reverse` | Behaves the same as wrap but cross-start and cross-end are permuted. |
 
 ### `flex-wrap` example
@@ -225,13 +225,13 @@ Use these classes to distribute space between and around flex items along the **
 
 ### Classes
 
-| Class | Default behavior |
-| --- | --- |
-| `.flex-justify-start` | Justify all items to the left |
-| `.flex-justify-end` | Justify all items to the right |
-| `.flex-justify-center` | Justify items to the center of the container |
+| Class                   | Default behavior                                                                        |
+| ----------------------- | --------------------------------------------------------------------------------------- |
+| `.flex-justify-start`   | Justify all items to the left                                                           |
+| `.flex-justify-end`     | Justify all items to the right                                                          |
+| `.flex-justify-center`  | Justify items to the center of the container                                            |
 | `.flex-justify-between` | Distribute items evenly. First item is on the start line, last item is on the end line. |
-| `.flex-justify-around` | Distribute items evenly with equal space around them |
+| `.flex-justify-around`  | Distribute items evenly with equal space around them                                    |
 
 ### flex-justify-start
 
@@ -321,13 +321,13 @@ The cross axis runs perpendicular to the main axis. By default the main axis run
 
 ### Classes
 
-| Class | Behavior |
-| --- | --- |
-| `.flex-items-start` | Align items to the start of the cross axis |
-| `.flex-items-end` | Align items to the end of the cross axis |
-| `.flex-items-center` | Align items to the center of the cross axis |
-| `.flex-items-baseline` | Align items along their baselines |
-| `.flex-items-stretch` | Stretch items from start of cross axis to end of cross axis |
+| Class                  | Behavior                                                    |
+| ---------------------- | ----------------------------------------------------------- |
+| `.flex-items-start`    | Align items to the start of the cross axis                  |
+| `.flex-items-end`      | Align items to the end of the cross axis                    |
+| `.flex-items-center`   | Align items to the center of the cross axis                 |
+| `.flex-items-baseline` | Align items along their baselines                           |
+| `.flex-items-stretch`  | Stretch items from start of cross axis to end of cross axis |
 
 ### flex-items-start
 
@@ -415,14 +415,14 @@ When the main axis wraps, this creates multiple main axis lines and adds extra s
 
 ### Classes
 
-| Class | Description |
-| --- | --- |
-| `.flex-content-start` | Align content to the start of the cross axis |
-| `.flex-content-end` | Align content to the end of the cross axis |
-| `.flex-content-center` | Align content to the center of the cross axis |
+| Class                   | Description                                                                                                         |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `.flex-content-start`   | Align content to the start of the cross axis                                                                        |
+| `.flex-content-end`     | Align content to the end of the cross axis                                                                          |
+| `.flex-content-center`  | Align content to the center of the cross axis                                                                       |
 | `.flex-content-between` | Distribute content evenly. First line is on the start of the cross axis, last line is on the end of the cross axis. |
-| `.flex-content-around` | Stretch items from the start of the cross axis to the end of the cross axis. |
-| `.flex-content-stretch` | Lines stretch to occupy available space. |
+| `.flex-content-around`  | Stretch items from the start of the cross axis to the end of the cross axis.                                        |
+| `.flex-content-stretch` | Lines stretch to occupy available space.                                                                            |
 
 ### flex-content-start
 
@@ -673,14 +673,14 @@ Use these classes to adjust the alignment of an individual flex item on the cros
 
 ### Classes
 
-| Class | Description |
-| --- | --- |
-| `.flex-self-auto` | Inherit alignment from parent |
-| `.flex-self-start` | Align to the start of the cross axis |
-| `.flex-self-end` | Align to the end of the cross axis |
-| `.flex-self-center` | Align to center of cross axis |
-| `.flex-self-baseline` | Align baseline to the start of the cross axis |
-| `.flex-self-stretch` | Stretch item from start of cross axis to end of cross axis. |
+| Class                 | Description                                                 |
+| --------------------- | ----------------------------------------------------------- |
+| `.flex-self-auto`     | Inherit alignment from parent                               |
+| `.flex-self-start`    | Align to the start of the cross axis                        |
+| `.flex-self-end`      | Align to the end of the cross axis                          |
+| `.flex-self-center`   | Align to center of cross axis                               |
+| `.flex-self-baseline` | Align baseline to the start of the cross axis               |
+| `.flex-self-stretch`  | Stretch item from start of cross axis to end of cross axis. |
 
 ### flex-self-auto
 

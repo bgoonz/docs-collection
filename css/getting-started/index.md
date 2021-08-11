@@ -33,7 +33,7 @@ Here's what you need to know about how the files are structured in both git and 
 - When published, all of the files in `src/` are "hoisted" to the package root so that you can import, say, utilities with:
 
   ```scss
-  @import '@primer/css/utilities/index.scss';
+  @import "@primer/css/utilities/index.scss";
   ```
 
 - All bundle interdependencies within Primer CSS are defined as relative imports (e.g. with `../`), so everything should work fine as long as the `@primer/css` directory is in one of your Sass include paths (i.e. `node_modules`).
@@ -62,25 +62,25 @@ sass:
 It's best practice to import all of this scss into one file, usually named `index.scss`. From this file you'll import one or more Primer CSS bundles and any other custom code you write.
 
 ```scss
-@import '@primer/css/core/index.scss';
+@import "@primer/css/core/index.scss";
 // These files live in the same directory as the index file.
-@import './custom-1.scss';
-@import './custom-2.scss';
+@import "./custom-1.scss";
+@import "./custom-2.scss";
 ```
 
 Here's an example of how it might look if you installed only a few Primer CSS components with some custom variable overrides. The `$blue` uses the default primer blue in the text utilities, then the new blue in `"custom-that-uses-primer-variables.scss"` and `.foo`.
 
 ```scss
-@import '@primer/css/utilities/index.scss';
-@import 'primer-buttons/index.scss';
+@import "@primer/css/utilities/index.scss";
+@import "primer-buttons/index.scss";
 
 // Import color variables for custom code
-@import 'primer-support/index.scss';
+@import "primer-support/index.scss";
 
 // Override default blue
 $blue: #0000ff;
 
-@import './custom-that-uses-primer-variables.scss';
+@import "./custom-that-uses-primer-variables.scss";
 
 .foo {
   background: $blue;

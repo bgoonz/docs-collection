@@ -2,7 +2,7 @@
 title: Breakpoints
 path: support/breakpoints
 status: Stable
-source: 'https://github.com/primer/css/blob/main/src/support/variables/layout.scss'
+source: "https://github.com/primer/css/blob/main/src/support/variables/layout.scss"
 bundle: support
 ---
 

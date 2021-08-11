@@ -89,10 +89,10 @@ When planning to delete a CSS selector or SCSS variable, you should:
 
    ```js
    const versionDeprecations = {
-     '15.0.0': [
+     "15.0.0": [
        {
-         variables: ['$some-unused-var'],
-         message: '$some-unused-var is unused, and has been deprecated.',
+         variables: ["$some-unused-var"],
+         message: "$some-unused-var is unused, and has been deprecated.",
        },
      ],
    };

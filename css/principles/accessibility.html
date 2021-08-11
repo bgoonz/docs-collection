@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Accessibility</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+    <style type="text/css">
+      a.sourceLine {
+        display: inline-block;
+        line-height: 1.25;
+      }
+      a.sourceLine {
+        pointer-events: none;
+        color: inherit;
+        text-decoration: inherit;
+      }
+      a.sourceLine:empty {
+        height: 1.2em;
+      }
+      .sourceCode {
+        overflow: visible;
+      }
+      code.sourceCode {
+        white-space: pre;
+        position: relative;
+      }
+      div.sourceCode {
+        margin: 1em 0;
+      }
+      pre.sourceCode {
+        margin: 0;
+      }
+      @media screen {
+        div.sourceCode {
+          overflow: auto;
+        }
+      }
+      @media print {
+        code.sourceCode {
+          white-space: pre-wrap;
+        }
+        a.sourceLine {
+          text-indent: -1em;
+          padding-left: 1em;
+        }
+      }
+      pre.numberSource a.sourceLine {
+        position: relative;
+        left: -4em;
+      }
+      pre.numberSource a.sourceLine::before {
+        content: attr(title);
+        position: relative;
+        left: -1em;
+        text-align: right;
+        vertical-align: baseline;
+        border: none;
+        pointer-events: all;
+        display: inline-block;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        padding: 0 4px;
+        width: 4em;
+        color: #aaaaaa;
+      }
+      pre.numberSource {
+        margin-left: 3em;
+        border-left: 1px solid #aaaaaa;
+        padding-left: 4px;
+      }
+      div.sourceCode {
+      }
+      @media screen {
+        a.sourceLine::before {
+          text-decoration: underline;
+        }
+      }
+      code span.al {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Alert */
+      code span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Annotation */
+      code span.at {
+        color: #7d9029;
+      } /* Attribute */
+      code span.bn {
+        color: #40a070;
+      } /* BaseN */
+      code span.bu {
+      } /* BuiltIn */
+      code span.cf {
+        color: #007020;
+        font-weight: bold;
+      } /* ControlFlow */
+      code span.ch {
+        color: #4070a0;
+      } /* Char */
+      code span.cn {
+        color: #880000;
+      } /* Constant */
+      code span.co {
+        color: #60a0b0;
+        font-style: italic;
+      } /* Comment */
+      code span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* CommentVar */
+      code span.do {
+        color: #ba2121;
+        font-style: italic;
+      } /* Documentation */
+      code span.dt {
+        color: #902000;
+      } /* DataType */
+      code span.dv {
+        color: #40a070;
+      } /* DecVal */
+      code span.er {
+        color: #ff0000;
+        font-weight: bold;
+      } /* Error */
+      code span.ex {
+      } /* Extension */
+      code span.fl {
+        color: #40a070;
+      } /* Float */
+      code span.fu {
+        color: #06287e;
+      } /* Function */
+      code span.im {
+      } /* Import */
+      code span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Information */
+      code span.kw {
+        color: #007020;
+        font-weight: bold;
+      } /* Keyword */
+      code span.op {
+        color: #666666;
+      } /* Operator */
+      code span.ot {
+        color: #007020;
+      } /* Other */
+      code span.pp {
+        color: #bc7a00;
+      } /* Preprocessor */
+      code span.sc {
+        color: #4070a0;
+      } /* SpecialChar */
+      code span.ss {
+        color: #bb6688;
+      } /* SpecialString */
+      code span.st {
+        color: #4070a0;
+      } /* String */
+      code span.va {
+        color: #19177c;
+      } /* Variable */
+      code span.vs {
+        color: #4070a0;
+      } /* VerbatimString */
+      code span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      } /* Warning */
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Accessibility</h1>
+    </header>
+    <p>
+      Accessibility is everyone’s responsibility, and the purpose of this
+      document is to provide general accessibility guidelines to developers and
+      designers.
+    </p>
+    <h2 id="overview">Overview</h2>
+    <p>
+      Our products should be accessible to all. At minimum, features should
+      comply to the requirements listed in
+      <a
+        href="https://www.access-board.gov/guidelines-and-standards/communications-and-it/about-the-section-508-standards/guide-to-the-section-508-standards/web-based-intranet-and-internet-information-and-applications-1194-22"
+        >508 Reference Guide - 1194.22</a
+      >
+      from the US Access Board, and conform to
+      <a href="https://www.w3.org/TR/WCAG20/#conformance"
+        >Web Content Accessibility Guidelines 2.0</a
+      >
+      at Level AA.
+    </p>
+    <p>
+      Making our products accessible benefits everyone, not just people with
+      disabilities. Below are some examples of use cases in which accessibility
+      is important:
+    </p>
+    <ul>
+      <li>
+        <p>
+          <strong>Visual</strong>: blindness, low vision, color blindness, using
+          a screen reader or related assistive tech for lifestyle reasons
+          (e.g. long car commute), machine readability and screen scraping
+          technologies
+        </p>
+      </li>
+      <li>
+        <p>
+          <strong>Hearing</strong>: deafness, hearing impairment, speech
+          impairment, using closed captioning or other assistive features for
+          lifestyle reasons (e.g. coworking in a loud coffee shop)
+        </p>
+      </li>
+      <li>
+        <p>
+          <strong>Cognitive</strong>: including short-term memory issues,
+          dyslexia, learning disabilities, trying to work or consume content
+          while distracted or multitasking, etc.
+        </p>
+      </li>
+      <li>
+        <p>
+          <strong>Mobility</strong>: mobility impairments, repetitive stress
+          injuries, power users who love keyboard shortcuts, busy parents
+          holding a sleeping child while trying to operate a computer with one
+          hand, etc.
+        </p>
+      </li>
+    </ul>
+    <h2 id="general-guidelines">General guidelines</h2>
+    <h3 id="semantic-markup">Semantic markup</h3>
+    <p>
+      Always use semantic HTML elements, like <code>button</code>,
+      <code>ul</code>, <code>nav</code>. Most modern browsers implement the
+      accessibility features outlined in the specs for these elements; without
+      them, elements will need additional
+      <a href="https://www.w3.org/WAI/PF/aria">ARIA attributes and roles</a> to
+      be recognized by assistive technologies.
+    </p>
+    <p>
+      Elements like <code>h1</code>-<code>h6</code>, <code>nav</code>,
+      <code>footer</code>, <code>header</code> have
+      <a href="https://www.w3.org/WAI/PF/aria/roles">meaningful roles</a>
+      assigned, so use them carefully. This can help assistive technologies read
+      the page better and help users find information quicker.
+    </p>
+    <p>
+      Only use a <code>div</code> or a <code>span</code> to markup up content
+      when there isn’t another HTML element that would semantically be more
+      appropriate, or when an element is needed exclusively for applying CSS
+      styles or JS behaviors.
+    </p>
+    <div class="sourceCode" id="cb1">
+      <pre
+        class="sourceCode html"
+      ><code class="sourceCode html"><a class="sourceLine" id="cb1-1" title="1"><span class="co">&lt;!-- Do: Button can be focused and tabbed to. --&gt;</span></a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="kw">&lt;button</span><span class="ot"> type=</span><span class="st">&quot;button&quot;</span><span class="ot"> class=</span><span class="st">&quot;btn&quot;</span><span class="kw">&gt;</span>Send<span class="kw">&lt;/button&gt;</span></a></code></pre>
+    </div>
+    <div class="sourceCode" id="cb2">
+      <pre
+        class="sourceCode html"
+      ><code class="sourceCode html"><a class="sourceLine" id="cb2-1" title="1"><span class="co">&lt;!-- Don&#39;t: Button can&#39;t be focused and tabbed to. --&gt;</span></a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="kw">&lt;span</span><span class="ot"> class=</span><span class="st">&quot;btn&quot;</span><span class="kw">&gt;</span>Send<span class="kw">&lt;/span&gt;</span></a></code></pre>
+    </div>
+    <blockquote>
+      <p>More on semantic markup:</p>
+      <ul>
+        <li>
+          <a href="http://webaim.org/techniques/semanticstructure/"
+            >Semantic Structure – WebAIM</a
+          >
+        </li>
+      </ul>
+    </blockquote>
+    <h3 id="keyboard-accessibility">Keyboard accessibility</h3>
+    <p>
+      Make sure elements can be reached via tabbing, and actions can be
+      triggered with a keyboard. Using semantic markup is especially important
+      in this case as it ensures that actionable elements are tabbable and
+      triggerable without a mouse. Note that elements positioned off-screen are
+      still tabbable, but those hidden with <code>display: none</code> or
+      <code>visibility: hidden</code> are effectively removed from content since
+      they are neither read by screen readers nor reachable by keyboard.
+    </p>
+    <p>
+      Tab order is determined by the order of elements in the DOM, and not by
+      their visual positioning on the page after CSS is applied. CSS properties
+      <code>float</code> and <code>order</code> for flex items are two common
+      sources for disconnection between visual and DOM order.
+    </p>
+    <p>
+      The <code>tabindex</code> attribute should only be used when absolutely
+      necessary.
+    </p>
+    <ul>
+      <li>
+        <p>
+          <code>tabindex=0/-1</code> makes an element focusable, while
+          <code>tabindex=0</code> also includes the element in the normal tab
+          order. In both cases, keyboard triggers of the element still require
+          scripting, so where possible, use
+          <a
+            href="http://w3c.github.io/html/dom.html#kinds-of-content-interactive-content"
+            >interactive content</a
+          >
+          instead.
+        </p>
+      </li>
+      <li>
+        <p>
+          <code>tabindex=1+</code> takes an element to the very front of the
+          default tab order. When it’s applied, the element’s visual positioning
+          is no longer indicative of its tab order, and the only way to find out
+          where an element is would be by tabbing through the page. Therefore,
+          unless a page is carefully designed around elements with positive
+          tabindex, it is very error-proned, and thus currently prohibited in
+          github.com.
+        </p>
+      </li>
+    </ul>
+    <p>
+      Finally, bear in mind that some assistive technologies have keyboard
+      combinations of their own that will override the combination on the web
+      page, so don’t rely on keyboard shortcuts as the only alternative to mouse
+      actions.
+    </p>
+    <div class="sourceCode" id="cb3">
+      <pre
+        class="sourceCode html"
+      ><code class="sourceCode html"><a class="sourceLine" id="cb3-1" title="1"><span class="co">&lt;!-- Do: Tab order can be guessed. --&gt;</span></a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="kw">&lt;button</span><span class="ot"> type=</span><span class="st">&quot;button&quot;</span><span class="ot"> class=</span><span class="st">&quot;btn&quot;</span><span class="kw">&gt;</span>1<span class="kw">&lt;/button&gt;</span></a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="kw">&lt;button</span><span class="ot"> type=</span><span class="st">&quot;button&quot;</span><span class="ot"> class=</span><span class="st">&quot;btn&quot;</span><span class="kw">&gt;</span>2<span class="kw">&lt;/button&gt;</span></a>
+<a class="sourceLine" id="cb3-4" title="4"><span class="kw">&lt;button</span><span class="ot"> type=</span><span class="st">&quot;button&quot;</span><span class="ot"> class=</span><span class="st">&quot;btn&quot;</span><span class="kw">&gt;</span>3<span class="kw">&lt;/button&gt;</span></a></code></pre>
+    </div>
+    <div class="sourceCode" id="cb4">
+      <pre
+        class="sourceCode html"
+      ><code class="sourceCode html"><a class="sourceLine" id="cb4-1" title="1"><span class="co">&lt;!-- Don&#39;t: The second button&#39;s tab order is unexpected. --&gt;</span></a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="kw">&lt;button</span><span class="ot"> type=</span><span class="st">&quot;button&quot;</span><span class="ot"> class=</span><span class="st">&quot;btn&quot;</span><span class="kw">&gt;</span>1<span class="kw">&lt;/button&gt;</span></a>
+<a class="sourceLine" id="cb4-3" title="3"><span class="kw">&lt;button</span><span class="ot"> type=</span><span class="st">&quot;button&quot;</span><span class="ot"> class=</span><span class="st">&quot;btn&quot;</span><span class="ot"> tabindex=</span><span class="st">&quot;1&quot;</span><span class="kw">&gt;</span>2<span class="kw">&lt;/button&gt;</span></a>
+<a class="sourceLine" id="cb4-4" title="4"><span class="kw">&lt;button</span><span class="ot"> type=</span><span class="st">&quot;button&quot;</span><span class="ot"> class=</span><span class="st">&quot;btn&quot;</span><span class="kw">&gt;</span>3<span class="kw">&lt;/button&gt;</span></a></code></pre>
+    </div>
+    <blockquote>
+      <p>More on keyboard accessibility:</p>
+      <ul>
+        <li>
+          <a
+            href="https://www.w3.org/TR/UNDERSTANDING-WCAG20/navigation-mechanisms-focus-order.html"
+            >Focus Order – Understanding WCAG 2.0</a
+          >
+        </li>
+        <li>
+          <a href="http://tink.uk/time-to-revisit-accesskey/"
+            >Time to revisit accesskey? by Léonie Watson</a
+          >
+        </li>
+        <li>
+          <a href="http://tink.uk/flexbox-the-keyboard-navigation-disconnect/"
+            >Flexbox &amp; the keyboard navigation disconnect by Léonie
+            Watson</a
+          >
+        </li>
+      </ul>
+    </blockquote>
+    <h3 id="visual-accessibility">Visual accessibility</h3>
+    <p>
+      Be mindful when using small font size, thin font weight, low contrast
+      colors in designs as it can severely affect usability.
+    </p>
+    <p>
+      Instead of relying solely on color to communicate information, always
+      combine color with another factor, like shape or position change. This is
+      important because some colors can be hard to tell apart due to color
+      blindness or weak eyesight.
+    </p>
+    <blockquote>
+      <p>More on visual accessibility:</p>
+      <ul>
+        <li>
+          <a
+            href="https://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-without-color.html"
+            >Use of Color – Understanding WCAG 2.0</a
+          >
+        </li>
+        <li>
+          <a
+            href="http://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-contrast.html"
+            >Contrast – Understanding WCAG 2.0</a
+          >
+        </li>
+      </ul>
+    </blockquote>
+    <h3 id="text-and-labels">Text and labels</h3>
+    <p>
+      Make sure text-based alternative is always available when using icons,
+      images, and graphs, and that the text by itself presents meaningful
+      information.
+    </p>
+    <div class="sourceCode" id="cb5">
+      <pre
+        class="sourceCode html"
+      ><code class="sourceCode html"><a class="sourceLine" id="cb5-1" title="1"><span class="co">&lt;!-- Do: Link text communicates destination. --&gt;</span></a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="kw">&lt;p&gt;</span>Find out more about <span class="kw">&lt;a</span><span class="ot"> href=</span><span class="st">&quot;#url&quot;</span><span class="kw">&gt;</span>GitHub Enterprise pricing<span class="kw">&lt;/a&gt;</span>.<span class="kw">&lt;br</span> <span class="kw">/&gt;&lt;/p&gt;</span></a></code></pre>
+    </div>
+    <div class="sourceCode" id="cb6">
+      <pre
+        class="sourceCode html"
+      ><code class="sourceCode html"><a class="sourceLine" id="cb6-1" title="1"><span class="co">&lt;!-- Don&#39;t: &quot;Click here&quot; is not meaningful. --&gt;</span></a>
+<a class="sourceLine" id="cb6-2" title="2"><span class="kw">&lt;p&gt;</span></a>
+<a class="sourceLine" id="cb6-3" title="3">  To find out more about GitHub Enterprise pricing,</a>
+<a class="sourceLine" id="cb6-4" title="4">  <span class="kw">&lt;a</span><span class="ot"> href=</span><span class="st">&quot;#url&quot;</span><span class="kw">&gt;</span>click here<span class="kw">&lt;/a&gt;</span>.</a>
+<a class="sourceLine" id="cb6-5" title="5"><span class="kw">&lt;/p&gt;</span></a></code></pre>
+    </div>
+    <p>Use <code>aria-label</code> when there is no text.</p>
+    <div class="sourceCode" id="cb7">
+      <pre
+        class="sourceCode html"
+      ><code class="sourceCode html"><a class="sourceLine" id="cb7-1" title="1"><span class="kw">&lt;a</span><span class="ot"> href=</span><span class="st">&quot;https://help.github.com/&quot;</span></a>
+<a class="sourceLine" id="cb7-2" title="2">  <span class="kw">&gt;</span><span class="er">&lt;</span>%= octicon(&quot;question&quot;, :&quot;aria-label&quot; =&gt; &quot;Help&quot;) %&gt;<span class="kw">&lt;/a</span></a>
+<a class="sourceLine" id="cb7-3" title="3"><span class="kw">&gt;</span></a></code></pre>
+    </div>
+    <h3 id="link-responsibly">Link responsibly</h3>
+    <p>
+      Navigating from a list of all the links on a given web page is very common
+      for assistive technology users. We should make sure that the link text
+      itself is meaningful and unique, and there should be as few duplicated
+      references as possible.
+    </p>
+    <blockquote>
+      <p>More on link responsibly:</p>
+      <ul>
+        <li>
+          <a
+            href="https://www.w3.org/TR/UNDERSTANDING-WCAG20/navigation-mechanisms-refs.html"
+            >Link Purpose – Understanding WCAG 2.0</a
+          >
+        </li>
+      </ul>
+    </blockquote>
+    <h3 id="dynamic-content">Dynamic content</h3>
+    <p>
+      When using JavaScript to change the content on the page, always make sure
+      that screen reader users are informed about the change. This can be done
+      with <code>aria-live</code>, or focus management.
+    </p>
+    <blockquote>
+      <p>More on dynamic content:</p>
+      <ul>
+        <li>
+          <a
+            href="https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Live_Regions"
+            >ARIA Live Regions – MDN</a
+          >
+        </li>
+      </ul>
+    </blockquote>
+    <h3 id="focus-management">Focus management</h3>
+    <p>
+      Focus management is useful for informing users about updated content, and
+      for making sure users land on the next useful section after performing an
+      action. This means using scripts to change user’s currently focused
+      element, and when focus changes, screen readers will read out change.
+    </p>
+    <h3 id="accessible-forms">Accessible forms</h3>
+    <p>
+      It is common for assistive technology users to jump straight to a form
+      when using a website, so make sure most relevant information is in the
+      form and is labelled properly. Labels and inputs should be associated with
+      the <code>label[for]</code> and <code>input[id]</code>, and help texts
+      should either be part of the label or be associated with
+      <code>aria-describedby</code>.
+    </p>
+    <div class="sourceCode" id="cb8">
+      <pre
+        class="sourceCode html"
+      ><code class="sourceCode html"><a class="sourceLine" id="cb8-1" title="1"><span class="co">&lt;!-- Do: Click &quot;Email&quot; label to focus on the input, and help text is read out by screen readers when focusing on the input. --&gt;</span></a>
+<a class="sourceLine" id="cb8-2" title="2"><span class="kw">&lt;label</span><span class="ot"> for=</span><span class="st">&quot;test_input&quot;</span><span class="kw">&gt;</span>Email<span class="kw">&lt;/label&gt;&lt;br</span> <span class="kw">/&gt;</span></a>
+<a class="sourceLine" id="cb8-3" title="3"><span class="kw">&lt;input</span></a>
+<a class="sourceLine" id="cb8-4" title="4"><span class="ot">  id=</span><span class="st">&quot;test_input&quot;</span></a>
+<a class="sourceLine" id="cb8-5" title="5"><span class="ot">  aria-describedby=</span><span class="st">&quot;test_input_help_good&quot;</span></a>
+<a class="sourceLine" id="cb8-6" title="6"><span class="ot">  class=</span><span class="st">&quot;width-full my-1&quot;</span></a>
+<a class="sourceLine" id="cb8-7" title="7"><span class="ot">  type=</span><span class="st">&quot;email&quot;</span></a>
+<a class="sourceLine" id="cb8-8" title="8"><span class="kw">/&gt;</span></a>
+<a class="sourceLine" id="cb8-9" title="9"><span class="kw">&lt;div</span><span class="ot"> id=</span><span class="st">&quot;test_input_help_good&quot;</span><span class="ot"> class=</span><span class="st">&quot;f6&quot;</span><span class="kw">&gt;</span></a>
+<a class="sourceLine" id="cb8-10" title="10">  Please enter an email ending with @github.com.</a>
+<a class="sourceLine" id="cb8-11" title="11"><span class="kw">&lt;/div&gt;</span></a></code></pre>
+    </div>
+    <div class="sourceCode" id="cb9">
+      <pre
+        class="sourceCode html"
+      ><code class="sourceCode html"><a class="sourceLine" id="cb9-1" title="1"><span class="co">&lt;!-- Don&#39;t: Input and label are not associated, and help text is not read out by screen reader when focusing on the input. --&gt;</span></a>
+<a class="sourceLine" id="cb9-2" title="2"><span class="kw">&lt;label&gt;</span>Email<span class="kw">&lt;/label&gt;&lt;br</span> <span class="kw">/&gt;</span></a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="kw">&lt;input</span><span class="ot"> type=</span><span class="st">&quot;email&quot;</span><span class="ot"> class=</span><span class="st">&quot;width-full my-1&quot;</span> <span class="kw">/&gt;</span></a>
+<a class="sourceLine" id="cb9-4" title="4"><span class="kw">&lt;div</span><span class="ot"> id=</span><span class="st">&quot;test_input_help_bad&quot;</span><span class="ot"> class=</span><span class="st">&quot;f6&quot;</span><span class="kw">&gt;</span></a>
+<a class="sourceLine" id="cb9-5" title="5">  Please enter an email ending with @github.com.</a>
+<a class="sourceLine" id="cb9-6" title="6"><span class="kw">&lt;/div&gt;</span></a></code></pre>
+    </div>
+    <h2 id="development-tools">Development tools</h2>
+    <h3 id="linting">Linting</h3>
+    <p>
+      We currently run basic linting
+      <a
+        href="https://github.com/github/github/blob/8546895623677abc70f61951642f32c16de231a1/test/fast/linting/accessible_tabindex_test.rb"
+        >against positive <code>tabindex</code></a
+      >
+      and
+      <a
+        href="https://github.com/github/github/blob/8546895623677abc70f61951642f32c16de231a1/test/rubocop/cop/rails/link_href.rb"
+        >anchor links with <code>href="#"</code></a
+      >.
+    </p>
+    <p>
+      We do client side scanning of inaccessible elements in development
+      environment. The inaccessible elements will be styled with red borders
+      with an onclick alert and console warnings.
+    </p>
+    <h3 id="external-tools">External tools</h3>
+    <ul>
+      <li>
+        <p>
+          Google Chrome provides an
+          <a
+            href="https://chrome.google.com/webstore/detail/accessibility-developer-t/fpkknkljclfencbdbgkenhalefipecmb"
+            >Accessibility Developer Tools extension</a
+          >. Once installed, go to Audits tab in developer tools, tick
+          Accessibility. It scans the page for violations and suggests
+          solutions.
+        </p>
+      </li>
+      <li>
+        <p>
+          If you’re working on a design that uses color to communicate
+          something, grab the
+          <a
+            href="https://itunes.apple.com/tw/app/chromatic-vision-simulator/id389310222?mt=8"
+            >Chromatic Vision Simulator app</a
+          >, this will let you use your iPhone camera to see what a colorblind
+          person would see.
+        </p>
+      </li>
+      <li>
+        <p>
+          Check out
+          <a href="https://github.com/showcases/web-accessibility"
+            >the Web Accessibility showcase on GitHub</a
+          >. GitHubbers are free to add more projects to the showcase.
+        </p>
+      </li>
+    </ul>
+    <h2 id="manual-testing">Manual testing</h2>
+    <h3 id="screen-reader">Screen reader</h3>
+    <p>
+      To use VoiceOver, the built-in screen reader for Mac, just hit
+      <kbd>⌘</kbd> + <kbd>F5</kbd>. This will start voice narration and display
+      most of the spoken information in a text box.
+    </p>
+    <p>
+      Use <kbd>alt</kbd> + <kbd>control</kbd> + <kbd>left/right</kbd> to
+      navigate a web page. <kbd>alt</kbd> + <kbd>control</kbd> +
+      <kbd>space</kbd> to click on an element. For more help with VoiceOver,
+      check out the built-in tutorial in
+      <code
+        >System Preferences &gt; Accessibility &gt; VoiceOver &gt; Open
+        VoiceOver Training</code
+      >.
+    </p>
+    <p>
+      Keep in mind that behaviors in different screen readers can differ when
+      navigating the same web page; just like designing for different browsers,
+      when it comes to accessibility, it is not just the implementation of the
+      browsers that can be different, but also the ones of assistive softwares.
+    </p>
+    <h2 id="internal-resources">Internal resources</h2>
+    <ol type="1">
+      <li>You can mention these teams when looking for help:</li>
+    </ol>
+    <ul>
+      <li>
+        <span class="citation" data-cites="github/accessibility"
+          >[@github/accessibility]</span
+        >(https://github.com/orgs/github/teams/accessibility): GitHubbers
+        interested in accessibility related topics and work on website
+        accessibility issues.
+      </li>
+      <li>
+        <span class="citation" data-cites="github/colorblind"
+          >[@github/colorblind]</span
+        >(https://github.com/orgs/github/teams/colorblind): GitHubbers who are
+        interested in accessibility for colorblindness.
+      </li>
+    </ul>
+    <ol start="2" type="1">
+      <li>
+        Go to #accessibility Slack channel to ask questions or discuss
+        accessibility issues.
+      </li>
+      <li>
+        Check
+        <a href="https://github.com/github/accessibility"
+          >github/accessibility repository</a
+        >
+        for information on events or learning resources.
+      </li>
+    </ol>
+    <h2 id="user-support">User support</h2>
+    <p>
+      Accessibility is a priority for us, if you ever encounter accessibility
+      related issues when using github.com, please don’t hesitate to reach out
+      to us via <a href="https://github.com/contact">the contact page</a> or
+      email us at <a href="mailto:support@github.com">support@github.com</a>, we
+      will try our best to assist.
+    </p>
+    <p>
+      For information about the accessibility compliance of GitHub products,
+      please refer to our
+      <a href="https://government.github.com/accessibility/"
+        >VPAT report, outlining §508 accessibility information for GitHub.com,
+        GitHub Enterprise, and GitHub Desktop</a
+      >.
+    </p>
+  </body>
+</html>

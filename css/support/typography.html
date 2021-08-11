@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Typography</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Typography</h1>
+    </header>
+    <h2 id="type-scale">Type scale</h2>
+    <p>
+      The typography scale is designed to work for GitHub’s product UI and
+      marketing sites. Font sizes are designed to work in combination with
+      line-height values so as to result in more sensible numbers wherever
+      possible.
+    </p>
+    <p>
+      Font sizes are smaller on mobile and scale up at the <code>md</code>
+      <a href="./breakpoints">breakpoint</a> to be larger on desktop.
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Scale</th>
+          <th>Font size: mobile</th>
+          <th>Font size: desktop</th>
+          <th>1.25 line height</th>
+          <th>1.5 line height</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>00</td>
+          <td>40px</td>
+          <td>48px</td>
+          <td>60</td>
+          <td>72</td>
+        </tr>
+        <tr class="even">
+          <td>0</td>
+          <td>32px</td>
+          <td>40px</td>
+          <td>50</td>
+          <td>60</td>
+        </tr>
+        <tr class="odd">
+          <td>1</td>
+          <td>26px</td>
+          <td>32px</td>
+          <td>40</td>
+          <td>48</td>
+        </tr>
+        <tr class="even">
+          <td>2</td>
+          <td>22px</td>
+          <td>24px</td>
+          <td>30</td>
+          <td>36</td>
+        </tr>
+        <tr class="odd">
+          <td>3</td>
+          <td>18px</td>
+          <td>20px</td>
+          <td>25</td>
+          <td>30</td>
+        </tr>
+        <tr class="even">
+          <td>4</td>
+          <td>16px</td>
+          <td>16px</td>
+          <td>20</td>
+          <td>24</td>
+        </tr>
+        <tr class="odd">
+          <td>5</td>
+          <td>14px</td>
+          <td>14px</td>
+          <td>17.5</td>
+          <td>21</td>
+        </tr>
+        <tr class="even">
+          <td>6</td>
+          <td>12px</td>
+          <td>12px</td>
+          <td>15</td>
+          <td>18</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      The typography scale is used to create
+      <a href="/utilities/typography">typography utilities</a>.
+    </p>
+    <h2 id="typography-variables">Typography variables</h2>
+    <h3 id="font-size-variables">Font size variables</h3>
+    <pre class="scss"><code>// Heading sizes - mobile
+// h4—h6 remain the same size on both mobile &amp; desktop
+$h00-size-mobile: 40px;
+$h0-size-mobile: 32px;
+$h1-size-mobile: 26px;
+$h2-size-mobile: 22px;
+$h3-size-mobile: 18px;
+
+// Heading sizes - desktop
+$h00-size: 48px;
+$h0-size: 40px;
+$h1-size: 32px;
+$h2-size: 24px;
+$h3-size: 20px;
+$h4-size: 16px;
+$h5-size: 14px;
+$h6-size: 12px;</code></pre>
+    <h3 id="font-weight-variables">Font weight variables</h3>
+    <pre class="scss"><code>$font-weight-bold: 600 !default;
+$font-weight-light: 300 !default;</code></pre>
+    <h3 id="line-height-variables">Line height variables</h3>
+    <pre class="scss"><code>$lh-condensed-ultra: 1 !default;
+$lh-condensed: 1.25 !default;
+$lh-default: 1.5 !default;</code></pre>
+    <h2 id="typography-mixins">Typography mixins</h2>
+    <p>
+      Typography mixins are available for heading styles and for our type scale.
+      They can be used within components or custom CSS. The same styles are also
+      available as
+      <a href="/utilities/typography#heading-utilities">utilities</a>. which
+      requires no additional CSS.
+    </p>
+    <p>
+      Heading mixins are available for <code>h1</code> through to
+      <code>h6</code>, this includes the font-size and font-weight. Example:
+    </p>
+    <pre class="scss"><code>.styles {
+  @include h1;
+}</code></pre>
+    <p>
+      Responsive heading mixins can be used to adjust the font-size between the
+      <code>sm</code> and <code>lg</code> breakpoint. Only headings 1—3 are
+      responsive. Heading 4—6 are small enough to remain the same between mobile
+      and desktop. Responsive heading mixins include the font-size and
+      font-weight as well as the media query. To use a responsive heading mixin,
+      postfix the heading with <code>-responsive</code>:
+    </p>
+    <pre class="scss"><code>.styles {
+  @include h1-responsive;
+}</code></pre>
+    <p>
+      Responsive type scale mixins are also available. Type scale mixins apply a
+      font-size that gets slightly bigger at the <code>lg</code> breakpoint.
+      They do not apply a font-weight. Like the responsive heading mixins, they
+      are only available for size <code>f1</code> to <code>f3</code> and are
+      postfixed with <code>-responsive</code> as in the example below:
+    </p>
+    <pre class="scss"><code>.style {
+  @include f1-responsive;
+}</code></pre>
+  </body>
+</html>

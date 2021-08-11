@@ -2,8 +2,8 @@
 title: Subhead
 path: components/subhead
 status: Stable
-status_issue: 'https://github.com/github/design-systems/issues/101'
-source: 'https://github.com/primer/css/tree/main/src/subhead'
+status_issue: "https://github.com/github/design-systems/issues/101"
+source: "https://github.com/primer/css/tree/main/src/subhead"
 bundle: subhead
 ---
 

@@ -84,15 +84,15 @@ It's recommended to use the [functional variables](/support/color-system#functio
 ```css
 @include color-variables(
   (
-    'custom-css-variable-1': (
+    "custom-css-variable-1": (
       light: var(--color-scale-gray-3),
       dark: var(--color-scale-gray-5)
     ),
-    'custom-css-variable-2': (
+    "custom-css-variable-2": (
       light: var(--color-scale-gray-2),
       dark: var(--color-scale-gray-6)
     ),
-    'custom-css-variable-3': (
+    "custom-css-variable-3": (
       light: var(--color-scale-gray-2),
       dark: var(--color-scale-gray-6)
     )
@@ -117,7 +117,7 @@ If you tried using the [`scale` color variables](/support/color-system#color-var
 ```css
 @include color-variables(
   (
-    'custom-css-variable': (
+    "custom-css-variable": (
       light: var(--color-scale-gray-7),
       dark: var(--color-scale-gray-2),
     ),

@@ -2,8 +2,8 @@
 title: Timeline
 path: components/timeline
 status: Experimental
-status_issue: 'https://github.com/github/design-systems/issues/101'
-source: ''
+status_issue: "https://github.com/github/design-systems/issues/101"
+source: ""
 bundle: timeline
 ---
 

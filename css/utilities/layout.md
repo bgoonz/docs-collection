@@ -2,7 +2,7 @@
 title: Layout
 path: utilities/layout
 status: Stable
-source: 'https://github.com/primer/css/blob/main/src/utilities/layout.scss'
+source: "https://github.com/primer/css/blob/main/src/utilities/layout.scss"
 bundle: utilities
 ---
 
@@ -39,8 +39,8 @@ Rather than toggling the `d-none` class in JavaScript, you should toggle the `hi
 element.hidden = !visible;
 
 // Bad:
-element.classList.toggle('d-none', !visible);
-element.classList.toggle('d-inline', visible);
+element.classList.toggle("d-none", !visible);
+element.classList.toggle("d-inline", visible);
 ```
 
 ### `display:table` wrapping issues

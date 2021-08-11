@@ -1,9 +1,9 @@
 ---
 title: Labels
 path: components/labels
-status_issue: 'https://github.com/github/design-systems/issues/332'
+status_issue: "https://github.com/github/design-systems/issues/332"
 status: Stable
-source: 'https://github.com/primer/css/tree/main/src/labels'
+source: "https://github.com/primer/css/tree/main/src/labels"
 bundle: labels
 ---
 

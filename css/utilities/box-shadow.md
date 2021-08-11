@@ -2,8 +2,8 @@
 title: Box shadow
 path: utilities/box-shadow
 status: Stable
-status_issue: 'https://github.com/github/design-systems/issues/269'
-source: 'https://github.com/primer/css/tree/main/src/utilities/box-shadow.scss'
+status_issue: "https://github.com/github/design-systems/issues/269"
+source: "https://github.com/primer/css/tree/main/src/utilities/box-shadow.scss"
 bundle: utilities
 ---
 

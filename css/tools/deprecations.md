@@ -74,7 +74,7 @@ npm install semver
 This is the object literal form of the [JSON data's](#json) `versions` object. For instance, to list all of the deprecations:
 
 ```js
-const { versionDeprecations } = require('@primer/css/deprecations');
+const { versionDeprecations } = require("@primer/css/deprecations");
 for (const [version, deprecations] of Object.entries(versionDeprecations)) {
   console.log(`${version}: ${deprecations.length} deprecations`);
 }
@@ -85,9 +85,9 @@ for (const [version, deprecations] of Object.entries(versionDeprecations)) {
 This is a [Map] object with keys for each CSS selector mapped to the deprecation info:
 
 ```js
-const { selectorDeprecations } = require('@primer/css/deprecations');
+const { selectorDeprecations } = require("@primer/css/deprecations");
 console.log(
-  `Purple buttons are going away? ${selectorDeprecations.has('.btn-purple')}`
+  `Purple buttons are going away? ${selectorDeprecations.has(".btn-purple")}`
 );
 // "Purple buttons are going away? true"
 ```
@@ -97,10 +97,10 @@ console.log(
 Returns `true` if the CSS `selector` will have been deprecated (removed) _by_ the specified [semver] version.
 
 ```js
-const { isSelectorDeprecated } = require('@primer/css/deprecations');
-console.log(`Purple buttons are bad? ${isSelectorDeprecated('.btn-purple')}`);
+const { isSelectorDeprecated } = require("@primer/css/deprecations");
+console.log(`Purple buttons are bad? ${isSelectorDeprecated(".btn-purple")}`);
 // "Purple buttons are bad? true"
-console.log(`Primary buttons are bad? ${isSelectorDeprecated('.btn-primary')}`);
+console.log(`Primary buttons are bad? ${isSelectorDeprecated(".btn-primary")}`);
 // "Primary buttons are bad? false"
 ```
 
@@ -109,10 +109,10 @@ console.log(`Primary buttons are bad? ${isSelectorDeprecated('.btn-primary')}`);
 This is a [Map] object with keys for each SCSS variable mapped to the deprecation info:
 
 ```js
-const { selectorDeprecations } = require('@primer/css/deprecations');
+const { selectorDeprecations } = require("@primer/css/deprecations");
 console.log(
   `Will $status-pending be deprecated? ${variableDeprecations.has(
-    '$status-pending'
+    "$status-pending"
   )}`
 );
 // "Will $status-pending be deprecated? true"
@@ -123,12 +123,12 @@ console.log(
 Returns `true` if the named SCSS variable (including the leading `$`) will have been deprecated (removed) _by_ the specified [semver] version.
 
 ```js
-const { isVariableDeprecated } = require('@primer/css/deprecations');
+const { isVariableDeprecated } = require("@primer/css/deprecations");
 console.log(
-  `$status-pending deprecated? ${isVariableDeprecated('$status-pending')}`
+  `$status-pending deprecated? ${isVariableDeprecated("$status-pending")}`
 );
 // "$status-pending deprecated? true"
-console.log(`$yellow-700 deprecated? ${isVariableDeprecated('$yellow-700')}`);
+console.log(`$yellow-700 deprecated? ${isVariableDeprecated("$yellow-700")}`);
 // "$yellow-700 deprecated false"
 ```
 

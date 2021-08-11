@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Select menu</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Select menu</h1>
+</header>
+<Note>
+Please note that the <code>.select-menu</code> component is deprecated and <code>.SelectMenu</code> should be used instead. Check the <a href="/css/components/select-menu-deprecated">migration guide</a> to make sure your app is up to date.
+</Note>
+<p>The <code>SelectMenu</code> component provides advanced support for navigation, filtering, and more. Any menu can make use of JavaScript-enabled live filtering, selected states, tabbed lists, and keyboard navigation with a bit of markup.</p>
+<h2 id="basic-example">Basic example</h2>
+<p>Use a <code>&lt;details&gt;</code> element to toggle the select menu. The <code>&lt;summary&gt;</code> element can be styled in many ways. In the example below it’s a <code>.btn</code>.</p>
+```html live
+<details class="details-reset details-overlay" open>
+<summary class="btn" aria-haspopup="true">Choose an item</summary>
+<div class="SelectMenu">
+<pre><code>&lt;div class=&quot;SelectMenu-modal&quot;&gt;
+  &lt;div class=&quot;SelectMenu-list&quot;&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 1&lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 2&lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 3&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+</div>
+</details>
+<div class="d-sm-none" style="height: 600px">
+<!-- min height for < sm -->
+</div>
+<div class="d-none d-sm-block" style="height: 120px">
+<p><!-- min height for > sm --></p>
+</div>
+<p>```</p>
+<p>Add a <code>.SelectMenu-header</code> to house a clear title and a close button. Note that the close button is only shown on narrow screens (mobile).</p>
+<h2 id="right-aligned">Right aligned</h2>
+<p>In case the select menu should be aligned to the right, use <code>SelectMenu right-0</code>.</p>
+```html live
+<div class="d-flex flex-justify-end position-relative">
+<details class="details-reset details-overlay" open>
+<summary class="btn" aria-haspopup="true">Choose an item</summary>
+<div class="SelectMenu right-0">
+<pre><code>  &lt;div class=&quot;SelectMenu-modal&quot;&gt;
+    &lt;div class=&quot;SelectMenu-list&quot;&gt;
+      &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 1&lt;/button&gt;
+      &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 2&lt;/button&gt;
+      &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 3&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+</details>
+</div>
+<div class="d-sm-none" style="height: 600px">
+<!-- min height for < sm -->
+</div>
+<div class="d-none d-sm-block" style="height: 180px">
+<p><!-- min height for > sm --></p>
+</div>
+<p>```</p>
+<h2 id="selected-state">Selected state</h2>
+<p>If the <code>SelectMenu</code> should show a check icon for selected items, use the <code>SelectMenu-icon SelectMenu-icon--check</code> classes. It will make the check icon show when <code>aria-checked="true"</code> is set.</p>
+```html live
+<details class="details-reset details-overlay" open>
+<summary class="btn" aria-haspopup="true">Choose an item</summary>
+<div class="SelectMenu">
+<pre><code>&lt;div class=&quot;SelectMenu-modal&quot;&gt;
+  &lt;div class=&quot;SelectMenu-list&quot;&gt;
+    &lt;button
+      class=&quot;SelectMenu-item&quot;
+      role=&quot;menuitemcheckbox&quot;
+      aria-checked=&quot;true&quot;
+    &gt;
+      &lt;!-- &lt;%= octicon &quot;check&quot;, class: &quot;SelectMenu-icon SelectMenu-icon--check&quot; %&gt; --&gt;
+      &lt;svg
+        class=&quot;SelectMenu-icon SelectMenu-icon--check octicon octicon-check&quot;
+        xmlns=&quot;http://www.w3.org/2000/svg&quot;
+        viewBox=&quot;0 0 16 16&quot;
+        width=&quot;16&quot;
+        height=&quot;16&quot;
+      &gt;
+        &lt;path
+          fill-rule=&quot;evenodd&quot;
+          clip-rule=&quot;evenodd&quot;
+          d=&quot;M13.78 4.22C13.9204 4.36062 13.9993 4.55125 13.9993 4.75C13.9993 4.94875 13.9204 5.13937 13.78 5.28L6.53 12.53C6.38937 12.6704 6.19875 12.7493 6 12.7493C5.80125 12.7493 5.61062 12.6704 5.47 12.53L2.22 9.28C2.08752 9.13782 2.0154 8.94978 2.01882 8.75547C2.02225 8.56117 2.10096 8.37579 2.23838 8.23837C2.37579 8.10096 2.56118 8.02225 2.75548 8.01882C2.94978 8.01539 3.13782 8.08752 3.28 8.22L6 10.94L12.72 4.22C12.8606 4.07955 13.0512 4.00066 13.25 4.00066C13.4487 4.00066 13.6394 4.07955 13.78 4.22Z&quot;
+        &gt;&lt;/path&gt;
+      &lt;/svg&gt;
+      Selected state
+    &lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitemcheckbox&quot;&gt;
+      &lt;!-- &lt;%= octicon &quot;check&quot;, class: &quot;SelectMenu-icon SelectMenu-icon--check&quot; %&gt; --&gt;
+      &lt;svg
+        class=&quot;SelectMenu-icon SelectMenu-icon--check octicon octicon-check&quot;
+        xmlns=&quot;http://www.w3.org/2000/svg&quot;
+        viewBox=&quot;0 0 16 16&quot;
+        width=&quot;16&quot;
+        height=&quot;16&quot;
+      &gt;
+        &lt;path
+          fill-rule=&quot;evenodd&quot;
+          clip-rule=&quot;evenodd&quot;
+          d=&quot;M13.78 4.22C13.9204 4.36062 13.9993 4.55125 13.9993 4.75C13.9993 4.94875 13.9204 5.13937 13.78 5.28L6.53 12.53C6.38937 12.6704 6.19875 12.7493 6 12.7493C5.80125 12.7493 5.61062 12.6704 5.47 12.53L2.22 9.28C2.08752 9.13782 2.0154 8.94978 2.01882 8.75547C2.02225 8.56117 2.10096 8.37579 2.23838 8.23837C2.37579 8.10096 2.56118 8.02225 2.75548 8.01882C2.94978 8.01539 3.13782 8.08752 3.28 8.22L6 10.94L12.72 4.22C12.8606 4.07955 13.0512 4.00066 13.25 4.00066C13.4487 4.00066 13.6394 4.07955 13.78 4.22Z&quot;
+        &gt;&lt;/path&gt;
+      &lt;/svg&gt;
+      Default state
+    &lt;/button&gt;
+    &lt;button
+      class=&quot;SelectMenu-item&quot;
+      role=&quot;menuitemcheckbox&quot;
+      aria-checked=&quot;true&quot;
+    &gt;
+      &lt;!-- &lt;%= octicon &quot;check&quot;, class: &quot;SelectMenu-icon SelectMenu-icon--check&quot; %&gt; --&gt;
+      &lt;svg
+        class=&quot;SelectMenu-icon SelectMenu-icon--check octicon octicon-check&quot;
+        xmlns=&quot;http://www.w3.org/2000/svg&quot;
+        viewBox=&quot;0 0 16 16&quot;
+        width=&quot;16&quot;
+        height=&quot;16&quot;
+      &gt;
+        &lt;path
+          fill-rule=&quot;evenodd&quot;
+          clip-rule=&quot;evenodd&quot;
+          d=&quot;M13.78 4.22C13.9204 4.36062 13.9993 4.55125 13.9993 4.75C13.9993 4.94875 13.9204 5.13937 13.78 5.28L6.53 12.53C6.38937 12.6704 6.19875 12.7493 6 12.7493C5.80125 12.7493 5.61062 12.6704 5.47 12.53L2.22 9.28C2.08752 9.13782 2.0154 8.94978 2.01882 8.75547C2.02225 8.56117 2.10096 8.37579 2.23838 8.23837C2.37579 8.10096 2.56118 8.02225 2.75548 8.01882C2.94978 8.01539 3.13782 8.08752 3.28 8.22L6 10.94L12.72 4.22C12.8606 4.07955 13.0512 4.00066 13.25 4.00066C13.4487 4.00066 13.6394 4.07955 13.78 4.22Z&quot;
+        &gt;&lt;/path&gt;
+      &lt;/svg&gt;
+      Selected state
+    &lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitemcheckbox&quot;&gt;
+      &lt;!-- &lt;%= octicon &quot;check&quot;, class: &quot;SelectMenu-icon SelectMenu-icon--check&quot; %&gt; --&gt;
+      &lt;svg
+        class=&quot;SelectMenu-icon SelectMenu-icon--check octicon octicon-check&quot;
+        xmlns=&quot;http://www.w3.org/2000/svg&quot;
+        viewBox=&quot;0 0 16 16&quot;
+        width=&quot;16&quot;
+        height=&quot;16&quot;
+      &gt;
+        &lt;path
+          fill-rule=&quot;evenodd&quot;
+          clip-rule=&quot;evenodd&quot;
+          d=&quot;M13.78 4.22C13.9204 4.36062 13.9993 4.55125 13.9993 4.75C13.9993 4.94875 13.9204 5.13937 13.78 5.28L6.53 12.53C6.38937 12.6704 6.19875 12.7493 6 12.7493C5.80125 12.7493 5.61062 12.6704 5.47 12.53L2.22 9.28C2.08752 9.13782 2.0154 8.94978 2.01882 8.75547C2.02225 8.56117 2.10096 8.37579 2.23838 8.23837C2.37579 8.10096 2.56118 8.02225 2.75548 8.01882C2.94978 8.01539 3.13782 8.08752 3.28 8.22L6 10.94L12.72 4.22C12.8606 4.07955 13.0512 4.00066 13.25 4.00066C13.4487 4.00066 13.6394 4.07955 13.78 4.22Z&quot;
+        &gt;&lt;/path&gt;
+      &lt;/svg&gt;
+      Default state
+    &lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitemcheckbox&quot;&gt;
+      &lt;!-- &lt;%= octicon &quot;check&quot;, class: &quot;SelectMenu-icon SelectMenu-icon--check&quot; %&gt; --&gt;
+      &lt;svg
+        class=&quot;SelectMenu-icon SelectMenu-icon--check octicon octicon-check&quot;
+        xmlns=&quot;http://www.w3.org/2000/svg&quot;
+        viewBox=&quot;0 0 16 16&quot;
+        width=&quot;16&quot;
+        height=&quot;16&quot;
+      &gt;
+        &lt;path
+          fill-rule=&quot;evenodd&quot;
+          clip-rule=&quot;evenodd&quot;
+          d=&quot;M13.78 4.22C13.9204 4.36062 13.9993 4.55125 13.9993 4.75C13.9993 4.94875 13.9204 5.13937 13.78 5.28L6.53 12.53C6.38937 12.6704 6.19875 12.7493 6 12.7493C5.80125 12.7493 5.61062 12.6704 5.47 12.53L2.22 9.28C2.08752 9.13782 2.0154 8.94978 2.01882 8.75547C2.02225 8.56117 2.10096 8.37579 2.23838 8.23837C2.37579 8.10096 2.56118 8.02225 2.75548 8.01882C2.94978 8.01539 3.13782 8.08752 3.28 8.22L6 10.94L12.72 4.22C12.8606 4.07955 13.0512 4.00066 13.25 4.00066C13.4487 4.00066 13.6394 4.07955 13.78 4.22Z&quot;
+        &gt;&lt;/path&gt;
+      &lt;/svg&gt;
+      Default state
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+</div>
+</details>
+<div class="d-sm-none" style="height: 600px">
+<!-- min height for < sm -->
+</div>
+<div class="d-none d-sm-block" style="height: 200px">
+<p><!-- min height for > sm --></p>
+</div>
+<p>```</p>
+<h2 id="borderless">Borderless</h2>
+<p>Use the <code>.SelectMenu-list--borderless</code> modifier to remove the borders between list items. Note: It’s better to keep the borders if a list contains items with multiple lines of text. It will make it easier to see where the items start and end.</p>
+```html live
+<details class="details-reset details-overlay" open>
+<summary class="btn" aria-haspopup="true">Choose an item</summary>
+<div class="SelectMenu">
+<pre><code>&lt;div class=&quot;SelectMenu-modal&quot;&gt;
+  &lt;div class=&quot;SelectMenu-list SelectMenu-list--borderless&quot;&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 1&lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 2&lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 3&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+</div>
+</details>
+<div class="d-sm-none" style="height: 600px">
+<!-- min height for < sm -->
+</div>
+<div class="d-none d-sm-block" style="height: 120px">
+<p><!-- min height for > sm --></p>
+</div>
+<p>```</p>
+<h2 id="header">Header</h2>
+<p>Add a <code>.SelectMenu-header</code> at the top to house a clear title and a close button.</p>
+```html live
+<details class="details-reset details-overlay" open>
+<summary class="btn" aria-haspopup="true">Choose an item</summary>
+<div class="SelectMenu">
+<pre><code>&lt;div class=&quot;SelectMenu-modal&quot;&gt;
+  &lt;header class=&quot;SelectMenu-header&quot;&gt;
+    &lt;h3 class=&quot;SelectMenu-title&quot;&gt;Title&lt;/h3&gt;
+    &lt;button class=&quot;SelectMenu-closeButton&quot; type=&quot;button&quot;&gt;
+      &lt;!-- &lt;%= octicon &quot;x&quot; %&gt; --&gt;
+      &lt;svg
+        class=&quot;octicon octicon-x&quot;
+        xmlns=&quot;http://www.w3.org/2000/svg&quot;
+        viewBox=&quot;0 0 16 16&quot;
+        width=&quot;16&quot;
+        height=&quot;16&quot;
+      &gt;
+        &lt;path
+          fill-rule=&quot;evenodd&quot;
+          clip-rule=&quot;evenodd&quot;
+          d=&quot;M3.72 3.72C3.86062 3.57955 4.05125 3.50066 4.25 3.50066C4.44875 3.50066 4.63937 3.57955 4.78 3.72L8 6.94L11.22 3.72C11.2887 3.64631 11.3715 3.58721 11.4635 3.54622C11.5555 3.50523 11.6548 3.48319 11.7555 3.48141C11.8562 3.47963 11.9562 3.49816 12.0496 3.53588C12.143 3.5736 12.2278 3.62974 12.299 3.70096C12.3703 3.77218 12.4264 3.85702 12.4641 3.9504C12.5018 4.04379 12.5204 4.14382 12.5186 4.24452C12.5168 4.34523 12.4948 4.44454 12.4538 4.53654C12.4128 4.62854 12.3537 4.71134 12.28 4.78L9.06 8L12.28 11.22C12.3537 11.2887 12.4128 11.3715 12.4538 11.4635C12.4948 11.5555 12.5168 11.6548 12.5186 11.7555C12.5204 11.8562 12.5018 11.9562 12.4641 12.0496C12.4264 12.143 12.3703 12.2278 12.299 12.299C12.2278 12.3703 12.143 12.4264 12.0496 12.4641C11.9562 12.5018 11.8562 12.5204 11.7555 12.5186C11.6548 12.5168 11.5555 12.4948 11.4635 12.4538C11.3715 12.4128 11.2887 12.3537 11.22 12.28L8 9.06L4.78 12.28C4.63782 12.4125 4.44977 12.4846 4.25547 12.4812C4.06117 12.4777 3.87579 12.399 3.73837 12.2616C3.60096 12.1242 3.52225 11.9388 3.51882 11.7445C3.51539 11.5502 3.58752 11.3622 3.72 11.22L6.94 8L3.72 4.78C3.57955 4.63938 3.50066 4.44875 3.50066 4.25C3.50066 4.05125 3.57955 3.86063 3.72 3.72Z&quot;
+        &gt;&lt;/path&gt;
+      &lt;/svg&gt;
+    &lt;/button&gt;
+  &lt;/header&gt;
+  &lt;div class=&quot;SelectMenu-list&quot;&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 1&lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 2&lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 3&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+</div>
+</details>
+<div class="d-sm-none" style="height: 600px">
+<!-- min height for < sm -->
+</div>
+<div class="d-none d-sm-block" style="height: 180px">
+<p><!-- min height for > sm --></p>
+</div>
+<p>```</p>
+<h2 id="list-items">List items</h2>
+<p>The list of items is arguably the most important subcomponent within the menu. Build them out of anchors, buttons, or just about any <a href="http://w3c.github.io/html/dom.html#interactive-content">interactive content</a>. List items are also customizable with options for avatars, additional icons, and multiple lines of text. Use utility classes in case more custom styling is needed.</p>
+```html live
+<details class="details-reset details-overlay" open>
+<summary class="btn" aria-haspopup="true">Choose an item</summary>
+<div class="SelectMenu">
+<pre><code>&lt;div class=&quot;SelectMenu-modal&quot;&gt;
+  &lt;header class=&quot;SelectMenu-header&quot;&gt;
+    &lt;h3 class=&quot;SelectMenu-title&quot;&gt;Title&lt;/h3&gt;
+    &lt;button class=&quot;SelectMenu-closeButton&quot; type=&quot;button&quot;&gt;
+      &lt;!-- &lt;%= octicon &quot;x&quot; %&gt; --&gt;
+      &lt;svg
+        class=&quot;octicon octicon-x&quot;
+        xmlns=&quot;http://www.w3.org/2000/svg&quot;
+        viewBox=&quot;0 0 16 16&quot;
+        width=&quot;16&quot;
+        height=&quot;16&quot;
+      &gt;
+        &lt;path
+          fill-rule=&quot;evenodd&quot;
+          clip-rule=&quot;evenodd&quot;
+          d=&quot;M3.72 3.72C3.86062 3.57955 4.05125 3.50066 4.25 3.50066C4.44875 3.50066 4.63937 3.57955 4.78 3.72L8 6.94L11.22 3.72C11.2887 3.64631 11.3715 3.58721 11.4635 3.54622C11.5555 3.50523 11.6548 3.48319 11.7555 3.48141C11.8562 3.47963 11.9562 3.49816 12.0496 3.53588C12.143 3.5736 12.2278 3.62974 12.299 3.70096C12.3703 3.77218 12.4264 3.85702 12.4641 3.9504C12.5018 4.04379 12.5204 4.14382 12.5186 4.24452C12.5168 4.34523 12.4948 4.44454 12.4538 4.53654C12.4128 4.62854 12.3537 4.71134 12.28 4.78L9.06 8L12.28 11.22C12.3537 11.2887 12.4128 11.3715 12.4538 11.4635C12.4948 11.5555 12.5168 11.6548 12.5186 11.7555C12.5204 11.8562 12.5018 11.9562 12.4641 12.0496C12.4264 12.143 12.3703 12.2278 12.299 12.299C12.2278 12.3703 12.143 12.4264 12.0496 12.4641C11.9562 12.5018 11.8562 12.5204 11.7555 12.5186C11.6548 12.5168 11.5555 12.4948 11.4635 12.4538C11.3715 12.4128 11.2887 12.3537 11.22 12.28L8 9.06L4.78 12.28C4.63782 12.4125 4.44977 12.4846 4.25547 12.4812C4.06117 12.4777 3.87579 12.399 3.73837 12.2616C3.60096 12.1242 3.52225 11.9388 3.51882 11.7445C3.51539 11.5502 3.58752 11.3622 3.72 11.22L6.94 8L3.72 4.78C3.57955 4.63938 3.50066 4.44875 3.50066 4.25C3.50066 4.05125 3.57955 3.86063 3.72 3.72Z&quot;
+        &gt;&lt;/path&gt;
+      &lt;/svg&gt;
+    &lt;/button&gt;
+  &lt;/header&gt;
+  &lt;div class=&quot;SelectMenu-list&quot;&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Text only&lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;
+      &lt;!-- &lt;%= octicon &quot;pin&quot;, class: &quot;SelectMenu-icon&quot; %&gt; --&gt;
+      &lt;svg
+        class=&quot;SelectMenu-icon octicon octicon-pin&quot;
+        viewBox=&quot;0 0 16 16&quot;
+        version=&quot;1.1&quot;
+        width=&quot;16&quot;
+        height=&quot;16&quot;
+        aria-hidden=&quot;true&quot;
+      &gt;
+        &lt;path
+          fill-rule=&quot;evenodd&quot;
+          d=&quot;M10 1.2V2l.5 1L6 6H2.2c-.44 0-.67.53-.34.86L5 10l-4 5 5-4 3.14 3.14a.5.5 0 00.86-.34V10l3-4.5 1 .5h.8c.44 0 .67-.53.34-.86L10.86.86a.5.5 0 00-.86.34z&quot;
+        &gt;&lt;/path&gt;
+      &lt;/svg&gt;
+      With an icon
+    &lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;
+      &lt;img
+        class=&quot;avatar avatar-small mr-2&quot;
+        src=&quot;https://avatars.githubusercontent.com/hubot?s=40&quot;
+        alt=&quot;hubot&quot;
+        height=&quot;20&quot;
+        width=&quot;20&quot;
+      /&gt;
+      With an avatar
+    &lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item flex-justify-between&quot; role=&quot;menuitem&quot;&gt;
+      With a status icon
+      &lt;!-- &lt;%= octicon &quot;primitive-dot&quot;, class: &quot;color-green-5 ml-2&quot; %&gt; --&gt;
+      &lt;svg
+        width=&quot;8&quot;
+        height=&quot;16&quot;
+        viewBox=&quot;0 0 8 16&quot;
+        class=&quot;octicon octicon-primitive-dot color-green-5 ml-2&quot;
+        aria-hidden=&quot;true&quot;
+      &gt;
+        &lt;path
+          fill-rule=&quot;evenodd&quot;
+          d=&quot;M0 8c0-2.2 1.8-4 4-4s4 1.8 4 4-1.8 4-4 4-4-1.8-4-4z&quot;
+        /&gt;
+      &lt;/svg&gt;
+    &lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item d-block&quot; role=&quot;menuitem&quot;&gt;
+      With a &lt;span class=&quot;Label&quot;&gt;label&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;
+      With a counter &lt;span class=&quot;Counter ml-1&quot;&gt;16&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item d-block&quot; role=&quot;menuitem&quot;&gt;
+      &lt;h5&gt;With a heading&lt;/h5&gt;
+      &lt;span&gt;and some longer description&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+</div>
+</details>
+<div class="d-sm-none" style="height: 600px">
+<!-- min height for < sm -->
+</div>
+<div class="d-none d-sm-block" style="height: 320px">
+<p><!-- min height for > sm --></p>
+</div>
+<p>```</p>
+<h2 id="divider">Divider</h2>
+<p>The select menu’s list can be divided into multiple parts by adding a <code>.SelectMenu-divider</code>. It can be a <code>&lt;div&gt;</code> with text/content. Or just an <code>&lt;hr&gt;</code> to add a visual separator.</p>
+```html live
+<details class="details-reset details-overlay" open>
+<summary class="btn" aria-haspopup="true">Choose an item</summary>
+<div class="SelectMenu">
+<pre><code>&lt;div class=&quot;SelectMenu-modal&quot;&gt;
+  &lt;header class=&quot;SelectMenu-header&quot;&gt;
+    &lt;h3 class=&quot;SelectMenu-title&quot;&gt;Title&lt;/h3&gt;
+    &lt;button class=&quot;SelectMenu-closeButton&quot; type=&quot;button&quot;&gt;
+      &lt;!-- &lt;%= octicon &quot;x&quot; %&gt; --&gt;
+      &lt;svg
+        class=&quot;octicon octicon-x&quot;
+        xmlns=&quot;http://www.w3.org/2000/svg&quot;
+        viewBox=&quot;0 0 16 16&quot;
+        width=&quot;16&quot;
+        height=&quot;16&quot;
+      &gt;
+        &lt;path
+          fill-rule=&quot;evenodd&quot;
+          clip-rule=&quot;evenodd&quot;
+          d=&quot;M3.72 3.72C3.86062 3.57955 4.05125 3.50066 4.25 3.50066C4.44875 3.50066 4.63937 3.57955 4.78 3.72L8 6.94L11.22 3.72C11.2887 3.64631 11.3715 3.58721 11.4635 3.54622C11.5555 3.50523 11.6548 3.48319 11.7555 3.48141C11.8562 3.47963 11.9562 3.49816 12.0496 3.53588C12.143 3.5736 12.2278 3.62974 12.299 3.70096C12.3703 3.77218 12.4264 3.85702 12.4641 3.9504C12.5018 4.04379 12.5204 4.14382 12.5186 4.24452C12.5168 4.34523 12.4948 4.44454 12.4538 4.53654C12.4128 4.62854 12.3537 4.71134 12.28 4.78L9.06 8L12.28 11.22C12.3537 11.2887 12.4128 11.3715 12.4538 11.4635C12.4948 11.5555 12.5168 11.6548 12.5186 11.7555C12.5204 11.8562 12.5018 11.9562 12.4641 12.0496C12.4264 12.143 12.3703 12.2278 12.299 12.299C12.2278 12.3703 12.143 12.4264 12.0496 12.4641C11.9562 12.5018 11.8562 12.5204 11.7555 12.5186C11.6548 12.5168 11.5555 12.4948 11.4635 12.4538C11.3715 12.4128 11.2887 12.3537 11.22 12.28L8 9.06L4.78 12.28C4.63782 12.4125 4.44977 12.4846 4.25547 12.4812C4.06117 12.4777 3.87579 12.399 3.73837 12.2616C3.60096 12.1242 3.52225 11.9388 3.51882 11.7445C3.51539 11.5502 3.58752 11.3622 3.72 11.22L6.94 8L3.72 4.78C3.57955 4.63938 3.50066 4.44875 3.50066 4.25C3.50066 4.05125 3.57955 3.86063 3.72 3.72Z&quot;
+        &gt;&lt;/path&gt;
+      &lt;/svg&gt;
+    &lt;/button&gt;
+  &lt;/header&gt;
+  &lt;div class=&quot;SelectMenu-list&quot;&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 1&lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 2&lt;/button&gt;
+    &lt;div class=&quot;SelectMenu-divider&quot;&gt;More options&lt;/div&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 3&lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 4&lt;/button&gt;
+    &lt;hr class=&quot;SelectMenu-divider&quot; /&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 5&lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 6&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+</div>
+</details>
+<div class="d-sm-none" style="height: 600px">
+<!-- min height for < sm -->
+</div>
+<div class="d-none d-sm-block" style="height: 300px">
+<p><!-- min height for > sm --></p>
+</div>
+<p>```</p>
+<p>Dividers are also supported when using the <code>.SelectMenu-list--borderless</code> modifier.</p>
+```html live
+<details class="details-reset details-overlay" open>
+<summary class="btn" aria-haspopup="true">Choose an item</summary>
+<div class="SelectMenu">
+<pre><code>&lt;div class=&quot;SelectMenu-modal&quot;&gt;
+  &lt;header class=&quot;SelectMenu-header&quot;&gt;
+    &lt;h3 class=&quot;SelectMenu-title&quot;&gt;Title&lt;/h3&gt;
+    &lt;button class=&quot;SelectMenu-closeButton&quot; type=&quot;button&quot;&gt;
+      &lt;!-- &lt;%= octicon &quot;x&quot; %&gt; --&gt;
+      &lt;svg
+        class=&quot;octicon octicon-x&quot;
+        xmlns=&quot;http://www.w3.org/2000/svg&quot;
+        viewBox=&quot;0 0 16 16&quot;
+        width=&quot;16&quot;
+        height=&quot;16&quot;
+      &gt;
+        &lt;path
+          fill-rule=&quot;evenodd&quot;
+          clip-rule=&quot;evenodd&quot;
+          d=&quot;M3.72 3.72C3.86062 3.57955 4.05125 3.50066 4.25 3.50066C4.44875 3.50066 4.63937 3.57955 4.78 3.72L8 6.94L11.22 3.72C11.2887 3.64631 11.3715 3.58721 11.4635 3.54622C11.5555 3.50523 11.6548 3.48319 11.7555 3.48141C11.8562 3.47963 11.9562 3.49816 12.0496 3.53588C12.143 3.5736 12.2278 3.62974 12.299 3.70096C12.3703 3.77218 12.4264 3.85702 12.4641 3.9504C12.5018 4.04379 12.5204 4.14382 12.5186 4.24452C12.5168 4.34523 12.4948 4.44454 12.4538 4.53654C12.4128 4.62854 12.3537 4.71134 12.28 4.78L9.06 8L12.28 11.22C12.3537 11.2887 12.4128 11.3715 12.4538 11.4635C12.4948 11.5555 12.5168 11.6548 12.5186 11.7555C12.5204 11.8562 12.5018 11.9562 12.4641 12.0496C12.4264 12.143 12.3703 12.2278 12.299 12.299C12.2278 12.3703 12.143 12.4264 12.0496 12.4641C11.9562 12.5018 11.8562 12.5204 11.7555 12.5186C11.6548 12.5168 11.5555 12.4948 11.4635 12.4538C11.3715 12.4128 11.2887 12.3537 11.22 12.28L8 9.06L4.78 12.28C4.63782 12.4125 4.44977 12.4846 4.25547 12.4812C4.06117 12.4777 3.87579 12.399 3.73837 12.2616C3.60096 12.1242 3.52225 11.9388 3.51882 11.7445C3.51539 11.5502 3.58752 11.3622 3.72 11.22L6.94 8L3.72 4.78C3.57955 4.63938 3.50066 4.44875 3.50066 4.25C3.50066 4.05125 3.57955 3.86063 3.72 3.72Z&quot;
+        &gt;&lt;/path&gt;
+      &lt;/svg&gt;
+    &lt;/button&gt;
+  &lt;/header&gt;
+  &lt;div class=&quot;SelectMenu-list SelectMenu-list--borderless&quot;&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 1&lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 2&lt;/button&gt;
+    &lt;div class=&quot;SelectMenu-divider&quot;&gt;More options&lt;/div&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 3&lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 4&lt;/button&gt;
+    &lt;hr class=&quot;SelectMenu-divider&quot; /&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 5&lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 6&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+</div>
+</details>
+<div class="d-sm-none" style="height: 600px">
+<!-- min height for < sm -->
+</div>
+<div class="d-none d-sm-block" style="height: 300px">
+<p><!-- min height for > sm --></p>
+</div>
+<p>```</p>
+<h2 id="footer">Footer</h2>
+<p>Use a <code>.SelectMenu-footer</code> at the bottom for additional information. As a side effect it can greatly improve the scrolling performance because the list doesn’t need to be repainted due to the rounded corners.</p>
+```html live
+<details class="details-reset details-overlay" open>
+<summary class="btn" aria-haspopup="true">Choose an item</summary>
+<div class="SelectMenu">
+<pre><code>&lt;div class=&quot;SelectMenu-modal&quot;&gt;
+  &lt;header class=&quot;SelectMenu-header&quot;&gt;
+    &lt;h3 class=&quot;SelectMenu-title&quot;&gt;Title&lt;/h3&gt;
+    &lt;button class=&quot;SelectMenu-closeButton&quot; type=&quot;button&quot;&gt;
+      &lt;!-- &lt;%= octicon &quot;x&quot; %&gt; --&gt;
+      &lt;svg
+        class=&quot;octicon octicon-x&quot;
+        xmlns=&quot;http://www.w3.org/2000/svg&quot;
+        viewBox=&quot;0 0 16 16&quot;
+        width=&quot;16&quot;
+        height=&quot;16&quot;
+      &gt;
+        &lt;path
+          fill-rule=&quot;evenodd&quot;
+          clip-rule=&quot;evenodd&quot;
+          d=&quot;M3.72 3.72C3.86062 3.57955 4.05125 3.50066 4.25 3.50066C4.44875 3.50066 4.63937 3.57955 4.78 3.72L8 6.94L11.22 3.72C11.2887 3.64631 11.3715 3.58721 11.4635 3.54622C11.5555 3.50523 11.6548 3.48319 11.7555 3.48141C11.8562 3.47963 11.9562 3.49816 12.0496 3.53588C12.143 3.5736 12.2278 3.62974 12.299 3.70096C12.3703 3.77218 12.4264 3.85702 12.4641 3.9504C12.5018 4.04379 12.5204 4.14382 12.5186 4.24452C12.5168 4.34523 12.4948 4.44454 12.4538 4.53654C12.4128 4.62854 12.3537 4.71134 12.28 4.78L9.06 8L12.28 11.22C12.3537 11.2887 12.4128 11.3715 12.4538 11.4635C12.4948 11.5555 12.5168 11.6548 12.5186 11.7555C12.5204 11.8562 12.5018 11.9562 12.4641 12.0496C12.4264 12.143 12.3703 12.2278 12.299 12.299C12.2278 12.3703 12.143 12.4264 12.0496 12.4641C11.9562 12.5018 11.8562 12.5204 11.7555 12.5186C11.6548 12.5168 11.5555 12.4948 11.4635 12.4538C11.3715 12.4128 11.2887 12.3537 11.22 12.28L8 9.06L4.78 12.28C4.63782 12.4125 4.44977 12.4846 4.25547 12.4812C4.06117 12.4777 3.87579 12.399 3.73837 12.2616C3.60096 12.1242 3.52225 11.9388 3.51882 11.7445C3.51539 11.5502 3.58752 11.3622 3.72 11.22L6.94 8L3.72 4.78C3.57955 4.63938 3.50066 4.44875 3.50066 4.25C3.50066 4.05125 3.57955 3.86063 3.72 3.72Z&quot;
+        &gt;&lt;/path&gt;
+      &lt;/svg&gt;
+    &lt;/button&gt;
+  &lt;/header&gt;
+  &lt;div class=&quot;SelectMenu-list&quot;&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 1&lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 2&lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 3&lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 4&lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 5&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;footer class=&quot;SelectMenu-footer&quot;&gt;Footer&lt;/footer&gt;
+&lt;/div&gt;</code></pre>
+</div>
+</details>
+<div class="d-sm-none" style="height: 600px">
+<!-- min height for < sm -->
+</div>
+<div class="d-none d-sm-block" style="height: 260px">
+<p><!-- min height for > sm --></p>
+</div>
+<p>```</p>
+<h2 id="filter">Filter</h2>
+<p>If the list is expected to get long, consider adding a <code>.SelectMenu-filter</code> input. Be sure to also include the <code>.SelectMenu--hasFilter</code> modifier class. On mobile devices it will add a fixed height and anchor the select menu to the top of the screen. This makes sure the filter input stays at the same position while typing.</p>
+```html live
+<details class="details-reset details-overlay" open>
+<summary class="btn" aria-haspopup="true">Choose an item</summary>
+<div class="SelectMenu SelectMenu--hasFilter">
+<pre><code>&lt;div class=&quot;SelectMenu-modal&quot;&gt;
+  &lt;header class=&quot;SelectMenu-header&quot;&gt;
+    &lt;h3 class=&quot;SelectMenu-title&quot;&gt;Title&lt;/h3&gt;
+    &lt;button class=&quot;SelectMenu-closeButton&quot; type=&quot;button&quot;&gt;
+      &lt;!-- &lt;%= octicon &quot;x&quot; %&gt; --&gt;
+      &lt;svg
+        class=&quot;octicon octicon-x&quot;
+        xmlns=&quot;http://www.w3.org/2000/svg&quot;
+        viewBox=&quot;0 0 16 16&quot;
+        width=&quot;16&quot;
+        height=&quot;16&quot;
+      &gt;
+        &lt;path
+          fill-rule=&quot;evenodd&quot;
+          clip-rule=&quot;evenodd&quot;
+          d=&quot;M3.72 3.72C3.86062 3.57955 4.05125 3.50066 4.25 3.50066C4.44875 3.50066 4.63937 3.57955 4.78 3.72L8 6.94L11.22 3.72C11.2887 3.64631 11.3715 3.58721 11.4635 3.54622C11.5555 3.50523 11.6548 3.48319 11.7555 3.48141C11.8562 3.47963 11.9562 3.49816 12.0496 3.53588C12.143 3.5736 12.2278 3.62974 12.299 3.70096C12.3703 3.77218 12.4264 3.85702 12.4641 3.9504C12.5018 4.04379 12.5204 4.14382 12.5186 4.24452C12.5168 4.34523 12.4948 4.44454 12.4538 4.53654C12.4128 4.62854 12.3537 4.71134 12.28 4.78L9.06 8L12.28 11.22C12.3537 11.2887 12.4128 11.3715 12.4538 11.4635C12.4948 11.5555 12.5168 11.6548 12.5186 11.7555C12.5204 11.8562 12.5018 11.9562 12.4641 12.0496C12.4264 12.143 12.3703 12.2278 12.299 12.299C12.2278 12.3703 12.143 12.4264 12.0496 12.4641C11.9562 12.5018 11.8562 12.5204 11.7555 12.5186C11.6548 12.5168 11.5555 12.4948 11.4635 12.4538C11.3715 12.4128 11.2887 12.3537 11.22 12.28L8 9.06L4.78 12.28C4.63782 12.4125 4.44977 12.4846 4.25547 12.4812C4.06117 12.4777 3.87579 12.399 3.73837 12.2616C3.60096 12.1242 3.52225 11.9388 3.51882 11.7445C3.51539 11.5502 3.58752 11.3622 3.72 11.22L6.94 8L3.72 4.78C3.57955 4.63938 3.50066 4.44875 3.50066 4.25C3.50066 4.05125 3.57955 3.86063 3.72 3.72Z&quot;
+        &gt;&lt;/path&gt;
+      &lt;/svg&gt;
+    &lt;/button&gt;
+  &lt;/header&gt;
+  &lt;form class=&quot;SelectMenu-filter&quot;&gt;
+    &lt;input
+      class=&quot;SelectMenu-input form-control&quot;
+      type=&quot;text&quot;
+      placeholder=&quot;Filter&quot;
+      aria-label=&quot;Filter&quot;
+    /&gt;
+  &lt;/form&gt;
+  &lt;div class=&quot;SelectMenu-list&quot;&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 1&lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 2&lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 3&lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 4&lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 5&lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 6&lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 7&lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 8&lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 9&lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 10&lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 11&lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 12&lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 13&lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 14&lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 15&lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 16&lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 17&lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 18&lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 19&lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 20&lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 21&lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 22&lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 23&lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 24&lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 25&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;footer class=&quot;SelectMenu-footer&quot;&gt;Showing 25 of 25&lt;/footer&gt;
+&lt;/div&gt;</code></pre>
+</div>
+</details>
+<div class="d-sm-none" style="height: 600px">
+<!-- min height for < sm -->
+</div>
+<div class="d-none d-sm-block" style="height: 500px">
+<p><!-- min height for > sm --></p>
+</div>
+<p>```</p>
+<h2 id="tabs">Tabs</h2>
+<p>Sometimes you need two or more lists of items in your select menu, e.g. branches and tags. Select menu lists can be tabbed with the addition of <code>.SelectMenu-tabs</code> above the menu.</p>
+```html live
+<details class="details-reset details-overlay" open>
+<summary class="btn" aria-haspopup="true">Choose an item</summary>
+<div class="SelectMenu SelectMenu--hasFilter">
+<pre><code>&lt;div class=&quot;SelectMenu-modal&quot;&gt;
+  &lt;header class=&quot;SelectMenu-header&quot;&gt;
+    &lt;h3 class=&quot;SelectMenu-title&quot;&gt;Title&lt;/h3&gt;
+    &lt;button class=&quot;SelectMenu-closeButton&quot; type=&quot;button&quot;&gt;
+      &lt;!-- &lt;%= octicon &quot;x&quot; %&gt; --&gt;
+      &lt;svg
+        class=&quot;octicon octicon-x&quot;
+        xmlns=&quot;http://www.w3.org/2000/svg&quot;
+        viewBox=&quot;0 0 16 16&quot;
+        width=&quot;16&quot;
+        height=&quot;16&quot;
+      &gt;
+        &lt;path
+          fill-rule=&quot;evenodd&quot;
+          clip-rule=&quot;evenodd&quot;
+          d=&quot;M3.72 3.72C3.86062 3.57955 4.05125 3.50066 4.25 3.50066C4.44875 3.50066 4.63937 3.57955 4.78 3.72L8 6.94L11.22 3.72C11.2887 3.64631 11.3715 3.58721 11.4635 3.54622C11.5555 3.50523 11.6548 3.48319 11.7555 3.48141C11.8562 3.47963 11.9562 3.49816 12.0496 3.53588C12.143 3.5736 12.2278 3.62974 12.299 3.70096C12.3703 3.77218 12.4264 3.85702 12.4641 3.9504C12.5018 4.04379 12.5204 4.14382 12.5186 4.24452C12.5168 4.34523 12.4948 4.44454 12.4538 4.53654C12.4128 4.62854 12.3537 4.71134 12.28 4.78L9.06 8L12.28 11.22C12.3537 11.2887 12.4128 11.3715 12.4538 11.4635C12.4948 11.5555 12.5168 11.6548 12.5186 11.7555C12.5204 11.8562 12.5018 11.9562 12.4641 12.0496C12.4264 12.143 12.3703 12.2278 12.299 12.299C12.2278 12.3703 12.143 12.4264 12.0496 12.4641C11.9562 12.5018 11.8562 12.5204 11.7555 12.5186C11.6548 12.5168 11.5555 12.4948 11.4635 12.4538C11.3715 12.4128 11.2887 12.3537 11.22 12.28L8 9.06L4.78 12.28C4.63782 12.4125 4.44977 12.4846 4.25547 12.4812C4.06117 12.4777 3.87579 12.399 3.73837 12.2616C3.60096 12.1242 3.52225 11.9388 3.51882 11.7445C3.51539 11.5502 3.58752 11.3622 3.72 11.22L6.94 8L3.72 4.78C3.57955 4.63938 3.50066 4.44875 3.50066 4.25C3.50066 4.05125 3.57955 3.86063 3.72 3.72Z&quot;
+        &gt;&lt;/path&gt;
+      &lt;/svg&gt;
+    &lt;/button&gt;
+  &lt;/header&gt;
+  &lt;form class=&quot;SelectMenu-filter&quot;&gt;
+    &lt;input
+      class=&quot;SelectMenu-input form-control&quot;
+      type=&quot;text&quot;
+      placeholder=&quot;Filter&quot;
+      aria-label=&quot;Filter&quot;
+    /&gt;
+  &lt;/form&gt;
+  &lt;nav class=&quot;SelectMenu-tabs&quot;&gt;
+    &lt;button class=&quot;SelectMenu-tab&quot; aria-selected=&quot;true&quot;&gt;Branches&lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-tab&quot;&gt;Tags&lt;/button&gt;
+  &lt;/nav&gt;
+  &lt;div class=&quot;SelectMenu-list&quot;&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Branch 1&lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Branch 2&lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Branch 3&lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Branch 4&lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Branch 5&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;SelectMenu-list&quot; hidden&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Tag 1&lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Tag 2&lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Tag 3&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;footer class=&quot;SelectMenu-footer&quot;&gt;Showing 5 of 5&lt;/footer&gt;
+&lt;/div&gt;</code></pre>
+</div>
+</details>
+<div class="d-sm-none" style="height: 600px">
+<!-- min height for < sm -->
+</div>
+<div class="d-none d-sm-block" style="height: 380px">
+<p><!-- min height for > sm --></p>
+</div>
+<p>```</p>
+<h2 id="message">Message</h2>
+<p>A <code>SelectMenu-message</code> can be used to show different kind of messages to a user. Use utility classes to further style the message.</p>
+```html live
+<details class="details-reset details-overlay" open>
+<summary class="btn" aria-haspopup="true">Choose an item</summary>
+<div class="SelectMenu">
+<pre><code>&lt;div class=&quot;SelectMenu-modal&quot;&gt;
+  &lt;header class=&quot;SelectMenu-header&quot;&gt;
+    &lt;h3 class=&quot;SelectMenu-title&quot;&gt;Title&lt;/h3&gt;
+    &lt;button class=&quot;SelectMenu-closeButton&quot; type=&quot;button&quot;&gt;
+      &lt;!-- &lt;%= octicon &quot;x&quot; %&gt; --&gt;
+      &lt;svg
+        class=&quot;octicon octicon-x&quot;
+        xmlns=&quot;http://www.w3.org/2000/svg&quot;
+        viewBox=&quot;0 0 16 16&quot;
+        width=&quot;16&quot;
+        height=&quot;16&quot;
+      &gt;
+        &lt;path
+          fill-rule=&quot;evenodd&quot;
+          clip-rule=&quot;evenodd&quot;
+          d=&quot;M3.72 3.72C3.86062 3.57955 4.05125 3.50066 4.25 3.50066C4.44875 3.50066 4.63937 3.57955 4.78 3.72L8 6.94L11.22 3.72C11.2887 3.64631 11.3715 3.58721 11.4635 3.54622C11.5555 3.50523 11.6548 3.48319 11.7555 3.48141C11.8562 3.47963 11.9562 3.49816 12.0496 3.53588C12.143 3.5736 12.2278 3.62974 12.299 3.70096C12.3703 3.77218 12.4264 3.85702 12.4641 3.9504C12.5018 4.04379 12.5204 4.14382 12.5186 4.24452C12.5168 4.34523 12.4948 4.44454 12.4538 4.53654C12.4128 4.62854 12.3537 4.71134 12.28 4.78L9.06 8L12.28 11.22C12.3537 11.2887 12.4128 11.3715 12.4538 11.4635C12.4948 11.5555 12.5168 11.6548 12.5186 11.7555C12.5204 11.8562 12.5018 11.9562 12.4641 12.0496C12.4264 12.143 12.3703 12.2278 12.299 12.299C12.2278 12.3703 12.143 12.4264 12.0496 12.4641C11.9562 12.5018 11.8562 12.5204 11.7555 12.5186C11.6548 12.5168 11.5555 12.4948 11.4635 12.4538C11.3715 12.4128 11.2887 12.3537 11.22 12.28L8 9.06L4.78 12.28C4.63782 12.4125 4.44977 12.4846 4.25547 12.4812C4.06117 12.4777 3.87579 12.399 3.73837 12.2616C3.60096 12.1242 3.52225 11.9388 3.51882 11.7445C3.51539 11.5502 3.58752 11.3622 3.72 11.22L6.94 8L3.72 4.78C3.57955 4.63938 3.50066 4.44875 3.50066 4.25C3.50066 4.05125 3.57955 3.86063 3.72 3.72Z&quot;
+        &gt;&lt;/path&gt;
+      &lt;/svg&gt;
+    &lt;/button&gt;
+  &lt;/header&gt;
+  &lt;div class=&quot;SelectMenu-list&quot;&gt;
+    &lt;div class=&quot;SelectMenu-message color-bg-danger color-text-danger&quot;&gt;
+      Message goes here
+    &lt;/div&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 1&lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 2&lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 3&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+</div>
+</details>
+<div class="d-sm-none" style="height: 600px">
+<!-- min height for < sm -->
+</div>
+<div class="d-none d-sm-block" style="height: 200px">
+<p><!-- min height for > sm --></p>
+</div>
+<p>```</p>
+<h2 id="loading">Loading</h2>
+<p>When fetching large lists, consider showing a <code>.SelectMenu-loading</code> animation.</p>
+```html live
+<details class="details-reset details-overlay" open>
+<summary class="btn" aria-haspopup="true">Choose an item</summary>
+<div class="SelectMenu">
+<pre><code>&lt;div class=&quot;SelectMenu-modal&quot;&gt;
+  &lt;header class=&quot;SelectMenu-header&quot;&gt;
+    &lt;h3 class=&quot;SelectMenu-title&quot;&gt;Title&lt;/h3&gt;
+    &lt;button class=&quot;SelectMenu-closeButton&quot; type=&quot;button&quot;&gt;
+      &lt;!-- &lt;%= octicon &quot;x&quot; %&gt; --&gt;
+      &lt;svg
+        class=&quot;octicon octicon-x&quot;
+        xmlns=&quot;http://www.w3.org/2000/svg&quot;
+        viewBox=&quot;0 0 16 16&quot;
+        width=&quot;16&quot;
+        height=&quot;16&quot;
+      &gt;
+        &lt;path
+          fill-rule=&quot;evenodd&quot;
+          clip-rule=&quot;evenodd&quot;
+          d=&quot;M3.72 3.72C3.86062 3.57955 4.05125 3.50066 4.25 3.50066C4.44875 3.50066 4.63937 3.57955 4.78 3.72L8 6.94L11.22 3.72C11.2887 3.64631 11.3715 3.58721 11.4635 3.54622C11.5555 3.50523 11.6548 3.48319 11.7555 3.48141C11.8562 3.47963 11.9562 3.49816 12.0496 3.53588C12.143 3.5736 12.2278 3.62974 12.299 3.70096C12.3703 3.77218 12.4264 3.85702 12.4641 3.9504C12.5018 4.04379 12.5204 4.14382 12.5186 4.24452C12.5168 4.34523 12.4948 4.44454 12.4538 4.53654C12.4128 4.62854 12.3537 4.71134 12.28 4.78L9.06 8L12.28 11.22C12.3537 11.2887 12.4128 11.3715 12.4538 11.4635C12.4948 11.5555 12.5168 11.6548 12.5186 11.7555C12.5204 11.8562 12.5018 11.9562 12.4641 12.0496C12.4264 12.143 12.3703 12.2278 12.299 12.299C12.2278 12.3703 12.143 12.4264 12.0496 12.4641C11.9562 12.5018 11.8562 12.5204 11.7555 12.5186C11.6548 12.5168 11.5555 12.4948 11.4635 12.4538C11.3715 12.4128 11.2887 12.3537 11.22 12.28L8 9.06L4.78 12.28C4.63782 12.4125 4.44977 12.4846 4.25547 12.4812C4.06117 12.4777 3.87579 12.399 3.73837 12.2616C3.60096 12.1242 3.52225 11.9388 3.51882 11.7445C3.51539 11.5502 3.58752 11.3622 3.72 11.22L6.94 8L3.72 4.78C3.57955 4.63938 3.50066 4.44875 3.50066 4.25C3.50066 4.05125 3.57955 3.86063 3.72 3.72Z&quot;
+        &gt;&lt;/path&gt;
+      &lt;/svg&gt;
+    &lt;/button&gt;
+  &lt;/header&gt;
+  &lt;div class=&quot;SelectMenu-list&quot;&gt;
+    &lt;div class=&quot;SelectMenu-loading&quot;&gt;
+      &lt;!-- &lt;%= octicon &quot;octoface&quot;, class: &quot;anim-pulse&quot;, width: 32 %&gt; --&gt;
+      &lt;svg
+        width=&quot;32 &quot;
+        height=&quot;32&quot;
+        viewBox=&quot;0 0 16 16&quot;
+        class=&quot;octicon octicon-octoface anim-pulse&quot;
+        aria-hidden=&quot;true&quot;
+      &gt;
+        &lt;path
+          fill-rule=&quot;evenodd&quot;
+          d=&quot;M14.7 5.34c.13-.32.55-1.59-.13-3.31 0 0-1.05-.33-3.44 1.3-1-.28-2.07-.32-3.13-.32s-2.13.04-3.13.32c-2.39-1.64-3.44-1.3-3.44-1.3-.68 1.72-.26 2.99-.13 3.31C.49 6.21 0 7.33 0 8.69 0 13.84 3.33 15 7.98 15S16 13.84 16 8.69c0-1.36-.49-2.48-1.3-3.35zM8 14.02c-3.3 0-5.98-.15-5.98-3.35 0-.76.38-1.48 1.02-2.07 1.07-.98 2.9-.46 4.96-.46 2.07 0 3.88-.52 4.96.46.65.59 1.02 1.3 1.02 2.07 0 3.19-2.68 3.35-5.98 3.35zM5.49 9.01c-.66 0-1.2.8-1.2 1.78s.54 1.79 1.2 1.79c.66 0 1.2-.8 1.2-1.79s-.54-1.78-1.2-1.78zm5.02 0c-.66 0-1.2.79-1.2 1.78s.54 1.79 1.2 1.79c.66 0 1.2-.8 1.2-1.79s-.53-1.78-1.2-1.78z&quot;
+        /&gt;
+      &lt;/svg&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;footer class=&quot;SelectMenu-footer&quot;&gt;Loading...&lt;/footer&gt;
+&lt;/div&gt;</code></pre>
+</div>
+</details>
+<div class="d-sm-none" style="height: 600px">
+<!-- min height for < sm -->
+</div>
+<div class="d-none d-sm-block" style="height: 220px">
+<p><!-- min height for > sm --></p>
+</div>
+<p>```</p>
+<h2 id="disabled">Disabled</h2>
+<p>To disable a list item, use the <code>disabled</code> attribute for <code>&lt;button&gt;</code>s. For <code>&lt;a&gt;</code>s replace the <code>href</code> with an <code>aria-disabled="true"</code> attribute. Note: If not obvious, try to communicate to the user why an item is disabled.</p>
+```html live
+<details class="details-reset details-overlay" open>
+<summary class="btn" aria-haspopup="true">Choose an item</summary>
+<div class="SelectMenu">
+<pre><code>&lt;div class=&quot;SelectMenu-modal&quot;&gt;
+  &lt;div class=&quot;SelectMenu-list&quot;&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot;&gt;Item 1&lt;/button&gt;
+    &lt;button class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot; disabled&gt;
+      Item 2 (disabled)
+    &lt;/button&gt;
+    &lt;a class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot; href=&quot;#&quot;&gt;Item 3&lt;/a&gt;
+    &lt;a class=&quot;SelectMenu-item&quot; role=&quot;menuitem&quot; aria-disabled=&quot;true&quot;
+      &gt;Item 4 (disabled)&lt;/a
+    &gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+</div>
+</details>
+<div class="d-sm-none" style="height: 600px">
+<!-- min height for < sm -->
+</div>
+<div class="d-none d-sm-block" style="height: 160px">
+<p><!-- min height for > sm --></p>
+</div>
+<p>```</p>
+<h2 id="blankslate">Blankslate</h2>
+<p>Sometimes a select menu needs to communicate a “blank slate” where there’s no content in the menu’s list. Usually these include a clear call to action to add said content to the list. Swap out the contents of a <code>.SelectMenu-list</code> with a <code>.SelectMenu-blankslate</code> and customize its contents as needed.</p>
+```html live
+<details class="details-reset details-overlay" open>
+<summary class="btn" aria-haspopup="true">Choose an item</summary>
+<div class="SelectMenu">
+<pre><code>&lt;div class=&quot;SelectMenu-modal&quot;&gt;
+  &lt;header class=&quot;SelectMenu-header&quot;&gt;
+    &lt;h3 class=&quot;SelectMenu-title&quot;&gt;Title&lt;/h3&gt;
+    &lt;button class=&quot;SelectMenu-closeButton&quot; type=&quot;button&quot;&gt;
+      &lt;!-- &lt;%= octicon &quot;x&quot; %&gt; --&gt;
+      &lt;svg
+        class=&quot;octicon octicon-x&quot;
+        xmlns=&quot;http://www.w3.org/2000/svg&quot;
+        viewBox=&quot;0 0 16 16&quot;
+        width=&quot;16&quot;
+        height=&quot;16&quot;
+      &gt;
+        &lt;path
+          fill-rule=&quot;evenodd&quot;
+          clip-rule=&quot;evenodd&quot;
+          d=&quot;M3.72 3.72C3.86062 3.57955 4.05125 3.50066 4.25 3.50066C4.44875 3.50066 4.63937 3.57955 4.78 3.72L8 6.94L11.22 3.72C11.2887 3.64631 11.3715 3.58721 11.4635 3.54622C11.5555 3.50523 11.6548 3.48319 11.7555 3.48141C11.8562 3.47963 11.9562 3.49816 12.0496 3.53588C12.143 3.5736 12.2278 3.62974 12.299 3.70096C12.3703 3.77218 12.4264 3.85702 12.4641 3.9504C12.5018 4.04379 12.5204 4.14382 12.5186 4.24452C12.5168 4.34523 12.4948 4.44454 12.4538 4.53654C12.4128 4.62854 12.3537 4.71134 12.28 4.78L9.06 8L12.28 11.22C12.3537 11.2887 12.4128 11.3715 12.4538 11.4635C12.4948 11.5555 12.5168 11.6548 12.5186 11.7555C12.5204 11.8562 12.5018 11.9562 12.4641 12.0496C12.4264 12.143 12.3703 12.2278 12.299 12.299C12.2278 12.3703 12.143 12.4264 12.0496 12.4641C11.9562 12.5018 11.8562 12.5204 11.7555 12.5186C11.6548 12.5168 11.5555 12.4948 11.4635 12.4538C11.3715 12.4128 11.2887 12.3537 11.22 12.28L8 9.06L4.78 12.28C4.63782 12.4125 4.44977 12.4846 4.25547 12.4812C4.06117 12.4777 3.87579 12.399 3.73837 12.2616C3.60096 12.1242 3.52225 11.9388 3.51882 11.7445C3.51539 11.5502 3.58752 11.3622 3.72 11.22L6.94 8L3.72 4.78C3.57955 4.63938 3.50066 4.44875 3.50066 4.25C3.50066 4.05125 3.57955 3.86063 3.72 3.72Z&quot;
+        &gt;&lt;/path&gt;
+      &lt;/svg&gt;
+    &lt;/button&gt;
+  &lt;/header&gt;
+  &lt;div class=&quot;SelectMenu-list&quot;&gt;
+    &lt;div class=&quot;SelectMenu-blankslate&quot;&gt;
+      &lt;!-- &lt;%= octicon &quot;repo&quot;, class: &quot;color-gray-3&quot;, width: 24 %&gt; --&gt;
+      &lt;svg
+        width=&quot;24 &quot;
+        height=&quot;32&quot;
+        viewBox=&quot;0 0 12 16&quot;
+        class=&quot;octicon octicon-repo color-gray-3&quot;
+        aria-hidden=&quot;true&quot;
+      &gt;
+        &lt;path
+          fill-rule=&quot;evenodd&quot;
+          d=&quot;M4 9H3V8h1v1zm0-3H3v1h1V6zm0-2H3v1h1V4zm0-2H3v1h1V2zm8-1v12c0 .55-.45 1-1 1H6v2l-1.5-1.5L3 16v-2H1c-.55 0-1-.45-1-1V1c0-.55.45-1 1-1h10c.55 0 1 .45 1 1zm-1 10H1v2h2v-1h3v1h5v-2zm0-10H2v9h9V1z&quot;
+        /&gt;
+      &lt;/svg&gt;
+      &lt;h4 class=&quot;my-2&quot;&gt;No repositories&lt;/h4&gt;
+      &lt;p class=&quot;mb-3 color-text-secondary&quot;&gt;
+        We didn’t find any matching repositories that you can commit to.
+      &lt;/p&gt;
+      &lt;button type=&quot;button&quot; class=&quot;btn btn-sm btn-primary&quot;&gt;
+        Create a repository
+      &lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+</div>
+</details>
+<div class="d-sm-none" style="height: 600px">
+<!-- min height for < sm -->
+</div>
+<div class="d-none d-sm-block" style="height: 260px">
+<p><!-- min height for > sm --></p>
+</div>
+<p>```</p>
+<h2 id="github.com-usage">github.com usage</h2>
+<p>When adding the <code>.SelectMenu</code> component on github.com, use the <a href="https://github.com/github/details-menu-element"><code>&lt;details-menu&gt;</code></a> element. It will magically make the <code>.SelectMenu</code> work. Here a basic example:</p>
+<pre class="erb"><code>&lt;details class=&quot;details-reset details-overlay&quot; id=&quot;my-select-menu&quot;&gt;
+  &lt;summary class=&quot;btn&quot;&gt;
+    &lt;span&gt;Choose&lt;/span&gt;
+    &lt;span class=&quot;dropdown-caret&quot;&gt;&lt;/span&gt;
+  &lt;/summary&gt;
+  &lt;details-menu class=&quot;SelectMenu&quot; role=&quot;menu&quot;&gt;
+    &lt;div class=&quot;SelectMenu-modal&quot;&gt;
+      &lt;header class=&quot;SelectMenu-header&quot;&gt;
+        &lt;span class=&quot;SelectMenu-title&quot;&gt;My Select Menu&lt;/span&gt;
+        &lt;button class=&quot;SelectMenu-closeButton&quot; type=&quot;button&quot; data-toggle-for=&quot;my-select-menu&quot;&gt;
+          &lt;%= octicon(&quot;x&quot;, &quot;aria-label&quot;: &quot;Close menu&quot;) %&gt;
+        &lt;/button&gt;
+      &lt;/header&gt;
+      &lt;div class=&quot;SelectMenu-list&quot;&gt;
+        &lt;a class=&quot;SelectMenu-item&quot; href=&quot;&quot; role=&quot;menuitem&quot;&gt;Item 1&lt;/a&gt;
+        &lt;a class=&quot;SelectMenu-item&quot; href=&quot;&quot; role=&quot;menuitem&quot;&gt;Item 2&lt;/a&gt;
+        &lt;a class=&quot;SelectMenu-item&quot; href=&quot;&quot; role=&quot;menuitem&quot;&gt;Item 3&lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/details-menu&gt;
+&lt;/details&gt;</code></pre>
+<p>If loading content should be deferred, use the <a href="https://github.com/github/details-menu-element"><code>&lt;include-fragment&gt;</code></a> element:</p>
+<pre class="erb"><code>&lt;details-menu class=&quot;SelectMenu&quot; src=&quot;/my-menu&quot; preload&gt;
+  &lt;div class=&quot;SelectMenu-modal&quot;&gt;
+    &lt;include-fragment class=&quot;SelectMenu-loading&quot; aria-label=&quot;Menu is loading&quot;&gt;
+      &lt;%= octicon(&quot;octoface&quot;, class: &quot;anim-pulse&quot;, :height =&gt; 32) %&gt;
+    &lt;/include-fragment&gt;
+  &lt;/div&gt;
+&lt;/details-menu&gt;</code></pre>
+<p>It will add a pulsing “octoface” icon while the content is loading.</p>
+</body>
+</html>

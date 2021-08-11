@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Forms</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Forms</h1>
+</header>
+<p>Style individual form controls and utilize common layouts.</p>
+<p>Overview:</p>
+<ul>
+<li>We reset several elements’ default styles for cross browser consistency and easier manipulation later. This includes <code>&lt;fieldset&gt;</code>s, WebKit validation bubbles, and most textual <code>&lt;input&gt;</code>s.</li>
+<li>Specific types of textual <code>&lt;input&gt;</code>s are styled automatically, but <code>.form-control</code> is available should you need it.</li>
+<li>Always declare a <code>type</code> on your <code>&lt;button&gt;</code>s.</li>
+<li>Form layouts rely on form groups.</li>
+</ul>
+<h2 id="kitchen-sink">Kitchen sink</h2>
+<p>All our inputs and buttons side-by-side for easy testing of sizing and alignment with one another.</p>
+```html live
+<p>
+<button class="btn" type="button">
+Button
+</button>
+<button class="btn" type="button" aria-expanded="false" aria-haspopup="true">
+Select menu <span class="dropdown-caret">
+</button>
+<input class="form-control" type="text" placeholder="Standard input" aria-label="Repository description" /> <input class="form-control input-monospace" type="text" placeholder="Monospace input" aria-label="SHA" /> <select class="form-select" aria-label="Important decision"> <option>Select</option> <option value="option 2">Option 2</option> </select>
+</p>
+<p>
+<button class="btn btn-sm" type="button">
+Small button
+</button>
+<button class="btn btn-sm" type="button" aria-expanded="false" aria-haspopup="true">
+Select menu <span class="dropdown-caret">
+</button>
+<input class="form-control input-sm" type="text" placeholder="Small input" aria-label="Repository description" /> <select class="form-select select-sm" aria-label="Important decision"> <option>Select</option> <option value="option 1">Option 1</option> </select>
+</p>
+<p>```</p>
+<h2 id="example-form">Example form</h2>
+<p>Form controls in Primer CSS currently have no basic layout specified (this is by design). You’ll need to use <code>&lt;fieldset&gt;</code>s, <code>&lt;div&gt;</code>s, or other elements and styles to rearrange them.</p>
+```html live
+<form>
+<p><label for="name">Name</label> <input class="form-control" type="text" id="name" /></p>
+<p><label for="email">Email address</label> <input class="form-control" type="email" id="email" /></p>
+<p><label> <input type="checkbox" /> Remember me </label></p>
+<p><label> <input type="radio" id="potato" name="radio-group-example" checked /> Potato </label> <label> <input type="radio" id="tomato" name="radio-group-example" /> Tomato </label></p>
+<button class="btn" type="submit">
+Submit
+</button>
+</form>
+<p>```</p>
+<h2 id="inputs">Inputs</h2>
+<h3 id="sizing">Sizing</h3>
+<p>Make inputs smaller, larger, or full-width with an additional class.</p>
+<h4 id="small">Small</h4>
+<p><code>html live &lt;form&gt;   &lt;input     class="form-control input-sm"     type="text"     placeholder="Small input"     aria-label="Small input"   /&gt; &lt;/form&gt;</code></p>
+<h4 id="large">Large</h4>
+<p><code>html live &lt;form&gt;   &lt;input     class="form-control input-lg"     type="text"     placeholder="Large input"     aria-label="Large input"   /&gt; &lt;/form&gt;</code></p>
+<h4 id="block">Block</h4>
+<p><code>html live &lt;form&gt;   &lt;input     class="form-control input-block"     type="text"     placeholder="Full-width input"     aria-label="Full-width input"   /&gt; &lt;/form&gt;</code></p>
+<h3 id="input-group">Input group</h3>
+<p>Attached an input and button to one another.</p>
+<p><code>html live &lt;form&gt;   &lt;div class="input-group"&gt;     &lt;input       class="form-control"       type="text"       placeholder="Username"       aria-label="Username"     /&gt;     &lt;span class="input-group-button"&gt;       &lt;button class="btn" type="button" aria-label="Copy to clipboard"&gt;         &lt;!-- &lt;%= octicon "clippy" %&gt; --&gt;         &lt;svg           class="octicon octicon-clippy"           viewBox="0 0 14 16"           version="1.1"           width="14"           height="16"           aria-hidden="true"         &gt;           &lt;path             fill-rule="evenodd"             d="M2 13h4v1H2v-1zm5-6H2v1h5V7zm2 3V8l-3 3 3 3v-2h5v-2H9zM4.5 9H2v1h2.5V9zM2 12h2.5v-1H2v1zm9 1h1v2c-.02.28-.11.52-.3.7-.19.18-.42.28-.7.3H1c-.55 0-1-.45-1-1V4c0-.55.45-1 1-1h3c0-1.11.89-2 2-2 1.11 0 2 .89 2 2h3c.55 0 1 .45 1 1v5h-1V6H1v9h10v-2zM2 5h8c0-.55-.45-1-1-1H8c-.55 0-1-.45-1-1s-.45-1-1-1-1 .45-1 1-.45 1-1 1H3c-.55 0-1 .45-1 1z"           &gt;&lt;/path&gt;         &lt;/svg&gt;       &lt;/button&gt;     &lt;/span&gt;   &lt;/div&gt; &lt;/form&gt;</code></p>
+<h2 id="customization">Customization</h2>
+<h3 id="form-contrast">Form contrast</h3>
+<p>Textual form controls have a white background by default. You can change this to a light gray with <code>.input-contrast</code>.</p>
+<p><code>html live &lt;form&gt;   &lt;input     class="form-control"     type="text"     placeholder="Default input"     aria-label="Default input"   /&gt;   &lt;input     class="form-control input-contrast"     type="text"     placeholder="Input with contrast"     aria-label="Input with contrast"   /&gt; &lt;/form&gt;</code></p>
+<h3 id="disabled-state">Disabled state</h3>
+<p>Add the <code>disabled</code> attribute to make a <code>.form-control</code> appear disabled.</p>
+<p><code>html live &lt;form&gt;   &lt;input     class="form-control"     type="text"     placeholder="Disabled input"     aria-label="Disabled input"     disabled   /&gt; &lt;/form&gt;</code></p>
+<h3 id="hide-webkits-contact-info-autofill-icon">Hide WebKit’s contact info autofill icon</h3>
+<p>WebKit sometimes gets confused and tries to add an icon/dropdown to autofill contact information on fields that may not be appropriate (such as input for number of users). Use this class to override the display of this icon.</p>
+<p><code>html live &lt;form&gt;   &lt;input     class="form-control input-hide-webkit-autofill"     placeholder="Hide Webkit's contact autofill on this input"     type="text"     aria-label="Hide Webkit's contact autofill on this input"   /&gt; &lt;/form&gt;</code></p>
+<h2 id="selects">Selects</h2>
+<p>Primer CSS adds light <code>height</code> and <code>vertical-align</code> styles to <code>&lt;select&gt;</code>s for all browsers to render them consistently with textual inputs.</p>
+<p><code>html live &lt;form&gt;   &lt;select class="form-select" aria-label="Preference"&gt;     &lt;option&gt;Choose an option&lt;/option&gt;     &lt;option&gt;Git&lt;/option&gt;     &lt;option&gt;Subversion&lt;/option&gt;     &lt;option&gt;Social Coding&lt;/option&gt;     &lt;option&gt;Beets&lt;/option&gt;     &lt;option&gt;Bears&lt;/option&gt;     &lt;option&gt;Battlestar Galactica&lt;/option&gt;   &lt;/select&gt; &lt;/form&gt;</code></p>
+<h3 id="small-1">Small</h3>
+<p>Use the <code>.select-sm</code> class to resize both default and custom <code>&lt;select&gt;</code>s to match the size of <a href="./buttons#default-buttons">our small buttons</a>.</p>
+<p>```html live <select class="form-select select-sm" aria-label="Preference"> <option>Choose an option</option> <option>Git</option> <option>Subversion</option> <option>Social Coding</option> <option>Beets</option> <option>Bears</option> <option>Battlestar Galactica</option> </select></p>
+<button class="btn btn-sm ml-1">
+Small button
+</button>
+<p>```</p>
+<h2 id="form-groups">Form groups</h2>
+```html live
+<form>
+<div class="form-group">
+<pre><code>&lt;div class=&quot;form-group-header&quot;&gt;
+  &lt;label for=&quot;example-text&quot;&gt;Example Text&lt;/label&gt;
+&lt;/div&gt;
+&lt;div class=&quot;form-group-body&quot;&gt;
+  &lt;input
+    class=&quot;form-control&quot;
+    type=&quot;text&quot;
+    value=&quot;Example Value&quot;
+    id=&quot;example-text&quot;
+  /&gt;
+&lt;/div&gt;</code></pre>
+</div>
+<div class="form-group">
+<pre><code>&lt;div class=&quot;form-group-header&quot;&gt;
+  &lt;label for=&quot;example-select&quot;&gt;Example Select&lt;/label&gt;
+&lt;/div&gt;
+&lt;div class=&quot;form-group-body&quot;&gt;
+  &lt;select class=&quot;form-select&quot; id=&quot;example-select&quot;&gt;
+    &lt;option&gt;Choose an option&lt;/option&gt;
+    &lt;option&gt;Git&lt;/option&gt;
+    &lt;option&gt;Subversion&lt;/option&gt;
+    &lt;option&gt;Social Coding&lt;/option&gt;
+    &lt;option&gt;Beets&lt;/option&gt;
+    &lt;option&gt;Bears&lt;/option&gt;
+    &lt;option&gt;Battlestar Galactica&lt;/option&gt;
+  &lt;/select&gt;
+&lt;/div&gt;</code></pre>
+</div>
+<div class="form-group">
+<pre><code>&lt;div class=&quot;form-group-header&quot;&gt;
+  &lt;label for=&quot;example-textarea&quot;&gt;Example Textarea&lt;/label&gt;
+&lt;/div&gt;
+&lt;div class=&quot;form-group-body&quot;&gt;
+  &lt;textarea class=&quot;form-control&quot; id=&quot;example-textarea&quot;&gt;&lt;/textarea&gt;
+&lt;/div&gt;</code></pre>
+</div>
+</form>
+<p>```</p>
+<h2 id="form-group-validation">Form group validation</h2>
+<p>Convey success, errors and warnings for form groups. For github.com consider using the <a href="https://github.github.io/web-systems-documentation/#custom-elements-auto-check-md"><code>&lt;auto-check&gt;</code></a> element to perform server-side validation on an input.</p>
+<h3 id="success">Success</h3>
+<p>If the input is <strong>valid</strong>, add the <code>.successed</code> class to the <code>&lt;div class="form-group"&gt;</code> element. Next add/update a success message to the <code>.note</code> element, as well as the <code>.success</code> class.</p>
+<p><code>html live &lt;form class="pb-6"&gt;   &lt;div class="form-group successed"&gt;     &lt;div class="form-group-header"&gt;       &lt;label for="username-input"&gt;Username&lt;/label&gt;     &lt;/div&gt;     &lt;div class="form-group-body"&gt;       &lt;input         class="form-control"         type="text"         value="monalisa"         id="username-input"         aria-describedby="username-input-validation"       /&gt;     &lt;/div&gt;     &lt;p class="note success" id="username-input-validation"&gt;       monalisa is available     &lt;/p&gt;   &lt;/div&gt; &lt;/form&gt;</code></p>
+<h3 id="error">Error</h3>
+<p>If the input is <strong>not valid</strong>, add the <code>.errored</code> class to the <code>&lt;div class="form-group"&gt;</code> element. Next add/update an error message to the <code>.note</code> element, as well as the <code>.error</code> class.</p>
+<p><code>html live &lt;form class="pb-6"&gt;   &lt;div class="form-group errored"&gt;     &lt;div class="form-group-header"&gt;       &lt;label for="username-input"&gt;Username&lt;/label&gt;     &lt;/div&gt;     &lt;div class="form-group-body"&gt;       &lt;input         class="form-control"         type="text"         value="monalisa"         id="username-input"         aria-describedby="username-input-validation"       /&gt;     &lt;/div&gt;     &lt;p class="note error" id="username-input-validation"&gt;       monalisa is not available. monalisa-beep, monalisa-cyber, or monalisa87       are available.     &lt;/p&gt;   &lt;/div&gt; &lt;/form&gt;</code></p>
+<h3 id="warning">Warning</h3>
+<p>If the input should show a <strong>warning</strong>, add the <code>.warn</code> class to the <code>&lt;div class="form-group"&gt;</code> element. Next add/update a warning message to the <code>.note</code> element, as well as the <code>.warning</code> class.</p>
+<p><code>html live &lt;form class="pb-6"&gt;   &lt;div class="form-group warn"&gt;     &lt;div class="form-group-header"&gt;       &lt;label for="username-input"&gt;Username&lt;/label&gt;     &lt;/div&gt;     &lt;div class="form-group-body"&gt;       &lt;input         class="form-control"         type="text"         value="monalisa-monalisa-monalisa-monalisa-"         id="username-input"         aria-describedby="username-input-validation"       /&gt;     &lt;/div&gt;     &lt;p class="note warning" id="username-input-validation"&gt;       36 of maximum 39 characters entered.     &lt;/p&gt;   &lt;/div&gt; &lt;/form&gt;</code></p>
+<h3 id="form-actions">Form actions</h3>
+<p>Align buttons to the right—via <code>float: right</code> on the buttons—in forms with <code>.form-actions</code>. The floats are automatically cleared for you.</p>
+<p><code>html live &lt;div class="form-actions"&gt;   &lt;button type="submit" class="btn btn-primary"&gt;Save changes&lt;/button&gt;   &lt;button type="button" class="btn"&gt;Cancel&lt;/button&gt; &lt;/div&gt;</code></p>
+<h2 id="checkboxes-and-radios">Checkboxes and radios</h2>
+<p>Utilities to control alignment and styling of checkbox and radio controls.</p>
+<p><code>html live &lt;form&gt;   &lt;div class="form-checkbox"&gt;     &lt;label&gt;       &lt;input         type="checkbox"         checked="checked"         aria-describedby="help-text-for-checkbox"       /&gt;       Available for hire     &lt;/label&gt;     &lt;p class="note" id="help-text-for-checkbox"&gt;       This will do insanely &lt;strong&gt;awesome&lt;/strong&gt; and       &lt;strong&gt;amazing&lt;/strong&gt; things!     &lt;/p&gt;   &lt;/div&gt; &lt;/form&gt;</code></p>
+<p>You may also add emphasis to the label:</p>
+<p><code>html live &lt;form&gt;   &lt;div class="form-checkbox"&gt;     &lt;label&gt;       &lt;input type="checkbox" checked="checked" /&gt;       &lt;em class="highlight"&gt;Available for hire&lt;/em&gt;     &lt;/label&gt;   &lt;/div&gt; &lt;/form&gt;</code></p>
+<h3 id="toggle-content-visibility-based-on-a-checkbox-or-radio-button-state">Toggle content visibility based on a checkbox or radio button state</h3>
+<p>Content that is hidden by default should only be done so if it is non-essential for the context of the surrounding content. Be sure to use the <code>aria-live="polite"</code> attribute on the parent label for added content to be announced when displayed.</p>
+<p><code>html live &lt;form&gt;   &lt;div class="form-checkbox"&gt;     &lt;label&gt;       &lt;input type="radio" name="hireme" /&gt;       Not available for hire     &lt;/label&gt;   &lt;/div&gt;   &lt;div class="form-checkbox"&gt;     &lt;label aria-live="polite"&gt;       &lt;input type="radio" class="form-checkbox-details-trigger" name="hireme" /&gt;       Available for hire       &lt;span class="form-checkbox-details text-normal"&gt;         &lt;span class="d-block mb-1"&gt;Available hours per week&lt;/span&gt;         &lt;input           type="text"           name=""           class="form-control input-contrast"           size="3"         /&gt;         &lt;span class="text-small color-text-secondary pl-2"&gt;hours per week&lt;/span&gt;       &lt;/span&gt;     &lt;/label&gt;   &lt;/div&gt; &lt;/form&gt;</code></p>
+<h2 id="radio-group">Radio group</h2>
+<p>Radio groups are tab like controls. Their blue border gives extra emphasis to what is selected.</p>
+<p><code>html live &lt;form&gt;   &lt;div class="radio-group"&gt;     &lt;input class="radio-input" id="option-a" type="radio" name="options" /&gt;     &lt;label class="radio-label" for="option-a"&gt;Option A&lt;/label&gt;     &lt;input class="radio-input" id="option-b" type="radio" name="options" /&gt;     &lt;label class="radio-label" for="option-b"&gt;Option B&lt;/label&gt;     &lt;input class="radio-input" id="option-c" type="radio" name="options" /&gt;     &lt;label class="radio-label" for="option-c"&gt;Option C&lt;/label&gt;   &lt;/div&gt; &lt;/form&gt;</code></p>
+</body>
+</html>

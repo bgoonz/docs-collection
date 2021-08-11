@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Grid</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Grid</h1>
+    </header>
+    <p>
+      The grid is 12 columns and percentage-based. The number of columns a
+      container spans can be adjusted across breakpoints for responsive layouts.
+      The grid system works with a variety of layout utilities to achieve
+      different results.
+    </p>
+    <h2 id="float-based-grid">Float based grid</h2>
+    <p>
+      Use <code>.clearfix</code> on the container and float utilities with
+      columns for a floated grid layout.
+    </p>
+    <p>
+      <code
+        >html live title="Float based grid" &lt;div class="container-lg
+        clearfix"&gt; &lt;div class="col-4 float-left border p-4"&gt;My
+        column&lt;/div&gt; &lt;div class="col-4 float-left border p-4"&gt;Looks
+        better&lt;/div&gt; &lt;div class="col-4 float-left border p-4"&gt;Than
+        your column&lt;/div&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <h3 id="reversed-grid">Reversed grid</h3>
+    <p>
+      To reverse the order of columns, use <code>float-right</code> to float
+      columns to the right.
+    </p>
+    <p>
+      <code
+        >html live title="Float grid reversed" &lt;div class="container-lg
+        clearfix"&gt; &lt;div class="col-4 float-right border
+        p-4"&gt;One&lt;/div&gt; &lt;div class="col-4 float-right border
+        p-4"&gt;Two&lt;/div&gt; &lt;div class="col-4 float-right border
+        p-4"&gt;Three&lt;/div&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <h2 id="nesting">Nesting</h2>
+    <p>
+      You can infinitely nest grid layouts within other columns since the column
+      widths are percentage based. With great flexibility comes great
+      responsibility - be sensible with how far you nest!
+    </p>
+    <p>
+      <code
+        >html live title="Nesting grids" &lt;div class="clearfix"&gt; &lt;div
+        class="col-6 float-left px-1"&gt; &lt;div class="border
+        p-1"&gt;Unnested&lt;/div&gt; &lt;/div&gt; &lt;div class="col-6
+        float-left"&gt; &lt;div class="clearfix"&gt; &lt;div class="col-6
+        float-left px-1"&gt; &lt;div class="border p-1"&gt;1 x
+        Nested&lt;/div&gt; &lt;/div&gt; &lt;div class="col-6 float-left"&gt;
+        &lt;div class="col-6 float-left px-1"&gt; &lt;div class="border
+        p-1"&gt;2 x Nested&lt;/div&gt; &lt;/div&gt; &lt;div class="col-6
+        float-left px-1"&gt; &lt;div class="border p-1"&gt;2 x
+        Nested&lt;/div&gt; &lt;/div&gt; &lt;/div&gt; &lt;/div&gt; &lt;/div&gt;
+        &lt;/div&gt;</code
+      >
+    </p>
+    <h2 id="centering-a-column">Centering a column</h2>
+    <p>Use <code>.mx-auto</code> to center columns within a container.</p>
+    <p>
+      <code
+        >html live title="Centering a column" &lt;div class="border"&gt; &lt;div
+        class="col-6 p-2 mx-auto border"&gt; This column is the center of my
+        world. &lt;/div&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <h2 id="column-widths">Column widths</h2>
+    <p>
+      Column widths can be used with any other block or inline-block elements to
+      add percentage-based widths.
+    </p>
+    <p>
+      <code
+        >html live &lt;div&gt; &lt;div class="col-4 float-right p-2 border
+        color-text-danger"&gt; &lt;!-- &lt;%= octicon "heart" %&gt; --&gt;
+        &lt;svg class="octicon octicon-heart" viewBox="0 0 12 16" version="1.1"
+        width="12" height="16" aria-hidden="true"&gt;&lt;path
+        fill-rule="evenodd" d="M9 2c-.97 0-1.69.42-2.2 1-.51.58-.78.92-.8
+        1-.02-.08-.28-.42-.8-1-.52-.58-1.17-1-2.2-1-1.632.086-2.954 1.333-3 3 0
+        .52.09 1.52.67 2.67C1.25 8.82 3.01 10.61 6 13c2.98-2.39 4.77-4.17
+        5.34-5.33C11.91 6.51 12 5.5 12
+        5c-.047-1.69-1.342-2.913-3-3z"&gt;&lt;/path&gt;&lt;/svg&gt;
+        &lt;span&gt;Don't go bacon my heart.&lt;span&gt; &lt;/div&gt;
+        &lt;p&gt;T-bone drumstick alcatra ribeye. Strip steak chuck andouille
+        tenderloin bacon tri-tip ball tip beef capicola rump. Meatloaf bresaola
+        drumstick ball tip salami. Drumstick ham bacon alcatra pig porchetta,
+        spare ribs leberkas pork belly.&lt;/p&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <h2 id="offset-columns">Offset columns</h2>
+    <p>
+      Using column offset classes can push a div over X number of columns. They
+      work responsively using the
+      <a href="#responsive-grids">breakpoints outlined below</a>.
+    </p>
+    <p>
+      <code
+        >html live title="Offset columns" &lt;div class="clearfix"&gt; &lt;div
+        class="offset-1 col-3 border p-3"&gt;.offset-1&lt;/div&gt; &lt;div
+        class="offset-2 col-3 border p-3"&gt;.offset-2&lt;/div&gt;
+        &lt;/div&gt;</code
+      >
+    </p>
+    <h2 id="gutters">Gutters</h2>
+    <p>
+      Use gutter styles or padding utilities to create gutters. You can use the
+      default gutter style, <code>gutter</code>, or either of its modifiers,
+      <code>gutter-condensed</code> or <code>gutter-spacious</code>. Gutter
+      styles also support responsive breakpoint modifiers. Gutter styles add
+      padding to the left and right side of each column and apply a negative
+      margin to the container to ensure content inside each column lines up with
+      content outside of the grid.
+    </p>
+    <p>
+      <code
+        >html live title="Gutters" &lt;div class="clearfix gutter-md-spacious
+        border"&gt; &lt;div class="col-3 float-left"&gt; &lt;div class="border
+        p-3"&gt;.col-md-3&lt;/div&gt; &lt;/div&gt; &lt;div class="col-3
+        float-left"&gt; &lt;div class="border p-3"&gt;.col-md-3&lt;/div&gt;
+        &lt;/div&gt; &lt;div class="col-3 float-left"&gt; &lt;div class="border
+        p-3"&gt;.col-md-3&lt;/div&gt; &lt;/div&gt; &lt;div class="col-3
+        float-left"&gt; &lt;div class="border p-3"&gt;.col-md-3&lt;/div&gt;
+        &lt;/div&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <p>Use padding utilities to create gutters for more customized layouts.</p>
+    <p>
+      <code
+        >html live title="Gutters with padding" &lt;div class="container-lg
+        clearfix"&gt; &lt;div class="col-3 float-left pr-2 mb-3"&gt; &lt;div
+        class="border color-bg-warning"&gt;.pr-2&lt;/div&gt; &lt;/div&gt;
+        &lt;div class="col-3 float-left px-2 mb-3"&gt; &lt;div class="border
+        color-bg-warning"&gt;.px-2&lt;/div&gt; &lt;/div&gt; &lt;div class="col-3
+        float-left px-2 mb-3"&gt; &lt;div class="border
+        color-bg-warning"&gt;.px-2&lt;/div&gt; &lt;/div&gt; &lt;div class="col-3
+        float-left pl-2 mb-3"&gt; &lt;div class="border
+        color-bg-warning"&gt;.pl-2&lt;/div&gt; &lt;/div&gt; &lt;/div&gt; &lt;div
+        class="container-lg clearfix"&gt; &lt;div class="col-3 float-left
+        pr-2"&gt; &lt;div class="border color-bg-warning"&gt;.pr-2&lt;/div&gt;
+        &lt;/div&gt; &lt;div class="col-9 float-left pl-2"&gt; &lt;div
+        class="border color-bg-warning"&gt;.pl-2&lt;/div&gt; &lt;/div&gt;
+        &lt;/div&gt;</code
+      >
+    </p>
+    <h2 id="inline-block-grids">Inline-block grids</h2>
+    <p>
+      Use column widths with <code>d-inline-block</code> as an alternative to
+      floated grids.
+    </p>
+    <p>
+      <code
+        >html live title="Inline-block grid" &lt;div&gt; &lt;div class="col-4
+        d-inline-block border"&gt;.col-4 .d-inline-block&lt;/div&gt; &lt;!--
+        --&gt; &lt;div class="col-4 d-inline-block border"&gt;.col-4
+        .d-inline-block&lt;/div&gt; &lt;!-- --&gt; &lt;div class="col-4
+        d-inline-block border"&gt;.col-4 .d-inline-block&lt;/div&gt;
+        &lt;/div&gt;</code
+      >
+    </p>
+    <p>
+      You can use column widths and other utilities on elements such as lists to
+      create the layout you need while keeping the markup semantically correct.
+    </p>
+    <p>
+      <code
+        >html live title="Inline-block grid list" &lt;ul
+        class="list-style-none"&gt; &lt;li class="d-inline-block col-2 p-2"&gt;
+        &lt;img class="width-full avatar"
+        src="https://github.com/broccolini.png" alt="broccolini" /&gt;
+        &lt;/li&gt; &lt;!-- --&gt; &lt;li class="d-inline-block col-2 p-2"&gt;
+        &lt;img class="width-full avatar" src="https://github.com/jonrohan.png"
+        alt="jonrohan" /&gt; &lt;/li&gt; &lt;!-- --&gt; &lt;li
+        class="d-inline-block col-2 p-2"&gt; &lt;img class="width-full avatar"
+        src="https://github.com/muan.png" alt="muan" /&gt; &lt;/li&gt; &lt;!--
+        --&gt; &lt;li class="d-inline-block col-2 p-2"&gt; &lt;img
+        class="width-full avatar" src="https://github.com/pmarsceill.png"
+        alt="pmarsceill" /&gt; &lt;/li&gt; &lt;!-- --&gt; &lt;li
+        class="d-inline-block col-2 p-2"&gt; &lt;img class="width-full avatar"
+        src="https://github.com/sophshep.png" alt="sophshep" /&gt; &lt;/li&gt;
+        &lt;!-- --&gt; &lt;li class="d-inline-block col-2 p-2"&gt; &lt;img
+        class="width-full avatar" src="https://github.com/cmwinters.png"
+        alt="cmwinters" /&gt; &lt;/li&gt; &lt;!-- --&gt; &lt;li
+        class="d-inline-block col-2 p-2"&gt; &lt;img class="width-full avatar"
+        src="https://github.com/jeejkang.png" alt="jeejkang" /&gt; &lt;/li&gt;
+        &lt;!-- --&gt; &lt;li class="d-inline-block col-2 p-2"&gt; &lt;img
+        class="width-full avatar" src="https://github.com/mdo.png" alt="mdo"
+        /&gt; &lt;/li&gt; &lt;/ul&gt;</code
+      >
+    </p>
+    <h2 id="display-table-grids">Display table grids</h2>
+    <p>
+      Using <a href="/utilities/layout#display">display table utilities</a> with
+      columns gives you some alternative layout options.
+    </p>
+    <p>
+      A useful example is being able to keep the height of the container equal
+      across a row when the length of content may differ.
+    </p>
+    <p>
+      <code
+        >html live title="Table grid" &lt;div class="d-table col-12"&gt; &lt;div
+        class="col-4 d-table-cell border p-2"&gt; Bacon ipsum dolor amet
+        leberkas pork pig kielbasa shankle ribeye meatball, salami alcatra
+        venison. &lt;/div&gt; &lt;!-- --&gt; &lt;div class="col-4 d-table-cell
+        border p-2"&gt; Pork chop cupim cow turkey frankfurter, landjaeger
+        fatback hamburger meatball salami spare ribs. Rump tenderloin salami,
+        hamburger frankfurter landjaeger andouille. &lt;/div&gt; &lt;!-- --&gt;
+        &lt;div class="col-4 d-table-cell border p-2"&gt; Brisket tongue
+        frankfurter cupim strip steak rump picanha pancetta pork pig kevin
+        pastrami biltong. Shankle venison meatball swine sausage ground round.
+        Tail pork loin ribeye kielbasa short ribs pork chop. &lt;/div&gt;
+        &lt;/div&gt;</code
+      >
+    </p>
+    <p>
+      You can also create an alternative
+      <a href="/utilities/layout#the-media-object">media object</a> layout with
+      <code>.display-table</code> and column widths.
+    </p>
+    <p>
+      <code
+        >html live title="Table grid alternative" &lt;div class="d-table
+        col-12"&gt; &lt;div class="col-2 d-table-cell v-align-middle"&gt;
+        &lt;img class="width-full avatar" src="https://github.com/github.png"
+        alt="github" /&gt; &lt;/div&gt; &lt;div class="col-10 d-table-cell
+        v-align-middle pl-4"&gt; &lt;h1 class="text-normal
+        lh-condensed"&gt;GitHub&lt;/h1&gt; &lt;p class="h4 color-text-secondary
+        text-normal mb-2"&gt; How people build software. &lt;/p&gt; &lt;a
+        class="color-text-secondary text-small" href="#url"
+        &gt;https://github.com/about&lt;/a &gt; &lt;/div&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <p>
+      Note that table cells will fill the width of their container even when the
+      total columns doesn’t add up to 12.
+    </p>
+    <p>
+      <code
+        >html live title="Table grid cells" &lt;div class="d-table col-12"&gt;
+        &lt;div class="col-4 d-table-cell border"&gt;.col-4
+        .d-table-cell&lt;/div&gt; &lt;!-- --&gt; &lt;div class="col-4
+        d-table-cell border"&gt;.col-4 .d-table-cell&lt;/div&gt; &lt;!-- --&gt;
+        &lt;div class="col-2 d-table-cell border"&gt;.col-2
+        .d-table-cell&lt;/div&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <h2 id="flexbox-grids">Flexbox grids</h2>
+    <p>
+      You can use <a href="/utilities/flexbox">flex utilities</a> on the
+      container and columns to create a flexbox grid.
+    </p>
+    <p>
+      This can be useful for keeping columns the same height, justifying content
+      and vertically aligning items. The flexbox grid is also great for working
+      with responsive layouts.
+    </p>
+    <p>
+      <code
+        >html live title="Flexbox grid" &lt;div class="d-flex flex-column
+        flex-md-row flex-items-center flex-md-items-center" &gt; &lt;div
+        class="col-2 d-flex flex-items-center flex-items-center
+        flex-md-items-start" &gt; &lt;img class="width-full avatar mb-2 mb-md-0"
+        src="https://github.com/github.png" alt="github" /&gt; &lt;/div&gt;
+        &lt;div class="col-12 col-md-10 d-flex flex-column flex-justify-center
+        flex-items-center flex-md-items-start pl-md-4" &gt; &lt;h1
+        class="text-normal lh-condensed"&gt;GitHub&lt;/h1&gt; &lt;p class="h4
+        color-text-secondary text-normal mb-2"&gt; How people build software.
+        &lt;/p&gt; &lt;a class="color-text-secondary text-small" href="#url"
+        &gt;https://github.com/about&lt;/a &gt; &lt;/div&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <h2 id="responsive-grids">Responsive grids</h2>
+    <p>
+      All the column width classes can be set per breakpoint to create
+      responsive grid layouts. Each responsive style is applied to the specified
+      breakpoint and up.
+    </p>
+    <h3 id="breakpoints">Breakpoints</h3>
+    <p>
+      We use abbreviations for each breakpoint to keep the class names concise.
+    </p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th>Shorthand</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td>sm</td>
+          <td>min-width: 544px</td>
+        </tr>
+        <tr class="even">
+          <td>md</td>
+          <td>min-width: 768px</td>
+        </tr>
+        <tr class="odd">
+          <td>lg</td>
+          <td>min-width: 1004px</td>
+        </tr>
+        <tr class="even">
+          <td>xl</td>
+          <td>min-width: 1280px</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>
+      <strong>Note:</strong> The <code>lg</code> breakpoint matches our current
+      page width of <code>980px</code> including left and right padding of
+      <code>12px</code>. This is so that content doesn’t touch the edges of the
+      window when resized.
+    </p>
+    <hr />
+    <p>
+      In this example at the <code>sm</code> breakpoint 2 columns will show, at
+      the <code>md</code> breakpoint 4 columns will show, and at the
+      <code>lg</code> breakpoint 6 columns will show.
+    </p>
+    <p>
+      <code
+        >html live title="Responsive grid" &lt;div class="container-lg
+        clearfix"&gt; &lt;div class="col-sm-6 col-md-3 col-lg-2 float-left p-2
+        border"&gt; .col-sm-6 .col-md-3 .col-lg-2 &lt;/div&gt; &lt;div
+        class="col-sm-6 col-md-3 col-lg-2 float-left p-2 border"&gt; .col-sm-6
+        .col-md-3 .col-lg-2 &lt;/div&gt; &lt;div class="col-sm-6 col-md-3
+        col-lg-2 float-left p-2 border"&gt; .col-sm-6 .col-md-3 .col-lg-2
+        &lt;/div&gt; &lt;div class="col-sm-6 col-md-3 col-lg-2 float-left p-2
+        border"&gt; .col-sm-6 .col-md-3 .col-lg-2 &lt;/div&gt; &lt;div
+        class="col-sm-6 col-md-3 col-lg-2 float-left p-2 border"&gt; .col-sm-6
+        .col-md-3 .col-lg-2 &lt;/div&gt; &lt;div class="col-sm-6 col-md-3
+        col-lg-2 float-left p-2 border"&gt; .col-sm-6 .col-md-3 .col-lg-2
+        &lt;/div&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <p>
+      For demonstration, this is how the above example would look at the
+      <code>sm</code> breakpoint.
+    </p>
+    <p>
+      <code
+        >html live title="Responsive grid small" &lt;div class="container-lg
+        clearfix"&gt; &lt;div class="col-sm-6 float-left p-2
+        border"&gt;.col-sm-6&lt;/div&gt; &lt;div class="col-sm-6 float-left p-2
+        border"&gt;.col-sm-6&lt;/div&gt; &lt;div class="col-sm-6 float-left p-2
+        border"&gt;.col-sm-6&lt;/div&gt; &lt;div class="col-sm-6 float-left p-2
+        border"&gt;.col-sm-6&lt;/div&gt; &lt;div class="col-sm-6 float-left p-2
+        border"&gt;.col-sm-6&lt;/div&gt; &lt;div class="col-sm-6 float-left p-2
+        border"&gt;.col-sm-6&lt;/div&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <p>
+      This is how that same example would look at the
+      <code>md</code> breakpoint.
+    </p>
+    <p>
+      <code
+        >html live title="Responsive grid medium" &lt;div class="container-lg
+        clearfix"&gt; &lt;div class="col-md-3 float-left p-2
+        border"&gt;.col-md-3&lt;/div&gt; &lt;div class="col-md-3 float-left p-2
+        border"&gt;.col-md-3&lt;/div&gt; &lt;div class="col-md-3 float-left p-2
+        border"&gt;.col-md-3&lt;/div&gt; &lt;div class="col-md-3 float-left p-2
+        border"&gt;.col-md-3&lt;/div&gt; &lt;div class="col-md-3 float-left p-2
+        border"&gt;.col-md-3&lt;/div&gt; &lt;div class="col-md-3 float-left p-2
+        border"&gt;.col-md-3&lt;/div&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <p>
+      This is how that example would look at the <code>lg</code> breakpoint.
+    </p>
+    <p>
+      <code
+        >html live title="Responsive grid large" &lt;div class="container-lg
+        clearfix"&gt; &lt;div class="col-lg-2 float-left p-2
+        border"&gt;.col-lg-2&lt;/div&gt; &lt;div class="col-lg-2 float-left p-2
+        border"&gt;.col-lg-2&lt;/div&gt; &lt;div class="col-lg-2 float-left p-2
+        border"&gt;.col-lg-2&lt;/div&gt; &lt;div class="col-lg-2 float-left p-2
+        border"&gt;.col-lg-2&lt;/div&gt; &lt;div class="col-lg-2 float-left p-2
+        border"&gt;.col-lg-2&lt;/div&gt; &lt;div class="col-lg-2 float-left p-2
+        border"&gt;.col-lg-2&lt;/div&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <h2 id="containers">Containers</h2>
+    <p>
+      Container widths match our breakpoints and are available at a
+      <code>sm</code>, <code>md</code>, <code>lg</code>, and
+      <code>xl</code> size. Containers apply a max-width rather than a fixed
+      width for responsive layouts, and they center the container.
+    </p>
+    ```html live title=“Containers sized”
+    <div class="container-sm border">.container-sm, max-width 544px</div>
+    <div class="container-md border">.container-md, max-width 768px</div>
+    <div class="container-lg border">.container-lg, max-width 1012px</div>
+    <div class="container-xl border">.container-xl, max-width 1280px</div>
+    <p>```</p>
+  </body>
+</html>

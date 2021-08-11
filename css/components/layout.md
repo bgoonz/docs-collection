@@ -2,7 +2,7 @@
 title: Layout
 path: components/layout
 status: Experimental
-source: 'https://github.com/primer/css/tree/main/src/layout/layout.scss'
+source: "https://github.com/primer/css/tree/main/src/layout/layout.scss"
 bundle: layout
 ---
 

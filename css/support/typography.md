@@ -2,8 +2,8 @@
 title: Typography
 path: support/typography
 status: Stable
-status_issue: 'https://github.com/github/design-systems/issues/329'
-source: 'https://github.com/primer/css/blob/main/src/support/variables/typography.scss'
+status_issue: "https://github.com/github/design-systems/issues/329"
+source: "https://github.com/primer/css/blob/main/src/support/variables/typography.scss"
 bundle: support
 ---
 
@@ -14,15 +14,15 @@ The typography scale is designed to work for GitHub's product UI and marketing s
 Font sizes are smaller on mobile and scale up at the `md` [breakpoint](./breakpoints) to be larger on desktop.
 
 | Scale | Font size: mobile | Font size: desktop | 1.25 line height | 1.5 line height |
-| --- | --- | --- | --- | --- |
-| 00 | 40px | 48px | 60 | 72 |
-| 0 | 32px | 40px | 50 | 60 |
-| 1 | 26px | 32px | 40 | 48 |
-| 2 | 22px | 24px | 30 | 36 |
-| 3 | 18px | 20px | 25 | 30 |
-| 4 | 16px | 16px | 20 | 24 |
-| 5 | 14px | 14px | 17.5 | 21 |
-| 6 | 12px | 12px | 15 | 18 |
+| ----- | ----------------- | ------------------ | ---------------- | --------------- |
+| 00    | 40px              | 48px               | 60               | 72              |
+| 0     | 32px              | 40px               | 50               | 60              |
+| 1     | 26px              | 32px               | 40               | 48              |
+| 2     | 22px              | 24px               | 30               | 36              |
+| 3     | 18px              | 20px               | 25               | 30              |
+| 4     | 16px              | 16px               | 20               | 24              |
+| 5     | 14px              | 14px               | 17.5             | 21              |
+| 6     | 12px              | 12px               | 15               | 18              |
 
 The typography scale is used to create [typography utilities](/utilities/typography).
 

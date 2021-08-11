@@ -3,7 +3,7 @@ title: Animations
 path: utilities/animations
 example_layout: toggle
 status: Stable
-source: 'https://github.com/primer/css/blob/main/src/utilities/animations.scss'
+source: "https://github.com/primer/css/blob/main/src/utilities/animations.scss"
 bundle: utilities
 ---
 

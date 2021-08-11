@@ -1,9 +1,9 @@
 ---
 title: Box
 path: components/box
-status_issue: 'https://github.com/github/design-systems/issues/198'
+status_issue: "https://github.com/github/design-systems/issues/198"
 status: Stable
-source: 'https://github.com/primer/css/tree/main/src/box'
+source: "https://github.com/primer/css/tree/main/src/box"
 bundle: box
 ---
 

@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Popover</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Popover</h1>
+    </header>
+    <p>
+      Popovers are used to bring attention to specific user interface elements,
+      typically to suggest an action or to guide users through a new experience.
+    </p>
+    <p>A popover consist of:</p>
+    <ul>
+      <li>
+        The block element, <code>.Popover</code>, which simply positions its
+        content absolutely atop other body content.
+      </li>
+      <li>
+        The child element, <code>.Popover-message</code>, which contains the
+        markup for the intended messaging and the visual “caret.”
+      </li>
+    </ul>
+    <p>
+      In the examples below, <code>Popover-message</code>, in particular, uses a
+      handful of utility classes to style it appropriately. And these are
+      intended to demonstrate the default, go-to presentation for the popover’s
+      message. By default, the message’s caret is centered on the top edge of
+      the message.
+    </p>
+    <p>
+      The <code>Popover-message</code> element also supports several modifiers.
+      By default, the caret is shown on the top edge of the message,
+      horizontally centered. To change the caret’s position, use one of the
+      following modifiers.
+    </p>
+    <ul>
+      <li>
+        <a href="#bottom"><code>.Popover-message--bottom</code></a> Places the
+        caret on the bottom edge of the message, horizontally centered.
+      </li>
+      <li>
+        <a href="#right"><code>.Popover-message--right</code></a
+        >: Places the caret on the right edge of the message, vertically
+        centered.
+      </li>
+      <li>
+        <a href="#left"><code>.Popover-message--left</code></a
+        >: Places the caret on the left edge of the message, vertically
+        centered.
+      </li>
+    </ul>
+    <p>
+      Each of these modifiers also support a syntax for adjusting the
+      positioning the caret to the right, left, top, or bottom of its respective
+      edge. That syntax looks like:
+    </p>
+    <ul>
+      <li>
+        <a href="#bottom-left"><code>.Popover-message--bottom-left</code></a>
+      </li>
+      <li>
+        <a href="#bottom-right"><code>.Popover-message--bottom-right</code></a>
+      </li>
+      <li>
+        <a href="#left-bottom"><code>.Popover-message--left-bottom</code></a>
+      </li>
+      <li>
+        <a href="#left-top"><code>.Popover-message--left-top</code></a>
+      </li>
+      <li>
+        <a href="#right-bottom"><code>.Popover-message--right-bottom</code></a>
+      </li>
+      <li>
+        <a href="#right-top"><code>.Popover-message--right-top</code></a>
+      </li>
+      <li>
+        <a href="#top-left"><code>.Popover-message--top-left</code></a>
+      </li>
+      <li>
+        <a href="#top-right"><code>.Popover-message--top-right</code></a>
+      </li>
+    </ul>
+    <p>
+      Lastly, there is an added
+      <a href="#large"><code>.Popover-message--large</code></a> modifier, which
+      assumes a slightly wider popover message on screens wider than 544px.
+    </p>
+    <h3 id="notes">Notes</h3>
+    <p>The samples below include optional markup, like:</p>
+    <ul>
+      <li>
+        An outermost container that establishes stacking context
+        (e.g. <code>position-relative</code>).
+      </li>
+      <li>
+        A choice piece of user interface (a button, in this case) to relate the
+        popover to.
+      </li>
+      <li>
+        Use of the <code>Details</code> and <code>js-details</code> family of
+        class names, which interact with JavaScript to demonstrate dismissal of
+        the popover by clicking the nested “Got it!” button.
+      </li>
+    </ul>
+    <h3 id="basic-example">Basic example</h3>
+    <p>Defaults to caret oriented top-center.</p>
+    <p>
+      <code
+        >html live title="Default (top-center)" &lt;div class="position-relative
+        text-center"&gt; &lt;button class="btn btn-primary"&gt;UI&lt;/button&gt;
+        &lt;div class="Popover right-0 left-0 position-relative"&gt; &lt;div
+        class="Popover-message text-left p-4 mt-2 mx-auto Box
+        color-shadow-large" &gt; &lt;h4 class="mb-2"&gt;Popover
+        heading&lt;/h4&gt; &lt;p&gt;Message about this particular piece of
+        UI.&lt;/p&gt; &lt;button type="submit" class="btn btn-outline mt-2
+        text-bold"&gt; Got it! &lt;/button&gt; &lt;/div&gt; &lt;/div&gt;
+        &lt;/div&gt;</code
+      >
+    </p>
+    <h3 id="large-example">Large example</h3>
+    <p>
+      <code
+        >html live title="Large" &lt;div class="position-relative
+        text-center"&gt; &lt;button class="btn btn-primary"&gt;UI&lt;/button&gt;
+        &lt;div class="Popover right-0 left-0 position-relative"&gt; &lt;div
+        class="Popover-message Popover-message--large text-left p-4 mt-2 Box
+        color-shadow-large" &gt; &lt;h4 class="mb-2"&gt;Popover
+        heading&lt;/h4&gt; &lt;p&gt;Message about this particular piece of
+        UI.&lt;/p&gt; &lt;button type="submit" class="btn btn-outline mt-2
+        text-bold"&gt; Got it! &lt;/button&gt; &lt;/div&gt; &lt;/div&gt;
+        &lt;/div&gt;</code
+      >
+    </p>
+    <h3 id="bottom">Bottom</h3>
+    <p>
+      <code
+        >html live title="Bottom" &lt;div class="position-relative
+        text-center"&gt; &lt;div class="Popover position-relative"&gt; &lt;div
+        class="Popover-message Popover-message--bottom p-4 mx-auto mb-2
+        text-left Box color-shadow-large" &gt; &lt;h4 class="mb-2"&gt;Popover
+        heading&lt;/h4&gt; &lt;p&gt;Message about this particular piece of
+        UI.&lt;/p&gt; &lt;button type="submit" class="btn btn-outline mt-2
+        text-bold"&gt; Got it! &lt;/button&gt; &lt;/div&gt; &lt;/div&gt;
+        &lt;button class="btn btn-primary"&gt;UI&lt;/button&gt;
+        &lt;/div&gt;</code
+      >
+    </p>
+    <h3 id="bottom-right">Bottom-right</h3>
+    <p>
+      <code
+        >html live title="Bottom-right" &lt;div class="position-relative
+        text-right pr-2"&gt; &lt;div class="Popover position-relative"&gt;
+        &lt;div class="Popover-message Popover-message--bottom-right p-4 mb-2
+        text-left Box color-shadow-large" &gt; &lt;h4 class="mb-2"&gt;Popover
+        heading&lt;/h4&gt; &lt;p&gt;Message about this particular piece of
+        UI.&lt;/p&gt; &lt;button type="submit" class="btn btn-outline mt-2
+        text-bold"&gt; Got it! &lt;/button&gt; &lt;/div&gt; &lt;/div&gt;
+        &lt;button class="btn btn-primary"&gt;UI&lt;/button&gt;
+        &lt;/div&gt;</code
+      >
+    </p>
+    <h3 id="bottom-left">Bottom-left</h3>
+    <p>
+      <code
+        >html live title="Bottom-left" &lt;div class="Popover position-relative
+        pl-2"&gt; &lt;div class="Popover-message Popover-message--bottom-left
+        p-4 mb-2 Box color-shadow-large" &gt; &lt;h4 class="mb-2"&gt;Popover
+        heading&lt;/h4&gt; &lt;p&gt;Message about this particular piece of
+        UI.&lt;/p&gt; &lt;button type="submit" class="btn btn-outline mt-2
+        text-bold"&gt; Got it! &lt;/button&gt; &lt;/div&gt; &lt;button
+        class="btn btn-primary"&gt;UI&lt;/button&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <h3 id="left">Left</h3>
+    <p>
+      <code
+        >html live title="Left" &lt;div class="d-flex flex-justify-center
+        flex-items-center"&gt; &lt;button class="btn
+        btn-primary"&gt;UI&lt;/button&gt; &lt;div class="Popover
+        position-relative"&gt; &lt;div class="Popover-message
+        Popover-message--left p-4 ml-2 Box color-shadow-large" &gt; &lt;h4
+        class="mb-2"&gt;Popover heading&lt;/h4&gt; &lt;p&gt;Message about this
+        particular piece of UI.&lt;/p&gt; &lt;button type="submit" class="btn
+        btn-outline mt-2 text-bold"&gt; Got it! &lt;/button&gt; &lt;/div&gt;
+        &lt;/div&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <h3 id="left-bottom">Left-bottom</h3>
+    <p>
+      <code
+        >html live title="Left-bottom" &lt;div class="d-flex flex-justify-center
+        flex-items-end"&gt; &lt;button class="btn
+        btn-primary"&gt;UI&lt;/button&gt; &lt;div class="Popover
+        position-relative"&gt; &lt;div class="Popover-message
+        Popover-message--left-bottom p-4 ml-2 Box color-shadow-large" &gt;
+        &lt;h4 class="mb-2"&gt;Popover heading&lt;/h4&gt; &lt;p&gt;Message about
+        this particular piece of UI.&lt;/p&gt; &lt;button type="submit"
+        class="btn btn-outline mt-2 text-bold"&gt; Got it! &lt;/button&gt;
+        &lt;/div&gt; &lt;/div&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <h3 id="left-top">Left-top</h3>
+    <p>
+      <code
+        >html live title="Left-top" &lt;div class="d-flex flex-justify-center
+        flex-items-start"&gt; &lt;button class="btn
+        btn-primary"&gt;UI&lt;/button&gt; &lt;div class="Popover
+        position-relative"&gt; &lt;div class="Popover-message
+        Popover-message--left-top p-4 ml-2 Box color-shadow-large" &gt; &lt;h4
+        class="mb-2"&gt;Popover heading&lt;/h4&gt; &lt;p&gt;Message about this
+        particular piece of UI.&lt;/p&gt; &lt;button type="submit" class="btn
+        btn-outline mt-2 text-bold"&gt; Got it! &lt;/button&gt; &lt;/div&gt;
+        &lt;/div&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <h3 id="right">Right</h3>
+    <p>
+      <code
+        >html live title="Right" &lt;div class="d-flex flex-justify-center
+        flex-items-center"&gt; &lt;div class="Popover position-relative"&gt;
+        &lt;div class="Popover-message Popover-message--right p-4 mr-2 Box
+        color-shadow-large" &gt; &lt;h4 class="mb-2"&gt;Popover
+        heading&lt;/h4&gt; &lt;p&gt;Message about this particular piece of
+        UI.&lt;/p&gt; &lt;button type="submit" class="btn btn-outline mt-2
+        text-bold"&gt; Got it! &lt;/button&gt; &lt;/div&gt; &lt;/div&gt;
+        &lt;button class="btn btn-primary"&gt;UI&lt;/button&gt;
+        &lt;/div&gt;</code
+      >
+    </p>
+    <h3 id="right-bottom">Right-bottom</h3>
+    <p>
+      <code
+        >html live title="Right-bottom" &lt;div class="d-flex
+        flex-justify-center flex-items-end"&gt; &lt;div class="Popover
+        position-relative"&gt; &lt;div class="Popover-message
+        Popover-message--right-bottom p-4 mr-2 Box color-shadow-large" &gt;
+        &lt;h4 class="mb-2"&gt;Popover heading&lt;/h4&gt; &lt;p&gt;Message about
+        this particular piece of UI.&lt;/p&gt; &lt;button type="submit"
+        class="btn btn-outline mt-2 text-bold"&gt; Got it! &lt;/button&gt;
+        &lt;/div&gt; &lt;/div&gt; &lt;button class="btn
+        btn-primary"&gt;UI&lt;/button&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <h3 id="right-top">Right-top</h3>
+    <p>
+      <code
+        >html live title="Right-top" &lt;div class="d-flex flex-justify-center
+        flex-items-start"&gt; &lt;div class="Popover position-relative"&gt;
+        &lt;div class="Popover-message Popover-message--right-top p-4 mr-2 Box
+        color-shadow-large" &gt; &lt;h4 class="mb-2"&gt;Popover
+        heading&lt;/h4&gt; &lt;p&gt;Message about this particular piece of
+        UI.&lt;/p&gt; &lt;button type="submit" class="btn btn-outline mt-2
+        text-bold"&gt; Got it! &lt;/button&gt; &lt;/div&gt; &lt;/div&gt;
+        &lt;button class="btn btn-primary"&gt;UI&lt;/button&gt;
+        &lt;/div&gt;</code
+      >
+    </p>
+    <h3 id="top-left">Top-left</h3>
+    <p>
+      <code
+        >html live title="Top-left" &lt;div class="position-relative pl-2"&gt;
+        &lt;button class="btn btn-primary"&gt;UI&lt;/button&gt; &lt;div
+        class="Popover position-relative"&gt; &lt;div class="Popover-message
+        Popover-message--top-left p-4 mt-2 Box color-shadow-large" &gt; &lt;h4
+        class="mb-2"&gt;Popover heading&lt;/h4&gt; &lt;p&gt;Message about this
+        particular piece of UI.&lt;/p&gt; &lt;button type="submit" class="btn
+        btn-outline mt-2 text-bold"&gt; Got it! &lt;/button&gt; &lt;/div&gt;
+        &lt;/div&gt; &lt;/div&gt;</code
+      >
+    </p>
+    <h3 id="top-right">Top-right</h3>
+    <p>
+      <code
+        >html live title="Top-right" &lt;div class="position-relative text-right
+        pr-2"&gt; &lt;button class="btn btn-primary"&gt;UI&lt;/button&gt;
+        &lt;div class="Popover right-0 position-relative"&gt; &lt;div
+        class="Popover-message Popover-message--top-right text-left p-4 mt-2 Box
+        color-shadow-large" &gt; &lt;h4 class="mb-2"&gt;Popover
+        heading&lt;/h4&gt; &lt;p&gt;Message about this particular piece of
+        UI.&lt;/p&gt; &lt;button type="submit" class="btn btn-outline mt-2
+        text-bold"&gt; Got it! &lt;/button&gt; &lt;/div&gt; &lt;/div&gt;
+        &lt;/div&gt;</code
+      >
+    </p>
+  </body>
+</html>

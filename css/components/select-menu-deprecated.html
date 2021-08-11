@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <title>Select menu (deprecated)</title>
+    <style type="text/css">
+      code {
+        white-space: pre-wrap;
+      }
+      span.smallcaps {
+        font-variant: small-caps;
+      }
+      span.underline {
+        text-decoration: underline;
+      }
+      div.column {
+        display: inline-block;
+        vertical-align: top;
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <header id="title-block-header">
+      <h1 class="title">Select menu (deprecated)</h1>
+    </header>
+    <Note>
+      Please note that the <code>.select-menu</code> component is
+      <strong>deprecated</strong>. Use the
+      <a href="select-menu"><code>.SelectMenu</code></a> instead.
+    </Note>
+    <h2 id="migration-guide">Migration guide</h2>
+    <p>
+      Here are a few tips on how to migrate an existing
+      <code>.select-menu</code> to <code>.SelectMenu</code>.
+    </p>
+    <ol type="1">
+      <li>
+        Use a <code>&lt;details&gt;</code> element to toggle the Select Menu.
+      </li>
+      <li>
+        Use a
+        <a href="https://github.com/github/details-menu-element"
+          ><code>&lt;details-menu&gt;</code></a
+        >
+        element to add JS behaviour. The older <code>.js-select-menu</code> is
+        not compatible.
+      </li>
+      <li>
+        In case custom styling is needed, use
+        <a href="https://primer.style/css/utilities">utility classes</a> if
+        possible.
+      </li>
+    </ol>
+    <p>Below is a comparison between class names:</p>
+    <table>
+      <thead>
+        <tr class="header">
+          <th><code>.select-menu</code></th>
+          <th><code>.SelectMenu</code></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="odd">
+          <td><code>select-menu</code></td>
+          <td>-</td>
+        </tr>
+        <tr class="even">
+          <td><code>select-menu-button</code></td>
+          <td>-</td>
+        </tr>
+        <tr class="odd">
+          <td><code>select-menu-modal-holder</code></td>
+          <td>-</td>
+        </tr>
+        <tr class="even">
+          <td><code>select-menu-modal</code></td>
+          <td><code>SelectMenu</code></td>
+        </tr>
+        <tr class="odd">
+          <td><code>select-menu-modal-right</code></td>
+          <td><code>SelectMenu right-0</code></td>
+        </tr>
+        <tr class="even">
+          <td>-</td>
+          <td><code>SelectMenu-modal</code></td>
+        </tr>
+        <tr class="odd">
+          <td><code>select-menu-loading-overlay</code></td>
+          <td><code>SelectMenu-loading</code></td>
+        </tr>
+        <tr class="even">
+          <td><code>select-menu-item-icon</code></td>
+          <td><code>SelectMenu-icon</code></td>
+        </tr>
+        <tr class="odd">
+          <td><code>select-menu-header</code></td>
+          <td><code>SelectMenu-header</code></td>
+        </tr>
+        <tr class="even">
+          <td><code>select-menu-title</code></td>
+          <td><code>SelectMenu-title</code></td>
+        </tr>
+        <tr class="odd">
+          <td><code>close-button</code></td>
+          <td><code>SelectMenu-closeButton</code></td>
+        </tr>
+        <tr class="even">
+          <td><code>select-menu-filters</code></td>
+          <td>-</td>
+        </tr>
+        <tr class="odd">
+          <td><code>select-menu-text-filter</code></td>
+          <td><code>SelectMenu-filter</code></td>
+        </tr>
+        <tr class="even">
+          <td>-</td>
+          <td><code>SelectMenu-input</code></td>
+        </tr>
+        <tr class="odd">
+          <td><code>select-menu-tabs</code></td>
+          <td><code>SelectMenu-tabs</code></td>
+        </tr>
+        <tr class="even">
+          <td><code>select-menu-tab</code></td>
+          <td><code>SelectMenu-tab</code></td>
+        </tr>
+        <tr class="odd">
+          <td><code>select-menu-tab-nav</code></td>
+          <td>-</td>
+        </tr>
+        <tr class="even">
+          <td><code>select-menu-list</code></td>
+          <td><code>SelectMenu-list</code></td>
+        </tr>
+        <tr class="odd">
+          <td><code>select-menu-item</code></td>
+          <td><code>SelectMenu-item</code></td>
+        </tr>
+        <tr class="even">
+          <td><code>select-menu-item-text</code></td>
+          <td>-</td>
+        </tr>
+        <tr class="odd">
+          <td><code>select-menu-no-results</code></td>
+          <td><code>SelectMenu-message</code></td>
+        </tr>
+        <tr class="even">
+          <td><code>select-menu-blankslate</code></td>
+          <td><code>SelectMenu-blankslate</code></td>
+        </tr>
+        <tr class="odd">
+          <td><code>selected</code></td>
+          <td><code>aria-checked="true"</code></td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    <p>
+      The select menu provides advanced support for navigation, filtering, and
+      more. Any popover within a select menu can make use of JavaScript-enabled
+      live filtering, selected states, tabbed lists, and keyboard navigation
+      with a bit of markup.
+    </p>
+    <p>{:toc}</p>
+    <h2 id="basic-example">Basic example</h2>
+    <p>
+      Select menus should be trigged by a <code>&lt;button&gt;</code>. In the
+      markup below, all classes prefixed with <code>select-menu</code> and
+      <code>.js-</code> are required.
+    </p>
+    <pre
+      class="erb"
+    ><code>&lt;div class=&quot;select-menu js-menu-container js-select-menu&quot;&gt;
+  &lt;button class=&quot;btn select-menu-button js-menu-target&quot; type=&quot;button&quot; aria-haspopup=&quot;true&quot; aria-expanded=&quot;false&quot;&gt;
+    Choose an item
+  &lt;/button&gt;
+  &lt;div class=&quot;select-menu-modal-holder&quot;&gt;
+    &lt;div class=&quot;select-menu-modal js-menu-content&quot;&gt;
+      &lt;div class=&quot;select-menu-list js-navigation-container&quot;&gt;
+        &lt;a href=&quot;#url&quot; class=&quot;select-menu-item selected js-navigation-item&quot;&gt;
+          &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+          &lt;span class=&quot;select-menu-item-text js-select-button-text&quot;&gt;Item 1&lt;/span&gt;
+        &lt;/a&gt;
+        &lt;a href=&quot;#url&quot; class=&quot;select-menu-item js-navigation-item&quot;&gt;
+          &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+          &lt;span class=&quot;select-menu-item-text js-select-button-text&quot;&gt;Item 2&lt;/span&gt;
+        &lt;/a&gt;
+        &lt;a href=&quot;#url&quot; class=&quot;select-menu-item js-navigation-item&quot;&gt;
+          &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+          &lt;span class=&quot;select-menu-item-text js-select-button-text&quot;&gt;Item 3&lt;/span&gt;
+        &lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+    <h2 id="menu-contents">Menu contents</h2>
+    <p>
+      The contents of a select menu are easily customized with support for
+      headers, footers, tabbed lists, and live filtering.
+    </p>
+    <h3 id="headers">Headers</h3>
+    <p>
+      Add a header to any select menu’s popover to house a clear title and a
+      dismiss button.
+    </p>
+    <pre
+      class="erb"
+    ><code>&lt;div class=&quot;select-menu js-menu-container js-select-menu&quot;&gt;
+  &lt;button class=&quot;btn select-menu-button js-menu-target&quot; type=&quot;button&quot; aria-haspopup=&quot;true&quot; aria-expanded=&quot;false&quot;&gt;
+    Choose an item
+  &lt;/button&gt;
+  &lt;div class=&quot;select-menu-modal-holder&quot;&gt;
+    &lt;div class=&quot;select-menu-modal js-menu-content&quot;&gt;
+      &lt;div class=&quot;select-menu-header js-navigation-enable&quot; tabindex=&quot;-1&quot;&gt;
+        &lt;button class=&quot;btn-link close-button js-menu-close&quot; type=&quot;button&quot;&gt;&lt;%= octicon(&quot;x&quot;, :&quot;aria-label&quot; =&gt; &quot;Close menu&quot;) %&gt;&lt;/button&gt;
+        &lt;span class=&quot;select-menu-title&quot;&gt;Options&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;select-menu-list js-navigation-container&quot;&gt;
+        &lt;a href=&quot;#url&quot; class=&quot;select-menu-item selected js-navigation-item&quot;&gt;
+          &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+          &lt;span class=&quot;select-menu-item-text js-select-button-text&quot;&gt;Item 1&lt;/span&gt;
+        &lt;/a&gt;
+        &lt;a href=&quot;#url&quot; class=&quot;select-menu-item js-navigation-item&quot;&gt;
+          &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+          &lt;span class=&quot;select-menu-item-text js-select-button-text&quot;&gt;Item 2&lt;/span&gt;
+        &lt;/a&gt;
+        &lt;a href=&quot;#url&quot; class=&quot;select-menu-item js-navigation-item&quot;&gt;
+          &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+          &lt;span class=&quot;select-menu-item-text js-select-button-text&quot;&gt;Item 3&lt;/span&gt;
+        &lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+    <h3 id="list-items">List items</h3>
+    <p>
+      The list of items is arguably the most important subcomponent within the
+      menu. Build them out of anchors, buttons, or just about any
+      <a href="http://w3c.github.io/html/dom.html#interactive-content"
+        >interactive content</a
+      >. <a href="#menu-list-items">List items are also customizable</a> with
+      options for avatars, additional icons, and multiple lines of text.
+    </p>
+    <pre
+      class="erb"
+    ><code>&lt;div class=&quot;select-menu js-menu-container js-select-menu&quot;&gt;
+  &lt;button class=&quot;btn select-menu-button js-menu-target&quot; type=&quot;button&quot; aria-haspopup=&quot;true&quot; aria-expanded=&quot;false&quot;&gt;
+    Choose an item
+  &lt;/button&gt;
+  &lt;div class=&quot;select-menu-modal-holder&quot;&gt;
+    &lt;div class=&quot;select-menu-modal js-menu-content&quot;&gt;
+      &lt;div class=&quot;select-menu-list js-navigation-container&quot;&gt;
+        &lt;button type=&quot;button&quot; class=&quot;select-menu-item selected js-navigation-item&quot;&gt;
+          &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+          &lt;span class=&quot;select-menu-item-text js-select-button-text&quot;&gt;Item 1&lt;/span&gt;
+        &lt;/button&gt;
+        &lt;a href=&quot;#url&quot; class=&quot;select-menu-item js-navigation-item&quot;&gt;
+          &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+          &lt;span class=&quot;select-menu-item-text js-select-button-text&quot;&gt;Item 2&lt;/span&gt;
+        &lt;/a&gt;
+        &lt;a href=&quot;#url&quot; class=&quot;select-menu-item js-navigation-item&quot; href=&quot;#url&quot;&gt;
+          &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+          &lt;span class=&quot;select-menu-item-text js-select-button-text&quot;&gt;Item 3&lt;/span&gt;
+        &lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+    <h3 id="filter">Filter</h3>
+    <p>
+      Enable live filtering of list items within a
+      <code>.select-menu-list</code> with a search input. Only a handful of
+      changes to your menu’s markup are required:
+    </p>
+    <ul>
+      <li>
+        Add the text input, housed in <code>.select-menu-filters</code>, before
+        the <code>.select-menu-list</code>.
+      </li>
+      <li>
+        Add two attritubes, <code>data-filterable-for</code> and
+        <code>data-filterable-type</code>, to the
+        <code>.select-menu-list</code> to scope the filter to the list.
+      </li>
+    </ul>
+    <p>
+      There are no required changes for the <code>.select-menu-item</code>s.
+    </p>
+    <pre
+      class="erb"
+    ><code>&lt;div class=&quot;select-menu js-menu-container js-select-menu&quot;&gt;
+  &lt;button class=&quot;btn select-menu-button js-menu-target&quot; type=&quot;button&quot; aria-haspopup=&quot;true&quot; aria-expanded=&quot;false&quot;&gt;
+    &lt;i&gt;Label:&lt;/i&gt;
+    &lt;span class=&quot;js-select-button&quot;&gt;Choose an item&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;div class=&quot;select-menu-modal-holder js-menu-content js-navigation-container&quot;&gt;
+    &lt;div class=&quot;select-menu-modal&quot;&gt;
+      &lt;div class=&quot;select-menu-header&quot; tabindex=&quot;-1&quot;&gt;
+        &lt;button class=&quot;btn-link close-button js-menu-close&quot; type=&quot;button&quot;&gt;&lt;%= octicon(&quot;x&quot;, :&quot;aria-label&quot; =&gt; &quot;Close menu&quot;) %&gt;&lt;/button&gt;
+        &lt;span class=&quot;select-menu-title&quot;&gt;Options&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;js-select-menu-deferred-content&quot;&gt;
+        &lt;div class=&quot;select-menu-filters&quot;&gt;
+          &lt;div class=&quot;select-menu-text-filter&quot;&gt;
+            &lt;input type=&quot;text&quot; id=&quot;example-filter-field&quot; class=&quot;form-control js-filterable-field js-navigation-enable&quot; placeholder=&quot;Filter this list&quot; aria-label=&quot;Type to filter&quot; autocomplete=&quot;off&quot;&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;select-menu-list&quot; data-filterable-for=&quot;example-filter-field&quot; data-filterable-type=&quot;substring&quot;&gt;
+          &lt;input hidden=&quot;checkbox&quot; name=&quot;example&quot; value=&quot;&quot;&gt;
+          &lt;a href=&quot;#url&quot; class=&quot;select-menu-item js-navigation-item&quot;&gt;
+            &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+            &lt;div class=&quot;select-menu-item-text js-select-button-text&quot;&gt;
+              Test element
+            &lt;/div&gt;
+          &lt;/a&gt;
+          &lt;a href=&quot;#url&quot; class=&quot;select-menu-item js-navigation-item&quot;&gt;
+            &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+            &lt;div class=&quot;select-menu-item-text js-select-button-text&quot;&gt;
+              Filter to this
+            &lt;/div&gt;
+          &lt;/a&gt;
+          &lt;a href=&quot;#url&quot; class=&quot;select-menu-item js-navigation-item&quot;&gt;
+            &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+            &lt;div class=&quot;select-menu-item-text js-select-button-text&quot;&gt;
+              More content
+            &lt;/div&gt;
+          &lt;/a&gt;
+          &lt;a href=&quot;#url&quot; class=&quot;select-menu-item js-navigation-item&quot;&gt;
+            &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+            &lt;div class=&quot;select-menu-item-text js-select-button-text&quot;&gt;
+              Something else
+            &lt;/div&gt;
+          &lt;/a&gt;
+          &lt;a href=&quot;#url&quot; class=&quot;select-menu-item js-navigation-item&quot;&gt;
+            &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+            &lt;div class=&quot;select-menu-item-text js-select-button-text&quot;&gt;
+              One more thing
+            &lt;/div&gt;
+          &lt;/a&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+    <h3 id="tabs">Tabs</h3>
+    <p>
+      Sometimes you need two or more lists of items in your select menu,
+      e.g. branches and tags. Select menu lists can be tabbed with the addition
+      of the tab toggles at the top of the menu and a few changes to the
+      <code>.select-menu-list</code>.
+    </p>
+    <pre
+      class="erb"
+    ><code>&lt;div class=&quot;select-menu js-menu-container js-select-menu&quot;&gt;
+  &lt;button class=&quot;btn select-menu-button js-menu-target&quot; type=&quot;button&quot; aria-haspopup=&quot;true&quot; aria-expanded=&quot;false&quot;&gt;
+    &lt;i&gt;Label:&lt;/i&gt;
+    &lt;span class=&quot;js-select-button&quot;&gt;Choose an item&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;div class=&quot;select-menu-modal-holder js-menu-content js-navigation-container&quot;&gt;
+    &lt;div class=&quot;select-menu-modal&quot;&gt;
+      &lt;div class=&quot;select-menu-header&quot; tabindex=&quot;-1&quot;&gt;
+        &lt;button class=&quot;btn-link close-button js-menu-close&quot; type=&quot;button&quot;&gt;&lt;%= octicon(&quot;x&quot;, :&quot;aria-label&quot; =&gt; &quot;Close menu&quot;) %&gt;&lt;/button&gt;
+        &lt;span class=&quot;select-menu-title&quot;&gt;Options&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;js-select-menu-deferred-content&quot;&gt;
+        &lt;div class=&quot;select-menu-filters&quot;&gt;
+          &lt;div class=&quot;select-menu-tabs&quot;&gt;
+            &lt;ul&gt;
+              &lt;li class=&quot;select-menu-tab&quot;&gt;
+                &lt;a href=&quot;#url&quot; data-tab-filter=&quot;branches&quot; data-filter-placeholder=&quot;Filter for &quot; class=&quot;js-select-menu-tab&quot; aria-current=&quot;false&quot;&gt;Branches&lt;/a&gt;
+              &lt;/li&gt;
+              &lt;li class=&quot;select-menu-tab&quot;&gt;
+                &lt;a href=&quot;#url&quot; data-tab-filter=&quot;tags&quot; data-filter-placeholder=&quot;Find a tag…&quot; class=&quot;js-select-menu-tab selected&quot; aria-current=&quot;true&quot;&gt;Tags&lt;/a&gt;
+              &lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;select-menu-list select-menu-tab-bucket js-select-menu-tab-bucket selected&quot; data-filterable-for=&quot;example-filter-field&quot; data-filterable-type=&quot;substring&quot; data-tab-filter=&quot;branches&quot; role=&quot;menu&quot;&gt;
+          &lt;input hidden=&quot;checkbox&quot; name=&quot;example&quot; value=&quot;&quot;&gt;
+          &lt;a href=&quot;#url&quot; class=&quot;select-menu-item js-navigation-item&quot;&gt;
+            &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+            &lt;div class=&quot;select-menu-item-text js-select-button-text&quot;&gt;
+              Branch 1
+            &lt;/div&gt;
+          &lt;/a&gt;
+          &lt;a href=&quot;#url&quot; class=&quot;select-menu-item js-navigation-item&quot;&gt;
+            &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+            &lt;div class=&quot;select-menu-item-text js-select-button-text&quot;&gt;
+              Branch 2
+            &lt;/div&gt;
+          &lt;/a&gt;
+          &lt;a href=&quot;#url&quot; class=&quot;select-menu-item js-navigation-item&quot;&gt;
+            &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+            &lt;div class=&quot;select-menu-item-text js-select-button-text&quot;&gt;
+              Branch 3
+            &lt;/div&gt;
+          &lt;/a&gt;
+          &lt;a href=&quot;#url&quot; class=&quot;select-menu-item js-navigation-item&quot;&gt;
+            &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+            &lt;div class=&quot;select-menu-item-text js-select-button-text&quot;&gt;
+              Branch 4
+            &lt;/div&gt;
+          &lt;/a&gt;
+          &lt;a href=&quot;#url&quot; class=&quot;select-menu-item js-navigation-item&quot;&gt;
+            &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+            &lt;div class=&quot;select-menu-item-text js-select-button-text&quot;&gt;
+              Branch 5
+            &lt;/div&gt;
+          &lt;/a&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;select-menu-list select-menu-tab-bucket js-select-menu-tab-bucket&quot; data-filterable-for=&quot;example-filter-field&quot; data-filterable-type=&quot;substring&quot; data-tab-filter=&quot;tags&quot; role=&quot;menu&quot;&gt;
+          &lt;input hidden=&quot;checkbox&quot; name=&quot;example&quot; value=&quot;&quot;&gt;
+          &lt;a href=&quot;#url&quot; class=&quot;select-menu-item js-navigation-item&quot;&gt;
+            &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+            &lt;div class=&quot;select-menu-item-text js-select-button-text&quot;&gt;
+              Tag 1
+            &lt;/div&gt;
+          &lt;/a&gt;
+          &lt;a href=&quot;#url&quot; class=&quot;select-menu-item js-navigation-item&quot;&gt;
+            &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+            &lt;div class=&quot;select-menu-item-text js-select-button-text&quot;&gt;
+              Tag 2
+            &lt;/div&gt;
+          &lt;/a&gt;
+          &lt;a href=&quot;#url&quot; class=&quot;select-menu-item js-navigation-item&quot;&gt;
+            &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+            &lt;div class=&quot;select-menu-item-text js-select-button-text&quot;&gt;
+              Tag 3
+            &lt;/div&gt;
+          &lt;/a&gt;
+          &lt;a href=&quot;#url&quot; class=&quot;select-menu-item js-navigation-item&quot;&gt;
+            &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+            &lt;div class=&quot;select-menu-item-text js-select-button-text&quot;&gt;
+              Tag 4
+            &lt;/div&gt;
+          &lt;/a&gt;
+          &lt;a href=&quot;#url&quot; class=&quot;select-menu-item js-navigation-item&quot;&gt;
+            &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+            &lt;div class=&quot;select-menu-item-text js-select-button-text&quot;&gt;
+              Tag 5
+            &lt;/div&gt;
+          &lt;/a&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+    <h3 id="filter-and-tabs">Filter and tabs</h3>
+    <p>Show a filter and tabs in a single select menu.</p>
+    <pre
+      class="erb"
+    ><code>&lt;div class=&quot;select-menu js-menu-container js-select-menu&quot;&gt;
+  &lt;button class=&quot;btn select-menu-button js-menu-target&quot; type=&quot;button&quot; aria-haspopup=&quot;true&quot; aria-expanded=&quot;false&quot;&gt;
+    &lt;i&gt;Label:&lt;/i&gt;
+    &lt;span class=&quot;js-select-button&quot;&gt;Choose an item&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;div class=&quot;select-menu-modal-holder js-menu-content js-navigation-container&quot;&gt;
+    &lt;div class=&quot;select-menu-modal&quot;&gt;
+      &lt;div class=&quot;select-menu-header&quot; tabindex=&quot;-1&quot;&gt;
+        &lt;button class=&quot;btn-link close-button js-menu-close&quot; type=&quot;button&quot;&gt;&lt;%= octicon(&quot;x&quot;, :&quot;aria-label&quot; =&gt; &quot;Close menu&quot;) %&gt;&lt;/button&gt;
+        &lt;span class=&quot;select-menu-title&quot;&gt;Options&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;js-select-menu-deferred-content&quot;&gt;
+        &lt;div class=&quot;select-menu-filters&quot;&gt;
+          &lt;div class=&quot;select-menu-text-filter&quot;&gt;
+            &lt;input type=&quot;text&quot; id=&quot;example-filter-field-2&quot; class=&quot;form-control js-filterable-field js-navigation-enable&quot; placeholder=&quot;Filter labels&quot; aria-label=&quot;Type or choose a label&quot; autocomplete=&quot;off&quot;&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;select-menu-tabs&quot;&gt;
+            &lt;ul&gt;
+              &lt;li class=&quot;select-menu-tab&quot;&gt;
+                &lt;a href=&quot;#url&quot; data-tab-filter=&quot;branches&quot; data-filter-placeholder=&quot;Filter for &quot; class=&quot;js-select-menu-tab&quot; aria-current=&quot;false&quot;&gt;Branches&lt;/a&gt;
+              &lt;/li&gt;
+              &lt;li class=&quot;select-menu-tab&quot;&gt;
+                &lt;a href=&quot;#url&quot; data-tab-filter=&quot;tags&quot; data-filter-placeholder=&quot;Find a tag…&quot; class=&quot;js-select-menu-tab selected&quot; aria-current=&quot;true&quot;&gt;Tags&lt;/a&gt;
+              &lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;select-menu-list select-menu-tab-bucket js-select-menu-tab-bucket selected&quot; data-filterable-for=&quot;example-filter-field&quot; data-filterable-type=&quot;substring&quot; data-tab-filter=&quot;branches&quot; role=&quot;menu&quot;&gt;
+          &lt;input hidden=&quot;checkbox&quot; name=&quot;example&quot; value=&quot;&quot;&gt;
+          &lt;a href=&quot;#url&quot; class=&quot;select-menu-item js-navigation-item&quot;&gt;
+            &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+            &lt;div class=&quot;select-menu-item-text js-select-button-text&quot;&gt;
+              Branch 1
+            &lt;/div&gt;
+          &lt;/a&gt;
+          &lt;a href=&quot;#url&quot; class=&quot;select-menu-item js-navigation-item&quot;&gt;
+            &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+            &lt;div class=&quot;select-menu-item-text js-select-button-text&quot;&gt;
+              Branch 2
+            &lt;/div&gt;
+          &lt;/a&gt;
+          &lt;a href=&quot;#url&quot; class=&quot;select-menu-item js-navigation-item&quot;&gt;
+            &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+            &lt;div class=&quot;select-menu-item-text js-select-button-text&quot;&gt;
+              Branch 3
+            &lt;/div&gt;
+          &lt;/a&gt;
+          &lt;a href=&quot;#url&quot; class=&quot;select-menu-item js-navigation-item&quot;&gt;
+            &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+            &lt;div class=&quot;select-menu-item-text js-select-button-text&quot;&gt;
+              Branch 4
+            &lt;/div&gt;
+          &lt;/a&gt;
+          &lt;a href=&quot;#url&quot; class=&quot;select-menu-item js-navigation-item&quot;&gt;
+            &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+            &lt;div class=&quot;select-menu-item-text js-select-button-text&quot;&gt;
+              Branch 5
+            &lt;/div&gt;
+          &lt;/a&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;select-menu-list select-menu-tab-bucket js-select-menu-tab-bucket&quot; data-filterable-for=&quot;example-filter-field&quot; data-filterable-type=&quot;substring&quot; data-tab-filter=&quot;tags&quot; role=&quot;menu&quot;&gt;
+          &lt;input hidden=&quot;checkbox&quot; name=&quot;example&quot; value=&quot;&quot;&gt;
+          &lt;a href=&quot;#url&quot; class=&quot;select-menu-item js-navigation-item&quot;&gt;
+            &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+            &lt;div class=&quot;select-menu-item-text js-select-button-text&quot;&gt;
+              Tag 1
+            &lt;/div&gt;
+          &lt;/a&gt;
+          &lt;a href=&quot;#url&quot; class=&quot;select-menu-item js-navigation-item&quot;&gt;
+            &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+            &lt;div class=&quot;select-menu-item-text js-select-button-text&quot;&gt;
+              Tag 2
+            &lt;/div&gt;
+          &lt;/a&gt;
+          &lt;a href=&quot;#url&quot; class=&quot;select-menu-item js-navigation-item&quot;&gt;
+            &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+            &lt;div class=&quot;select-menu-item-text js-select-button-text&quot;&gt;
+              Tag 3
+            &lt;/div&gt;
+          &lt;/a&gt;
+          &lt;a href=&quot;#url&quot; class=&quot;select-menu-item js-navigation-item&quot;&gt;
+            &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+            &lt;div class=&quot;select-menu-item-text js-select-button-text&quot;&gt;
+              Tag 4
+            &lt;/div&gt;
+          &lt;/a&gt;
+          &lt;a href=&quot;#url&quot; class=&quot;select-menu-item js-navigation-item&quot;&gt;
+            &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+            &lt;div class=&quot;select-menu-item-text js-select-button-text&quot;&gt;
+              Tag 5
+            &lt;/div&gt;
+          &lt;/a&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+    <h3 id="blankslate">Blankslate</h3>
+    <p>
+      Sometimes a select menu needs to communicate a “blank slate” where there’s
+      no content in the menu’s list. Usually these include a clear call to
+      action to add said content to the list. Swap out the contents of a
+      <code>.select-menu-list</code> with the
+      <code>.select-menu-blankslate</code> and customize its contents as needed.
+    </p>
+    <pre
+      class="erb"
+    ><code>&lt;div class=&quot;select-menu js-menu-container js-select-menu&quot;&gt;
+  &lt;button class=&quot;btn select-menu-button js-menu-target&quot; type=&quot;button&quot; aria-haspopup=&quot;true&quot; aria-expanded=&quot;false&quot;&gt;
+    Choose an item
+  &lt;/button&gt;
+  &lt;div class=&quot;select-menu-modal-holder&quot;&gt;
+    &lt;div class=&quot;select-menu-modal js-menu-content&quot;&gt;
+      &lt;div class=&quot;select-menu-header js-navigation-enable&quot; tabindex=&quot;-1&quot;&gt;
+        &lt;button class=&quot;btn-link close-button js-menu-close&quot; type=&quot;button&quot;&gt;&lt;%= octicon(&quot;x&quot;, :&quot;aria-label&quot; =&gt; &quot;Close menu&quot;) %&gt;&lt;/button&gt;
+        &lt;span class=&quot;select-menu-title&quot;&gt;Options&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;select-menu-list js-navigation-container&quot;&gt;
+        &lt;div class=&quot;select-menu-blankslate&quot;&gt;
+          &lt;%= octicon(&quot;check&quot;, :height =&gt; 32) %&gt;
+          &lt;h3&gt;Select menu blankslate&lt;/h3&gt;
+          &lt;p&gt;Some text here to describe why you&#39;re seeing a blankslate and how to go about fixing that up.&lt;/p&gt;
+          &lt;button type=&quot;button&quot; class=&quot;btn btn-sm btn-primary mt-3 mb-3&quot;&gt;Deal with it&lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+    <h2 id="menu-list-items">Menu list items</h2>
+    <p>
+      Select menu list items have a few options available to them for more
+      complex information patterns.
+    </p>
+    <h3 id="multi-line-text">Multi-line text</h3>
+    <p>
+      Sometimes the contents of your select menu list require a heading and a
+      description instead of just a string. Select menus come with some default
+      styles for such situations with the addition of a few classes and wrapping
+      <code>&lt;span&gt;</code>s.
+    </p>
+    <pre
+      class="erb"
+    ><code>&lt;div class=&quot;select-menu js-menu-container js-select-menu&quot;&gt;
+  &lt;button class=&quot;btn select-menu-button js-menu-target&quot; type=&quot;button&quot; aria-haspopup=&quot;true&quot; aria-expanded=&quot;false&quot;&gt;
+    &lt;i&gt;Multi line:&lt;/i&gt;
+    &lt;span class=&quot;js-select-button&quot;&gt;Choose an item&lt;/span&gt;
+  &lt;/button&gt;
+
+  &lt;div class=&quot;select-menu-modal-holder&quot;&gt;
+    &lt;div class=&quot;select-menu-modal subscription-menu-modal js-menu-content&quot; aria-hidden=&quot;false&quot;&gt;
+      &lt;div class=&quot;select-menu-header js-navigation-enable&quot; tabindex=&quot;-1&quot;&gt;
+        &lt;button class=&quot;btn-link close-button js-menu-close&quot; type=&quot;button&quot;&gt;&lt;%= octicon(&quot;x&quot;, :&quot;aria-label&quot; =&gt; &quot;Close menu&quot;) %&gt;&lt;/button&gt;
+        &lt;span class=&quot;select-menu-title&quot;&gt;Notifications&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;select-menu-list js-navigation-container js-active-navigation-container&quot; role=&quot;menu&quot;&gt;
+        &lt;a href=&quot;#url&quot; class=&quot;select-menu-item js-navigation-item selected&quot; role=&quot;menuitem&quot;&gt;
+          &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+          &lt;div class=&quot;select-menu-item-text&quot;&gt;
+            &lt;span class=&quot;select-menu-item-heading&quot;&gt;Not watching&lt;/span&gt;
+            &lt;span class=&quot;description&quot;&gt;Be notified when participating or @mentioned.&lt;/span&gt;
+            &lt;span class=&quot;js-select-button-text hidden-select-button-text&quot;&gt;
+              Watch
+            &lt;/span&gt;
+          &lt;/div&gt;
+        &lt;/a&gt;
+        &lt;a href=&quot;#url&quot; class=&quot;select-menu-item js-navigation-item&quot; role=&quot;menuitem&quot;&gt;
+          &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+          &lt;div class=&quot;select-menu-item-text&quot;&gt;
+            &lt;span class=&quot;select-menu-item-heading&quot;&gt;Watching&lt;/span&gt;
+            &lt;span class=&quot;description&quot;&gt;Be notified of all conversations.&lt;/span&gt;
+            &lt;span class=&quot;js-select-button-text hidden-select-button-text&quot;&gt;
+              Stop watching
+            &lt;/span&gt;
+          &lt;/div&gt;
+        &lt;/a&gt;
+        &lt;a href=&quot;#url&quot; class=&quot;select-menu-item js-navigation-item&quot; role=&quot;menuitem&quot;&gt;
+          &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+          &lt;div class=&quot;select-menu-item-text&quot;&gt;
+            &lt;span class=&quot;select-menu-item-heading&quot;&gt;Ignoring&lt;/span&gt;
+            &lt;span class=&quot;description&quot;&gt;Never be notified.&lt;/span&gt;
+            &lt;span class=&quot;js-select-button-text hidden-select-button-text&quot;&gt;
+              Stop ignoring
+            &lt;/span&gt;
+          &lt;/div&gt;
+        &lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+    <h3 id="with-avatars">With avatars</h3>
+    <p>
+      Add avatars to a select menu to help indicate when a menu list item
+      represents a user.
+    </p>
+    <pre
+      class="erb"
+    ><code>&lt;div class=&quot;select-menu js-menu-container js-select-menu&quot;&gt;
+  &lt;button class=&quot;btn select-menu-button js-menu-target&quot; type=&quot;button&quot; aria-haspopup=&quot;true&quot; aria-expanded=&quot;false&quot;&gt;
+    Choose an item
+  &lt;/button&gt;
+  &lt;div class=&quot;select-menu-modal-holder&quot;&gt;
+    &lt;div class=&quot;select-menu-modal js-menu-content&quot;&gt;
+      &lt;div class=&quot;select-menu-header js-navigation-enable&quot; tabindex=&quot;-1&quot;&gt;
+        &lt;button class=&quot;btn-link close-button js-menu-close&quot; type=&quot;button&quot;&gt;&lt;%= octicon(&quot;x&quot;, :&quot;aria-label&quot; =&gt; &quot;Close menu&quot;) %&gt;&lt;/button&gt;
+        &lt;span class=&quot;select-menu-title&quot;&gt;Options&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;select-menu-list js-navigation-container&quot;&gt;
+        &lt;a href=&quot;#url&quot; class=&quot;select-menu-item selected js-navigation-item&quot;&gt;
+          &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+          &lt;span class=&quot;select-menu-item-gravatar&quot;&gt;
+            &lt;%= avatar_for(current_user, 20, :alt =&gt; &quot;&quot;) %&gt;
+          &lt;/span&gt;
+          &lt;span class=&quot;select-menu-item-text js-select-button-text&quot;&gt;
+            probot
+          &lt;/span&gt;
+        &lt;/a&gt;
+        &lt;a href=&quot;#url&quot; class=&quot;select-menu-item js-navigation-item&quot;&gt;
+          &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+          &lt;span class=&quot;select-menu-item-gravatar&quot;&gt;
+            &lt;%= avatar_for(current_user, 20, :alt =&gt; &quot;&quot;) %&gt;
+          &lt;/span&gt;
+          &lt;span class=&quot;select-menu-item-text js-select-button-text&quot;&gt;
+            probot
+          &lt;/span&gt;
+        &lt;/a&gt;
+        &lt;a href=&quot;#url&quot; class=&quot;select-menu-item js-navigation-item&quot;&gt;
+          &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+          &lt;span class=&quot;select-menu-item-gravatar&quot;&gt;
+            &lt;%= avatar_for(current_user, 20, :alt =&gt; &quot;&quot;) %&gt;
+          &lt;/span&gt;
+          &lt;span class=&quot;select-menu-item-text js-select-button-text&quot;&gt;
+            probot
+          &lt;/span&gt;
+        &lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+    <h3 id="with-dismiss-icon">With dismiss icon</h3>
+    <p>
+      Indicate how to toggle the selected state on a select menu list item with
+      the addition of a dismiss icon.
+    </p>
+    <pre
+      class="erb"
+    ><code>&lt;div class=&quot;select-menu js-menu-container js-select-menu&quot;&gt;
+  &lt;button class=&quot;btn select-menu-button js-menu-target&quot; type=&quot;button&quot; aria-haspopup=&quot;true&quot; aria-expanded=&quot;false&quot;&gt;
+    Choose an item
+  &lt;/button&gt;
+  &lt;div class=&quot;select-menu-modal-holder&quot;&gt;
+    &lt;div class=&quot;select-menu-modal js-menu-content&quot;&gt;
+      &lt;div class=&quot;select-menu-header js-navigation-enable&quot; tabindex=&quot;-1&quot;&gt;
+        &lt;button class=&quot;btn-link close-button js-menu-close&quot; type=&quot;button&quot;&gt;&lt;%= octicon(&quot;x&quot;, :&quot;aria-label&quot; =&gt; &quot;Close menu&quot;) %&gt;&lt;/button&gt;
+        &lt;span class=&quot;select-menu-title&quot;&gt;Options&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;select-menu-list js-navigation-container&quot;&gt;
+        &lt;button type=&quot;button&quot; class=&quot;select-menu-item selected js-navigation-item width-full&quot;&gt;
+          &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+          &lt;span class=&quot;select-menu-item-text js-select-button-text&quot;&gt;
+            &lt;%= octicon(&quot;x&quot;, :&quot;aria-label&quot; =&gt; &quot;Click to remove&quot;) %&gt;
+            Item 1
+          &lt;/span&gt;
+        &lt;/button&gt;
+        &lt;button type=&quot;button&quot; class=&quot;select-menu-item js-navigation-item width-full&quot;&gt;
+          &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+          &lt;span class=&quot;select-menu-item-text js-select-button-text&quot;&gt;
+            &lt;%= octicon(&quot;x&quot;, :&quot;aria-label&quot; =&gt; &quot;Click to remove&quot;) %&gt;
+            Item 2
+          &lt;/span&gt;
+        &lt;/button&gt;
+        &lt;button type=&quot;button&quot; class=&quot;select-menu-item js-navigation-item width-full&quot;&gt;
+          &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+          &lt;span class=&quot;select-menu-item-text js-select-button-text&quot;&gt;
+            &lt;%= octicon(&quot;x&quot;, :&quot;aria-label&quot; =&gt; &quot;Click to remove&quot;) %&gt;
+            Item 3
+          &lt;/span&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+    <h2 id="menu-alignment">Menu alignment</h2>
+    <p>
+      By default select menus are automatically aligned to the top left corner
+      of an element, but you can also customize that with a few utilities or
+      custom display.
+    </p>
+    <h3 id="right-aligned-menus">Right aligned menus</h3>
+    <p>
+      When select menus are right aligned, you can also right-align the select
+      menu’s popover with <code>.select-menu-modal-right</code>.
+    </p>
+    <pre
+      class="erb"
+    ><code>&lt;div class=&quot;select-menu float-right select-menu-modal-right js-menu-container js-select-menu&quot;&gt;
+  &lt;button class=&quot;btn select-menu-button js-menu-target&quot; type=&quot;button&quot; aria-haspopup=&quot;true&quot; aria-expanded=&quot;false&quot;&gt;
+    Choose an item
+  &lt;/button&gt;
+  &lt;div class=&quot;select-menu-modal-holder&quot;&gt;
+    &lt;div class=&quot;select-menu-modal js-menu-content&quot;&gt;
+      &lt;div class=&quot;select-menu-header js-navigation-enable&quot; tabindex=&quot;-1&quot;&gt;
+        &lt;button class=&quot;btn-link close-button js-menu-close&quot; type=&quot;button&quot;&gt;&lt;%= octicon(&quot;x&quot;, :&quot;aria-label&quot; =&gt; &quot;Close menu&quot;) %&gt;&lt;/button&gt;
+        &lt;span class=&quot;select-menu-title&quot;&gt;Options&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;select-menu-list js-navigation-container&quot;&gt;
+        &lt;a href=&quot;#url&quot; class=&quot;select-menu-item selected js-navigation-item&quot;&gt;
+          &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+          &lt;span class=&quot;select-menu-item-text js-select-button-text&quot;&gt;Item 1&lt;/span&gt;
+        &lt;/a&gt;
+        &lt;a href=&quot;#url&quot; class=&quot;select-menu-item js-navigation-item&quot;&gt;
+          &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+          &lt;span class=&quot;select-menu-item-text js-select-button-text&quot;&gt;Item 2&lt;/span&gt;
+        &lt;/a&gt;
+        &lt;a href=&quot;#url&quot; class=&quot;select-menu-item js-navigation-item&quot;&gt;
+          &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+          &lt;span class=&quot;select-menu-item-text js-select-button-text&quot;&gt;Item 3&lt;/span&gt;
+        &lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+    <h2 id="button-options">Button options</h2>
+    <p>
+      Customize the select menu’s trigger button by changing the button modifier
+      class, enabling stateful text, and more.
+    </p>
+    <h3 id="style-options">Style options</h3>
+    <p>
+      Since select menus are powered by JavaScript behaviors, the specific
+      display of your select menu button is up to you and your use case.
+    </p>
+    <pre
+      class="erb"
+    ><code>&lt;div class=&quot;select-menu js-menu-container js-select-menu&quot;&gt;
+  &lt;button class=&quot;btn select-menu-button js-menu-target&quot; type=&quot;button&quot; aria-haspopup=&quot;true&quot; aria-expanded=&quot;false&quot;&gt;
+    Default button
+  &lt;/button&gt;
+
+  &lt;div class=&quot;select-menu-modal-holder&quot;&gt;
+    &lt;div class=&quot;select-menu-modal js-menu-content&quot;&gt;
+      &lt;div class=&quot;select-menu-list js-navigation-container&quot;&gt;
+        &lt;a href=&quot;#url&quot; class=&quot;select-menu-item selected js-navigation-item&quot;&gt;
+          &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+          &lt;span class=&quot;select-menu-item-text js-select-button-text&quot;&gt;Item 1&lt;/span&gt;
+        &lt;/a&gt;
+        &lt;a href=&quot;#url&quot; class=&quot;select-menu-item js-navigation-item&quot;&gt;
+          &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+          &lt;span class=&quot;select-menu-item-text js-select-button-text&quot;&gt;Item 2&lt;/span&gt;
+        &lt;/a&gt;
+        &lt;a href=&quot;#url&quot; class=&quot;select-menu-item js-navigation-item&quot;&gt;
+          &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+          &lt;span class=&quot;select-menu-item-text js-select-button-text&quot;&gt;Item 3&lt;/span&gt;
+        &lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+    <pre
+      class="erb"
+    ><code>&lt;div class=&quot;select-menu js-menu-container js-select-menu&quot;&gt;
+  &lt;button class=&quot;btn btn-primary select-menu-button js-menu-target&quot; type=&quot;button&quot; aria-haspopup=&quot;true&quot; aria-expanded=&quot;false&quot;&gt;
+    Primary button
+  &lt;/button&gt;
+
+  &lt;div class=&quot;select-menu-modal-holder&quot;&gt;
+    &lt;div class=&quot;select-menu-modal js-menu-content&quot;&gt;
+      &lt;div class=&quot;select-menu-list js-navigation-container&quot;&gt;
+        &lt;a href=&quot;#url&quot; class=&quot;select-menu-item selected js-navigation-item&quot;&gt;
+          &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+          &lt;span class=&quot;select-menu-item-text js-select-button-text&quot;&gt;Item 1&lt;/span&gt;
+        &lt;/a&gt;
+        &lt;a href=&quot;#url&quot; class=&quot;select-menu-item js-navigation-item&quot;&gt;
+          &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+          &lt;span class=&quot;select-menu-item-text js-select-button-text&quot;&gt;Item 2&lt;/span&gt;
+        &lt;/a&gt;
+        &lt;a href=&quot;#url&quot; class=&quot;select-menu-item js-navigation-item&quot;&gt;
+          &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+          &lt;span class=&quot;select-menu-item-text js-select-button-text&quot;&gt;Item 3&lt;/span&gt;
+        &lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+    <pre
+      class="erb"
+    ><code>&lt;div class=&quot;select-menu js-menu-container js-select-menu&quot;&gt;
+  &lt;button class=&quot;btn btn-outline select-menu-button js-menu-target&quot; type=&quot;button&quot; aria-haspopup=&quot;true&quot; aria-expanded=&quot;false&quot;&gt;
+    Outline button
+  &lt;/button&gt;
+
+  &lt;div class=&quot;select-menu-modal-holder&quot;&gt;
+    &lt;div class=&quot;select-menu-modal js-menu-content&quot;&gt;
+      &lt;div class=&quot;select-menu-list js-navigation-container&quot;&gt;
+        &lt;a href=&quot;#url&quot; class=&quot;select-menu-item selected js-navigation-item&quot;&gt;
+          &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+          &lt;span class=&quot;select-menu-item-text js-select-button-text&quot;&gt;Item 1&lt;/span&gt;
+        &lt;/a&gt;
+        &lt;a href=&quot;#url&quot; class=&quot;select-menu-item js-navigation-item&quot;&gt;
+          &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+          &lt;span class=&quot;select-menu-item-text js-select-button-text&quot;&gt;Item 2&lt;/span&gt;
+        &lt;/a&gt;
+        &lt;a href=&quot;#url&quot; class=&quot;select-menu-item js-navigation-item&quot;&gt;
+          &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+          &lt;span class=&quot;select-menu-item-text js-select-button-text&quot;&gt;Item 3&lt;/span&gt;
+        &lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+    <pre
+      class="erb"
+    ><code>&lt;div class=&quot;select-menu js-menu-container js-select-menu&quot;&gt;
+  &lt;button class=&quot;btn-link select-menu-button js-menu-target&quot; type=&quot;button&quot; aria-haspopup=&quot;true&quot; aria-expanded=&quot;false&quot;&gt;
+    Link button
+  &lt;/button&gt;
+
+  &lt;div class=&quot;select-menu-modal-holder&quot;&gt;
+    &lt;div class=&quot;select-menu-modal js-menu-content&quot;&gt;
+      &lt;div class=&quot;select-menu-list js-navigation-container&quot;&gt;
+        &lt;a href=&quot;#url&quot; class=&quot;select-menu-item selected js-navigation-item&quot;&gt;
+          &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+          &lt;span class=&quot;select-menu-item-text js-select-button-text&quot;&gt;Item 1&lt;/span&gt;
+        &lt;/a&gt;
+        &lt;a href=&quot;#url&quot; class=&quot;select-menu-item js-navigation-item&quot;&gt;
+          &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+          &lt;span class=&quot;select-menu-item-text js-select-button-text&quot;&gt;Item 2&lt;/span&gt;
+        &lt;/a&gt;
+        &lt;a href=&quot;#url&quot; class=&quot;select-menu-item js-navigation-item&quot;&gt;
+          &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+          &lt;span class=&quot;select-menu-item-text js-select-button-text&quot;&gt;Item 3&lt;/span&gt;
+        &lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+    <h3 id="stateful-text">Stateful text</h3>
+    <p>
+      Select menu buttons have the option of showing the current selection in
+      the button itself. Wrap the string you intend to update with a
+      <code>.js-select-button</code> and the select menu JavaScript will
+      automatically update the contents of that element with the selected item’s
+      text.
+    </p>
+    <p>
+      Open the select menu below and click different options to see it in
+      action.
+    </p>
+    <pre
+      class="erb"
+    ><code>&lt;div class=&quot;select-menu js-menu-container js-select-menu&quot;&gt;
+  &lt;button class=&quot;btn select-menu-button js-menu-target&quot; type=&quot;button&quot; aria-haspopup=&quot;true&quot; aria-expanded=&quot;false&quot;&gt;
+    &lt;span class=&quot;js-select-button&quot;&gt;main&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;div class=&quot;select-menu-modal-holder&quot;&gt;
+    &lt;div class=&quot;select-menu-modal js-menu-content&quot;&gt;
+      &lt;div class=&quot;select-menu-header js-navigation-enable&quot; tabindex=&quot;-1&quot;&gt;
+        &lt;button class=&quot;btn-link close-button js-menu-close&quot; type=&quot;button&quot;&gt;&lt;%= octicon(&quot;x&quot;, :&quot;aria-label&quot; =&gt; &quot;Close menu&quot;) %&gt;&lt;/button&gt;
+        &lt;span class=&quot;select-menu-title&quot;&gt;Options&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;select-menu-list js-navigation-container&quot;&gt;
+        &lt;a href=&quot;#url&quot; class=&quot;select-menu-item selected js-navigation-item&quot;&gt;
+          &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+          &lt;span class=&quot;select-menu-item-text js-select-button-text&quot;&gt;main&lt;/span&gt;
+        &lt;/a&gt;
+        &lt;a href=&quot;#url&quot; class=&quot;select-menu-item js-navigation-item&quot;&gt;
+          &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+          &lt;span class=&quot;select-menu-item-text js-select-button-text&quot;&gt;feature-branch&lt;/span&gt;
+        &lt;/a&gt;
+        &lt;a href=&quot;#url&quot; class=&quot;select-menu-item js-navigation-item&quot;&gt;
+          &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+          &lt;span class=&quot;select-menu-item-text js-select-button-text&quot;&gt;refactor-component-name&lt;/span&gt;
+        &lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+    <h3 id="emphasized-text">Emphasized text</h3>
+    <p>
+      You may want to include an emphasized label in the select menu. For
+      example, you may want to include the word <code>Branch:</code> in front of
+      the current branch on a repository <strong>Code</strong> page. To do this,
+      within the button, wrap the string in an <code>&lt;i&gt;</code> element.
+    </p>
+    <p>
+      As shown below, emphasized text works well with the stateful text
+      functionality mentioned above.
+    </p>
+    <pre
+      class="erb"
+    ><code>&lt;div class=&quot;select-menu js-menu-container js-select-menu&quot;&gt;
+  &lt;button class=&quot;btn select-menu-button js-menu-target&quot; type=&quot;button&quot; aria-haspopup=&quot;true&quot; aria-expanded=&quot;false&quot;&gt;
+    &lt;i&gt;Branch:&lt;/i&gt;
+    &lt;span class=&quot;js-select-button&quot;&gt;main&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;div class=&quot;select-menu-modal-holder&quot;&gt;
+    &lt;div class=&quot;select-menu-modal js-menu-content&quot;&gt;
+      &lt;div class=&quot;select-menu-header js-navigation-enable&quot; tabindex=&quot;-1&quot;&gt;
+        &lt;button class=&quot;btn-link close-button js-menu-close&quot; type=&quot;button&quot;&gt;&lt;%= octicon(&quot;x&quot;, :&quot;aria-label&quot; =&gt; &quot;Close menu&quot;) %&gt;&lt;/button&gt;
+        &lt;span class=&quot;select-menu-title&quot;&gt;Options&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;select-menu-list js-navigation-container&quot;&gt;
+        &lt;a href=&quot;#url&quot; class=&quot;select-menu-item selected js-navigation-item&quot;&gt;
+          &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+          &lt;span class=&quot;select-menu-item-text js-select-button-text&quot;&gt;main&lt;/span&gt;
+        &lt;/a&gt;
+        &lt;a href=&quot;#url&quot; class=&quot;select-menu-item js-navigation-item&quot;&gt;
+          &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+          &lt;span class=&quot;select-menu-item-text js-select-button-text&quot;&gt;feature-branch&lt;/span&gt;
+        &lt;/a&gt;
+        &lt;a href=&quot;#url&quot; class=&quot;select-menu-item js-navigation-item&quot;&gt;
+          &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+          &lt;span class=&quot;select-menu-item-text js-select-button-text&quot;&gt;refactor-component-name&lt;/span&gt;
+        &lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+    <h3 id="button-avatars">Button avatars</h3>
+    <p>
+      Add an avatar to the button, like, for example, in the context switcher in
+      the signed in dashboard.
+    </p>
+    <pre
+      class="erb"
+    ><code>&lt;div class=&quot;select-menu js-menu-container js-select-menu&quot;&gt;
+  &lt;button class=&quot;btn select-menu-button js-menu-target&quot; type=&quot;button&quot; aria-haspopup=&quot;true&quot; aria-expanded=&quot;false&quot;&gt;
+    &lt;div class=&quot;select-menu-button-gravatar js-select-button-gravatar&quot;&gt;
+      &lt;%= avatar_for(current_user, 20, :&quot;aria-label&quot; =&gt; &quot;&quot;) %&gt;
+    &lt;/div&gt;
+    &lt;span class=&quot;js-select-button css-truncate css-truncate-target&quot;&gt;probot&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;div class=&quot;select-menu-modal-holder&quot;&gt;
+    &lt;div class=&quot;select-menu-modal js-menu-content&quot;&gt;
+      &lt;div class=&quot;select-menu-header js-navigation-enable&quot; tabindex=&quot;-1&quot;&gt;
+        &lt;button class=&quot;btn-link close-button js-menu-close&quot; type=&quot;button&quot;&gt;&lt;%= octicon(&quot;x&quot;, :&quot;aria-label&quot; =&gt; &quot;Close menu&quot;) %&gt;&lt;/button&gt;
+        &lt;span class=&quot;select-menu-title&quot;&gt;Options&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;select-menu-list js-navigation-container&quot;&gt;
+        &lt;a href=&quot;#url&quot; class=&quot;select-menu-item selected js-navigation-item&quot;&gt;
+          &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+          &lt;span class=&quot;select-menu-item-gravatar&quot;&gt;
+            &lt;%= avatar_for(current_user, 20, :&quot;aria-label&quot; =&gt; &quot;&quot;) %&gt;
+          &lt;/span&gt;
+          &lt;span class=&quot;select-menu-item-text js-select-button-text&quot;&gt;
+            probot
+          &lt;/span&gt;
+        &lt;/a&gt;
+        &lt;a href=&quot;#url&quot; class=&quot;select-menu-item js-navigation-item&quot;&gt;
+          &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+          &lt;span class=&quot;select-menu-item-gravatar&quot;&gt;
+            &lt;%= avatar_for(current_user, 20, :&quot;aria-label&quot; =&gt; &quot;&quot;) %&gt;
+          &lt;/span&gt;
+          &lt;span class=&quot;select-menu-item-text js-select-button-text&quot;&gt;
+            probot
+          &lt;/span&gt;
+        &lt;/a&gt;
+        &lt;a href=&quot;#url&quot; class=&quot;select-menu-item js-navigation-item&quot;&gt;
+          &lt;%= octicon(&quot;check&quot;, :class =&gt; &quot;select-menu-item-icon&quot;) %&gt;
+          &lt;span class=&quot;select-menu-item-gravatar&quot;&gt;
+            &lt;%= avatar_for(current_user, 20, :&quot;aria-label&quot; =&gt; &quot;&quot;) %&gt;
+          &lt;/span&gt;
+          &lt;span class=&quot;select-menu-item-text js-select-button-text&quot;&gt;
+            probot
+          &lt;/span&gt;
+        &lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+  </body>
+</html>
