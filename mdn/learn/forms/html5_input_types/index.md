@@ -1,4 +1,4 @@
---- title: The HTML5 input types slug: Learn/Forms/HTML5\_input\_types tags: - Beginner - Controls - Example - Forms - Guide - HTML - Web - Widgets ---
+--- title: The HTML5 input types slug: Learn/Forms/HTML5_input_types tags: - Beginner - Controls - Example - Forms - Guide - HTML - Web - Widgets ---
 
 {{LearnSidebar}}
 
@@ -12,8 +12,7 @@ In the [previous article](/en-US/docs/Learn/Forms/Basic_native_form_controls) we
 
 Because HTML form control appearance may be quite different from a designer's specifications, web developers sometimes build their own custom form controls. We cover this in an advanced tutorial: [How to build custom form widgets](/en-US/docs/Learn/Forms/How_to_build_custom_form_controls).
 
-E-mail address field
---------------------
+## E-mail address field
 
 This type of field is set using the value `email` for the {{htmlattrxref("type","input")}} attribute:
 
@@ -37,16 +36,15 @@ This is another good reason for using these newer input types, improving the use
 
 ### Client-side validation
 
-As you can see above `email` — along with other newer `input` types — provides built-in *client-side* error validation, performed by the browser before the data gets sent to the server. It *is* a helpful aid to guide users to fill out a form accurately, and it can save time: it is useful to know that your data is not correct immediately, rather than having to wait for a round trip to the server.
+As you can see above `email` — along with other newer `input` types — provides built-in _client-side_ error validation, performed by the browser before the data gets sent to the server. It _is_ a helpful aid to guide users to fill out a form accurately, and it can save time: it is useful to know that your data is not correct immediately, rather than having to wait for a round trip to the server.
 
-But it *should not be considered* an exhaustive security measure! Your apps should always perform security checks on any form-submitted data on the *server-side* as well as the client-side, because client-side validation is too easy to turn off, so malicious users can still easily send bad data through to your server. Read [Website security](/en-US/docs/Learn/Server-side/First_steps/Website_security) for an idea of what *could* happen; implementing server-side validation is somewhat beyond the scope of this module, but you should bear it in mind.
+But it _should not be considered_ an exhaustive security measure! Your apps should always perform security checks on any form-submitted data on the _server-side_ as well as the client-side, because client-side validation is too easy to turn off, so malicious users can still easily send bad data through to your server. Read [Website security](/en-US/docs/Learn/Server-side/First_steps/Website_security) for an idea of what _could_ happen; implementing server-side validation is somewhat beyond the scope of this module, but you should bear it in mind.
 
 Note that `a@b` is a valid email address according to the default provided constraints. This is because the `email` input type allows intranet email addresses by default. To implement different validation behavior, you can use the `pattern` attribute, and you can also custom the error messages; we'll talk how to use these features in the [Client-side form validation](/en-US/docs/Learn/Forms/Form_validation) article later on.
 
 **Note**: If the data entered is not an email address, the {{cssxref(':invalid')}} pseudo-class will match, and the {{domxref('validityState.typeMismatch')}} property will return `true`.
 
-Search field
-------------
+## Search field
 
 Search fields are intended to be used to create search boxes on pages and apps. This type of field is set by using the value `search` for the {{htmlattrxref("type","input")}} attribute:
 
@@ -60,8 +58,7 @@ The below screenshots show a non-empty search field in Firefox 71, Safari 13, an
 
 Another worth-noting feature is that the values of a `search` field can be automatically saved and re-used to offer auto-completion across multiple pages of the same website; this tends to happen automatically in most modern browsers.
 
-Phone number field
-------------------
+## Phone number field
 
 A special field for filling in phone numbers can be created using `tel` as the value of the {{htmlattrxref("type","input")}} attribute:
 
@@ -77,8 +74,7 @@ Due to the wide variety of phone number formats around the world, this type of f
 
 As we mentioned earlier, the `pattern` attribute can be used to enforce constraints, which you'll learn about in [Client-side form validation](/en-US/docs/Learn/Forms/Form_validation).
 
-URL field
----------
+## URL field
 
 A special type of field for entering URLs can be created using the value `url` for the {{htmlattrxref("type","input")}} attribute:
 
@@ -92,8 +88,7 @@ See below for an example (taken on Firefox for Android):
 
 **Note:** Just because the URL is well-formed doesn't necessarily mean that it refers to a location that actually exists!
 
-Numeric field
--------------
+## Numeric field
 
 Controls for entering numbers can be created with an {{HTMLElement("input")}} {{htmlattrxref("type","input")}} of `number`. This control looks like a text field but allows only floating-point numbers, and usually provides buttons in the form of a spinner to increase and decrease the value of the control. On devices with dynamic keyboards, the numeric keyboard is generally displayed.
 
@@ -115,14 +110,13 @@ The second one creates a number control whose value is restricted to any value b
 
 The `number` input type makes sense when the range of valid values is limited, for example a person's age or height. If the range is too large for incremental increases to make sense (such as USA ZIP codes, which range from `00001` to `99999`), the `tel` type might be a better option; it provides the numeric keypad while forgoing the number's spinner UI feature.
 
-Slider controls
----------------
+## Slider controls
 
 Another way to pick a number is to use a **slider**. You see these quite often on sites like house buying sites where you want to set a maximum property price to filter by. Let's look at a live example to illustrate this:
 
 {{EmbedGHLiveSample("learning-area/html/forms/range-example/index.html", '100%', 200)}}
 
-Usage-wise, sliders are less accurate than text fields. Therefore, they are used to pick a number whose *precise* value is not necessarily important.
+Usage-wise, sliders are less accurate than text fields. Therefore, they are used to pick a number whose _precise_ value is not necessarily important.
 
 A slider is created using the {{HTMLElement("input")}} with its {{htmlattrxref("type","input")}} attribute set to the value `range`. The slider-thumb can be moved via mouse or touch, or with the arrows of the keypad.
 
@@ -155,8 +149,7 @@ Here we store references to the `range` input and the `output` in two variables.
 
 There is a nice tutorial covering this subject on CSS Tricks: [The Output Element](https://css-tricks.com/the-output-element/).
 
-Date and time pickers
----------------------
+## Date and time pickers
 
 Gathering date and time values has traditionally been a nightmare for web developers. For good user experience, it is important to provide a calendar selection UI, enabling users to select dates without necessitating context switching to a native calendar application or potentially entering them in differing formats that are hard to parse. The last minute of the previous millennium can be expressed in the following different ways, for example: 1999/12/31, 23:59 or 12/31/99T11:59PM.
 
@@ -182,7 +175,7 @@ Let's look at the different available types in brief. Note that the usage of the
 
 ### `time`
 
-`<input type="time">` creates a widget to display and pick a time value. While time may *display* in 12-hour format, the *value returned* is in 24-hour format.
+`<input type="time">` creates a widget to display and pick a time value. While time may _display_ in 12-hour format, the _value returned_ is in 24-hour format.
 
     <input type="time" name="time" id="time">
 
@@ -201,8 +194,7 @@ All date and time controls can be constrained using the `min` and `max` attribut
     <label for="myDate">When are you available this summer?</label>
     <input type="date" name="myDate" min="2013-06-01" max="2013-08-31" step="7" id="myDate">
 
-Color picker control
---------------------
+## Color picker control
 
 Colors are always a bit difficult to handle. There are many ways to express them: RGB values (decimal or hexadecimal), HSL values, keywords, and so on.
 
@@ -220,33 +212,30 @@ And here is a live example for you to try out:
 
 The value returned is always a lowercase 6-value hexadecimal color.
 
-Test your skills!
------------------
+## Test your skills!
 
 You've reached the end of this article, but can you remember the most important information? You can find some further tests to verify that you've retained this information before you move on — see [Test your skills: HTML5 controls](/en-US/docs/Learn/Forms/Test_your_skills:_HTML5_controls).
 
-Summary
--------
+## Summary
 
 That brings us to the end of our tour of the HTML5 form input types. There are a few other control types that cannot be easily grouped together due to their very specific behaviors, but which are still essential to know about. We cover those in the next article.
 
 {{PreviousMenuNext("Learn/Forms/Basic\_native\_form\_controls", "Learn/Forms/Other\_form\_controls", "Learn/Forms")}}
 
-In this module
---------------
+## In this module
 
--   [Your first form](/en-US/docs/Learn/Forms/Your_first_form)
--   [How to structure a web form](/en-US/docs/Learn/Forms/How_to_structure_a_web_form)
--   [Basic native form controls](/en-US/docs/Learn/Forms/Basic_native_form_controls)
--   [Other form controls](/en-US/docs/Learn/Forms/Other_form_controls)
--   [Styling web forms](/en-US/docs/Learn/Forms/Styling_web_forms)
--   [Advanced form styling](/en-US/docs/Learn/Forms/Advanced_form_styling)
--   [UI pseudo-classes](/en-US/docs/Learn/Forms/UI_pseudo-classes)
--   [Client-side form validation](/en-US/docs/Learn/Forms/Form_validation)
--   [Sending form data](/en-US/docs/Learn/Forms/Sending_and_retrieving_form_data)
+- [Your first form](/en-US/docs/Learn/Forms/Your_first_form)
+- [How to structure a web form](/en-US/docs/Learn/Forms/How_to_structure_a_web_form)
+- [Basic native form controls](/en-US/docs/Learn/Forms/Basic_native_form_controls)
+- [Other form controls](/en-US/docs/Learn/Forms/Other_form_controls)
+- [Styling web forms](/en-US/docs/Learn/Forms/Styling_web_forms)
+- [Advanced form styling](/en-US/docs/Learn/Forms/Advanced_form_styling)
+- [UI pseudo-classes](/en-US/docs/Learn/Forms/UI_pseudo-classes)
+- [Client-side form validation](/en-US/docs/Learn/Forms/Form_validation)
+- [Sending form data](/en-US/docs/Learn/Forms/Sending_and_retrieving_form_data)
 
 ### Advanced Topics
 
--   [How to build custom form controls](/en-US/docs/Learn/Forms/How_to_build_custom_form_controls)
--   [Sending forms through JavaScript](/en-US/docs/Learn/Forms/Sending_forms_through_JavaScript)
--   [Property compatibility table for form widgets](/en-US/docs/Learn/Forms/Property_compatibility_table_for_form_controls)
+- [How to build custom form controls](/en-US/docs/Learn/Forms/How_to_build_custom_form_controls)
+- [Sending forms through JavaScript](/en-US/docs/Learn/Forms/Sending_forms_through_JavaScript)
+- [Property compatibility table for form widgets](/en-US/docs/Learn/Forms/Property_compatibility_table_for_form_controls)

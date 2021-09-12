@@ -1,4 +1,4 @@
---- title: Positioning slug: Learn/CSS/CSS\_layout/Positioning tags: - Article - Beginner - CSS - CodingScripting - Guide - Layout - Positioning - absolute - fixed - relative ---
+--- title: Positioning slug: Learn/CSS/CSS_layout/Positioning tags: - Article - Beginner - CSS - CodingScripting - Guide - Layout - Positioning - absolute - fixed - relative ---
 
 {{LearnSidebar}}
 
@@ -10,15 +10,13 @@ Positioning allows you to take elements out of the normal document layout flow, 
 
 We'd like you to follow along with the exercises on your local computer, if possible — grab a copy of `0_basic-flow.html` from our GitHub repo ([source code here](https://github.com/mdn/learning-area/blob/master/css/css-layout/positioning/0_basic-flow.html)) and use that as a starting point.
 
-Introducing positioning
------------------------
+## Introducing positioning
 
 The whole idea of positioning is to allow us to override the basic document flow behavior described above, to produce interesting effects. What if you want to slightly alter the position of some boxes inside a layout from their default layout flow position, to give a slightly quirky, distressed feel? Positioning is your tool. Or if you want to create a UI element that floats over the top of other parts of the page, and/or always sits in the same place inside the browser window no matter how much the page is scrolled? Positioning makes such layout work possible.
 
 There are a number of different types of positioning that you can put into effect on HTML elements. To make a specific type of positioning active on an element, we use the {{cssxref("position")}} property.
 
-Static positioning
-------------------
+## Static positioning
 
 Static positioning is the default that every element gets — it just means "put the element into its normal position in the document layout flow — nothing special to see here."
 
@@ -37,8 +35,7 @@ If you now save and refresh, you'll see no difference at all, except for the up
 
 **Note**: You can see the example at this point live at `1_static-positioning.html` ([see source code](https://github.com/mdn/learning-area/blob/master/css/css-layout/positioning/1_static-positioning.html)).
 
-Relative positioning
---------------------
+## Relative positioning
 
 Relative positioning is the first position type we'll take a look at. This is very similar to static positioning, except that once the positioned element has taken its place in the normal layout flow, you can then modify its final position, including making it overlap other elements on the page. Go ahead and update the `position` declaration in your code:
 
@@ -97,8 +94,7 @@ Cool, huh? Ok, so this probably wasn't what you were expecting — why has it mo
 
 **Note**: You can see the example at this point live at `2_relative-positioning.html` ([see source code](https://github.com/mdn/learning-area/blob/master/css/css-layout/positioning/2_relative-positioning.html)).
 
-Absolute positioning
---------------------
+## Absolute positioning
 
 Absolute positioning brings very different results. Let's try changing the position declaration in your code as follows:
 
@@ -156,9 +152,9 @@ Second, notice that the position of the element has changed — this is because 
 
 ### Positioning contexts
 
-Which element is the "containing element" of an absolutely positioned element? This is very much dependent on the position property of the ancestors of the positioned element (See [Identifying the containing block](/en-US/docs/Web/CSS/Containing_block#identifying_the_containing_block)). 
+Which element is the "containing element" of an absolutely positioned element? This is very much dependent on the position property of the ancestors of the positioned element (See [Identifying the containing block](/en-US/docs/Web/CSS/Containing_block#identifying_the_containing_block)).
 
-If no ancestor elements have their position property explicitly defined, then by default all ancestor elements will have a static position. The result of this is, the absolutely positioned element will be contained in the **initial containing block**. The initial containing block has the dimensions of the viewport, and is also the block that contains the {{htmlelement("html")}} element. In other words, the absolutely positioned element will be displayed outside of the {{htmlelement("html")}} element, and be positioned relative to the initial viewport. 
+If no ancestor elements have their position property explicitly defined, then by default all ancestor elements will have a static position. The result of this is, the absolutely positioned element will be contained in the **initial containing block**. The initial containing block has the dimensions of the viewport, and is also the block that contains the {{htmlelement("html")}} element. In other words, the absolutely positioned element will be displayed outside of the {{htmlelement("html")}} element, and be positioned relative to the initial viewport.
 
 The positioned element is nested inside the {{htmlelement("body")}} in the HTML source, but in the final layout, it is 30px away from the top and left of the edge of the page. We can change the **positioning context** — which element the absolutely positioned element is positioned relative to. This is done by setting positioning on one of the element's ancestors — to one of the elements it is nested inside (you can't position it relative to an element it is not nested inside). To demonstrate this, add the following declaration to your `body` rule:
 
@@ -281,10 +277,9 @@ Note that `z-index` only accepts unitless index values; you can't specify that y
 
 **Note**: You can see the example at this point live at `5_z-index.html` ([see source code](https://github.com/mdn/learning-area/blob/master/css/css-layout/positioning/5_z-index.html)).
 
-Fixed positioning
------------------
+## Fixed positioning
 
-Let's now look at fixed positioning. This works in exactly the same way as absolute positioning, with one key difference: whereas absolute positioning fixes an element in place relative to its nearest positioned ancestor (the initial containing block if there isn't one), **fixed positioning** *usually* fixes an element in place relative to the visible portion of the viewport, except if one of its ancestors is a fixed containing block due to its [transform property](/en-US/docs/Web/CSS/transform) being different from none. This means that you can create useful UI items that are fixed in place, like persisting navigation menus that are always visible no matter how much the page scrolls.
+Let's now look at fixed positioning. This works in exactly the same way as absolute positioning, with one key difference: whereas absolute positioning fixes an element in place relative to its nearest positioned ancestor (the initial containing block if there isn't one), **fixed positioning** _usually_ fixes an element in place relative to the visible portion of the viewport, except if one of its ancestors is a fixed containing block due to its [transform property](/en-US/docs/Web/CSS/transform) being different from none. This means that you can create useful UI items that are fixed in place, like persisting navigation menus that are always visible no matter how much the page scrolls.
 
 Let's put together a simple example to show what we mean. First of all, delete the existing `p:nth-of-type(1)` and `.positioned` rules from your CSS.
 
@@ -361,10 +356,9 @@ You should now see the finished example:
 
 **Note**: You can see the example at this point live at `6_fixed-positioning.html` ([see source code](https://github.com/mdn/learning-area/blob/master/css/css-layout/positioning/6_fixed-positioning.html)).
 
-Sticky positioning
-------------------
+## Sticky positioning
 
-There is another position value available called `position: sticky`, which is somewhat newer than the others. This is basically a hybrid between relative and fixed position, which allows a positioned element to act like it is relatively positioned until it is scrolled to a certain threshold point (e.g. 10px from the top of the viewport), after which it becomes fixed. This can be used to for example cause a navigation bar to scroll with the page until a certain point, and then stick to the top of the page. 
+There is another position value available called `position: sticky`, which is somewhat newer than the others. This is basically a hybrid between relative and fixed position, which allows a positioned element to act like it is relatively positioned until it is scrolled to a certain threshold point (e.g. 10px from the top of the viewport), after which it becomes fixed. This can be used to for example cause a navigation bar to scroll with the page until a certain point, and then stick to the top of the page.
 
 ###### Sticky positioning example
 
@@ -376,7 +370,7 @@ There is another position value available called `position: sticky`, which is so
 
     <p>Nam vulputate diam nec tempor bibendum. Donec luctus augue eget malesuada ultrices. Phasellus turpis est, posuere sit amet dapibus ut, facilisis sed est. Nam id risus quis ante semper consectetur eget aliquam lorem. Vivamus tristique elit dolor, sed pretium metus suscipit vel. Mauris ultricies lectus sed lobortis finibus. Vivamus eu urna eget velit cursus viverra quis vestibulum sem. Aliquam tincidunt eget purus in interdum. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
 
-    <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla luctus aliquam dolor, eu lacinia lorem placerat vulputate. Duis felis orci, pulvinar id metus ut, rutrum luctus orci. Cras porttitor imperdiet nunc, at ultricies tellus laoreet sit amet. Sed auctor cursus massa at porta. Integer ligula ipsum, tristique sit amet orci vel, viverra egestas ligula. Curabitur vehicula tellus neque, ac ornare ex malesuada et. In vitae convallis lacus. Aliquam erat volutpat. Suspendisse ac imperdiet turpis. Aenean finibus sollicitudin eros pharetra congue. Duis ornare egestas augue ut luctus. Proin blandit quam nec lacus varius commodo et a urna. Ut id ornare felis, eget fermentum sapien.</p>       
+    <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla luctus aliquam dolor, eu lacinia lorem placerat vulputate. Duis felis orci, pulvinar id metus ut, rutrum luctus orci. Cras porttitor imperdiet nunc, at ultricies tellus laoreet sit amet. Sed auctor cursus massa at porta. Integer ligula ipsum, tristique sit amet orci vel, viverra egestas ligula. Curabitur vehicula tellus neque, ac ornare ex malesuada et. In vitae convallis lacus. Aliquam erat volutpat. Suspendisse ac imperdiet turpis. Aenean finibus sollicitudin eros pharetra congue. Duis ornare egestas augue ut luctus. Proin blandit quam nec lacus varius commodo et a urna. Ut id ornare felis, eget fermentum sapien.</p>
 
     body {
       width: 500px;
@@ -495,36 +489,32 @@ Sticky elements are "sticky" relative to the nearest ancestor with a "scrolling 
 
 **Note**: You can see this example live at `7_sticky-positioning.html` ([see source code](https://github.com/mdn/learning-area/blob/master/css/css-layout/positioning/7_sticky-positioning.html)).
 
-Test your skills!
------------------
+## Test your skills!
 
 You've reached the end of this article, but can you remember the most important information? You can find some further tests to verify that you've retained this information before you move on — see [Test your skills: Positioning](/en-US/docs/Learn/CSS/CSS_layout/Position_skills).
 
-Summary
--------
+## Summary
 
 I'm sure you had fun playing with basic positioning; while it is not a method you would use for entire layouts, as you can see there are many tasks it is suited for.
 
 {{PreviousMenuNext("Learn/CSS/CSS\_layout/Floats", "Learn/CSS/CSS\_layout/Multiple-column\_Layout", "Learn/CSS/CSS\_layout")}}
 
-See also
---------
+## See also
 
--   The {{cssxref("position")}} property reference.
--   [Practical positioning examples](/en-US/docs/Learn/CSS/CSS_layout/Practical_positioning_examples), for some more useful ideas.
+- The {{cssxref("position")}} property reference.
+- [Practical positioning examples](/en-US/docs/Learn/CSS/CSS_layout/Practical_positioning_examples), for some more useful ideas.
 
-In this module
---------------
+## In this module
 
--   [Introduction to CSS layout](/en-US/docs/Learn/CSS/CSS_layout/Introduction)
--   [Normal flow](/en-US/docs/Learn/CSS/CSS_layout/Normal_Flow)
--   [Flexbox](/en-US/docs/Learn/CSS/CSS_layout/Flexbox)
--   [Grid](/en-US/docs/Learn/CSS/CSS_layout/Grids)
--   [Floats](/en-US/docs/Learn/CSS/CSS_layout/Floats)
--   [Positioning](/en-US/docs/Learn/CSS/CSS_layout/Positioning)
--   [Multiple-column layout](/en-US/docs/Learn/CSS/CSS_layout/Multiple-column_Layout)
--   [Responsive design](/en-US/docs/Learn/CSS/CSS_layout/Responsive_Design)
--   [Beginner's guide to media queries](/en-US/docs/Learn/CSS/CSS_layout/Media_queries)
--   [Legacy layout methods](/en-US/docs/Learn/CSS/CSS_layout/Legacy_Layout_Methods)
--   [Supporting older browsers](/en-US/docs/Learn/CSS/CSS_layout/Supporting_Older_Browsers)
--   [Fundamental layout comprehension assessment](/en-US/docs/Learn/CSS/CSS_layout/Fundamental_Layout_Comprehension)
+- [Introduction to CSS layout](/en-US/docs/Learn/CSS/CSS_layout/Introduction)
+- [Normal flow](/en-US/docs/Learn/CSS/CSS_layout/Normal_Flow)
+- [Flexbox](/en-US/docs/Learn/CSS/CSS_layout/Flexbox)
+- [Grid](/en-US/docs/Learn/CSS/CSS_layout/Grids)
+- [Floats](/en-US/docs/Learn/CSS/CSS_layout/Floats)
+- [Positioning](/en-US/docs/Learn/CSS/CSS_layout/Positioning)
+- [Multiple-column layout](/en-US/docs/Learn/CSS/CSS_layout/Multiple-column_Layout)
+- [Responsive design](/en-US/docs/Learn/CSS/CSS_layout/Responsive_Design)
+- [Beginner's guide to media queries](/en-US/docs/Learn/CSS/CSS_layout/Media_queries)
+- [Legacy layout methods](/en-US/docs/Learn/CSS/CSS_layout/Legacy_Layout_Methods)
+- [Supporting older browsers](/en-US/docs/Learn/CSS/CSS_layout/Supporting_Older_Browsers)
+- [Fundamental layout comprehension assessment](/en-US/docs/Learn/CSS/CSS_layout/Fundamental_Layout_Comprehension)

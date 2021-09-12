@@ -1,11 +1,10 @@
---- title: What do common web layouts contain? slug: Learn/Common\_questions/Common\_web\_layouts tags: - Beginner - CSS - Design - HTML - NeedsActiveLearning ---
+--- title: What do common web layouts contain? slug: Learn/Common_questions/Common_web_layouts tags: - Beginner - CSS - Design - HTML - NeedsActiveLearning ---
 
 When designing pages for your website, it's good to have an idea of the most common layouts.
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>Make sure you've already thought about <a href="/en-US/docs/Learn/Common_questions/Thinking_before_coding">what you want to accomplish</a> with your web project.</td></tr><tr class="even"><td>Objective:</td><td>Learn where to put things on your webpages, and how to put them there.</td></tr></tbody></table>
 
-Summary
--------
+## Summary
 
 There's a reason we talk about web design. You start out with a blank page, and you can take it so many directions. And if you don't have much experience, starting out with a blank page might be a bit scary. We have over 25 years' experience and we'll give you some common rules of thumb to help you design your site.
 
@@ -17,8 +16,9 @@ Visible at the top of every page on the site. Contains information relevant to a
 Main content  
 The biggest region, containing content unique to the current page.
 
-Stuff on the side  
-1) Information complementing the main content; 2) information shared among a subset of pages; 3) alternative navigation system. In fact, everything not absolutely required by the page's main content.
+Stuff on the side
+
+1. Information complementing the main content; 2) information shared among a subset of pages; 3) alternative navigation system. In fact, everything not absolutely required by the page's main content.
 
 Footer  
 Visible at the bottom of every page on the site. Like the header, contains less prominent global information like legal notices or contact info.
@@ -31,7 +31,7 @@ These elements are quite common in all form factors, but they can be laid out di
 
 **2-column layout.** Often used to target tablets, since they have medium-size screens.
 
- ![Example of a basic 2 column layout: One aside on the left column, and main on the right column.](2-col-layout-right.png) ![Example of a basic 2 column layout: One aside on the right column, and main on the left column.](2-col-layout-left.png)
+![Example of a basic 2 column layout: One aside on the left column, and main on the right column.](2-col-layout-right.png) ![Example of a basic 2 column layout: One aside on the right column, and main on the left column.](2-col-layout-left.png)
 
 **3-column layouts**. Only suitable for desktops with big screens. (Even many desktop-users prefer viewing things in small windows rather than full-screen.)
 
@@ -45,13 +45,11 @@ These are just examples and you're quite free to lay things out as you want. You
 
 These are rules of thumb you can draw on. There are complex designs and exceptions, of course. In other articles we'll discuss how to design responsive sites (sites that change depending on the screen size) and sites whose layouts vary between pages. For now, it's best to keep your layout consistent throughout your site.
 
-Active learning
----------------
+## Active learning
 
-*There is no active learning available yet. [Please, consider contributing](/en-US/docs/MDN/Contribute/Getting_started).*
+_There is no active learning available yet. [Please, consider contributing](/en-US/docs/MDN/Contribute/Getting_started)._
 
-Deeper dive
------------
+## Deeper dive
 
 Let's study some more concrete examples taken from well-known websites.
 
@@ -69,7 +67,7 @@ Quite straightforward. Just remember, many people will still browse your site fr
 
 ![Example of a 2 column layout for a blog](screenshot-blog.jpg)        ![A 2 column layout with the main content on the left column](screenshot-blog-overlay.jpg)
 
-In this example, look at the image (B1) right underneath the header. It's related to the main content, but the main content makes sense without it, so you could think of the image either as main content or as side content. It doesn't really matter. What does matter is, if you put something right under the header, it should either be main content or *directly related* to the main content.
+In this example, look at the image (B1) right underneath the header. It's related to the main content, but the main content makes sense without it, so you could think of the image either as main content or as side content. It doesn't really matter. What does matter is, if you put something right under the header, it should either be main content or _directly related_ to the main content.
 
 ### It's a trap
 
@@ -89,6 +87,6 @@ This is a good example of a classic layout supporting some design creativity. Si
 
 ![An example of a tricky layout.](screenshot-opera.jpg)        ![This is a 2 column layout but the header is overlaping the main content.](screenshot-opera-overlay.jpg)
 
-Basically a two-column layout, but you'll notice many tweaks here and there that visually break up the layout. Especially, the header overlaps the image of the main content. The way the curve of the header's menu ties in with the curve at the bottom of the image, the header and main content look like one thing even though they're technically completely different. The Opera example looks more complex than the MICA example, but it's actually easier to implement (all right, "easy" *is* a relative concept).
+Basically a two-column layout, but you'll notice many tweaks here and there that visually break up the layout. Especially, the header overlaps the image of the main content. The way the curve of the header's menu ties in with the curve at the bottom of the image, the header and main content look like one thing even though they're technically completely different. The Opera example looks more complex than the MICA example, but it's actually easier to implement (all right, "easy" _is_ a relative concept).
 
 As you see, you can craft stunning websites even with just basic layouts. Have a look at your own favorite websites and ask yourself, where's the header, the footer, the main content, and the side content? That will inspire you for your own design and give you good hints for which designs work and which ones don't.

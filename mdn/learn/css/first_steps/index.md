@@ -1,4 +1,4 @@
---- title: CSS first steps slug: Learn/CSS/First\_steps tags: - Beginner - CSS - Landing - Learn - Module - first steps ---
+--- title: CSS first steps slug: Learn/CSS/First_steps tags: - Beginner - CSS - Landing - Learn - Module - first steps ---
 
 {{LearnSidebar}}
 
@@ -10,8 +10,7 @@ We have put together a course that includes all the essential information you ne
 
 [**Get started**](/en-US/docs/Learn/Front-end_web_developer)
 
-Prerequisites
--------------
+## Prerequisites
 
 Before starting this module, you should have:
 
@@ -21,22 +20,21 @@ Before starting this module, you should have:
 
 **Note**: If you are working on a computer/tablet/other device where you don't have the ability to create your own files, you could try out (most of) the code examples in an online coding program such as [JSBin](https://jsbin.com/) or [Glitch](https://glitch.com/).
 
-Guides
-------
+## Guides
 
 This module contains the following articles, which will take you through all the basic theory of CSS, and provide opportunities for you to test out some skills.
 
- [What is CSS?](/en-US/docs/Learn/CSS/First_steps/What_is_CSS)   
+[What is CSS?](/en-US/docs/Learn/CSS/First_steps/What_is_CSS)  
 **{{Glossary("CSS")}}** (Cascading Style Sheets) allows you to create great-looking web pages, but how does it work under the hood? This article explains what CSS is, with a simple syntax example, and also covers some key terms about the language.
 
- [Getting started with CSS](/en-US/docs/Learn/CSS/First_steps/Getting_started)   
+[Getting started with CSS](/en-US/docs/Learn/CSS/First_steps/Getting_started)  
 In this article we will take a simple HTML document and apply CSS to it, learning some practical things about the language along the way.
 
- [How CSS is structured](/en-US/docs/Learn/CSS/First_steps/How_CSS_is_structured)   
+[How CSS is structured](/en-US/docs/Learn/CSS/First_steps/How_CSS_is_structured)  
 Now that you have an idea about what CSS is and the basics of using it, it is time to look a little deeper into the structure of the language itself. We have already met many of the concepts discussed here; you can return to this one to recap if you find any later concepts confusing.
 
- [How CSS works](/en-US/docs/Learn/CSS/First_steps/How_CSS_works)   
+[How CSS works](/en-US/docs/Learn/CSS/First_steps/How_CSS_works)  
 We have learned the basics of CSS, what it is for and how to write simple stylesheets. In this lesson we will take a look at how a browser takes CSS and HTML and turns that into a webpage.
 
- [Using your new knowledge](/en-US/docs/Learn/CSS/First_steps/Using_your_new_knowledge)   
+[Using your new knowledge](/en-US/docs/Learn/CSS/First_steps/Using_your_new_knowledge)  
 With the things you have learned in the last few lessons you should find that you can format simple text documents using CSS, to add your own style to them. This article gives you a chance to do that.

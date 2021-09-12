@@ -1,9 +1,8 @@
---- title: Example slug: Learn/Forms/How\_to\_structure\_a\_web\_form/Example tags: - Beginner - CSS - Example - Guide - HTML - Intro - Reference ---
+--- title: Example slug: Learn/Forms/How_to_structure_a_web_form/Example tags: - Beginner - CSS - Example - Guide - HTML - Intro - Reference ---
 
 This the example for a basic payment form for the article [How to structure an HTML form](/en-US/docs/Learn/Forms/How_to_structure_a_web_form).
 
-A payment form
---------------
+## A payment form
 
 ### HTML Content
 

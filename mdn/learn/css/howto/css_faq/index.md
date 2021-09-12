@@ -1,18 +1,17 @@
---- title: CSS FAQ slug: Learn/CSS/Howto/CSS\_FAQ tags: - CSS - Example - FAQ - Guide - Web - questions ---
+--- title: CSS FAQ slug: Learn/CSS/Howto/CSS_FAQ tags: - CSS - Example - FAQ - Guide - Web - questions ---
 
 In this article, you'll find some frequently-asked questions (FAQs) about CSS, along with answers that may help you on your quest to become a web developer.
 
-Why doesn't my CSS, which is valid, render correctly?
------------------------------------------------------
+## Why doesn't my CSS, which is valid, render correctly?
 
 Browsers use the `DOCTYPE` declaration to choose whether to show the document using a mode that is more compatible  with Web standards or with old browser bugs. Using a correct and modern `DOCTYPE` declaration at the start of your HTML will improve browser standards compliance.
 
 Modern browsers have two main rendering modes:
 
--   *Quirks Mode*: also called backwards-compatibility mode, allows legacy webpages to be rendered as their authors intended, following the non-standard rendering rules used by older browsers. Documents with an incomplete, incorrect, or missing `DOCTYPE` declaration or a known `DOCTYPE` declaration in common use before 2001 will be rendered in Quirks Mode.
--   *Standards Mode*: the browser attempts to follow the W3C standards strictly. New HTML pages are expected to be designed for standards-compliant browsers, and as a result, pages with a modern `DOCTYPE` declaration will be rendered with Standards Mode.
+- _Quirks Mode_: also called backwards-compatibility mode, allows legacy webpages to be rendered as their authors intended, following the non-standard rendering rules used by older browsers. Documents with an incomplete, incorrect, or missing `DOCTYPE` declaration or a known `DOCTYPE` declaration in common use before 2001 will be rendered in Quirks Mode.
+- _Standards Mode_: the browser attempts to follow the W3C standards strictly. New HTML pages are expected to be designed for standards-compliant browsers, and as a result, pages with a modern `DOCTYPE` declaration will be rendered with Standards Mode.
 
-Gecko-based browsers, have a third *[Almost Standards Mode](/en-US/docs/Mozilla/Gecko_Almost_Standards_Mode "Gecko's_"Almost_Standards"_Mode")* that has only a few minor quirks.
+Gecko-based browsers, have a third _[Almost Standards Mode](/en-US/docs/Mozilla/Gecko*Almost_Standards_Mode "Gecko's*"Almost_Standards"\_Mode")_ that has only a few minor quirks.
 
 This is a list of the most commonly used `DOCTYPE` declarations that will trigger Standards or Almost Standards mode:
 
@@ -33,32 +32,29 @@ This is a list of the most commonly used `DOCTYPE` declarations that will trigge
 
 When at all possible, you should just use the HTML5 doctype.
 
-Why doesn't my CSS, which is valid, render at all?
---------------------------------------------------
+## Why doesn't my CSS, which is valid, render at all?
 
 Here are some possible causes:
 
--   You've got the path to CSS file wrong.
--   To be applied, a CSS stylesheet must be served with a `text/css` MIME type. If the Web server doesn't serve it with this type, it won't be applied.
+- You've got the path to CSS file wrong.
+- To be applied, a CSS stylesheet must be served with a `text/css` MIME type. If the Web server doesn't serve it with this type, it won't be applied.
 
-What is the difference between `id` and `class`?
-------------------------------------------------
+## What is the difference between `id` and `class`?
 
 HTML elements can have an `id` and/or `class` attribute. The `id` attribute assigns a name to the element it is applied to, and for valid markup, there can be only one element with that name. The `class` attribute assigns a class name to the element, and that name can be used on many elements within the page. CSS allows you to apply styles to particular `id` and/or `class` names.
 
--   Use a class-specific style when you want to apply the styling rules to many blocks and elements within the page, or when you currently only have element to style with that style, but you might want to add more later.
--   Use an id-specific style when you need to restrict the applied styling rules to one specific block or element. This style will only be used by the element with that particular id.
+- Use a class-specific style when you want to apply the styling rules to many blocks and elements within the page, or when you currently only have element to style with that style, but you might want to add more later.
+- Use an id-specific style when you need to restrict the applied styling rules to one specific block or element. This style will only be used by the element with that particular id.
 
 It is generally recommended to use classes as much as possible, and to use ids only when absolutely necessary for specific uses (like to connect label and form elements or for styling elements that must be semantically unique):
 
--   Using classes makes your styling extensible — even if you only have one element to style with a particular ruleset now, you might want to add more later.
--   Classes allow you to style multiple elements, therefore they can lead to shorter stylesheets, rather than having to write out the same styling information in multiple rules that use id selectors. Shorter stylesheets are more performant.
--   Class selectors have lower [specificity](/en-US/docs/Learn/CSS/Building_blocks/Cascade_and_inheritance#specificity) than id selectors, so are easier to override if needed.
+- Using classes makes your styling extensible — even if you only have one element to style with a particular ruleset now, you might want to add more later.
+- Classes allow you to style multiple elements, therefore they can lead to shorter stylesheets, rather than having to write out the same styling information in multiple rules that use id selectors. Shorter stylesheets are more performant.
+- Class selectors have lower [specificity](/en-US/docs/Learn/CSS/Building_blocks/Cascade_and_inheritance#specificity) than id selectors, so are easier to override if needed.
 
 **Note**: See [Selectors](/en-US/docs/Learn/CSS/Building_blocks/Selectors) for more information.
 
-How do I restore the default value of a property?
--------------------------------------------------
+## How do I restore the default value of a property?
 
 Initially CSS didn't provide a "default" keyword and the only way to restore the default value of a property is to explicitly re-declare that property. For example:
 
@@ -72,13 +68,11 @@ This has changed with CSS 2; the keyword [initial](/en-US/docs/Web/CSS/initial) 
     h1 { color: red; }
     h1 { color: initial; }
 
-How do I derive one style from another?
----------------------------------------
+## How do I derive one style from another?
 
 CSS does not exactly allow one style to be defined in terms of another. (See [Eric Meyer's note about the Working Group's stance](http://archivist.incutio.com/viewlist/css-discuss/2685)). However, assigning multiple classes to a single element can provide the same effect, and [CSS Variables](/en-US/docs/Web/CSS/Using_CSS_custom_properties) now provide a way to define style information in one place that can be reused in multiple places.
 
-How do I assign multiple classes to an element?
------------------------------------------------
+## How do I assign multiple classes to an element?
 
 HTML elements can be assigned multiple classes by listing the classes in the `class` attribute, with a blank space to separate them.
 
@@ -93,10 +87,9 @@ HTML elements can be assigned multiple classes by listing the classes in the `cl
 
 If the same property is declared in both rules, the conflict is resolved first through specificity, then according to the order of the CSS declarations. The order of classes in the `class` attribute is not relevant.
 
-Why don't my style rules work properly?
----------------------------------------
+## Why don't my style rules work properly?
 
-Style rules that are syntactically correct may not apply in certain situations. You can use [DOM Inspector](/en-US/docs/Tools/Add-ons/DOM_Inspector)'s *CSS Style Rules* view to debug problems of this kind, but the most frequent instances of ignored style rules are listed below.
+Style rules that are syntactically correct may not apply in certain situations. You can use [DOM Inspector](/en-US/docs/Tools/Add-ons/DOM_Inspector)'s _CSS Style Rules_ view to debug problems of this kind, but the most frequent instances of ignored style rules are listed below.
 
 ### HTML elements hierarchy
 
@@ -177,10 +170,9 @@ When multiple rules apply to a certain element, the rule chosen depends on its s
 
 The rules are more complicated when the selector has multiple parts. More detailed information about how selector specificity is calculated can be found in the [CSS 2.1 Specification chapter 6.4.3](https://www.w3.org/TR/CSS21/cascade.html#specificity).
 
-What do the -moz-\*, -ms-\*, -webkit-\*, -o-\* and -khtml-\* properties do?
----------------------------------------------------------------------------
+## What do the -moz-\*, -ms-\*, -webkit-\*, -o-\* and -khtml-\* properties do?
 
-These properties, called *prefixed properties*, are extensions to the CSS standard. They allow use of experimental and non-standard features in browsers without polluting the regular namespace, preventing future incompatibilities to arise when the standard is extended.
+These properties, called _prefixed properties_, are extensions to the CSS standard. They allow use of experimental and non-standard features in browsers without polluting the regular namespace, preventing future incompatibilities to arise when the standard is extended.
 
 The use of such properties on production websites is not recommended — they have already created a huge web compatibility mess. For example, many developers only using the `-webkit-` prefixed version of a property when the non-prefixed version is supported across all browsers meant that a feature relying on that property would break in non-webkit-based browsers, completely needlessly. This problem got so bad that other browsers started to implement `-webkit-` prefixed aliases to improve web compatibility, as specified in the [Compatibility Living Standard](https://compat.spec.whatwg.org/).
 
@@ -196,8 +188,7 @@ If you need to use prefixes in your work, you are advised to write your code in 
 
 **Note**: See the [Mozilla CSS Extensions](/en-US/docs/Web/CSS/Mozilla_Extensions "CSS Reference/Mozilla Extensions") page for more information on the Mozilla-prefixed CSS properties.
 
-How does z-index relate to positioning?
----------------------------------------
+## How does z-index relate to positioning?
 
 The z-index property specifies the stack order of elements.
 

@@ -1,18 +1,17 @@
---- title: Responsive design slug: Learn/CSS/CSS\_layout/Responsive\_Design tags: - Images - Media Queries - RWD - Responsive web design - flexbox - fluid grids - grid - multicol - typography ---
+--- title: Responsive design slug: Learn/CSS/CSS_layout/Responsive_Design tags: - Images - Media Queries - RWD - Responsive web design - flexbox - fluid grids - grid - multicol - typography ---
 
 {{learnsidebar}}{{PreviousMenuNext("Learn/CSS/CSS\_layout/Multiple-column\_Layout", "Learn/CSS/CSS\_layout/Media\_queries", "Learn/CSS/CSS\_layout")}}
 
-In the early days of web design, pages were built to target a particular screen size. If the user had a larger or smaller screen than the designer expected, results ranged from unwanted scrollbars to overly long line lengths, and poor use of space. As more diverse screen sizes became available, the concept of *responsive web design* (RWD) appeared, a set of practices that allows web pages to alter their layout and appearance to suit different screen widths, resolutions, etc. It is an idea that changed the way we design for a multi-device web, and in this article, we'll help you understand the main techniques you need to know to master it.
+In the early days of web design, pages were built to target a particular screen size. If the user had a larger or smaller screen than the designer expected, results ranged from unwanted scrollbars to overly long line lengths, and poor use of space. As more diverse screen sizes became available, the concept of _responsive web design_ (RWD) appeared, a set of practices that allows web pages to alter their layout and appearance to suit different screen widths, resolutions, etc. It is an idea that changed the way we design for a multi-device web, and in this article, we'll help you understand the main techniques you need to know to master it.
 
 <table><tbody><tr class="odd"><td>Prerequisites:</td><td>HTML basics (study <a href="/en-US/docs/Learn/HTML/Introduction_to_HTML">Introduction to HTML</a>), and an idea of how CSS works (study <a href="/en-US/docs/Learn/CSS/First_steps">CSS first steps</a> and <a href="/en-US/docs/Learn/CSS/Building_blocks">CSS building blocks</a>.)</td></tr><tr class="even"><td>Objective:</td><td>To understand the fundamental concepts and history of responsive design.</td></tr></tbody></table>
 
-Historic website layouts
-------------------------
+## Historic website layouts
 
 At one point in history you had two options when designing a website:
 
--   You could create a *liquid* site, which would stretch to fill the browser window
--   or a *fixed width* site, which would be a fixed size in pixels.
+- You could create a _liquid_ site, which would stretch to fill the browser window
+- or a _fixed width_ site, which would be a fixed size in pixels.
 
 These two approaches tended to result in a website that looked its best on the screen of the person designing the site! The liquid site resulted in a squashed design on smaller screens (as seen below) and unreadably long line lengths on larger ones.
 
@@ -28,19 +27,17 @@ The fixed-width site risked a horizontal scrollbar on screens smaller than the s
 
 **Note**: The screenshots above are taken using the [Responsive Design Mode](/en-US/docs/Tools/Responsive_Design_Mode) in Firefox DevTools.
 
-As the mobile web started to become a reality with the first feature phones, companies who wished to embrace mobile would generally create a special mobile version of their site, with a different URL (often something like *m.example.com*, or *example.mobi*). This meant that two separate versions of the site had to be developed and kept up-to-date.
+As the mobile web started to become a reality with the first feature phones, companies who wished to embrace mobile would generally create a special mobile version of their site, with a different URL (often something like _m.example.com_, or _example.mobi_). This meant that two separate versions of the site had to be developed and kept up-to-date.
 
 In addition, these mobile sites often offered a very cut down experience. As mobile devices became more powerful and able to display full websites, this was frustrating to mobile users who found themselves trapped in the site's mobile version and unable to access information they knew was on the full-featured desktop version of the site.
 
-Flexible layout before responsive design
-----------------------------------------
+## Flexible layout before responsive design
 
 A number of approaches were developed to try to solve the downsides of the liquid or fixed-width methods of building websites. In 2004 Cameron Adams wrote a post entitled [Resolution dependent layout](https://www.themaninblue.com/writing/perspective/2004/09/21/), describing a method of creating a design that could adapt to different screen resolutions. This approach required JavaScript to detect the screen resolution and load the correct CSS.
 
 Zoe Mickley Gillenwater was instrumental in [her work](https://zomigi.com/blog/voices-that-matter-slides-available/) to describe and formalize the different ways in which flexible sites could be created, attempting to find a happy medium between filling the screen or being completely fixed in size.
 
-Responsive design
------------------
+## Responsive design
 
 The term responsive design was [coined by Ethan Marcotte in 2010](https://alistapart.com/article/responsive-web-design/) and described the use of three techniques in combination.
 
@@ -48,12 +45,11 @@ The term responsive design was [coined by Ethan Marcotte in 2010](https://alista
 2.  The second technique was the idea of [fluid images](https://unstoppablerobotninja.com/entry/fluid-images). Using a very simple technique of setting the `max-width` property to `100%`, images would scale down smaller if their containing column became narrower than the image's intrinsic size, but never grow larger. This enables an image to scale down to fit in a flexibly-sized column, rather than overflow it, but not grow larger and become pixelated if the column becomes wider than the image.
 3.  The third key component was the [media query](/en-US/docs/Web/CSS/Media_Queries). Media Queries enable the type of layout switch that Cameron Adams had previously explored using JavaScript, using only CSS. Rather than having one layout for all screen sizes, the layout could be changed. Sidebars could be repositioned for the smaller screen, or alternate navigation could be displayed.
 
-It is important to understand that **responsive web design isn't a separate technology** — it is a term used to describe an approach to web design or a set of best practices, used to create a layout that can *respond* to the device being used to view the content. In Marcotte's original exploration this meant flexible grids (using floats) and media queries, however in the almost 10 years since that article was written, working responsively has become the default. Modern CSS layout methods are inherently responsive, and we have new things built into the web platform to make designing responsive sites easier.
+It is important to understand that **responsive web design isn't a separate technology** — it is a term used to describe an approach to web design or a set of best practices, used to create a layout that can _respond_ to the device being used to view the content. In Marcotte's original exploration this meant flexible grids (using floats) and media queries, however in the almost 10 years since that article was written, working responsively has become the default. Modern CSS layout methods are inherently responsive, and we have new things built into the web platform to make designing responsive sites easier.
 
 The rest of this article will point you to the various web platform features you might want to use when creating a responsive site.
 
-Media Queries
--------------
+## Media Queries
 
 Responsive design was only able to emerge due to the media query. The Media Queries Level 3 specification became a Candidate Recommendation in 2009, meaning that it was deemed ready for implementation in browsers. Media Queries allow us to run a series of tests (e.g. whether the user's screen is greater than a certain width, or a certain resolution) and apply CSS selectively to style the page appropriately for the user's needs.
 
@@ -65,14 +61,13 @@ For example, the following media query tests to see if the current web page is b
       }
     }
 
-You can add multiple media queries within a stylesheet, tweaking your whole layout or parts of it to best suit the various screen sizes. The points at which a media query is introduced, and the layout changed, are known as *breakpoints*.
+You can add multiple media queries within a stylesheet, tweaking your whole layout or parts of it to best suit the various screen sizes. The points at which a media query is introduced, and the layout changed, are known as _breakpoints_.
 
 A common approach when using Media Queries is to create a simple single-column layout for narrow-screen devices (e.g mobile phones), then check for larger screens and implement a multiple-column layout when you know that you have enough screen width to handle it. This is often described as **mobile first** design.
 
 Find out more in the MDN documentation for [Media Queries](/en-US/docs/Web/CSS/Media_Queries).
 
-Flexible grids
---------------
+## Flexible grids
 
 Responsive sites don't just change their layout between breakpoints, they are built on flexible grids. A flexible grid means that you don't need to target every possible device size that there is, and build a pixel perfect layout for it. That approach would be impossible given the vast number of differently-sized devices that exist, and the fact that on desktop at least, people do not always have their browser window maximized.
 
@@ -80,7 +75,7 @@ By using a flexible grid, you only need to add in a breakpoint and change the de
 
 In the early days of responsive design, our only option for performing layout was to use [floats](/en-US/docs/Learn/CSS/CSS_layout/Floats). Flexible floated layouts were achieved by giving each element a percentage width, and ensuring that across the layout the totals were not more than 100%. In his original piece on fluid grids, Marcotte detailed a formula for taking a layout designed using pixels and converting it into percentages.
 
-    target / context = result 
+    target / context = result
 
 For example, if our target column size is 60 pixels, and the context (or container) it is in is 960 pixels, we divide 60 by 960 to get a value we can use in our CSS, after moving the decimal point two places to the right.
 
@@ -100,8 +95,7 @@ On wider screens they move to two columns:
 
 **Note**: You can find the [live example](https://mdn.github.io/css-examples/learn/rwd/float-based-rwd.html) and [source code](https://github.com/mdn/css-examples/blob/master/learn/rwd/float-based-rwd.html) for this example on GitHub.
 
-Modern layout technologies
---------------------------
+## Modern layout technologies
 
 Modern layout methods such as [Multiple-column layout](/en-US/docs/Learn/CSS/CSS_layout/Multiple-column_Layout), [Flexbox](/en-US/docs/Learn/CSS/CSS_layout/Flexbox), and [Grid](/en-US/docs/Learn/CSS/CSS_layout/Grids) are responsive by default. They all assume that you are trying to create a flexible grid and give you easier ways to do so.
 
@@ -113,7 +107,7 @@ The oldest of these layout methods is multicol — when you specify a `column-co
       column-count: 3;
     }
 
-If you instead specify a `column-width`, you are specifying a *minimum* width. The browser will create as many columns of that width as will comfortably fit into the container, then share out the remaining space between all the columns. Therefore the number of columns will change according to how much space there is.
+If you instead specify a `column-width`, you are specifying a _minimum_ width. The browser will create as many columns of that width as will comfortably fit into the container, then share out the remaining space between all the columns. Therefore the number of columns will change according to how much space there is.
 
     .container {
       column-width: 10em;
@@ -146,8 +140,7 @@ In CSS Grid Layout the `fr` unit allows the distribution of available space acro
 
 **Note**: The grid layout version is even simpler as we can define the columns on the .wrapper: [example](https://mdn.github.io/css-examples/learn/rwd/grid-based-rwd.html), [source code](https://github.com/mdn/css-examples/blob/master/learn/rwd/grid-based-rwd.html).
 
-Responsive images
------------------
+## Responsive images
 
 The simplest approach to responsive images was as described in Marcotte's early articles on responsive design. Basically, you would take an image that was at the largest size that might be needed, and scale it down. This is still an approach used today, and in most stylesheets, you will find the following CSS somewhere:
 
@@ -159,12 +152,11 @@ There are obvious downsides to this approach. The image might be displayed a lot
 
 Responsive Images, using the {{htmlelement("picture")}} element and the {{htmlelement("img")}} `srcset` and `sizes` attributes solve both of these problems. You can provide multiple sizes along with "hints" (meta data that describes the screen size and resolution the image is best suited for), and the browser will choose the most appropriate image for each device, ensuring that a user will download an image size appropriate for the device they are using.
 
-You can also *art direct* images used at different sizes, thus providing a different crop or completely different image to different screen sizes.
+You can also _art direct_ images used at different sizes, thus providing a different crop or completely different image to different screen sizes.
 
 You can find a detailed [guide to Responsive Images in the Learn HTML section](/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images) here on MDN.
 
-Responsive typography
----------------------
+## Responsive typography
 
 An element of responsive design not covered in earlier work was the idea of responsive typography. Essentially, this describes changing font sizes within media queries to reflect lesser or greater amounts of screen real estate.
 
@@ -218,8 +210,7 @@ This means that we only need to specify the font size for the heading once, rath
 
 See an example of this in action: [example](https://mdn.github.io/css-examples/learn/rwd/type-vw.html), [source code](https://github.com/mdn/css-examples/blob/master/learn/rwd/type-vw.html).
 
-The viewport meta tag
----------------------
+## The viewport meta tag
 
 If you look at the HTML source of a responsive page, you will usually see the following {{htmlelement("meta")}} tag in the `<head>` of the document.
 
@@ -233,15 +224,15 @@ This meta tag exists because when the original iPhone launched and people starte
 
 The trouble is that your responsive design with breakpoints and media queries won't work as intended on mobile browsers. If you've got a narrow screen layout that kicks in at 480px viewport width or less, and the viewport is set at 960px, you'll never see your narrow screen layout on mobile. By setting `width=device-width` you are overriding Apple's default `width=960px` with the actual width of the device, so your media queries will work as intended.
 
-**So you should *always* include the above line of HTML in the head of your documents.**
+**So you should _always_ include the above line of HTML in the head of your documents.**
 
 There are other settings you can use with the viewport meta tag, however in general the above line is what you will want to use.
 
--   `initial-scale`: Sets the initial zoom of the page, which we set to 1.
--   `height`: Sets a specific height for the viewport.
--   `minimum-scale`: Sets the minimum zoom level.
--   `maximum-scale`: Sets the maximum zoom level.
--   `user-scalable`: Prevents zooming if set to `no`.
+- `initial-scale`: Sets the initial zoom of the page, which we set to 1.
+- `height`: Sets a specific height for the viewport.
+- `minimum-scale`: Sets the minimum zoom level.
+- `maximum-scale`: Sets the maximum zoom level.
+- `user-scalable`: Prevents zooming if set to `no`.
 
 You should avoid using `minimum-scale`, `maximum-scale`, and in particular setting `user-scalable` to `no`. Users should be allowed to zoom as much or as little as they need to; preventing this causes accessibility problems.
 
@@ -249,8 +240,7 @@ You should avoid using `minimum-scale`, `maximum-scale`, and in particular sett
 
 There was a CSS @ rule designed to replace the viewport meta tag — [@viewport](/en-US/docs/Web/CSS/@viewport) — however, the rule failed to gain traction and has been deprecated. @viewport should not be used.
 
-Summary
--------
+## Summary
 
 Responsive design refers to a site or application design that responds to the environment in which it is viewed. It encompasses a number of CSS and HTML features and techniques and is now essentially just how we build websites by default. Consider the sites that you visit on your phone — it is probably fairly unusual to come across a site that is the desktop version scaled down, or where you need to scroll sideways to find things. This is because the web has moved to this approach of designing responsively.
 
@@ -258,18 +248,17 @@ It has also become much easier to achieve responsive designs with the help of th
 
 {{PreviousMenuNext("Learn/CSS/CSS\_layout/Multiple-column\_Layout", "Learn/CSS/CSS\_layout/Media\_queries", "Learn/CSS/CSS\_layout")}}
 
-In this module
---------------
+## In this module
 
--   [Introduction to CSS layout](/en-US/docs/Learn/CSS/CSS_layout/Introduction)
--   [Normal flow](/en-US/docs/Learn/CSS/CSS_layout/Normal_Flow)
--   [Flexbox](/en-US/docs/Learn/CSS/CSS_layout/Flexbox)
--   [Grid](/en-US/docs/Learn/CSS/CSS_layout/Grids)
--   [Floats](/en-US/docs/Learn/CSS/CSS_layout/Floats)
--   [Positioning](/en-US/docs/Learn/CSS/CSS_layout/Positioning)
--   [Multiple-column layout](/en-US/docs/Learn/CSS/CSS_layout/Multiple-column_Layout)
--   [Responsive design](/en-US/docs/Learn/CSS/CSS_layout/Responsive_Design)
--   [Beginner's guide to media queries](/en-US/docs/Learn/CSS/CSS_layout/Media_queries)
--   [Legacy layout methods](/en-US/docs/Learn/CSS/CSS_layout/Legacy_Layout_Methods)
--   [Supporting older browsers](/en-US/docs/Learn/CSS/CSS_layout/Supporting_Older_Browsers)
--   [Fundamental layout comprehension assessment](/en-US/docs/Learn/CSS/CSS_layout/Fundamental_Layout_Comprehension)
+- [Introduction to CSS layout](/en-US/docs/Learn/CSS/CSS_layout/Introduction)
+- [Normal flow](/en-US/docs/Learn/CSS/CSS_layout/Normal_Flow)
+- [Flexbox](/en-US/docs/Learn/CSS/CSS_layout/Flexbox)
+- [Grid](/en-US/docs/Learn/CSS/CSS_layout/Grids)
+- [Floats](/en-US/docs/Learn/CSS/CSS_layout/Floats)
+- [Positioning](/en-US/docs/Learn/CSS/CSS_layout/Positioning)
+- [Multiple-column layout](/en-US/docs/Learn/CSS/CSS_layout/Multiple-column_Layout)
+- [Responsive design](/en-US/docs/Learn/CSS/CSS_layout/Responsive_Design)
+- [Beginner's guide to media queries](/en-US/docs/Learn/CSS/CSS_layout/Media_queries)
+- [Legacy layout methods](/en-US/docs/Learn/CSS/CSS_layout/Legacy_Layout_Methods)
+- [Supporting older browsers](/en-US/docs/Learn/CSS/CSS_layout/Supporting_Older_Browsers)
+- [Fundamental layout comprehension assessment](/en-US/docs/Learn/CSS/CSS_layout/Fundamental_Layout_Comprehension)
