@@ -606,7 +606,6 @@ Grid "frameworks" tend to be based around 12 or 16 column grids and with CSS Gri
       <footer>Contact me@mysite.com</footer>
     </div>
 
-
 {{ EmbedLiveSample('Grid\_8', '100%', 400) }}
 
 If you use the [Firefox Grid Inspector](/en-US/docs/Tools/Page_Inspector/How_to/Examine_grid_layouts) to overlay the grid lines on your design, you can see how our 12 column grid works.
