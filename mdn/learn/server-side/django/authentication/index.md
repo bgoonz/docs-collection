@@ -169,7 +169,6 @@ Update the `TEMPLATES` section's `'DIRS'` line as shown:
            'APP_DIRS': True,
            ...
 
-
 ### Login template
 
 **Important**: The authentication templates provided in this article are a very basic/slightly modified version of the Django demonstration login templates. You may need to customise them for your own use!

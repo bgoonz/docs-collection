@@ -79,8 +79,6 @@ If the substring _is_ found inside the main string, it returns a number represen
 
     This returns "moz" — the first parameter is the character position to start extracting at, and the second parameter is the character position after the last one to be extracted. So the slice happens from the first position, up to, but not including, the last position. In this example, since the starting index is 0, the second parameter is equal to the length of the string being returned.
 
-
-
 4.  Also, if you know that you want to extract all of the remaining characters in a string after a certain character, you don't have to include the second parameter! Instead, you only need to include the character position from where you want to extract the remaining characters in a string. Try the following:
 
         browserType.slice(2);

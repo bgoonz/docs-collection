@@ -467,7 +467,6 @@ The code required for the URL mappers and the views should be virtually identica
 
       <p><strong>Author:</strong> <a href="\{{ book.author.get_absolute_url }}">\{{ book.author }}</a></p>
 
-
 When you are finished, your pages should look something like the screenshots below.
 
 ![Author List Page](author_list_page_no_pagination.png)
